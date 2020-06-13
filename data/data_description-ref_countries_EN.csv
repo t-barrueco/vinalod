@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+euCode,object,251,251,AD,ZW,AD to ZW,identifier,Two digits EU country code 
+isoCode,object,251,250,AD,ZW,AD to ZW,identifier,Two digits ISO country code 
+name,object,251,251,Afghanistan,Åland Islands,Afghanistan to Åland Islands,info,Country name
+language,object,251,1,en,en,en,info,Language

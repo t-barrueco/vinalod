@@ -1,0 +1,427 @@
+code,title,description,language
+ABI,Biotechnologia rolna,,pl
+ABI,Landwirtschaftliche Biotechnologie,,de
+ABI,Biotechnologie agricole,,fr
+ABI,Agricultural biotechnology,,en
+ABI,Biotecnologia agricola,,it
+ABI,Biotecnolog�a agr�cola,,es
+AER,Technologia kosmiczna,Technologia kosmiczna,pl
+AER,Luft- und Raumfahrttechnik,,de
+AER,Technologie a�rospatiale,,fr
+AER,Aerospace Technology,Aeronauticaltechnology; aircraft; avionics; space exploration and technology.,en
+AER,Tecnologia aerospaziale,,it
+AER,Tecnolog�a aeroespacial,,es
+AGR,Rolnictwo,,pl
+AGR,Landwirtschaft,,de
+AGR,Agriculture,,fr
+AGR,Agriculture,Livestock production;crops and crop production; managerial and economic aspects of agriculture; veterinary medicine; animal husbandry; control of weeds;pests and diseases of plants; land use; forestry; agro-technology; agro-industrial research.,en
+AGR,Agricoltura,,it
+AGR,Agricultura,,es
+AUT,Automatyzacja,,pl
+AUT,Automatisierung,,de
+AUT,Automatisation,,fr
+AUT,Automation,,en
+AUT,Automazione,,it
+AUT,Automatizaci�n,,es
+BIF,Biopaliwa,,pl
+BIF,Biobrennstoffe,,de
+BIF,Biocarburants,,fr
+BIF,Biofuels,,en
+BIF,Biocarburanti,,it
+BIF,Biocombustibles,,es
+BIO,Biotechnologia,Biotechnologia,pl
+BIO,Biotechnologie,,de
+BIO,Biotechnologie,,fr
+BIO,Biotechnology,Microbiology; cellular and molecular biology; genetic engineering; enzyme engineering; assessment of risk; applications of biotechnology in health;agriculture;food;industry and the environment.,en
+BIO,Biotecnologia,,it
+BIO,Biotecnolog�a,,es
+BUS,Aspekty biznesowe,,pl
+BUS,Businessaspekte,,de
+BUS,Aspects commerciaux,,fr
+BUS,Business aspects,,en
+BUS,Aspetti commerciali,,it
+BUS,Aspectos comerciales,,es
+CCC,Zmiana klimatu i cykl w?glowy,,pl
+CCC,Klimaforschung und Kohlenstoffkreislauf,,de
+CCC,Recherche sur les changements climatiques et le cycle du carbone,,fr
+CCC,Climate change and Carbon cycle research,,en
+CCC,Cambiamento climatico e ricerca sul ciclo del carbonio,,it
+CCC,Investigaci�n sobre el cambio clim�tico y el ciclo del carbono,,es
+CLC,Technologie korzystne dla ?rodowiska pod wzgl?dem,,pl
+CLC,Saubere Kohletechnologien,,de
+CLC,Technologies de charbon propre,,fr
+CLC,Clean coal technologies,,en
+CLC,Tecnologie pulite del carbone,,it
+CLC,Tecnolog�as limpias del carb�n,,es
+CON,Budownictwo,Budownictwo,pl
+CON,Bautechnik,,de
+CON,Technologie de la construction,,fr
+CON,Construction Technology,Civil engineering; construction equipment; materials;components and methods; structural reliability; fire resistance; sound insulation; architectural design; building regulations; use of steel;wood;cork;concrete etc. for building purposes.,en
+CON,Tecnologia di costruzione,,it
+CON,Tecnolog�a de la construcci�n,,es
+COO,Koordynacja i wsp�lpraca,Koordynacja i wspo?praca,pl
+COO,Koordinierung und Zusammenarbeit,,de
+COO,Coordination et coop�ration,,fr
+COO,Coordination and Cooperation,Promotion of joint actions;the exchange of information;mobility;sharing of research resources;comparison exercises.,en
+COO,Coordinamento e cooperazione,,it
+COO,Coordinaci�n y Cooperaci�n,,es
+EAR,Nauki o ziemi,Nauki o ziemi,pl
+EAR,Geowissenschaften,,de
+EAR,Sciences de la terre,,fr
+EAR,Earth Sciences,Geology; mineralogy; geography; geophysics; geo-chemistry; soil science; cartography.,en
+EAR,Scienze della Terra,,it
+EAR,Ciencias de la Tierra,,es
+ECO,Aspekty ekonomiczne,Aspekty ekonomiczne,pl
+ECO,Wirtschaftliche Aspekte,,de
+ECO,Aspects �conomiques,,fr
+ECO,Economic Aspects,Economic sciences; economic analysis and theory; economic aspects of RTD.,en
+ECO,Aspetti economici,,it
+ECO,Aspectos econ�micos,,es
+EDU,Edukacja i szkolenie,,pl
+EDU,Ausbildung und Schulung,,de
+EDU,Education et formation,,fr
+EDU,Education and Training,Education of children and adults; university;polytechnic and college students; teaching methods; training needs; in-service training; vocational training; retraining; distance learning.,en
+EDU,Istruzione e formazione,,it
+EDU,Educaci�n y Formaci�n,,es
+ELM,Elektronika i mikroelektronika,Elektronika i mikroelektronika,pl
+ELM,Elektronik und Mikroelektronik,,de
+ELM,Electronique et micro�lectronique,,fr
+ELM,Electronics and Microelectronics,Electronic circuits;components and equipment; semiconductors; magnetic and superconducting materials and devices; power systems; printed circuits and integrated circuits (ICs); microwave technology and waveguides.,en
+ELM,Elettronica e Microelettronica,,it
+ELM,Electr�nica y Microelectr�nica,,es
+EMP,Zatrudnienie,,pl
+EMP,Besch�ftigung,,de
+EMP,Consid�rations d�emploi,,fr
+EMP,Employment issues,,en
+EMP,Temi legati all'occupazione,,it
+EMP,Empleo,,es
+ENV,Ochrona srodowiska,Ochrona ?rodowiska,pl
+ENV,Umweltschutz,,de
+ENV,Protection de l'environnement,,fr
+ENV,Environmental Protection,Measurement and detection of pollution; effects of pollutants; aerosals and particulate emissions; water quality; acid rain; soil pollution; ecology and radio-ecology; limitation/prevention actions on pollution.,en
+ENV,Protezione ambientale,,it
+ENV,Protecci�n del medio ambiente,,es
+EST,Magazynowanie energii i transport energii,,pl
+EST,Energiespeicherung und Energietransport,,de
+EST,Conservation de l'�nergie et transport de l'�nergie,,fr
+EST,Energy Storage and Energy Transport,The storage;transmission and conversion of energy; use of hydrogen for energy transport; cells; secondary energy vectors.,en
+EST,Immagazzinamento di energia Trasporto di energia,,it
+EST,Almacenamiento de energ�a Transporte de energ�a,,es
+ESV,Oszczednosc energii,,pl
+ESV,Energieeinsparung,,de
+ESV,Economie d'�nergie,,fr
+ESV,Energy Saving,Energy conservation; increased efficiency of energy use; energy audits; heat transmission and storage; heat pumps; thermal insulation; use of waste heat.,en
+ESV,Risparmio di energia,,it
+ESV,Ahorro energ�tico,,es
+ETH,Etyka bada?,,pl
+ETH,Forschungsethik,,de
+ETH,�thique de la recherche,,fr
+ETH,Research ethics,,en
+ETH,Etica della ricerca,,it
+ETH,�tica de la investigaci�n,,es
+EVA,Ocena,,pl
+EVA,Bewertung,,de
+EVA,Evaluation,,fr
+EVA,Evaluation,Evaluation of Community RTD programmes; evaluation methodologies.,en
+EVA,Valutazione,,it
+EVA,Evaluaci�n,,es
+FFU,Paliwa kopalne,,pl
+FFU,Fossile Brennstoffe,,de
+FFU,Combustibles fossiles,,fr
+FFU,Fossil Fuels,Coal and hydrocarbons; petroleum products; coke; by-products; transporting and storage of hydrocarbons; liquefaction and gasification of solid fuels; exploration; mining;processing and utilization.,en
+FFU,Combustibili fossili,,it
+FFU,Combustibles f�siles,,es
+FIS,Rozszczepienie jadra atomowego,,pl
+FIS,Kernspaltung,,de
+FIS,Fission nucl�aire,,fr
+FIS,Nuclear Fission,Reactor operation; decommissioning; reactor physics; pressure vessels; safeguarding techniques; fuel fabrication and reprocessing; irradiation facilities; uranium; plutonium and thorium ores; Transuranic elements/actinides; fissile materials (excluding r...,en
+FIS,Fissione nucleare,,it
+FIS,Fisi�n nuclear,,es
+FOO,Zywnosc,,pl
+FOO,Lebensmittel,,de
+FOO,Alimentation,,fr
+FOO,Food,Nutritional and toxicological properties of foodstuffs; processed agricultural and aquacultural produce; food additives; food containers and handling; food technology.,en
+FOO,Alimentari,,it
+FOO,Alimentaci�n,,es
+FOR,Prognozy,,pl
+FOR,Prognostik,,de
+FOR,Pr�visions,,fr
+FOR,Forecasting,Identification of future developments in RTD and long-term strategic options; input to RTD policies; forecasting methodologies.,en
+FOR,Previsioni,,it
+FOR,Previsiones,,es
+FPR,Programy finansowania,,pl
+FPR,Finanzierungsprogramm,,de
+FPR,Programmes de financement,,fr
+FPR,Funding Programmes,,en
+FPR,Programmi di finanziamento,,it
+FPR,Programas de financiaci�n,,es
+FUS,Synteza jadrowa,Synteza j?drowa,pl
+FUS,Kernfusion,,de
+FUS,Fusion nucl�aire,,fr
+FUS,Nuclear Fusion,Tokamaks; plasma physics; electron dynamics and confinement; components and materials; instabilities and turbulence; MHD equilibrium; safeguarding techniques; electric and magnetic fields; impurities; ignition; modelling.,en
+FUS,Fusione nucleare,,it
+FUS,Fusi�n nuclear,,es
+HCS,Opieka zdrowotna/s?u?by zdrowia,,pl
+HCS,Gesundheitliche Versorgung/Leistungen,,de
+HCS,Prestations/services de soins de sant�,,fr
+HCS,Healthcare delivery/services,,en
+HCS,Servizi/prestazioni sanitarie,,it
+HCS,Servicios de salud,,es
+HFC,Wod�r i ogniwa paliwowe,,pl
+HFC,Wasserstoff- und Brennstoffzellen,,de
+HFC,Hydrog�ne et piles � combustible,,fr
+HFC,Hydrogen and fuel cells,,en
+HFC,Idrogeno e pile a combustibile,,it
+HFC,Hidr�geno y pilas de combustible,,es
+IBI,Biotechnologia przemys?owa,,pl
+IBI,Industrielle Biotechnologie,,de
+IBI,Biotechnologie industrielle,,fr
+IBI,Industrial biotech,,en
+IBI,Biotecnologia industriale,,it
+IBI,Biotecnolog�a industrial,,es
+ICT,Technologie informacyjne i komunikacyjne,,pl
+ICT,Anwendungen der Informations- und Kommunikationstechnologie,,de
+ICT,Applications dans le domaine des technologies de l'information,,fr
+ICT,Information and communication technology applications,,en
+ICT,Applicazioni della tecnologia dell'informazione e della comunica,,it
+ICT,Aplicaciones de tecnolog�a de la informaci�n y la comunicaci�n,,es
+IND,Produkcja przemyslowa,Produkcja przemys?owa,pl
+IND,Industrielle Fertigung,,de
+IND,Fabrication industrielle,,fr
+IND,Industrial Manufacture,Industrial processes; process control; plant design and maintenance; machine tools; advanced design and manufacturing techniques; use of automated tools.,en
+IND,Produzione industriale,,it
+IND,Producci�n industrial,,es
+INF,Informacje i media,Informacje;media,pl
+INF,Information und Medien,,de
+INF,Information et m�dias,,fr
+INF,Information and Media,Information services; the media industry; library sciences.,en
+INF,Informazione e mass media,,it
+INF,Informaci�n y Medios de comunicaci�n,,es
+IPR,Prawa w?asno?ci intelektualnej,,pl
+IPR,Rechte an geistigem Eigentum,,de
+IPR,Droits de propri�t� intellectuelle,,fr
+IPR,Intellectual property rights,,en
+IPR,Diritti di propriet� intellettuale,,it
+IPR,Derechos de la propiedad intelectual,,es
+IPS,Przetwarzanie informacji i systemy informacyjne,,pl
+IPS,Informationsverarbeitung und Informationssysteme,,de
+IPS,Traitement de l'information et syst�mes d'information,,fr
+IPS,Information Processing and Information Systems,Technical aspects of information systems; computer hardware and software; data processing; databases; systems design and documentation; advanced systems architecture; expert systems; artificial inteligence (AI); computer-integrated manufacturing (CIM) sy...,en
+IPS,Elaborazione dati e Sistemi di informazione,,it
+IPS,Tratamiento de la informaci�n y Sistemas de informaci�n,,es
+ITT,Innowacja i transfer technologii,,pl
+ITT,Innovation und Technologietransfer,,de
+ITT,Innovation et Transfert de technologies,,fr
+ITT,Innovation and Technology Transfer,Development of mechanisms to promote innovation and technology transfer;utilization of the results of research;property rights and patents.,en
+ITT,Innovazione e trasferimento di tecnologie,,it
+ITT,Innovaci�n y transferencia de tecnolog�as,,es
+LEG,Prawodawstwo i przepisy,,pl
+LEG,Gesetze und Vorschriften,,de
+LEG,L�gislation et r�glements,,fr
+LEG,Legislation and Regulations,Formulation;evaluation or application of laws and regulations;administrative measures;codes of conduct;decisions;directives or agreements for research and development in science and technology.,en
+LEG,Legislazione e regolamentazione,,it
+LEG,Legislaci�n y reglamentaci�n,,es
+LIF,Nauki biologiczne,,pl
+LIF,Biowissenschaften,,de
+LIF,Sciences du vivant,,fr
+LIF,Life Sciences,Biological sciences not included elsewhere; biochemistry; genetics; toxicology.,en
+LIF,Scienze biologiche,,it
+LIF,Ciencias de la vida,,es
+MAT,Technologia materialowa,,pl
+MAT,Werkstofftechnik,,de
+MAT,Technologie des mat�riaux,,fr
+MAT,Materials Technology,Plastics;rubber;polymers and composite materials; adhesives; ceramics; coatings; metals and alloys; iron and steel;steelworks;properties and utilization of steels; miscellaneous materials; properties of materials;corrosion and degradation.,en
+MAT,Tecnologia dei materiali,,it
+MAT,Tecnolog�a de materiales,,es
+MBI,Biotechnologia medyczna,,pl
+MBI,Medizinische Biotechnologie,,de
+MBI,Biotechnologie m�dicale,,fr
+MBI,Medical biotechnology,,en
+MBI,Biotecnologia medica,,it
+MBI,Biotecnolog�a m�dica,,es
+MEA,Metody pomiarowe,,pl
+MEA,Me�verfahren,,de
+MEA,M�thodes de mesures,,fr
+MEA,Measurement Methods,Test facilities and methods; applied metrology; biomedical analyses; environmental analyses; verification methods; recording devices; non-destructive testing; online testing.,en
+MEA,Metodi di misurazione,,it
+MEA,M�todos de medici�n,,es
+MED,Medycyna i zdrowie,,pl
+MED,Medizin und Gesundheit,,de
+MED,M�decine et sant�,,fr
+MED,Medicine and Health,"Human health (for veterinary medicine see ""Agriculture""); the effect of specific environments; public health;industrial medicine; medical research; nutrition; dentistry; nursing; physiology; pharmaceutical products; medical technology.",en
+MED,Medicina e sanit�,,it
+MED,Medicina y Sanidad,,es
+MET,Meteorologia,,pl
+MET,Meteorologie,,de
+MET,M�t�orologie,,fr
+MET,Meteorology,Climatology; weather forecasting; weather modifications; collection and analysis of meteorological data.,en
+MET,Meteorologia,,it
+MET,Meteorolog�a,,es
+MST,Matematyka i statystyka,,pl
+MST,Mathematik und Statistik,,de
+MST,Math�matiques et statistique,,fr
+MST,Mathematics and Statistics,Mathematical theory; statistical analysis; operational research; numerical analysis; mathematical modelling. (See also application area),en
+MST,Matematica e statistiche,,it
+MST,Matem�ticas y Estad�stica,,es
+NET,Technologie sieciowe,,pl
+NET,Netzwerktechnologien,,de
+NET,Technologies de r�seaux,,fr
+NET,Network technologies,,en
+NET,Tecnologie di rete,,it
+NET,Tecnolog�as de redes,,es
+NNT,Nanotechnologie i nanonauki,,pl
+NNT,Nanotechnologien und Nanowissenschaften,,de
+NNT,Nanotechnologie et nanosciences,,fr
+NNT,Nanotechnology and Nanosciences,,en
+NNT,Nanotecnologia e nanoscienze,,it
+NNT,Nanotecnolog�a y nanociencias,,es
+OET,Inne zagadnienia dotyczace energii,,pl
+OET,Sonstige Energiefragen,,de
+OET,Autres th�mes li�s � l'�nergie,,fr
+OET,Other Energy Topics,Demand analysis and utilization strategies; energy statistics; general energy topics not included elsewhere.,en
+OET,Altri temi relativi all'energia,,it
+OET,Otros temas relacionados con la energ�a,,es
+OTH,Inny,Inny,pl
+OTH,Andere,Andere,de
+OTH,Autre,Autre,fr
+OTH,Other,Other,en
+OTH,Altro,Altro,it
+OTH,Otro,Otro,es
+PMM,Metodologia zarz?dzania projektami,,pl
+PMM,Projektmanagementmethoden,,de
+PMM,M�thodologies de gestion de projet,,fr
+PMM,Project management methodologies,,en
+PMM,Metodologie di gestione di progetti,,it
+PMM,Metodolog�as de gesti�n de proyectos,,es
+POL,Linie polityczne,,pl
+POL,Strategien,,de
+POL,Strat�gies,,fr
+POL,Policies,Formulation;evaluation or application of policies;policy strategies or plans of action for research and development in science and technology.,en
+POL,Politiche,,it
+POL,Pol�ticas,,es
+PSE,Nauki fizyczne i in?ynieria,,pl
+PSE,Natur- und Ingenieurwissenschaften,,de
+PSE,Sciences physiques et ing�nierie,,fr
+PSE,Physical sciences and engineering,,en
+PSE,Scienze fisiche e ingegneria,,it
+PSE,Ciencias f�sicas e ingenier�a,,es
+RAD,Ochrona przed promieniowaniem,,pl
+RAD,Strahlenschutz,,de
+RAD,Radioprotection,,fr
+RAD,Radiation Protection,Radiation shielding; dosimetry; radiation and radioisotope effects on man;animals;plants and micro-organisms.,en
+RAD,Protezione contro le radiazioni,,it
+RAD,Protecci�n contra las radiaciones,,es
+REF,Materialy referencyjne,,pl
+REF,Referenzmaterialien,,de
+REF,Mat�riaux de r�f�rence,,fr
+REF,Reference Materials,Preparation and distribution of certified reference material (CRM) samples for standardization;harmonization and comparison of analyses and measurements; technical specification of CRMs; storage and preservation of CRMs.,en
+REF,Materiali di riferimento,,it
+REF,Materiales de referencia,,es
+REG,Rozw�j regionalny,,pl
+REG,Regionalentwicklung,,de
+REG,D�veloppement r�gional,,fr
+REG,Regional Development,RTD activities related to regional development and the restructuring of economic sectors.,en
+REG,Sviluppo regionale,,it
+REG,Desarrollo regional,,es
+ROB,Robotyka,,pl
+ROB,Robotik,,de
+ROB,Robotique,,fr
+ROB,Robotics,,en
+ROB,Robotica,,it
+ROB,Rob�tica,,es
+RSE,Odnawialne zr�dla energii,,pl
+RSE,Regenerative Energietr�ger,,de
+RSE,Sources d'�nergie renouvelables,,fr
+RSE,Renewable Sources of Energy,Tidal wave and wind energy; hydro-electric power; geothermal energy; energy from biomass; solar energy; photovoltaics; unconventional and alternative energies.,en
+RSE,Fonti di energia rinnovabile,,it
+RSE,Fuentes de energ�a renovable,,es
+RWA,Odpady radioaktywne,,pl
+RWA,Radioaktive Abf�lle,,de
+RWA,D�chets radioactifs,,fr
+RWA,Radioactive Waste,Management and storage of radioactive waste; radioactive waste treatment; disposal in deep land or sub-seabed formations; remote handling; container materials and matrices.,en
+RWA,Scorie radioattive,,it
+RWA,Residuos radiactivos,,es
+SAF,Bezpieczenstwo,,pl
+SAF,Sicherheit,,de
+SAF,S�curit�,,fr
+SAF,Safety,Safety engineering; safety at work; assessment of risk; reliability of components and systems; industrial hazards;; natural hazards; transportation of hazardous materials; accident analysis and reporting.,en
+SAF,Sicurezza,,it
+SAF,Seguridad,,es
+SCI,Badania Naukowe,,pl
+SCI,Wissenschaftliche Forschung,,de
+SCI,Recherche scientifique,,fr
+SCI,Scientific Research,General scientific and industrial research;or research not included elsewhere.,en
+SCI,Ricerca scientifica,,it
+SCI,Investigaci�n cient�fica,,es
+SDT,Zr�wnowa?ony rozw�j,,pl
+SDT,Nachhaltige Entwicklung,,de
+SDT,D�veloppement durable,,fr
+SDT,Sustainable development,,en
+SDT,Sviluppo sostenibile,,it
+SDT,Desarrollo sostenible,,es
+SEA,Zasoby morza i rybol�wstwo,,pl
+SEA,Meeressch�tze und Fischerei,,de
+SEA,Ressources de la mer et p�che,,fr
+SEA,Resources of the Sea and Fisheries,Marine science; oceanography; oceanology; exploitation of the seabed; fisheries; aquaculture.,en
+SEA,Risorse del mare e Pesca,,it
+SEA,Recursos marinos y Pesca,,es
+SEC,Bezpiecze?stwo,,pl
+SEC,Sicherheit,,de
+SEC,S�curit�,,fr
+SEC,Security,,en
+SEC,Sicurezza,,it
+SEC,Seguridad,,es
+SOC,Nauki spo?eczne i humanistyczne,,pl
+SOC,Sozial- und Geisteswissenschaften,,de
+SOC,Sciences sociales et humaines,,fr
+SOC,Social sciences and humanities,Social sciences; use of human resources; ergonomics; social implications of new technology; social effects of technology.,en
+SOC,Scienze sociali e umanistiche,,it
+SOC,Ciencias sociales y humanidades,,es
+SPA,Przestrze? kosmiczna i badania satelitarne,,pl
+SPA,Weltraum- und Satellitenforschung,,de
+SPA,Recherche spatiale et par satellite,,fr
+SPA,Space and satellite research,,en
+SPA,Ricerca spaziale e satellitare,,it
+SPA,Investigaci�n sobre el espacio y sat�lites,,es
+STA,Standardy,,pl
+STA,Normen and Standards,,de
+STA,Normalisation,,fr
+STA,Standards,"Technical standards; quality standards; national and international standards; harmonization of standards. (See also ""Reference Materials"")",en
+STA,Standard,,it
+STA,Normas,,es
+TEC,Inne technologie,,pl
+TEC,Sonstige Technik,,de
+TEC,Autres technologies,,fr
+TEC,Other Technology,Textile technology; laser technology; membrane technology; vacuum engineering; hydraulics; particle technology; other specific technologies not included elsewhere.,en
+TEC,Altre tecnologie,,it
+TEC,Otras tecnolog�as,,es
+TEL,Telekomunikacja,,pl
+TEL,Telekommunikation,,de
+TEL,T�l�communications,,fr
+TEL,Telecommunications,Communication systems based on electromagnetic waves; radio and television equipment and transmissions; high-definition television (HDTV); satellite communications; integrated broadband communications (IBC); remote sensing; radar; network value-added ser...,en
+TEL,Telecomunicazioni,,it
+TEL,Telecomunicaciones,,es
+TRA,Transport,,pl
+TRA,Verkehr,,de
+TRA,Transports,,fr
+TRA,Transport,"Road;track and rail transport; design of vehicles and systems; transportation by sea and inland waterways; air transportation; pipelines; transport infrastructure; prototypes;trial and pilot schemes. (For transportation of hazardous materials see ""Safe...",en
+TRA,Trasporti,,it
+TRA,Transportes,,es
+VAS,Weterynaria i nauki o zwierz?tach,,pl
+VAS,Veterin�r - und Tierwissenschaften,,de
+VAS,Sciences v�t�rinaires et des animaux,,fr
+VAS,Veterinary and animal sciences,,en
+VAS,Scienze veterinarie e degli animali,,it
+VAS,Ciencias veterinarias y de los animales,,es
+WAS,Gospodarka odpadami,,pl
+WAS,Abfallwirtschaft,,de
+WAS,Gestion des d�chets,,fr
+WAS,Waste Management,"Non-nuclear waste (for other types see ""Radioactive Waste""); recycling;recovery and reclamation; incineration and pyrolysis; land and sea disposal; bioconversion; landfill; industrial waste; energy from waste.",en
+WAS,Gestione dei rifiuti,,it
+WAS,Gesti�n de residuos,,es
+WAT,Zasoby wodne i gospodarowanie nimi,,pl
+WAT,Wasserressourcen und Wasserbewirtschaftung,,de
+WAT,Ressources en eau et gestion,,fr
+WAT,Water resources and management,,en
+WAT,Risorse idriche e gestione,,it
+WAT,Recursos h�dricos y gesti�n,,es

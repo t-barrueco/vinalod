@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+code,object,187,187,169,notAvailable,169 to notAvailable,identifier,Funding Scheme code
+title,object,178,169,Access to Research Infrastructures,Young researchers,Access to Research I to Young researchers,info,Funding Scheme title
+description,float64,0,0,,,,info,Funding Scheme description
+language,object,187,1,en,en,en,info,Language

@@ -1,0 +1,252 @@
+euCode,isoCode,name,language
+AD,AD,Andorra,en
+AE,AE,United Arab Emirates,en
+AF,AF,Afghanistan,en
+AG,AG,Antigua and Barbuda,en
+AI,AI,Anguilla,en
+AL,AL,Albania,en
+AM,AM,Armenia,en
+AO,AO,Angola,en
+AQ,AQ,Antarctica,en
+AR,AR,Argentina,en
+AS,AS,American Samoa,en
+AT,AT,Austria,en
+AU,AU,Australia,en
+AW,AW,Aruba,en
+AX,AX,Åland Islands,en
+AZ,AZ,Azerbaijan,en
+BA,BA,Bosnia and Herzegovina,en
+BB,BB,Barbados,en
+BD,BD,Bangladesh,en
+BE,BE,Belgium,en
+BF,BF,Burkina Faso,en
+BG,BG,Bulgaria,en
+BH,BH,Bahrain,en
+BI,BI,Burundi,en
+BJ,BJ,Benin,en
+BL,BL,Saint Barthélemy,en
+BM,BM,Bermuda,en
+BN,BN,Brunei,en
+BO,BO,Bolivia,en
+BQ,NULL,Bonaire; Saint Eustatius and Saba,en
+BR,BR,Brazil,en
+BS,BS,Bahamas,en
+BT,BT,Bhutan,en
+BV,BV,Bouvet Island,en
+BW,BW,Botswana,en
+BY,BY,Belarus,en
+BZ,BZ,Belize,en
+CA,CA,Canada,en
+CC,CC,Cocos (Keeling) Islands,en
+CD,CD,Democratic Republic of the Congo,en
+CF,CF,Central African Republic,en
+CG,CG,Congo,en
+CH,CH,Switzerland,en
+CI,CI,Côte d’Ivoire,en
+CK,CK,Cook Islands,en
+CL,CL,Chile,en
+CM,CM,Cameroon,en
+CN,CN,China,en
+CO,CO,Colombia,en
+CP,CP,Clipperton,en
+CR,CR,Costa Rica,en
+CU,CU,Cuba,en
+CV,CV,Cape Verde,en
+CW,CW,Curaçao,en
+CX,CX,Christmas Island,en
+CY,CY,Cyprus,en
+CZ,CZ,Czechia,en
+DE,DE,Germany,en
+DJ,DJ,Djibouti,en
+DK,DK,Denmark,en
+DM,DM,Dominica,en
+DO,DO,Dominican Republic,en
+DZ,DZ,Algeria,en
+EC,EC,Ecuador,en
+EE,EE,Estonia,en
+EG,EG,Egypt,en
+EH,EH,Western Sahara,en
+EL,GR,Greece,en
+ER,ER,Eritrea,en
+ES,ES,Spain,en
+ET,ET,Ethiopia,en
+FI,FI,Finland,en
+FJ,FJ,Fiji,en
+FK,FK,Falkland Islands,en
+FM,FM,Micronesia,en
+FO,FO,Faeroe Islands,en
+FR,FR,France,en
+GA,GA,Gabon,en
+GD,GD,Grenada,en
+GE,GE,Georgia,en
+GF,GF,French Guiana,en
+GG,GG,Guernsey,en
+GH,GH,Ghana,en
+GI,GI,Gibraltar,en
+GL,GL,Greenland,en
+GM,GM,The Gambia,en
+GN,GN,Guinea,en
+GP,GP,Guadeloupe,en
+GQ,GQ,Equatorial Guinea,en
+GS,GS,South Georgia and the South Sandwich Islands,en
+GT,GT,Guatemala,en
+GU,GU,Guam,en
+GW,GW,Guinea-Bissau,en
+GY,GY,Guyana,en
+HK,HK,Hong Kong,en
+HM,HM,Heard Island and McDonald Islands,en
+HN,HN,Honduras,en
+HR,HR,Croatia,en
+HT,HT,Haiti,en
+HU,HU,Hungary,en
+ID,ID,Indonesia,en
+IE,IE,Ireland,en
+IL,IL,Israel,en
+IM,IM,Isle of Man,en
+IN,IN,India,en
+IO,IO,British Indian Ocean Territory,en
+IQ,IQ,Iraq,en
+IR,IR,Iran,en
+IS,IS,Iceland,en
+IT,IT,Italy,en
+JE,JE,Jersey,en
+JM,JM,Jamaica,en
+JO,JO,Jordan,en
+JP,JP,Japan,en
+KE,KE,Kenya,en
+KG,KG,Kyrgyzstan,en
+KH,KH,Cambodia,en
+KI,KI,Kiribati,en
+KM,KM,Comoros,en
+KN,KN,Saint Kitts and Nevis,en
+KP,KP,North Korea,en
+KR,KR,South Korea,en
+KW,KW,Kuwait,en
+KY,KY,Cayman Islands,en
+KZ,KZ,Kazakhstan,en
+LA,LA,Laos,en
+LB,LB,Lebanon,en
+LC,LC,Saint Lucia,en
+LI,LI,Liechtenstein,en
+LK,LK,Sri Lanka,en
+LR,LR,Liberia,en
+LS,LS,Lesotho,en
+LT,LT,Lithuania,en
+LU,LU,Luxembourg,en
+LV,LV,Latvia,en
+LY,LY,Libya,en
+MA,MA,Morocco,en
+MC,MC,Monaco,en
+MD,MD,Moldova,en
+ME,ME,Montenegro,en
+MF,MF,Saint Martin,en
+MG,MG,Madagascar,en
+MH,MH,Marshall Islands,en
+MK,MK,North Macedonia,en
+ML,ML,Mali,en
+MM,MM,Myanmar/Burma,en
+MN,MN,Mongolia,en
+MO,MO,Macao,en
+MP,MP,Northern Mariana Islands,en
+MQ,MQ,Martinique,en
+MR,MR,Mauritania,en
+MS,MS,Montserrat,en
+MT,MT,Malta,en
+MU,MU,Mauritius,en
+MV,MV,Maldives,en
+MW,MW,Malawi,en
+MX,MX,Mexico,en
+MY,MY,Malaysia,en
+MZ,MZ,Mozambique,en
+NA,NA,Namibia,en
+NC,NC,New Caledonia,en
+NE,NE,Niger,en
+NF,NF,Norfolk Island,en
+NG,NG,Nigeria,en
+NI,NI,Nicaragua,en
+NL,NL,Netherlands,en
+NO,NO,Norway,en
+NP,NP,Nepal,en
+NR,NR,Nauru,en
+NU,NU,Niue,en
+NZ,NZ,New Zealand,en
+OM,OM,Oman,en
+PA,PA,Panama,en
+PE,PE,Peru,en
+PF,PF,French Polynesia,en
+PG,PG,Papua New Guinea,en
+PH,PH,Philippines,en
+PK,PK,Pakistan,en
+PL,PL,Poland,en
+PM,PM,Saint Pierre and Miquelon,en
+PN,PN,Pitcairn Islands,en
+PR,PR,Puerto Rico,en
+PS,PS,Palestine,en
+PT,PT,Portugal,en
+PW,PW,Palau,en
+PY,PY,Paraguay,en
+QA,QA,Qatar,en
+RE,RE,Réunion,en
+RO,RO,Romania,en
+RS,RS,Serbia,en
+RU,RU,Russia,en
+RW,RW,Rwanda,en
+SA,SA,Saudi Arabia,en
+SB,SB,Solomon Islands,en
+SC,SC,Seychelles,en
+SD,SD,Sudan,en
+SE,SE,Sweden,en
+SG,SG,Singapore,en
+SH,SH,Saint Helena,en
+SI,SI,Slovenia,en
+SJ,SJ,Svalbard and Jan Mayen,en
+SK,SK,Slovakia,en
+SL,SL,Sierra Leone,en
+SM,SM,San Marino,en
+SN,SN,Senegal,en
+SO,SO,Somalia,en
+SR,SR,Suriname,en
+SS,SS,South Sudan,en
+ST,ST,São Tomé and Príncipe,en
+SV,SV,El Salvador,en
+SX,SX,Sint Maarten,en
+SY,SY,Syria,en
+SZ,SZ,Eswatini,en
+TC,TC,Turks and Caicos Islands,en
+TD,TD,Chad,en
+TF,TF,French Southern and Antarctic Lands,en
+TG,TG,Togo,en
+TH,TH,Thailand,en
+TJ,TJ,Tajikistan,en
+TK,TK,Tokelau,en
+TL,TL,Timor-Leste,en
+TM,TM,Turkmenistan,en
+TN,TN,Tunisia,en
+TO,TO,Tonga,en
+TR,TR,Turkey,en
+TT,TT,Trinidad and Tobago,en
+TV,TV,Tuvalu,en
+TW,TW,Taiwan,en
+TZ,TZ,Tanzania,en
+UA,UA,Ukraine,en
+UG,UG,Uganda,en
+UK,GB,United Kingdom,en
+UM,UM,United States Minor Outlying Islands,en
+US,US,United States,en
+UY,UY,Uruguay,en
+UZ,UZ,Uzbekistan,en
+VA,VA,Holy See/Vatican City,en
+VC,VC,Saint Vincent and the Grenadines,en
+VE,VE,Venezuela,en
+VG,VG,British Virgin Islands,en
+VI,VI,US Virgin Islands,en
+VN,VN,Vietnam,en
+VU,VU,Vanuatu,en
+WF,WF,Wallis and Futuna,en
+WS,WS,Samoa,en
+XK,NULL,Kosovo,en
+YE,YE,Yemen,en
+YT,YT,Mayotte,en
+ZA,ZA,South Africa,en
+ZM,ZM,Zambia,en
+ZW,ZW,Zimbabwe,en

@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+rcn,int64,2088,2088,664095,705326,664095 to 705326,identifier,Topic Record Control Number
+code,object,2088,2088,ALTFI-01-2017,YOUNG-4-2015,ALTFI-01-2017 to YOUNG-4-2015,identifier,Topic code
+title,object,2088,1983,"""Seals for FTB#2 Wing with Additive Manufacturing Technologies""",eHealth interoperability,"""Seals for FTB#2 Win to eHealth interoperabi",info,Topic Title
+language,object,2088,1,en,en,en,info,Language

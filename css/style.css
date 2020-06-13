@@ -1,0 +1,331 @@
+th.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #0c5baa!important;
+  /* background-color: #cfcfcf!important; */
+  color: white;
+  border: 1px;
+  border-color: rgb(20, 20, 20); 
+  font-weight: normal;
+}
+
+.table {
+  border-style: solid;
+  border-width: thin;
+  border-color: black;
+  text-align: left;
+}
+
+
+.tiptable {
+  width: 320px;
+}
+
+
+.filter {
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+  /* padding: 0px; */
+  /* top: 0px; */
+  /* background: rgb(152, 199, 236); */
+}
+
+.div-center {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.stats {
+  /* background-color: #d1d1d1; */
+  background-color: #ebe9e9;  
+  /* border-color: #ffffff; */
+  /* border-width: 0mm; */
+  border-color: #2b2a2a;  
+}
+
+.details1 {
+  font-size: 14px;
+  text-align: right;
+}
+.details2 {
+  font-size: 14px;
+  text-align: left;
+}
+
+
+input:focus, textarea {
+  outline: none !important;
+}
+
+/* 9dd2e2 */
+
+#chart-area svg {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#logo {
+  height:50px;
+}
+
+.navbar-brand {
+  height: 60px;
+  padding: 5px 0px;
+}
+
+body {
+  background-color: rgb(255, 255, 255)    
+}
+
+.axis {
+	font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #D4D8DA;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+/* .border {
+  color: #535a61;
+} */
+
+#radBars:hover {
+  fill: red;
+}
+
+.focus circle {
+  fill: #F1F3F3;
+  stroke: #777;
+  stroke-width: 3px;
+}
+
+.hover-line {
+  stroke: #777;
+  stroke-width: 2px;
+  stroke-dasharray: 3,3;
+}
+
+#download-selection-btn {
+  /* background-color: DodgerBlue; */
+  border: none;
+  color: #00838f ;
+  /* padding: 12px 30px; */
+  cursor: pointer;
+  font-size: 12px;
+}
+
+
+
+#download-all-btn {
+  /* background-color: DodgerBlue; */
+  border: none;
+  color: rgb(6, 36, 39) ;
+  /* padding: 12px 30px; */
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#download-meta-btn {
+  /* background-color: DodgerBlue; */
+  border: none;
+  color: #00838f ;
+  /* padding: 12px 30px; */
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-download:hover {
+  background-color: #1986dc;
+  color: white;
+}
+
+.btn-download {
+  /* background-color: DodgerBlue; */
+  border: none;
+  color: #00838f ;
+  /* padding: 12px 30px; */
+  cursor: pointer;
+  font-size: 12px;
+}
+
+
+#barChartEC {
+  display: block;
+  max-width:240px;
+  max-height:160px;
+  width: auto;
+  height: auto;
+  align-content: center;
+}
+
+#valuesEC {
+  display: block;
+  max-width:240px;
+  max-height:160px;
+  width: auto;
+  height: auto;
+}
+
+#barChartorgCount {
+  display: block;
+  max-width:240px;
+  max-height:160px;
+  width: auto;
+  height: auto;
+}
+
+
+#dashdescript {
+  display: none;
+}
+
+#openDataset1{
+  color: rgb(228, 227, 227);
+  text-decoration:none;
+}
+
+#openDataset2{
+  color: rgb(228, 227, 227);
+  text-decoration:none;
+}
+
+#openDataset1:hover {
+ color: grey;
+}
+
+#openDataset2:hover {
+  color: grey;
+ }
+
+/* .nav-link.active {
+  color: white;
+} */
+
+
+#openDataset1.active.nav-link{
+  background-color: #0c5baa!important;
+  color: white; 
+  border: 1px;
+  /* border-color: rgb(29, 28, 28); */
+}
+
+#openDataset2.active.nav-link{
+  background-color: #0c5baa!important;
+  color: white; 
+  border: 1px;
+  /* border-color: rgb(29, 28, 28); */
+}
+
+
+#poza1, #poza2 {
+  display: none;
+}
+
+
+/* .nav-tabs li.active a, .nav-tabs li.active a:hover, .nav-tabs li.active a:focus{
+  background-color: #17a2b8;
+} */
+
+
+.btn:hover {
+  border-color : white;
+}
+
+.blinking {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.myborder {
+  border-style: solid;
+  border-width: thin;
+  border-color: black;
+}
+
+
+/* dropdown social media button */
+
+/* The container <div> - needed to position the dropdown content */
+#social-media {
+  position: absolute;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1986dc;
+  min-width: 160px;
+  border-radius: 5px;
+  font-family: sans-serif;
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #1986dc;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.btn:hover, .dropdown:hover .btn  {
+  background-color: #1986dc;
+}
+
+/* .fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+} */
+
+.fab:hover {
+    opacity: 0.7;
+}

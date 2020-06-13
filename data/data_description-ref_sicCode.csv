@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+code,object,426,71,ABI,WAT,ABI to WAT,identifier,Subject of Research three digits code
+title,object,426,417,Abfallwirtschaft,�tica de la investigaci�n,Abfallwirtschaft to �tica de la investig,info,Subject of Research title
+description,object,62,62,Aeronauticaltechnology; aircraft; avionics; space exploration and technology.,Tokamaks; plasma physics; electron dynamics and confinement; components and materials; instabilities and turbulence; MHD equilibrium; safeguarding techniques; electric and magnetic fields; impurities; ignition; modelling.,Aeronauticaltechnolo to Tokamaks; plasma phy,info,Subject of Research desscription
+language,object,426,6,de,pl,"pl, de, fr, en, it, es",info,Language

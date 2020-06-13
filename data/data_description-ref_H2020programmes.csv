@@ -1,0 +1,6 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+rcn,int64,780,290,664087,704517,664087 to 704517,identifier,Programme Record Control Number
+code,object,780,290,H2020-ARF-2018-2020-10,H2020-SWFS-2016-2017-35,H2020-ARF-2018-2020- to H2020-SWFS-2016-2017,identifier,Programme code
+title,object,780,770," Mainstreaming SME support, especially through a dedicated instrument","ÅÄczeniu w zespoÅy najlepszych instytucji badawczych (ang. teaming) oraz przedstawicieli regionÃ³w osiÄgajÄcych sÅabe wyniki w zakresie badaÅ, rozwoju i innowacji,", Mainstreaming SME s to ÅÄczeniu w zespoÅ,info,Programme title
+shortTitle,object,577,98,A green economy and society through eco-innovation,tworzeniu partnerstw miÄdzy instytucjami badawczymi (ang. twinning),A green economy and  to tworzeniu partnerstw,info,Programme short title
+language,object,780,6,de,pl,"en, pl, fr, it, de, es",info,Language

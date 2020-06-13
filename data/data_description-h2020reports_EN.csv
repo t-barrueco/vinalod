@@ -1,0 +1,126 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+rcn,object,15449,15449,184713,450313,184713 to 450313,identifier,Report Record Control Number
+language,object,15449,1,en,en,en,cross-reference,Language
+title,object,15449,15410,Periodic Reporting for  period 1 - 16gAirTest (Development of replacement method for all kind of 16g dynamically tested aircraft cushions.),Periodic Reporting for period 6 - TTMJ (NEW DIAPHRAGM WALL JOINT SYSTEM ALLOWING GREATER DEPTHS AND HIGH QUALITY JOINTS),Periodic Reporting f to Periodic Reporting f,info,Report title
+teaser,object,15448,15418,"""	VisionBot is addressing one of the greatest problems in electronics manufacturing namely making the electronic boards assembly to be affordable. Even in the year of 2017 electronic assembly represents a great challenge for most SMEs and startups. Mass producing electronic...","➢	Millions of chronic disease patients worldwide depend on treatment that requires safe, repetitive access to the vascular system. The major markets are dialysis and oncology patients in need of chemotherapy. Other chronic disease patients, who require regular medications or...","""	VisionBot is addre to ➢	Millions of chroni",info,Report teaser
+summary,object,15448,15444,"""	VisionBot is addressing one of the greatest problems in electronics manufacturing namely making the electronic boards assembly to be affordable. Even in the year of 2017 electronic assembly represents a great challenge for most SMEs and startups. Mass producing electronic prototypes or boards requires factories equipped with multiple Pick and Place machines. Most of the electronic assembly factories have investments worth of a few hundreds million dollars. To start a manufacturing facility for electronics is always difficult because it involves a lot of investment while the profit will come only later on, after the commercialization is done. So at the beginning, SMEs need to take some major risks. Because of this, a great number of electronic inventions, products have remained at the stage of prototyping and never been mass-product. Many electronic devices never saw the light because their creators were lacking access to assembling facilities. Millions of makers, inventors, electrical engineers and Small and Medium Enterprises had encountered the problem of manufacturing in great amounts industrial electronic products based on prototypes. These creators either have to outsource the electronic production to big electronic manufacturers from China or to buy expensive machines that can cost up to a hundred thousand euro machines. Even the majority of start-ups and SMEs don't have access to enough funds to build an automatized electronic assembly facility, thus being forced to assemble and manufacture the electronic boards using labours. VisionBot is about offering good quality at a reasonable price lowering the starting risks for manufacturers. Moreover, in this way more and more makers will be helped in their start-ups or they actually be encouraged to start new ones.  
+	VisionBot's slogan is: """"Designed by a maker for makers"""". VisionBot was built by a maker to help and enable other creators to build their own manufacturing lines so that they can start their own business in electronics. Our big ambition though VisionBot is to facilitate up to a few millions of people enabling them to manufacture gadgets, IoT devices and electronics in their own garages without being dependent on Electronics Manufacturing  Services or big electronics factories. VisionBot will enable people and companies to assembly electronics fast and affordable. Manufacturing and delivering the VisionBot affordable Pick and Place robots to customers will help and foster the hardware ecosystems from Romanian and the European Union. VisionBot will allow multiple start-ups from our local communities to have access to affordable productions machines enabling them to bring their new electronic technologies and devices a reality to the world. VisionBot impact is not solely to the makers to manufacture electronic products, but also it will enable other million users to have access to electronic devices that couldn't see the light.  If 3D printers started a revolution in prototyping design, we believe VisionBot can start the technological revolution for medium electronic production. By this way, VisionBot reduces market entry barriers for millions of makers who were struggling to bring their ideas to the world. We want to create and deliver a professional, low and medium-quantity (250 products/day) manufacturing line for makers to help them with the production of their products based on prototypes. 
+	The three major objectives from the proposal had been accomplished. The first and most important objective was to conduct and compile a feasibility report to enable our company to gather knowledge and insights enabling us to become a key player in the global competitive market. This objective has been accomplished by interacting with early adopters and potential buyers for our robots. Moreover, we assembled 10 VisionBot units and even commercialized to a customer based in Alba Iulia.
+	The 2nd objective was to analyse the feasibility of the VisionBot machines by testing its""","➢	Millions of chronic disease patients worldwide depend on treatment that requires safe, repetitive access to the vascular system. The major markets are dialysis and oncology patients in need of chemotherapy. Other chronic disease patients, who require regular medications or blood transfusions, i.e. people with blood or digestive disorders,  pediatrics, also need reliable venous access.
+➢	There are approximately 21.4M cancer patients in Europe (http://www.eurocare.it/AboutUs/tabid/54/Default.aspx) with 4.5M on chemotherapy, and 20.1M cancer patients in the US with 4.2M on chemotherapy. Worldwide, there are 2.5M renal failure patients on dialysis, with close to 400K in Europe alone (2014 United States Renal Data System: USRDS. Page 29 vol 2). 
+➢	Current techniques to achieve repetitive venous access have frequent complications such as infection and blockage that cause a significant increase in patient morbidity and mortality, , and result in markedly increased costs of care.
+➢	Damage to fistulas leads to an additional 150K operations/year to repair fistulas in the US alone, at a cost of $2.24 Billion dollars. Extrapolating to Europe shows similar costs. 
+➢	The desired outcomes for prolonged vascular access are well established: Avoid vessel perforation, prevent pseudo aneurysms, hematomas, thrombosis, and stenosis and empower a non-highly skilled clinician to achieve access. 
+➢	Those issues affect hemodialysis patients whose vessels are punctured three times a week during their entire treatment life; cancer patients who often require a small port under the chest wall skin for repetitive chemotherapy treatment; and chronic disease patients who often need sustained venous access to facilitate repetitive transfusion of blood and medications.
+
+The market needs and demands a solution for repetitive vascular access, which avoids the above-mentioned complications and failures: clotted or infected catheters, vessel wall damage, and disrupted blood flow.  The JEM medical devices have been designed to prevent these complications and allowing vessel access by lesser skilled nurse or patients in the home.","""	VisionBot is addre to ➢	Millions of chroni",info,Report summary
+workPerformed,object,15448,15440,"""
+
+
+
+The research for the first 2.5 years on Advanced ERC project """"SM-GRAV"""" was
+focused in the following directions.
+
+
+1) The investigation of the gravitational landscape of theories and the
+navigation of this landscape via classical solutions that are holographically
+dual to renormalization group flows in quantum field theory. Such flows track
+the change of a quantum theory under a change of scale due to quantum effects.
+
+There was a series of works in this direction that analyzed in full generality
+the equations of the gravitational description and their translation in quantum
+field theory language.
+
+What was found was a wealth of cases which were not known before and whose
+study was initiated.
+
+These involved solutions that interpolate between two minima of the potential,
+solutions that are patch-wise defined and cases where there is a dynamical
+competition of solutions.
+
+The analysis of such solutions went even further, by considering quantum field
+theories that lived on curved space-time. There were many reasons to consider
+this. Probably the most interesting is that we would like to understand the
+response of quantum field theory being in de Sitter space. de Sitter space is a
+highly symmetric space that is describing the cosmological expansion in an
+accelerating phase of the universe, similar to the one our universe is
+undergoing currently.
+
+  There are many puzzles concerning quantum field theories in de Sitter space
+  and some were addressed in the on-going work.
+One of the most important outcomes of this work is to provide a controlled
+calculation of the back-reaction of the quantum field theory on the geometry,
+an effect that has been postulated in the back, but it physical impact has been
+out of reach so far.
+
+A further study, analyzed the black-hole solutions in this general landscape.
+On one hand black-holes are the most iconic solutions/backrounds for gravity.
+On the other, via the holographic correspondence they describe the finite
+temperature physics of the dual quantum field theories.
+
+
+
+2) The second direction involved use of the ideas mentioned above to readdress
+the cosmological constant problem, one of the most serious clash points of
+gravity versus quantum mechanics.
+
+The problem can be described as follows:
+
+a) A direct calculation in quantum field theories yields the energy (density)
+of the vacuum to be very large (of order the Planck Mass to the fourth power)
+
+b) The energy-density of the vacuum today is also inferred using the
+gravitational theory and cosmological observations on the acceleration of the
+expansion of the universe. This yields a value for the vacuum energy density
+that is 120 orders of magnitude smaller compared to the one predicted by the
+quantum field theory describing the fundamental particle interactions.
+
+In our setup we can consider a gravitational form of the interaction of our
+four-dimensional world of elementary particle interactions as a
+four-dimensional mem(brane) stretching inside a five-dimensional space that is
+generated by the gravitational description of the hidden quantum field theory
+that generates gravity. This brane-world picture of our world is not new and
+has been studied before.
+
+What we have managed however is to implement the self-tuning idea on the
+cosmological constant in this context as follows: The known interactions
+generate a large vacuum energy (= cosmological constant) that is localized on
+the four-dimensional universe brane. This large cosmological constant will
+become """"invisible"""" if the universe on the brane does not expand.
+
+We therefore searched for solutions in the full theory such that the brane
+metric is flat. To do this, we made a detailed analysis of the bulk equations
+of motion and of the interaction of the brane and the bulk. We found that
+generically
+
+A. such solutions exist
+
+B. they are free of bad singularities.
+
+We have further analyzed the nature of the gravitational interaction on the
+universe brane, and found that quite generally gravity""","	Defined the scope of monitoring and parameters of operation;
+	Running the Machine Learning method and data fusion system; (ongoing)
+	Advanced signal processing requirements; 
+	Theoretical modelling;
+	Requirements of wireless system;
+	Energy harvesting module calculations and results;
+	Development of dual sensor transducer; (ongoing)","""
+
+
+
+The research fo to 	Defined the scope ",info,Work performed
+finalResults,object,15437,15416,"""	Current theoretical models for the fate of oil droplets in marine waters account only for the biodegradation via direct interfacial uptake and neglect any effects resulting from the formation of biofilms around the droplets or the limitation in the oil consumption rate that may be caused by low oxygen availability. The compound particle model developed in this project is the first and simplest possible model that accounts for (some) biofilm and hypoxia effects on the biodegradation of oil droplets. With regard to hypoxia effects, the anaerobic biodegradation of certain hydrocarbons is also feasible but very slow. Areas with low concentration of dissolved oxygen are known as """"dead zones"""" and exist in marine waters throughout the globe. In those areas, the biodegradation of dispersed oil might slow down or not even take place at all. Therefore, it is expected that the compound particle model will eventually be incorporated in macroscale models that track the fate of underwater droplet clouds at the ocean level of observation. Until the end of the project, we shall further relax certain hypotheses of the compound particle model and also combine it with a droplet cloud simulator that accounts for droplet-droplet and droplet-marine snow interactions (collision, clustering, breakup). 
+
+	Previous microscale experiments of oil biodegradation were based on closed systems (batch bioreactors) and/or were conducted without fluid flow. The millifluidic platform devised in this project is not subject to these two important limitations. During the return phase of the project, this platform will be used to investigate the biodegradation of crude oil droplets by different marine microbes. 
+""","	It is stated that ASALVO will be the most important product (in terms of sales and reputation) of all the subsidiary companies of Symborg and will strengthen and optimize the commercial network, increasing also the interest of distributors on the company products.
+	Additionally, it will provide resistance to the company in the markets, since with ASALVO, Symborg will be more resilient to variations in regulation, policies or competence products that could affect to its traditional activity (biostimulants).
+	On the other hand, the registration processes are the limiting factor for the market uptake of Asalvo, whose former products were mainly bio-stimulants, which didn’t need this long and expensive registration process. Moreover, this process is more complicated in Europe than in USA or other countries, and this also makes a difference regarding the market uptake strategy. This is due to the need of developing a double stage process in Europe, where it is necessary to register both the active substance and the commercial product, while in the USA it is necessary only to develop one of these processes and, in addition to this it is normally a faster process.
+	Finally, the rapid growth of Symborg needs the reinvestment of all the benefits the company achieves. This way, it is difficult for the company to afford the long investment needed for developing the registration processes of ASALVO, taking into account that the product couldn’t be on the market before 24 months (USA, Mexico, Chile, Peru) or 48 months (Europe), and this would affect seriously the current market uptake process of other products from Symborg. To solve this, additional resources are needed.","""	Current theoretica to 	It is stated that ",info,Final results
+lastUpdateDate,object,15448,14816,2017-03-28 17:53:34,2020-03-20 19:10:18,2017-03-28 17:53:34 to 2020-03-20 19:10:18,info,Date of last update
+country,float64,0,0,,,,info,Country
+projectID,object,15448,15448,115797,882725,115797 to 882725,cross-reference,Project identifier
+projectAcronym,object,15448,14739,100 Archaic Genomes,zelig,100 Archaic Genomes to zelig,info,Project acronym
+programme,object,15448,293,H2020-EC,H2020-Euratom-1.8.;H2020-Euratom-1.4.;H2020-Euratom-1.3.;H2020-Euratom-1.1.,H2020-EC to H2020-Euratom-1.8.;H,cross-reference,Framework programme
+topics,object,15448,1860,ALTFI-01-2017,YOUNG-5b-2014,ALTFI-01-2017 to YOUNG-5b-2014,cross-reference,Framework topic
+relatedFile,object,13643,13643,/docs/results/h2020/115/115797_PS/logo.png,/docs/results/h2020/882/882725_PS/screen-shot-2020-01-07-at-6-40-23-am.png,/docs/results/h2020/ to /docs/results/h2020/,info,Path to related file
+url,object,14039,13775,http://1ot.mobi/,https://zornplus.si/projects/,http://1ot.mobi/ to https://zornplus.si/,info,Project URL

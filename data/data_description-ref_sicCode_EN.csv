@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+code,object,71,71,ABI,WAT,ABI to WAT,identifier,Subject of Research three digits code
+title,object,71,71,Aerospace Technology,Water resources and management,Aerospace Technology to Water resources and ,info,Subject of Research title
+description,object,46,46,Aeronauticaltechnology; aircraft; avionics; space exploration and technology.,Tokamaks; plasma physics; electron dynamics and confinement; components and materials; instabilities and turbulence; MHD equilibrium; safeguarding techniques; electric and magnetic fields; impurities; ignition; modelling.,Aeronauticaltechnolo to Tokamaks; plasma phy,info,Subject of Research desscription
+language,object,71,1,en,en,en,info,Language

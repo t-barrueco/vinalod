@@ -1,0 +1,13 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+rcn,int64,65130,65130,203948,443715,203948 to 443715,identifier,Deliverables Record Control Number
+title,object,65129,58199,"""""""Ask the expert"""" policy briefs @M14""",￼ Impact of the energy- performance on building valuation,"""""""Ask the expert""""  to ￼ Impact of the ener",info,Title
+projectID,int64,65130,6332,115797,875568,115797 to 875568,cross-reference,Project identifier
+projectAcronym,object,65130,6119,1000kmPLUS,xCLASS,1000kmPLUS to xCLASS,info,Project acronym
+programme,object,65130,306,H2020-EC,H2020-Euratom-1.8.;H2020-Euratom-1.4.;H2020-Euratom-1.3.;H2020-Euratom-1.1.,H2020-EC to H2020-Euratom-1.8.;H,cross-reference,Framework programme
+topics,object,65130,1864,ALTFI-01-2017,YOUNG-5b-2014,ALTFI-01-2017 to YOUNG-5b-2014,cross-reference,Framework topic
+description,object,65130,59886,"""""""BASE-LiNE Earth” website is online""","￼
+Impact of the energy- performance on building valuation","""""""BASE-LiNE Earth”  to ￼
+Impact of the ener",info,Project description
+deliverableType,object,65130,5,"Demonstrators, pilots, prototypes","Websites, patent fillings, videos etc.","Other, Documents, reports, Demonstrators, pilots, prototypes, Websites, patent fillings, videos etc., Open Research Data Pilot",info,Deliverable type
+url,object,65130,65129,https://ec.europa.eu/research/participants/documents/downloadPublic?documentIds=080166e59d339c93&appId=PPGMS,https://www.ec.europa.eu/research/participants/documents/downloadPublic?documentIds=080166e5c711b172&appId=PPGMS,https://ec.europa.eu to https://www.ec.europ,info,Project URL
+lastUpdateDate,object,65130,23913,2018-07-05 17:57:53,2020-02-21 18:31:56,2018-07-05 17:57:53 to 2020-02-21 18:31:56,info,Date of last update

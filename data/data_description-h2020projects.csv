@@ -1,0 +1,63 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+rcn,int64,28145,28145,193157,228063,193157 to 228063,identifier,Project Record Control Number
+id,int64,28145,28145,115797,101003403,115797 to 101003403,identifier,Project identifier
+acronym,object,28145,26455,1-SWARM,zelig,1-SWARM to zelig,info,Project acronym
+status,object,28145,3,CLOSED,TERMINATED,"SIGNED, CLOSED, TERMINATED",info,Project status
+programme,object,28145,374,H2020-EC,H2020-Euratom-1.8.;H2020-Euratom-1.4.;H2020-Euratom-1.3.;H2020-Euratom-1.1.,H2020-EC to H2020-Euratom-1.8.;H,cross-reference,Project assigned programme(s)
+topics,object,28145,2808,ALTFI-01-2017,YOUNG-5b-2014,ALTFI-01-2017 to YOUNG-5b-2014,cross-reference,Project assigned topic(s)
+frameworkProgramme,object,28145,1,H2020,H2020,H2020,info,Framework under which the project is funded
+title,object,28145,27914,"""""""Investigating autophagy enhancement as a therapeutic approach for the treatment of Rett syndrome.""""""",“World’s first techno-economic viable recycling technology for waste woodboards”,"""""""Investigating aut to “World’s first techn",info,Project title
+startDate,object,28139,756,2014-01-01,2021-09-01,2014-01-01 to 2021-09-01,info,Project start date
+endDate,datetime64[ns],28124,1193,2014-09-3,2026-12-31,2014-09-3 to 2026-12-31,info,Project end date
+projectUrl,object,14174,13905,http://1ot.mobi/,https://zornplus.si/projects/,from http://1ot.mobi/ to https://zornplus.si/,info,Project website URL
+objective,object,28144,28129,"'
+Based upon the finding from IMAILE PCP of Innovative STEM/PLE (www.imaile.eu), the project LEARNTECH ACCELERATOR ( LEA)  will take a quantum leap from being one standalone project to  critical mass of European procurers  who will:
+
+1. Unify LEA procurers network and 'Observer Cities '
+2. Implement  IMAILE PCP lessons learned as LEA baseline 
+3. Recommend a LEARNTECH Demand policy - 2030 to reduce fragmentation of  the  public sector 
+4. Enable increased dialogue between demand/ supply side 
+5. Provide transfer of knowledge for the LEARNTECH community ( other procurers, industry, start-ups , end - users and policy level) in order to remove barriers of innovative procurement 
+6. Prepare one PPI ( based upon IMAILE) and one additional future PCP 
+7. Speed up awareness rising  of innovative procurement including cross sectorial value chains 
+
+LEA WP- METHODOLOGY  is developed in order to achieve the above mentioned objectives and with focus to  'ACCELERATE': 
+
+- LEA network collaboration ( WP 2) 
+- Demand  policy recommendations ( WP 3)  
+- Dialogue tools/ venues between demand & supply side  ( WP 4) 
+- Knowledge transfer within the community ( WP5) 
+- Awareness rising on EU level ( WP 6) 
+ 
+
+This unified and knowledge based  action will result in the  LEA ROADMAP  2030 including: 
+
+-Critical mass of European procurers of LEARNTECH in collaboration acting first customers 
+-User cases for evidence of cost& time saving/ standardization/ interoperability as results of innovative procurement 
+-2030 LEARNTECH market foresight and demand policy 
+-Training material/methods/tools for increased competence and dynamic dialogue among LEARNTECH community  
+-One prepared PPI absed upon IMAILE with lessons learned 
+- One addtional prepared PCP identified in LEA 
+
+Implementation of the LEA project  shall contribute to SMART, INCLUSIVE AND SUSTAINABLE DEMAND BASED DEVELOPMENT OF LEARNING TECHNOLOGY
+'","• The need arises from the greater use of PE pipes with a lower capital, installation, operation & maintenance cost and corrosion free during service but is limited through not having a suitable NDT technique to check the integrity of the welded joints between pipes
+• The objective is to take recently developed FP7 inspection/NDT technology for polyethylene (PE) pipe welds, from TRL6 to a TRL9 commercial product that will be exploited globally by the consortium partner providers to the consortium end user, Tier1/2 suppliers and other customers in the EU and globally by product sales and services. 
+• Funds are requested from consortium members TWI, M2M, Plasflow, Tecnitest
+• €1.9m of funds is requested
+• The money will be used for the enhancement, meeting of specific application site testing requirements and the commercialisation of Ultrasonic Testing technology, software, technique validation, standards and technician training/certification.
+• Funds will enable the application specific product enhancements to be made and to support product/service/support commercialisation
+• Ultrasonic equipment, transducers, software suppliers and service inspection/NDT companies as well as end-user nuclear plant, gas/water utilities, mines will all benefit
+• Target market covers nuclear NPP, gas & water utilities, mining & process plant with a total size of 11.5billion welds. A market penetration of €30M sales pa plus €60M pa in EU direct industry savings/benefits are sought.
+• Customers/ buyers. End Users, Tier 1/Tier 2 suppliers, NDT Inspection Companies in the Power Generation (Nuclear Power Plant – NPP), Gas & Water Utilities, Mining industry and Process Plant industries.
+• A unique TRL9 product that has been made suitable for industry use i.e. radiation hardened, ingress protected, site ruggedized, automated data analysis software, validated with appropriate standards, will meet target industry specific inspection applications.
+• Consortium ROI= 10:1 Total EU ROI= 33:1","'
+Based upon the fin to • The need arises fr",info,Project objective (abstract)
+totalCost,object,27966,14744,€ 0.00,"€ 67,289,236,754.00","€ 0.00 to € 67,289,236,754.00",info,Total cost (€) of the project (EC contribution + other contributions)
+ecMaxContribution,object,28145,14494,"€ 3,150.00","€ 470,800,000.00","€ 3,150.00 to € 470,800,000.00",info,Maximum contribution (€) from the European Commision:
+call,object,28145,698,CIP-2016-2017-1,NFRP-2018,CIP-2016-2017-1 to NFRP-2018,cross-reference,Call code under framework H2020
+fundingScheme,object,28145,59,BBI-CSA,Shift2Rail-RIA-LS,BBI-CSA to Shift2Rail-RIA-LS,cross-reference,Funding schemes under which the project is funded
+coordinator,object,28145,8288,"""INSTITUTUL NATIONAL DE CERCETARE-DEZVOLTARE AEROSPATIALA """"ELIE CARAFOLI""""- INCAS BUCURESTI""",stiftung caesar,"""INSTITUTUL NATIONAL to stiftung caesar",info,Name of the coordinating organisation
+coordinatorCountry,object,28145,52,AI,ZA,AI to ZA,cross-reference,Two digits EU Country Code of the coordinating organisation
+participants,object,9917,9204,"""ALL-UKRAINIAN CHARITABLE ORGANIZATION """"MUNICIPAL DEVELOPMENT INSTITUTE"""""";INSTITUTUL NATIONAL DE CERCETARE-DEZVOLTARE IN CONSTRUCTII URBANISM SI DEZVOLTARE TERITORIALA DURABILA URBAN-INCERC;SEVEN STREDISKO PRO EFEKTIVNI VYUZIVANI ENERGIE O.P.S.;B SYS;BULGARIAN CONSTRUCTION CHAMBER;SEVEN, THE ENERGY EFFICIENCY CENTER Z.U.;BUSINESS DEVELOPMENT GROUP SRL;EGE UNIVERSITY;FUNDATIA PENTRU FORMARE PROFESIONALA SI INVATAMANT PREUNIVERSITAR-VIITOR;MOSART LANDSCAPE ARCHITECTURE RESEARCH LIMITED;LIMERICK INSTITUTE OF TECHNOLOGY;WOLFGANG FEIST",Össur hf;CHARITE - UNIVERSITAETSMEDIZIN BERLIN;UNIVERSITA CATTOLICA DEL SACRO CUORE,"""ALL-UKRAINIAN CHARI to Össur hf;CHARITE - U",info,String of Names of participating organisations
+participantCountries,object,9917,7307,AF;UK;BE;UA;IQ;XK;IT;SK;SN;RS;FR;DE,ZA;UK;NZ,AF;UK;BE;UA;IQ;XK;IT to ZA;UK;NZ,info,String of two digits Country Code of participating organisations
+subjects,float64,0,0,,,,cross-reference,String of Subject of research codes( eg: ABI/BBI/SEC) 

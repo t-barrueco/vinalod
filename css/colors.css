@@ -1,0 +1,132 @@
+
+/*  
+ CSS FILE FOR DASHBOARD D1.3 EXPLORE H2020 ORGANISATIONS by European Commission contributions 
+*/
+
+
+/* FONTS */
+
+.text-main {
+  color: #1986dc;
+}
+.text-eublue1 {
+  color: #29357f;
+}
+.text-eublue3 {
+  color: #1986dc;
+}
+.text-cobli2 {
+  color: #5f9ed1;
+}
+.text-cobli3 {
+  color: #a1c8ef;
+}
+
+/* BACKGROUNDS */
+.bg-main {
+  background-color: #074a8b;
+}
+.bg-eublue2 {
+  background-color: #0065a2;
+}
+.bg-eublue3 {
+  background-color: #1986dc;
+}
+.bg-cobli3 {
+  background-color: #a1c8ef;
+}
+.bg-chart {
+  background-color: #f0f0f0;
+}
+
+
+/* BORDERS */
+.border-eublue3 {
+  border-style: solid;
+  border-width: thin ;
+  border-color: #074a8b;
+}
+
+/* BUTTONS */
+.btn-eublue3 {
+  background-color: #1986dc;
+}
+
+.btn-reset {
+  border-style: solid;
+  border-width: thin ;
+  border-color: rgb(219, 88, 88);
+}
+.btn-reset:hover {
+  background-color: #f0baba;
+}
+
+.btn-filters {
+  border-style: solid;
+  border-width: thin ;
+  border-color: rgb(15, 156, 57);
+}
+.btn-filters:hover {
+  background-color: #f0baba;
+}
+
+.btn-onpage  {
+  /* background-color: #f0f0f0; */
+  border-style: solid;
+  border-width: thin ;
+  border-color: black;
+}
+.btn-onpage:hover {
+  background-color: #1986dc;
+  color: white;
+  border-style: solid;
+  border-width: thin ;
+  border-color: white;
+}
+
+
+
+
+colorblind_palette {
+  color: #0468ac;
+  color: #5f9ed1;
+  color: #a1c8ef;
+  color: #ca5100;
+  color: #ff800f;
+  color: #ffbb7a;
+  color: #262626;
+  color: #595959;
+  color: #ababab;
+  color: #cfcfcf;
+}
+
+
+colors_eudataportal {
+  color: #29357f;
+  color: #074a8b; 
+  color: #0065a2;
+  color: #1986dc;
+  color: #1ba3c9;
+  color: #51aee5;
+  color: #f2532a;
+  color: #f06933;
+  color: #f4a01b;
+}
+
+
+colors_sources {
+  color: #08306b;
+  color: #d0e2f2;
+
+  color: #528bb9; 
+  color: #d0e8f2;
+
+  color: #f1790f;
+  color: #f3d7bf;
+
+  color: #e0a46c;
+  color: #e9ccb2;
+
+}
+
+

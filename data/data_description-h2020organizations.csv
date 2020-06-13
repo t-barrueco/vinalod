@@ -1,0 +1,25 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+projectRcn,int64,127179,28145,193157,228063,193157 to 228063,cross-reference,Project Record Control Number
+projectID,int64,127179,28145,115797,101003403,115797 to 101003403,cross-reference,Project identifier
+projectAcronym,object,127179,26455,1-SWARM,zelig,1-SWARM to zelig,info,Project acronym
+role,object,127179,3,coordinator,partner,"coordinator, partner, participant",info,"Organisation role: participant, coordinator, partner, host institution, beneficiary"
+id,int64,127179,33493,888888170,999997930,888888170 to 999997930,identifier,Organisation identifier
+name,object,127177,33478,"""""""Matenadaran"""" M.Mashtots Institute of Ancient Manuscripts""","Інститут магнетизму Національної академії наук України та Міністерства освіти і науки, молоді та спорту України","""""""Matenadaran"""" M.M to Інститут магнетизму ",info,Name of the organisation
+shortName,object,125993,30550,(UN)MANNED,مختبر عمران القاهرة للتصميم والدراسات,(UN)MANNED to مختبر عمران القاهرة ,info,Short Name of the organisation
+activityType,object,127177,5,HES,REC,"HES, REC, PUB, OTH, PRC",cross-reference,Organisation type
+endOfParticipation,bool,127179,2,False,True,"False, True",info,"End of participation in H2020 (False, True)"
+ecContribution,object,112946,60471,€ 0.00,"€ 178,169,171.00","€ 0.00 to € 178,169,171.00",info,Contribution (€) from the European Commision
+country,object,127174,163,AE,ZM,AE to ZM,cross-reference,Two digit country code where the organisation is registered
+street,object,126458,31296,"""3 Shenton Way #21-04 Shenton House, Singapore 068805""",​PARQUE DE CIENCIA E TECNOLOGIA DA COVILHA,"""3 Shenton Way #21-0 to ​PARQUE DE CIENCIA E",info,Street address
+city,object,127175,10321,'S GRAVENHAGE,’s-Hertogenbosch,'S GRAVENHAGE to ’s-Hertogenbosch,info,City address
+postCode,object,125908,15919,-,​WC1V 7AA,- to ​WC1V 7AA,info,Postal Code
+organizationUrl,object,83095,8328,http://acad-icht.tm.edu.ro,wwww.fmmc.ro,from http://acad-icht.tm. to wwww.fmmc.ro,info,Organisation website URL
+vatNumber,object,113928,27715,177177181,ZM1005363116,177177181 to ZM1005363116,info,Fiscal identifier
+contactForm,object,127179,127179,https://ec.europa.eu/research/participants/api/contact/indexcontactproject.html?pic=888888170&projectId=642575&programId=31045243,https://ec.europa.eu/research/participants/api/contact/indexcontactproject.html?pic=999997930&projectId=899555&programId=31045243,from https://ec.europa.eu to https://ec.europa.eu,info,Webportal
+contactType,float64,0,0,,,,info,(relatedContact)
+contactTitle,float64,0,0,,,,info,"Person title: Dr., Ms.,Prof. etc."
+contactFirstNames,float64,0,0,,,,info,Contact first name
+contactLastNames,float64,0,0,,,,info,Contact last name
+contactFunction,float64,0,0,,,,info,Contact function
+contactTelephoneNumber,float64,0,0,,,,info,Contact telephone number
+contactFaxNumber,float64,0,0,,,,info,Contact fax number

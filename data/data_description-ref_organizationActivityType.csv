@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+Code,object,5,5,HES,REC,"HES, REC, PRC, PUB, OTH",identifier,Organisation Activity Type code
+Title,object,5,5,Higher or Secondary Education Establishments,Research Organisations,"Higher or Secondary Education Establishments, Research Organisations, Private for-profit entities (excluding Higher or Secondary Education Establishments), Public bodies (excluding Research Organisations and Secondary or Higher Education Establishments), Other",info,Organisation Activity Type Title
+description,float64,0,0,,,,info,Organisation Activity Type Description
+language,object,5,1,en,en,en,info,Language

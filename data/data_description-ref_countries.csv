@@ -1,0 +1,5 @@
+attribute,dataType,count,uniques,minValue,maxValue,valuesRange,attribute_type,description
+euCode,object,1503,251,AD,ZW,AD to ZW,identifier,Two digits EU country code 
+isoCode,object,1503,250,AD,ZW,AD to ZW,identifier,Two digits ISO country code 
+name,object,1503,1000,Afganistan,Święta Helena,Afganistan to Święta Helena,info,Country name
+language,object,1503,6,de,pl,"pl, es, it, de, en, fr",info,Language
