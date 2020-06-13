@@ -16,13 +16,19 @@ function filter1_ini(dataset) {
 
     // add new div
     var row = "";
-
+    i=1;
     columns.forEach(e => {
       var ind = columns.indexOf(e);
-      row += "<div class=\"form-check form-check-inline small col-lg-2 float-left\"><input class=\"form-check-input\" type=\"checkbox\" id=\"1" + ind + "\" value=\"" + e + "\" onclick=\"text_bold1(" + ind + ")\"><label id=\"label_1" + ind + "\" class=\"form-check-label\" for=\"1" + ind + "\">  " + e  + "</label></div>"
+      row += "<div class=\"col-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 form-check form-check-inline small float-left\"><input class=\"form-check-input\" type=\"checkbox\" id=\"1" + ind + "\" value=\"" + e + "\" onclick=\"text_bold1(" + ind + ")\"><label id=\"label_1" + ind + "\" class=\"form-check-label\" for=\"1" + ind + "\">  " + e  + "</label></div>"
+      if(i == 4) {
+        $("#checkfilters1").append(row);
+        i = 1;
+        row = "";
+      } else {
+      i = i + 1;
+      }
     });
-    
-    $("#checkfilters1").append(row);
+    // $("#checkfilters1").append(row);
   });
 
   $(document).ready(function () {
@@ -44,13 +50,19 @@ function filter2_ini(dataset) {
 
     // add new div
     var row = "";
-
+    i=1;
     columns.forEach(e => {
       var ind = columns.indexOf(e);
-      row += "<div class=\"form-check form-check-inline small col-lg-2 float-left\"><input class=\"form-check-input\" type=\"checkbox\" id=\"2" + ind + "\" value=\"" + e + "\" onclick=\"text_bold2(" + ind + ")\"><label id=\"label_2" + ind + "\" class=\"form-check-label\" for=\"2" + ind + "\">  " + e  + "</label></div>"
+      row += "<div class=\"col-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 form-check form-check-inline small float-left\"><input class=\"form-check-input\" type=\"checkbox\" id=\"2" + ind + "\" value=\"" + e + "\" onclick=\"text_bold2(" + ind + ")\"><label id=\"label_2" + ind + "\" class=\"form-check-label float-left\" for=\"2" + ind + "\">  " + e  + "</label></div>"
+      if(i == 4) {
+        $("#checkfilters2").append(row);
+        i = 1;
+        row = "";
+      } else {
+      i = i + 1;
+      }
     });
-    // console.log(row);
-    $("#checkfilters2").append(row);
+    // $("#checkfilters2").append(row);
   });
 
   $(document).ready(function () {

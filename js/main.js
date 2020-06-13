@@ -880,36 +880,7 @@ Promise.all([
 
 
   ////// SOCIAL MEDIA BUTTONS ///////////////////////////////////
-
-  $('#facebook').click(function () {
-
-    $(this).attr('href', "https://www.facebook.com/sharer.php?u=" + window.location.href);
-
-    // $(this).attr('href', "https://www.facebook.com/sharer.php?u=" + "https://www.europeandataportal.eu/en");
-
-  });
-
-  $('#twitter').click(function () {
-
-    $(this).attr('href', "https://www.facebook.com/sharer.php?u=" + window.location.href);
-
-    // $(this).attr('href', "https://twitter.com/intent/tweet?url=" + "https://www.europeandataportal.eu/en" +
-    //   "&text=Research and Innovation Expenditure Trends" +
-    //   "&hashtags=H2020,European Commission Contribution ");
-
-  });
-
-
-  $('#linkedin').click(function () {
-
-    $(this).attr('href', "https://www.facebook.com/sharer.php?u=" + window.location.href);
-
-    // $(this).attr('href', "https://www.linkedin.com/shareArticle?mini=true&url=" + "https://www.europeandataportal.eu/en" +
-    //   "&title=Research and Innovation Expenditure Trends" +
-    //   "&summary=This dashboard highlights the trends in research and innovation investments within the EU28 and allows comparison between different sources of investment, i.e. European Commission contributions (via the framework programmes FP7 and H2020), government outlays and business expenditures." +
-    //   "&source=Publication Office of the European Union");
-
-  });
+  // moved to socialmedia.js
 
 
   // FUNCTIONS //////////////////////////

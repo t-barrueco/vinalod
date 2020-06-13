@@ -327,5 +327,14 @@ body {
 } */
 
 .fab:hover {
-    opacity: 0.7;
+  opacity: 0.7;
+}
+
+.form-check-input {
+  width: 10px;
+}
+
+.form-check-label {
+  text-align : left;
+  overflow: hidden;
 }

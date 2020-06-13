@@ -258,7 +258,7 @@
         <div class="tab-content w-100">
 
           <!-- TAB-PANE 1 -->
-          <div id="tab1" class="tab-pane container">
+          <div id="tab1" class="tab-pane container w-100">
             <!-- Filters for nulls and duplicates -->
 
             <!-- BEGIN RADIO BUTTONS 1 - all, nulls, duplicates  -->
@@ -291,9 +291,9 @@
             </div>
 
             <!-- BEGIN CHECK BUTTONS 1 (attributes) -->
-            <div class="row">
-              <div id="checkfilters1" class="col-lg-12 mt-2 text-eublue3" style="padding-left: 60px;"></div>
-            </div>
+            <!-- <div class="row"> -->
+              <div id="checkfilters1" class="row no-guters mt-2 text-eublue3" style="padding-left: 60px;"></div>
+            <!-- </div> -->
 
             <div class="row">
               <div class="col-10">
@@ -361,7 +361,7 @@
           <!-- END TAB-PANE 1 -->
 
           <!-- TAB-PANE 2 -->
-          <div id="tab2" class="tab-pane container">
+          <div id="tab2" class="tab-pane container w-100">
             <!-- Filters for nulls and duplicates -->
 
 
@@ -397,9 +397,9 @@
             </div>
 
             <!-- BEGIN CHECK BUTTONS 2 (attributes) -->
-            <div class="row">
-              <div id="checkfilters2" class="col-lg-12 mt-2 text-eublue3" style="padding-left: 60px;"> </div>
-            </div>
+            <!-- <div class="row"> -->
+              <div id="checkfilters2" class="row no-guters mt-2 text-eublue3" style="padding-left: 60px;"> </div>
+            <!-- </div> -->
 
             <div class="row">
               <div class="col-10">
@@ -486,8 +486,10 @@
 
 
 
+
   <!-- CUSTOM JS -->
 
+  <script src="js/socialmedia.js"></script>
   <script src="js/functions.js"></script>
   <script src="js/dropdown_ini.js"></script>
   <script src="js/filters.js"></script>
@@ -520,12 +522,14 @@
 
   </script>
 
-
   <script>
+  
     var myVar;
 
+    // window.addEventListener("loadeddata", mySpinner);
+
     function mySpinner() {
-      myVar = setTimeout(showPage, 3000);
+      myVar = setTimeout(showPage, 6000);
     }
 
 
@@ -537,6 +541,7 @@
     }
 
   </script>
+
 
 </body>
 
