@@ -1,121 +1,864 @@
 /*
-*    CORDIS data exploration
+*    VINALOD
 *    functions.js
 *    
-*    created by EuriTrends
+*    created by Teresa Barrueco
 */
 
+//
+async function dblclickTrTable(row) {
+  var indexRows=1;
+  var element=document.getElementById(row.getAttribute("id"));
+  ////////////////////////console.log("dblclickTrTable")
+  ////////////////////////console.log(row)
+  //set all nodes in table to stroke black and width 3px
+  row2=$('#myModal #'+ row.getAttribute("id"))[0];
+  //row2=document.getElementById("myModal").getElementById(row.getAttribute("id"))
+  ////////////////////////////console.log(row2)
+  ////////////////////////////console.log(row2.rowIndex)
+  
+  //set selected node to yellow in graph
+  /* for (var i = 0; i < nodesSel.length; i++) {
+    d3.select("#"+nodesSel[i]["id"])
+    .attr("stroke", "black")
+    .attr("stroke-width", "3px");
+  } */
+  
 
-///////////////////// color function  /////////////////////////////////
-
-function attributeTypeColor(attrType) {
-  switch (attrType) {
-    case "identifier":
-      return "#ca5100"; // ff800f 
-    case "cross-reference":
-      return "#ca5100"; // ffff00 
-    case "info":
-      return "#ffbb7a"; // light-teal  5EA8C1   grey-plum 4d626b
-    default:
-      break;
+  //REVIEW dblclick
+/*   networkGraph.isDblclick = true;
+  clearTimeout(networkGraph.dblclickTimeout);
+  networkGraph.dblclickTimeout = setTimeout(function () {
+    networkGraph.isDblclick = false;
+  }, networkGraph.timeoutTiming); */
+  
+  //add graph attached to selected node
+  indexRows=await networkGraph.wrangleData(document.getElementById(row.getAttribute("id")+"_image"),"table");
+  ////////////////////////console.log("vuelve a dblclickTrTable")
+  ////////////////////////console.log(indexRows)
+  //throw new Error("Something went badly wrong!");
+  if (indexRows.length<2){
+    unclickBubble()
+    clickBubble(element,networkGraph.data)
+    d3.select("#"+row.getAttribute("id"))
+    .attr("stroke", "yellow")
+    .attr("stroke-width", "6px");
   }
-};
+}
+function clickTrTable(row) {
+  d3.selectAll(".nodeCircleCircle")
+  .style("opacity", 1)
+  .attr("stroke", "grey")
+  .attr("stroke-width", "1px");
+  d3.select("#"+row.getAttribute("id"))
+  .attr("stroke", "yellow")
+  .attr("stroke-width", "6px");
+}
 
-// 377eb8
-// 76b7b2
+function clickBubble(element,data) {
+  var nodeData
+  nodesSel=[]
+  //////////////////////console.log(element)
+  //////////////////////console.log(data)
+  d3.selectAll(".nodeCircle")
+  .style("opacity", 0.1)
+  .attr("stroke", "grey")
+  .attr("stroke-width", "1px");
 
-// 28a745
-// 4ac065 light green
-// a3f266
+  d3.selectAll(".link")
+  .style("opacity", 0.1)
+  .style("stroke", "#aaaaaa")
+  .style("stroke-width", "1px");
+
+  nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
+  nodesSel.push({"class":nodeData.class,"id":nodeData.id,"value":nodeData.value})
+  var idEl=element.getAttribute("id");
+  var targets=data.links.filter(function(item) {
+    return item.source.id == idEl
+  })
+  var sources=data.links.filter(function(item) {
+    return item.target.id == idEl
+  })
+  ////////////////////////////////////////////////////////////console.log(targets)
+  ////////////////////////////////////////////////////////////console.log(sources)
+
+  targets.forEach(function(s){
+    nodesSel.push({"class":s.target.class,"id":s.target.id,"value":s.target.value})
+    d3.select("#"+ s.target.id)
+    .style("opacity", 1)
+    .attr("stroke", "black")
+    .attr("stroke-width", "3px");
+
+    d3.select("#"+ s.target.id+"_g")
+    .style("opacity", 1)
+
+    d3.select("#"+element.id+"_"+s.target.id)
+    .style("opacity", 1)
+    .style("stroke", "black")
+    .style("fill","black")
+    .style("stroke-width", "3px");
+  });
+  sources.forEach(function(t){
+    nodesSel.push({"class":t.source.class,"id":t.source.id,"value":t.source.value})
+    d3.select("#"+t.source.id)
+    .style("opacity", 1)
+    .attr("stroke", "black")
+    .attr("stroke-width", "3px");
+
+    d3.select("#"+t.source.id+"_g")
+    .style("opacity", 1)
+
+    d3.select("#"+t.source.id+"_"+element.id)
+    .style("opacity", 1)
+    .style("stroke", "black")
+    .style("fill","black")
+    .style("stroke-width", "3px");
+  });
+
+  
+  d3.select("#"+element.id)
+  .style("opacity", 1)
+  .attr("stroke", "black")
+  .attr("stroke-width", "3px");
+  ////////////////////////////////////////////////////////////////console.log(d3.select("#"+element.id+"_image"))
+  d3.select("#"+element.id+"_g")
+  .style("opacity", 1)
 
 
-// function selectedDataset1(name) {
-//   switch (name) {
-//     case "proj":
-//       return "#ffff00"; // bbbb00 dark yellow 
-//     case "org":
-//       return "#ffff00"; // yellow
-//     case "orgtype":
-//       return "#5EA8C1"; // light-teal
-//     default:
-//       break;
-//   }
-// };
+  labelsClick(element)
+}
 
+function unclickBubble() {
+  nodesSel=[]
+  $("#myModal").removeClass("in");
+  $("#myModal").hide();
+  d3.selectAll(".nodeCircle")
+      .style("opacity", 1)
+  d3.selectAll(".nodeCircleCircle")
+      .style("opacity", 1)
+      .attr("stroke", "grey")
+      .attr("stroke-width", "1px");
+  d3.selectAll(".link")
+      .style("opacity", 1)
+      .style("stroke", "grey")
+      .style("fill","grey")
+      .style("stroke-width", "1px");
+}
 
-
-
-
-
-
-///////////////////// functions from other dashboards  //////////////////
-
-function blobColor(framework) {
-  switch (framework) {
-    case "H2020":
-      return "#22A7F0";
-    case "FP7":
-      return "#ff7f50";
-    case "FP6":
-      return "#94e65e"; // green
-    default:
-      break;
+function removeChars(chars){
+  var invalid=["~","!","@","$","%","^","&","*","(",")","+","=",",",".","/","'",";",":",'"',"?",">","<","[","]","\\","{","}","|","`","#","]"]
+  var pieces;
+  invalid.forEach(function(c){
+    pieces = chars.split(c);
+    chars = pieces.join("");
+  })
+  chars=chars.replaceAll(" ","_")
+  if (chars.match(/^\d/)) {
+    chars="_"+chars
   }
-};
+  return chars
+}
+function getHierarchy(hierarchy){
+  var temp=[]
+  hierarchy = hierarchy.split("-");
+
+  return hierarchy
+}
+function getClassesShow(classes){
+  var temp=[],classesTemp=[],tmp={}
+  classes = classes.split(";");
+  classes.forEach(function(c){
+    temp.push({"class":c.split("-")[0],"classShow":c.split("-")[1]})
+    tmp[c.split("-")[0]]=c.split("-")[1]
+  })
+  return tmp
+}
+function getProperties(properties){
+  var temp={}
+  properties = properties.split(";");
+  properties.forEach(function(d){
+    if(temp[d.split("-")[0]]){
+      temp[d.split("-")[0]].push(d.split("-")[1])
+    }else{
+      temp[d.split("-")[0]]=[d.split("-")[1]]
+    }
+  })
+  properties=temp
+  return properties
+}
+// Generate random string for ids
+function genRandomString(){
+  var s=Math.random().toString(36).substr(2, 11);
+  if (s.match(/^\d/)) {
+   s="_"+s
+  }
+  return s; 
+}
 
 
-function isOdd(num) { return num % 2;};
+function getId(idPrefix){
+  idValue+=1
+  id=idPrefix+idValue.toString()
+  return id
+}
+function getOptions(configClass,elClass){
+  ////////////////////////////////console.log(configClass)
+  var selClass=configClass.filter(function(d){
+    return d.class==elClass
+  })
+  return selClass
+}
+function getTooltip(elClass){
+  //console.log(configFile)
+  //console.log(elClass)
+  var selClass=configFile.filter(function(d){
+    return d.CLASS==elClass
+  })
+  //console.log(selClass[0])
+  if(selClass[0]!=undefined){
+    return selClass[0]["TOOLTIP"]
+  }else{
+    return ""
+  } 
+}
+function fillDropDown(dataConfig){
+  var select = document.getElementById("options_basic"); 
+  for(var i = 0; i < dataConfig.length; i++) {
+    if(!dataConfig[i]["QUERY"].includes("PARAMETER")){
+      var opt = dataConfig[i].OPTION_TEXT;
+      var el = document.createElement("option");
+      el.textContent = opt;
+      el.value = i;
+      select.appendChild(el);
+    }
+  }
+  return select.options[select.selectedIndex].value;
+}
+
+function changeBasicGraph(){
+  execQueries=[]
+  var selectedValue = $("#options_basic").val();
+  buildBasicGraph(selectedValue)
+}
+
+function labelsClick(element){
+  var nodeData,cell,row,nodesTable;
+  ////////////console.log(element)
+  ////////////console.log(nodesSel)
+
+  nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
+  d3.select("#modalHeader").select("img").remove()
+  d3.select("#modalHeader").select("span").remove()
+
+  d3.select("#modalHeader")
+  .style("background-color",element.style.fill)
+  .append("img")
+    .attr('src', bubbleImage(d3.select("#"+element.getAttribute("id")).data()[0]))
+  .attr('width','40px')
+  .attr('height','40px')
+
+  d3.select("#modalHeader")
+  .append("span")
+  .text(function(){
+    return nodeData["value"];
+  })
+  .style("font-size", "18px")
+  .attr("text-anchor", "middle")
+  .attr("stroke", "black")
+  .attr("stroke-width", "3px");
+
+  if(element.getAttribute("root")=="1"){
+    d3.select("#modalHeader2").style("display","hidden")
+  }else{
+    d3.select("#modalHeader2").select("img").remove()
+    d3.select("#modalHeader2").select("span").remove()
+    d3.select("#modalHeader2")
+    .style("background-color",colorScale(nodesClassesCorrespondence[nodesSel.slice(-1)[0]["class"]]))
+    .append("img")
+    .attr('src', bubbleImage(d3.select("#"+nodesSel.slice(-1)[0]["id"]).data()[0]))
+    .attr('width','40px')
+    .attr('height','40px')
+
+    d3.select("#modalHeader2")
+    .append("span")
+    .text(function(){
+      ////////////console.log(nodesSel)
+      return nodesSel.slice(-1)[0]["value"];
+    })
+    .style("font-size", "18px")
+    .attr("text-anchor", "left")
+    .attr("stroke", "black")
+    .attr("stroke-width", "3px"); 
+/*     d3.select("#modalHeader2")
+    .text(function(){
+      ////////////console.log(nodesSel)
+      return nodesSel.slice(-1)[0]["value"];
+    })
+    .style("font-size", "18px")
+    .attr("text-anchor", "middle")
+    .attr("stroke", "black")
+    .attr("stroke-width", "3px"); */
+  }
+  //cell.innerHTML = '<img src='+bubbleImage(d3.select("#"+nodesTable[i]["id"]).data()[0])+' width="40" height="40">';
+
+  modal=document.getElementById("myModal")
+  modal.style.display = "block";
+  $('#myModal').resizable({
+    //alsoResize: ".modal-dialog",
+    //minHeight: 150
+  });
+  $("#myModal").draggable()
+  //$("*").draggable();
+/*   $("#myModal").draggable({
+    handle: ".modal-header"
+  }); */
+
+  var columnCount = 4;
+
+  d3.selectAll(".modal-content table").remove()
+  var table = document.createElement("table");
+
+  if(element.getAttribute("root")=="1"){
+    nodesTable=nodesSel;
+  }else{
+    nodesTable=nodesSel.slice(0, -1);
+  }
+
+  for (var i = 1; i < nodesTable.length; i++) {
+    
+    row = table.insertRow(-1);
+    row.style.backgroundColor = colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]]); 
+    row.id=nodesTable[i]["id"]
+    cell = row.insertCell(-1);
+    cell.innerHTML = nodesTable[i]["value"];
+    cell = row.insertCell(-1);
+    cell.innerHTML = '<img src='+bubbleImage(d3.select("#"+nodesTable[i]["id"]).data()[0])+' width="40" height="40">';
+  }
+  var dvTable = document.getElementById("dvTable");
+  dvTable.innerHTML = "";
+
+  dvTable.appendChild(table);
+  d3.selectAll(".modal-content tr").on("dblclick",function(){  
+    dblclickTrTable(this)
+  })
+  .on("click",function(){  
+    clickTrTable(this)
+  })
+  .on('contextmenu',function(){  
+    var menuItems=[]
+    ////////////////////console.log("entra")
+    //////////////////////console.log(d)
+    ////////////////////console.log(this)
+    //d3.event.preventDefault();
+    //networkGraph.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , networkGraph.menuItems, d,"contextMenu");
+    //createContextMenu(d, vis.menuItems, 100, 100, vis.g);
+    d3.event.preventDefault();
+    var node=d3.select("#"+this.getAttribute("id")).data()[0]
+    getMenuItemsContextMenu(node,"table")
+    //menuItems.push({"option":"option1","position":1})
+    //menuItems.push({"option":"option1","position":2})
+    //menuItems.push({"option":"option1","position":3})
+    //addContextMenuToTable(node,menuItems)
+  });
+  var modal = document.getElementById('modalHeader');
+  var modal_width = modal.offsetWidth
+
+  d3.select("table").attr("class", "table table-striped table-bordered")
+                    .style("width",modal_width+"px");
+
+}
+
+function findConnectedNodes(idEl){
+  var targets=allDataModel.links.filter(function(item) {
+    return item.source.id == idEl
+  })
+  var sources=allDataModel.links.filter(function(item) {
+    return item.target.id == idEl
+  })
+  return {"sources":sources,"targets":targets,"id":idEl}
+}
+function getNodesFromConnected(connectedNodes){
+  var selNodes=[connectedNodes.id],selLinks=[],properties=[],connectedNodesProp;
+  connectedNodes.sources.forEach(function(d){
+    selNodes.push(d.source.id)
+    if(d.source.shape==2){
+      properties.push(d.source.id)
+    }
+  })
+  connectedNodes.targets.forEach(function(d){
+    selNodes.push(d.target.id)
+    if(d.target.shape==2){
+      properties.push(d.target.id)
+    }
+  })
+
+  properties.forEach(function(d){
+    connectedNodesProp=findConnectedNodes(d)
+    selNodes.push(connectedNodesProp.sources[0]["source"]["id"])
+    selNodes.push(connectedNodesProp.targets[0]["target"]["id"])
+    selLinks.push(connectedNodesProp.sources[0])
+    selLinks.push(connectedNodesProp.targets[0])
+  })
+  selNodes= [...new Set(selNodes)]
+  selLinks= [...new Set(selLinks)]
+  selNodes=allDataModel.nodes.filter(function(d){
+    return selNodes.includes(d.id)
+  })
+  selLinks=selLinks.concat(connectedNodes.sources.concat(connectedNodes.targets))
+  selNodes= [...new Set(selNodes)]
+  selLinks= [...new Set(selLinks)]
+  return {"nodes":selNodes,"links":selLinks}
+}
+async function addGraph(node,pageX,pageY,origin){
+  var indexRows=[],className;
+  className=node["class"]
+  ////////////////////////console.log(addGraph)
+  for (var i = 0; i < configFile.length; i++) {
+    ////////////////////////////////////////////console.log(configFile[i])
+    
+    if(configFile[i]["CLASS"]==nodesClassesCorrespondence[className]){
+      ////////////////////////////////console.log(configFile[i])
+      indexRows.push({"position":i,"option":configFile[i]["OPTION"],"optionText":configFile[i]["OPTION_TEXT"]})
+    }
+  }
+  ////////////////////////////////////////////console.log(nodesClassesCorrespondence[className])
+  ////////console.log(indexRows)
+  indexRows=await checkAskResults(indexRows,node)
+  ////////////////////////////////console.log(indexRows)
+  if(indexRows.length>1){
+    getMenuItems(indexRows,node,pageX,pageY,origin)
+  }else if (indexRows.length==1){
+    await buildBasicGraph(indexRows[0]["position"],node)
+    ////////////////////////////////////////////////////console.log(networkGraph.data)
+  }
+  return indexRows
+}
+function getMenuItems(items,node,pageX,pageY,origin){
+  var menuItems=[],element,position
+  ////////////////////////console.log("getMenuItems")
+  if (origin=="table"){
+    ////////////////////////////console.log(origin)
+    for (var i = 0; i < items.length; i++) {
+      //////////////////////////////console.log(items[i]["position"])
+      //////////////////////////////console.log(items[i]["option"])
+      menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
+    }
+    addMenuToTable(node,menuItems)
+  /*  for (var i = 0; i < items.length; i++) {
+  } */
+  }else{
+    for (var i = 0; i < items.length; i++) {
+      position=items[i]["position"]
+      element={
+        title: items[i]["option"],
+        action: (d) => {
+          for (var i = 0; i < configFile.length; i++) {
+                if(configFile[i]["OPTION"] == d.title){
+                  position=i
+                }
+              }
+          buildBasicGraph(position,node)
+        }
+      }
+      menuItems.push(element)
+    }
+    ////////////////////////////console.log(menuItems)
+    networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick")
+  }
+  
+}
+function addMenuToTable(node,menuItems){
+  var newText,newCell,element
+  d3.selectAll(".menu-table").remove()
+  ////////////////console.log(menuItems)
+  ////////////////console.log(node)
+  var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex+1;
+  var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
+
+  for (var i = 0; i < menuItems.length; i++) {
+      var newRow = tbodyRef.insertRow(rowIndex+i);
+      newRow.style.backgroundColor="white"
+      newRow.id="menu-table-"+menuItems[i]["position"]
+      newRow.className = 'menu-table';
+      newCell = newRow.insertCell();
+
+      // Append a text node to the cell
+      newText = document.createTextNode(menuItems[i]["option"]);
+      newCell.appendChild(newText);
+      newCell = newRow.insertCell();
+      newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">';
+      d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("click",function(){        
+        clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
+      })
+  }
+}
+async function clickMenuTable(position,node){
+  var element=document.getElementById(node["id"])
+  //////////////////////console.log("entra en clickMenuTable")
+  await buildBasicGraph(position,node)
+  //////////////////////console.log(networkGraph.data)
+  unclickBubble()
+  clickBubble(element,networkGraph.data)
+}
+function addContextMenuToTable(node,menuItems){
+  var newText,newCell,element,id
+  d3.selectAll(".menu-table").remove()
+  //////////////console.log(menuItems)
+  var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex+1;
+  var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
+
+  for (var i = 0; i < menuItems.length; i++) {
+      var newRow = tbodyRef.insertRow(rowIndex+i);
+      newRow.style.backgroundColor="white"
+      newRow.id="menu-table-"+menuItems[i]["position"]
+      newRow.className = 'menu-table';
+      newCell = newRow.insertCell();
+
+      // Append a text node to the cell
+      newText = document.createTextNode(menuItems[i]["option"]);
+      newCell.appendChild(newText);
+      newCell = newRow.insertCell();
+      newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">';
+      d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("dblclick",function(){ 
+        //////////////console.log(this)       
+        id=this.getAttribute("id").replace("menu-table-","")
+        action=menuItems.filter(function(d){
+          return (d.position==id)
+        })[0]["action"]
+        //////////////console.log(action)
+        eval(action)
+        //clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
+      })
+  }
+}
+async function getMenuItemsContextMenu(node,origin,pageX,pageY){
+  var options,indexRows=[],Items,actionFunction;
+  //////////////console.log(origin)
+  if(origin=="table"){
+    Items=[{
+      option: 'Download data',
+      position: 1,
+      action:"downloadData(node)"
+    },{
+      option: 'Download SPARQL query',
+      position: 2,
+      action:"downloadQuery()"
+    }]
+      
+  }else{
+    Items = [
+      {
+        title: 'Download data',
+        position:1,
+        action: (d) => {
+          // TODO: add any action you want to perform
+          downloadData(d)
+        }
+      },
+      {
+        title: 'Download SPARQL query',
+        position:2,
+        action: (d) => {
+          // TODO: add any action you want to perform
+          downloadQuery()
+        }
+      }]
+  }
 
 
-// SORTING FUNCTION YEAR
-function sortYear(a, b) {
-  if (a[0].year < b[0].year) return -1;
-  if (a[0].year > b[0].year) return 1;
-  return 0;
-};
+    for (var i = 0; i < configFile.length; i++) {     
 
+      if((configFile[i]["CLASS"]==nodesClassesCorrespondence[node["class"]])&(configFile[i]["TYPE"]!="TREE")){
+        option={
+          "position":i,
+          "option":configFile[i]["OPTION"]
+        }
+        //////////////console.log(configFile[i]["CLASS"])
+        indexRows.push(option)
+      }
+      
+    }
+    //////////console.log(indexRows)
+    indexRows=await checkAskResults(indexRows,node)
+    //////////////console.log(indexRows)
 
-// SUM OF ELEMENTS OF AN ARRAY FUNCTION
-function sumOfArray(sum, value, index, array) {
-  return sum + value;
-};
+    for (var i = 0; i < indexRows.length; i++) {
+      if(origin=="table"){
+        //addMenuToTable(node,Items)
+        Items.push({
+          "position":indexRows[i]["position"],
+          "option":indexRows[i]["option"],
+          "action":configFile[indexRows[i]["position"]]["FUNCTION"]+"(node)"
+        })
+      }else{
+        Items.push({
+          title: indexRows[i]["option"],
+          position:Items.length+1+i,
+          action: (data,d) => {
+            // TODO: add any action you want to perform
+            //downloadQuery()
+            ////////////console.log(data)
+            
+            actionFunction=configFile.filter(function(v){
+              return v["OPTION"]==d.title
+            })[0]["FUNCTION"]+"({"
+            //class:"'+data["class"]
+            for (const [key, value] of Object.entries(data)) {
+              ////////////console.log(`${key}: "${value}",`);
+              actionFunction=actionFunction+`${key}: "${value}",`
+            }
+            actionFunction = actionFunction.slice(0, -1);
+            actionFunction=actionFunction+"})"
+            ////////////console.log(actionFunction)
+            eval(actionFunction)
+/*             eval(configFile.filter(function(v){
+              return v["OPTION"]==d.title
+            })[0]["FUNCTION"]+"("+data+")") */
+            //configFile[indexRows[i]["position"]]["FUNCTION"]
+          }
+        })
+      }
+    }
+    if(origin=="table"){
+      addContextMenuToTable(node,Items)
+    }else{
+      //return Items
+      networkGraph.menuItems=Items
+      //////////////console.log(networkGraph.menuItems)
+      ////////////////console.log(d3.event.pageX)
+      networkGraph.menuFactory(pageX-200, pageY-200 , Items, node,"contextMenu");
+      //d3.event.preventDefault();
+    }  
+    ////////////////console.log(Items)
+}
+function runSparlqQuery(settings){
+  return new Promise((resolve, reject) => {
+  $.ajax(settings).then  (function( _data ) {
+    results = _data.results.bindings;
+    resolve(results)
+  })
+})
+}
+function runAskSparlqQuery(url,sparqlQuery){
+  var prefixes="",settings
+  ////////////////console.log(url)
+  //////////////////console.log(sparqlQuery)
+  var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  
+  if (url=="https://query.wikidata.org/sparql"){
+    settings = { url: queryUrl, async: true       }; 
+  }else{
+    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+  }
+  
+  ////////console.log(settings)
+  return new Promise((resolve, reject) => {
+  $.ajax(settings).then  (function( _data ) {
+    results = _data.boolean;
+    ////////////////console.log(results)
+    resolve(results)
+  })
+})
+}
+async function checkAskResults(indexRows,node){
+  var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
+  //////console.log(indexRows)
+  
+  ////////////////////////////////////////////console.log(node)
+  for (var i = 0; i < indexRows.length; i++) {
+    ////////////////////console.log(configFile[indexRows[i]["position"]])
+    sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["QUERY"])
+    singleIndexRow=indexRows[i]
+    //////console.log(sparqlQuery)
+    ////////////////////////////////////////////console.log(singleIndexRow["position"])
+    parameters=configFile[singleIndexRow["position"]]["PARAMETERS"]
+    ////////////////////////////////////////////console.log(parameters)
+    if(node["class"]!=undefined){
+      ////////////////////////////////console.log(node)
+      if(parameters!=""){
+        parameters=parameters.split(";")
+        for (j = 0; j < parameters.length; ++j) { 
+          sparqlQuery=sparqlQuery.replace("PARAMETER"+(j+2).toString(), node[parameters[j]]);
+        }  
+        if(node["class"]=="corporateBody"){
+          ////////////////////////////////console.log("node class corporateBody")
+          sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
+        }else{
+          sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
+        }
+      }else{
+        if(node[node["class"]+"_uri"]!=undefined){
+          sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_uri"]);
+        } else{
+          sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_code"]);
+        }
+      }
+      ////////////////////////////////////////////console.log(indexRows[i])
+    }else{
+      sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
+    }
+    ////////////////////////////////////////////console.log(singleIndexRow)
+    //////console.log(sparqlQuery)
+    results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["URL"],sparqlQuery)
+    ////////////////console.log(results)
+    if(results==true){
+      ////////////////////////////////////////////console.log(singleIndexRow["position"])
+      ////////////////////////////////////////////console.log(singleIndexRow)
+      resultIndexRows.push(singleIndexRow)
+    }
+  }
+  //////console.log(resultIndexRows)
+  return resultIndexRows
+}
+function fromSelectToAskQuery(query){
+  ////////console.log(query)
+  var mySubString = query.substring(
+    query.toLowerCase().lastIndexOf("select"), 
+    query.toLowerCase().lastIndexOf("where") - 1 
+  );
+  ////////console.log(mySubString)
+  query=query.replace(mySubString,"ASK")
+  if(query.toLowerCase().lastIndexOf("group by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("group by"), 
+      query.length - 1 
+    );
+    query=query.replace(mySubString,"")
+  }
+  ////////console.log(query)
 
-// BOOTSTRAP COLORS
+  if(query.toLowerCase().lastIndexOf("order by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("order by"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
+  //////////console.log(mySubString)
+  //////////console.log(query)
+  return query
+}
+function bubbleImage(node){
+  var icon=[];
+  if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
+    return node[node["class"]+"_image"];
+  }else{
+    if(node[node["class"]+"_uri"]){
+      icon=filesIcons.filter(function(d){
+        return d.ID==node[node["class"]+"_uri"];
+      })
+    }
+    if(icon.length==0){
+      icon=filesIcons.filter(function(d){
+        return d.ID==nodesClassesCorrespondence[node["class"]];
+      })
+    }
+    if(icon.length>0){
+      return "../images/"+icon[0]["FILE"]
+    }else{
+      return "../images/eu_flag.jpeg";
+    }
+  }
+  
+}
+function zoom() {
+  networkGraph.g
+  //.attr("transform", d3.event.transform+"scale("+zoomScale+")")
+  .attr("transform", "translate("+zoomX+","+zoomY+")"+d3.event.transform+"scale(" + zoomScale + ")")
+}
+function addFilters(filters,data){
+  var property,filterType,classFilter,valuesFilter;
+  //////////////////////////////////////////console.log(filters)
+  //////////////////////////////////////////console.log(data)
+  filters = filters.split(";");
+  filters.forEach(function(d){
+    property=d.split("-")[0]
+    filterType=d.split("-")[1]
+    classFilter=d.split("-")[0].split("_")[0]
+    //////////////////////////////////////////console.log(property)
+    //////////////////////////////////////////console.log(filterType)
+    //////////////////////////////////////////console.log(classFilter)
+    valuesFilter=getValuesFilter(classFilter,property,data["flatData"]["nodes"])
+    buildFilter(property,filterType,classFilter,valuesFilter)
+  })
+}
+function getValuesFilter(classFilter,property,data){
+  var values=[]
+  data.forEach(function(d){
+    if(d["class"]==classFilter){
+      values.push(d[property])
+    }
+  })
+  values=[...new Set(values)].sort()
+  return values
+}
+function buildFilter(property,filterType,classFilter,valuesFilter){
+  ////////////////////////////////console.log(d3.select("#"+classFilter).empty())
+  if(d3.select("#"+classFilter).empty()){
+    if(d3.select(".controls").select("#"+classFilter).empty()){
+      d3.select(".controls").append("div")
+      .attr("class","filter")
+      .attr("id",classFilter)
+      .append("p")
+      .append("label")
+      .text(classFilter)
+    }
+    addFilterType(filterType,valuesFilter,property,classFilter)
+  }
+} 
+function addFilterType(filterType,valuesFilter,property,classFilter){
+  if(filterType=="dropdown"){
+    //var values = ["dog", "cat", "parrot", "rabbit"];
+    valuesFilter=["All"].concat(valuesFilter)
+    var select = document.createElement("select");
+    select.name = property;
+    select.id = property;
+   
+    select.setAttribute("onchange","selectChange(this)");
+    for (const val of valuesFilter) {
+      var option = document.createElement("option");
+      option.value = val;
+      option.text = val.charAt(0).toUpperCase() + val.slice(1);
+      select.appendChild(option);
+    }
 
-// Colors
-// $blue:    #007bff !default; // primary
-// $indigo:  #6610f2 !default;
-// $purple:  #6f42c1 !default;
-// $pink:    #e83e8c !default;
-// $red:     #dc3545 !default; // danger
-// $orange:  #fd7e14 !default;
-// $yellow:  #ffc107 !default; // warning
-// $green:   #28a745 !default; // success
-// $teal:    #20c997 !default;
-// $cyan:    #17a2b8 !default; // info
+    var label = document.createElement("label");
+    label.innerHTML = property
+    label.htmlFor = property;
 
-// // Grays
-// $white:    #fff !default;
-// $gray-100: #f8f9fa !default; // light
-// $gray-200: #e9ecef !default;
-// $gray-300: #dee2e6 !default;
-// $gray-400: #ced4da !default;
-// $gray-500: #adb5bd !default;
-// $gray-600: #868e96 !default; // secondary
-// $gray-700: #495057 !default;
-// $gray-800: #343a40 !default; // dark
-// $gray-900: #212529 !default;
-// $black:    #000 !default;
-
-
-// pastel colors
-// return "#ccebc5";
-// return "#cccccc";
-// return "#ffffcc";
-// return "#b3cde3";
-// return "#fddaec";
-
-// Pastel1
-// ["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]
-// Pastel2
-// ["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"]
+    document.getElementById(classFilter).appendChild(label).appendChild(select);//
+  }
+}
+function selectChange(element){
+  //////////////////////////////////////////console.log(element.getAttribute("id"))
+  //////////////////////////////////////////console.log(element.value)
+  applyFilter([element.value],element.getAttribute("id"))
+  ////////////////////////////////////////////console.log(element.options[element.selectedIndex].text)
+}
+function applyFilter(values,property){
+ ////////////////////////////////////////////console.log(networkGraph.treeData)
+ networkGraph.applyFilter(values,property)
+}
+function findNodeTreemap(nodeId,treeData){
+  //////////////////////////////////////////console.log(node)
+  var founded=treeData.filter(function(item) {
+    //////////////////////////////////////////console.log(item.id)
+    //////////////////////////////////////////console.log(nodeId)
+    return item.id == nodeId
+  })
+  return founded
+}
+function getTooltipText(d){
+  //////console.log(d)
+  var text = `
+      <table class="tiptable" style="margin-left: 2.5px">
+          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
+          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Class:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + nodesClassesCorrespondence[d.class] + `</span></td></tr>`
+          Object.keys(d["tooltip"]).forEach(function(k){
+            text=text + `
+                  <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">`+d["tooltip"][k]+`:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d[k] + `</span></td></tr>`
+          })      
+          text=text+`<tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
+          </table>`;
+  return text;
+}

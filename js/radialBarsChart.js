@@ -1,11 +1,10 @@
 /*
-*    H2020 CORDIS DATA EXPLORATION
-*    main.js
+*    Network graph
 *    
-*    created by EuriTrends
+*    created by Teresa Barrueco
 *    
-*    based on the version of Radial Stacked Bars by M. Bostock at
-*    https://bl.ocks.org/mbostock/3686329aa6e1f5938df8eef12ec353fe
+*    based on the version of d3-force testing ground by Steve Haroz at
+*    https://bl.ocks.org/steveharoz/8c3e2524079a8c440df60c1ab72b5d03
 *    GNU General Public License, version 3
 *    https://opensource.org/licenses/GPL-3.0 
 *    
@@ -13,20 +12,66 @@
 
 
 
-RadialBarsChart = function (_parentElement, _variable, _dataname) {
+//NetworkGraph = function (_parentElement, _variable, _dataname) {
+NetworkGraph = function (_parentElement, _data) {
   this.parentElement = _parentElement;
-  this.variable = _variable;
-  this.dataname = _dataname;
+  //this.variable = _variable;
+  this.data = _data;
 
   this.initVis();
 };
 
 /////////////////// initVis Method //////////////////////
 
-RadialBarsChart.prototype.initVis = function () {
+NetworkGraph.prototype.initVis = function () {
   var vis = this;
 
-  vis.pxc = 10;
+  vis.svg = d3.select(this.parentElement).append("svg");
+
+  vis.width = +vis.svg.node().getBoundingClientRect().width;
+  vis.height = +vis.svg.node().getBoundingClientRect().height;
+
+  vis.simulation = d3.forceSimulation();
+
+    // values for all forces
+    vis.forceProperties = {
+      center: {
+          x: 0.5,
+          y: 0.5
+      },
+      charge: {
+          enabled: true,
+          strength: -30,
+          distanceMin: 1,
+          distanceMax: 2000
+      },
+      collide: {
+          enabled: true,
+          strength: .7,
+          iterations: 1,
+          radius: 5
+      },
+      forceX: {
+          enabled: false,
+          strength: .1,
+          x: .5
+      },
+      forceY: {
+          enabled: false,
+          strength: .1,
+          y: .5
+      },
+      link: {
+          enabled: true,
+          distance: 30,
+          iterations: 1
+      }
+    }
+  
+    // update the display positions after each simulation tick
+    
+
+  /* vis.pxc = 10;
 
   vis.margin = { top:vis.pxc, right: vis.pxc, bottom: vis.pxc, left: vis.pxc };
 
@@ -56,31 +101,163 @@ RadialBarsChart.prototype.initVis = function () {
     .range([vis.innerRadius, vis.outerRadius]);
   vis.z = d3.scaleOrdinal()
     .range(["#5EA8C1"]);
-
+ */
 
   vis.wrangleData();
 };
 
+// set up the simulation and event to update locations after each tick
+NetworkGraph.prototype.initializeSimulation() = function () {
+  var vis = this;
+  vi.simulation.nodes(vis.data.nodes);
+  vis.initializeForces();
+  vis.simulation.on("tick", ticked);
+
+  function ticked() {
+    vis.link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    vis.node
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+    d3.select('#alpha_value').style('flex-basis', (vis.simulation.alpha()*100) + '%');
+  }
+}
+NetworkGraph.prototype.initializeForces() = function() {
+  var vis = this;
+  // add forces and associate each with a name
+  vis.simulation
+      .force("link", d3.forceLink())
+      .force("charge", d3.forceManyBody())
+      .force("collide", d3.forceCollide())
+      .force("center", d3.forceCenter())
+      .force("forceX", d3.forceX())
+      .force("forceY", d3.forceY());
+  // apply properties to each of the forces
+  vis.updateForces();
+}
+
+// apply new force properties
+NetworkGraph.prototype.updateForces()= function() {
+  var vis = this;
+  // get each force by name and update the properties
+  vis.simulation.force("center")
+      .x(width * vis.forceProperties.center.x)
+      .y(height * vis.forceProperties.center.y);
+  vis.simulation.force("charge")
+      .strength(vis.forceProperties.charge.strength * vis.forceProperties.charge.enabled)
+      .distanceMin(vis.forceProperties.charge.distanceMin)
+      .distanceMax(vis.forceProperties.charge.distanceMax);
+  vis.simulation.force("collide")
+      .strength(vis.forceProperties.collide.strength * vis.forceProperties.collide.enabled)
+      .radius(vis.forceProperties.collide.radius)
+      .iterations(vis.forceProperties.collide.iterations);
+  vis.simulation.force("forceX")
+      .strength(vis.forceProperties.forceX.strength * vis.forceProperties.forceX.enabled)
+      .x(width * vis.forceProperties.forceX.x);
+  vis.simulation.force("forceY")
+      .strength(vis.forceProperties.forceY.strength * vis.forceProperties.forceY.enabled)
+      .y(height * vis.forceProperties.forceY.y);
+  vis.simulation.force("link")
+      .id(function(d) {return d.id;})
+      .distance(vis.forceProperties.link.distance)
+      .iterations(vis.forceProperties.link.iterations)
+      .links(vis.forceProperties.link.enabled ? graph.links : []);
+
+  // updates ignored until this is run
+  // restarts the simulation (important if simulation has already slowed down)
+  vis.simulation.alpha(1).restart();
+}
+
+// generate the svg objects and force simulation
+function initializeDisplay() {
+  var vis = this;
+  // set the data and properties of link lines
+  vis.link = vis.svg.append("g")
+        .attr("class", "links")
+    .selectAll("line")
+    .data(vis.data.links)
+    .enter().append("line");
+
+  // set the data and properties of node circles
+  vis.node = vis.svg.append("g")
+        .attr("class", "nodes")
+    .selectAll("circle")
+    .data(vis.data.nodes)
+    .enter().append("circle")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+  // node tooltip
+  vis.node.append("title")
+      .text(function(d) { return d.id; });
+  // visualize the graph
+  vis.updateDisplay();
+
+  //////////// UI EVENTS ////////////
+
+  function dragstarted(d) {
+    if (!d3.event.active) vis.simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+
+  function dragended(d) {
+    if (!d3.event.active) vis.simulation.alphaTarget(0.0001);
+    d.fx = null;
+    d.fy = null;
+  }
+}
+
+NetworkGraph.prototype.updateDisplay() = function () {
+  var vis = this;
+
+  vis.node
+      .attr("r", vis.forceProperties.collide.radius)
+      .attr("stroke", vis.forceProperties.charge.strength > 0 ? "blue" : "red")
+      .attr("stroke-width", vis.forceProperties.charge.enabled==false ? 0 : Math.abs(vis.forceProperties.charge.strength)/15);
+
+  vis.link
+      .attr("stroke-width", vis.forceProperties.link.enabled ? 1 : .5)
+      .attr("opacity", vis.forceProperties.link.enabled ? 1 : 0);
+}
+
+NetworkGraph.prototype.updateAll() = function (){
+  var vis = this;
+
+  vis.updateForces();
+  vis.updateDisplay();
+}
 /////////////////// wrangleVis Method ///////////////////
 
-RadialBarsChart.prototype.wrangleData = function () {
+NetworkGraph.prototype.wrangleData = function () {
   var vis = this;
-  // console.log(vis.variable);
-  vis.variable = chart;
-  // (vis.variable == "chart1") ? vis.data = chartData_proj : vis.data = chartData_org;
+  
+/*   vis.variable = chart;
+
   (vis.variable == "chart1") ? vis.data = dataset1 : vis.data = dataset2;
-  (vis.variable == "chart1") ? vis.dataname = dataset1_name : vis.dataname = dataset2_name;
+  (vis.variable == "chart1") ? vis.dataname = dataset1_name : vis.dataname = dataset2_name; */
 
   vis.updateVis();
 };
 
 /////////////////// updateVis Method ////////////////////
 
-RadialBarsChart.prototype.updateVis = function () {
+NetworkGraph.prototype.updateVis = function () {
   var vis = this;
 
 
-  vis.x.domain(vis.data.map(d => d.attribute))
+  /* vis.x.domain(vis.data.map(d => d.attribute))
     .align(0);
   vis.y.domain([0, d3.max(vis.data, d => d.countpercentage)]);
   vis.z.domain(vis.data.map(d => d.attribute));
@@ -204,7 +381,7 @@ RadialBarsChart.prototype.updateVis = function () {
     // .attr("stroke-linejoin", "round")
     // .attr("stroke-width", 0.4)
     .text(vis.y.tickFormat(6, formatPercent));
-
+ */
   // vis.svg.append("text")
   //   .attr("x", 5)
   //   // .attr("y", function (d) { return -vis.y(vis.y.ticks(6).pop()); })
@@ -228,7 +405,7 @@ RadialBarsChart.prototype.updateVis = function () {
 
 
 
-  // create a legend tooltip
+  /* // create a legend tooltip
   vis.legendtip = d3.tip()
     .attr('class', 'd3-tip')
     // .style('background', "#cbd5e8")
@@ -297,12 +474,12 @@ RadialBarsChart.prototype.updateVis = function () {
     // .attr("fill", "#264d73")
     .attr("fill", "grey")
     // .attr("fill-opacity", "1.2")
-    .text("attributes with null values");
+    .text("attributes with null values"); */
 
 
   /////////////////// Helper Functions /////////////////////
 
-  function details(d, chart) {
+  /* function details(d, chart) {
 
 
     if (chart == "chart2") {
@@ -371,6 +548,6 @@ RadialBarsChart.prototype.updateVis = function () {
   
   function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
-  }
+  } */
 
 };

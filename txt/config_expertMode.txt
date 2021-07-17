@@ -1,0 +1,5 @@
+URI	ENDPOINT
+http://publications.europa.eu/resource/authority/corporate-body/PUBL	https://publications.europa.eu/webapi/rdf/sparql
+http://publications.europa.eu/resource/authority/corporate-body/CONSIL	https://publications.europa.eu/webapi/rdf/sparql
+http://publications.europa.eu/resource/authority/pub-theme/G01A	https://publications.europa.eu/webapi/rdf/sparql
+http://data.europa.eu/88u/dataset/covid-19-coronavirus-data	https://data.europa.eu/euodp/sparqlep

@@ -1,0 +1,76 @@
+/*
+*   Trends by source of investment and country
+*   map.css
+*   for mapChart.js 
+*   credit M. Bostock https://bl.ocks.org/mbostock/8fadc5ac9c2a9e7c5ba2*/
+
+svg {
+  display: block;
+  margin: auto;
+}
+
+/* svg {
+  background: rgb(210, 235, 235);
+  border: 1px solid gray;
+} */
+
+/* #svgMapChart {
+  background: rgb(210, 235, 235);
+} */
+
+/* 
+.sphere {
+  fill: #fff;
+}
+
+.land {
+  fill: #000;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  /* vector-effect: non-scaling-stroke;
+} */
+
+/* .overlay {
+  fill: none;
+  pointer-events: all;
+} */
+
+/* #mapChart { 
+  width: 60vw;
+  height: 50vh;
+} */
+
+#svgMapChart rect {
+  fill: #F0F3F4;
+}
+
+.country{
+  /* fill: #d2dbdd;  */
+  stroke: #2A2C39; /* country border colour */
+  stroke-width: 0.2; /* country border width */
+}
+
+.country:hover { 
+  stroke: #050505; /* country border colour */
+  stroke-width: 1; /* country border width */
+}
+
+.country-on{
+  fill: #ebec9e;   /* highlight colour for selected country */
+  /* fill: rgb(250, 253, 255);  */
+}
+
+/* .countryLabel{
+  display: none;   /* hide all country labels by default
+} */
+
+/* 
+path:hover {
+  fill: rgba(17, 90, 226, 0.705);
+  cursor:pointer;
+} */
