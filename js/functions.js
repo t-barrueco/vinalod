@@ -754,9 +754,9 @@ function bubbleImage(node){
       })
     }
     if(icon.length>0){
-      return "../images/"+icon[0]["FILE"]
+      return icon[0]["FILE"]
     }else{
-      return "../images/eu_flag.jpeg";
+      return "images/eu_flag.jpeg";
     }
   }
   
