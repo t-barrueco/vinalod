@@ -1,6 +1,6 @@
 ID	FILE
-Directory Organization	images/organization_icon.svg
-Membership Type	images/person_icon.svg
-Person	images/person_icon.svg
-OP Theme	images/publication.png
-corporateBody	images/organization_icon.svg
+Directory Organization	organization_icon.svg
+Membership Type	person_icon.svg
+Person	person_icon.svg
+OP Theme	publication.png
+corporateBody	organization_icon.svg
