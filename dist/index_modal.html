@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VINALOD UI</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<!-- component -->
+<div class="bg-white">
+    <nav class="border-b">
+        <div class="container px-6 py-2 mx-auto md:flex md:justify-between md:items-center">
+            <div class="flex items-center justify-between">
+                <div>
+                    <a href="#" class="text-xl text-gray-800 font-semiblod md:text-3xl hover:text-gray-700">
+                        Brand
+                    </a>
+                </div>
+                <div class="flex md:hidden">
+                    <button type="button" aria-label="toggle menu"
+                        class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+                            <path fill-rule="evenodd"
+                                d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="items-center hidden md:flex">
+                <div
+                    class="flex flex-col mt-4 space-y-8 md:flex-row md:items-center md:mt-0 md:space-y-0 md:space-x-16">
+                    <a href="#" class="block font-medium text-gray-700 hover:text-gray-900 hover:underline">Car
+                        Search</a>
+                    <a href="#" class="block font-medium text-gray-700 hover:text-gray-900 hover:underline">How it
+                        works!</a>
+                    <a href="#" class="block font-medium text-gray-700 hover:text-gray-900 hover:underline">Why us?</a>
+                    <a href="#" class="block font-medium text-gray-700 hover:text-gray-900 hover:underline">Contact</a>
+                    <button
+                        class="flex items-center px-5 py-3 font-medium tracking-wide text-center text-white capitalize bg-blue-600 rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+                        Get in touch
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- component -->
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+
+
+<!-- component -->
+<div class="flex items-center justify-center h-screen antialiased bg-gray-200">
+    <div class="flex flex-col w-11/12 max-w-2xl mx-auto border border-gray-300 rounded-lg shadow-xl sm:w-5/6 lg:w-1/2">
+      <div
+        class="flex flex-row justify-between p-6 bg-white border-b border-gray-200 rounded-tl-lg rounded-tr-lg"
+      >
+        <p class="font-semibold text-gray-800">Add a step</p>
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </div>
+      <div class="flex flex-col px-6 py-5 bg-gray-50">
+        <p class="mb-2 font-semibold text-gray-700">Bots Message</p>
+        <textarea
+          type="text"
+          name=""
+          placeholder="Type message..."
+          class="p-5 mb-5 bg-white border border-gray-200 rounded shadow-sm h-36"
+          id=""
+        ></textarea>
+        <div class="flex flex-col items-center mb-5 sm:flex-row sm:space-x-5">
+          <div class="w-full sm:w-1/2">
+            <p class="mb-2 font-semibold text-gray-700">Customer Response</p>
+            <select
+              type="text"
+              name=""
+              class="w-full p-5 bg-white border border-gray-200 rounded shadow-sm appearance-none"
+              id=""
+            >
+              <option value="0">Add service</option>
+            </select>
+          </div>
+          <div class="w-full mt-2 sm:w-1/2 sm:mt-0">
+            <p class="mb-2 font-semibold text-gray-700">Next step</p>
+            <select
+              type="text"
+              name=""
+              class="w-full p-5 bg-white border border-gray-200 rounded shadow-sm appearance-none"
+              id=""
+            >
+              <option value="0">Book Appointment</option>
+            </select>
+          </div>
+        </div>
+        <hr />
+
+        <div class="flex items-center mt-5 mb-3 space-x-4">
+          <input
+            class="inline-flex rounded-full"
+            type="checkbox"
+            id="check1"
+            name="check1"
+          />
+          <label class="inline-flex font-semibold text-gray-400" for="check1">
+            Add a crew</label
+          ><br />
+          <input
+            class="inline-flex"
+            type="checkbox"
+            id="check2"
+            name="check2"
+                 checked
+          />
+          <label class="inline-flex font-semibold text-blue-500" for="check2">
+            Add a specific agent</label
+          ><br />
+        </div>
+        <div
+          class="flex flex-row items-center justify-between p-5 bg-white border border-gray-200 rounded shadow-sm"
+        >
+          <div class="flex flex-row items-center">
+            <img
+              class="w-10 h-10 mr-3 rounded-full"
+              src="https://randomuser.me/api/portraits/lego/7.jpg"
+              alt=""
+            />
+            <div class="flex flex-col">
+              <p class="font-semibold text-gray-800">Xu Lin Bashir</p>
+              <p class="text-gray-400">table.co</p>
+            </div>
+          </div>
+          <h1 class="font-semibold text-red-400">Remove</h1>
+        </div>
+      </div>
+      <div
+        class="flex flex-row items-center justify-between p-5 bg-white border-t border-gray-200 rounded-bl-lg rounded-br-lg"
+      >
+        <p class="font-semibold text-gray-600">Cancel</p>
+        <button class="px-4 py-2 font-semibold text-white bg-blue-500 rounded">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- component -->
+<div class="w-full max-w-6xl min-w-0 px-6 mx-auto">
+    <div class="flex mt-12 bg-white rounded-md shadow">
+        <div class="w-64 bg-red-100 border-r border-red-200 border-dashed rounded-l-md">
+            <div class="flex items-center justify-center h-32 text-3xl italic font-semibold text-center text-red-700">
+                Logo
+            </div>
+            <div class="mt-8 border-t border-red-200">
+                <a href="#" class="block px-6 py-3 font-semibold text-red-700 border-b border-red-200">
+                    Facebook
+                </a>
+                <a href="#" class="block px-6 py-3 font-semibold text-red-100 bg-red-900 border-b border-red-200">
+                    Google
+                </a>
+                <a href="#" class="block px-6 py-3 font-semibold text-red-700 border-b border-red-200">
+                    Microsoft
+                </a>
+                <a href="#" class="block px-6 py-3 font-semibold text-red-700 border-b border-red-200">
+                    Yahoo
+                </a>
+                <a href="#" class="block px-6 py-3 font-semibold text-red-700 border-b border-red-200">
+                    Apple
+                </a>
+                <a href="#" class="block px-6 py-3 font-semibold text-red-700 border-b border-red-200">
+                    Amazon
+                </a>
+                <a href="#" class="block px-6 py-3 font-semibold text-red-700 border-b border-red-200">
+                    Twitter
+                </a>
+            </div>
+        </div>
+        <div class="flex-grow">
+            <div class="flex flex-col mx-40 mt-20">
+                <div class="flex items-center mb-4">
+                    <label for="email" class="w-24 font-semibold text-gray-700">Email</label>
+                    <input type="email" class="flex-grow px-3 py-1 border border-red-200 rounded" placeholder="Email" />
+                </div>
+                <div class="flex items-center mb-4">
+                    <label for="username" class="w-24 font-semibold text-gray-700">Username</label>
+                    <input type="text" class="flex-grow px-3 py-1 border border-red-200 rounded" placeholder="Username" />
+                </div>
+                <div class="flex items-center mb-4">
+                    <label for="password" class="w-24 font-semibold text-gray-700">Password</label>
+                    <input type="password" class="flex-grow px-3 py-1 border border-red-200 rounded" placeholder="Password" />
+                </div>
+                <div class="flex items-center mb-4">
+                    <textarea name="description" class="flex-grow px-3 py-1 border border-red-200 rounded" id="description" rows="8"></textarea>
+                </div>
+                <div class="flex items-center mb-4">
+                    <button class="px-4 py-1 mr-2 font-semibold text-red-100 bg-red-800 border border-red-200 rounded hover:bg-red-900 hover:shadow">Submit</button>
+                    <button class="px-4 py-1 font-semibold text-red-700 bg-white border border-red-200 rounded hover:shadow">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
