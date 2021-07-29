@@ -1,0 +1,9 @@
+This dashboard explores the original data behind all the other dashboards and allows the user to discover:
+
+	the structure of datasets
+        attributes definition and range
+        completeness of data
+
+Color coding point to cross-referenced attributes.
+
+The data corresponding to the selections made can be downloaded in csv format.

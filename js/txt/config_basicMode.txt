@@ -1,0 +1,525 @@
+CLASS	URL	QUERY	HIERARCHY	PROPERTIES	OPTION	OPTION_TEXT	TYPE	CLASSES	PARAMETERS	FILTERS	TOOLTIP	FUNCTION
+opThemeMain	https://publications.europa.eu/webapi/rdf/sparql	"
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT DISTINCT ?opThemeMain ?opThemeMain_uri ?opTheme ?opTheme_uri
+            where {{?opTheme_uri rdf:type ?opThemeMain_uri;
+                       skos:prefLabel ?opTheme.
+                    ?opThemeMain_uri rdfs:label ?opThemeMain
+                    } 
+                   filter(?opThemeMain_uri=<http://publications.europa.eu/ontology/cdm#concept_op_theme>)
+                   FILTER(langMatches(lang(?opTheme), ""en"")).
+                   filter not exists { 
+                       ?opTheme_uri skos:broader ?broader
+                   }
+                   }ORDER BY ?opThemeMain ?opTheme
+                   #LIMIT 50
+    "	opThemeMain-opTheme	opThemeMain-opThemeMain_uri;opTheme-opTheme_uri	PUBLICATIONS - Publications by OP Theme	PUBLICATIONS - Publications by OP Theme	TREE	opThemeMain-Publications Themes;opTheme-OP Theme				
+Membership	https://publications.europa.eu/webapi/rdf/sparql	"
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX org: <http://www.w3.org/ns/org#>
+    PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+            SELECT DISTINCT ?membership ?person ?person_uri ?person_gender ?person_genderUri 
+            where {{?person_uri org:hasMembership ?membership_uri;
+                                vcard:hasGender ?person_genderUri;
+                                foaf:name ?person.
+                    ?membership_uri euvoc:positionComplement ?membership.
+                    ?person_genderUri skos:prefLabel ?person_gender.
+                    } 
+                   filter(?membership_uri=<PARAMETER>)
+                   FILTER(langMatches(lang(?membership), ""en"")).
+                   FILTER(langMatches(lang(?person_gender), ""en"")).
+                   }ORDER BY ?person
+                   #LIMIT 50
+    "	membership-person	person-person_uri;person-person_gender;person-person_genderUri	WHOISWHO Person	WHOISWHO Person	TREE	membership-Membership;person-Person				
+Directory Organization	https://publications.europa.eu/webapi/rdf/sparql	"
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX org: <http://www.w3.org/ns/org#>
+    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+    PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+    PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+            SELECT DISTINCT ?directoryOrg ?directoryOrg2 ?directoryOrg2_uri ?directoryOrg_order ?directoryOrg_protocolLevel ?directoryOrg_email ?directoryOrg_telephone ?directoryOrg_locality ?directoryOrg_postalCode ?directoryOrg_streetAddress ?directoryOrg_homepage
+            where {{?directoryOrg_uri org:hasSubOrganization ?directoryOrg2_uri.
+                    ?directoryOrg_uri skos:prefLabel ?directoryOrg.
+                    ?directoryOrg2_uri skos:prefLabel ?directoryOrg2;
+                                      euvoc:order ?directoryOrg_order;
+                                      euvoc:protocolLevel ?directoryOrg_protocolLevel.
+                                      #euvoc:contactPoint ?directoryOrg_contactPoint.
+                    #OPTIONAL {
+                    #?directoryOrg_uri2 euvoc:contactPoint ?directoryOrg_contactPoint2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint2 vcard:hasEmail ?directoryOrg_email2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint2 vcard:hasTelephone ?directoryOrg_telephoneBN2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint2 vcard:locality ?directoryOrg_locality2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint2 vcard:postal-code ?directoryOrg_postalCode2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint2 vcard:street-address ?directoryOrg_streetAddress2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint2 foaf:homepage ?directoryOrg_homepage2.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_telephoneBN2 vcard:hasValue ?directoryOrg_telephone2.  
+                    #}
+                    } 
+                   filter(?directoryOrg_uri=<PARAMETER>).
+                   FILTER(langMatches(lang(?directoryOrg2), ""en"")).
+                   FILTER(langMatches(lang(?directoryOrg), ""en"")).
+                   }
+                   #ORDER BY ?whoiswhoOrg ?country ?location
+                   #LIMIT 50
+    "	directoryOrg-directoryOrg2	directoryOrg2-directoryOrg2_uri;directoryOrg2-directoryOrg_order;directoryOrg2-directoryOrg_protocolLevel;directoryOrg2-directoryOrg_email;directoryOrg2-directoryOrg_telephone;directoryOrg2-directoryOrg_locality;directoryOrg2-directoryOrg_postalCode;directoryOrg2-directoryOrg_streetAddress;directoryOrg2-directoryOrg_homepage	WHOISWHO directoryOrg second level	WHOISWHO directoryOrg second level	TREE	directoryOrg-Directory Organization;directoryOrg2-Directory Organization				
+OP Theme	https://publications.europa.eu/webapi/rdf/sparql	"
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+                SELECT DISTINCT ?opTheme ?opTheme_uri ?corporateBody ?corporateBody_uri ?opTheme_uri AS ?corporateBody_opTheme
+                where {{?publicationDocument_uri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;
+                           cdm:work_authored_by_agent ?corporateBody_uri.
+                        ?opTheme_uri skos:prefLabel ?opTheme.
+                        ?corporateBody_uri skos:prefLabel ?corporateBody.
+                        } 
+                       filter(?opTheme_uri=<PARAMETER>)
+                       FILTER(langMatches(lang(?corporateBody), ""en"")).
+                       FILTER(langMatches(lang(?opTheme), ""en"")).
+                       }ORDER BY ?opTheme ?corporateBody
+    "	opTheme-corporateBody	opTheme-opTheme_uri;corporateBody-corporateBody_uri;corporateBody-corporateBody_opTheme	OP Themes and publication author	OP Themes and publication author	TREE	opTheme-OP Theme;corporateBody-corporateBody				
+eurovoc	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+            SELECT DISTINCT ?eurovoc ?eurovoc_uri ?eurovocDomain ?eurovocDomain_uri ?eurovocThesauri ?eurovocThesauri_uri ?eurovocConcept ?eurovocConcept_uri
+            where {{?eurovoc_uri dcterms:hasPart ?eurovocThesauri_uri;
+                       skos:prefLabel ?eurovoc.
+                    ?eurovocThesauri_uri skos:prefLabel ?eurovocThesauri;
+                       euvoc:domain ?eurovocDomain_uri.
+                    ?eurovocDomain_uri skos:prefLabel ?eurovocDomain.
+                    ?eurovocConcept_uri skos:inScheme ?eurovocThesauri_uri;
+                             skos:prefLabel ?eurovocConcept.
+                    } 
+                   filter(?eurovoc_uri=<http://eurovoc.europa.eu/100141>).
+                   FILTER(langMatches(lang(?eurovocDomain), ""en"")) 
+                   FILTER(langMatches(lang(?eurovocThesauri), ""en""))
+                   FILTER(langMatches(lang(?eurovoc), ""en""))
+                   FILTER(langMatches(lang(?eurovocConcept), ""en""))
+
+                   }ORDER BY ?eurovoc ?eurovocDomain ?eurovocThesauri ?eurovocConcept"	eurovoc-eurovocDomain-eurovocThesauri-eurovocConcept	eurovoc-eurovoc_uri;eurovocDomain-eurovocDomain_uri;eurovocThesauri-eurovocThesauri_uri;eurovocConcept-eurovocConcept_uri	Eurovoc domains, thesauri and concepts	Eurovoc concepts by thesauri and domain	TREE	eurovoc-Eurovoc;eurovocDomain-Eurovoc Domain;eurovocThesauri-Eurovoc Thesauri;eurovocConcept-Eurovoc Concept				
+Eurovoc Concept	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    
+SELECT ?eurovocConcept ?eurovocConcept_uri ?aligment WHERE
+{
+    ?eurovocConcept_uri skos:inScheme <http://eurovoc.europa.eu/100141> ;
+    skos:prefLabel ?eurovocConcept
+    {?eurovocConcept_uri skos:exactMatch ?aligment}
+    UNION
+    {?eurovocConcept_uri skos:closeMatch ?aligment}
+    #filter (strStarts(str(?aligment), 'https://en.wikipedia.org/')).
+    FILTER(langMatches(lang(?eurovocConcept), ""en"")).
+    filter(?eurovocConcept_uri=<PARAMETER>).
+}ORDER BY ?eurovocConcept ?aligment"	eurovocConcept-aligment	eurovocConcept-eurovocConcept_uri	Eurovoc concept and aligments	Eurovoc concepts and external aligments	TREE	eurovocConcept-Eurovoc Concept;aligment-Aligment				
+nuts	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+
+    SELECT DISTINCT ?nuts ?nutsLevel0 ?nutsLevel0_uri ?nutsLevel1 ?nutsLevel1_uri ?nutsLevel2 ?nutsLevel2_uri ?nutsLevel3 ?nutsLevel3_uri
+    where {{?nutsLevel3_uri ?p ?o;
+               skos:prefLabel ?nutsLevel3;
+               skos:broader ?nutsLevel2_uri.
+            ?nutsLevel2_uri skos:prefLabel ?nutsLevel2;
+                             skos:broader ?nutsLevel1_uri.
+            ?nutsLevel1_uri skos:prefLabel ?nutsLevel1;
+                             skos:broader ?nutsLevel0_uri.
+            ?nutsLevel0_uri skos:prefLabel ?nutsLevel0;
+                             skos:inScheme <http://data.europa.eu/nuts>.
+            <http://data.europa.eu/nuts> skos:prefLabel ?nuts
+            } 
+           FILTER(?p=<http://data.europa.eu/nuts/level>).
+           FILTER(?o=3) 
+           }ORDER BY ?nuts ?nutsLevel0 ?nutsLevel1 ?nutsLevel2 ?nutsLevel3"	nuts-nutsLevel0-nutsLevel1-nutsLevel2-nutsLevel3	nutsLevel0-nutsLevel0_uri;nutsLevel1-nutsLevel1_uri;nutsLevel2-nutsLevel2_uri;nutsLevel3-nutsLevel3_uri	NUTS Tree	NUTS Tree	TREE	nuts-NUTS Classification;nutsLevel0-NUTS Level 0;nutsLevel1-NUTS Level 1;nutsLevel2-NUTS Level 2;;nutsLevel3-NUTS Level 3				
+taxonomy	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+            SELECT DISTINCT ?taxonomy ?taxonomy_def ?taxonomyType ?taxonomyType_uri ?taxonomyType_desc ?taxonomyLevel1 ?taxonomyLevel1_uri ?taxonomyLevel1_definition
+            where {{<http://publications.europa.eu/resource/authority/dataset-type/TAXONOMY> skos:prefLabel ?taxonomy;
+                       skos:definition ?taxonomy_def.
+                    ?s cdm:work_dataset_has_type_concept_type_dataset <http://publications.europa.eu/resource/authority/dataset-type/TAXONOMY>;
+                       cdm:work_id ?taxonomyType_uri;
+                       cdm:work_dataset_description_editorial ?taxonomyType_desc;
+                       cdm:work_title ?taxonomyType.
+                    BIND(IRI(?taxonomyType_uri) as ?idUri)
+                    ?idUri skos:hasTopconcept ?taxonomyLevel1_uri.
+                    ?taxonomyLevel1_uri skos:prefLabel ?taxonomyLevel1.
+                    OPTIONAL {?taxonomyLevel1_uri skos:definition ?taxonomyLevel1_definition }
+                    #?idUri skos:prefLabel ?label
+                    FILTER(langMatches(lang(?taxonomy), ""en"")).
+                    FILTER(langMatches(lang(?taxonomyLevel1), ""en"")).
+                    #FILTER(langMatches(lang(?label), ""en"")).
+                       }
+                   } ORDER BY ?taxonomy ?taxonomyType ?taxonomyLevel1"	taxonomy-taxonomyType-taxonomyLevel1	taxonomy-taxonomy_def;taxonomyType-taxonomyType_uri;taxonomyType-taxonomyType_desc;taxonomyLevel1-taxonomyLevel1_uri;taxonomyLevel1-taxonomyLevel1_definition	Taxonomies	Taxonomies	TREE	taxonomy-Taxonomies Classification;taxonomyType-Taxonomy Type;taxonomyLevel1-Taxonomy Level				
+Taxonomy Level	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT DISTINCT ?taxonomyLevel1 ?taxonomyLevel1_uri ?taxonomyLevel2 ?taxonomyLevel2_uri
+                    WHERE{{
+                    ?taxonomyLevel1_uri skos:prefLabel ?taxonomyLevel1;
+                                         skos:narrower ?taxonomyLevel2_uri.
+                    ?taxonomyLevel2_uri skos:prefLabel ?taxonomyLevel2
+                    } 
+                   filter(?taxonomyLevel1_uri=<PARAMETER>).
+                   FILTER(langMatches(lang(?taxonomyLevel2), ""en""))
+                   FILTER(langMatches(lang(?taxonomyLevel1), ""en""))
+                   }ORDER BY ?taxonomyLevel1 ?taxonomyLevel2"	taxonomyLevel1-taxonomyLevel2	taxonomyLevel1-taxonomyLevel1_uri;taxonomyLevel2-taxonomyLevel2_uri	Taxonomy Level Children	Taxonomy Level Children	TREE	taxonomyLevel1-Taxonomy Level;taxonomyLevel2-Taxonomy Level				
+det	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+            SELECT DISTINCT ?det ?det_uri ?detLevel1 ?detLevel1_uri ?detLevel2 ?detLevel2_uri
+            where {{ ?det_uri skos:prefLabel ?det;
+                               skos:hasTopConcept ?detLevel1_uri.
+                    ?detLevel1_uri skos:prefLabel ?detLevel1;
+                               skos:narrower ?detLevel2_uri.
+                    ?detLevel2_uri skos:prefLabel ?detLevel2.
+                    FILTER(langMatches(lang(?detLevel1), ""en"")).
+                    FILTER(langMatches(lang(?detLevel2), ""en"")).
+                    #FILTER(langMatches(lang(?taxonomyLevel1), ""en"")).
+                    #FILTER(langMatches(lang(?label), ""en"")).
+                    FILTER(?det_uri=<http://data.europa.eu/uxp/det>)
+                       }
+                   } ORDER BY ?det ?det ?detLevel1"	det-detLevel1-detLevel2	det-det_uri;detLevel1-detLevel1_uri;detLevel2-detLevel2_uri	Digital Europa Thesaurus	Digital Europa Thesaurus	TREE	det-DET;detLevel1-DET Level;detLevel2-DET Level				
+Eurovoc Concept	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX purl: <http://purl.org/dc/terms/>
+    PREFIX rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+    PREFIX rdf: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT DISTINCT ?eurovocConcept ?eurovocConcept_uri ?workType ?workType_uri ?work ?work_uri
+            where {{?eurovocConcept_uri skos:prefLabel ?eurovocConcept.
+                    ?work_uri cdm:work_is_about_concept_eurovoc ?eurovocConcept_uri;
+                          rdfs:type ?workType_uri;
+                          cdm:work_title ?work.
+                    ?workType_uri rdf:label ?workType
+                    }
+                   FILTER(langMatches(lang(?eurovocConcept), ""en"")) 
+                   FILTER(?eurovocConcept_uri=<PARAMETER>)
+                   FILTER (isLiteral(?workType) && lcase(str(?workType)) != ""work"")
+                   }
+                   ORDER BY ?eurovocConcept ?workType ?work"	eurovocConcept-workType-work	eurovocConcept-eurovocConcept_uri;workType-workType_uri;work-work_uri	Eurovoc concept and work types	Eurovoc concepts and works by type	TREE	eurovocConcept-Eurovoc Concept;workType-Work Type;work-Work				
+DET Level	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT DISTINCT ?detLevel2 ?detLevel2_uri ?detLevel3 ?detLevel3_uri
+                    WHERE{{
+                    ?detLevel2_uri skos:prefLabel ?detLevel2;
+                                         skos:narrower ?detLevel3_uri.
+                    ?detLevel3_uri skos:prefLabel ?detLevel3
+                    } 
+                   filter(?detLevel2_uri=<PARAMETER>).
+                   FILTER(langMatches(lang(?detLevel2), ""en""))
+                   FILTER(langMatches(lang(?detLevel3), ""en""))
+                   }ORDER BY ?detLevel2 ?detLevel3"	detLevel2-detLevel3	detLevel2-detLevel2_uri;detLevel3-detLevel3_uri	DET Children Level	DET Children Level	TREE	detLevel2-DET Level;detLevel3-DET Level				
+DET Level	https://publications.europa.eu/webapi/rdf/sparql	"
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT DISTINCT ?detLevel1 ?detLevel1_uri ?eurovocConcept ?eurovocConcept_uri
+            where {{?detLevel1_uri skos:prefLabel ?detLevel1;
+                                    skos:exactMatch ?eurovocConcept_uri.
+                    ?eurovocConcept_uri skos:prefLabel ?eurovocConcept} 
+                   filter(?detLevel1_uri=<PARAMETER>).
+                   FILTER(langMatches(lang(?detLevel1), ""en"")).
+                   FILTER(langMatches(lang(?eurovocConcept), ""en"")).
+                   }
+    "	detLevel1-eurovocConcept	detLevel1-detLevel1_uri;eurovocConcept-eurovocConcept_uri	DET Level to Eurovoc Concept	DET Level to Eurovoc Concept	TREE	detLevel1-DET Level;eurovocConcept-Eurovoc Concept				
+Continents	https://publications.europa.eu/webapi/rdf/sparql	"
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+            PREFIX dcterms: <http://purl.org/dc/terms/>
+            PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+            PREFIX authority: <http://publications.europa.eu/ontology/authority/>
+                    SELECT DISTINCT ?continent ?continent_uri ?continentName ?continentName_uri ?country ?country_uri ?language ?language_uri 
+                    where {{?continentName_uri skos:prefLabel ?continentName;
+                               skos:inScheme ?continent_uri.
+                            ?continent_uri skos:prefLabel ?continent.
+                            ?country_uri geo:sfWithin ?continentName_uri;
+                                         skos:prefLabel ?country;
+                                         authority:deprecated ?deprecated;
+                                         dcterms:language ?language_uri.
+                            ?language_uri skos:prefLabel ?language
+                            } 
+                           filter(?continent_uri=<http://publications.europa.eu/resource/authority/continent>).
+                           FILTER(langMatches(lang(?continent), ""en"")).
+                           FILTER(langMatches(lang(?continentName), ""en"")).
+                           FILTER(langMatches(lang(?country), ""en"")).
+                           filter(?deprecated=""false"").
+                           FILTER(langMatches(lang(?language), ""en"")).
+                           }ORDER BY ?continent ?continentName ?country ?language
+    "	continent-continentName-country-language	continent-continent_uri;continentName-continentName_uri;country-country_uri;language-language_uri	Languages by country and continent	Languages by country and continent	TREE	continent-Continents;continentName-Continent;country-Country;language-Language				
+Continents	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+            PREFIX dcterms: <http://purl.org/dc/terms/>
+            PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+            PREFIX authority: <http://publications.europa.eu/ontology/authority/>
+            PREFIX org: <http://www.w3.org/ns/org#>
+                    SELECT DISTINCT ?continent ?continent_uri ?continentName ?continentName_uri ?country_uri ?country ?org ?org_code ?org_desc
+                    where {{?continentName_uri skos:prefLabel ?continentName;
+                               skos:inScheme ?continent_uri.
+                            ?continent_uri skos:prefLabel ?continent.
+                            ?country_uri geo:sfWithin ?continentName_uri;
+                                         skos:prefLabel ?country;
+                                         authority:deprecated ?deprecated.
+                            OPTIONAL {
+                                    ?country_uri org:hasMembership ?o.
+                                    ?o org:organization ?org_code.
+                                    ?org_code authority:deprecated ?deprecated2;
+                                              authority:authority-code ?org;
+                                              skos:prefLabel ?org_desc.
+                                    filter(?deprecated2=""false"").
+                                    FILTER(langMatches(lang(?org_desc), ""en"")).
+                            }
+                            } 
+                           filter(?continent_uri=<http://publications.europa.eu/resource/authority/continent>).
+                           FILTER(langMatches(lang(?continent), ""en"")).
+                           FILTER(langMatches(lang(?continentName), ""en"")).
+                           FILTER(langMatches(lang(?country), ""en"")).
+                           filter(?deprecated=""false"").
+                           }ORDER BY ?continent ?continentName ?country ?org"	continent-continentName-country-org	continent-continent_uri;continentName-continentName_uri;country-country_uri;org-org_desc;org-org_code	Continents countries and organisations	Continents countries and organisations those countries belong to	TREE	continent-Continents;continentName-Continent;country-Country;org-Organisation				
+org	https://publications.europa.eu/webapi/rdf/sparql	"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX dcterms: <http://purl.org/dc/terms/>
+            PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+            PREFIX authority: <http://publications.europa.eu/ontology/authority/>
+                    SELECT DISTINCT ?org ?org_code ?org_desc ?treaty ?startDate ?endDate ?replaces
+                    where {{?org_code skos:prefLabel ?org_desc;
+                                      authority:authority-code ?org;
+                                      euvoc:startDate ?startDate.
+                            OPTIONAL {
+                            ?org_code euvoc:endDate ?endDate.
+                            }
+                            OPTIONAL{
+                            ?org_code euvoc:legallyBasedOnTreaty ?treaty_code.
+                            ?treaty_code skos:prefLabel ?treaty.
+                            FILTER(langMatches(lang(?treaty), ""en"")).
+                            }
+                            OPTIONAL{
+                            ?org_code dcterms:replaces ?replaces.
+                            }
+                            } 
+                           filter(?org_code=<PARAMETER>).
+                           FILTER(langMatches(lang(?org_desc), ""en"")).
+                           }"	org	org-org_desc;org-org_code;org-org_startDate;org-org_endDate	Timeline organisations	Timeline organisations	TIMELINE	org-Organisation				
+eurun	https://publications.europa.eu/webapi/rdf/sparql	"
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX org: <http://www.w3.org/ns/org#>
+    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+    PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT DISTINCT ?eurun ?eurun_uri ?eurun_image ?corporateBody ?corporateBody_uri ?corporateBody_image ?corporateBody_country ?corporateBody_countryUri ?corporateBody_location ?corporateBody_locationUri   
+            where {{?eurun_uri org:hasSubOrganization ?corporateBody_uri;
+                           skos:prefLabel ?eurun;
+                           foaf:depiction ?eurun_image.
+                    ?corporateBody_uri skos:prefLabel ?corporateBody;
+                       foaf:depiction ?corporateBody_image;
+                       geo:location ?corporateBody_locationUri.
+                    ?corporateBody_locationUri skos:prefLabel ?corporateBody_location;
+                              geosparql:sfWithin ?corporateBody_countryUri.
+                    ?corporateBody_countryUri skos:prefLabel ?corporateBody_country          
+                    } 
+                   filter(?eurun_uri=<http://publications.europa.eu/resource/authority/corporate-body/EURUN>).
+                   FILTER(langMatches(lang(?eurun), ""en"")).
+                   FILTER(langMatches(lang(?corporateBody), ""en"")).
+                   FILTER(langMatches(lang(?corporateBody_location), ""en"")).
+                   FILTER(langMatches(lang(?corporateBody_country), ""en"")).
+                   }ORDER BY ?eurun ?corporateBody
+                   #LIMIT 50
+    "	eurun-corporateBody	eurun-eurun_uri;eurun-eurun_image;corporateBody-corporateBody_uri;corporateBody-corporateBody_image;corporateBody-corporateBody_countryUri;corporateBody-corporateBody_country;corporateBody-corporateBody_locationUri;corporateBody-corporateBody_location	WHOISWHO EURUN Suborganizations	WHOISWHO EURUN Suborganizations	TREE	eurun-European Union;corporateBody-corporateBody		corporateBody_country-dropdown;corporateBody_location-dropdown	corporateBody_country-Country;corporateBody_location-Location	
+corporateBody	https://publications.europa.eu/webapi/rdf/sparql	"
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX org: <http://www.w3.org/ns/org#>
+    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+    PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+    PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+            SELECT DISTINCT ?corporateBody ?directoryOrg ?directoryOrg_uri ?directoryOrg_order ?directoryOrg_protocolLevel ?directoryOrg_email ?directoryOrg_telephone ?directoryOrg_locality ?directoryOrg_postalCode ?directoryOrg_streetAddress ?directoryOrg_homepage
+            where {{?corporateBody_uri skos:prefLabel ?corporateBody.
+                    ?corporateBody_uri org:hasSubOrganization ?directoryOrg_uri. 
+                    ?directoryOrg_uri skos:prefLabel ?directoryOrg.
+                    OPTIONAL {
+                    ?directoryOrg_uri euvoc:order ?directoryOrg_order.
+                    }
+                    OPTIONAL {
+                    ?directoryOrg_uri euvoc:protocolLevel ?directoryOrg_protocolLevel.
+                    }
+                    #OPTIONAL {
+                    #?directoryOrg_uri euvoc:contactPoint ?directoryOrg_contactPoint.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint vcard:hasEmail ?directoryOrg_email.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint vcard:hasTelephone ?directoryOrg_telephoneBN.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint vcard:locality ?directoryOrg_locality.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint vcard:postal-code ?directoryOrg_postalCode.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint vcard:street-address ?directoryOrg_streetAddress.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_contactPoint foaf:homepage ?directoryOrg_homepage.
+                    #}
+                    #OPTIONAL {
+                    #?directoryOrg_telephoneBN vcard:hasValue ?directoryOrg_telephone.  
+                    #}
+                    } 
+                   filter(?corporateBody_uri=<PARAMETER>).
+                   FILTER(langMatches(lang(?directoryOrg), ""en"")).
+                   FILTER(langMatches(lang(?corporateBody), ""en"")).
+                   }
+                   #ORDER BY ?whoiswhoOrg ?country ?location
+                   #LIMIT 50
+    "	corporateBody-directoryOrg	directoryOrg-directoryOrg_uri;directoryOrg-directoryOrg_order;directoryOrg-directoryOrg_protocolLevel;directoryOrg-directoryOrg_email;directoryOrg-directoryOrg_telephone;directoryOrg-directoryOrg_locality;directoryOrg-directoryOrg_postalCode;directoryOrg-directoryOrg_streetAddress;directoryOrg-directoryOrg_homepage	WHOISWHO Suborganizations	WHOISWHO Suborganizations	TREE	corporateBody-corporateBody;directoryOrg-Directory Organization				
+Directory Organization	https://publications.europa.eu/webapi/rdf/sparql	"
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX org: <http://www.w3.org/ns/org#>
+    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+            SELECT DISTINCT ?directoryOrg ?membership ?directoryOrg_uri AS ?membership_directoryOrg
+            where {{?membership_uri org:organization ?directoryOrg_uri;
+                                    euvoc:order ?membership_order;
+                                    euvoc:positionComplement ?membership.
+                    ?directoryOrg_uri skos:prefLabel ?directoryOrg.
+                    } 
+                   filter(?directoryOrg_uri=<PARAMETER>).
+                   FILTER(langMatches(lang(?membership), ""en"")).
+                   FILTER(langMatches(lang(?directoryOrg), ""en"")).
+                   }GROUP BY ?membership
+    "	directoryOrg-membership	membership-membership_directoryOrg	WHOISWHO Membership	WHOISWHO Membership	TREE	directoryOrg-Directory Organization;membership-Membership Type				
+Membership Type	https://publications.europa.eu/webapi/rdf/sparql	"
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX org: <http://www.w3.org/ns/org#>
+    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX resource: <http://publications.europa.eu/resource/>
+            SELECT DISTINCT ?membership ?membership_uri ?membership_startDate ?membership_endDate ?membership_order ?membership_positionStatusUri ?membership_positionStatus ?person ?person_uri ?person_id ?person_image ?person_citiz ?person_gender ?person_genderUri
+            where {{?membership_uri org:organization ?directoryOrg_uri;
+                       euvoc:startDate ?membership_startDate;
+                       euvoc:endDate ?membership_endDate;
+                       euvoc:order ?membership_order;
+                       euvoc:positionComplement ?membership;
+                       euvoc:positionStatus ?membership_positionStatusUri.
+                       #euvoc:roleQualification ?roleQualification_uri;
+                       #euvoc:contactPoint ?contactPoint.
+                    ?directoryOrg_uri skos:prefLabel ?directoryOrg.
+                    ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.
+                    ?person_uri org:hasMembership ?membership_uri;
+                    #            vcard:hasGender ?person_genderUri;
+                                foaf:name ?person.
+                    #?person_genderUri skos:prefLabel ?person_gender.
+                    OPTIONAL{
+                        ?person_uri foaf:img ?person_image;
+                                    resource:personcitizenship ?person_citizUri.
+                        ?person_citizUri skos:prefLabel ?person_citiz.
+                        FILTER(langMatches(lang(?person_citiz), ""en"")).
+                        BIND (STRBEFORE(STRAFTER( STR(?person_image), ""https://www.europarl.europa.eu/mepphoto/"" ), "".jpg"" ) AS ?person_id)
+                        #BIND (regex(STR(?person_img), ""^https"", ""i"") AS ?str_event)
+                    }
+                    } 
+                   FILTER(STR(?membership)=""PARAMETER"").
+                   filter(?directoryOrg_uri=<PARAMETER2>).
+                   FILTER(langMatches(lang(?membership), ""en"")).
+                   FILTER(langMatches(lang(?membership_positionStatus), ""en"")).
+                   FILTER(langMatches(lang(?directoryOrg), ""en"")).
+                   #FILTER(langMatches(lang(?person_gender), ""en"")).
+                   }ORDER BY ?membership_order ?person
+"	membership-person	membership-membership_uri;membership-membership_startDate;membership-membership_endDate;membership-membership_order;membership-membership_positionStatusUri;membership-membership_positionStatus;person-person_uri;person-person_gender;person-person_genderUri;person-person_citiz;person-person_image;person-person_id	WHOISWHO Membership Type	WHOISWHO Membership Type	TREE	membership-Membership Type;person-Person	membership_directoryOrg			
+Person	https://query.wikidata.org/sparql	"
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX org: <http://www.w3.org/ns/org#>
+            SELECT DISTINCT ?s ?article #?label
+            where {{?s <http://www.wikidata.org/prop/direct/P1186> 'PARAMETER2'.
+                    ?article schema:about ?s .
+                    ?article schema:inLanguage ""en"" .
+                    ?article schema:isPartOf <https://en.wikipedia.org/> .
+                    } 
+                   }
+    "	person-article	article	WHOISWHO Wikipedia page	WHOISWHO Wikipedia page	WEBPAGE	article-Wikipedia Article	person_id			showWikipediaPage
+OP Theme	https://publications.europa.eu/webapi/rdf/sparql	"
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+        SELECT DISTINCT ?opThemeParent ?opThemeParent_uri ?opThemeChild ?opThemeChild_uri
+        where {{?opThemeChild_uri skos:broader ?opThemeParent_uri;
+                   skos:prefLabel ?opThemeChild.
+                ?opThemeParent_uri skos:prefLabel ?opThemeParent.
+                } 
+               filter(?opThemeParent_uri=<PARAMETER>)
+               FILTER(langMatches(lang(?opThemeParent), ""en"")).
+               FILTER(langMatches(lang(?opThemeChild), ""en"")).
+               }ORDER BY ?opThemeParent ?opThemeChild
+    "	opThemeParent-opThemeChild	opThemeParent-opThemeParent_uri;opThemeChild-opThemeChild_uri	OP Themes children	OP Themes children	TREE	opThemeParent-OP Theme;opThemeChild-OP Theme				
+Publication Document	https://publications.europa.eu/webapi/rdf/sparql	"
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+            SELECT DISTINCT ?expression ?expression_uri ?manifestation ?manifestation_uri ?manifestation_image ?manifestation_type
+            where {
+                    {
+                    ?manifestation_uri cdm:manifestation_manifests_expression ?expression_uri.
+                    ?manifestation_uri cdm:manifestation_has_thumbnail ?manifestation_image;
+                                       cdm:manifestation_number_catalogue ?manifestation;
+                                       cdm:manifestation_type ?manifestation_type.
+                                       #cdm:manifestation_isbn ?manifestation_isbn.
+                    ?expression_uri cdm:expression_title ?expression.
+                    } 
+                   filter(?expression_uri=<PARAMETER>)
+                   }ORDER BY ?expression ?manifestation
+    "	expression-manifestation	expression-expression_uri;manifestation-manifestation_isbn;manifestation-manifestation_uri;manifestation-manifestation_image;manifestation-manifestation_type	Manifestation by Expression	Manifestation by Expression	TREE	expression-Publication Document;manifestation-Publication Manifestation			manifestation_type-Manifestation Type	
+corporateBody	https://publications.europa.eu/webapi/rdf/sparql	"
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+            SELECT DISTINCT ?corporateBody ?corporateBody_uri ?publicationDocument ?publicationDocument_uri ?publicationDocument_documentUri ?publicationDocument_date
+            where {{?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;
+                       cdm:work_authored_by_agent ?corporateBody_uri.
+                    ?opTheme_uri skos:prefLabel ?opTheme.
+                    ?corporateBody_uri skos:prefLabel ?corporateBody.
+                    ?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date.
+                    ?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;
+                       cdm:expression_uses_language ?expression_languageUri;
+                       cdm:expression_title ?publicationDocument.
+                    ?expression_languageUri skos:prefLabel ?expression_language.
+                    } 
+                   filter(?opTheme_uri=<PARAMETER2>)
+                   filter(?corporateBody_uri=<PARAMETER>)
+                   FILTER(langMatches(lang(?corporateBody), ""en"")).
+                   FILTER(langMatches(lang(?opTheme), ""en"")).
+                   FILTER(langMatches(lang(?expression_language), ""en"")).
+                   }ORDER BY ?corporateBody ?publicationDocument
+    "	corporateBody-publicationDocument	corporateBody-corporateBody_uri;publicationDocument-publicationDocument_uri;publicationDocument-publicationDocument_date	Publications by CorporateBody	Publications by CorporateBody	TREE	corporateBody-corporateBody;publicationDocument-Publication Document	corporateBody_opTheme			

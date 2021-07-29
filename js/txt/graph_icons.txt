@@ -1,0 +1,6 @@
+ID	FILE
+Directory Organization	organization_icon.svg
+Membership Type	person_icon.svg
+Person	person_icon.svg
+OP Theme	publication.png
+corporateBody	organization_icon.svg
