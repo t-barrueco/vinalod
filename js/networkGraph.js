@@ -73,17 +73,38 @@ NetworkGraph.prototype.initVis = function () {
   .attr("class", "nodesRect")
 
   if(nodesClassesShow!=undefined){
+    
+    colorCorrespondence={
+    "#6EE7B7":"green-300",
+    "#FCA5A5":"red-300",
+    "#FCD34D":"yellow-300",
+    "#F9A8D4":"pink-300",
+    "#C4B5FD":"purple-300",
+    "#93C5FD":"blue-300",
+    "#D1D5DB":"gray-300",
+    "#10B981":"green-500",
+    "#EF4444":"red-500",
+    "#F59E0B":"yellow-500",
+    "#EC4899":"pink-500",
+    "#8B5CF6":"purple-500",
+    "#3B82F6":"blue-500",
+    "#6B7280":"gray-s500"}
 
     vis.colorScale = d3.scaleOrdinal()
     .domain(nodesClassesShow)
-    .range(d3.schemeCategory20)
+    //.range(d3.schemeCategory20)
+    .range(["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
+    ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"])
+
     colorScale=vis.colorScale
+
+    fillLegend([],false)
 
 /*     vis.legend = vis.g.append("g")
         .attr("class","legendOrdinal")
         .attr("transform", "translate(20,50)") */
 
-    vis.legend = d3.select(".legend").append("svg")
+/*     vis.legend = d3.select(".legend").append("svg")
         .attr("class","legendOrdinal")
         .attr("transform", "translate(0,0)")
         .attr("width", vis.width)
@@ -97,7 +118,7 @@ NetworkGraph.prototype.initVis = function () {
     .scale(vis.colorScale);
 
     vis.legend
-    .call(vis.legendOrdinal);
+    .call(vis.legendOrdinal); */
   }
   
   

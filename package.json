@@ -12,18 +12,18 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": " postcss tailwind.css -o dist/css/styles.css",
-    "watch": "postcss tailwind.css -o dist/css/styles.css --watch"
+    "build": " postcss tailwind.css -o dist/styles.css",
+    "watch": "postcss tailwind.css -o dist/styles.css --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://euritrends@github.com/euritrends/dashboard18.io.git"
+    "url": "git+https://t-barrueco@github.com/t-barrueco/vinalod.io.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/euritrends/dashboard18.io/issues"
+    "url": "https://github.com/t-barrueco/vinalod.io/issues"
   },
-  "homepage": "https://github.com/euritrends/dashboard18.io#readme"
+  "homepage": "https://github.com/t-barrueco/vinalod.io#readme"
 }

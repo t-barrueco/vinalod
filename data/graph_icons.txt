@@ -1,4 +1,0 @@
-ID	FILE
-Directory Organization	organization_icon.svg
-Membership	person_icon.svg
-Person	person_icon.svg

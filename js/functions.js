@@ -236,6 +236,9 @@ function fillDropDown(dataConfig){
 }
 
 function changeBasicGraph(){
+  console.log(d3.select("#legend").selectAll("li"))
+  d3.select("#legend").selectAll("li").remove()
+  d3.selectAll("svg").remove()
   execQueries=[]
   var selectedValue = $("#options_basic").val();
   buildBasicGraph(selectedValue)
@@ -797,22 +800,32 @@ function buildFilter(property,filterType,classFilter,valuesFilter){
   if(d3.select("#"+classFilter).empty()){
     if(d3.select(".controls").select("#"+classFilter).empty()){
       d3.select(".controls").append("div")
-      .attr("class","filter")
+      .attr("class","block px-6 py-3 font-semibold text-gray-700")
+      .append("div")
+      .attr("class","mb-4 filter")
       .attr("id",classFilter)
-      .append("p")
       .append("label")
+      .attr("class","block mb-2 text-lg font-bold text-grey-darker")
       .text(classFilter)
     }
     addFilterType(filterType,valuesFilter,property,classFilter)
   }
 } 
 function addFilterType(filterType,valuesFilter,property,classFilter){
+  console.log(filterType)
+  console.log(valuesFilter)
+  console.log(property)
+  console.log(classFilter)
+
+
   if(filterType=="dropdown"){
     //var values = ["dog", "cat", "parrot", "rabbit"];
     valuesFilter=["All"].concat(valuesFilter)
     var select = document.createElement("select");
     select.name = property;
     select.id = property;
+    select.className="w-full h-10 pl-3 pr-6 text-base border rounded-lg appearance-none focus:shadow-outline"
+    //select.placeholder='Regular input'
    
     select.setAttribute("onchange","selectChange(this)");
     for (const val of valuesFilter) {
@@ -825,6 +838,11 @@ function addFilterType(filterType,valuesFilter,property,classFilter){
     var label = document.createElement("label");
     label.innerHTML = property
     label.htmlFor = property;
+    label.className="block mb-2 text-base text-grey-darker"
+    //.attr("class","block mb-2 text-lg font-bold text-grey-darker")
+    console.log(label)
+    console.log(select)
+    console.log(classFilter)
 
     document.getElementById(classFilter).appendChild(label).appendChild(select);//
   }
@@ -861,4 +879,56 @@ function getTooltipText(d){
           text=text+`<tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
           </table>`;
   return text;
+}
+function fillLegend(dif,addOne){
+  console.log(colorScale.range())
+  console.log(colorScale.domain())
+  
+ 
+  if ((addOne)&(dif.length>0)){
+    //appendLi()
+    appendLi(colorScale.domain().length,dif[0])
+  }else if(!addOne){
+    for (var i = 0; i < colorScale.domain().length; i++) {
+      console.log(colorCorrespondence[colorScale.range()[i]])
+      appendLi(i,colorScale.domain()[i])
+    } 
+  }
+
+  console.log(d3.select("#legend"))
+  
+/*   <li class="flex col-span-1 rounded-md shadow-sm">
+      <div class="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white bg-pink-600 rounded-l-md">
+      </div>
+      <div class="flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-gray-200 rounded-r-md">
+        <div class="flex-1 px-4 py-2 text-sm truncate">
+          <a href="#" class="font-medium text-gray-900 hover:text-gray-600">Graph API</a>
+        </div>
+      </div>
+    </li> */
+}
+function appendLi(i,textLi){
+  var li,classLi;
+  classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
+  li=d3.select("#legend").append("li")
+  .attr("class", "flex col-span-1 rounded-md shadow-sm")
+  li.append("div")
+  .attr("class", classLi+"bg-"+colorCorrespondence[colorScale.range()[i]])
+  li.append("div")
+  .attr("class","flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-gray-200 rounded-r-md")
+  .append("div")
+  .attr("class","flex-1 px-4 py-2 text-sm truncate")
+  .append("a")
+  .attr("class","font-medium text-gray-900 hover:text-gray-600")
+  .append("text")
+  .text(textLi);
+}
+function differenceArrays(a1, a2) {
+  var result = [];
+  for (var i = 0; i < a1.length; i++) {
+    if (a2.indexOf(a1[i]) === -1) {
+      result.push(a1[i]);
+    }
+  }
+  return result;
 }

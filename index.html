@@ -9,6 +9,8 @@
   <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="dist/styles.css">
+
   <!-- D3 Tooltip CSS -->
 <link rel="stylesheet" href="css/d3-tip.css">
 
@@ -23,263 +25,321 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
 </head>
 <body onload="dataViz()">
-<div class="container-fluid">
-<div class="row">
-  <div class="col-lg-12">
-    <div class="filters">
-      <div class="row">
-        <div class="selection col-lg-3">
-          <img src="images/vinalod.png" alt="VINALOD project">
-        </div>
-        <div class="selection col-lg-9">
-        <div class="row">
-          <div class="selection col-lg-4">
+  <!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ]
+  }
+  ```
+-->
+<!--
+  When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars
+
+  Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
+-->
+<!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ]
+  }
+  ```
+-->
+<div class="w-full">
+
+<div class="grid grid-cols-6 grid-rows-3">
+  <nav class="col-span-6 row-span-3 py-6 bg-gray-200 shadow">
+    <div class="px-2 mx-auto max-w-7xl sm:px-4 lg:px-8">
+      <div class="flex w-full h-16">
+        <div class="flex px-2 lg:px-2">
+          <div class="flex items-center flex-shrink-0">
+            <img class="block w-auto h-20" src="images/vinalod.png" alt="VINALOD project">
+
           </div>
-          <div class="selection col-lg-8" id="select-expert"  style="display: block;">
-            <!-- <div class="row">
-              <label for="cars">Select graph:</label>
-              <select name="options_expert" id="options_expert" onchange="changeExpertGraph()">
+          <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
+            <div class="relative inline-block w-full col-auto text-gray-700 selection" id="select-basic">
+              <label class="block text-xl font-bold text-grey-darker">Select graph:</label>
+              <select class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" placeholder="Regular input" name="options_basic" id="options_basic" onchange="changeBasicGraph()">
               </select>
-            </div> -->
-<!--             <div class="row">
-              <button type="button" class="btn btn-primary example" onclick='collapse()' id="collapse">Collapse all</button>
-              <button type="button" class="btn btn-primary example" onclick='expand()'>Expand all</button>
-              <button type="button" class="btn btn-primary example" onclick='labelsOn()'>Labels on</button>
-              <button type="button" class="btn btn-primary example" onclick='labelsOff()'>Labels off</button>
-            </div>
-            <hr>
-            <div class="row">
-              <button type="button" class="btn btn-primary example" onclick='collapse()' id="collapse">Collapse all</button>
-              <button type="button" class="btn btn-primary example" onclick='expand()'>Expand all</button>
-              <button type="button" class="btn btn-primary example" onclick='labelsOn()'>Labels on</button>
-              <button type="button" class="btn btn-primary example" onclick='labelsOff()'>Labels off</button>
-            </div> -->
+              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+              </div>
+            </div> 
+            
           </div>
-          <div class="selection col-lg-8" id="select-basic">
-            <label for="cars">Select graph:</label>
-    
-              <select name="options_basic" id="options_basic" onchange="changeBasicGraph()">
-              </select>
-          </div>
-        </div>
-<!--         <div class="row">
-          <div class="selection col-lg-12">
-            <hr>
-          </div>
-        </div> -->
-        <div class="row" id="collapseButtons">
-          <div class="selection col-lg-4">
-          </div>
-          <div class="selection col-lg-8">
-          <button type="button" class="btn btn-primary example" onclick='collapse()' id="collapse">Collapse all</button>
-          <button type="button" class="btn btn-primary example" onclick='expand()'>Expand all</button>
-          <!-- <label>Navigation mode</label>
-              <input type="radio" id="labelsOn" name="labels" value="labelsOn" onclick=labelsOn()>
-              <label for="labelsOn">Labels On</label>
-              <input type="radio" id="labelsOff" name="labels" value="labelsOff" checked onclick=labelsOff()>
-              <label for="labelsOff">Labels Off</label> -->
-        </div>
-        </div>
-        </div>
-<!--         <div class="row">
-          <button type="button" class="btn btn-primary example" onclick='collapse()' id="collapse">Collapse all</button>
-          <button type="button" class="btn btn-primary example" onclick='expand()'>Expand all</button>
-          <button type="button" class="btn btn-primary example" onclick='labelsOn()'>Labels on</button>
-          <button type="button" class="btn btn-primary example" onclick='labelsOff()'>Labels off</button>
-        </div> -->
-        
-      </div>
-      <!-- <div id="model-tab" style="display: none;">
-        <nav>
-          <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="nav-all_class-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" onclick="changeTab(this);">All classes</button>
-            <button class="nav-link" id="nav-case_law-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onclick="changeTab(this);">Case law</button>
-            <button class="nav-link" id="nav-resource_legal-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onclick="changeTab(this);">Resource legal</button>
-            <button class="nav-link" id="nav-work-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2" type="button" role="tab" aria-controls="nav-contact2" aria-selected="false" onclick="changeTab(this);">Work</button>
-            <button class="nav-link" id="nav-agent-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2" type="button" role="tab" aria-controls="nav-contact2" aria-selected="false" onclick="changeTab(this);">Agent</button>
-            <button class="nav-link" id="nav-institution-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2" type="button" role="tab" aria-controls="nav-contact2" aria-selected="false" onclick="changeTab(this);">Institution</button>
-            <button class="nav-link" id="nav-event_legal-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2" type="button" role="tab" aria-controls="nav-contact2" aria-selected="false" onclick="changeTab(this);">Event legal</button>
-            <button class="nav-link" id="nav-dossier-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2" type="button" role="tab" aria-controls="nav-contact2" aria-selected="false" onclick="changeTab(this);">Dossier</button>
+<!--           <div class="justify-end hidden lg:ml-6 lg:flex lg:space-x-8">
+            <div class="relative z-50 inline-block w-auto text-left">
+              <div>
+                <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-normal text-gray-700 bg-white border-2 border-indigo-500 shadow-sm rounded-3xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                  English (en)
+                  <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+              
 
-          </div>
-        </nav>
-      </div>
-      <div id="euvoc-tab" style="display: none;">
-        <nav>
-          <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="nav-euvoc_at-tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="true" onclick="changeTabEuvoc(this);">Authority tables</button>
-            <button class="nav-link" id="nav-euvoc_at_class-sum-leg-tab" data-bs-toggle="tab" type="button" role="tab" aria-selected="false" onclick="changeTabEuvoc(this);">Summaries of EU legislation classification</button>
-          </div>
-        </nav>
-      </div> -->
-      <!-- <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
-        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
-      </div> -->
-    </div>
-  </div>
-</div>
-<!-- <div class="row" style="background-color: aquamarine;">
-</div> -->
-
-<div class="row">
-  <div class="col-lg-2">
-      <div class="controls">
-        <div class="filter">
-          <p><label>FILTERS</label></p>
-        </div>
-<!--           <div class="filter" id="center">
-            <p><label>Center</label></p>
-            <p>Shifts the view, so the graph is centered at this location.</p>
-            <label>
-              x
-              <output id="center_XSliderOutput">.5</output>
-              <input type="range" min="0" max="1" value=".5" step="0.01" oninput="d3.select('#center_XSliderOutput').text(value); forceCenterX(value);">
-            </label>
-            <label>
-              y
-              <output id="center_YSliderOutput">.4</output>
-              <input type="range" min="0" max="1" value=".4" step="0.01" oninput="d3.select('#center_YSliderOutput').text(value); forceCenterY(value);">
-            </label>
-          </div>
-
-          <div class="filter">
-            <p><label><input type="checkbox" checked onchange="forceChargedChecked(this.checked);"> charge</label> Attracts (+) or repels (-) nodes to/from each other.</p>
-            <label title="Negative strength repels nodes. Positive strength attracts nodes.">
-              strength
-              <output id="charge_StrengthSliderOutput">-200</output>
-              <input type="range" min="-300" max="50" value="-200" step=".1" oninput="d3.select('#charge_StrengthSliderOutput').text(value); forceChargeStrength(value)">
-            </label>
-            <label title="Minimum distance where force is applied">
-              distanceMin
-              <output id="charge_distanceMinSliderOutput">1</output>
-              <input type="range" min="0" max="50" value="1" step=".1" oninput="d3.select('#charge_distanceMinSliderOutput').text(value); forceChargeDistanceMin(value);">
-            </label>
-            <label title="Maximum distance where force is applied">
-              distanceMax
-              <output id="charge_distanceMaxSliderOutput">2000</output>
-              <input type="range" min="0" max="2000" value="2000" step=".1" oninput="d3.select('#charge_distanceMaxSliderOutput').text(value); forceChargeDistanceMax(value);">
-            </label>
-          </div>
-
-          <div class="filter">
-            <p><label><input type="checkbox" checked onchange="forceCollideChecked(this.checked)"> collide</label> Prevents nodes from overlapping</p>
-            <label>
-              strength
-              <output id="collide_StrengthSliderOutput">.7</output>
-              <input type="range" min="0" max="2" value=".7" step=".1" oninput="d3.select('#collide_StrengthSliderOutput').text(value);forceCollideStrength(value)">
-            </label>
-            <label title="Size of nodes">
-              radius
-              <output id="collide_radiusSliderOutput">5</output>
-              <input type="range" min="0" max="100" value="5" step="1" oninput="d3.select('#collide_radiusSliderOutput').text(value); forceCollideRadius(value)">
-            </label>
-            <label title="Higher values increase rigidity of the nodes (WARNING: high values are computationally expensive)">
-              iterations
-              <output id="collide_iterationsSliderOutput">1</output>
-              <input type="range" min="1" max="10" value="1" step="1" oninput="d3.select('#collide_iterationsSliderOutput').text(value); forceCollideIterations(value);">
-            </label>
-          </div>
-
-          <div class="filter">
-            <p><label><input type="checkbox" onchange="forceXChecked(this.checked)" checked> forceX</label> Acts like gravity. Pulls all points towards an X location.</p>
-            <label>
-              strength
-              <output id="forceX_StrengthSliderOutput">.1</output>
-              <input type="range" min="0" max="1" value=".1" step="0.01" oninput="d3.select('#forceX_StrengthSliderOutput').text(value);forceXStrength(value);">
-            </label>
-            <label title="The X location that the force will push the nodes to (NOTE: This demo multiplies by the svg width)">
-              x
-              <output id="forceX_XSliderOutput">.5</output>
-              <input type="range" min="0" max="1" value=".5" step="0.01" oninput="d3.select('#forceX_XSliderOutput').text(value); forceXX(value);">
-            </label>
-          </div>
-
-          <div class="filter">
-            <p><label><input type="checkbox" onchange="forceYChecked(this.checked)" checked> forceY</label> Acts like gravity. Pulls all points towards a Y location.</p>
-            <label>
-              strength
-              <output id="forceY_StrengthSliderOutput">.1</output>
-              <input type="range" min="0" max="1" value=".1" step="0.01" oninput="d3.select('#forceY_StrengthSliderOutput').text(value);forceYStrength(value);">
-            </label>
-            <label title="The Y location that the force will push the nodes to (NOTE: This demo multiplies by the svg height)">
-              y
-              <output id="forceY_YSliderOutput">.5</output>
-              <input type="range" min="0" max="1" value=".5" step="0.01" oninput="d3.select('#forceY_YSliderOutput').text(value); forceYY(value);">
-            </label>
-          </div>
-
-          <div class="filter">
-            <p><label><input type="checkbox" checked onchange="forceLinksChecked(this.checked)"> link</label> Sets link length</p>
-            <label title="The force will push/pull nodes to make links this long">
-              distance
-              <output id="link_DistanceSliderOutput">50</output>
-              <input type="range" min="0" max="100" value="50" step="1" oninput="d3.select('#link_DistanceSliderOutput').text(value); forceLinksDistance(value);">
-            </label>
-            <label title="Higher values increase rigidity of the links (WARNING: high values are computationally expensive)">
-              iterations
-              <output id="link_IterationsSliderOutput">1</output>
-              <input type="range" min="1" max="10" value="1" step="1" oninput="d3.select('#link_IterationsSliderOutput').text(value); forceLinksIterations(value);">
-            </label>
+              
+              <div class="absolute right-0 w-full origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="py-1" role="none">
+                  <a href="#" class="z-50 block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0">Български (bg)</a>
+                  <a href="#" class="z-50 block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-1">čeština (cs)</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-2">dansk (da)</a>
+              
+              </div>
+              </div>
+              </div>  
+            
           </div> -->
-      </div>
-  </div>
-  <div class="col-lg-10" id="networkGraph" style="height: 1800px;width: 800px;">
-    <!-- <svg></svg> -->
-    <form>
-      <button name="in" type="button" onclick='zoomIn()'>Zoom In</button>
-      <button name="out" type="button" onclick='zoomOut()'>Zoom Out</button>
-<!--       <button name="random" type="button">Random</button>
-      <button name="reset" type="button">Reset</button> -->
-    </form>
-    <div class="legend"></div>
-  </div>
+        </div>
 
-  <script type="text/javascript" src="https://op.europa.eu/o/opportal-widgets/js/widget/widgetload.js"></script>
-  <script type="application/json">
-  {"portalURL":"https://op.europa.eu","uuid":"portal2012ac1ecc7587024827adf2ac1fd34af3f7","widgetType":"3","cellarId":"571ed14b-6789-11eb-aeb5-01aa75ed71a1"}
-  </script>
-  <!-- The Modal -->
-  <!-- Trigger/Open The Modal -->
-  <!-- <button id="myBtn">Open Modal</button> -->
-  <div id="myModal" class="modal">
-    
-    <!-- Modal content -->
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div class="modal-header" id="modalHeader2"></div>
-      <div class="modal-header" id="modalHeader"></div>
-      <div id="dvTable" style="overflow: auto">
+
+
       </div>
     </div>
+  
 
-  </div>
-  <div id="myModal2" class="modal2">
-    
-    <!-- Modal content -->
-    <div class="modal-content2">
-      <span class="close2">&times;</span>
-      <div class="modal-header2" id="modalHeader2"><b>Timeline</b></div>
-      <div id="timelineGraph" style="overflow: auto">
-      </div>
-    </div>
-    
-  </div>
-  <!-- <div id="myModal3" class="modal3">
-    
-    <div class="modal-content3">
-      <span class="close3">&times;</span>
-      <div class="modal-header3" id="modalHeader3"><b>Wikipedia</b></div>
-      <div style="overflow: auto">
-        <iframe src="http://g.co/kg/g/11h1sww3m" name="myFrame"></iframe>
-      </div>
-    </div>
-    
-  </div> -->
+  </nav>
+ 
+  <div class="row-span-3 bg-gray-100 border-r-2">
+    <div class="filter justify-items-center">
+      <div class="w-64 border-r rounded-l-md justify-items-center controls">
+        <div class="grid divide-y divide-gray-200 justify-items-center">
+            <div class="block px-12 py-3 font-semibold text-gray-700">
+                <button type="button" @click="open = !open" class="flex items-center px-3 py-1 font-medium text-gray-700 border rounded"> 
+                  <div class="flex items-center">
+                    <span class="text-2xl font-semibold text-gray-800 dark:text-white">Filters</span>
+                  </div>
+                </button>
+            </div>
 
+
+          </div>
+          <div class="block px-6 py-3 font-semibold text-gray-700">
+            <div class="mb-4">
+              <label class="block mb-2 text-lg font-bold text-grey-darker">Name:</label>
+              <input class="w-full px-3 py-2 border rounded text-grey-darker" type="text"
+                  name="student_id" id="student_id" value="" placeholder="Enter Name">
+          
+            </div>
+            <divclass="block px-6 py-3 font-semibold text-gray-700">
+              <div class="mb-4">
+                <label class="block mb-2 text-lg font-bold text-grey-darker">Start Date:</label>
+                <input class="w-full px-3 py-2 border rounded text-grey-darker" type="date"
+                    name="addmission_date" id="addmission_date" value="">
+                <p id=error_intake_year></p>
+            </div>
+            </div>
+            
+            <div class="block px-6 py-3 font-semibold text-gray-700">
+              <div class="mb-4">
+                <label class="block mb-2 text-lg font-bold text-grey-darker">End Date:</label>
+                <input class="w-full px-3 py-2 border rounded text-grey-darker" type="date"
+                    name="addmission_date" id="addmission_date" value="">
+                <p id=error_intake_year></p>
+            </div>                </div>
+            <div class="block px-6 py-3 font-semibold text-gray-700">
+              <div class="mb-4">
+                <label class="block mb-2 text-lg font-bold text-grey-darker">Number:</label>
+                <input class="w-full px-3 py-2 border rounded text-grey-darker" type="text"
+                    name="student_id" id="student_id" value="" placeholder="Enter Number">
+         
+              </div>
+            </div>
+            <div class="block px-6 py-3 font-semibold text-red-700">
+                <label for="custom-input-number" class="w-full text-lg font-semibold text-gray-700">Number
+                </label>
+                <div class="relative flex flex-row w-full h-10 mt-1 bg-transparent rounded-lg">
+                  <button data-action="decrement" class="w-20 h-full text-gray-600 bg-gray-300 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-400">
+                    <span class="m-auto text-2xl font-thin">−</span>
+                  </button>
+                  <input type="number" class="flex items-center w-full font-semibold text-center text-gray-700 bg-gray-300 outline-none focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default" name="custom-input-number" value="0"></input>
+                <button data-action="increment" class="w-20 h-full text-gray-600 bg-gray-300 rounded-r cursor-pointer hover:text-gray-700 hover:bg-gray-400">
+                  <span class="m-auto text-2xl font-thin">+</span>
+                </button>
+              </div>
+            </div>
+<!--             <div class="z-50 block w-full px-6 py-3 font-semibold text-red-700 justify-items-center">
+            <div class="relative z-50 inline-block w-full text-left">
+              <div>
+                <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                  Options
+                  <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            
+            
+              <div class="absolute right-0 w-full origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="py-1" role="none">
+                  <a href="#" class="z-50 block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+                  <a href="#" class="z-50 block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+                  <form method="POST" action="#" role="none">
+                    <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700" role="menuitem" tabindex="-1" id="menu-item-3">
+                      Sign out
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+              </div> -->
+<!--             <div class="block px-6 py-3 font-semibold text-gray-700 h-36">
+              <label for="custom-input-number" class="w-full py-6 text-lg font-semibold text-gray-700">Values between numbers
+              </label> -->
+            <!-- <div class="z-0 flex items-center justify-center py-8">
+              <div x-data="range()" x-init="mintrigger(); maxtrigger()" class="relative w-full max-w-xl">
+                <div>
+                  <input type="range"
+                         step="100"
+                         x-bind:min="min" x-bind:max="max"
+                         x-on:input="mintrigger"
+                         x-model="minprice"
+                         class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+            
+                  <input type="range" 
+                         step="100"
+                         x-bind:min="min" x-bind:max="max"
+                         x-on:input="maxtrigger"
+                         x-model="maxprice"
+                         class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+            
+                  <div class="relative z-10 h-2">
+            
+                    <div class="absolute top-0 bottom-0 left-0 right-0 z-10 bg-gray-200 rounded-md"></div>
+            
+                    <div class="absolute top-0 bottom-0 z-20 bg-green-300 rounded-md" x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'"></div>
+            
+                    <div class="absolute top-0 left-0 z-30 w-6 h-6 -mt-2 -ml-1 bg-green-300 rounded-full" x-bind:style="'left: '+minthumb+'%'"></div>
+            
+                    <div class="absolute top-0 right-0 z-30 w-6 h-6 -mt-2 -mr-3 bg-green-300 rounded-full" x-bind:style="'right: '+maxthumb+'%'"></div>
+             
+                  </div>
+            
+                </div>
+                
+                <div class="flex items-center justify-between py-5">
+                  <div>
+                    <input type="text" maxlength="5" x-on:input="mintrigger" x-model="minprice" class="w-24 px-3 py-2 text-center border border-gray-200 rounded">
+                  </div>
+                  <div>
+                    <input type="text" maxlength="5" x-on:input="maxtrigger" x-model="maxprice" class="w-24 px-3 py-2 text-center border border-gray-200 rounded">
+                  </div>
+                </div>
+                
+              </div>
+            </div> -->
+<!--             </div>
+ --><!--             <div class="block px-6 py-3 font-semibold text-gray-700">
+              <button type="submit" class="flex p-4 my-5 font-semibold tracking-wide text-gray-900 transition duration-300 ease-in bg-indigo-300 rounded-full shadow-lg cursor-pointer justify-items-center focus:outline-none focus:shadow-outline hover:bg-indigo-400">
+                Apply filter
+            </button>
+            </div> -->
+            
+        </div>
+    </div>
+  </div>
+  <div class="col-span-5 row-span-3 bg-white">
+    
+    <div class="w-full h-full" id="networkGraph">
+      <!-- <svg></svg> -->
+      <!-- This example requires Tailwind CSS v2.0+ -->
+
+      <div class="bg-gray-100">
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <div class="mx-10 bg-gray-100">
+          <h2 class="text-xs font-medium tracking-wide text-gray-500 uppercase">legend</h2>
+          <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
+            
+          </ul>
+        </div>
+        <div class="flex border-b-2">
+          <!-- This example requires Tailwind CSS v2.0+ -->
+            <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
+              <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                <span>Zoom In</span>
+                <!-- Heroicon name: solid/chevron-left -->
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+              <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                <span>Zoom Out</span>
+                <!-- Heroicon name: solid/chevron-right -->
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </span>
+        
+            <span class="relative z-0 inline-flex w-1/2 my-10 rounded-md md:justify-center">
+              <button type="button" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-indigo-300 border border-gray-300 rounded-l-md hover:bg-indigo-400 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" onclick='collapse()' id="collapse">
+                Collapse all
+              </button>
+              <button type="button" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-indigo-300 border border-gray-300 hover:bg-indigo-400 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" onclick='expand()'>
+                Expand all
+              </button>
+      
+            </span>
+        </div>
+      </div>
+      <!-- <div class="legend"></div> -->
+    </div>
+  </div>
 </div>
-<!-- </div> -->
+<script type="text/javascript" src="https://op.europa.eu/o/opportal-widgets/js/widget/widgetload.js"></script>
+    <script type="application/json">
+    {"portalURL":"https://op.europa.eu","uuid":"portal2012ac1ecc7587024827adf2ac1fd34af3f7","widgetType":"3","cellarId":"571ed14b-6789-11eb-aeb5-01aa75ed71a1"}
+    </script>
+    <!-- The Modal -->
+    <!-- Trigger/Open The Modal -->
+    <!-- <button id="myBtn">Open Modal</button> -->
+    <div id="myModal" class="modal">
+      
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header" id="modalHeader2"></div>
+        <div class="modal-header" id="modalHeader"></div>
+        <div id="dvTable" style="overflow: auto">
+        </div>
+      </div>
+  
+    </div>
+    <div id="myModal2" class="modal2">
+      
+      <!-- Modal content -->
+      <div class="modal-content2">
+        <span class="close2">&times;</span>
+        <div class="modal-header2" id="modalHeader2"><b>Timeline</b></div>
+        <div id="timelineGraph" style="overflow: auto">
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+
+  
+
 <!-- <div id="networkGraph"></div> -->
 
 

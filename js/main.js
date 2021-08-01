@@ -1,5 +1,5 @@
 
-var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,nodesSel=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,filesIcons,zoomScale=1,zoomY=0,zoomX=0;
+var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,nodesSel=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={};
 
   function dataViz(){
     var rowDataConfig;
@@ -515,9 +515,13 @@ async function buildBasicGraph(rowDataConfig,node){
       networkGraph = new NetworkGraph("#networkGraph", data,forces);
       collapse()
     }else{
-      ////////////////////////////////////////////////console.log(nodesClassesShow)
-      networkGraph.colorScale.domain(nodesClassesShow)
-      networkGraph.legendOrdinal
+      console.log(nodesClassesShow)
+      console.log(colorScale.domain())
+      var dif=differenceArrays(nodesClassesShow,colorScale.domain())
+      console.log(dif)
+      fillLegend(dif,true)
+/*       networkGraph.colorScale.domain(nodesClassesShow)
+ *//*       networkGraph.legendOrdinal
       .scale(networkGraph.colorScale);
 
       networkGraph.legend
@@ -532,7 +536,7 @@ async function buildBasicGraph(rowDataConfig,node){
         legendElements.forEach(function(d,i){
           d.setAttribute("transform", "translate("+legendElPosition[i]+",70)")
         })
-      }
+      } */
       
       
       networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
