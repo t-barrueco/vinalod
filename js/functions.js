@@ -223,6 +223,7 @@ function getTooltip(elClass){
 }
 function fillDropDown(dataConfig){
   var select = document.getElementById("options_basic"); 
+  console.log(dataConfig)
   for(var i = 0; i < dataConfig.length; i++) {
     if(!dataConfig[i]["QUERY"].includes("PARAMETER")){
       var opt = dataConfig[i].OPTION_TEXT;
@@ -681,6 +682,8 @@ async function checkAskResults(indexRows,node){
       if(parameters!=""){
         parameters=parameters.split(";")
         for (j = 0; j < parameters.length; ++j) { 
+          console.log(node)
+          console.log(node[parameters[j]])
           sparqlQuery=sparqlQuery.replace("PARAMETER"+(j+2).toString(), node[parameters[j]]);
         }  
         if(node["class"]=="corporateBody"){
