@@ -3,7 +3,7 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
 
   function dataViz(){
     var rowDataConfig;
-          d3.tsv("txt/config_basicMode.txt",function(dataConfig){
+          d3.tsv("config_vinalod/config_basicMode.txt",function(dataConfig){
             d3.tsv("txt/graph_icons.txt",function(dataIcons){
               filesIcons=dataIcons;
               rowDataConfig=fillDropDown(dataConfig)
