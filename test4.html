@@ -1,0 +1,85 @@
+<!-- component -->
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<style>
+  input[type=range]::-webkit-slider-thumb {
+	pointer-events: all;
+	width: 24px;
+	height: 24px;
+	-webkit-appearance: none;
+  /* @apply w-6 h-6 appearance-none pointer-events-auto; */
+  }
+</style> 
+<link rel="stylesheet" href="dist/styles.css">
+
+</head>
+<body>
+<div class="flex items-center justify-center h-screen">
+  <div x-data="range()" x-init="mintrigger(); maxtrigger()" class="relative w-full max-w-xl">
+    <div>
+      <input type="range"
+             step="100"
+             x-bind:min="min" x-bind:max="max"
+             x-on:input="mintrigger"
+             x-model="minprice"
+             class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+
+      <input type="range" 
+             step="100"
+             x-bind:min="min" x-bind:max="max"
+             x-on:input="maxtrigger"
+             x-model="maxprice"
+             class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+
+      <div class="relative z-10 h-2">
+
+        <div class="absolute top-0 bottom-0 left-0 right-0 z-10 bg-gray-200 rounded-md"></div>
+
+        <div class="absolute top-0 bottom-0 z-20 bg-green-300 rounded-md" x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'"></div>
+
+        <div class="absolute top-0 left-0 z-30 w-6 h-6 -mt-2 -ml-1 bg-green-300 rounded-full" x-bind:style="'left: '+minthumb+'%'"></div>
+
+        <div class="absolute top-0 right-0 z-30 w-6 h-6 -mt-2 -mr-3 bg-green-300 rounded-full" x-bind:style="'right: '+maxthumb+'%'"></div>
+ 
+      </div>
+
+    </div>
+    
+    <div class="flex items-center justify-between py-5">
+      <div>
+        <input type="text" maxlength="5" x-on:input="mintrigger" x-model="minprice" class="w-24 px-3 py-2 text-center border border-gray-200 rounded">
+      </div>
+      <div>
+        <input type="text" maxlength="5" x-on:input="maxtrigger" x-model="maxprice" class="w-24 px-3 py-2 text-center border border-gray-200 rounded">
+      </div>
+    </div>
+    
+  </div>
+
+<script>
+    function range() {
+        return {
+          minprice: 1000, 
+          maxprice: 7000,
+          min: 100, 
+          max: 10000,
+          minthumb: 0,
+          maxthumb: 0, 
+          
+          mintrigger() {   
+            this.minprice = Math.min(this.minprice, this.maxprice - 500);      
+            this.minthumb = ((this.minprice - this.min) / (this.max - this.min)) * 100;
+          },
+           
+          maxtrigger() {
+            this.maxprice = Math.max(this.maxprice, this.minprice + 500); 
+            this.maxthumb = 100 - (((this.maxprice - this.min) / (this.max - this.min)) * 100);    
+          }, 
+        }
+    }
+</script>
+</div>
+</body>
+</html>

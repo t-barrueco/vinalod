@@ -1,0 +1,145 @@
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+  <style>
+    .kge-search-picker {
+      width: 500;
+    }
+  </style>
+  <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="dist/styles.css">
+
+  <!-- D3 Tooltip CSS -->
+<link rel="stylesheet" href="css/d3-tip.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://d3js.org/d3-color.v2.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="jslib/d3-tip.js"></script>
+
+<script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
+</head>
+<body>
+<div class="py-3" id="OP_Theme_Main">
+    <label for="Publication date selection" class="block mb-2 text-base font-light text-indigo-600">Publication date selection</label>
+    <div class="relative">
+        <select name="OP Theme Main_Publication date_dates_selection" id="OP_Theme_Main_Publication_date_dates_selection" class="w-full h-10 pl-3 pr-6 text-base border rounded-lg appearance-none focus:shadow-outline">
+            <option value="date later than">Date later than</option>
+            <option value="date earlier than">Date earlier than</option>
+            <option value="between dates">Between dates</option>
+        </select>
+    </div>
+    <label for="Publication date" class="block mb-2 text-base font-light text-indigo-600">Publication date</label>
+    <div class="relative">
+            <input name="OP Theme Main_Publication date" id="OP_Theme_Main_Publication_date" type="date" class="block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm&quot; type=&quot;date&quot;">
+    </div>
+    <label for="Publication number" id="Publication_number" class="block mb-2 text-base font-light text-indigo-600">Publication number</label>
+    <div class="flex items-center justify-center w-64 h-32 m-auto">
+        <div class="relative min-w-full py-1">
+            <div id="OP_Theme_Main_Publication_number" class="h-2 bg-gray-200 rounded-full">
+                <div class="absolute w-0 h-2 bg-indigo-400 rounded-full" style="width: 24.1935%; left: 11.2903%;">
+                </div>
+                <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" style="left: 11.2903%;">
+                    <div class="relative w-1 -mt-2">
+                        <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" unselectable="on" onselectstart="return false;" style="margin-left: -25px;">
+                            <div class="relative shadow-md">
+                                <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">15</div>
+                                <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="100px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                    <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="flex items-center justify-center w-64 h-32 m-auto">
+    <div class="relative min-w-full py-1">
+        <div class="h-2 bg-gray-200 rounded-full">
+            <div class="absolute w-0 h-2 bg-indigo-400 rounded-full" style="width: 24.1935%; left: 11.2903%;"></div>
+            <input type="range" step="100" x-bind:min="min" x-bind:max="max" x-on:input="mintrigger" x-model="minprice" class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+            <input type="range" 
+             step="100"
+             x-bind:min="min" x-bind:max="max"
+             x-on:input="maxtrigger"
+             x-model="maxprice"
+             class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+            <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" unselectable="on" onselectstart="return false;" style="left: 11.2903%;">
+            <!-- <input type="range" class="absolute flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 shadow cursor-pointer -top-2 range" style="left: 11.2903%;">
+ --><!--     <input type="range"
+    step="100"
+    x-bind:min="min" x-bind:max="max"
+    x-on:input="mintrigger"
+    x-model="minprice"
+    class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none"> -->
+                <div class="relative w-1 -mt-2">
+                    <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" style="margin-left: -25px;">
+                        <div class="relative shadow-md">
+                            <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">15</div>
+                            <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="100px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" unselectable="on" onselectstart="return false;" style="left: 35.4839%;">
+            
+             
+                   <div class="relative w-1 -mt-2">
+                    <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" style="margin-left: -25px;">
+                        <div class="relative shadow-md">
+                            <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">30</div>
+                            <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--             <div class="absolute bottom-0 left-0 -mb-6 -ml-1 text-gray-800">8</div>
+            <div class="absolute bottom-0 right-0 -mb-6 -mr-1 text-gray-800">70</div> -->
+        </div>
+    </div>
+    <div class="flex items-center justify-center w-64 h-32 m-auto">
+        <div class="relative min-w-full py-1">
+            <div class="h-2 bg-gray-200 rounded-full">
+                <div class="absolute w-0 h-2 bg-indigo-400 rounded-full" style="width: 24.1935%; left: 11.2903%;"></div>
+                <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" unselectable="on" onselectstart="return false;" style="left: 11.2903%;">
+                <div class="relative w-1 -mt-2">
+                        <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" style="margin-left: -25px;">
+                            <div class="relative shadow-md">
+                                <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">15</div>
+                                <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="100px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                    <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" unselectable="on" onselectstart="return false;" style="left: 35.4839%;">
+                    <div class="relative w-1 -mt-2">
+                        <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" style="margin-left: -25px;">
+                            <div class="relative shadow-md">
+                                <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">30</div>
+                                <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                    <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <!--             <div class="absolute bottom-0 left-0 -mb-6 -ml-1 text-gray-800">8</div>
+                <div class="absolute bottom-0 right-0 -mb-6 -mr-1 text-gray-800">70</div> -->
+            </div>
+        </div>
+</div>
+</body>
+</html>

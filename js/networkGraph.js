@@ -30,11 +30,12 @@ NetworkGraph.prototype.initVis = function () {
     vis.data=vis.data.flatData
   }
 
-  ////////////////////////////////////////////console.log(vis.data)
+  //////////////////////////////////////////////////////////console.log(vis.data)
   vis.width = +d3.select(this.parentElement).node().getBoundingClientRect().width;
   vis.height = +d3.select(this.parentElement).node().getBoundingClientRect().height;
-
+  vis.height=800
   vis.svg = d3.select(this.parentElement).append("svg")
+  //.attr("xmlns","http://www.w3.org/2000/svg")
   .attr("class", "graph")
   .attr("width", vis.width)
   .attr("height", vis.height)
@@ -90,12 +91,22 @@ NetworkGraph.prototype.initVis = function () {
     "#3B82F6":"blue-500",
     "#6B7280":"gray-s500"}
 
+    vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
+    ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
+
+    ////////console.log("pasa por init")
     vis.colorScale = d3.scaleOrdinal()
     .domain(nodesClassesShow)
     //.range(d3.schemeCategory20)
-    .range(["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
-    ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"])
+    .range(vis.colors.slice(0,nodesClassesShow.length))
+    ////////console.log(vis.colorScale.domain())
+    ////////console.log(vis.colorScale.range())
 
+    //////////console.log(nodesClassesShow.length)
+    //////////console.log(vis.colors.slice(0,2))
+
+    //////////console.log(vis.colors.slice(0,nodesClassesShow.length))
+    //////////console.log(vis.colorScale.range())
     colorScale=vis.colorScale
 
     fillLegend([],false)
@@ -125,7 +136,7 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.simulation = d3.forceSimulation();
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.forces.center.y)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.forces.center.y)
   vis.forceProperties = {
     center: {
         x: vis.forces.center.x,
@@ -160,7 +171,7 @@ NetworkGraph.prototype.initVis = function () {
     }
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
   vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
     vis.sizeNode = d3.scaleLinear()
     //.domain([0,vis.maxSizeNode])  // What's in the data
@@ -186,7 +197,7 @@ NetworkGraph.prototype.zoomIn = function () {
                   zoomY=d3.event.transform.y
                   zoomX=d3.event.transform.x
             });
-    ////////////////////////////////////////console.log(d3.select('rect.zoom'))
+    //////////////////////////////////////////////////////console.log(d3.select('rect.zoom'))
     zoom.scaleBy(vis.g.transition().duration(750), 1.3);
     
     //d3.select('rect.zoom').call(zoom.scaleBy, 2)
@@ -204,7 +215,7 @@ NetworkGraph.prototype.zoomOut = function () {
                   zoomY=d3.event.transform.y
                   zoomX=d3.event.transform.x
             });
-    ////////////////////////////////////////console.log(d3.select('rect.zoom'))
+    //////////////////////////////////////////////////////console.log(d3.select('rect.zoom'))
     zoom.scaleBy(vis.g.transition().duration(750), 1 / 1.3);
     //d3.select('rect.zoom').call(zoom.scaleBy, 2)
 }
@@ -287,12 +298,12 @@ NetworkGraph.prototype.updateForces= function() {
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
   var vis = this,linkId,classElement;
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
   vis.tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-25,0])
   .html(function (d) {
-      //////////////////////console.log(d)
+      ////////////////////////////////////console.log(d)
       var text=getTooltipText(d)
     return text;
   });
@@ -386,7 +397,10 @@ NetworkGraph.prototype.enterGraph = function(){
 
     
   ]; */
+  vis.colorScale.range(vis.colors.slice(0,nodesClassesShow.length))
 
+  colorScale=vis.colorScale
+  
   vis.isDblclick = false;
 
   vis.timeoutTiming = 500;
@@ -411,10 +425,15 @@ NetworkGraph.prototype.enterGraph = function(){
     return (d.id+"_g")
   })
 
+  
   vis.nodeCircleCircle=vis.nodeCircle
       .append("circle")
-      .attr("class", "nodeCircleCircle")
+      .attr("class",function(d){
+        ////////////console.log(d)
+        return d.class + " nodeCircleCircle"
+      }) 
       .attr("origId",function(d){
+        ////////////console.log(d)
         return d.value
       })
       .attr("id",function(d){
@@ -454,6 +473,9 @@ NetworkGraph.prototype.enterGraph = function(){
             return "#a3cbe2"
           }
         }else{
+          ////////console.log(vis.colorScale.domain())
+          ////////console.log(vis.colorScale.range())
+          ////////console.log(nodesClassesCorrespondence[d.class])
          return vis.colorScale(nodesClassesCorrespondence[d.class]);
         }
         
@@ -494,7 +516,7 @@ NetworkGraph.prototype.enterGraph = function(){
       })
       .on('contextmenu', (d) => {
         d3.event.preventDefault();
-        ////////////console.log(d)
+        //////////////////////////console.log(d)
         vis.menuItems=getMenuItemsContextMenu(d,"bubble")
         createContextMenu(d, vis.menuItems, 100, 100, vis.g);
       })
@@ -549,9 +571,9 @@ NetworkGraph.prototype.enterGraph = function(){
         d3.select("#"+(this.getAttribute("id").replace("_image","")))
         .transition()
         .attr("r", function(d) { 
-          console.log(vis.sizeNode.domain())
-          console.log(vis.sizeNode.range())
-          console.log( vis.sizeNode(d.number))
+          //////////////console.log(vis.sizeNode.domain())
+          //////////////console.log(vis.sizeNode.range())
+          //////////////console.log( vis.sizeNode(d.number))
           return vis.sizeNode(d.number);})
         d3.select("#"+this.getAttribute("id"))
         .transition()
@@ -581,9 +603,9 @@ NetworkGraph.prototype.enterGraph = function(){
       })
       .on('contextmenu', (d) => {
         d3.event.preventDefault();
-        ////////////console.log(d)
+        //////////////////////////console.log(d)
         getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
-        //////////////console.log(vis.menuItems)
+        ////////////////////////////console.log(vis.menuItems)
         //createContextMenu(d, vis.menuItems, 100, 100, vis.g);
       })
 
@@ -609,7 +631,7 @@ NetworkGraph.prototype.enterGraph = function(){
       d.fy = null;
     }
     function createContextMenu (d, menuItems, width, height, svgId) {
-      ////////////console.log(menuItems)
+      //////////////////////////console.log(menuItems)
       vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
       d3.event.preventDefault();
     }
@@ -618,9 +640,9 @@ NetworkGraph.prototype.enterGraph = function(){
 NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin){
 
   var vis=this
-  //////////////////////////////////////////////////console.log(x)
-  //////////////////////////////////////////////////console.log(y)
-  ////////////console.log(menuItems)
+  ////////////////////////////////////////////////////////////////console.log(x)
+  ////////////////////////////////////////////////////////////////console.log(y)
+  //////////////////////////console.log(menuItems)
   d3.select(".contextMenu").remove();
   // Draw the menu
   vis.g
@@ -640,8 +662,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin){
       .attr('width', 250)
       .attr('height', 30)
       .on('click', (d) => { 
-        ////////////console.log(d)
-        ////////////console.log(origin)
+        //////////////////////////console.log(d)
+        //////////////////////////console.log(origin)
         if (origin=="contextMenu"){
           d.action(data,d)
         }else{
@@ -652,7 +674,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin){
   d3.selectAll(".menuEntry")
       .append('text')
       .text((d) => { 
-        ////////////console.log(d)
+        //////////////////////////console.log(d)
         return d.title; })
       .attr('x', x)
       .attr('y', (d, i) => { return y + (i * 30); })
@@ -676,7 +698,7 @@ NetworkGraph.prototype.exitGraph = function(){
 NetworkGraph.prototype.wrangleData = async function (node,origin) {
   var vis = this;
   var children,pageX,pageY,founded,indexRows=1
-  ////////////////console.log("wrangleData")
+  //////////////////////////////console.log("wrangleData")
   //Node always exist because we call wrangleData when clicking a bubble or clicking the table with the labels
   //Look for the data from the element by looking at the data in the treeData
   //If it exists there will be children for the node
@@ -736,11 +758,11 @@ NetworkGraph.prototype.wrangleData = async function (node,origin) {
 NetworkGraph.prototype.collapseAll = function () {
   var vis = this;
   var children;
-  //console.log(d3.selectAll('[root="1"]'))
-  //console.log(vis.treeData)
+  ////////////////console.log(d3.selectAll('[root="1"]'))
+  ////////////////console.log(vis.treeData)
   //children=d3.select('[root="1"]').data()[0]["children"]
-  //console.log(children)
-  //console.log(vis.data.nodes[0]["children"])
+  ////////////////console.log(children)
+  ////////////////console.log(vis.data.nodes[0]["children"])
   children=vis.data.nodes[0]["children"]
   children.forEach(function(d){
       vis.collapseBranch(d)
@@ -783,11 +805,11 @@ NetworkGraph.prototype.collapseBranch = function (node){
     if (nodes.includes(vis.treeData[i]["id"])){
       vis.treeData[i]._children = vis.treeData[i].children;
       delete vis.treeData[i].children;
-      //////////////////////////////////////console.log(vis.treeData[i]["id"])
-      //////////////////////////////////////console.log(node.id)
+      ////////////////////////////////////////////////////console.log(vis.treeData[i]["id"])
+      ////////////////////////////////////////////////////console.log(node.id)
       if(vis.treeData[i]["id"]!=node.id){
         vis.treeData[i]["hidden"]=true
-        //////////////////////////////////////console.log(vis.treeData[i])
+        ////////////////////////////////////////////////////console.log(vis.treeData[i])
       }
     }
   }
@@ -868,20 +890,20 @@ NetworkGraph.prototype.expandLevelBranch = function (node){
 NetworkGraph.prototype.applyFilter = function (values,property){
   var vis = this;
   //var treeData=[]
-  //////////////////////////console.log(values)
-  //////////////////////////////////////console.log(property)
-  //////////////////////////////console.log(vis.treeData)
+  ////////////////////////////////////////console.log(values)
+  ////////////////////////////////////////////////////console.log(property)
+  ////////////////////////////////////////////console.log(vis.treeData)
   vis.treeData.forEach(function(d){
-    //////////////////////////////console.log(d)
+    ////////////////////////////////////////////console.log(d)
     if(d[property]!=undefined){
-      ////////////////////////////console.log(d[property])
+      //////////////////////////////////////////console.log(d[property])
       if(values.includes("All")){
         if(d["hidden"]){
-          ////////////////////////////console.log(v)
+          //////////////////////////////////////////console.log(v)
           delete d.hidden
         }
       }else if(!values.includes(d[property])){
-          ////////////////////////////console.log(v)
+          //////////////////////////////////////////console.log(v)
           d["hidden"]=true
       }else{
           delete d.hidden
@@ -889,26 +911,26 @@ NetworkGraph.prototype.applyFilter = function (values,property){
     }
     if(d.children!=undefined){
       d.children.forEach(function(v){
-        //////////////////////////////console.log(v)
+        ////////////////////////////////////////////console.log(v)
         if(d["hidden"]==true){
           v["hidden"]=true
         }else{
           if(v[property]!=undefined){
-            ////////////////////////////console.log(v[property])
+            //////////////////////////////////////////console.log(v[property])
             if(values.includes("All")){
               if(v["hidden"]){
-                ////////////////////////////console.log(v)
+                //////////////////////////////////////////console.log(v)
                 delete v.hidden
               }
             }else if(!values.includes(v[property])){
-                ////////////////////////////console.log(v)
+                //////////////////////////////////////////console.log(v)
                 v["hidden"]=true
             }else{
                 delete v.hidden
             }
           }else{
             if(v["hidden"]){
-              ////////////////////////////console.log(v)
+              //////////////////////////////////////////console.log(v)
               delete v.hidden
             }
           }
@@ -916,12 +938,12 @@ NetworkGraph.prototype.applyFilter = function (values,property){
         
       })
     }
-    //////////////////////////////////////console.log(d[property])
+    ////////////////////////////////////////////////////console.log(d[property])
     
   })
-  //////////////////////////console.log(vis.treeData)
+  ////////////////////////////////////////console.log(vis.treeData)
   vis.data=flatten(vis.treeData).flatData
-  //////////////////////////console.log(vis.data)
+  ////////////////////////////////////////console.log(vis.data)
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.enterGraph()

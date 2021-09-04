@@ -1,0 +1,60 @@
+<div class="relative w-full max-w-xl" x-data="range()" x-init="mintrigger(); maxtrigger()">
+<div>
+<input class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none" type="range" step="100" x-bind:min="min" x-bind:max="max" x-on:input="mintrigger" x-model="minprice" min="100" max="10000">
+<input class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none" type="range" step="100" x-bind:min="min" x-bind:max="max" x-on:input="maxtrigger" x-model="minprice" min="100" max="10000">
+<div class="relative z-10 h-2">
+<div class="absolute top-0 bottom-0 left-0 right-0 z-10 bg-gray-200 rounded-md">
+<div class="absolute top-0 bottom-0 z-20 bg-indigo-400 rounded-full" x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'" style="right:-38287.878787878784%; left:9.090909090909092%">
+</div>
+</div>
+<div class="absolute z-30 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer -top-1" x-bind:style="'left: '+minthumb+'%'" style="left: 9.090909090909092%">
+<div class="absolute z-30 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer -top-1" x-bind:style="'right: '+maxthumb+'%'" style="right: -38287.878787878784%">
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-5">
+</div>
+</div>
+
+<div class="flex items-center justify-center h-screen">
+  <div x-data="range()" x-init="mintrigger(); maxtrigger()" class="relative w-full max-w-xl">
+    <div>
+      <input type="range"
+             step="100"
+             x-bind:min="min" x-bind:max="max"
+             x-on:input="mintrigger"
+             x-model="minprice"
+             class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+
+      <input type="range" 
+             step="100"
+             x-bind:min="min" x-bind:max="max"
+             x-on:input="maxtrigger"
+             x-model="maxprice"
+             class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+
+      <div class="relative z-10 h-2">
+
+        <div class="absolute top-0 bottom-0 left-0 right-0 z-10 bg-gray-200 rounded-md"></div>
+
+        <div class="absolute top-0 bottom-0 z-20 bg-indigo-400 rounded-full" x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'"></div>
+
+        <div class="absolute z-30 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer -top-1" x-bind:style="'left: '+minthumb+'%'"></div>
+
+        <div class="absolute z-30 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer -top-1" x-bind:style="'right: '+maxthumb+'%'"></div>
+ 
+      </div>
+
+    </div>
+    
+    <div class="flex items-center justify-between py-5">
+      <div>
+        <input type="text" maxlength="5" x-on:input="mintrigger" x-model="minprice" class="w-24 px-3 py-2 text-center border border-gray-200 rounded">
+      </div>
+      <div>
+        <input type="text" maxlength="5" x-on:input="maxtrigger" x-model="maxprice" class="w-24 px-3 py-2 text-center border border-gray-200 rounded">
+      </div>
+    </div>
+    
+  </div>

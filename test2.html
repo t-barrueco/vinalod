@@ -1,0 +1,104 @@
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+  <style>
+    .kge-search-picker {
+      width: 500;
+    }
+    input[type=range]::-webkit-slider-thumb {
+	pointer-events: all;
+	width: 24px;
+	height: 24px;
+	-webkit-appearance: none;
+  /* @apply w-6 h-6 appearance-none pointer-events-auto; */
+  }
+  </style>
+  <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="dist/styles.css">
+
+  <!-- D3 Tooltip CSS -->
+<link rel="stylesheet" href="css/d3-tip.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://d3js.org/d3-color.v2.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="jslib/d3-tip.js"></script>
+
+<!-- <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+ --><script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js"></script>
+
+</head>
+<body>
+    
+<div x-data="range()" x-init="mintrigger(); maxtrigger()" class="flex items-center justify-center w-64 h-32 m-auto">
+    <div class="relative min-w-full py-1">
+        <div class="h-2 bg-gray-200 rounded-full">
+            <div class="absolute w-0 h-2 bg-indigo-400 rounded-full" style="width: 24.1935%; left: 11.2903%;"></div>
+            <input type="range" step="100" x-bind:min="min" x-bind:max="max" x-on:input="mintrigger" x-model="minprice" class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+            <input type="range" 
+             step="100"
+             x-bind:min="min" x-bind:max="max"
+             x-on:input="maxtrigger"
+             x-model="maxprice"
+             class="absolute z-20 w-full h-2 opacity-0 appearance-none cursor-pointer pointer-events-none">
+            <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" style="left: 11.2903%;">
+            
+                <div class="relative w-1 -mt-2">
+                    <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" style="margin-left: -25px;">
+                        <div class="relative shadow-md">
+                            <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">15</div>
+                            <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="100px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute top-0 flex items-center justify-center w-4 h-4 -ml-2 bg-white border border-gray-300 rounded-full shadow cursor-pointer" unselectable="on" onselectstart="return false;" style="left: 35.4839%;">
+            
+             
+                   <div class="relative w-1 -mt-2">
+                    <div class="absolute left-0 z-40 min-w-full mb-2 opacity-100 bottom-100" style="margin-left: -25px;">
+                        <div class="relative shadow-md">
+                            <div class="px-4 py-1 -mt-8 text-xs text-black truncate bg-white rounded">30</div>
+                            <svg class="absolute left-0 h-2 min-w-full text-white top-100" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+                                <polygon class="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--             <div class="absolute bottom-0 left-0 -mb-6 -ml-1 text-gray-800">8</div>
+            <div class="absolute bottom-0 right-0 -mb-6 -mr-1 text-gray-800">70</div> -->
+        </div>
+    </div>
+    <script>
+        function range() {
+            return {
+              minprice: 1000, 
+              maxprice: 7000,
+              min: 100, 
+              max: 10000,
+              minthumb: 0,
+              maxthumb: 0, 
+              
+              mintrigger() {   
+                this.minprice = Math.min(this.minprice, this.maxprice - 500);      
+                this.minthumb = ((this.minprice - this.min) / (this.max - this.min)) * 100;
+              },
+               
+              maxtrigger() {
+                this.maxprice = Math.max(this.maxprice, this.minprice + 500); 
+                this.maxthumb = 100 - (((this.maxprice - this.min) / (this.max - this.min)) * 100);    
+              }, 
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
