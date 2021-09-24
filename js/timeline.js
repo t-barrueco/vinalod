@@ -4,11 +4,22 @@ function timelineGraph(data){
 //d3.csv("../data/civilization timelines - civilization timelines.csv",function(data){
     var margin = {top: 30, right: 30, bottom: 30, left: 30}
     //console.log(data)
-    d3.select(".modal-header2")
+/*     d3.select(".modal-header2")
     //.style("background-color","blue")
     .text(function(){
         return "Timeline EU Members";
-    })
+    }) */
+    d3.select(".modal-header2 h2").remove()
+    modalHeader2=document.getElementsByClassName("modal-header2")[0]
+    ////////console.log(modalHeader2)
+    //modalHeader2.className="mb-4"
+    modalHeader2.classList.add("mb-4");
+    var h2=document.createElement("h2")
+    h2.className="text-lg font-medium text-gray-900"
+    //h2.innerHTML = node["value"]
+    h2.innerHTML = "Timeline EU Members"
+    modalHeader2.appendChild(h2);
+
     var xFormat = "%Y-%m-%d";;
     var parseTime = d3.timeParse("%Y-%m-%d");
 
@@ -37,9 +48,18 @@ function timelineGraph(data){
     //height=data.length*40
     height=500
     console.log(height)
+    if(d3.select("#modalGraph")){
+        d3.select("#modalGraph").remove()
+    }
+    var div=document.createElement("div")
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto")
+    console.log(document.getElementsByClassName("modal-content2"))
+    document.getElementsByClassName("modal-content2")[0].appendChild(div)
 
-    d3.select("#timelineGraph svg").remove()
-    svg=d3.select("#timelineGraph").append("svg")
+    //d3.select("#modalGraph svg").remove()
+    //d3.select("#modalGraph iframe").remove()
+    svg=d3.select("#modalGraph").append("svg")
     .style("width", width - margin.left + 'px')
     .style("height", height + 'px');
 

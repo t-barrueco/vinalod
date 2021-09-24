@@ -38,8 +38,8 @@
   
 <div class="w-full">
 
-<div class="grid grid-cols-6 grid-rows-3">
-  <nav class="col-span-6 row-span-3 py-6 bg-gray-200 shadow">
+<div class="grid grid-cols-12">
+  <nav class="col-span-12 py-6 bg-gray-200 shadow">
     <div class="px-2 mx-auto max-w-7xl sm:px-4 lg:px-8">
       <div class="flex w-full h-16">
         <div class="flex px-2 lg:px-2">
@@ -69,14 +69,14 @@
 
   </nav>
  
-  <div class="row-span-3 bg-gray-100 border-r-2">
+  <div class="col-span-2 bg-gray-100 border-r-2">
     <div class="object-contain filter justify-items-center">
-      <div class="w-full border-r rounded-l-md justify-items-center">
-        <div class="grid border-b border-gray-200 divide-y divide-gray-200 justify-items-center controls">
+<!--       <div class="w-full border-r rounded-l-md justify-items-center">
+ -->        <div class="border-b border-gray-200 divide-y divide-gray-200 justify-items-center controls">
             <div class="block px-12 py-3 font-semibold text-gray-700">
                 <button type="button" @click="open = !open" class="flex items-center px-3 py-1 font-medium text-gray-700 rounded"> 
                   <div class="flex items-center">
-                    <span class="text-2xl font-semibold text-gray-800 dark:text-white">Filters</span>
+                    <span class="text-2xl font-semibold text-gray-700 dark:text-white">Filters</span>
                   </div>
                 </button>
             </div>
@@ -121,10 +121,10 @@
             </div> -->
           </div>
             
-      </div>
+      <!-- </div> -->
     </div>
   </div>
-  <div class="object-contain col-span-5 row-span-3 bg-white">
+  <div class="object-contain col-span-10 bg-white">
     
     <div class="object-contain w-full h-full" id="networkGraph">
       <!-- <svg></svg> -->
@@ -141,14 +141,14 @@
         <div class="flex object-contain border-b-2">
           <!-- This example requires Tailwind CSS v2.0+ -->
             <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
-              <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+              <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                 <span>Zoom In</span>
                 <!-- Heroicon name: solid/chevron-left -->
 <!--                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg> -->
               </button>
-              <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+              <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                 <span>Zoom Out</span>
                 <!-- Heroicon name: solid/chevron-right -->
 <!--                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -156,12 +156,13 @@
                 </svg> -->
               </button>
             </span>
-        
+
+
             <span class="relative z-0 inline-flex w-1/2 my-10 rounded-md md:justify-center">
-              <button type="button" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-indigo-300 border border-gray-300 rounded-l-md hover:bg-indigo-400 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" onclick='collapse()' id="collapse">
+              <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
                 Collapse all
               </button>
-              <button type="button" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-indigo-300 border border-gray-300 hover:bg-indigo-400 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" onclick='expand()'>
+              <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
                 Expand all
               </button>
       
@@ -169,200 +170,118 @@
         </div>
       </div>
 
-      <!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  const colors = require('tailwindcss/colors')
-  
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        colors: {
-          orange: colors.orange,
-        },
-      },
-    },
-  }
-  ```
--->
-<!-- <div class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-  <div class="absolute inset-0 overflow-hidden"> -->
-    <!--
-      Background overlay, show/hide based on slide-over state.
-
-      Entering: "ease-in-out duration-500"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in-out duration-500"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
-<!--     <div class="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
-
-    <div class="fixed inset-y-0 right-0 flex max-w-full pl-10"> -->
-      <!--
-        Slide-over panel, show/hide based on slide-over state.
-
-        Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-          From: "translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-          From: "translate-x-0"
-          To: "translate-x-full"
-      -->
-<!--       <div class="w-screen max-w-md">
-        <div class="flex flex-col h-full overflow-y-scroll bg-white shadow-xl">
-          <div class="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
-                Shopping cart
-              </h2>
-              <div class="flex ml-3 items-right h-7">
-                <button type="button" class="p-2 -m-2 text-gray-400 hover:text-gray-500">
-                  <span class="sr-only">Close panel</span> -->
-                  <!-- Heroicon name: outline/x -->
-<!--                   <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div class="mt-8">
-              <div class="flow-root">
-                <ul role="list" class="-my-6 divide-y divide-gray-200">
-                  <li class="flex py-6">
-                    <div class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md">
-                      <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="object-cover object-center w-full h-full">
-                    </div>
-
-                    <div class="flex flex-col flex-1 ml-4">
-                      <div>
-                        <div class="flex justify-between text-base font-medium text-gray-900">
-                          <h3>
-                            <a href="#">
-                              Throwback Hip Bag
-                            </a>
-                          </h3>
-                          <p class="ml-4">
-                            $90.00
-                          </p>
-                        </div>
-                        <p class="mt-1 text-sm text-gray-500">
-                          Salmon
-                        </p>
-                      </div>
-                      <div class="flex items-end justify-between flex-1 text-sm">
-                        <p class="text-gray-500">
-                          Qty 1
-                        </p>
-
-                        <div class="flex">
-                          <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-
-                  <li class="flex py-6">
-                    <div class="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md">
-                      <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg" alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch." class="object-cover object-center w-full h-full">
-                    </div>
-
-                    <div class="flex flex-col flex-1 ml-4">
-                      <div>
-                        <div class="flex justify-between text-base font-medium text-gray-900">
-                          <h3>
-                            <a href="#">
-                              Medium Stuff Satchel
-                            </a>
-                          </h3>
-                          <p class="ml-4">
-                            $32.00
-                          </p>
-                        </div>
-                        <p class="mt-1 text-sm text-gray-500">
-                          Blue
-                        </p>
-                      </div>
-                      <div class="flex items-end justify-between flex-1 text-sm">
-                        <p class="text-gray-500">
-                          Qty 1
-                        </p>
-
-                        <div class="flex">
-                          <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
- -->
-                  <!-- More products... -->
-<!--                 </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="px-4 py-6 border-t border-gray-200 sm:px-6">
-            <div class="flex justify-between text-base font-medium text-gray-900">
-              <p>Subtotal</p>
-              <p>$262.00</p>
-            </div>
-            <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-            <div class="mt-6">
-              <a href="#" class="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Checkout</a>
-            </div>
-            <div class="flex justify-center mt-6 text-sm text-center text-gray-500">
-              <p>
-                or <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Continue Shopping<span aria-hidden="true"> &rarr;</span></button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
-
-      
-      <!-- <div class="legend"></div> -->
-
 </div>
-<script type="text/javascript" src="https://op.europa.eu/o/opportal-widgets/js/widget/widgetload.js"></script>
-    <script type="application/json">
-    {"portalURL":"https://op.europa.eu","uuid":"portal2012ac1ecc7587024827adf2ac1fd34af3f7","widgetType":"3","cellarId":"571ed14b-6789-11eb-aeb5-01aa75ed71a1"}
-    </script>
+
     <!-- The Modal -->
     <!-- Trigger/Open The Modal -->
     <!-- <button id="myBtn">Open Modal</button> -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="z-40 modal">
       
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="modal-header" id="modalHeader2"></div>
-        <div class="modal-header" id="modalHeader"></div>
-        <div id="dvTable" style="overflow: auto">
+        <!-- <span class="m-2 border-solid close">&times;</span> -->
+        <div class="flex items-start justify-between p-6 border-2 bg-gray-50">
+          <!-- <h2 class="text-lg font-medium text-gray-900" id="slide-over-title"> -->
+          <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
+            Navigation panel
+          </h2>
+          <div class="flex ml-3 items-right h-7">
+            <span class="close">&times;</span>
+<!--             <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <span class="sr-only">Close panel</span>
+              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button> -->
+          </div>
         </div>
+<!--         <div class="modal-header" id="modalHeader2"></div>
+        <div class="modal-header" id="modalHeader"></div> -->
+        <div id="navTable" style="overflow: auto" class="mt-6"></div>
+        <div id="dvTable" style="overflow: auto">
+          
+        </div>
+        <!-- This example requires Tailwind CSS v2.0+ -->
+<!-- <div class="flex flex-col">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"> -->
+        <!-- <div>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                Name
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                Title
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                Status
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                Role
+              </th>
+              <th scope="col" class="relative px-6 py-3">
+                <span class="sr-only">Edit</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 w-10 h-10">
+                    <img class="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60" alt="">
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">
+                      Jane Cooper
+                    </div>
+                    <div class="text-sm text-gray-500">
+                      jane.cooper@example.com
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
+                <div class="text-sm text-gray-500">Optimization</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                  Active
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                Admin
+              </td>
+              <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div> -->
+<!--       </div>
+    </div>
+  </div>
+</div> -->
       </div>
   
     </div>
-    <div id="myModal2" class="modal2">
+    <div id="myModal2" class="z-50 modal2">
       
       <!-- Modal content -->
-      <div class="modal-content2">
+      <div class="rounded-lg shadow-xl modal-content2">
         <span class="close2">&times;</span>
-        <div class="modal-header2" id="modalHeader2"><b>Timeline</b></div>
-        <div id="timelineGraph" style="overflow: auto">
-        </div>
-        <div id="treeGraph" style="overflow: auto">
+        <div class="modal-header2" id="modalHeader2"></div>
+        <!-- <div id="modalGraph" style="overflow: auto">
+          
+        </div> -->
+        <div class="modal-footer" id="modalFooter">
+    
         </div>
       </div>
       

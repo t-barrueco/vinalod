@@ -65,13 +65,32 @@ function treeGraph(treeData,title){
     }
     ]; */
     console.log(treeData)
-    d3.select(".modal-header2")
+/*     d3.select(".modal-header2")
     //.style("background-color","blue")
     .text(function(){
         return title;
-    })
+    }) */
+    d3.select(".modal-header2 h2").remove()
+    modalHeader2=document.getElementsByClassName("modal-header2")[0]
+    ////////console.log(modalHeader2)
+    //modalHeader2.className="mb-4"
+    modalHeader2.classList.add("mb-4");
+    var h2=document.createElement("h2")
+    h2.className="text-lg font-medium text-gray-900"
+    //h2.innerHTML = node["value"]
+    h2.innerHTML = title
+    modalHeader2.appendChild(h2);
 
-    d3.select("#treeGraph svg").remove()
+    if(d3.select("#modalGraph")){
+      d3.select("#modalGraph").remove()
+  }
+  var div=document.createElement("div")
+  div.setAttribute("id","modalGraph")
+  div.setAttribute("style","overflow: auto")
+  console.log(document.getElementsByClassName("modal-content2"))
+  document.getElementsByClassName("modal-content2")[0].appendChild(div)
+  /*   d3.select("#modalGraph svg").remove()
+    d3.select("#modalGraph iframe").remove() */
     // set the dimensions and margins of the diagram
 /* var margin = {top: 20, right: 90, bottom: 30, left: 90},
 width = 660 - margin.left - margin.right,
@@ -342,7 +361,7 @@ var margin = {top: 20, right: 90, bottom: 30, left: 180},
 // append the svg object to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("#treeGraph").append("svg")
+var svg = d3.select("#modalGraph").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")

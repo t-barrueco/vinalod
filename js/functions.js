@@ -8,42 +8,60 @@
 //
 async function dblclickTrTable(row) {
   var indexRows=1;
-  var element=document.getElementById(row.getAttribute("id"));
-  ////////////////////////////////////////////console.log("dblclickTrTable")
-  ////////////////////////////////////////////console.log(row)
-  //set all nodes in table to stroke black and width 3px
-  row2=$('#myModal #'+ row.getAttribute("id"))[0];
-  //row2=document.getElementById("myModal").getElementById(row.getAttribute("id"))
-  ////////////////////////////////////////////////console.log(row2)
-  ////////////////////////////////////////////////console.log(row2.rowIndex)
-  
-  //set selected node to yellow in graph
-  /* for (var i = 0; i < nodesSel.length; i++) {
-    d3.select("#"+nodesSel[i]["id"])
-    .attr("stroke", "black")
-    .attr("stroke-width", "3px");
-  } */
+  ////////console.log(row)
+  var element=document.getElementById(row.getAttribute("id").replace("_a","").replace("_tr",""));
+  ////////console.log(element)
+
+  //row2=$('#myModal #'+ row.getAttribute("id"))[0];
   
 
-  //REVIEW dblclick
-/*   networkGraph.isDblclick = true;
-  clearTimeout(networkGraph.dblclickTimeout);
-  networkGraph.dblclickTimeout = setTimeout(function () {
-    networkGraph.isDblclick = false;
-  }, networkGraph.timeoutTiming); */
-  
-  //add graph attached to selected node
-  indexRows=await networkGraph.wrangleData(document.getElementById(row.getAttribute("id")+"_image"),"table");
-  ////////////////////////////////////////////console.log("vuelve a dblclickTrTable")
-  ////////////////////////////////////////////console.log(indexRows)
+  //////////console.log(row.getAttribute("id"))
+  //////////console.log(document.getElementById(row.getAttribute("id").replace("_a","_image")))
+  indexRows=await networkGraph.wrangleData(document.getElementById(row.getAttribute("id").replace("_a","")),"table");
+
   //throw new Error("Something went badly wrong!");
+  ////////console.log(indexRows)
   if (indexRows.length<2){
+    ////////console.log("entra")
     unclickBubble()
     clickBubble(element,networkGraph.data)
     d3.select("#"+row.getAttribute("id"))
     .attr("stroke", "yellow")
     .attr("stroke-width", "6px");
   }
+  //else if (indexRows==1){
+  //  labelsClick(document.getElementById(row.getAttribute("id").replace("_a","")))
+  //}
+}
+async function dblclickNavTable(row) {
+  //var indexRows=1;
+  ////////console.log(row)
+  var element=document.getElementById(row.getAttribute("id").replace("_a",""));
+  ////////console.log(element)
+  clickBubble(element,networkGraph.data)
+  d3.select("#"+row.getAttribute("id"))
+  .attr("stroke", "yellow")
+  .attr("stroke-width", "6px");
+  //row2=$('#myModal #'+ row.getAttribute("id"))[0];
+  
+
+  //////////console.log(row.getAttribute("id"))
+  //////////console.log(document.getElementById(row.getAttribute("id").replace("_a","_image")))
+  //indexRows=await networkGraph.wrangleData(document.getElementById(row.getAttribute("id").replace("_a","")),"table");
+
+  //throw new Error("Something went badly wrong!");
+  /* ////////console.log(indexRows)
+  if (indexRows.length<2){
+    ////////console.log("entra")
+    unclickBubble()
+    clickBubble(element,networkGraph.data)
+    d3.select("#"+row.getAttribute("id"))
+    .attr("stroke", "yellow")
+    .attr("stroke-width", "6px");
+  } */
+  //else if (indexRows==1){
+  //  labelsClick(document.getElementById(row.getAttribute("id").replace("_a","")))
+  //}
 }
 function clickTrTable(row) {
   d3.selectAll(".nodeCircleCircle")
@@ -56,10 +74,10 @@ function clickTrTable(row) {
 }
 
 function clickBubble(element,data) {
-  var nodeData
-  nodesSel=[]
-  //////////////////////////////////////////console.log(element)
-  //////////////////////////////////////////console.log(data)
+  var nodeData,sources2
+  nodesSelSources=[]
+  nodesSelTarget=[]
+  //////////console.log(element)
   d3.selectAll(".nodeCircle")
   .style("opacity", 0.1)
   .attr("stroke", "grey")
@@ -70,8 +88,10 @@ function clickBubble(element,data) {
   .style("stroke", "#aaaaaa")
   .style("stroke-width", "1px");
 
+  ////////console.log(d3.select("#"+element.getAttribute("id")))
+  ////////console.log(element.getAttribute("id"))
   nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
-  nodesSel.push({"class":nodeData.class,"id":nodeData.id,"value":nodeData.value})
+
   var idEl=element.getAttribute("id");
   var targets=data.links.filter(function(item) {
     return item.source.id == idEl
@@ -79,11 +99,55 @@ function clickBubble(element,data) {
   var sources=data.links.filter(function(item) {
     return item.target.id == idEl
   })
-  ////////////////////////////////////////////////////////////////////////////////console.log(targets)
-  ////////////////////////////////////////////////////////////////////////////////console.log(sources)
 
+  if (sources.length>0){
+    sources2=data.links.filter(function(item) {
+      return item.target.id == sources[0]["source"]["id"]
+    })
+
+    while(sources2.length>0){
+      sources2.forEach(function(d){
+        sources.push(d)
+      })
+      sources2=data.links.filter(function(item) {
+        return item.target.id == sources2[0]["source"]["id"]
+      })
+      //////////////console.log(sources2)
+    }
+  }
+  
+  sources=sources.reverse();
+  
+  //////////////console.log(sources)
+  sources.forEach(function(t){
+    nodesSelSources.push({"class":t.source.class,"id":t.source.id,"value":t.source.value})
+    d3.select("#"+t.source.id)
+    .style("opacity", 1)
+    .attr("stroke", "black")
+    .attr("stroke-width", "3px");
+
+    d3.select("#"+t.source.id+"_g")
+    .style("opacity", 1)
+
+    d3.select("#"+t.source.id+"_"+element.id)
+    .style("opacity", 1)
+    .style("stroke", "black")
+    .style("fill","black")
+    .style("stroke-width", "3px");
+
+    d3.select("#"+t.source.id+"_"+t.target.id)
+    .style("opacity", 1)
+    .style("stroke", "black")
+    .style("fill","black")
+    .style("stroke-width", "3px");
+    //////////////console.log(t)
+  });
+
+  nodesSelSources.push({"class":nodeData.class,"id":nodeData.id,"value":nodeData.value})
+
+  ////////console.log(nodesSelSources)
   targets.forEach(function(s){
-    nodesSel.push({"class":s.target.class,"id":s.target.id,"value":s.target.value})
+    nodesSelTarget.push({"class":s.target.class,"id":s.target.id,"value":s.target.value})
     d3.select("#"+ s.target.id)
     .style("opacity", 1)
     .attr("stroke", "black")
@@ -98,29 +162,15 @@ function clickBubble(element,data) {
     .style("fill","black")
     .style("stroke-width", "3px");
   });
-  sources.forEach(function(t){
-    nodesSel.push({"class":t.source.class,"id":t.source.id,"value":t.source.value})
-    d3.select("#"+t.source.id)
-    .style("opacity", 1)
-    .attr("stroke", "black")
-    .attr("stroke-width", "3px");
 
-    d3.select("#"+t.source.id+"_g")
-    .style("opacity", 1)
-
-    d3.select("#"+t.source.id+"_"+element.id)
-    .style("opacity", 1)
-    .style("stroke", "black")
-    .style("fill","black")
-    .style("stroke-width", "3px");
-  });
-
+  ////////console.log(targets)
+  ////////////console.log(nodesSelTarget)
   
   d3.select("#"+element.id)
   .style("opacity", 1)
   .attr("stroke", "black")
   .attr("stroke-width", "3px");
-  ////////////////////////////////////////////////////////////////////////////////////console.log(d3.select("#"+element.id+"_image"))
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d3.select("#"+element.id+"_image"))
   d3.select("#"+element.id+"_g")
   .style("opacity", 1)
 
@@ -129,7 +179,8 @@ function clickBubble(element,data) {
 }
 
 function unclickBubble() {
-  nodesSel=[]
+  nodesSelSources=[]
+  nodesSelTarget=[]
   $("#myModal").removeClass("in");
   $("#myModal").hide();
   d3.selectAll(".nodeCircle")
@@ -158,33 +209,54 @@ function removeChars(chars){
   }
   return chars
 }
-function getHierarchy(hierarchy){
-  var temp=[]
-  hierarchy = hierarchy.split("-");
+function get_hierarchy(hierarchy){
+  var hierarchy_arr=[]
+  //////////////////////console.log(hierarchy)
+  hierarchy_arr=[hierarchy[0]["parent"]]
+  hierarchy.forEach(function(d){
+    hierarchy_arr.push(d["child"])
+  })
+  //hierarchy = hierarchy.split("-");
 
-  return hierarchy
+  return hierarchy_arr
 }
 function getClassesShow(classes){
-  var temp=[],classesTemp=[],tmp={}
-  classes = classes.split(";");
+  var tmp={}
+  //classes = classes.split(";");
+  ////////////////////////console.log(classes)
   classes.forEach(function(c){
-    temp.push({"class":c.split("-")[0],"classShow":c.split("-")[1]})
-    tmp[c.split("-")[0]]=c.split("-")[1]
+    //temp.push({"class":c.split("-")[0],"classShow":c.split("-")[1]})
+    //tmp[c.split("-")[0]]=c.split("-")[1]
+    tmp[c["class"]]=c["text"]
   })
   return tmp
 }
-function getProperties(properties){
+function get_properties(properties){
   var temp={}
-  properties = properties.split(";");
+  //properties = properties.split(";");
   properties.forEach(function(d){
-    if(temp[d.split("-")[0]]){
+/*     if(temp[d.split("-")[0]]){
       temp[d.split("-")[0]].push(d.split("-")[1])
     }else{
       temp[d.split("-")[0]]=[d.split("-")[1]]
+    } */
+    if(temp[d["class"]]){
+      temp[d["class"]].push(d["property"])
+    }else{
+      temp[d["class"]]=[d["property"]]
     }
   })
-  properties=temp
-  return properties
+  return temp
+}
+function get_property_names(properties){
+  var temp={}
+  properties.forEach(function(d){
+
+        temp[d["property"]]=d["property_name"]
+       // }
+      })
+      return temp
+
 }
 // Generate random string for ids
 function genRandomString(){
@@ -202,32 +274,32 @@ function getId(idPrefix){
   return id
 }
 function getOptions(configClass,elClass){
-  ////////////////////////////////////////////////////console.log(configClass)
+  //////////////////////////////////////////////////////////////////////////console.log(configClass)
   var selClass=configClass.filter(function(d){
     return d.class==elClass
   })
   return selClass
 }
 function getTooltip(elClass,option_text){
-  //////////////////////console.log(configFile)
-  //////////////////////console.log(elClass)
+  ////////////////////////////////////////////console.log(configFile)
+  ////////////////////////////////////////////console.log(elClass)
   var selClass=configFile.filter(function(d){
-    //console.log(d)
-    return d.OPTION_TEXT==option_text
+    ////////////////////////console.log(d)
+    return d.option_text==option_text
   })
-  //console.log(selClass[0])
+  ////////////////////console.log(selClass[0])
   if(selClass[0]!=undefined){
-    return selClass[0]["TOOLTIP"]
+    return selClass[0]["tooltip"]
   }else{
     return ""
   } 
 }
 function fillDropDown(dataConfig){
   var select = document.getElementById("options_basic"); 
-  ////////////////////console.log(dataConfig)
+  ////////////////console.log(dataConfig)
   for(var i = 0; i < dataConfig.length; i++) {
-    if(!dataConfig[i]["QUERY"].includes("PARAMETER")){
-      var opt = dataConfig[i].OPTION_TEXT;
+    if((!dataConfig[i]["query"].includes("PARAMETER"))&(dataConfig[i]["type"]=="TREE")){
+      var opt = dataConfig[i].option;
       var el = document.createElement("option");
       el.textContent = opt;
       el.value = i;
@@ -238,73 +310,126 @@ function fillDropDown(dataConfig){
 }
 
 function changeBasicGraph(){
-  ////////////////////console.log(d3.select("#legend").selectAll("li"))
+  //////////////////////////////////////////console.log(d3.select("#legend").selectAll("li"))
   d3.selectAll(".classFilter").remove()
   d3.select("#legend").selectAll("li").remove()
   d3.selectAll(".graph").remove()
+  propertiesFilterHist=[]
   execQueries=[]
+  filtersInGraph=[]
   var selectedValue = $("#options_basic").val();
+  graphHistory=[]
   buildBasicGraph(selectedValue)
 }
 
 function labelsClick(element){
-  var nodeData,cell,row,nodesTable;
-  ////////////////////////////////console.log(element)
-  ////////////////////////////////console.log(nodesSel)
+  var nodeData,cell,row,nodesTable,li,div,div2,div3,div4,a,span,span2,svg,path,el1,el2,span3,span4,img,colorCircle;
 
+  //////////console.log(element)
   nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
-  d3.select("#modalHeader").select("img").remove()
-  d3.select("#modalHeader").select("span").remove()
 
-  d3.select("#modalHeader")
-  .style("background-color",element.style.fill)
-  .append("img")
-    .attr('src', bubbleImage(d3.select("#"+element.getAttribute("id")).data()[0]))
-  .attr('width','40px')
-  .attr('height','40px')
+  d3.select("#navTable").select("nav").remove()
 
-  d3.select("#modalHeader")
-  .append("span")
-  .text(function(){
-    return nodeData["value"];
-  })
-  .style("font-size", "18px")
-  .attr("text-anchor", "middle")
-  .attr("stroke", "black")
-  .attr("stroke-width", "3px");
+  var navTable = document.getElementById("navTable");
+  var nav=document.createElement("nav")
+  nav.setAttribute("aria-label", "Progress");
+  var ol=document.createElement("ol")
+  ol.setAttribute("role", "list");
 
-  if(element.getAttribute("root")=="1"){
-    d3.select("#modalHeader2").style("display","hidden")
-  }else{
-    d3.select("#modalHeader2").select("img").remove()
-    d3.select("#modalHeader2").select("span").remove()
-    d3.select("#modalHeader2")
-    .style("background-color",colorScale(nodesClassesCorrespondence[nodesSel.slice(-1)[0]["class"]]))
-    .append("img")
-    .attr('src', bubbleImage(d3.select("#"+nodesSel.slice(-1)[0]["id"]).data()[0]))
-    .attr('width','40px')
-    .attr('height','40px')
+  for (var i = 0; i < nodesSelSources.length-1; i++) {
+  //for (var i = nodesSel.length; i <= 0; i--) {
+    li=document.createElement("li")
+    li.setAttribute("class", "relative pb-10");
+    div=document.createElement("div")
+    div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+    div.setAttribute("aria-hidden", "true");
+    a=document.createElement("a")
+    a.setAttribute("href", "#");
+    a.setAttribute("class", "relative flex items-start group");
+    a.id=nodesSelSources[i]["id"]+"_a"
+    
+    //a.setAttribute("id",nodesSelSources[i]["id"])
+    span=document.createElement("span")
+    span.setAttribute("class","h-9 flex items-center")
+    
+    span2=document.createElement("span")
+    //////////////console.log(nodesSel)
+    //////////////console.log(nodesSel.slice(-1)[0]["class"])
+    colorCircle=colorCorrespondence[colorScale(nodesClassesCorrespondence[nodesSelSources[i]["class"]])]
+    //////////////console.log(colorCircle.split("-"))
+    span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
 
-    d3.select("#modalHeader2")
-    .append("span")
-    .text(function(){
-      ////////////////////////////////console.log(nodesSel)
-      return nodesSel.slice(-1)[0]["value"];
-    })
-    .style("font-size", "18px")
-    .attr("text-anchor", "left")
-    .attr("stroke", "black")
-    .attr("stroke-width", "3px"); 
-/*     d3.select("#modalHeader2")
-    .text(function(){
-      ////////////////////////////////console.log(nodesSel)
-      return nodesSel.slice(-1)[0]["value"];
-    })
-    .style("font-size", "18px")
-    .attr("text-anchor", "middle")
-    .attr("stroke", "black")
-    .attr("stroke-width", "3px"); */
+    img=document.createElement("img")
+
+    img.setAttribute("src","../images/check.svg")
+    //img.setAttribute("src",bubbleImage(d3.select("#"+element.getAttribute("id")).data()[0]))
+    img.setAttribute('width','40px')
+    img.setAttribute('height','40px')
+
+    el1=navTable.appendChild(nav).appendChild(ol).appendChild(li)
+    el1.appendChild(div)
+    el2=el1.appendChild(a)
+    //el2.appendChild(span).appendChild(span2).appendChild(svg).appendChild(path)
+    el2.appendChild(span).appendChild(span2).appendChild(img)
+    span3=document.createElement("span")
+    span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
+    span4=document.createElement("span")
+    span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
+    span4.innerHTML = nodesSelSources[i]["value"]
+    img=document.createElement("img")
+    //nodesSel[i]
+    //////////////console.log(bubbleImage(d3.select("#"+nodesSel[i]["id"]).data()[0]))
+    //////////////console.log(d3.select("#"+nodesSel[i]["id"]).data()[0])
+    img.setAttribute("src",bubbleImage(d3.select("#"+nodesSelSources[i]["id"]).data()[0]))
+    //img.setAttribute("src",bubbleImage(d3.select("#"+element.getAttribute("id")).data()[0]))
+    img.setAttribute('width','40px')
+    img.setAttribute('height','40px')
+    el3=el2.appendChild(span3)
+    el3.appendChild(span4)
+    //el3.appendChild(span5)
+    el3.appendChild(img)
+
+
   }
+
+  li=document.createElement("li")
+  li.setAttribute("class", "relative pb-10");
+
+  a=document.createElement("a")
+  a.setAttribute("href", "#");
+  a.setAttribute("class", "relative flex items-start group");
+  a.id=nodesSelSources[i]["id"]+"_a"
+  span=document.createElement("span")
+  span.setAttribute("class","h-9 flex items-center")
+  span2=document.createElement("span")
+
+  colorCircle=colorCorrespondence[colorScale(nodesClassesCorrespondence[nodesSelSources[i]["class"]])]
+  span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
+
+  img=document.createElement("img")
+
+  img.setAttribute("src","../images/location.svg")
+  img.setAttribute('width','40px')
+  img.setAttribute('height','40px')
+
+  el1=navTable.appendChild(nav).appendChild(ol).appendChild(li)
+  el2=el1.appendChild(a)
+  el2.appendChild(span).appendChild(span2).appendChild(img)
+  span3=document.createElement("span")
+  span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
+  span4=document.createElement("span")
+  span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
+  span4.innerHTML = nodesSelSources[i]["value"]
+  img=document.createElement("img")
+
+  img.setAttribute("src",bubbleImage(d3.select("#"+nodesSelSources[i]["id"]).data()[0]))
+  img.setAttribute('width','40px')
+  img.setAttribute('height','40px')
+  el3=el2.appendChild(span3)
+  el3.appendChild(span4)
+  //el3.appendChild(span5)
+  el3.appendChild(img)
+  //}
   //cell.innerHTML = '<img src='+bubbleImage(d3.select("#"+nodesTable[i]["id"]).data()[0])+' width="40" height="40">';
 
   modal=document.getElementById("myModal")
@@ -314,66 +439,121 @@ function labelsClick(element){
     //minHeight: 150
   });
   $("#myModal").draggable()
-  //$("*").draggable();
-/*   $("#myModal").draggable({
-    handle: ".modal-header"
-  }); */
 
-  var columnCount = 4;
-  //h-full flex flex-col bg-white shadow-xl overflow-y-scroll
-  d3.selectAll(".modal-content table").remove()
-  var table = document.createElement("table");
-
-  if(element.getAttribute("root")=="1"){
-    nodesTable=nodesSel;
-  }else{
-    nodesTable=nodesSel.slice(0, -1);
-  }
-
-  for (var i = 1; i < nodesTable.length; i++) {
-    
-    row = table.insertRow(-1);
-    row.style.backgroundColor = colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]]); 
-    row.id=nodesTable[i]["id"]
-    cell = row.insertCell(-1);
-    cell.innerHTML = nodesTable[i]["value"];
-    cell = row.insertCell(-1);
-    cell.innerHTML = '<img src='+bubbleImage(d3.select("#"+nodesTable[i]["id"]).data()[0])+' width="40" height="40">';
-  }
-  var dvTable = document.getElementById("dvTable");
-  dvTable.innerHTML = "";
-
-  dvTable.appendChild(table);
-  d3.selectAll(".modal-content tr").on("dblclick",function(){  
-    dblclickTrTable(this)
+  d3.selectAll("#navTable a").on("dblclick",function(){ 
+    //////////console.log(this.parentNode)
+    dblclickNavTable(this)
+    //dblclickTrTable(this)
   })
+  //.on("mouseover",////////console.log("mouseover a navTable"))
   .on("click",function(){  
     clickTrTable(this)
   })
   .on('contextmenu',function(){  
     var menuItems=[]
-    ////////////////////////////////////////console.log("entra")
-    //////////////////////////////////////////console.log(d)
-    ////////////////////////////////////////console.log(this)
+    //////////////////////////////////////////////////////////////console.log("entra")
+    ////////////////////////////////////////////////////////////////console.log(d)
+    //////////////////////////////////////////////////////////////console.log(this)
     //d3.event.preventDefault();
     //networkGraph.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , networkGraph.menuItems, d,"contextMenu");
     //createContextMenu(d, vis.menuItems, 100, 100, vis.g);
     d3.event.preventDefault();
     var node=d3.select("#"+this.getAttribute("id")).data()[0]
     getMenuItemsContextMenu(node,"table")
-    //menuItems.push({"option":"option1","position":1})
-    //menuItems.push({"option":"option1","position":2})
-    //menuItems.push({"option":"option1","position":3})
-    //addContextMenuToTable(node,menuItems)
-  });
-  var modal = document.getElementById('modalHeader');
-  var modal_width = modal.offsetWidth
 
-  d3.select("table").attr("class", "table table-striped")
-                    .style("width",modal_width+"px");
+  });
+  
+
+  d3.selectAll(".modal-content table").remove()
+  if (nodesSelTarget.length>0){
+
+    var table = document.createElement("table");
+    table.className="min-w-full divide-y divide-gray-200"
+  
+    var thead=document.createElement("thead")
+    thead.className="bg-gray-50"
+    var tr=document.createElement("tr")
+    var th=document.createElement("th")
+    th.setAttribute("scope","col")
+    th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
+    //th.innerHTML="Child nodes for "+nodeData["class"]+" "+nodeData["value"]
+    th.innerHTML=nodeData["value"]
+    thead.appendChild(tr).appendChild(th)
+    var tbody=document.createElement("tbody")
+    tbody.className="bg-white divide-y divide-gray-200"
+    //////////////console.log(nodesSel)
+  
+    //if(element.getAttribute("root")=="1"){
+    nodesTable=nodesSelTarget;
+    //}else{
+    //  nodesTable=nodesSelTarget.slice(0, -1);
+    //}
+  
+    ////////////console.log(nodes.nodesSelTarget)
+    for (var i = 0; i < nodesTable.length; i++) {
+      
+      row = tbody.insertRow(-1);
+      //row.style.backgroundColor = colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]]); 
+      row.id=nodesTable[i]["id"]
+      cell = row.insertCell(-1);
+      cell.className="px-6 py-4 whitespace-nowrap"
+      div=document.createElement("div")
+      div.className="flex items-center"
+      div2=document.createElement("div")
+      div2.className="flex-shrink-0 w-10 h-10"
+      img=document.createElement("img")
+      img.className="w-10 h-10 rounded-full bg-"+colorCorrespondence[colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]])]
+      img.setAttribute("src",bubbleImage(d3.select("#"+nodesTable[i]["id"]).data()[0]))
+      div3=document.createElement("div")
+      div3.className="ml-4"
+      div4=document.createElement("div")
+      div4.className="text-sm font-medium text-gray-900"
+      a=document.createElement("a")
+      a.setAttribute("href", "#");
+      a.setAttribute("class", "relative flex items-start group");
+      //a.id=nodesSelSources[i]["id"]
+      span=document.createElement("span")
+      newText = document.createTextNode(nodesTable[i]["value"]);
+      div4.appendChild(a).appendChild(span).appendChild(newText);
+      //div4.innerHTML = nodesTable[i]["value"];
+      el1=cell.appendChild(div)
+      el1.appendChild(div2).appendChild(img)
+      el1.appendChild(div3).appendChild(div4)
+  
+    }
+    var dvTable = document.getElementById("dvTable");
+    dvTable.innerHTML = "";
+  
+    div=document.createElement("div")    
+    div.className="flex flex-col"
+    div2=document.createElement("div")    
+    div2.className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+    div3=document.createElement("div")    
+    div3.className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
+    var fullTable=dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(table)
+    fullTable.appendChild(thead)
+    fullTable.appendChild(tbody);
+    d3.selectAll(".modal-content tr").on("dblclick",function(){  
+      dblclickTrTable(this)
+    })
+    //.on("mouseover",function(){////////console.log("mouseover a Table")})
+    .on("click",function(){  
+      clickTrTable(this)
+    })
+    .on('contextmenu',function(){  
+      var menuItems=[]
+
+      d3.event.preventDefault();
+      var node=d3.select("#"+this.getAttribute("id")).data()[0]
+      //////////////console.log(node)
+      getMenuItemsContextMenu(node,"table")
+
+    });
+  
+  }
+
 
 }
-
 function findConnectedNodes(idEl){
   var targets=allDataModel.links.filter(function(item) {
     return item.source.id == idEl
@@ -416,37 +596,38 @@ function getNodesFromConnected(connectedNodes){
   return {"nodes":selNodes,"links":selLinks}
 }
 async function addGraph(node,pageX,pageY,origin){
-  var indexRows=[],className;
+  var indexRows=[],className,query="";
   className=node["class"]
-  ////////////////////////////////////////////console.log(addGraph)
+
   for (var i = 0; i < configFile.length; i++) {
-    ////////////////////////////////////////////////////////////////console.log(configFile[i])
-    
-    if(configFile[i]["CLASS"]==nodesClassesCorrespondence[className]){
-      ////////////////////////////////////////////////////console.log(configFile[i])
-      indexRows.push({"position":i,"option":configFile[i]["OPTION"],"optionText":configFile[i]["OPTION_TEXT"]})
+
+    if(configFile[i]["class"]==nodesClassesCorrespondence[className]){
+
+      query=configFile[i]["query"]
+      indexRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  ////////////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[className])
-  ////////////////////////////console.log(indexRows)
-  indexRows=await checkAskResults(indexRows,node)
-  ////////////////////////////////////////////////////console.log(indexRows)
+
+  if(query!=""){
+    indexRows=await checkAskResults(indexRows,node)
+  }
+  ////////////////console.log(indexRows)
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
     await buildBasicGraph(indexRows[0]["position"],node)
-    ////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+    //////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
   }
   return indexRows
 }
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
-  ////////////////////////////////////////////console.log("getMenuItems")
+  ////////////////console.log("getMenuItems")
   if (origin=="table"){
-    ////////////////////////////////////////////////console.log(origin)
+    //////////////////////////////////////////////////////////////////////console.log(origin)
     for (var i = 0; i < items.length; i++) {
-      //////////////////////////////////////////////////console.log(items[i]["position"])
-      //////////////////////////////////////////////////console.log(items[i]["option"])
+      ////////////////////////////////////////////////////////////////////////console.log(items[i]["position"])
+      ////////////////////////////////////////////////////////////////////////console.log(items[i]["option"])
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
     addMenuToTable(node,menuItems)
@@ -459,7 +640,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
         title: items[i]["option"],
         action: (d) => {
           for (var i = 0; i < configFile.length; i++) {
-                if(configFile[i]["OPTION"] == d.title){
+                if(configFile[i]["option"] == d.title){
                   position=i
                 }
               }
@@ -468,31 +649,43 @@ function getMenuItems(items,node,pageX,pageY,origin){
       }
       menuItems.push(element)
     }
-    ////////////////////////////////////////////////console.log(menuItems)
+    //////////////////console.log(menuItems)
     networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick")
   }
   
 }
 function addMenuToTable(node,menuItems){
-  var newText,newCell,element
+  var newText,newCell,element,newRow,span
   d3.selectAll(".menu-table").remove()
-  ////////////////////////////////////console.log(menuItems)
-  ////////////////////////////////////console.log(node)
-  var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex+1;
+  //////////////////////////////////////////////////////////console.log(menuItems)
+  //////////////////////////////////////////////////////////console.log(node)
+  var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex;
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
 
+/*   <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Active
+                </span>
+              </td> */
   for (var i = 0; i < menuItems.length; i++) {
-      var newRow = tbodyRef.insertRow(rowIndex+i);
-      newRow.style.backgroundColor="white"
+      newRow = tbodyRef.insertRow(rowIndex+i);
+      //newRow.style.backgroundColor="white"
       newRow.id="menu-table-"+menuItems[i]["position"]
       newRow.className = 'menu-table';
       newCell = newRow.insertCell();
-
+      newCell.className="px-6 py-4 bg-gray-100 whitespace-nowrap"
       // Append a text node to the cell
+      a=document.createElement("a")
+      a.setAttribute("href", "#");
+      a.setAttribute("class", "relative flex items-start group");
+      //a.id=nodesSelSources[i]["id"]
+      span=document.createElement("span")
+      span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
       newText = document.createTextNode(menuItems[i]["option"]);
-      newCell.appendChild(newText);
-      newCell = newRow.insertCell();
-      newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">';
+      newCell.appendChild(a).appendChild(span).appendChild(newText);
+
+      /* newCell = newRow.insertCell();
+      newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">'; */
       d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("click",function(){        
         clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
       })
@@ -500,38 +693,48 @@ function addMenuToTable(node,menuItems){
 }
 async function clickMenuTable(position,node){
   var element=document.getElementById(node["id"])
-  //////////////////////////////////////////console.log("entra en clickMenuTable")
+  ////////////////////////////////////////////////////////////////console.log("entra en clickMenuTable")
   await buildBasicGraph(position,node)
-  //////////////////////////////////////////console.log(networkGraph.data)
+  ////////////////////////////////////////////////////////////////console.log(networkGraph.data)
   unclickBubble()
   clickBubble(element,networkGraph.data)
 }
 function addContextMenuToTable(node,menuItems){
   var newText,newCell,element,id
   d3.selectAll(".menu-table").remove()
-  //////////////////////////////////console.log(menuItems)
-  var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex+1;
+  ////////////console.log(node)
+  ////////////////////////////////////////////////////////console.log(menuItems)
+  var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex;
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
 
   for (var i = 0; i < menuItems.length; i++) {
       var newRow = tbodyRef.insertRow(rowIndex+i);
-      newRow.style.backgroundColor="white"
+      //newRow.style.backgroundColor="white"
       newRow.id="menu-table-"+menuItems[i]["position"]
       newRow.className = 'menu-table';
       newCell = newRow.insertCell();
-
+      newCell.className="px-6 py-4 bg-gray-100 whitespace-nowrap"
       // Append a text node to the cell
+      a=document.createElement("a")
+      a.setAttribute("href", "#");
+      a.setAttribute("class", "relative flex items-start group");
+      //a.id=nodesSelSources[i]["id"]
+      span=document.createElement("span")
+      span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
       newText = document.createTextNode(menuItems[i]["option"]);
+      newCell.appendChild(a).appendChild(span).appendChild(newText);
+
+/*       newText = document.createTextNode(menuItems[i]["option"]);
       newCell.appendChild(newText);
       newCell = newRow.insertCell();
-      newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">';
+      newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">'; */
       d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("dblclick",function(){ 
-        //////////////////////////////////console.log(this)       
+        ////////////////////////////////////////////////////////console.log(this)       
         id=this.getAttribute("id").replace("menu-table-","")
         action=menuItems.filter(function(d){
           return (d.position==id)
         })[0]["action"]
-        //////////////////////////////////console.log(action)
+        //////////////////console.log(action)
         eval(action)
         //clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
       })
@@ -539,7 +742,8 @@ function addContextMenuToTable(node,menuItems){
 }
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var options,indexRows=[],Items,actionFunction;
-  //////////////////////////////////console.log(origin)
+  ////////console.log(node)
+  ////////console.log(origin)
   if(origin=="table"){
     Items=[{
       option: 'Download data',
@@ -572,70 +776,15 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   }
 
 
-    for (var i = 0; i < configFile.length; i++) {     
-
-      if((configFile[i]["CLASS"]==nodesClassesCorrespondence[node["class"]])&(configFile[i]["TYPE"]!="TREE")){
-        option={
-          "position":i,
-          "option":configFile[i]["OPTION"]
-        }
-        //////////////////////////////////console.log(configFile[i]["CLASS"])
-        indexRows.push(option)
-      }
-      
-    }
-    //////////////////////////////console.log(indexRows)
-    indexRows=await checkAskResults(indexRows,node)
-    //////////////////////////////////console.log(indexRows)
-
-    for (var i = 0; i < indexRows.length; i++) {
-      if(origin=="table"){
-        //addMenuToTable(node,Items)
-        Items.push({
-          "position":indexRows[i]["position"],
-          "option":indexRows[i]["option"],
-          "action":configFile[indexRows[i]["position"]]["FUNCTION"]+"(node)"
-        })
-      }else{
-        Items.push({
-          title: indexRows[i]["option"],
-          position:Items.length+1+i,
-          action: (data,d) => {
-            // TODO: add any action you want to perform
-            //downloadQuery()
-            ////////////////////////////////console.log(data)
-            
-            actionFunction=configFile.filter(function(v){
-              return v["OPTION"]==d.title
-            })[0]["FUNCTION"]+"({"
-            //class:"'+data["class"]
-            for (const [key, value] of Object.entries(data)) {
-              ////////////////////////////////console.log(`${key}: "${value}",`);
-              actionFunction=actionFunction+`${key}: "${value}",`
-            }
-            actionFunction = actionFunction.slice(0, -1);
-            actionFunction=actionFunction+"})"
-            ////////////////////////////////console.log(actionFunction)
-            eval(actionFunction)
-/*             eval(configFile.filter(function(v){
-              return v["OPTION"]==d.title
-            })[0]["FUNCTION"]+"("+data+")") */
-            //configFile[indexRows[i]["position"]]["FUNCTION"]
-          }
-        })
-      }
-    }
     if(origin=="table"){
       addContextMenuToTable(node,Items)
     }else{
       //return Items
       networkGraph.menuItems=Items
-      //////////////////////////////////console.log(networkGraph.menuItems)
-      ////////////////////////////////////console.log(d3.event.pageX)
       networkGraph.menuFactory(pageX-200, pageY-200 , Items, node,"contextMenu");
       //d3.event.preventDefault();
     }  
-    ////////////////////////////////////console.log(Items)
+    //////////////////////////////////////////////////////////console.log(Items)
 }
 function runSparlqQuery(settings){
   return new Promise((resolve, reject) => {
@@ -647,8 +796,8 @@ function runSparlqQuery(settings){
 }
 function runAskSparlqQuery(url,sparqlQuery){
   var prefixes="",settings
-  ////////////////////////////////////console.log(url)
-  //////////////////////////////////////console.log(sparqlQuery)
+  //////////////////////////////////////////////////////////console.log(url)
+  ////////////////////////////////////////////////////////////console.log(sparqlQuery)
   var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   
   if (url=="https://query.wikidata.org/sparql"){
@@ -657,39 +806,41 @@ function runAskSparlqQuery(url,sparqlQuery){
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   }
   
-  ////////////////////////////console.log(settings)
+  //////////////////////////////////////////////////console.log(settings)
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
     results = _data.boolean;
-    ////////////////////////////////////console.log(results)
+    //////////////////////////////////////////////////////////console.log(results)
     resolve(results)
   })
 })
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  //////////////////////////console.log(indexRows)
-  
-  ////////////////////////////////////////////////////////////////console.log(node)
+  ////////////////console.log(indexRows)
+  ////////////////console.log(node)
+  //////////////////////////////////////////////////////////////////////////////////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
-    ////////////////////////////////////////console.log(configFile[indexRows[i]["position"]])
-    sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["QUERY"])
+    //////////////////////////////////////////////////////////////console.log(configFile[indexRows[i]["position"]])
+    sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
-    //////////////////////////console.log(sparqlQuery)
-    ////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
-    parameters=configFile[singleIndexRow["position"]]["PARAMETERS"]
-    ////////////////////////////////////////////////////////////////console.log(parameters)
+    ////////////////////////////////////////////////console.log(sparqlQuery)
+    //////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
+    parameters=configFile[singleIndexRow["position"]]["parameters"]
+    //////////////////////////////////////////////////////////////////////////////////////console.log(parameters)
     if(node["class"]!=undefined){
-      ////////////////////////////////////////////////////console.log(node)
+      //////////////////////////////////////////////////////////////////////////console.log(node)
       if(parameters!=""){
-        parameters=parameters.split(";")
+        //////////////////////console.log(parameters)
+        parameters=get_parameters(parameters)
+        //////////////////////console.log(parameters)
         for (j = 0; j < parameters.length; ++j) { 
-          ////////////////////console.log(node)
-          ////////////////////console.log(node[parameters[j]])
+          //////////////////////////////////////////console.log(node)
+          //////////////////////////////////////////console.log(node[parameters[j]])
           sparqlQuery=sparqlQuery.replace("PARAMETER"+(j+2).toString(), node[parameters[j]]);
         }  
         if(node["class"]=="corporateBody"){
-          ////////////////////////////////////////////////////console.log("node class corporateBody")
+          //////////////////////////////////////////////////////////////////////////console.log("node class corporateBody")
           sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
         }else{
           sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
@@ -701,30 +852,29 @@ async function checkAskResults(indexRows,node){
           sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_code"]);
         }
       }
-      ////////////////////////////////////////////////////////////////console.log(indexRows[i])
+      //////////////////////////////////////////////////////////////////////////////////////console.log(indexRows[i])
     }else{
       sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
     }
-    ////////////////////////////////////////////////////////////////console.log(singleIndexRow)
-    //////////////////////////console.log(sparqlQuery)
-    results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["URL"],sparqlQuery)
-    ////////////////////////////////////console.log(results)
+    //////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
+    ////////////////console.log(sparqlQuery)
+    results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["endpoint_url"],sparqlQuery)
+    ////////////////console.log(results)
     if(results==true){
-      ////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
-      ////////////////////////////////////////////////////////////////console.log(singleIndexRow)
+      //////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
+      //////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
       resultIndexRows.push(singleIndexRow)
     }
   }
-  //////////////////////////console.log(resultIndexRows)
+  ////////////////////////////////////////////////console.log(resultIndexRows)
   return resultIndexRows
 }
 function fromSelectToAskQuery(query){
-  ////////////////////////////console.log(query)
   var mySubString = query.substring(
     query.toLowerCase().lastIndexOf("select"), 
     query.toLowerCase().lastIndexOf("where") - 1 
   );
-  ////////////////////////////console.log(mySubString)
+  //////////////////////////////////////////////////console.log(mySubString)
   query=query.replace(mySubString,"ASK")
   if(query.toLowerCase().lastIndexOf("group by")!=-1){
     mySubString = query.substring(
@@ -733,7 +883,7 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  ////////////////////////////console.log(query)
+  //////////////////////////////////////////////////console.log(query)
 
   if(query.toLowerCase().lastIndexOf("order by")!=-1){
     mySubString = query.substring(
@@ -742,8 +892,8 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  //////////////////////////////console.log(mySubString)
-  //////////////////////////////console.log(query)
+  ////////////////////////////////////////////////////console.log(mySubString)
+  ////////////////////////////////////////////////////console.log(query)
   return query
 }
 function bubbleImage(node){
@@ -764,7 +914,7 @@ function bubbleImage(node){
     if(icon.length>0){
       return icon[0]["FILE"]
     }else{
-      return "images/eu_flag.jpeg";
+      return "images/question_mark.svg";
     }
   }
   
@@ -777,26 +927,26 @@ function zoom() {
 
 
  function findNodeTreemap(nodeId,treeData){
-   //////////////////////////////////////////////////////////////console.log(node)
+   ////////////////////////////////////////////////////////////////////////////////////console.log(node)
    var founded=treeData.filter(function(item) {
-     //////////////////////////////////////////////////////////////console.log(item.id)
-     //////////////////////////////////////////////////////////////console.log(nodeId)
+     ////////////////////////////////////////////////////////////////////////////////////console.log(item.id)
+     ////////////////////////////////////////////////////////////////////////////////////console.log(nodeId)
      return item.id == nodeId
    })
    return founded
  }
 
 function findNodeTreemap(nodeId,treeData){
-  //////////////////////////////////////////////////////////////console.log(node)
+  ////////////////////////////////////////////////////////////////////////////////////console.log(node)
   var founded=treeData.filter(function(item) {
-    //////////////////////////////////////////////////////////////console.log(item.id)
-    //////////////////////////////////////////////////////////////console.log(nodeId)
+    ////////////////////////////////////////////////////////////////////////////////////console.log(item.id)
+    ////////////////////////////////////////////////////////////////////////////////////console.log(nodeId)
     return item.id == nodeId
   })
   return founded
 }
 function getTooltipText(d){
-  //////////////////////////console.log(d)
+  ////////////////////console.log(d)
   var text = `
       <table class="tiptable" style="margin-left: 2.5px">
           <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
@@ -810,24 +960,24 @@ function getTooltipText(d){
   return text;
 }
 function fillLegend(dif,addOne){
-  //////console.log(colorScale.range())
-  //////console.log(colorScale.domain())
-  //////////console.log(networkGraph.colorScale.domain())
-  //////////console.log(networkGraph.colorScale.domain())
+  ////////////////////////////console.log(colorScale.range())
+  ////////////////////////////console.log(colorScale.domain())
+  ////////////////////////////////console.log(networkGraph.colorScale.domain())
+  ////////////////////////////////console.log(networkGraph.colorScale.domain())
 
   if ((addOne)&(dif.length>0)){
     //appendLi()
-    //////console.log("primero if")
+    ////////////////////////////console.log("primero if")
     appendLi(colorScale.domain().length-1,dif[0])
   }else if(!addOne){
-    //////console.log("segundo if")
+    ////////////////////////////console.log("segundo if")
     for (var i = 0; i < colorScale.domain().length; i++) {
-      ////////////////////console.log(colorCorrespondence[colorScale.range()[i]])
+      //////////////////////////////////////////console.log(colorCorrespondence[colorScale.range()[i]])
       appendLi(i,colorScale.domain()[i])
     } 
   }
 
-  ////////////////////console.log(d3.select("#legend"))
+  //////////////////////////////////////////console.log(d3.select("#legend"))
   
 /*   <li class="flex col-span-1 rounded-md shadow-sm">
       <div class="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white bg-pink-600 rounded-l-md">
@@ -841,10 +991,10 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-  //////console.log(textLi)
-  //////console.log(i)
-  //////console.log(colorScale.range())
-  //////console.log(colorScale.range()[i])
+  ////////////////////////////console.log(textLi)
+  ////////////////////////////console.log(i)
+  ////////////////////////////console.log(colorScale.range())
+  ////////////////////////////console.log(colorScale.range()[i])
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -879,7 +1029,7 @@ function autocomplete(inp, arr) {
       currentFocus = -1;
       /*create a DIV element that will contain the items (values):*/
       a = document.createElement("DIV");
-      ////////////////console.log(a)
+      //////////////////////////////////////console.log(a)
       a.setAttribute("id", this.id + "autocomplete-list");
       a.setAttribute("class", "autocomplete-items text-sm");
       /*append the DIV element as a child of the autocomplete container:*/
@@ -976,7 +1126,7 @@ function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
 function insertAfter(newNode, existingNode) {
-  //////////////console.log(newNode)
-  //////////////console.log(existingNode)
+  ////////////////////////////////////console.log(newNode)
+  ////////////////////////////////////console.log(existingNode)
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }

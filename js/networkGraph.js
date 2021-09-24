@@ -30,7 +30,7 @@ NetworkGraph.prototype.initVis = function () {
     vis.data=vis.data.flatData
   }
 
-  //////////////////////////////////////////////////////////console.log(vis.data)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
   vis.width = +d3.select(this.parentElement).node().getBoundingClientRect().width;
   vis.height = +d3.select(this.parentElement).node().getBoundingClientRect().height;
   vis.height=800
@@ -39,6 +39,7 @@ NetworkGraph.prototype.initVis = function () {
   .attr("class", "graph")
   .attr("width", vis.width)
   .attr("height", vis.height)
+  //.on("dblclick", null);
 
   vis.rect=vis.svg.append("rect")
     .attr('class', 'zoom')
@@ -46,6 +47,7 @@ NetworkGraph.prototype.initVis = function () {
     .attr("pointer-events", "all")
     .attr("width", vis.width)
     .attr("height", vis.height)
+    .on("click",function() { unclickBubble() })
     //.call(zoom).on("dblclick.zoom", null)
     .call(d3.zoom()
         //.scaleExtent([-2, 8])
@@ -56,7 +58,6 @@ NetworkGraph.prototype.initVis = function () {
           zoomX=d3.event.transform.x
         }))
         .on("wheel.zoom", null);
-        
 
 
 
@@ -94,19 +95,19 @@ NetworkGraph.prototype.initVis = function () {
     vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
     ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
 
-    ////////console.log("pasa por init")
+    ////////////////////////////////////////////////////////console.log("pasa por init")
     vis.colorScale = d3.scaleOrdinal()
     .domain(nodesClassesShow)
     //.range(d3.schemeCategory20)
     .range(vis.colors.slice(0,nodesClassesShow.length))
-    ////////console.log(vis.colorScale.domain())
-    ////////console.log(vis.colorScale.range())
+    ////////////////////////////////////////////////////////console.log(vis.colorScale.domain())
+    ////////////////////////////////////////////////////////console.log(vis.colorScale.range())
 
-    //////////console.log(nodesClassesShow.length)
-    //////////console.log(vis.colors.slice(0,2))
+    //////////////////////////////////////////////////////////console.log(nodesClassesShow.length)
+    //////////////////////////////////////////////////////////console.log(vis.colors.slice(0,2))
 
-    //////////console.log(vis.colors.slice(0,nodesClassesShow.length))
-    //////////console.log(vis.colorScale.range())
+    //////////////////////////////////////////////////////////console.log(vis.colors.slice(0,nodesClassesShow.length))
+    //////////////////////////////////////////////////////////console.log(vis.colorScale.range())
     colorScale=vis.colorScale
 
     fillLegend([],false)
@@ -136,7 +137,7 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.simulation = d3.forceSimulation();
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.forces.center.y)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.forces.center.y)
   vis.forceProperties = {
     center: {
         x: vis.forces.center.x,
@@ -171,7 +172,7 @@ NetworkGraph.prototype.initVis = function () {
     }
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
   vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
     vis.sizeNode = d3.scaleLinear()
     //.domain([0,vis.maxSizeNode])  // What's in the data
@@ -197,7 +198,7 @@ NetworkGraph.prototype.zoomIn = function () {
                   zoomY=d3.event.transform.y
                   zoomX=d3.event.transform.x
             });
-    //////////////////////////////////////////////////////console.log(d3.select('rect.zoom'))
+    //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d3.select('rect.zoom'))
     zoom.scaleBy(vis.g.transition().duration(750), 1.3);
     
     //d3.select('rect.zoom').call(zoom.scaleBy, 2)
@@ -215,7 +216,7 @@ NetworkGraph.prototype.zoomOut = function () {
                   zoomY=d3.event.transform.y
                   zoomX=d3.event.transform.x
             });
-    //////////////////////////////////////////////////////console.log(d3.select('rect.zoom'))
+    //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d3.select('rect.zoom'))
     zoom.scaleBy(vis.g.transition().duration(750), 1 / 1.3);
     //d3.select('rect.zoom').call(zoom.scaleBy, 2)
 }
@@ -298,12 +299,12 @@ NetworkGraph.prototype.updateForces= function() {
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
   var vis = this,linkId,classElement;
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
   vis.tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-25,0])
   .html(function (d) {
-      ////////////////////////////////////console.log(d)
+      ////////////////////////////////////////////////////////////////////////////////////console.log(d)
       var text=getTooltipText(d)
     return text;
   });
@@ -429,11 +430,11 @@ NetworkGraph.prototype.enterGraph = function(){
   vis.nodeCircleCircle=vis.nodeCircle
       .append("circle")
       .attr("class",function(d){
-        ////////////console.log(d)
+        ////////////////////////////////////////////////////////////console.log(d)
         return d.class + " nodeCircleCircle"
       }) 
       .attr("origId",function(d){
-        ////////////console.log(d)
+        ////////////////////////////////////////////////////////////console.log(d)
         return d.value
       })
       .attr("id",function(d){
@@ -473,9 +474,9 @@ NetworkGraph.prototype.enterGraph = function(){
             return "#a3cbe2"
           }
         }else{
-          ////////console.log(vis.colorScale.domain())
-          ////////console.log(vis.colorScale.range())
-          ////////console.log(nodesClassesCorrespondence[d.class])
+          ////////////////////////////////////////////////////////console.log(vis.colorScale.domain())
+          ////////////////////////////////////////////////////////console.log(vis.colorScale.range())
+          ////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[d.class])
          return vis.colorScale(nodesClassesCorrespondence[d.class]);
         }
         
@@ -485,6 +486,9 @@ NetworkGraph.prototype.enterGraph = function(){
       })
       .on('mouseout', function(d){
         vis.tip.hide(d,this);
+      })
+      .on('clickout', function(d){
+        //////////////////////////////////////console.log("clickout");
       })
       .on("click",function(d){
         var element=this
@@ -506,17 +510,20 @@ NetworkGraph.prototype.enterGraph = function(){
   
       })
       .on('dblclick', function(d){
+        //d3.event.stopPropagation(); 
+        ////////////////////////////////////////console.log("pasa por aquí")
+        d3.event.preventDefault();
         vis.isDblclick = true;
         clearTimeout(vis.dblclickTimeout);
         vis.dblclickTimeout = setTimeout(function () {
           vis.isDblclick = false;
         }, vis.timeoutTiming);
         vis.wrangleData(this,"bubble");
-  
+        return false;
       })
       .on('contextmenu', (d) => {
         d3.event.preventDefault();
-        //////////////////////////console.log(d)
+        //////////////////////////////////////////////////////////////////////////console.log(d)
         vis.menuItems=getMenuItemsContextMenu(d,"bubble")
         createContextMenu(d, vis.menuItems, 100, 100, vis.g);
       })
@@ -538,13 +545,16 @@ NetworkGraph.prototype.enterGraph = function(){
       .attr("width",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
       .attr("height",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
       .on('dblclick', function(d){
+        ////////////////////////////////////////console.log(d3.event)
+        //d3.event.stopPropagation(); 
+        d3.event.preventDefault();
         vis.isDblclick = true;
         clearTimeout(vis.dblclickTimeout);
         vis.dblclickTimeout = setTimeout(function () {
           vis.isDblclick = false;
         }, vis.timeoutTiming);
         vis.wrangleData(this,"bubble");
-  
+        return false;
       })
       .on('mouseover', function(d){
         vis.tip.show(d,this);
@@ -571,9 +581,9 @@ NetworkGraph.prototype.enterGraph = function(){
         d3.select("#"+(this.getAttribute("id").replace("_image","")))
         .transition()
         .attr("r", function(d) { 
-          //////////////console.log(vis.sizeNode.domain())
-          //////////////console.log(vis.sizeNode.range())
-          //////////////console.log( vis.sizeNode(d.number))
+          //////////////////////////////////////////////////////////////console.log(vis.sizeNode.domain())
+          //////////////////////////////////////////////////////////////console.log(vis.sizeNode.range())
+          //////////////////////////////////////////////////////////////console.log( vis.sizeNode(d.number))
           return vis.sizeNode(d.number);})
         d3.select("#"+this.getAttribute("id"))
         .transition()
@@ -603,9 +613,9 @@ NetworkGraph.prototype.enterGraph = function(){
       })
       .on('contextmenu', (d) => {
         d3.event.preventDefault();
-        //////////////////////////console.log(d)
+        //////////////////////////////////////////////////////////////////////////console.log(d)
         getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
-        ////////////////////////////console.log(vis.menuItems)
+        ////////////////////////////////////////////////////////////////////////////console.log(vis.menuItems)
         //createContextMenu(d, vis.menuItems, 100, 100, vis.g);
       })
 
@@ -631,18 +641,39 @@ NetworkGraph.prototype.enterGraph = function(){
       d.fy = null;
     }
     function createContextMenu (d, menuItems, width, height, svgId) {
-      //////////////////////////console.log(menuItems)
+      //////////////////////////////////////////////////////////////////////////console.log(menuItems)
       vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
       d3.event.preventDefault();
     }
-    
+  //////////////////console.log(vis.treeData)
+  vis.allData=allData()
+  //////////////////console.log(vis.allData)
+  function allData(){
+    var data=[]
+    vis.treeData.forEach(function(d){
+      ////////////////////console.log(d)
+      if(!data.includes(d)){
+        data.push(d)
+      }
+      if(d.children){
+        d.children.forEach(function(v){
+          //////////////////console.log(v)
+          if(!data.includes(v)){
+            data.push(v)
+          }
+        })
+      }
+    })
+    //////////////////console.log(data)
+    return data;
+  }
 }
 NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin){
 
   var vis=this
-  ////////////////////////////////////////////////////////////////console.log(x)
-  ////////////////////////////////////////////////////////////////console.log(y)
-  //////////////////////////console.log(menuItems)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(x)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(y)
+  ////////////////////////////////////////////////console.log(menuItems)
   d3.select(".contextMenu").remove();
   // Draw the menu
   vis.g
@@ -662,8 +693,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin){
       .attr('width', 250)
       .attr('height', 30)
       .on('click', (d) => { 
-        //////////////////////////console.log(d)
-        //////////////////////////console.log(origin)
+        //////////////////////////////////////////////////////////////////////////console.log(d)
+        //////////////////////////////////////////////////////////////////////////console.log(origin)
         if (origin=="contextMenu"){
           d.action(data,d)
         }else{
@@ -674,13 +705,16 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin){
   d3.selectAll(".menuEntry")
       .append('text')
       .text((d) => { 
-        //////////////////////////console.log(d)
+        //////////////////////////////////////////////////////////////////////////console.log(d)
         return d.title; })
       .attr('x', x)
       .attr('y', (d, i) => { return y + (i * 30); })
       .attr('dy', 20)
       .attr('dx', 25)
       .on('click', (d) => { 
+        //////////////////////////////////////////////console.log(d)
+        //////////////////////////////////////////////console.log(data)
+
         d.action(data) });
 
   // Other interactions
@@ -698,11 +732,16 @@ NetworkGraph.prototype.exitGraph = function(){
 NetworkGraph.prototype.wrangleData = async function (node,origin) {
   var vis = this;
   var children,pageX,pageY,founded,indexRows=1
-  //////////////////////////////console.log("wrangleData")
+  //////////////////////////////////////////////////////////////////////////////console.log("wrangleData")
+  //////////////////////////////////////console.log(node)
+  //////////////////////////////////////console.log(origin)
   //Node always exist because we call wrangleData when clicking a bubble or clicking the table with the labels
   //Look for the data from the element by looking at the data in the treeData
   //If it exists there will be children for the node
   founded=findNodeTreemap(node.getAttribute("id").replace("_image",""),vis.treeData)
+  //////////////////////////////////////////////console.log(vis.treeData)
+  //////////////////////////////////////////////console.log(node.getAttribute("id"))
+  //////////////////////////////////////console.log(founded)
   if (origin=="table"){
     pageX=d3.select("#"+node.getAttribute("id").replace("_image","")).data()[0]["x"]
     pageY=d3.select("#"+node.getAttribute("id").replace("_image","")).data()[0]["y"]
@@ -711,6 +750,7 @@ NetworkGraph.prototype.wrangleData = async function (node,origin) {
     pageY=d3.event.pageY
   }
   if(founded.length==0){
+    ////////////////////////////////////////console.log("length 0")
     indexRows=await addGraph(d3.select("#"+(node.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,origin)
     vis.data=flatten(vis.treeData).flatData
     vis.initializeSimulation();
@@ -718,6 +758,8 @@ NetworkGraph.prototype.wrangleData = async function (node,origin) {
     vis.exitGraph()
     
   }else{
+    ////////////////////////////////////////console.log("children")
+
     if (founded[0]["children"]){
        if (node.getAttribute("root")=="1"){
           children=founded[0]["children"]
@@ -751,18 +793,20 @@ NetworkGraph.prototype.wrangleData = async function (node,origin) {
         vis.exitGraph()
 
     }
+    
   }
+  //////////////////console.log(vis.treeData)
   return indexRows
 };
 
 NetworkGraph.prototype.collapseAll = function () {
   var vis = this;
   var children;
-  ////////////////console.log(d3.selectAll('[root="1"]'))
-  ////////////////console.log(vis.treeData)
+  ////////////////////////////////////////////////////////////////console.log(d3.selectAll('[root="1"]'))
+  ////////////////////////////////////////////////////////////////console.log(vis.treeData)
   //children=d3.select('[root="1"]').data()[0]["children"]
-  ////////////////console.log(children)
-  ////////////////console.log(vis.data.nodes[0]["children"])
+  ////////////////////////////////////////////////////////////////console.log(children)
+  ////////////////////////////////////////////////////////////////console.log(vis.data.nodes[0]["children"])
   children=vis.data.nodes[0]["children"]
   children.forEach(function(d){
       vis.collapseBranch(d)
@@ -805,11 +849,11 @@ NetworkGraph.prototype.collapseBranch = function (node){
     if (nodes.includes(vis.treeData[i]["id"])){
       vis.treeData[i]._children = vis.treeData[i].children;
       delete vis.treeData[i].children;
-      ////////////////////////////////////////////////////console.log(vis.treeData[i]["id"])
-      ////////////////////////////////////////////////////console.log(node.id)
+      ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.treeData[i]["id"])
+      ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node.id)
       if(vis.treeData[i]["id"]!=node.id){
         vis.treeData[i]["hidden"]=true
-        ////////////////////////////////////////////////////console.log(vis.treeData[i])
+        ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.treeData[i])
       }
     }
   }
@@ -887,23 +931,22 @@ NetworkGraph.prototype.expandLevelBranch = function (node){
     }
   }
 }
-NetworkGraph.prototype.applyFilter = function (values,property){
+NetworkGraph.prototype.applyFilterCopy = function (values,property,typeComp,multiple){
   var vis = this;
   //var treeData=[]
-  ////////////////////////////////////////console.log(values)
-  ////////////////////////////////////////////////////console.log(property)
-  ////////////////////////////////////////////console.log(vis.treeData)
+  //typeComp == "equal","greater","lower"
+  //multiple == true or false
+  //////////////////////////////////////////console.log(values)
+  //////////////////////////////////////////console.log(property)
+  //////////////////////////////////////////console.log(vis.treeData)
   vis.treeData.forEach(function(d){
-    ////////////////////////////////////////////console.log(d)
+    //////////////////////////////////////////console.log(d)
     if(d[property]!=undefined){
-      //////////////////////////////////////////console.log(d[property])
       if(values.includes("All")){
         if(d["hidden"]){
-          //////////////////////////////////////////console.log(v)
           delete d.hidden
         }
       }else if(!values.includes(d[property])){
-          //////////////////////////////////////////console.log(v)
           d["hidden"]=true
       }else{
           delete d.hidden
@@ -911,26 +954,27 @@ NetworkGraph.prototype.applyFilter = function (values,property){
     }
     if(d.children!=undefined){
       d.children.forEach(function(v){
-        ////////////////////////////////////////////console.log(v)
+        //////////////////////////////////////////console.log(v)
         if(d["hidden"]==true){
           v["hidden"]=true
         }else{
           if(v[property]!=undefined){
+            //////////////////////////////////////////console.log(values)
             //////////////////////////////////////////console.log(v[property])
             if(values.includes("All")){
               if(v["hidden"]){
-                //////////////////////////////////////////console.log(v)
+                //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
                 delete v.hidden
               }
             }else if(!values.includes(v[property])){
-                //////////////////////////////////////////console.log(v)
+                //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
                 v["hidden"]=true
             }else{
                 delete v.hidden
             }
           }else{
             if(v["hidden"]){
-              //////////////////////////////////////////console.log(v)
+              //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
               delete v.hidden
             }
           }
@@ -938,16 +982,635 @@ NetworkGraph.prototype.applyFilter = function (values,property){
         
       })
     }
-    ////////////////////////////////////////////////////console.log(d[property])
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d[property])
     
   })
-  ////////////////////////////////////////console.log(vis.treeData)
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(vis.treeData)
   vis.data=flatten(vis.treeData).flatData
-  ////////////////////////////////////////console.log(vis.data)
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.enterGraph()
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.exitGraph()
+}
+NetworkGraph.prototype.applyFilter = function (values,property,typeComp,typeField,multiple){
+  var vis = this;
+  //var treeData=[]
+  //typeComp == "==",">","<"
+  //multiple == true or false
+  //////////////////////////////////////////console.log(values)
+  //////////////////////////////////////////console.log(property)
+  //////////////////////////////////////////console.log(vis.treeData)
+  //////////////////////////////////////////console.log(typeField)
+  vis.treeData.forEach(function(d){
+    //////////////////////////////////////////console.log(d)
+    if(d[property]!=undefined){
+      if(typeField=="date"){
+        if (typeComp=="<>"){
+          values=[document.getElementById(property+"_start").value,document.getElementById(property+"_end").value]
+          if(eval("new Date('"+values[0]+"') < new Date('"+d[property]+"')") & eval("new Date('"+values[1]+"') > new Date('"+d[property]+"')")){
+            delete d.hidden
+          }else{
+            d["hidden"]=true 
+          }
+        }else{
+          //////////////////////////////////////console.log(eval("new Date('"+values+"')"+typeComp+"new Date('"+d[property]+"')"))
+          if(eval("new Date('"+values+"')"+typeComp+"new Date('"+d[property]+"')")){
+            delete d.hidden
+          }else{
+            d["hidden"]=true 
+          }
+        }
+      }else if(typeField=="dropdown"){
+        if(values.includes("All")){
+          if(d["hidden"]){
+            delete d.hidden
+          }
+        }else if(!values.includes(d[property])){
+            d["hidden"]=true
+        }else{
+            delete d.hidden
+        }
+      }else{
+        if(values=="All"){
+          if(d["hidden"]){
+            delete d.hidden
+          }
+        }else if(eval(values+typeComp+d[property])){
+          delete d.hidden
+        }else{
+          d["hidden"]=true 
+        }
+        ////////////////////////////////////////////console.log(eval("new Date("+values+")"+typeComp+"new Date("+d[property]+")"))
+      }
+
+      /* if(values.includes("All")){
+        if(d["hidden"]){
+          delete d.hidden
+        }
+      }else if(!values.includes(d[property])){
+          d["hidden"]=true
+      }else{
+          delete d.hidden
+      } */
+    }
+    if(d.children!=undefined){
+      d.children.forEach(function(v){
+        //////////////////////////////////////////console.log(v)
+        //////////////////////////////////////////console.log(property)
+        //////////////////////////////////////////console.log(d["hidden"])
+        if(d["hidden"]==true){
+          v["hidden"]=true
+        }else{
+          if(v[property]!=undefined){
+            //////////////////////////////////////////console.log(v)
+            if(typeField=="date"){
+              ////////////////////////////////////////console.log("new Date('"+values+"')"+typeComp+"new Date('"+v[property]+"')")
+              ////////////////////////////////////////console.log(eval("new Date('"+values+"')"+typeComp+"new Date('"+v[property]+"')"))
+              if (typeComp=="<>"){
+                values=[document.getElementById(property+"_start").value,document.getElementById(property+"_end").value]
+                if(eval("new Date('"+values[0]+"') < new Date('"+v[property]+"')") & eval("new Date('"+values[1]+"') > new Date('"+v[property]+"')")){
+                  delete v.hidden
+                }else{
+                  v["hidden"]=true 
+                }
+              }else{
+                if(eval("new Date('"+values+"')"+typeComp+"new Date('"+v[property]+"')")){
+                  delete v.hidden
+                }else{
+                  v["hidden"]=true 
+                }
+              }  
+            }else if(typeField=="dropdown"){
+              if(values.includes("All")){
+                if(v["hidden"]){
+                  //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
+                  delete v.hidden
+                }
+              }else if(!values.includes(v[property])){
+                  //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
+                  v["hidden"]=true
+              }else{
+                  delete v.hidden
+              }
+            }else{
+              //////////////////////////////////////////console.log(values)
+              //////////////////////////////////////////console.log(v[property])
+              ////////////////////////////////////////////console.log(eval(values+typeComp+v[property]))
+              //////////////////////////////////////////console.log(values+typeComp+v[property])
+              if(values=="All"){
+                if(v["hidden"]){
+                  //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
+                  delete v.hidden
+                }
+              }else if(eval(values+typeComp+v[property])){
+                  //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
+                  delete v.hidden
+              }else{
+                v["hidden"]=true
+              }
+              
+            }
+          }else{
+            if(v["hidden"]){
+              //////////////////////////////////////////////////////////////////////////////////////////console.log(v)
+              delete v.hidden
+            }
+          }
+        }
+        
+      })
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d[property])
+    
+  })
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(vis.treeData)
+  vis.data=flatten(vis.treeData).flatData
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  vis.initializeSimulation();
+  vis.dataJoinGraph()
+  vis.enterGraph()
+  vis.initializeSimulation();
+  vis.dataJoinGraph()
+  vis.exitGraph()
+}
+
+NetworkGraph.prototype.applyFilter2 = function (filters,classFilter,property){
+  function filterText(f,node){
+    var hidden=false;
+    if (node[f.property].indexOf(f.values[0]) !== -1){
+      hidden=true
+    }else{
+      hidden=false
+    }
+    return hidden
+  }
+  function filterNumber(f,node){
+    var hidden=false;
+    ////console.log("filter Number")
+    ////console.log(f.values)
+    if(f.values[0]==""){
+      hidden=false;
+    }else{
+      if(f.operator=="<>"){
+        if(eval(f.values[0] +"<"+ node[f.property]) & eval(f.values[1]+">"+node[f.property])){
+            hidden=false
+        }else{
+            hidden=true
+        }
+      }else{
+        ////console.log(f.values[0]+f.operator+node[f.property])
+        if(eval(f.values[0]+f.operator+node[f.property])){
+          hidden=false
+        }else{
+          hidden=true
+        }
+      }
+    }
+
+    return hidden
+  }
+  function filterDropdown(f,node){
+    var hidden=false;
+    //////////////////////////////console.log(node[f.property])
+    //////////////////////////////console.log(f.values)
+    ////////////////////////////////console.log(f.values.includes(node[f.property]))
+    if(f.values.includes("All")){
+      if(nodes["hidden"]){
+        hidden=false
+      }
+    }else if(!f.values.includes(node[f.property])){
+        hidden=true
+    }else{
+        hidden=false
+    }
+    //////////////////////////////console.log(hidden)
+    return hidden
+  }
+  function filterDate(f,node){
+    var hidden=false;
+    ////console.log("filterDate")
+    ////console.log(f.values[0])
+    if(f.values[0]==""){
+      ////console.log("hidden false")
+      hidden=false
+    }else{
+      if(f.operator=="<>"){
+        if(eval("new Date('"+f.values[0]+"') < new Date('"+node[f.property]+"')") & eval("new Date('"+f.values[1]+"') > new Date('"+node[f.property]+"')")){
+          hidden=false;
+        }else{
+          hidden=true
+        }
+      }else{
+        ////console.log("new Date('"+f.values[0]+"')"+f.operator+"new Date('"+node[f.property]+"')")
+        //////////////////////////////////////console.log(eval("new Date('"+values+"')"+typeComp+"new Date('"+d[property]+"')"))
+        if(eval("new Date('"+f.values[0]+"')"+f.operator+"new Date('"+node[f.property]+"')")){
+          hidden==false
+        }else{
+          hidden=true 
+        }
+      }
+    }
+    return hidden
+  }
+
+  function check_filters(node,filters){
+    var hidden=false,hiddenNodes=[];
+    ////console.log(node)
+    filters.forEach(function (f){
+      //////console.log(f)
+      //////////////console.log(node)
+      //////////////console.log(filters)
+      ////console.log(f)
+      ////console.log(f.values[0])
+      ////console.log(f.filter_type)
+      if(f.class==node.class){
+        if((f.values[0]!="")|(f.filter_type!="dropdown")){
+        ////console.log("entra if")
+        ////console.log(hiddenNodes.includes(node.id))
+          if(!hiddenNodes.includes(node.id)){
+          //if(f.class==node.class){
+            //////////////////////////////////console.log(node)
+            if(node[f.property]!=undefined){
+              if(f.filter_type=="date"){
+                hidden=filterDate(f,node)
+              }else if(f.filter_type=="dropdown"){
+                hidden=filterDropdown(f,node)
+              }else if(f.filter_type=="number"){
+                hidden=filterNumber(f,node)
+              }else if(f.filter_type=="text"){
+                hidden=filterText(f,node)
+              }
+              if(hidden){
+                hiddenNodes.push(node.id)
+              }
+              //{"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":">"
+              //hidden=false
+            }
+          }
+        }
+      }
+      ////console.log(hidden)
+      ////////////////////////console.log(hiddenNodes)
+    })
+    return hidden
+  }
+  function check_one_filter(node,filters,classFilter,property){
+    var hidden=false;
+    ////////////////////////////////console.log(node)
+    ////////////////////////////////console.log(filters)
+    ////////////////////////////////console.log(classFilter)
+    ////////////////////////////////console.log(property)
+
+    ////////////////////////////console.log(selectedFilter)
+    ////////////////////////////console.log(node)
+    if(selectedFilter.class==node.class){
+      //////////////////////////////console.log(node[selectedFilter.property])
+      if(node[selectedFilter.property]!=undefined){
+        if(selectedFilter.filter_type=="date"){
+          hidden=filterDate(selectedFilter,node)
+        }else if(selectedFilter.filter_type=="dropdown"){
+          hidden=filterDropdown(selectedFilter,node)
+        }else if(selectedFilter.filter_type=="number"){
+          hidden=filterNumber(selectedFilter,node)
+        }else if(selectedFilter.filter_type=="text"){
+          hidden=filterText(selectedFilter,node)
+        }
+      }
+    }
+
+    return hidden
+  }
+  function changeValuesFilters(){
+    var nodes,values=[],changedValue;
+    //////////////////console.log("changeValuesFilters")
+    visibilityFilters(classFilter)
+    filters.forEach(function (f){
+      //////////////////console.log(f)
+      values=[]
+      if ((f.filter_type=="dropdown")|(f.filter_type=="number")){
+        if((classFilter!=f.class)|(property!=f.property)){
+          ////////////////////console.log(f.values[0])
+          //if((f.parentFilter=="")|(f.values[0]="All")){
+/*           if(f.parentFilter==""){
+            nodes=vis.data["nodes"].filter(function(item) {
+              return ((item.class == f.class)&(selectedFilter.values[0]==item[selectedFilter.property]))
+            })
+            ////////////////////console.log(nodes)
+          }else{ */
+            ////////////////////console.log(f)
+            console.log(vis.allData)
+            console.log(f.class)
+            console.log(selectedFilter)
+            nodes=vis.allData.filter(function(item) {
+              console.log(item.class)
+              //console.log(f.class)
+              //console.log(selectedFilter.values[0])
+              console.log(item[selectedFilter.property])
+              return ((item.class == f.class)&(selectedFilter.values[0]==item[selectedFilter.property]))
+            })
+         // } 
+          nodes.forEach(function(n){
+            //console.log(n)
+            if(!(values.includes(n[f.property]))){
+              //console.log(n[f.property])
+              values.push(n[f.property])
+            }
+          })
+
+          //////////////////console.log(f.filter_type)
+          //////////////////console.log(f.property)
+          //console.log(values)
+          changedValue=addValuesToFilter(f.filter_type,f.property,values)
+          ////////////console.log(changedValue)
+          ////////////console.log(f)
+          f.values=[changedValue]
+        }
+      }
+    })
+  }
+  function addValuesToFilter(filterType,property,values){
+    var selectLength,changedValue=""
+    ////////////////console.log("addValuesToFilter")
+    //console.log(property)
+    if(filterType=="dropdown"){
+      var option,options=[];
+      var select=document.getElementById(property)
+      ////////////////////////console.log(select)
+      ////////////////////////console.log(select.value)
+  
+      /* $("#"+property).empty()
+      if (values.length>1){
+        values.unshift("All")
+      }
+      for (const val of values) {
+          option = document.createElement("option");
+          option.value = val;
+          option.text = val.charAt(0).toUpperCase() + val.slice(1);
+          select.appendChild(option);
+      } */
+      //console.log(values[0])
+      //console.log(select.value)
+      if((select.value=="")|(select.value=="All")){
+        if(values[0]==undefined){
+          select.value="All"
+        }else{
+          select.value=values[0]
+        }
+      }else{
+        select.value=values[0]
+      }
+      //throw new Error("Something went badly wrong!");
+      //////////////console.log(filters)
+      changedValue=select.value
+    }
+    //filters.filter
+    return changedValue
+    }
+  function visibilityFilters(classFilterChanged){
+    var values,childNodes;
+    //////////////////console.log(networkGraph.data)
+    //////////////////console.log(document.getElementsByClassName("classFilter"))
+    var classFilter=document.getElementsByClassName("classFilter")
+    filters.forEach(function(f){
+      ////////////console.log(f)
+      ////////////console.log(f.class)
+      ////////////////console.log(document.getElementById(f.class+"_filters").parentNode.style.display)
+      if(document.getElementById(f.class+"_filters").parentNode.style.display=="none"){
+        /* values=vis.data.nodes.filter(function(v){
+          return v[property]!=""
+        }) */
+        ////////////console.log(document.getElementById(f.class+"_filters").childNodes)
+/*         document.getElementById(f.class+"_filters").childNodes.forEach(function (d){
+          ////////////console.log(d)
+          if(d.id.endsWith("_label")){
+            ////////////console.log(d.id)
+            //////////console.log(vis.data.nodes)
+            values=vis.data.nodes.filter(function(v){
+              return v[d.id.replace("_label","")]!=""
+            })
+            ////////////console.log(values)
+          }
+        })  */
+        document.getElementById(f.class+"_filters").parentNode.style.display="block"
+      }
+    })
+    for (let c of classFilter) {
+      //////////////////console.log(c.childNodes);
+      c.childNodes.forEach(function(ch){
+        //////////////////console.log(ch)
+        if(classFilterChanged!=ch.id.split("_")[0]){
+          if(ch.id){
+            //////////////////console.log(ch.id)
+            resultFilterNodes=networkGraph.data.nodes.filter(function(n){
+              return n.class==ch.id.split("_")[0]
+            })
+            //////////////////console.log(resultFilterNodes)
+            if(resultFilterNodes.length==0){
+              c.style.display = "none";
+            }
+          }
+        }
+      })
+    }
+    //////////////////console.log(filters)
+    
+/*     classFilter.forEach(function (d){
+      ////////////////console.log(d.getElementsByTagName("div"))
+    }) */
+  }
+function newValuesFilters(classFilterChanged,property){
+    var values,childNodes,classNotEmptyFilter=[],classHasFilter=[],newValues=[];
+    //////////////////console.log(networkGraph.data)
+    console.log(classFilterChanged)
+    console.log(property)
+    //////////////////console.log(document.getElementsByClassName("classFilter"))
+    //var classFilter=document.getElementsByClassName("classFilter")
+    filters.forEach(function(f){
+      console.log(f)
+      /* newValues=[]
+      if((f.filter_type=="dropdown")&(f.property!=property)){
+        var option,options=[];
+        var select=document.getElementById(f.property)
+        console.log(vis.data.nodes)
+        vis.data.nodes.forEach(function (n){
+          console.log(n[f.property])
+          if (n[f.property]){
+            console.log(n[f.property])
+            newValues.push(n[f.property])
+          }
+        })
+        newValues=[...new Set(newValues)]
+
+        if(newValues.length>0){
+          select.value=newValues[0]
+          f.values=newValues[0]
+        }
+      } */
+    //}
+
+      document.getElementById(f.class+"_filters").childNodes.forEach(function (d){
+        ////////console.log(d)
+        if(d.id.endsWith("_label")){
+          ////////////console.log(d.id)
+          //////////console.log(vis.data.nodes)
+          values=vis.data.nodes.filter(function(v){
+            ////////console.log(v[d.id.replace("_label","")])
+            return ((v[d.id.replace("_label","")]!="")&(v[d.id.replace("_label","")]!=undefined))
+          })
+          ////////console.log(values)
+          ////////console.log(document.getElementById(d.id))
+          ////////console.log(document.getElementById(d.id.replace("_label","")))
+          //////////console.log(document.getElementById(d.id.replace("_selection_label","")))
+          ////////console.log(values)
+          if((values.length==0)&(f.class!=classFilterChanged)){
+            document.getElementById(d.id).style.display="none"
+            if(document.getElementById(d.id.replace("_label",""))){
+              document.getElementById(d.id.replace("_label","")).style.display="none"
+            }else if (document.getElementById(d.id.replace("_selection_label",""))){
+              document.getElementById(d.id.replace("_selection_label","")).style.display="none"
+            }
+          }else{
+            document.getElementById(d.id).style.display="block"
+            if(document.getElementById(d.id.replace("_label",""))){
+              document.getElementById(d.id.replace("_label","")).style.display="block"
+            }else if (document.getElementById(d.id.replace("_selection_label",""))){
+              document.getElementById(d.id.replace("_selection_label","")).style.display="block"
+            }
+            //document.getElementById(d.id.replace("_label","")).style.display="block"
+            classNotEmptyFilter.push(f.class)
+          }
+          classHasFilter.push(f.class)
+        }
+      }) 
+        //document.getElementById(f.class+"_filters").parentNode.style.display="block"
+      //}
+    })
+    classNotEmptyFilter=[...new Set(classNotEmptyFilter)]
+    classHasFilter=[...new Set(classHasFilter)]
+    var elmts = classHasFilter.filter(f => !classNotEmptyFilter.includes(f));
+    //diff = classNotEmptyFilter.filter(function(x) { return classHasFilter.indexOf(x) < 0 })
+    ////////console.log(elmts)
+    //////////console.log(diff)
+    ////////console.log(classNotEmptyFilter)
+    ////////console.log(classHasFilter)
+    classHasFilter.forEach(function(d){
+      document.getElementById(d+"_filters").parentNode.style.display="block"
+    })
+    elmts.forEach(function(d){
+      document.getElementById(d+"_filters").parentNode.style.display="none"
+    })
+    /* classHasFilterforEach(function(d){
+      document.getElementById(d+"_filters").parentNode.style.display="block"
+    }) */
+    /* filters.forEach(function (f){
+
+    }) */
+    
+  }
+  function changeValuesFilter(filterType,property,values){
+    var selectLength,changedValue=""
+    ////////////////console.log("addValuesToFilter")
+    //console.log(property)
+    if(filterType=="dropdown"){
+      var option,options=[];
+      var select=document.getElementById(property)
+
+      if((select.value=="")|(select.value=="All")){
+        if(values[0]==undefined){
+          select.value="All"
+        }else{
+          select.value=values[0]
+        }
+      }else{
+        select.value=values[0]
+      }
+
+      changedValue=select.value
+    }
+    return changedValue
+    }
+  //////console.log("empieza aquí")
+  var vis = this,parentHidden=false,position,selectedFilter;
+  
+  vis.hiddenNodes=[]
+  vis.filters=filters
+  property=classFilter+"_"+property
+  selectedFilter=filters.filter(function(item) {
+    return ((item.class == classFilter)&(item.property == property))
+  })[0]
+  changeValuesFilters()
+  //visibilityFilters(classFilter)
+  //console.log(filters)
+  //throw new Error("Something went badly wrong!");
+  //////////////////console.log(classFilter)
+  //////////////////console.log(property)
+  //////////////////console.log(selectedFilter)
+  //for (var i = vis.treeData.length - 1; i >= 0; i--) {
+  //////////////////console.log(vis.treeData)
+  vis.treeData.forEach(function(t){
+    parentHidden=false
+    ////////////////console.log(t)
+    ////////////////console.log(hiddenNodes)
+    if(vis.hiddenNodes.includes(t.id)){
+      t.hidden=true
+      parentHidden=true
+    }else{
+      //if(check_one_filter(t,filters,classFilter,property)){
+      if(check_filters(t,filters)){
+        t.hidden=true
+        parentHidden=true
+        if(!vis.hiddenNodes.includes(t.id)){
+          vis.hiddenNodes.push(t.id)
+        }
+        ////////////////console.log(t)
+        ////////////////console.log(hiddenNodes)
+      }else{
+        delete t.hidden
+      }
+    }
+    
+    if(t.children!=undefined){
+      t.children.forEach(function(v){
+        //////console.log(v)
+        //////console.log(parentHidden)
+        if(parentHidden){
+          v["hidden"]=true
+          if(!vis.hiddenNodes.includes(v.id)){
+            vis.hiddenNodes.push(v.id)
+          }
+        }else{
+          //if(check_one_filter(v,filters,classFilter,property)){
+          if(check_filters(v,filters)){  
+            //////console.log("hidden true segun filters")
+            //////////////console.log(v)
+            v["hidden"]=true
+            if(!vis.hiddenNodes.includes(v.id)){
+              vis.hiddenNodes.push(v.id)
+            }
+          }else{
+            delete v.hidden
+          }
+        }
+        
+      })
+    }
+    
+  })
+  //////////////////////////////console.log(vis.visibleNodes)
+  //changeValuesFilters()
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(vis.treeData)
+  vis.data=flatten(vis.treeData).flatData
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  vis.initializeSimulation();
+  vis.dataJoinGraph()
+  vis.enterGraph()
+  vis.initializeSimulation();
+  vis.dataJoinGraph()
+  vis.exitGraph()
+  ////////////////console.log(classFilter)
+  newValuesFilters(classFilter,property)
+  //changeValuesFilters()
 }

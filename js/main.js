@@ -1,16 +1,30 @@
 
-var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,nodesSel=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[];
-
+var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],graphHistory=[],filtersInGraph=[];
+  //window.onclick = function(event){
+    /* if(!(event.target.className.baseVal=="circleClass")){
+        d3.selectAll('circle').style('fill', function(d) {
+        return d.color;
+         })
+    } */
+    //////////////////console.log("click window")
+  //}
+  //d3.select("svg").on("click",function(){
+    //////////////////console.log("click outside")
+  //})
   function dataViz(){
     var rowDataConfig;
-          d3.tsv("../config_vinalod/config_basicMode.txt",function(dataConfig){
-            d3.tsv("txt/graph_icons.txt",function(dataIcons){
-              filesIcons=dataIcons;
-              rowDataConfig=fillDropDown(dataConfig)
-              configFile=dataConfig
-              //////////////////console.log(configFile)
-              buildBasicGraph(rowDataConfig)
-            })
+          d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
+            //d3.json("../config_vinalod/config_basicMode_notTree.json",function(dataConfig_notTree){
+              d3.tsv("txt/graph_icons.txt",function(dataIcons){
+                filesIcons=dataIcons;
+                //////////////////////////console.log(dataConfig)
+                rowDataConfig=fillDropDown(dataConfig)
+                configFile=dataConfig
+                //configFileNotTree=dataConfig_notTree
+                
+                buildBasicGraph(rowDataConfig)
+              })
+            //})
           })
   }
   function updateAll(){
@@ -95,36 +109,38 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
   
   function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip;
-    hierarchy=getHierarchy(hierarchy)
+    hierarchy=get_hierarchy(hierarchy)
+    ////////////////////////////////console.log(hierarchy)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(classes)
       nodesClassesShow=Object.values(nodesClassesCorrespondence)
-      //////////////////////////console.log(hierarchy)
+      //////////////////////////////////////////////////////////console.log(hierarchy)
       classTooltip=hierarchy[0]
     }else{
-      //////////////////////////console.log(element)
-      //////////////////////////console.log(nodesClassesCorrespondence[element["class"]])
+      //////////////////////////////////////////////////////////console.log(element)
+      //////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[element["class"]])
       classTooltip=nodesClassesCorrespondence[element["class"]]
     }
-    //console.log(hierarchy)
-    properties=getProperties(properties)
+    //////////////////////////////////console.log(hierarchy)
+    properties=get_properties(properties_full)
+    //property_names=get_property_names(properties_full)
     tooltip=getTooltip(classTooltip,option_text)
-    //console.log(tooltip)
-    //////////////////////////////////console.log(results)
-    ////////////////////////////////////////////////////////console.log(hierarchy[0])
+    //////////////////////////////////console.log(tooltip)
+    //////////////////////////////////////////////////////////////////console.log(results)
+    ////////////////////////////////////////////////////////////////////////////////////////console.log(hierarchy[0])
     root=results[0][hierarchy[0]]["value"]
     results.forEach(function(r){
-      //////////////////////////////////////////////////////////////////console.log(r)
+      //////////////////////////////////////////////////////////////////////////////////////////////////console.log(r)
       for (i = 0; i < hierarchy.length-1; ++i) {    
-        //////////////////////////////console.log(hierarchy[i])
+        //////////////////////////////////////////////////////////////console.log(hierarchy[i])
         if((!procNode[i])||(procNode[i]!=r[hierarchy[i]].value)){  
           if(element!=undefined){
             node=element
           }else{
             node={"id":genRandomString(),"value":r[hierarchy[i]].value,"shape":1,"class":hierarchy[i]}
           }
-          //////////////////////////////////////////////////////console.log(node)
+          //////////////////////////////////////////////////////////////////////////////////////console.log(node)
           if(r[hierarchy[i]].value==root){
             node["root"]=true
             if(element!=undefined){
@@ -150,16 +166,16 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
               node[k]=r[k].value
             })
           }
-          ////////////////////////console.log(node)
+          ////////////////////////////////////////////////////////console.log(node)
           nodes.push(node)
-          ////////////////////////////////////////////////console.log(node)
-          //////////////////////////////////////////////////////////////////console.log(position[i-1])
+          ////////////////////////////////////////////////////////////////////////////////console.log(node)
+          //////////////////////////////////////////////////////////////////////////////////////////////////console.log(position[i-1])
           if(position[i-1]){
-            ////////////////////////////////////////////////////////////console.log(node)
+            ////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
             treeData[position[i-1]-1]["children"].push(node)
           }
           if(i!=(hierarchy.length-1)){
-            ////////////////////////////////////////////////////////////console.log(node)
+            ////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
             node["children"]=[]
             position[i]=treeData.push(node)
           }
@@ -168,10 +184,10 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
         
       } 
       if (r[hierarchy[hierarchy.length-1]]!=undefined){
-        ////////////////////////////////////////////////////////////console.log(r[hierarchy[hierarchy.length-1]])
+        ////////////////////////////////////////////////////////////////////////////////////////////console.log(r[hierarchy[hierarchy.length-1]])
         value=r[hierarchy[hierarchy.length-1]].value
         node={"id":genRandomString(),"value":value,"shape":1,"class":hierarchy[hierarchy.length-1]}
-        //////////////////////////////////////////////////////console.log(node)
+        //////////////////////////////////////////////////////////////////////////////////////console.log(node)
         if(properties[hierarchy[hierarchy.length-1]]){
               properties[hierarchy[hierarchy.length-1]].forEach(function(k){
                 if(r[k]==undefined){
@@ -183,21 +199,21 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
         //}else{
         }
         //tooltip=getTooltip(hierarchy[i])
-        //////////////////////////console.log(hierarchy)
-        //////////////////////////console.log(tooltip)
+        //////////////////////////////////////////////////////////console.log(hierarchy)
+        //////////////////////////////////////////////////////////console.log(tooltip)
         node["tooltip"]=getTooltipNode(tooltip,node["class"])
-        ////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////console.log(node)
         nodes.push(node)
-        ////////////////////////////////////////////////////////////////console.log(nodes)
+        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodes)
         treeData[position[position.length-1]-1]["children"].push(node)
-        //////////////////////////////////////////////////console.log(node)
-        ////////////////////////////////////////////////////////////////console.log(position[position.length-1]-1)
-        ////////////////////////////////////////////////////////////////console.log(treeData[position[position.length-1]-1]["children"])
+        //////////////////////////////////////////////////////////////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(position[position.length-1]-1)
+        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData[position[position.length-1]-1]["children"])
       }
       })
-      ////////////////////////////////////////////////////////////////console.log(treeData)
+      ////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData)
       flatData=flatten(treeData)
-      //////////////////////////////////////////////////////////////console.log(flatData)
+      //////////////////////////////////////////////////////////////////////////////////////////////console.log(flatData)
       return flatData
   }
 
@@ -287,14 +303,14 @@ async function showTimeLine(data){
   var rowDataConfig,results,node,dataTimeline=[];
 
   for (i = 0; i < configFile.length; ++i) { 
-    if((configFile[i]["CLASS"]==data["class"])&&(configFile[i]["TYPE"]=="TIMELINE")){
+    if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="TIMELINE")){
       rowDataConfig=i
       break;
     }
   }
   node=data
-  url=configFile[rowDataConfig]["URL"]
-  sparqlQuery=configFile[rowDataConfig]["QUERY"]
+  url=configFile[rowDataConfig]["endpoint_url"]
+  sparqlQuery=configFile[rowDataConfig]["query"]
   prefixes=""
   do{
     if(node["class"]!=undefined){
@@ -332,17 +348,257 @@ async function showTimeLine(data){
   });
   $("#myModal2").draggable()
 }
-async function showTreegraph(node,sparqlQuery){
-  var rowDataConfig,results,dataTreegraph=[];
-  console.log(configFile)
-  console.log(node)
+async function showPdf(node,sparqlQuery,url){
+  ////////////////////////////console.log("entra")
+  //url=configFile[rowDataConfig]["endpoint_url"]
+  //sparqlQuery=configFile[rowDataConfig]["query"]
+  prefixes=""
+  //////////////////////////console.log(sparqlQuery)
+  queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+
+  results = await runSparlqQuery(settings)
+  //////////////////////////console.log(results)
+  var pdf=results[0]["item"]["value"]
+  //////////////////////////console.log(node)
+  modal2=document.getElementById("myModal2")
+  modal2.style.display = "block";
+  d3.select(".modal-header2 h2").remove()
+  modalHeader2=document.getElementsByClassName("modal-header2")[0]
+  //////////////////////////console.log(modalHeader2)
+  //modalHeader2.className="mb-4"
+  modalHeader2.classList.add("mb-4");
+  var h2=document.createElement("h2")
+  h2.className="text-lg font-medium text-gray-900"
+  //h2.innerHTML = node["value"]
+  h2.innerHTML = "PDF"
+  modalHeader2.appendChild(h2);
+  $('#myModal2').resizable({
+    //alsoResize: ".modal-dialog",
+    //minHeight: 150
+  });
+  $("#myModal2").draggable()
+  if(d3.select("#modalGraph")){
+    d3.select("#modalGraph").remove()
+  }
+  var div=document.createElement("div")
+  div.setAttribute("id","modalGraph")
+  div.setAttribute("style","overflow: auto")
+  //////////////////console.log(document.getElementsByClassName("modal-content2"))
+  document.getElementsByClassName("modal-content2")[0].appendChild(div)
+  PDFObject.embed(pdf, "#modalGraph");
+  /* d3.select("#modalGraph").append("script")
+  .attr("type",'text/javascript')
+  .attr("src","https://op.europa.eu/o/opportal-widgets/js/widget/widgetload.js")
+
+  var s = document.createElement('script');
+  s.type = 'application/json';
+  var code = '{"portalURL": "https://op.europa.eu","uuid": "portal2012a5591932400446fb8684a60a25a00a50","widgetType": "5","cellarId": "dd7623b2-a4f1-11e7-837e-01aa75ed71a1"};';
+  s.appendChild(document.createTextNode(code));
+  document.getElementById("modalGraph").appendChild(s) */
+
+  //PDFObject.embed("/pdf/sample-3pp.pdf", "#example1");
+/*   <script type='text/javascript' src='https://op.europa.eu/o/opportal-widgets/js/widget/widgetload.js'></script>
+<script type='application/json'>
+{
+"portalURL": "https://op.europa.eu",
+"uuid": "portal2012a5591932400446fb8684a60a25a00a50",
+"widgetType": "5",
+"cellarId": "dd7623b2-a4f1-11e7-837e-01aa75ed71a1"
+}
+</script> */
+}
+async function showTable(node,sparqlQuery,columns,column_names){
+  var rowDataConfig,results,data=[],modalHeader2;
+  //////////////////////////console.log(configFile)
+  //////////////////////////console.log(columns)
   for (i = 0; i < configFile.length; ++i) { 
-    if((configFile[i]["CLASS"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["TYPE"]=="TREEGRAPH")){
+    if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TABLE")){
       rowDataConfig=i
       break;
     }
   }
-  url=configFile[rowDataConfig]["URL"]
+  ////////////////////////////console.log(configFile[rowDataConfig])
+  url=configFile[rowDataConfig]["endpoint_url"]
+  //sparqlQuery=configFile[rowDataConfig]["query"]
+  prefixes=""
+  //////////////////////////console.log(sparqlQuery)
+  queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+
+  results = await runSparlqQuery(settings)
+  //////////////////////////console.log(results)
+  //////////////////////////console.log(node)
+  //data=transformDataTable(results)
+  table(results,columns,column_names)
+  modal2=document.getElementById("myModal2")
+
+/*   <h2 class="text-lg font-medium text-gray-900">
+    Projects
+  </h2>
+  <p class="mt-1 text-sm text-gray-500">
+    You haven’t created a project yet. Get started by selecting a template or start from an empty project.
+  </p>
+ */
+  d3.select(".modal-header2 h2").remove()
+  modalHeader2=document.getElementsByClassName("modal-header2")[0]
+  //////////////////////////console.log(modalHeader2)
+  //modalHeader2.className="mb-4"
+  var h2=document.createElement("h2")
+  h2.className="text-lg font-medium text-gray-900"
+  h2.innerHTML = node["value"]
+  modalHeader2.appendChild(h2);
+
+  /* d3.select(".modal-header2")
+    //.style("background-color","blue")
+
+    .text(function(){
+        //////////////////////////console.log(node)
+        return node["value"];
+    }) */
+  modal2.style.display = "block";
+  $('#myModal2').resizable({
+    //alsoResize: ".modal-dialog",
+    //minHeight: 150
+  });
+  $("#myModal2").draggable()
+}
+/* function transformDataTable(data){
+  //////////////////////////console.log(data)
+  //////////////////////////console.log(Object.values(data[0]));
+  //////////////////////////console.log(Object.keys(data[0]));
+} */
+function table(data,columns,column_names){
+  var cellContent;
+  //////////////////////////console.log(data)
+  //////////////////////////console.log(columns)
+  //////////////////////////console.log(column_names)
+
+  //d3.select("#modalGraph div").remove()
+  if(d3.select("#modalGraph")){
+    d3.select("#modalGraph").remove()
+  }
+  var div=document.createElement("div")
+  div.setAttribute("id","modalGraph")
+  div.setAttribute("style","overflow: auto")
+  //////////////////console.log(document.getElementsByClassName("modal-content2"))
+  document.getElementsByClassName("modal-content2")[0].appendChild(div)
+  var mainEl=document.getElementById("modalGraph")
+  var div=document.createElement("div");
+  div.className="flex flex-col mt-6"
+
+  var div2=document.createElement("div");
+  div2.className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
+
+  var div3=document.createElement("div");
+  div3.className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+
+  var div4=document.createElement("div");
+  div4.className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
+
+  var table = document.createElement("table");
+
+  table.className="min-w-full divide-y divide-gray-200"
+
+  
+  //Add the header row.
+  //var row = table.insertRow(-1);
+
+  header = table.createTHead();
+  header.className="bg-gray-50"
+  var row = header.insertRow(0);    
+  //var columns=Object.keys(data[0])
+/* // Insert a new cell (<td>) at the first position of the "new" <tr> element:
+var cell = row.insertCell(0);
+
+// Add some bold text in the new cell:
+cell.innerHTML = "<b>This is a table header</b>" */
+
+
+  for (var i = columns.length-1; i >= 0; i--) {
+      var headerCell = row.insertCell(0);
+      //headerCell.innerHTML = customers[0][i];
+      headerCell.setAttribute("scope", "col");
+      headerCell.setAttribute("class", "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider");
+      if(Object.keys(column_names).includes(columns[i])){
+        headerCell.innerHTML = column_names[columns[i]]
+      }else{
+        headerCell.innerHTML = nodesClassesCorrespondence[columns[i]]
+      }
+      
+      //row.appendChild(headerCell);
+  }
+
+  //var customers=4
+  //Add the data rows.
+
+  body=table.createTBody();
+/*   row = body.insertRow();
+  cell = row.insertCell();
+  text = document.createTextNode("test row");
+  cell.appendChild(text);
+  cell = row.insertCell();
+  text = document.createTextNode("test row");
+  cell.appendChild(text);
+  cell = row.insertCell();
+  text = document.createTextNode("test row");
+  cell.appendChild(text); */
+  //////////////////////////console.log(data)
+  for (var j = 0; j < data.length; j++) {
+    row = body.insertRow();
+    if(j%2==0){
+      row.className="bg-white"
+    }else{
+      row.className="bg-gray-50"
+    }
+    //row.style.backgroundColor = colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]]); 
+    //row.id=nodesTable[i]["id"]
+    
+/*     for (var i = columns.length-1; i >= 0; i--) {
+      cell = row.insertCell();
+      text = document.createTextNode(data[j][columns[i]]["value"]);
+      cell.appendChild(text);
+      //row.appendChild(headerCell);
+    } */
+    for (var i = 0; i < columns.length; i++) {
+      cell = row.insertCell();
+      cell.className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap"
+      if(data[j][columns[i]]!=undefined){
+        //if (data[j][columns[i]]["value"].slice(-4)==".jpg"){
+        if (columns[i].slice(-6)=="_image"){
+          cellContent = document.createElement('img'); 
+          cellContent.src = data[j][columns[i]]["value"]; 
+          cellContent.className="w-12 rounded-full h-14"
+        }else{
+          cellContent = document.createTextNode(data[j][columns[i]]["value"]);
+          //cellContent = document.createTextNode("");
+        }
+      }else{
+        cellContent = document.createTextNode("");
+      }
+      
+      cell.appendChild(cellContent);
+      //row.appendChild(headerCell);
+    }
+   
+  }
+
+  //////////////////////////console.log(mainEl)
+  mainEl.appendChild(div).appendChild(div2).appendChild(div3).appendChild(div4).appendChild(table);
+
+}
+async function showTreegraph(node,sparqlQuery){
+  var rowDataConfig,results,dataTreegraph=[];
+  ////////////////////////////////console.log(configFile)
+  ////////////////////////////////console.log(node)
+  for (i = 0; i < configFile.length; ++i) { 
+    if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TREEGRAPH")){
+      rowDataConfig=i
+      break;
+    }
+  }
+  ////////////////////////////console.log(configFile[rowDataConfig])
+  url=configFile[rowDataConfig]["endpoint_url"]
   //sparqlQuery=configFile[rowDataConfig]["QUERY"]
   prefixes=""
 
@@ -350,38 +606,7 @@ async function showTreegraph(node,sparqlQuery){
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
   results = await runSparlqQuery(settings)
-  console.log(node)
-  console.log(results)
-  //if(results[0]["replaces"]!=undefined){
-  //  node=results[0]["replaces"]["value"]
-  //}    
   
-  /* do{
-    if(node["class"]!=undefined){
-      sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_code"]); 
-    }else{
-      sparqlQuery=sparqlQuery.replace("PARAMETER", node);
-    }
-    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-
-    results = await runSparlqQuery(settings)
-    if(node["class"]!=undefined){
-      sparqlQuery=sparqlQuery.replace(node[node["class"]+"_code"],"PARAMETER"); 
-    }else{
-      sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
-    }
-    if(results[0]["replaces"]!=undefined){
-      node=results[0]["replaces"]["value"]
-    }    
-    if(results[0]["endDate"]==undefined){
-      let today = new Date().toISOString().slice(0, 10)
-
-      results[0]["endDate"]={"value":today.toString()}
-    }
-    dataTimeline.push(results[0])
-    }
-  while (results[0]["replaces"]!=undefined)  */
   dataTreegraph=transformDataTreegraph(node,results)
   treeGraph(dataTreegraph,node["value"])
   modal2=document.getElementById("myModal2")
@@ -478,48 +703,71 @@ function showWikipediaPage(data){
   var rowDataConfig,results,node,page,parameters,parameterTemp="";
   var modal=document.getElementById("myModal")
   modal.style.display = "none";
+
+  //////////////////////////console.log(data)
   //modal2.style.display = "none";
-  ////////////////////////////////////console.log(nodesClassesCorrespondence[data["class"]])
+  ////////////////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[data["class"]])
   for (i = 0; i < configFile.length; ++i) { 
-    if((configFile[i]["CLASS"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["TYPE"]=="WEBPAGE")){
+    if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WEBPAGE")){
       rowDataConfig=i
       break;
     }
   }
-  ////////////////////////////////////console.log(rowDataConfig)
+  //////////////////////////console.log(configFile)
+  //////////////////////////console.log(rowDataConfig)
   node=data
-  url=configFile[rowDataConfig]["URL"]
-  sparqlQuery=configFile[rowDataConfig]["QUERY"]
+  url=configFile[rowDataConfig]["endpoint_url"]
+  sparqlQuery=configFile[rowDataConfig]["query"]
   prefixes=""
-  //////////////////////////////////////console.log(rowDataConfig)
-  ////////////////////////////////////////console.log(sparqlQuery)
-  //////////////////////////////////////console.log(configFile[rowDataConfig])
+  //////////////////////////////////////////////////////////////////////console.log(rowDataConfig)
+  ////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
+  //////////////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
   //parameter=node[configFile[rowDataConfig]["PARAMETERS"]]
-  parameters=configFile[rowDataConfig]["PARAMETERS"]
-  ////////////////////////////////////console.log(parameters)
-  if(parameters!=""){
-    parameters=parameters.split(";")
+  parameters=configFile[rowDataConfig]["parameters"]
+  //////////////////////////console.log(parameters)
+  if(parameters.length>0){
+    parameters=get_parameters(parameters)
     for (i = 0; i < parameters.length; ++i) { 
-      ////////////////////////////////////console.log(node)
+      ////////////////////////////////////////////////////////////////////console.log(node)
       sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
     }  
   }
   //sparqlQuery=sparqlQuery.replace("PARAMETER",parameter);
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true       }; 
-  ////////////////////////////////////console.log(sparqlQuery)
+  ////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
   $.ajax(settings).then  (function( _data ) {
     results = _data.results.bindings;
     page=results[0]["article"]["value"]
-    d3.select("#timelineGraph iframe").remove()
-    iframe=d3.select("#timelineGraph").append("iframe")
+/*     d3.select("#modalGraph svg").remove()
+    d3.select("#modalGraph iframe").remove() */
+    if(d3.select("#modalGraph")){
+      d3.select("#modalGraph").remove()
+    }
+    var div=document.createElement("div")
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto")
+    //////////////////console.log(document.getElementsByClassName("modal-content2"))
+    document.getElementsByClassName("modal-content2")[0].appendChild(div)
+    iframe=d3.select("#modalGraph").append("iframe")
     .attr("src",page)
       .style("width", "100%")
       .style("height","100%");
-    d3.select(".modal-header2")
+/*     d3.select(".modal-header2")
       .text(function(){
           return "Wikipedia Page";
-      })
+      }) */
+    d3.select(".modal-header2 h2").remove()
+    modalHeader2=document.getElementsByClassName("modal-header2")[0]
+    //////////////////////////console.log(modalHeader2)
+    //modalHeader2.className="mb-4"
+    modalHeader2.classList.add("mb-4");
+    var h2=document.createElement("h2")
+    h2.className="text-lg font-medium text-gray-900"
+    //h2.innerHTML = node["value"]
+    h2.innerHTML = "Wikipedia Page"
+
+    modalHeader2.appendChild(h2);
     modal2=document.getElementById("myModal2")
     modal2.style.display = "block";
     $('#myModal2').resizable({
@@ -530,44 +778,48 @@ function showWikipediaPage(data){
   })
 }
 async function buildBasicGraph(rowDataConfig,node){
-  var sparqlQuery,queryUrl, hierarchy, parameters,properties,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType;
+  var sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns;
 
-  url=configFile[rowDataConfig]["URL"]
-  sparqlQuery=configFile[rowDataConfig]["QUERY"]
-  hierarchy=configFile[rowDataConfig]["HIERARCHY"]
-  properties=configFile[rowDataConfig]["PROPERTIES"]
-  options=configFile[rowDataConfig]["OPTION"]
-  option_text=configFile[rowDataConfig]["OPTION_TEXT"]
-  graphType=configFile[rowDataConfig]["TYPE"]
-  classes=configFile[rowDataConfig]["CLASSES"]
-  parameters=configFile[rowDataConfig]["PARAMETERS"]
-  filters=configFile[rowDataConfig]["FILTERS"]
-  tooltip=configFile[rowDataConfig]["TOOLTIP"]
-  //console.log(tooltip)
-  //////////////////console.log(configFile[rowDataConfig])
-  ////////////////////////////////////////////////////////////////////console.log(configFile)
-  //////////////////////////////////////////////////////////console.log(configFile)
+  url=configFile[rowDataConfig]["endpoint_url"]
+  sparqlQuery=configFile[rowDataConfig]["query"]
+  hierarchy=configFile[rowDataConfig]["hierarchy"]
+  properties_full=configFile[rowDataConfig]["properties"]
+  options=configFile[rowDataConfig]["option"]
+  option_text=configFile[rowDataConfig]["option_text"]
+  graphType=configFile[rowDataConfig]["type"]
+  classes=configFile[rowDataConfig]["classes_text"]
+  parameters=configFile[rowDataConfig]["parameters"]
+  filters=configFile[rowDataConfig]["filters"]
+  tooltip=configFile[rowDataConfig]["tooltip"]
+  tooltip=configFile[rowDataConfig]["tooltip"]
+  columns=configFile[rowDataConfig]["columns"]
+  //////////////////////////console.log(columns)
+  property_names=get_property_names(properties_full)
+  //////////////////////////////////////////////////console.log(configFile[rowDataConfig])
+  ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile)
+  //////////////////////////////////////////////////////////////////////////////////////////console.log(configFile)
   
   execQueries.push(sparqlQuery)
   configClasses = configFile.map(function(d) {
     return {
-      class:d.CLASS,
-      option:d.OPTION,
-      option_text:d.OPTION_TEXT
+      class:d.class,
+      option:d.option,
+      option_text:d.option_text
     };
     })
   prefixes=""
   //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
   if(node!=undefined){
     if(parameters!=""){
-      parameters=parameters.split(";")
+      //parameters=parameters.split(";")
+      parameters=get_parameters(parameters)
       for (i = 0; i < parameters.length; ++i) { 
-        ////////////////////////////////////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////////////////////////////////////console.log(node)
         sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
       }  
-      ////////////////////////////////////////////////////////console.log(node["class"])
+      ////////////////////////////////////////////////////////////////////////////////////////console.log(node["class"])
       if(node["class"]=="corporateBody"){
-        ////////////////////////////////////////////////////////console.log("node class corporateBody")
+        ////////////////////////////////////////////////////////////////////////////////////////console.log("node class corporateBody")
         sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
       }else{
         sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
@@ -579,15 +831,17 @@ async function buildBasicGraph(rowDataConfig,node){
     nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(classes)))))
   }
   if(graphType=="TREE"){
-    //////////////////////////////////console.log(sparqlQuery)
+    //////////////////////////////////////////////////////////////////console.log(sparqlQuery)
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  ////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
+  ////////////////////////////////console.log(sparqlQuery)
   await $.ajax(settings).then  (function( _data ) {
     var results = _data.results.bindings;
     //Get new branch
+    graphHistory.push(options)
+    ////////////////console.log(graphHistory)
     data=buildDataBasic(results,properties,hierarchy,classes,configClasses,node,option_text)
-    //////////////////////////////////////////////////////////////console.log(data)
+    //////////////////////////////////////////////////////////////////////////////////////////////console.log(data)
     
     if(node==undefined){
       //d3.select(".graph").remove()
@@ -625,17 +879,17 @@ async function buildBasicGraph(rowDataConfig,node){
             iterations: 1
         }
       }
-      //////////////////////////////////////////////////////////////////////////////console.log(data)
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(data)
       networkGraph = new NetworkGraph("#networkGraph", data,forces);
       collapse()
     }else{
-      ////////////////////console.log(nodesClassesShow)
-      ////////////////////console.log(colorScale.domain())
+      ////////////////////////////////////////////////////console.log(nodesClassesShow)
+      ////////////////////////////////////////////////////console.log(colorScale.domain())
       var dif=differenceArrays(nodesClassesShow,colorScale.domain())
 /*       var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-      //////////console.log(dif)
-      //////////console.log(filters)
-      //////////console.log(configFile[rowDataConfig])
+      //////////////////////////////////////////console.log(dif)
+      //////////////////////////////////////////console.log(filters)
+      //////////////////////////////////////////console.log(configFile[rowDataConfig])
       fillLegend(dif,true) */
 /*       networkGraph.colorScale.domain(nodesClassesShow)
  *//*       networkGraph.legendOrdinal
@@ -657,35 +911,43 @@ async function buildBasicGraph(rowDataConfig,node){
       
       
       networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-      ////////////////////////////////////////////////////////////console.log(networkGraph.treeData)
+      ////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.treeData)
       networkGraph.data=flatten(networkGraph.treeData).flatData
-      ////////////////////////////////////////////////////////////console.log(networkGraph.data)
+      ////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
       networkGraph.initializeSimulation();
       networkGraph.dataJoinGraph()
       networkGraph.enterGraph()
       
-      //////console.log(dif)
-      //////////console.log(filters)
-      //////////console.log(configFile[rowDataConfig])
+      //////////////////////////////////////console.log(dif)
+      //////////////////////////////////////////console.log(filters)
+      //////////////////////////////////////////console.log(configFile[rowDataConfig])
       fillLegend(dif,true)
       networkGraph.initializeSimulation();
       networkGraph.dataJoinGraph()
       networkGraph.exitGraph()
     }
     if((results.length>0)&(filters!="")){
-      ////console.log(filters)
-      ////console.log(data)
-      ////console.log(networkGraph.data)
+      //////////////console.log(filters)
+      ////////////////////////////////////console.log(data)
+      ////////////////////////////////////console.log(networkGraph.data)
       addFilters(filters,data)
+      filtersInGraph=filtersInGraph.concat(filters)
+      //////////////console.log(filtersInGraph)
     }
-    
-    
+
   })
   }else if (graphType=="TREEGRAPH"){
     showTreegraph(node,sparqlQuery)
+  }else if (graphType=="WEBPAGE"){
+    showWikipediaPage(node)
+  }else if (graphType=="TIMELINE"){
+    showTimeLine(node)
+  }else if (graphType=="PDF"){
+    showPdf(node,sparqlQuery,url)
+  }else if (graphType=="TABLE"){
+    showTable(node,sparqlQuery,columns,property_names)
   }
-  
-  //////////////////////////////////////////console.log(networkGraph.data)
+  //////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
 }
 
 // Get the modal
@@ -726,7 +988,7 @@ window.onclick = function(event) {
 function downloadData(element){
   
   var nodes = [],row2,classIndex,hierarchy,lastHierarchy,row={};
-  //////////////////////////////////////console.log(element)
+  //////////////////////////////////////////////////////////////////////console.log(element)
   root=networkGraph.treeData.filter(function(item) {
     if(item[item["class"]+"_uri"]!=undefined){
       return item[item["class"]+"_uri"] == element[element["class"]+"_uri"]
@@ -805,15 +1067,24 @@ function downloadQuery(){
 }
 function getTooltipNode(tooltip,nodeClass){
   var tooltipNode={}
-  ////////////////////////console.log(tooltip)
-  ////////////////////////console.log(nodeClass)
+  ////////////////////////////////////////////////////////console.log(tooltip)
+  ////////////////////////////////////////////////////////console.log(nodeClass)
   if(tooltip!=""){
-    tooltip=tooltip.split(";")
+    //tooltip=tooltip.split(";")
+    //{'property': '', 'tooltip_text': ''}]
     tooltip.forEach(function(k){
-      if(k.split("-")[0].split("_")[0]==nodeClass){
-        tooltipNode[k.split("-")[0]]=k.split("-")[1]
+      if(k["property"].split("_")[0]==nodeClass){
+        tooltipNode[k["property"]]=k["tooltip_text"]
       }
     })
   }
   return tooltipNode
+}
+function get_parameters(parameters){
+  var temp=[]
+  ////////////////////////////////console.log(parameters)
+  parameters.forEach(function(d){
+    temp.push(d["property"])
+  })
+  return temp
 }
