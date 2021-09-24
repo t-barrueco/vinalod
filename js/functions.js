@@ -361,7 +361,7 @@ function labelsClick(element){
 
     img=document.createElement("img")
 
-    img.setAttribute("src","../images/check.svg")
+    img.setAttribute("src","images/check.svg")
     //img.setAttribute("src",bubbleImage(d3.select("#"+element.getAttribute("id")).data()[0]))
     img.setAttribute('width','40px')
     img.setAttribute('height','40px')
@@ -408,7 +408,7 @@ function labelsClick(element){
 
   img=document.createElement("img")
 
-  img.setAttribute("src","../images/location.svg")
+  img.setAttribute("src","images/location.svg")
   img.setAttribute('width','40px')
   img.setAttribute('height','40px')
 
