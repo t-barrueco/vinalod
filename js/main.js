@@ -1,15 +1,15 @@
 
-var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],graphHistory=[],filtersInGraph=[];
+var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],graphHistory=[],filtersInGraph=[],filtersList=[],classesFilterList=[];
   //window.onclick = function(event){
     /* if(!(event.target.className.baseVal=="circleClass")){
         d3.selectAll('circle').style('fill', function(d) {
         return d.color;
          })
     } */
-    //////////////////console.log("click window")
+    ////////////////////////////////////////////////////console.log("click window")
   //}
   //d3.select("svg").on("click",function(){
-    //////////////////console.log("click outside")
+    ////////////////////////////////////////////////////console.log("click outside")
   //})
   function dataViz(){
     var rowDataConfig;
@@ -17,7 +17,7 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
             //d3.json("../config_vinalod/config_basicMode_notTree.json",function(dataConfig_notTree){
               d3.tsv("txt/graph_icons.txt",function(dataIcons){
                 filesIcons=dataIcons;
-                //////////////////////////console.log(dataConfig)
+                ////////////////////////////////////////////////////////////console.log(dataConfig)
                 rowDataConfig=fillDropDown(dataConfig)
                 configFile=dataConfig
                 //configFileNotTree=dataConfig_notTree
@@ -108,39 +108,44 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
   }
   
   function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
-    var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip;
+    var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri;
     hierarchy=get_hierarchy(hierarchy)
-    ////////////////////////////////console.log(hierarchy)
+    //////////////////////////////////////////////////////////////////console.log(hierarchy)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(classes)
       nodesClassesShow=Object.values(nodesClassesCorrespondence)
-      //////////////////////////////////////////////////////////console.log(hierarchy)
+      ////////////////////////////////////////////////////////////////////////////////////////////console.log(hierarchy)
       classTooltip=hierarchy[0]
     }else{
-      //////////////////////////////////////////////////////////console.log(element)
-      //////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[element["class"]])
+      ////////////////////////////////////////////////////////////////////////////////////////////console.log(element)
+      ////////////////////////////////////////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[element["class"]])
       classTooltip=nodesClassesCorrespondence[element["class"]]
     }
-    //////////////////////////////////console.log(hierarchy)
+    ////////////////////////////////////////////////////////////////////console.log(hierarchy)
     properties=get_properties(properties_full)
     //property_names=get_property_names(properties_full)
     tooltip=getTooltip(classTooltip,option_text)
-    //////////////////////////////////console.log(tooltip)
-    //////////////////////////////////////////////////////////////////console.log(results)
-    ////////////////////////////////////////////////////////////////////////////////////////console.log(hierarchy[0])
+    ////////////////////////////////////////////////////////////////////console.log(tooltip)
+    ////////////////////////////////console.log(results)
+    ////////////////////////////////console.log(hierarchy)
+    //////////////////console.log(properties)
+    ////////////////console.log(results)
+    ////////////////console.log(hierarchy[0])
     root=results[0][hierarchy[0]]["value"]
     results.forEach(function(r){
-      //////////////////////////////////////////////////////////////////////////////////////////////////console.log(r)
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(r)
       for (i = 0; i < hierarchy.length-1; ++i) {    
-        //////////////////////////////////////////////////////////////console.log(hierarchy[i])
+        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(hierarchy[i])
         if((!procNode[i])||(procNode[i]!=r[hierarchy[i]].value)){  
           if(element!=undefined){
             node=element
           }else{
+            ////////////////////console.log(r)
+            ////////////////////console.log("value:      "+r[hierarchy[i]].value)
             node={"id":genRandomString(),"value":r[hierarchy[i]].value,"shape":1,"class":hierarchy[i]}
           }
-          //////////////////////////////////////////////////////////////////////////////////////console.log(node)
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
           if(r[hierarchy[i]].value==root){
             node["root"]=true
             if(element!=undefined){
@@ -166,16 +171,16 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
               node[k]=r[k].value
             })
           }
-          ////////////////////////////////////////////////////////console.log(node)
+          //////////////////////////////////////////////////////////////////////////////////////////console.log(node)
           nodes.push(node)
-          ////////////////////////////////////////////////////////////////////////////////console.log(node)
-          //////////////////////////////////////////////////////////////////////////////////////////////////console.log(position[i-1])
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(position[i-1])
           if(position[i-1]){
-            ////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
             treeData[position[i-1]-1]["children"].push(node)
           }
           if(i!=(hierarchy.length-1)){
-            ////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
             node["children"]=[]
             position[i]=treeData.push(node)
           }
@@ -184,10 +189,12 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
         
       } 
       if (r[hierarchy[hierarchy.length-1]]!=undefined){
-        ////////////////////////////////////////////////////////////////////////////////////////////console.log(r[hierarchy[hierarchy.length-1]])
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(r[hierarchy[hierarchy.length-1]])
         value=r[hierarchy[hierarchy.length-1]].value
+        //////////////////////console.log(r)
+        //////////////////////console.log("value:      "+r[hierarchy[i]].value)
         node={"id":genRandomString(),"value":value,"shape":1,"class":hierarchy[hierarchy.length-1]}
-        //////////////////////////////////////////////////////////////////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
         if(properties[hierarchy[hierarchy.length-1]]){
               properties[hierarchy[hierarchy.length-1]].forEach(function(k){
                 if(r[k]==undefined){
@@ -199,21 +206,21 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
         //}else{
         }
         //tooltip=getTooltip(hierarchy[i])
-        //////////////////////////////////////////////////////////console.log(hierarchy)
-        //////////////////////////////////////////////////////////console.log(tooltip)
+        ////////////////////////////////////////////////////////////////////////////////////////////console.log(hierarchy)
+        ////////////////////////////////////////////////////////////////////////////////////////////console.log(tooltip)
         node["tooltip"]=getTooltipNode(tooltip,node["class"])
-        ////////////////////////////////////////////////////////console.log(node)
+        //////////////////////////////////////////////////////////////////////////////////////////console.log(node)
         nodes.push(node)
-        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodes)
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodes)
         treeData[position[position.length-1]-1]["children"].push(node)
-        //////////////////////////////////////////////////////////////////////////////////console.log(node)
-        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(position[position.length-1]-1)
-        ////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData[position[position.length-1]-1]["children"])
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(position[position.length-1]-1)
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData[position[position.length-1]-1]["children"])
       }
       })
-      ////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData)
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData)
       flatData=flatten(treeData)
-      //////////////////////////////////////////////////////////////////////////////////////////////console.log(flatData)
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(flatData)
       return flatData
   }
 
@@ -349,23 +356,23 @@ async function showTimeLine(data){
   $("#myModal2").draggable()
 }
 async function showPdf(node,sparqlQuery,url){
-  ////////////////////////////console.log("entra")
+  //////////////////////////////////////////////////////////////console.log("entra")
   //url=configFile[rowDataConfig]["endpoint_url"]
   //sparqlQuery=configFile[rowDataConfig]["query"]
   prefixes=""
-  //////////////////////////console.log(sparqlQuery)
+  ////////////////////////////////////////////////////////////console.log(sparqlQuery)
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
   results = await runSparlqQuery(settings)
-  //////////////////////////console.log(results)
+  ////////////////////////////////////////////////////////////console.log(results)
   var pdf=results[0]["item"]["value"]
-  //////////////////////////console.log(node)
+  ////////////////////////////////////////////////////////////console.log(node)
   modal2=document.getElementById("myModal2")
   modal2.style.display = "block";
   d3.select(".modal-header2 h2").remove()
   modalHeader2=document.getElementsByClassName("modal-header2")[0]
-  //////////////////////////console.log(modalHeader2)
+  ////////////////////////////////////////////////////////////console.log(modalHeader2)
   //modalHeader2.className="mb-4"
   modalHeader2.classList.add("mb-4");
   var h2=document.createElement("h2")
@@ -384,7 +391,7 @@ async function showPdf(node,sparqlQuery,url){
   var div=document.createElement("div")
   div.setAttribute("id","modalGraph")
   div.setAttribute("style","overflow: auto")
-  //////////////////console.log(document.getElementsByClassName("modal-content2"))
+  ////////////////////////////////////////////////////console.log(document.getElementsByClassName("modal-content2"))
   document.getElementsByClassName("modal-content2")[0].appendChild(div)
   PDFObject.embed(pdf, "#modalGraph");
   /* d3.select("#modalGraph").append("script")
@@ -410,25 +417,25 @@ async function showPdf(node,sparqlQuery,url){
 }
 async function showTable(node,sparqlQuery,columns,column_names){
   var rowDataConfig,results,data=[],modalHeader2;
-  //////////////////////////console.log(configFile)
-  //////////////////////////console.log(columns)
+  ////////////////////////////////////////////////////////////console.log(configFile)
+  ////////////////////////////////////////////////////////////console.log(columns)
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TABLE")){
       rowDataConfig=i
       break;
     }
   }
-  ////////////////////////////console.log(configFile[rowDataConfig])
+  //////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
   url=configFile[rowDataConfig]["endpoint_url"]
   //sparqlQuery=configFile[rowDataConfig]["query"]
   prefixes=""
-  //////////////////////////console.log(sparqlQuery)
+  ////////////////////////////////////////////////////////////console.log(sparqlQuery)
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
   results = await runSparlqQuery(settings)
-  //////////////////////////console.log(results)
-  //////////////////////////console.log(node)
+  ////////////////////////////////////////////////////////////console.log(results)
+  ////////////////////////////////////////////////////////////console.log(node)
   //data=transformDataTable(results)
   table(results,columns,column_names)
   modal2=document.getElementById("myModal2")
@@ -442,7 +449,7 @@ async function showTable(node,sparqlQuery,columns,column_names){
  */
   d3.select(".modal-header2 h2").remove()
   modalHeader2=document.getElementsByClassName("modal-header2")[0]
-  //////////////////////////console.log(modalHeader2)
+  ////////////////////////////////////////////////////////////console.log(modalHeader2)
   //modalHeader2.className="mb-4"
   var h2=document.createElement("h2")
   h2.className="text-lg font-medium text-gray-900"
@@ -453,7 +460,7 @@ async function showTable(node,sparqlQuery,columns,column_names){
     //.style("background-color","blue")
 
     .text(function(){
-        //////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////////console.log(node)
         return node["value"];
     }) */
   modal2.style.display = "block";
@@ -464,15 +471,15 @@ async function showTable(node,sparqlQuery,columns,column_names){
   $("#myModal2").draggable()
 }
 /* function transformDataTable(data){
-  //////////////////////////console.log(data)
-  //////////////////////////console.log(Object.values(data[0]));
-  //////////////////////////console.log(Object.keys(data[0]));
+  ////////////////////////////////////////////////////////////console.log(data)
+  ////////////////////////////////////////////////////////////console.log(Object.values(data[0]));
+  ////////////////////////////////////////////////////////////console.log(Object.keys(data[0]));
 } */
 function table(data,columns,column_names){
   var cellContent;
-  //////////////////////////console.log(data)
-  //////////////////////////console.log(columns)
-  //////////////////////////console.log(column_names)
+  ////////////////////////////////////////////////////////////console.log(data)
+  ////////////////////////////////////////////////////////////console.log(columns)
+  ////////////////////////////////////////////////////////////console.log(column_names)
 
   //d3.select("#modalGraph div").remove()
   if(d3.select("#modalGraph")){
@@ -481,7 +488,7 @@ function table(data,columns,column_names){
   var div=document.createElement("div")
   div.setAttribute("id","modalGraph")
   div.setAttribute("style","overflow: auto")
-  //////////////////console.log(document.getElementsByClassName("modal-content2"))
+  ////////////////////////////////////////////////////console.log(document.getElementsByClassName("modal-content2"))
   document.getElementsByClassName("modal-content2")[0].appendChild(div)
   var mainEl=document.getElementById("modalGraph")
   var div=document.createElement("div");
@@ -543,7 +550,7 @@ cell.innerHTML = "<b>This is a table header</b>" */
   cell = row.insertCell();
   text = document.createTextNode("test row");
   cell.appendChild(text); */
-  //////////////////////////console.log(data)
+  ////////////////////////////////////////////////////////////console.log(data)
   for (var j = 0; j < data.length; j++) {
     row = body.insertRow();
     if(j%2==0){
@@ -583,21 +590,21 @@ cell.innerHTML = "<b>This is a table header</b>" */
    
   }
 
-  //////////////////////////console.log(mainEl)
+  ////////////////////////////////////////////////////////////console.log(mainEl)
   mainEl.appendChild(div).appendChild(div2).appendChild(div3).appendChild(div4).appendChild(table);
 
 }
 async function showTreegraph(node,sparqlQuery){
   var rowDataConfig,results,dataTreegraph=[];
-  ////////////////////////////////console.log(configFile)
-  ////////////////////////////////console.log(node)
+  //////////////////////////////////////////////////////////////////console.log(configFile)
+  //////////////////////////////////////////////////////////////////console.log(node)
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TREEGRAPH")){
       rowDataConfig=i
       break;
     }
   }
-  ////////////////////////////console.log(configFile[rowDataConfig])
+  //////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
   url=configFile[rowDataConfig]["endpoint_url"]
   //sparqlQuery=configFile[rowDataConfig]["QUERY"]
   prefixes=""
@@ -619,32 +626,7 @@ async function showTreegraph(node,sparqlQuery){
 }
 function transformDataTreegraph(node,data){
   var treeData,membership=[]
-/*   var treeData = [
-    {
-        "name": "Top Level",
-        "parent": "null",
-        "children": [
-        {
-            "name": "Level 2: A",
-            "parent": "Top Level",
-            "children": [
-            {
-                "name": "Son of A",
-                "parent": "Level 2: A"
-            },
-            {
-                "name": "Daughter of A",
-                "parent": "Level 2: A"
-            }
-            ]
-        },
-        {
-            "name": "Level 2: B",
-            "parent": "Top Level"
-        }
-        ]
-    }
-    ]; */
+
     for (i = 0; i < data.length; ++i) { 
 /*       if((configFile[i]["CLASS"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["TYPE"]=="TREEGRAPH")){
         rowDataConfig=i
@@ -668,6 +650,78 @@ function transformDataTreegraph(node,data){
 
     return treeData
 }
+async function showWordcloud(node,sparqlQuery){
+  var rowDataConfig,results,dataTreegraph=[];
+  //////////////////////////////////////////////////////////////////console.log(configFile)
+  //////////////////////////////////////////////////////////////////console.log(node)
+  for (i = 0; i < configFile.length; ++i) { 
+    if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="WORDCLOUD")){
+      rowDataConfig=i
+      break;
+    }
+  }
+  //////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
+  url=configFile[rowDataConfig]["endpoint_url"]
+  //sparqlQuery=configFile[rowDataConfig]["QUERY"]
+  prefixes=""
+
+  ////////////////////////////////console.log(sparqlQuery)
+  queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+
+  results = await runSparlqQuery(settings)
+  
+  dataWordCloud=transformDataWordCloud(node,results)
+  wordCloudGraph(dataWordCloud,node["value"])
+  modal2=document.getElementById("myModal2")
+  modal2.style.display = "block";
+  $('#myModal2').resizable({
+    //alsoResize: ".modal-dialog",
+    //minHeight: 150
+  });
+  $("#myModal2").draggable()
+}
+function transformDataWordCloud(node,data){
+  var wordCloudData=[],splittedStr=[]
+  for (i = 0; i < data.length; ++i) { 
+    //////////////////////////////console.log(data[i]["text"]["value"])
+    splittedStr=data[i]["text"]["value"]
+    if(splittedStr.includes(".")){
+      splittedStr=splittedStr.split(".")[1]
+    }
+    //wordCloudData.push(data[i]["text"]["value"].split(".")[1].split(" "))
+    splittedStr=splittedStr.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(" ")
+    wordCloudData.push(splittedStr)
+  }
+  return wordCloudData.flat()
+}
+function transformDataTreegraph(node,data){
+  var treeData,membership=[]
+
+    for (i = 0; i < data.length; ++i) { 
+/*       if((configFile[i]["CLASS"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["TYPE"]=="TREEGRAPH")){
+        rowDataConfig=i
+        break;
+      } */
+      membership.push({
+        "name": data[i]["membership"]["value"],
+        //"parent": node["value"],
+        "children": [
+        {
+            "name": data[i]["person"]["value"],
+            //"parent": data[i]["membership"]["value"]
+        }]})
+      //data[i]["membership"]
+      //membership ?membership_order ?membership_positionStatus ?person ?person_image
+    }
+    treeData={//"name":node["value"],
+                "name":"Organisation",
+                   //"parent":"null",
+                  "children":membership}
+
+    return treeData
+}
+
 async function getIterData(property){
   var nodes = [], links=[],number,children=0;
   async function recurse(node) {
@@ -704,38 +758,38 @@ function showWikipediaPage(data){
   var modal=document.getElementById("myModal")
   modal.style.display = "none";
 
-  //////////////////////////console.log(data)
+  ////////////////////////////////////////////////////////////console.log(data)
   //modal2.style.display = "none";
-  ////////////////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[data["class"]])
+  //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodesClassesCorrespondence[data["class"]])
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WEBPAGE")){
       rowDataConfig=i
       break;
     }
   }
-  //////////////////////////console.log(configFile)
-  //////////////////////////console.log(rowDataConfig)
+  ////////////////////////////////////////////////////////////console.log(configFile)
+  ////////////////////////////////////////////////////////////console.log(rowDataConfig)
   node=data
   url=configFile[rowDataConfig]["endpoint_url"]
   sparqlQuery=configFile[rowDataConfig]["query"]
   prefixes=""
-  //////////////////////////////////////////////////////////////////////console.log(rowDataConfig)
-  ////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
-  //////////////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(rowDataConfig)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
   //parameter=node[configFile[rowDataConfig]["PARAMETERS"]]
   parameters=configFile[rowDataConfig]["parameters"]
-  //////////////////////////console.log(parameters)
+  ////////////////////////////////////////////////////////////console.log(parameters)
   if(parameters.length>0){
     parameters=get_parameters(parameters)
     for (i = 0; i < parameters.length; ++i) { 
-      ////////////////////////////////////////////////////////////////////console.log(node)
+      //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
       sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
     }  
   }
   //sparqlQuery=sparqlQuery.replace("PARAMETER",parameter);
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true       }; 
-  ////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
+  //////////////////////////////////console.log(sparqlQuery)
   $.ajax(settings).then  (function( _data ) {
     results = _data.results.bindings;
     page=results[0]["article"]["value"]
@@ -747,7 +801,7 @@ function showWikipediaPage(data){
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
-    //////////////////console.log(document.getElementsByClassName("modal-content2"))
+    ////////////////////////////////////////////////////console.log(document.getElementsByClassName("modal-content2"))
     document.getElementsByClassName("modal-content2")[0].appendChild(div)
     iframe=d3.select("#modalGraph").append("iframe")
     .attr("src",page)
@@ -759,7 +813,7 @@ function showWikipediaPage(data){
       }) */
     d3.select(".modal-header2 h2").remove()
     modalHeader2=document.getElementsByClassName("modal-header2")[0]
-    //////////////////////////console.log(modalHeader2)
+    ////////////////////////////////////////////////////////////console.log(modalHeader2)
     //modalHeader2.className="mb-4"
     modalHeader2.classList.add("mb-4");
     var h2=document.createElement("h2")
@@ -777,9 +831,10 @@ function showWikipediaPage(data){
     $("#myModal2").draggable()
   })
 }
+
 async function buildBasicGraph(rowDataConfig,node){
   var sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns;
-
+  //////////////////////////////console.log("entra")
   url=configFile[rowDataConfig]["endpoint_url"]
   sparqlQuery=configFile[rowDataConfig]["query"]
   hierarchy=configFile[rowDataConfig]["hierarchy"]
@@ -793,11 +848,17 @@ async function buildBasicGraph(rowDataConfig,node){
   tooltip=configFile[rowDataConfig]["tooltip"]
   tooltip=configFile[rowDataConfig]["tooltip"]
   columns=configFile[rowDataConfig]["columns"]
-  //////////////////////////console.log(columns)
+  //////////////////////////////////console.log(classes)
   property_names=get_property_names(properties_full)
-  //////////////////////////////////////////////////console.log(configFile[rowDataConfig])
-  ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile)
-  //////////////////////////////////////////////////////////////////////////////////////////console.log(configFile)
+  //////////////////console.log(configFile[rowDataConfig])
+  
+
+  //////////////////////////console.log(options)
+  
+  //throw new Error("Something went badly wrong!");
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile)
   
   execQueries.push(sparqlQuery)
   configClasses = configFile.map(function(d) {
@@ -814,34 +875,43 @@ async function buildBasicGraph(rowDataConfig,node){
       //parameters=parameters.split(";")
       parameters=get_parameters(parameters)
       for (i = 0; i < parameters.length; ++i) { 
-        ////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
         sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
       }  
-      ////////////////////////////////////////////////////////////////////////////////////////console.log(node["class"])
-      if(node["class"]=="corporateBody"){
-        ////////////////////////////////////////////////////////////////////////////////////////console.log("node class corporateBody")
-        sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
-      }else{
-        sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
-      }
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node["class"])
+      //if(node["class"]=="corporateBody"){
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log("node class corporateBody")
+        ////////////////console.log(node)
+        if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
+          sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
+        }else{
+          sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
+        }
+      //}else{
+      //  sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
+      //}
     }else{
       sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
     }
+    ////////////////////////////console.log(classes)
     nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(classes));
     nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(classes)))))
   }
+  //////////////////////////////console.log(graphType)
+  ////////////////console.log(sparqlQuery)
   if(graphType=="TREE"){
-    //////////////////////////////////////////////////////////////////console.log(sparqlQuery)
+    ////////////////////////////////console.log(sparqlQuery)
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  ////////////////////////////////console.log(sparqlQuery)
+  //console.log(sparqlQuery)
   await $.ajax(settings).then  (function( _data ) {
     var results = _data.results.bindings;
+    ////////////////////////////////console.log(results)
     //Get new branch
     graphHistory.push(options)
-    ////////////////console.log(graphHistory)
+    //////////////////////////////////////////////////console.log(graphHistory)
     data=buildDataBasic(results,properties,hierarchy,classes,configClasses,node,option_text)
-    //////////////////////////////////////////////////////////////////////////////////////////////console.log(data)
+    ////////////////////////////////console.log(data)
     
     if(node==undefined){
       //d3.select(".graph").remove()
@@ -879,17 +949,17 @@ async function buildBasicGraph(rowDataConfig,node){
             iterations: 1
         }
       }
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(data)
-      networkGraph = new NetworkGraph("#networkGraph", data,forces);
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(data)
+      networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
       collapse()
     }else{
-      ////////////////////////////////////////////////////console.log(nodesClassesShow)
-      ////////////////////////////////////////////////////console.log(colorScale.domain())
+      //////////////////////////////////////////////////////////////////////////////////////console.log(nodesClassesShow)
+      //////////////////////////////////////////////////////////////////////////////////////console.log(colorScale.domain())
       var dif=differenceArrays(nodesClassesShow,colorScale.domain())
 /*       var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-      //////////////////////////////////////////console.log(dif)
-      //////////////////////////////////////////console.log(filters)
-      //////////////////////////////////////////console.log(configFile[rowDataConfig])
+      ////////////////////////////////////////////////////////////////////////////console.log(dif)
+      ////////////////////////////////////////////////////////////////////////////console.log(filters)
+      ////////////////////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
       fillLegend(dif,true) */
 /*       networkGraph.colorScale.domain(nodesClassesShow)
  *//*       networkGraph.legendOrdinal
@@ -911,28 +981,41 @@ async function buildBasicGraph(rowDataConfig,node){
       
       
       networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-      ////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.treeData)
+      //////////////////////////////////console.log(networkGraph.treeData)
       networkGraph.data=flatten(networkGraph.treeData).flatData
-      ////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
       networkGraph.initializeSimulation();
-      networkGraph.dataJoinGraph()
-      networkGraph.enterGraph()
+      //if(networkGraph.graphType=="freeGraph"){
+      //  //////////////console.log("entra por aquí")
+      //  networkGraph.dataJoinFreeGraph()
+      //  networkGraph.enterFreeGraph()
+      //}else{
+        networkGraph.dataJoinGraph()
+        networkGraph.enterGraph()
+      //}
       
-      //////////////////////////////////////console.log(dif)
-      //////////////////////////////////////////console.log(filters)
-      //////////////////////////////////////////console.log(configFile[rowDataConfig])
+      ////////////////////////////////////////////////////////////////////////console.log(dif)
+      ////////////////////////////////////////////////////////////////////////////console.log(filters)
+      ////////////////////////////////////////////////////////////////////////////console.log(configFile[rowDataConfig])
       fillLegend(dif,true)
       networkGraph.initializeSimulation();
-      networkGraph.dataJoinGraph()
+      //networkGraph.dataJoinGraph()
+      if(networkGraph.graphType=="freeGraph"){
+        networkGraph.dataJoinFreeGraph()
+      }else{
+        networkGraph.dataJoinGraph()
+      }
       networkGraph.exitGraph()
     }
     if((results.length>0)&(filters!="")){
-      //////////////console.log(filters)
-      ////////////////////////////////////console.log(data)
-      ////////////////////////////////////console.log(networkGraph.data)
+      //////////////////////////console.log(filters)
+      //////////////////////////////////////////////////////////////////////console.log(data)
+      //////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+      ////////////////////////console.log("addFilters")
       addFilters(filters,data)
+      
       filtersInGraph=filtersInGraph.concat(filters)
-      //////////////console.log(filtersInGraph)
+      ////////////////////////////////////////////////console.log(filtersInGraph)
     }
 
   })
@@ -946,8 +1029,11 @@ async function buildBasicGraph(rowDataConfig,node){
     showPdf(node,sparqlQuery,url)
   }else if (graphType=="TABLE"){
     showTable(node,sparqlQuery,columns,property_names)
+  }else if (graphType=="WORDCLOUD"){
+    ////////////////////////////console.log(sparqlQuery)
+    showWordcloud(node,sparqlQuery,columns,property_names)
   }
-  //////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
 }
 
 // Get the modal
@@ -988,7 +1074,7 @@ window.onclick = function(event) {
 function downloadData(element){
   
   var nodes = [],row2,classIndex,hierarchy,lastHierarchy,row={};
-  //////////////////////////////////////////////////////////////////////console.log(element)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(element)
   root=networkGraph.treeData.filter(function(item) {
     if(item[item["class"]+"_uri"]!=undefined){
       return item[item["class"]+"_uri"] == element[element["class"]+"_uri"]
@@ -1067,8 +1153,8 @@ function downloadQuery(){
 }
 function getTooltipNode(tooltip,nodeClass){
   var tooltipNode={}
-  ////////////////////////////////////////////////////////console.log(tooltip)
-  ////////////////////////////////////////////////////////console.log(nodeClass)
+  //////////////////////////////////////////////////////////////////////////////////////////console.log(tooltip)
+  //////////////////////////////////////////////////////////////////////////////////////////console.log(nodeClass)
   if(tooltip!=""){
     //tooltip=tooltip.split(";")
     //{'property': '', 'tooltip_text': ''}]
@@ -1082,9 +1168,29 @@ function getTooltipNode(tooltip,nodeClass){
 }
 function get_parameters(parameters){
   var temp=[]
-  ////////////////////////////////console.log(parameters)
+  //////////////////////////////////////////////////////////////////console.log(parameters)
   parameters.forEach(function(d){
     temp.push(d["property"])
   })
   return temp
 }
+
+
+function checkConfigFileNode(result){
+  //////////console.log(result)
+  if(result["o"].type=="uri"){
+    ////////console.log(result)
+    ////////console.log(configFile)
+  }
+}
+/* function getFreeGraphTreeData(results){
+  var treeData=[];
+  subjectId=genRandomString()
+  treeData.push({"id":subjectId,"value":results[0]["s"]["value"],"shape":1,"class":"node","type":results[0]["s"]["type"]})
+  results.forEach(function (r){
+    objectId=genRandomString()
+    nodes.push({"id":objectId,"value":r["o"]["value"],"shape":1,"class":"node","type":r["o"]["type"]})
+    links.push({source: subjectId, target: objectId, type: r["p"]["value"]})
+  })
+  treeData[position[i-1]-1]["children"].push(node)
+} */

@@ -3,7 +3,7 @@ function addFilters(filters,data){
 
     // Example format for filters
     // OP Theme_Publication date-date;OP Theme_Theme name-text;OP Theme Main_Publication date-date;OP Theme Main_Publication number-number    
-    ////////////////////////console.log(filters)
+    //////////////////////////////////console.log(filters)
     filters.forEach(function(d){
       // property format example: corporateBody_country
       property=d["property"]
@@ -31,59 +31,50 @@ function addFilters(filters,data){
       }else if(!propertiesFilterHist.includes(property)){
         controls=d3.select("#"+classFilter+"_filters")
       }
-      valuesFilter=getValuesFilter(classFilter,property)
-      ////////////////////////console.log(valuesFilter)
+      valuesFilter=getValuesFilterVisibleNodes(classFilter,property)
+      //////////////////////////////////console.log(valuesFilter)
       
       if(propertiesFilterHist.includes(property)){
+        //??????????????????????????????????????????
         addValuesToFilter(filterType,property,valuesFilter)
       }else{
         addFilterType(filterType,valuesFilter,property,classFilter,controls,true)
         propertiesFilterHist.push(property)
       }
       if(valuesFilter[0]==""){
-        document.getElementById(property).parentNode.style.display = 'none'
-        document.getElementById(property+"_label").parentNode.style.display = 'none'
-        if(hideClassFilter(property.split("_")[0])){
-          ////////////////////////console.log("entra")
-          ////////////////////////console.log(document.getElementById(property).parentNode.parentNode)
-          document.getElementById(property).parentNode.parentNode.parentNode.style.display = 'none'
-        }
-        //d3.select("#"+property).node().parentNode.style("display", "none") 
-        //////////////////////////console.log(filtersInClass)
+        hidePropertyFilter(property)
       }
       //check_values_filter()
     })
   }
-  function check_values_filter(){
+/*   function check_values_filter(){
       if(valuesFilter[0]==""){
         document.getElementById(property).parentNode.style.display = 'none'
         document.getElementById(property+"_label").parentNode.style.display = 'none'
         if(hideClassFilter(property.split("_")[0])){
-          ////////////////////////console.log("entra")
-          ////////////////////////console.log(document.getElementById(property).parentNode.parentNode)
           document.getElementById(property).parentNode.parentNode.parentNode.style.display = 'none'
         }
-        //d3.select("#"+property).node().parentNode.style("display", "none") 
-        //////////////////////////console.log(filtersInClass)
       }
-  }  
-
+  }  */ 
+  function hidePropertyFilter(property){
+    document.getElementById(property).parentNode.style.display = 'none'
+    document.getElementById(property+"_label").parentNode.style.display = 'none'
+    if(hideClassFilter(property.split("_")[0])){
+      document.getElementById(property).parentNode.parentNode.parentNode.style.display = 'none'
+    }
+  }
   function hideClassFilter(classFilter){
     var filtersInClass
-    ////////////////////////console.log(classFilter)
     filtersInClass=filtersInGraph.filter(function(d){
-      ////////////////////////console.log(d.property.split("_")[0])
-      ////////////////////////console.log(classFilter)
       return d.property.split("_")[0]==classFilter
     })
-    ////////////////////////console.log(filtersInClass)
     if(filtersInClass.length==0){
       return true
     }else{
       false
     }
   }
-  function getValuesFilter(classFilter,property){
+  function getValuesFilterVisibleNodes(classFilter,property){
     var values=[]
     // get all values from property in data
     networkGraph.data["nodes"].forEach(function(d){
@@ -101,7 +92,7 @@ function addFilters(filters,data){
     
   
     if((filterType=="dropdown")|(filterType=="dropdown_multiple")|(filterType=="dropdown_date")|(filterType=="dropdown_number")){
-      //////////////////////////////////////////////console.log("entra en dropdown")
+      ////////////////////////////////////////////////////////console.log("entra en dropdown")
       if (all&(valuesFilter.length>1)){
         valuesFilter=["All"].concat(valuesFilter)
       }
@@ -189,9 +180,9 @@ function addFilters(filters,data){
 
       var dateInput = document.createElement("input");
       dateInput.name = property;
-      //////////////////////////////console.log(property)
+      ////////////////////////////////////////console.log(property)
       dateInput.id = property.replaceAll(" ","_");
-      //////////////////////////////console.log(dateInput.id)
+      ////////////////////////////////////////console.log(dateInput.id)
       dateInput.type="date"
       dateInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + getKeyByValue(nodesClassesCorrespondence, classFilter) +"_filter"
       //dateInput.setAttribute("onchange","applyFilter([this.value],this.getAttribute('id'),'"+getKeyByValue(nodesClassesCorrespondence, classFilter)+"')"); 
@@ -263,16 +254,7 @@ function addFilters(filters,data){
       betNumbersInput2 = document.createElement("div")
       betNumbersInput2.className="relative w-full max-w-xl"
       betNumbersInput2.setAttribute("id",property+"_filter")
-      //betNumbersInput2.setAttribute("id",function (){
-        //SOLO UN FILTRO POR FIELD
-        //if (document.getElementById(property+"_filter")){
-        //  str.charAt(str.length-1)
-        //}else{
-        //  return property+"_filter";
-        //}
-        //return property+"_filter";
-      //})
-      //betNumbersInput2.setAttribute("x-ref","id")
+
       betNumbersInput2.setAttribute("x-data",'range($el)')
       betNumbersInput2.setAttribute("x-init",'mintrigger(); maxtrigger()')
 
@@ -410,9 +392,7 @@ function addFilters(filters,data){
       label.htmlFor+=" start"
       label.id=label.id.replace("label","start_label")
       document.getElementById(element.id.replace("_dates_selection",""))
-      ////////////////////////////////console.log(document.getElementById(element.id.replace("_dates_selection","_end")))
-      //////////////////////////////console.log(dateField.id)
-      //////////////////////////////console.log(dateField.id.replace(id+"_start",id+"_end"))
+
       addFilterType("date_range","",dateField.id.replace(id+"_start",id+"_end"),classFilter,d3.select("#"+classFilter.replaceAll(" ","_")),false)
 
       if((document.getElementById(element.id.replace("_dates_selection","_start")).value!="")&(document.getElementById(element.id.replace("_dates_selection","_end")).value!="")){
@@ -421,7 +401,7 @@ function addFilters(filters,data){
       }
 
     }if((element.value=="date later than")|(element.value=="date earlier than")){
-      //////////////////////////////////////console.log("if two options")
+
       dateField=document.getElementById(element.id.replace("_dates_selection","_start"))
       if (dateField){
         label=document.getElementById(element.id.replace("_dates_selection","_start_label"))
@@ -435,7 +415,7 @@ function addFilters(filters,data){
       }else{
         dateFieldVal=document.getElementById(element.id.replace("_dates_selection",""))
       }
-      ////////////////////////////////////console.log(dateFieldVal.value)
+      //////////////////////////////////////////////console.log(dateFieldVal.value)
       dateFieldVal.setAttribute("onchange","applyFilter([this.value],this.getAttribute('id'),'date','')"); 
 
       if(dateFieldVal.value!=""){
@@ -449,7 +429,7 @@ function addFilters(filters,data){
       document.getElementById(element.id.replace("_selection","")).parentNode.style.display = 'none';
       document.getElementById(element.id.replace("_selection","_label")).style.display = 'none';
       if(document.getElementById(element.id.replace("_selection","_filter"))){
-        //////////////////////////////////////////////////console.log(document.getElementById(element.id.replace("_selection","_between")).parentNode)
+        ////////////////////////////////////////////////////////////console.log(document.getElementById(element.id.replace("_selection","_between")).parentNode)
         document.getElementById(element.id.replace("_selection","_filter")).parentNode.style.display = 'block';
         document.getElementById(element.id.replace("_selection","_between_label")).style.display = 'block';
       }else{
@@ -461,19 +441,19 @@ function addFilters(filters,data){
       if(document.getElementById(element.id.replace("_selection","_filter"))){
         document.getElementById(element.id.replace("_selection","_filter")).parentNode.style.display = 'none';
       }
-      ////////////////////////////////////////console.log(document.getElementById(element.id.replace("_selection","_between")))
+      //////////////////////////////////////////////////console.log(document.getElementById(element.id.replace("_selection","_between")))
       if(document.getElementById(element.id.replace("_selection","_filter"))){
         document.getElementById(element.id.replace("_selection","_filter")).parentNode.style.display = 'none';
         document.getElementById(element.id.replace("_selection","_between_label")).style.display = 'none';
       }
-      ////////////////////console.log(document.getElementById(element.id).getAttribute("id"))
+      //////////////////////////////console.log(document.getElementById(element.id).getAttribute("id"))
       filterAllFields(document.getElementById(element.id).getAttribute("id").replace("_selection",""))
       //applyFilter(document.getElementById(element.id.replace("_selection","")),"number","")
     }
    }
    function applyFilterBet(element){
     var typeField,value,property
-    ////////////////////////////////////console.log(element.parentNode.parentNode)
+    //////////////////////////////////////////////console.log(element.parentNode.parentNode)
     typeField=element.getAttribute("id")
     value=element.value
     if(typeField=="range_min"){
@@ -491,19 +471,19 @@ function addFilters(filters,data){
     }
    }
    function applyFilter(value,property,type,typeComp){
-     //////////////console.log("applyFilter")
+     ////////////////////////console.log("applyFilter")
      filterAllFields(property)
    }
 
-   function filterValuesFilters(classFilter,property){
+/*    function filterValuesFilters(classFilter,property){
     var selectValues
 
     const fieldsClass=document.getElementsByClassName(classFilter+"_filter")
 
     for (let i = 0; i < fieldsClass.length; i++) {
-      //////////////////////////////////////////////////console.log(fieldsClass[i]);
+      ////////////////////////////////////////////////////////////console.log(fieldsClass[i]);
       if (fieldsClass[i]["id"]!=property){
-        //////////////////////////////////////////////////console.log(fieldsClass[i].tagName)
+        ////////////////////////////////////////////////////////////console.log(fieldsClass[i].tagName)
         selectValues=networkGraph.data.nodes.filter(function(d){
           return d.class==classFilter
         })
@@ -519,11 +499,11 @@ function addFilters(filters,data){
         }
       }
     }
-   }
-   function filterDropdown(fieldClass,selectValues){
+   } */
+   /* function filterDropdown(fieldClass,selectValues){
     for (j = fieldClass.length - 1; j>= 0; j--) {
       fieldClass.remove(j);
-      ////////////////////////////////////////////////////console.log(fieldsClass[i][j])
+      //////////////////////////////////////////////////////////////console.log(fieldsClass[i][j])
     }
     if(selectValues.length>1){
       var option = document.createElement("option");
@@ -536,7 +516,7 @@ function addFilters(filters,data){
       option.text = val.charAt(0).toUpperCase() + val.slice(1);
       fieldClass.appendChild(option);
     } 
-   }
+   } */
 
    function range(element) {
       var values=[],classElement,propertyEl;
@@ -603,26 +583,29 @@ function addFilters(filters,data){
 
 function filterAllFields(property){
   var filters=[],valuesFilter=[],values=[],classFilter,allValues,parent;
-
+  // Get all current values and all values for filters and update the array of filters and pass it to networkgraph.applyFilter
   classFilter=property.split("_")[0]
   property=property.split("_")[1]
-  ////////////////////console.log(property)
+
+  //get all lines of config file for graphs added
   var options=configFile.filter(function(item) {
     return graphHistory.includes(item.option)
   })
+
+  //add all filters added until now
   options.forEach(function (d){
     if (d.filters.length>0){
       d.filters.forEach(function (v){
         filters.push(v)
       })
     }
-    ////////////////////////////////////console.log(d.filters)
   })
   
-  //////////////////////////////////console.log(filters)
+  //iterate all filters added 
   filters.forEach(function (f){
-    console.log(f)
-    allValues=get_all_values_filter(f)
+    //////////console.log(f)
+    allValues=getValuesFilterAllNodes(f)
+    //allValues=getValuesFilterVisibleNodes(classFilter,property)
     if(f.parent){
       parent=f.parent
     }else{
@@ -630,33 +613,33 @@ function filterAllFields(property){
     }
     if(f.filter_type=="number"){
       if(document.getElementById(f.property+"_selection").value=="number range"){
-        //////////////////////////////console.log(d3.select("#"+f.property+"_filter #text_min").node().value)
+        ////////////////////////////////////////console.log(d3.select("#"+f.property+"_filter #text_min").node().value)
         values.push(d3.select("#"+f.property+"_filter #text_min").node().value)
         values.push(d3.select("#"+f.property+"_filter #text_max").node().value)
-        //////////////////////////////console.log(d3.select("#"+f.property+"_filter #text_max").node().value)
+        ////////////////////////////////////////console.log(d3.select("#"+f.property+"_filter #text_max").node().value)
         //allValues
         valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":"<>","allValues":allValues,"parentFilter":parent})
       }else{
         values=[document.getElementById(f.property).value]
-        console.log(values)
+        //////////console.log(values)
         if(document.getElementById(f.property+"_selection").value=="greater than"){
           valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":"<","allValues":allValues,"parentFilter":parent})
         }else if (document.getElementById(f.property+"_selection").value=="smaller than"){
           valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":">","allValues":allValues,"parentFilter":parent})
         }else if (document.getElementById(f.property+"_selection").value=="equal to")
         valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":"==","allValues":allValues,"parentFilter":parent})
-        console.log(valuesFilter)
+        //////////console.log(valuesFilter)
       }
     }else if(f.filter_type=="date"){
       if(document.getElementById(f.property+"_dates_selection").value=="date range"){
-        //////////////////////////////console.log(d3.select("#"+f.property+"_start").node().value)
+        ////////////////////////////////////////console.log(d3.select("#"+f.property+"_start").node().value)
         values.push(d3.select("#"+f.property+"_start").node().value)
-        //////////////////////////////console.log(d3.select("#"+f.property+"_end").node().value)
+        ////////////////////////////////////////console.log(d3.select("#"+f.property+"_end").node().value)
         values.push(d3.select("#"+f.property+"_end").node().value)
         valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":"<>","allValues":allValues,"parentFilter":parent})
       }else{
-        //////////////////////////////console.log(f.property)
-        //////////////////////////////console.log(f.property+"_dates_selection")
+        ////////////////////////////////////////console.log(f.property)
+        ////////////////////////////////////////console.log(f.property+"_dates_selection")
         values=[document.getElementById(f.property).value]
         if(document.getElementById(f.property+"_dates_selection").value=="date later than"){
           valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":"<","allValues":allValues,"parentFilter":parent})
@@ -669,23 +652,88 @@ function filterAllFields(property){
       values=[document.getElementById(f.property).value]
       valuesFilter.push({"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":"==","allValues":allValues,"parentFilter":parent})
     }
-    ////////////////////////////////////console.log(document.getElementById(f.property).value)
+    //////////////////////////////////////////////console.log(document.getElementById(f.property).value)
     values=[]
   })
-  ////////////////////////console.log(valuesFilter)
-  //get_all_values_filter()
-  console.log(valuesFilter)
+  filters=valuesFilter
+  //networkGraph.applyFilter2(valuesFilter,classFilter,property)
+  var hiddenNodes,parentHidden=false,position,selectedFilter;
   
-  
-  ////////////////////console.log(classFilter)
-  ////////////////////console.log(property)
-  networkGraph.applyFilter2(valuesFilter,classFilter,property)
+  hiddenNodes=[]
+  //vis.filters=filters
+  property=classFilter+"_"+property
+  selectedFilter=filters.filter(function(item) {
+    return ((item.class == classFilter)&(item.property == property))
+  })[0]
+  changeValuesFilters()
+
+  networkGraph.treeData.forEach(function(t){
+    parentHidden=false
+    //////////////////////////////console.log(t)
+    //////////////////////////////console.log(hiddenNodes)
+    if(hiddenNodes.includes(t.id)){
+      t.hidden=true
+      parentHidden=true
+    }else{
+      //if(check_one_filter(t,filters,classFilter,property)){
+      if(check_filters(t,filters)){
+        t.hidden=true
+        parentHidden=true
+        if(!hiddenNodes.includes(t.id)){
+          hiddenNodes.push(t.id)
+        }
+        //////////////////////////////console.log(t)
+        //////////////////////////////console.log(hiddenNodes)
+      }else{
+        delete t.hidden
+      }
+    }
+    
+    if(t.children!=undefined){
+      t.children.forEach(function(v){
+        ////////////////////console.log(v)
+        ////////////////////console.log(parentHidden)
+        if(parentHidden){
+          v["hidden"]=true
+          if(!hiddenNodes.includes(v.id)){
+            hiddenNodes.push(v.id)
+          }
+        }else{
+          //if(check_one_filter(v,filters,classFilter,property)){
+          if(check_filters(v,filters)){  
+            ////////////////////console.log("hidden true segun filters")
+            ////////////////////////////console.log(v)
+            v["hidden"]=true
+            if(!hiddenNodes.includes(v.id)){
+              hiddenNodes.push(v.id)
+            }
+          }else{
+            delete v.hidden
+          }
+        }
+        
+      })
+    }
+    
+  })
+  ////////////////////////////////////////////console.log(vis.visibleNodes)
+  //changeValuesFilters()
+  //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.treeData)
+  networkGraph.data=flatten(vis.treeData).flatData
+  //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(vis.data)
+  networkGraph.initializeSimulation();
+  networkGraph.dataJoinGraph()
+  networkGraph.enterGraph()
+  networkGraph.initializeSimulation();
+  networkGraph.dataJoinGraph()
+  networkGraph.exitGraph()
+  //////////////////////////////console.log(classFilter)
+  newValuesFilters(classFilter,property)
 }
-function get_all_values_filter(filter){
+function getValuesFilterAllNodes(filter){
   var ids=[],values=[]
-  ////////////////////////////console.log(filter)
+
   networkGraph.treeData.forEach(function(item){
-    ////////////////////////////console.log(item)
     if(!ids.includes(item.id)){
       if(item[filter.property]){
         if(!values.includes(item[filter.property])){
@@ -696,7 +744,7 @@ function get_all_values_filter(filter){
     }
     if(item.children){
       item.children.forEach(function (c){
-        ////////////////////////////console.log(c)
+        //////////////////////////////////////console.log(c)
         if(!ids.includes(c.id)){
           if(c[filter.property]){
             if(!values.includes(c[filter.property])){
@@ -710,3 +758,348 @@ function get_all_values_filter(filter){
   })
   return values;
 }
+function filterText(f,node){
+  var hidden=false;
+  if (node[f.property].indexOf(f.values[0]) !== -1){
+    hidden=true
+  }else{
+    hidden=false
+  }
+  return hidden
+}
+function filterNumber(f,node){
+  var hidden=false;
+
+  if(f.values[0]==""){
+    hidden=false;
+  }else{
+    if(f.operator=="<>"){
+      if(eval(f.values[0] +"<"+ node[f.property]) & eval(f.values[1]+">"+node[f.property])){
+          hidden=false
+      }else{
+          hidden=true
+      }
+    }else{
+      //////////////////console.log(f.values[0]+f.operator+node[f.property])
+      if(eval(f.values[0]+f.operator+node[f.property])){
+        hidden=false
+      }else{
+        hidden=true
+      }
+    }
+  }
+
+  return hidden
+}
+function filterDropdown(f,node){
+  var hidden=false;
+  ////////////////////////////////////////////console.log(node[f.property])
+  ////////////////////////////////////////////console.log(f.values)
+  //////////////////////////////////////////////console.log(f.values.includes(node[f.property]))
+  if(f.values.includes("All")){
+    if(nodes["hidden"]){
+      hidden=false
+    }
+  }else if(!f.values.includes(node[f.property])){
+      hidden=true
+  }else{
+      hidden=false
+  }
+  ////////////////////////////////////////////console.log(hidden)
+  return hidden
+}
+function filterDate(f,node){
+  var hidden=false;
+
+  if(f.values[0]==""){
+    hidden=false
+  }else{
+    if(f.operator=="<>"){
+      if(eval("new Date('"+f.values[0]+"') < new Date('"+node[f.property]+"')") & eval("new Date('"+f.values[1]+"') > new Date('"+node[f.property]+"')")){
+        hidden=false;
+      }else{
+        hidden=true
+      }
+    }else{
+      if(eval("new Date('"+f.values[0]+"')"+f.operator+"new Date('"+node[f.property]+"')")){
+        hidden==false
+      }else{
+        hidden=true 
+      }
+    }
+  }
+  return hidden
+}
+
+function check_filters(node,filters){
+  var hidden=false,hiddenNodes=[];
+  filters.forEach(function (f){
+    if(f.class==node.class){
+      if((f.values[0]!="")|(f.filter_type!="dropdown")){
+
+        if(!hiddenNodes.includes(node.id)){
+        //if(f.class==node.class){
+          ////////////////////////////////////////////////console.log(node)
+          if(node[f.property]!=undefined){
+            if(f.filter_type=="date"){
+              hidden=filterDate(f,node)
+            }else if(f.filter_type=="dropdown"){
+              hidden=filterDropdown(f,node)
+            }else if(f.filter_type=="number"){
+              hidden=filterNumber(f,node)
+            }else if(f.filter_type=="text"){
+              hidden=filterText(f,node)
+            }
+            if(hidden){
+              hiddenNodes.push(node.id)
+            }
+            //{"class":f.property.split("_")[0],"property":f.property,"filter_type":f.filter_type,"values":values,"operator":">"
+            //hidden=false
+          }
+        }
+      }
+    }
+    //////////////////console.log(hidden)
+    //////////////////////////////////////console.log(hiddenNodes)
+  })
+  return hidden
+}
+function check_one_filter(node,filters,classFilter,property){
+  var hidden=false;
+  //////////////////////////////////////////////console.log(node)
+  //////////////////////////////////////////////console.log(filters)
+  //////////////////////////////////////////////console.log(classFilter)
+  //////////////////////////////////////////////console.log(property)
+
+  //////////////////////////////////////////console.log(selectedFilter)
+  //////////////////////////////////////////console.log(node)
+  if(selectedFilter.class==node.class){
+    ////////////////////////////////////////////console.log(node[selectedFilter.property])
+    if(node[selectedFilter.property]!=undefined){
+      if(selectedFilter.filter_type=="date"){
+        hidden=filterDate(selectedFilter,node)
+      }else if(selectedFilter.filter_type=="dropdown"){
+        hidden=filterDropdown(selectedFilter,node)
+      }else if(selectedFilter.filter_type=="number"){
+        hidden=filterNumber(selectedFilter,node)
+      }else if(selectedFilter.filter_type=="text"){
+        hidden=filterText(selectedFilter,node)
+      }
+    }
+  }
+
+  return hidden
+}
+function changeValuesFilters(){
+  var nodes,values=[],changedValue;
+  ////////////////////////////////console.log("changeValuesFilters")
+  visibilityFilters(classFilter)
+  filters.forEach(function (f){
+    ////////////////////////////////console.log(f)
+    values=[]
+    if ((f.filter_type=="dropdown")|(f.filter_type=="number")){
+      if((classFilter!=f.class)|(property!=f.property)){
+          nodes=vis.allData.filter(function(item) {
+            return ((item.class == f.class)&(selectedFilter.values[0]==item[selectedFilter.property]))
+          })
+       // } 
+        nodes.forEach(function(n){
+          if(!(values.includes(n[f.property]))){
+            values.push(n[f.property])
+          }
+        })
+
+        ////////////////////////////////console.log(f.filter_type)
+        ////////////////////////////////console.log(f.property)
+        ////////////////console.log(values)
+        changedValue=addValuesToFilter(f.filter_type,f.property,values)
+        //////////////////////////console.log(changedValue)
+        //////////////////////////console.log(f)
+        f.values=[changedValue]
+      }
+    }
+  })
+}
+function addValuesToFilter(filterType,property,values){
+  var selectLength,changedValue=""
+
+  if(filterType=="dropdown"){
+    var option,options=[];
+    var select=document.getElementById(property)
+
+    if((select.value=="")|(select.value=="All")){
+      if(values[0]==undefined){
+        select.value="All"
+      }else{
+        select.value=values[0]
+      }
+    }else{
+      select.value=values[0]
+    }
+
+    changedValue=select.value
+  }
+  return changedValue
+  }
+function visibilityFilters(classFilterChanged){
+  var values,childNodes;
+  ////////////////////////////////console.log(networkGraph.data)
+  ////////////////////////////////console.log(document.getElementsByClassName("classFilter"))
+  var classFilter=document.getElementsByClassName("classFilter")
+  filters.forEach(function(f){
+    //////////////////////////console.log(f)
+    //////////////////////////console.log(f.class)
+    //////////////////////////////console.log(document.getElementById(f.class+"_filters").parentNode.style.display)
+    if(document.getElementById(f.class+"_filters").parentNode.style.display=="none"){
+      /* values=vis.data.nodes.filter(function(v){
+        return v[property]!=""
+      }) */
+      //////////////////////////console.log(document.getElementById(f.class+"_filters").childNodes)
+/*         document.getElementById(f.class+"_filters").childNodes.forEach(function (d){
+        //////////////////////////console.log(d)
+        if(d.id.endsWith("_label")){
+          //////////////////////////console.log(d.id)
+          ////////////////////////console.log(vis.data.nodes)
+          values=vis.data.nodes.filter(function(v){
+            return v[d.id.replace("_label","")]!=""
+          })
+          //////////////////////////console.log(values)
+        }
+      })  */
+      document.getElementById(f.class+"_filters").parentNode.style.display="block"
+    }
+  })
+  for (let c of classFilter) {
+    ////////////////////////////////console.log(c.childNodes);
+    c.childNodes.forEach(function(ch){
+      ////////////////////////////////console.log(ch)
+      if(classFilterChanged!=ch.id.split("_")[0]){
+        if(ch.id){
+          ////////////////////////////////console.log(ch.id)
+          resultFilterNodes=networkGraph.data.nodes.filter(function(n){
+            return n.class==ch.id.split("_")[0]
+          })
+          ////////////////////////////////console.log(resultFilterNodes)
+          if(resultFilterNodes.length==0){
+            c.style.display = "none";
+          }
+        }
+      }
+    })
+  }
+  ////////////////////////////////console.log(filters)
+  
+/*     classFilter.forEach(function (d){
+    //////////////////////////////console.log(d.getElementsByTagName("div"))
+  }) */
+}
+function newValuesFilters(classFilterChanged,property){
+  var values,childNodes,classNotEmptyFilter=[],classHasFilter=[],newValues=[];
+  ////////////////////////////////console.log(networkGraph.data)
+  //////////////console.log(classFilterChanged)
+  //////////////console.log(property)
+  ////////////////////////////////console.log(document.getElementsByClassName("classFilter"))
+  //var classFilter=document.getElementsByClassName("classFilter")
+  filters.forEach(function(f){
+    //////////////console.log(f)
+    /* newValues=[]
+    if((f.filter_type=="dropdown")&(f.property!=property)){
+      var option,options=[];
+      var select=document.getElementById(f.property)
+      //////////////console.log(vis.data.nodes)
+      vis.data.nodes.forEach(function (n){
+        //////////////console.log(n[f.property])
+        if (n[f.property]){
+          //////////////console.log(n[f.property])
+          newValues.push(n[f.property])
+        }
+      })
+      newValues=[...new Set(newValues)]
+
+      if(newValues.length>0){
+        select.value=newValues[0]
+        f.values=newValues[0]
+      }
+    } */
+  //}
+
+    document.getElementById(f.class+"_filters").childNodes.forEach(function (d){
+      //////////////////////console.log(d)
+      if(d.id.endsWith("_label")){
+        //////////////////////////console.log(d.id)
+        ////////////////////////console.log(vis.data.nodes)
+        values=vis.data.nodes.filter(function(v){
+          //////////////////////console.log(v[d.id.replace("_label","")])
+          return ((v[d.id.replace("_label","")]!="")&(v[d.id.replace("_label","")]!=undefined))
+        })
+        //////////////////////console.log(values)
+        //////////////////////console.log(document.getElementById(d.id))
+        //////////////////////console.log(document.getElementById(d.id.replace("_label","")))
+        ////////////////////////console.log(document.getElementById(d.id.replace("_selection_label","")))
+        //////////////////////console.log(values)
+        if((values.length==0)&(f.class!=classFilterChanged)){
+          document.getElementById(d.id).style.display="none"
+          if(document.getElementById(d.id.replace("_label",""))){
+            document.getElementById(d.id.replace("_label","")).style.display="none"
+          }else if (document.getElementById(d.id.replace("_selection_label",""))){
+            document.getElementById(d.id.replace("_selection_label","")).style.display="none"
+          }
+        }else{
+          document.getElementById(d.id).style.display="block"
+          if(document.getElementById(d.id.replace("_label",""))){
+            document.getElementById(d.id.replace("_label","")).style.display="block"
+          }else if (document.getElementById(d.id.replace("_selection_label",""))){
+            document.getElementById(d.id.replace("_selection_label","")).style.display="block"
+          }
+          //document.getElementById(d.id.replace("_label","")).style.display="block"
+          classNotEmptyFilter.push(f.class)
+        }
+        classHasFilter.push(f.class)
+      }
+    }) 
+      //document.getElementById(f.class+"_filters").parentNode.style.display="block"
+    //}
+  })
+  classNotEmptyFilter=[...new Set(classNotEmptyFilter)]
+  classHasFilter=[...new Set(classHasFilter)]
+  var elmts = classHasFilter.filter(f => !classNotEmptyFilter.includes(f));
+  //diff = classNotEmptyFilter.filter(function(x) { return classHasFilter.indexOf(x) < 0 })
+  //////////////////////console.log(elmts)
+  ////////////////////////console.log(diff)
+  //////////////////////console.log(classNotEmptyFilter)
+  //////////////////////console.log(classHasFilter)
+  classHasFilter.forEach(function(d){
+    document.getElementById(d+"_filters").parentNode.style.display="block"
+  })
+  elmts.forEach(function(d){
+    document.getElementById(d+"_filters").parentNode.style.display="none"
+  })
+  /* classHasFilterforEach(function(d){
+    document.getElementById(d+"_filters").parentNode.style.display="block"
+  }) */
+  /* filters.forEach(function (f){
+
+  }) */
+  
+}
+function changeValuesFilter(filterType,property,values){
+  var selectLength,changedValue=""
+
+  if(filterType=="dropdown"){
+    var option,options=[];
+    var select=document.getElementById(property)
+
+    if((select.value=="")|(select.value=="All")){
+      if(values[0]==undefined){
+        select.value="All"
+      }else{
+        select.value=values[0]
+      }
+    }else{
+      select.value=values[0]
+    }
+
+    changedValue=select.value
+  }
+  return changedValue
+  }

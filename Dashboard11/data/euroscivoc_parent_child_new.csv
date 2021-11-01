@@ -1,0 +1,2193 @@
+child,parent
+"electrical engineering, electronic engineering, information engineering",engineering and technology
+electronic engineering,engineering and technology
+robotics,engineering and technology
+soft robotics,engineering and technology
+electronic engineering,"electrical engineering, electronic engineering, information engineering"
+robotics,"electrical engineering, electronic engineering, information engineering"
+soft robotics,"electrical engineering, electronic engineering, information engineering"
+robotics,electronic engineering
+soft robotics,electronic engineering
+soft robotics,robotics
+chemical sciences,natural sciences
+inorganic chemistry,natural sciences
+inorganic compounds,natural sciences
+inorganic chemistry,chemical sciences
+inorganic compounds,chemical sciences
+inorganic compounds,inorganic chemistry
+physical sciences,natural sciences
+electromagnetism and electronics,natural sciences
+electrical conductivity,natural sciences
+electromagnetism and electronics,physical sciences
+electrical conductivity,physical sciences
+electrical conductivity,electromagnetism and electronics
+mathematics,natural sciences
+pure mathematics,natural sciences
+arithmetic,natural sciences
+pure mathematics,mathematics
+arithmetic,mathematics
+arithmetic,pure mathematics
+geometry,natural sciences
+geometry,mathematics
+geometry,pure mathematics
+algebra,natural sciences
+algebraic geometry,natural sciences
+algebra,mathematics
+algebraic geometry,mathematics
+algebra,pure mathematics
+algebraic geometry,pure mathematics
+algebraic geometry,algebra
+astronomy,natural sciences
+observational astronomy,natural sciences
+infrared astronomy,natural sciences
+astronomy,physical sciences
+observational astronomy,physical sciences
+infrared astronomy,physical sciences
+observational astronomy,astronomy
+infrared astronomy,astronomy
+infrared astronomy,observational astronomy
+physical cosmology,natural sciences
+physical cosmology,physical sciences
+physical cosmology,astronomy
+astrophysics,natural sciences
+dark matter,natural sciences
+astrophysics,physical sciences
+dark matter,physical sciences
+astrophysics,astronomy
+dark matter,astronomy
+dark matter,astrophysics
+optics,natural sciences
+cavity optomechanics,natural sciences
+optics,physical sciences
+cavity optomechanics,physical sciences
+cavity optomechanics,optics
+semiconductor,natural sciences
+semiconductor,physical sciences
+semiconductor,electromagnetism and electronics
+semiconductor,electrical conductivity
+law,social sciences
+mathematical analysis,natural sciences
+differential equations,natural sciences
+partial differential equations,natural sciences
+mathematical analysis,mathematics
+differential equations,mathematics
+partial differential equations,mathematics
+mathematical analysis,pure mathematics
+differential equations,pure mathematics
+partial differential equations,pure mathematics
+differential equations,mathematical analysis
+partial differential equations,mathematical analysis
+partial differential equations,differential equations
+sociology,social sciences
+governance,social sciences
+public services,social sciences
+governance,sociology
+public services,sociology
+public services,governance
+electrochemistry,natural sciences
+electrolysis,natural sciences
+electrochemistry,chemical sciences
+electrolysis,chemical sciences
+electrolysis,electrochemistry
+biological sciences,natural sciences
+ecology,natural sciences
+ecosystems,natural sciences
+ecology,biological sciences
+ecosystems,biological sciences
+ecosystems,ecology
+earth and related environmental sciences,natural sciences
+hydrology,natural sciences
+limnology,natural sciences
+hydrology,earth and related environmental sciences
+limnology,earth and related environmental sciences
+limnology,hydrology
+medical biotechnology,medical and health sciences
+cells technologies,medical and health sciences
+stem cells,medical and health sciences
+cells technologies,medical biotechnology
+stem cells,medical biotechnology
+stem cells,cells technologies
+clinical medicine,medical and health sciences
+oncology,medical and health sciences
+cancer,medical and health sciences
+oncology,clinical medicine
+cancer,clinical medicine
+cancer,oncology
+organic chemistry,natural sciences
+organic chemistry,chemical sciences
+electrocatalysis,natural sciences
+electrocatalysis,chemical sciences
+electrocatalysis,electrochemistry
+environmental engineering,engineering and technology
+energy and fuels,engineering and technology
+fossil energy,engineering and technology
+gas,engineering and technology
+energy and fuels,environmental engineering
+fossil energy,environmental engineering
+gas,environmental engineering
+fossil energy,energy and fuels
+gas,energy and fuels
+gas,fossil energy
+dermatology,medical and health sciences
+melanoma,medical and health sciences
+dermatology,clinical medicine
+melanoma,clinical medicine
+melanoma,dermatology
+computer and information sciences,natural sciences
+artificial intelligence,natural sciences
+machine learning,natural sciences
+artificial intelligence,computer and information sciences
+machine learning,computer and information sciences
+machine learning,artificial intelligence
+computational intelligence,natural sciences
+computational intelligence,computer and information sciences
+computational intelligence,artificial intelligence
+applied mathematics,natural sciences
+mathematical model,natural sciences
+applied mathematics,mathematics
+mathematical model,mathematics
+mathematical model,applied mathematics
+languages and literature,humanities
+literature - general,humanities
+literature - general,languages and literature
+microbiology,natural sciences
+bacteriology,natural sciences
+microbiology,biological sciences
+bacteriology,biological sciences
+bacteriology,microbiology
+data science,natural sciences
+data processing,natural sciences
+data science,computer and information sciences
+data processing,computer and information sciences
+data processing,data science
+biochemistry,natural sciences
+biomolecules,natural sciences
+lipids,natural sciences
+biochemistry,biological sciences
+biomolecules,biological sciences
+lipids,biological sciences
+biomolecules,biochemistry
+lipids,biochemistry
+lipids,biomolecules
+synthetic biology,natural sciences
+synthetic biology,biological sciences
+software,natural sciences
+software,computer and information sciences
+big data,natural sciences
+big data,computer and information sciences
+big data,data science
+genetics and heredity,natural sciences
+mutation,natural sciences
+genetics and heredity,biological sciences
+mutation,biological sciences
+mutation,genetics and heredity
+history and archaeology,humanities
+history,humanities
+history,history and archaeology
+computer vision,natural sciences
+computer vision,computer and information sciences
+computer vision,artificial intelligence
+topology,natural sciences
+topology,mathematics
+topology,pure mathematics
+computational science,natural sciences
+computational science,computer and information sciences
+metals,natural sciences
+metals,chemical sciences
+metals,inorganic chemistry
+classical mechanics,natural sciences
+statistical mechanics,natural sciences
+classical mechanics,physical sciences
+statistical mechanics,physical sciences
+statistical mechanics,classical mechanics
+social problems,social sciences
+migration,social sciences
+social problems,sociology
+migration,sociology
+migration,social problems
+economics and business,social sciences
+business and management,social sciences
+business model,social sciences
+business and management,economics and business
+business model,economics and business
+business model,business and management
+commerce,social sciences
+commerce,economics and business
+commerce,business and management
+economics,social sciences
+economics,economics and business
+psychology,social sciences
+political science,social sciences
+public policy,social sciences
+public policy,political science
+other social sciences,social sciences
+social sciences interdisciplinary,social sciences
+sustainable development,social sciences
+social sciences interdisciplinary,other social sciences
+sustainable development,other social sciences
+sustainable development,social sciences interdisciplinary
+sustainable economy,social sciences
+sustainable economy,economics and business
+sustainable economy,economics
+social and economic geography,social sciences
+transport,social sciences
+transport,social and economic geography
+public administration,social sciences
+public administration,political science
+"philosophy, ethics and religion",humanities
+philosophy,humanities
+philosophy,"philosophy, ethics and religion"
+natural language processing,natural sciences
+natural language processing,computer and information sciences
+natural language processing,data science
+data analysis,natural sciences
+data analysis,computer and information sciences
+data analysis,data science
+data mining,natural sciences
+data mining,computer and information sciences
+data mining,data science
+employment,social sciences
+employment,economics and business
+employment,business and management
+government systems,social sciences
+civil society,social sciences
+government systems,political science
+civil society,political science
+civil society,government systems
+other medical sciences,medical and health sciences
+forensic science,medical and health sciences
+forensic science,other medical sciences
+psychiatry,medical and health sciences
+psychiatry,clinical medicine
+media and communications,social sciences
+library science,social sciences
+archives,social sciences
+library science,media and communications
+archives,media and communications
+archives,library science
+educational sciences,social sciences
+pedagogy,social sciences
+teaching,social sciences
+pedagogy,educational sciences
+teaching,educational sciences
+teaching,pedagogy
+arts,humanities
+modern and contemporary art,humanities
+film,humanities
+modern and contemporary art,arts
+film,arts
+film,modern and contemporary art
+literary genres,humanities
+essay,humanities
+literary genres,languages and literature
+essay,languages and literature
+essay,literary genres
+languages - general,humanities
+languages - general,languages and literature
+nongovernmental organization,social sciences
+nongovernmental organization,political science
+nongovernmental organization,government systems
+proteins,natural sciences
+proteins,biological sciences
+proteins,biochemistry
+proteins,biomolecules
+databases,natural sciences
+databases,computer and information sciences
+freight transport,social sciences
+freight transport,social and economic geography
+freight transport,transport
+entrepreneurship,social sciences
+entrepreneurship,economics and business
+entrepreneurship,business and management
+anthropology,social sciences
+ethnology,social sciences
+anthropology,sociology
+ethnology,sociology
+ethnology,anthropology
+gravitational waves,natural sciences
+gravitational waves,physical sciences
+gravitational waves,astronomy
+gravitational waves,observational astronomy
+black hole,natural sciences
+black hole,physical sciences
+black hole,astronomy
+black hole,astrophysics
+biofuels,engineering and technology
+biofuels,environmental engineering
+biofuels,energy and fuels
+electric vehicles,social sciences
+electric vehicles,social and economic geography
+electric vehicles,transport
+mechanical engineering,engineering and technology
+vehicle engineering,engineering and technology
+aerospace engineering,engineering and technology
+aircraft,engineering and technology
+vehicle engineering,mechanical engineering
+aerospace engineering,mechanical engineering
+aircraft,mechanical engineering
+aerospace engineering,vehicle engineering
+aircraft,vehicle engineering
+aircraft,aerospace engineering
+heuristic programming,natural sciences
+heuristic programming,computer and information sciences
+heuristic programming,artificial intelligence
+deep learning,natural sciences
+deep learning,computer and information sciences
+deep learning,artificial intelligence
+deep learning,machine learning
+linguistics,humanities
+phonetics,humanities
+linguistics,languages and literature
+phonetics,languages and literature
+phonetics,linguistics
+sleep disorders,medical and health sciences
+sleep disorders,clinical medicine
+sleep disorders,psychiatry
+health sciences,medical and health sciences
+public and environmental health,medical and health sciences
+public and environmental health,health sciences
+neurobiology,natural sciences
+neurobiology,biological sciences
+public transport,social sciences
+public transport,social and economic geography
+public transport,transport
+materials engineering,engineering and technology
+textiles,engineering and technology
+textiles,materials engineering
+system software,natural sciences
+operating systems,natural sciences
+system software,computer and information sciences
+operating systems,computer and information sciences
+system software,software
+operating systems,software
+operating systems,system software
+environmental sciences,natural sciences
+pollution,natural sciences
+environmental sciences,earth and related environmental sciences
+pollution,earth and related environmental sciences
+pollution,environmental sciences
+composites,engineering and technology
+composites,materials engineering
+political communication,social sciences
+political communication,political science
+aeronautical engineering,engineering and technology
+aeronautical engineering,mechanical engineering
+aeronautical engineering,vehicle engineering
+aeronautical engineering,aerospace engineering
+waste management,engineering and technology
+energy efficiency,engineering and technology
+waste management,environmental engineering
+energy efficiency,environmental engineering
+energy efficiency,waste management
+galaxy formation and evolution,natural sciences
+galaxy formation and evolution,physical sciences
+galaxy formation and evolution,astronomy
+galaxy formation and evolution,physical cosmology
+sustainable transport,social sciences
+sustainable transport,social and economic geography
+sustainable transport,transport
+basic medicine,medical and health sciences
+physiology,medical and health sciences
+physiology,basic medicine
+proteomics,natural sciences
+proteomics,biological sciences
+proteomics,biochemistry
+proteomics,biomolecules
+proteomics,proteins
+genome,natural sciences
+genome,biological sciences
+genome,genetics and heredity
+industrial relations,social sciences
+automation,social sciences
+industrial relations,sociology
+automation,sociology
+automation,industrial relations
+renewable energy,engineering and technology
+renewable energy,environmental engineering
+renewable energy,energy and fuels
+civil engineering,engineering and technology
+architecture engineering,engineering and technology
+home automation,engineering and technology
+architecture engineering,civil engineering
+home automation,civil engineering
+home automation,architecture engineering
+polymer science,natural sciences
+polymer science,chemical sciences
+thermodynamic engineering,engineering and technology
+thermodynamic engineering,mechanical engineering
+gastroenterology,medical and health sciences
+inflammatory bowel disease,medical and health sciences
+gastroenterology,clinical medicine
+inflammatory bowel disease,clinical medicine
+inflammatory bowel disease,gastroenterology
+neurology,medical and health sciences
+multiple sclerosis,medical and health sciences
+neurology,basic medicine
+multiple sclerosis,basic medicine
+multiple sclerosis,neurology
+metallurgy,engineering and technology
+metallurgy,materials engineering
+endocrinology,medical and health sciences
+diabetes,medical and health sciences
+endocrinology,clinical medicine
+diabetes,clinical medicine
+diabetes,endocrinology
+pharmacology and pharmacy,medical and health sciences
+pharmacology and pharmacy,basic medicine
+manufacturing engineering,engineering and technology
+additive manufacturing,engineering and technology
+manufacturing engineering,mechanical engineering
+additive manufacturing,mechanical engineering
+additive manufacturing,manufacturing engineering
+natural resource management,engineering and technology
+desalination,engineering and technology
+natural resource management,environmental engineering
+desalination,environmental engineering
+desalination,natural resource management
+recycling,engineering and technology
+recycling,environmental engineering
+recycling,waste management
+laser physics,natural sciences
+laser physics,physical sciences
+laser physics,optics
+environmental biotechnology,engineering and technology
+biosensing,engineering and technology
+biosensing,environmental biotechnology
+mathematical physics,natural sciences
+mathematical physics,mathematics
+mathematical physics,applied mathematics
+pharmacokinetics,medical and health sciences
+pharmacokinetics,basic medicine
+pharmacokinetics,pharmacology and pharmacy
+allergology,medical and health sciences
+food allergy,medical and health sciences
+allergology,clinical medicine
+food allergy,clinical medicine
+food allergy,allergology
+production economics,social sciences
+productivity,social sciences
+production economics,economics and business
+productivity,economics and business
+production economics,economics
+productivity,economics
+productivity,production economics
+statistics and probability,natural sciences
+statistics and probability,mathematics
+statistics and probability,applied mathematics
+theoretical physics,natural sciences
+particles,natural sciences
+particle accelerator,natural sciences
+theoretical physics,physical sciences
+particles,physical sciences
+particle accelerator,physical sciences
+particles,theoretical physics
+particle accelerator,theoretical physics
+particle accelerator,particles
+analytical chemistry,natural sciences
+mass spectrometry,natural sciences
+analytical chemistry,chemical sciences
+mass spectrometry,chemical sciences
+mass spectrometry,analytical chemistry
+coating and films,engineering and technology
+coating and films,materials engineering
+spectroscopy,natural sciences
+spectroscopy,chemical sciences
+spectroscopy,analytical chemistry
+fibre optics,natural sciences
+fibre optics,physical sciences
+fibre optics,optics
+radio astronomy,natural sciences
+radio astronomy,physical sciences
+radio astronomy,astronomy
+radio astronomy,observational astronomy
+internet,natural sciences
+internet,computer and information sciences
+pathology,medical and health sciences
+pathology,basic medicine
+pharmaceutical drug,medical and health sciences
+pharmaceutical drug,basic medicine
+pharmaceutical drug,pharmacology and pharmacy
+surgery,medical and health sciences
+surgery,clinical medicine
+planetary science,natural sciences
+satellites,natural sciences
+planetary science,physical sciences
+satellites,physical sciences
+planetary science,astronomy
+satellites,astronomy
+satellites,planetary science
+optical astronomy,natural sciences
+optical astronomy,physical sciences
+optical astronomy,astronomy
+optical astronomy,observational astronomy
+internet of things,natural sciences
+internet of things,computer and information sciences
+internet of things,internet
+acoustics,natural sciences
+ultrasound,natural sciences
+acoustics,physical sciences
+ultrasound,physical sciences
+ultrasound,acoustics
+demography,social sciences
+fertility,social sciences
+demography,sociology
+fertility,sociology
+fertility,demography
+colorectal cancer,medical and health sciences
+colorectal cancer,clinical medicine
+colorectal cancer,oncology
+colorectal cancer,cancer
+physical chemistry,natural sciences
+quantum chemistry,natural sciences
+physical chemistry,chemical sciences
+quantum chemistry,chemical sciences
+quantum chemistry,physical chemistry
+odontology,medical and health sciences
+dental implantology,medical and health sciences
+odontology,clinical medicine
+dental implantology,clinical medicine
+dental implantology,odontology
+medical bioproducts,medical and health sciences
+implants,medical and health sciences
+medical bioproducts,medical biotechnology
+implants,medical biotechnology
+implants,medical bioproducts
+orthopaedics,medical and health sciences
+orthopaedics,clinical medicine
+immunology,medical and health sciences
+immunology,basic medicine
+breast cancer,medical and health sciences
+breast cancer,clinical medicine
+breast cancer,oncology
+breast cancer,cancer
+drug resistance,medical and health sciences
+drug resistance,basic medicine
+drug resistance,pharmacology and pharmacy
+computer security,natural sciences
+data protection,natural sciences
+computer security,computer and information sciences
+data protection,computer and information sciences
+data protection,computer security
+sustainable architecture,engineering and technology
+sustainable architecture,civil engineering
+sustainable architecture,architecture engineering
+heat engineering,engineering and technology
+heat engineering,mechanical engineering
+heat engineering,thermodynamic engineering
+fuel cell,engineering and technology
+fuel cell,environmental engineering
+fuel cell,energy and fuels
+industrial biotechnology,engineering and technology
+bioprocessing technologies,engineering and technology
+fermentation,engineering and technology
+bioprocessing technologies,industrial biotechnology
+fermentation,industrial biotechnology
+fermentation,bioprocessing technologies
+expert systems,natural sciences
+expert systems,computer and information sciences
+expert systems,artificial intelligence
+physical geography,natural sciences
+cartography,natural sciences
+physical geography,earth and related environmental sciences
+cartography,earth and related environmental sciences
+cartography,physical geography
+nephrology,medical and health sciences
+nephrology,clinical medicine
+crystals,engineering and technology
+crystals,materials engineering
+embryology,medical and health sciences
+embryology,clinical medicine
+antibiotic resistance,medical and health sciences
+antibiotic resistance,basic medicine
+antibiotic resistance,pharmacology and pharmacy
+antibiotic resistance,drug resistance
+democracy,social sciences
+democracy,political science
+democracy,government systems
+social inequality,social sciences
+social inequality,sociology
+social inequality,social problems
+journalism,social sciences
+journalism,media and communications
+malicious software,natural sciences
+malicious software,computer and information sciences
+malicious software,software
+network security,natural sciences
+network security,computer and information sciences
+network security,computer security
+physiotherapy,medical and health sciences
+physiotherapy,clinical medicine
+stroke,medical and health sciences
+stroke,basic medicine
+stroke,neurology
+tissue engineering,medical and health sciences
+tissue engineering,medical biotechnology
+computer hardware,engineering and technology
+quantum computer,engineering and technology
+computer hardware,"electrical engineering, electronic engineering, information engineering"
+quantum computer,"electrical engineering, electronic engineering, information engineering"
+computer hardware,electronic engineering
+quantum computer,electronic engineering
+quantum computer,computer hardware
+mechatronics,engineering and technology
+mechatronics,mechanical engineering
+globalization,social sciences
+globalization,sociology
+anxiety disorders,medical and health sciences
+anxiety disorders,clinical medicine
+anxiety disorders,psychiatry
+virology,natural sciences
+virology,biological sciences
+virology,microbiology
+molecular biology,natural sciences
+molecular biology,biological sciences
+electric energy,engineering and technology
+electric energy,environmental engineering
+electric energy,energy and fuels
+nanotechnology,engineering and technology
+nano-materials,engineering and technology
+nanocrystal,engineering and technology
+nano-materials,nanotechnology
+nanocrystal,nanotechnology
+nanocrystal,nano-materials
+two-dimensional nanostructures,engineering and technology
+graphene,engineering and technology
+two-dimensional nanostructures,nanotechnology
+graphene,nanotechnology
+two-dimensional nanostructures,nano-materials
+graphene,nano-materials
+graphene,two-dimensional nanostructures
+fibers,engineering and technology
+fibers,materials engineering
+condensed matter physics,natural sciences
+condensed matter physics,physical sciences
+spintronics,natural sciences
+spintronics,physical sciences
+spintronics,electromagnetism and electronics
+superconductor,natural sciences
+superconductor,physical sciences
+superconductor,electromagnetism and electronics
+superconductor,electrical conductivity
+infectious diseases,medical and health sciences
+malaria,medical and health sciences
+infectious diseases,health sciences
+malaria,health sciences
+malaria,infectious diseases
+biodiversity conservation,natural sciences
+biodiversity conservation,biological sciences
+nuclear physics,natural sciences
+nuclear physics,physical sciences
+"agriculture, forestry, and fisheries",agricultural sciences
+fisheries,agricultural sciences
+fisheries,"agriculture, forestry, and fisheries"
+parkinson,medical and health sciences
+parkinson,basic medicine
+parkinson,neurology
+alzheimer,medical and health sciences
+alzheimer,basic medicine
+alzheimer,neurology
+epidemiology,medical and health sciences
+epidemiology,health sciences
+mortality,social sciences
+mortality,sociology
+mortality,demography
+phycology,natural sciences
+phycology,biological sciences
+phycology,microbiology
+mycology,natural sciences
+ethnomycology,natural sciences
+mycology,biological sciences
+ethnomycology,biological sciences
+mycology,microbiology
+ethnomycology,microbiology
+ethnomycology,mycology
+thermodynamics,natural sciences
+thermodynamics,physical sciences
+cell biology,natural sciences
+cell biology,biological sciences
+radio and television,humanities
+radio and television,arts
+radio and television,modern and contemporary art
+photochemistry,natural sciences
+photocatalysis,natural sciences
+photochemistry,chemical sciences
+photocatalysis,chemical sciences
+photochemistry,physical chemistry
+photocatalysis,physical chemistry
+photocatalysis,photochemistry
+geology,natural sciences
+volcanology,natural sciences
+geology,earth and related environmental sciences
+volcanology,earth and related environmental sciences
+volcanology,geology
+ophthalmology,medical and health sciences
+ophthalmology,clinical medicine
+medicinal chemistry,medical and health sciences
+medicinal chemistry,basic medicine
+windpower,engineering and technology
+windpower,environmental engineering
+windpower,energy and fuels
+windpower,renewable energy
+electrical engineering,engineering and technology
+power engineering,engineering and technology
+electric power generation,engineering and technology
+electrical engineering,"electrical engineering, electronic engineering, information engineering"
+power engineering,"electrical engineering, electronic engineering, information engineering"
+electric power generation,"electrical engineering, electronic engineering, information engineering"
+power engineering,electrical engineering
+electric power generation,electrical engineering
+electric power generation,power engineering
+structural biology,natural sciences
+structural biology,biological sciences
+structural biology,molecular biology
+naval engineering,engineering and technology
+naval engineering,mechanical engineering
+naval engineering,vehicle engineering
+quantitative analysis,natural sciences
+quantitative analysis,chemical sciences
+quantitative analysis,analytical chemistry
+homeostasis,medical and health sciences
+homeostasis,basic medicine
+homeostasis,physiology
+enzymes,natural sciences
+enzymes,biological sciences
+enzymes,biochemistry
+enzymes,biomolecules
+social psychology,social sciences
+social psychology,psychology
+radiology,medical and health sciences
+medical imaging,medical and health sciences
+radiology,clinical medicine
+medical imaging,clinical medicine
+medical imaging,radiology
+biomaterials,engineering and technology
+biomaterials,industrial biotechnology
+heredity,natural sciences
+heredity,biological sciences
+heredity,genetics and heredity
+computed tomography,medical and health sciences
+computed tomography,clinical medicine
+computed tomography,radiology
+computed tomography,medical imaging
+magnetic resonance imaging,medical and health sciences
+magnetic resonance imaging,clinical medicine
+magnetic resonance imaging,radiology
+magnetic resonance imaging,medical imaging
+photons,natural sciences
+photons,physical sciences
+photons,theoretical physics
+photons,particles
+water management,engineering and technology
+water management,environmental engineering
+bioremediation,engineering and technology
+bioremediation,environmental biotechnology
+smart city,engineering and technology
+smart city,civil engineering
+smart city,architecture engineering
+fluid mechanics,natural sciences
+fluid dynamics,natural sciences
+fluid mechanics,physical sciences
+fluid dynamics,physical sciences
+fluid mechanics,classical mechanics
+fluid dynamics,classical mechanics
+fluid dynamics,fluid mechanics
+invasive species,natural sciences
+invasive species,biological sciences
+invasive species,ecology
+ceramics,engineering and technology
+ceramics,materials engineering
+cardiology,medical and health sciences
+cardiovascular diseases,medical and health sciences
+cardiology,clinical medicine
+cardiovascular diseases,clinical medicine
+cardiovascular diseases,cardiology
+biocomposites,engineering and technology
+biocomposites,materials engineering
+biocomposites,composites
+coal,engineering and technology
+coal,environmental engineering
+coal,energy and fuels
+coal,fossil energy
+human rights,social sciences
+human rights,law
+racism,social sciences
+racism,sociology
+racism,social problems
+ageism,social sciences
+ageism,sociology
+ageism,social problems
+otorhinolaryngology,medical and health sciences
+otorhinolaryngology,clinical medicine
+metabolic engineering,engineering and technology
+metabolic engineering,industrial biotechnology
+tribology,engineering and technology
+lubrication,engineering and technology
+tribology,mechanical engineering
+lubrication,mechanical engineering
+lubrication,tribology
+intelligent transport system,social sciences
+intelligent transport system,social and economic geography
+intelligent transport system,transport
+intelligent transport system,sustainable transport
+information science,social sciences
+information science,media and communications
+hydroelectricity,engineering and technology
+marine energy,engineering and technology
+hydroelectricity,environmental engineering
+marine energy,environmental engineering
+hydroelectricity,energy and fuels
+marine energy,energy and fuels
+hydroelectricity,renewable energy
+marine energy,renewable energy
+marine energy,hydroelectricity
+solar energy,engineering and technology
+solar energy,environmental engineering
+solar energy,energy and fuels
+solar energy,renewable energy
+chemical engineering,engineering and technology
+forestry,agricultural sciences
+forestry,"agriculture, forestry, and fisheries"
+nanophotonics,engineering and technology
+nanophotonics,nanotechnology
+nanomedicine,medical and health sciences
+nanomedicine,medical biotechnology
+agricultural biotechnology,agricultural sciences
+agricultural genetics,agricultural sciences
+agricultural genetics,agricultural biotechnology
+biological economics,social sciences
+biological economics,economics and business
+biological economics,economics
+transport planning,social sciences
+air traffic management,social sciences
+transport planning,social and economic geography
+air traffic management,social and economic geography
+transport planning,transport
+air traffic management,transport
+air traffic management,transport planning
+autonomous robots,engineering and technology
+drones,engineering and technology
+autonomous robots,"electrical engineering, electronic engineering, information engineering"
+drones,"electrical engineering, electronic engineering, information engineering"
+autonomous robots,electronic engineering
+drones,electronic engineering
+autonomous robots,robotics
+drones,robotics
+drones,autonomous robots
+remote sensing,engineering and technology
+remote sensing,environmental engineering
+rotorcraft,engineering and technology
+rotorcraft,mechanical engineering
+rotorcraft,vehicle engineering
+rotorcraft,aerospace engineering
+rotorcraft,aircraft
+bioartificial liver,medical and health sciences
+bioartificial liver,medical biotechnology
+bioartificial liver,tissue engineering
+transplantation,medical and health sciences
+transplantation,clinical medicine
+navigation systems,social sciences
+satellite navigation system,social sciences
+global navigation satellite system,social sciences
+navigation systems,social and economic geography
+satellite navigation system,social and economic geography
+global navigation satellite system,social and economic geography
+navigation systems,transport
+satellite navigation system,transport
+global navigation satellite system,transport
+satellite navigation system,navigation systems
+global navigation satellite system,navigation systems
+global navigation satellite system,satellite navigation system
+compost,engineering and technology
+compost,environmental biotechnology
+compost,bioremediation
+other engineering and technologies,engineering and technology
+food and beverages,engineering and technology
+food packaging,engineering and technology
+food and beverages,other engineering and technologies
+food packaging,other engineering and technologies
+food packaging,food and beverages
+x-ray astronomy,natural sciences
+x-ray astronomy,physical sciences
+x-ray astronomy,astronomy
+x-ray astronomy,observational astronomy
+irrigation,engineering and technology
+irrigation,environmental engineering
+irrigation,water management
+vaccines,medical and health sciences
+vaccines,basic medicine
+vaccines,pharmacology and pharmacy
+vaccines,pharmaceutical drug
+immunotherapy,medical and health sciences
+immunotherapy,basic medicine
+immunotherapy,immunology
+special education,social sciences
+special education,educational sciences
+e-commerce,social sciences
+e-commerce,economics and business
+e-commerce,business and management
+e-commerce,commerce
+bioreactor,engineering and technology
+bioreactor,environmental biotechnology
+bioreactor,bioremediation
+animal and dairy science,agricultural sciences
+paper and wood,engineering and technology
+paper and wood,materials engineering
+business intelligence,natural sciences
+business intelligence,computer and information sciences
+business intelligence,data science
+bureaucracy,social sciences
+bureaucracy,political science
+bureaucracy,public administration
+surface roughness,engineering and technology
+surface roughness,mechanical engineering
+surface roughness,tribology
+genetic engineering,medical and health sciences
+gene therapy,medical and health sciences
+genetic engineering,medical biotechnology
+gene therapy,medical biotechnology
+gene therapy,genetic engineering
+nucleic acid,natural sciences
+nucleic acid,biological sciences
+nucleic acid,biochemistry
+nucleic acid,biomolecules
+electric power transmission,engineering and technology
+electric power transmission,"electrical engineering, electronic engineering, information engineering"
+electric power transmission,electrical engineering
+electric power transmission,power engineering
+taxation,social sciences
+taxation,sociology
+taxation,governance
+sign language,humanities
+sign language,languages and literature
+sign language,linguistics
+numerical analysis,natural sciences
+numerical analysis,mathematics
+numerical analysis,applied mathematics
+bladder cancer,medical and health sciences
+bladder cancer,clinical medicine
+bladder cancer,oncology
+bladder cancer,cancer
+signal processing,engineering and technology
+signal processing,"electrical engineering, electronic engineering, information engineering"
+signal processing,electronic engineering
+botany,natural sciences
+botany,biological sciences
+combined heat and power,engineering and technology
+combined heat and power,"electrical engineering, electronic engineering, information engineering"
+combined heat and power,electrical engineering
+combined heat and power,power engineering
+combined heat and power,electric power generation
+bioplastics,engineering and technology
+bioplastics,industrial biotechnology
+bioplastics,biomaterials
+crisis management,social sciences
+crisis management,sociology
+crisis management,governance
+hydrocarbons,natural sciences
+hydrocarbons,chemical sciences
+hydrocarbons,organic chemistry
+amines,natural sciences
+amines,chemical sciences
+amines,organic chemistry
+transportation engineering,engineering and technology
+highway engineering,engineering and technology
+transportation engineering,civil engineering
+highway engineering,civil engineering
+highway engineering,transportation engineering
+waste water,engineering and technology
+waste water,environmental engineering
+waste water,waste management
+law enforcement agencies,social sciences
+law enforcement agencies,law
+web development,natural sciences
+web development,computer and information sciences
+web development,internet
+archaeology,humanities
+archaeology,history and archaeology
+cell polarity,natural sciences
+cell polarity,biological sciences
+cell polarity,cell biology
+international law,social sciences
+international law,law
+cryptography,natural sciences
+cryptography,computer and information sciences
+cryptography,computer security
+cell metabolism,natural sciences
+cell metabolism,biological sciences
+cell metabolism,cell biology
+seismology,natural sciences
+plate tectonics,natural sciences
+seismology,earth and related environmental sciences
+plate tectonics,earth and related environmental sciences
+seismology,geology
+plate tectonics,geology
+plate tectonics,seismology
+religion,humanities
+religion,"philosophy, ethics and religion"
+schizophrenia,medical and health sciences
+schizophrenia,clinical medicine
+schizophrenia,psychiatry
+medical genetics,medical and health sciences
+medical genetics,basic medicine
+literary theory,humanities
+literary criticism,humanities
+literary theory,languages and literature
+literary criticism,languages and literature
+literary theory,literature - general
+literary criticism,literature - general
+literary criticism,literary theory
+obsessive-compulsive disorder,medical and health sciences
+obsessive-compulsive disorder,clinical medicine
+obsessive-compulsive disorder,psychiatry
+arteriosclerosis,medical and health sciences
+arteriosclerosis,clinical medicine
+arteriosclerosis,cardiology
+arteriosclerosis,cardiovascular diseases
+gluons,natural sciences
+gluons,physical sciences
+gluons,theoretical physics
+gluons,particles
+quarks,natural sciences
+quarks,physical sciences
+quarks,theoretical physics
+quarks,particles
+nuclear decay,natural sciences
+nuclear decay,physical sciences
+nuclear decay,nuclear physics
+developmental biology,natural sciences
+developmental biology,biological sciences
+zoology,natural sciences
+mammalogy,natural sciences
+zoology,biological sciences
+mammalogy,biological sciences
+mammalogy,zoology
+protozoology,natural sciences
+protozoology,biological sciences
+protozoology,microbiology
+volatile organic compounds,natural sciences
+volatile organic compounds,chemical sciences
+volatile organic compounds,organic chemistry
+galactic astronomy,natural sciences
+galactic astronomy,physical sciences
+galactic astronomy,astronomy
+planets,natural sciences
+planets,physical sciences
+planets,astronomy
+planets,planetary science
+energy conversion,engineering and technology
+energy conversion,environmental engineering
+energy conversion,energy and fuels
+leukemia,medical and health sciences
+leukemia,clinical medicine
+leukemia,oncology
+hematology,medical and health sciences
+hematology,clinical medicine
+linear algebra,natural sciences
+linear algebra,mathematics
+linear algebra,pure mathematics
+linear algebra,algebra
+criminology,social sciences
+criminology,law
+chromosome,natural sciences
+chromosome,biological sciences
+chromosome,genetics and heredity
+islam,humanities
+islam,"philosophy, ethics and religion"
+islam,religion
+christianity,humanities
+christianity,"philosophy, ethics and religion"
+christianity,religion
+aliphatic compounds,natural sciences
+aliphatic compounds,chemical sciences
+aliphatic compounds,organic chemistry
+organic reactions,natural sciences
+organic reactions,chemical sciences
+organic reactions,organic chemistry
+nano-processes,engineering and technology
+nano-processes,nanotechnology
+stellar astronomy,natural sciences
+supernova,natural sciences
+stellar astronomy,physical sciences
+supernova,physical sciences
+stellar astronomy,astronomy
+supernova,astronomy
+supernova,stellar astronomy
+molecular neuroscience,natural sciences
+molecular neuroscience,biological sciences
+molecular neuroscience,molecular biology
+epistemology,humanities
+epistemology,"philosophy, ethics and religion"
+epistemology,philosophy
+ethics,humanities
+ethics,"philosophy, ethics and religion"
+geographic information systems,natural sciences
+geographic information systems,earth and related environmental sciences
+geographic information systems,physical geography
+geographic information systems,cartography
+mineralogy,natural sciences
+crystallography,natural sciences
+mineralogy,earth and related environmental sciences
+crystallography,earth and related environmental sciences
+mineralogy,geology
+crystallography,geology
+crystallography,mineralogy
+phonology,humanities
+phonology,languages and literature
+phonology,linguistics
+corruption,social sciences
+corruption,sociology
+corruption,social problems
+molecular and chemical physics,natural sciences
+molecular and chemical physics,physical sciences
+atomic physics,natural sciences
+atomic physics,physical sciences
+leptons,natural sciences
+leptons,physical sciences
+leptons,theoretical physics
+leptons,particles
+prostate cancer,medical and health sciences
+prostate cancer,clinical medicine
+prostate cancer,oncology
+prostate cancer,cancer
+biophysics,natural sciences
+biophysics,biological sciences
+solid-state physics,natural sciences
+solid-state physics,physical sciences
+solid-state physics,condensed matter physics
+neutron star,natural sciences
+neutron star,physical sciences
+neutron star,astronomy
+neutron star,stellar astronomy
+biomass,agricultural sciences
+biomass,agricultural biotechnology
+reinforcement learning,natural sciences
+reinforcement learning,computer and information sciences
+reinforcement learning,artificial intelligence
+reinforcement learning,machine learning
+calorimetry,natural sciences
+calorimetry,chemical sciences
+calorimetry,analytical chemistry
+pneumology,medical and health sciences
+asthma,medical and health sciences
+pneumology,clinical medicine
+asthma,clinical medicine
+asthma,pneumology
+tuberculosis,medical and health sciences
+tuberculosis,clinical medicine
+tuberculosis,pneumology
+supervised learning,natural sciences
+supervised learning,computer and information sciences
+supervised learning,artificial intelligence
+supervised learning,machine learning
+space exploration,natural sciences
+space exploration,physical sciences
+space exploration,astronomy
+seismic risk management,social sciences
+seismic risk management,sociology
+seismic risk management,governance
+seismic risk management,crisis management
+planetary geology,natural sciences
+planetary geology,physical sciences
+planetary geology,astronomy
+planetary geology,planetary science
+celestial mechanics,natural sciences
+celestial mechanics,physical sciences
+celestial mechanics,astronomy
+celestial mechanics,planetary science
+fermion,natural sciences
+fermion,physical sciences
+fermion,theoretical physics
+fermion,particles
+macroeconomics,social sciences
+macroeconomics,economics and business
+macroeconomics,economics
+primatology,natural sciences
+primatology,biological sciences
+primatology,zoology
+primatology,mammalogy
+evolutionary biology,natural sciences
+evolutionary biology,biological sciences
+econometrics,social sciences
+econometrics,economics and business
+econometrics,economics
+exoplanetology,natural sciences
+exoplanetology,physical sciences
+exoplanetology,astronomy
+exoplanetology,planetary science
+exoplanetology,planets
+nucleotide,natural sciences
+nucleotide,biological sciences
+nucleotide,genetics and heredity
+unsupervised learning,natural sciences
+unsupervised learning,computer and information sciences
+unsupervised learning,artificial intelligence
+unsupervised learning,machine learning
+dna,natural sciences
+dna,biological sciences
+dna,genetics and heredity
+rna,natural sciences
+rna,biological sciences
+rna,genetics and heredity
+comets,natural sciences
+comets,physical sciences
+comets,astronomy
+comets,planetary science
+asteroids,natural sciences
+asteroids,physical sciences
+asteroids,astronomy
+asteroids,planetary science
+quantum gases,natural sciences
+quantum gases,physical sciences
+quantum gases,condensed matter physics
+bose-einstein condensates,natural sciences
+bose-einstein condensates,physical sciences
+bose-einstein condensates,condensed matter physics
+nanocomposites,engineering and technology
+nanocomposites,materials engineering
+bulk nanostructured materials,engineering and technology
+bulk nanostructured materials,nanotechnology
+bulk nanostructured materials,nano-materials
+metaphysics,humanities
+metaphysics,"philosophy, ethics and religion"
+metaphysics,philosophy
+food safety,engineering and technology
+food safety,other engineering and technologies
+food safety,food and beverages
+polyurethane,engineering and technology
+polyurethane,industrial biotechnology
+polyurethane,biomaterials
+polyurethane,bioplastics
+human rights violations,social sciences
+human trafficking,social sciences
+human rights violations,law
+human trafficking,law
+human rights violations,human rights
+human trafficking,human rights
+human trafficking,human rights violations
+access control,natural sciences
+access control,computer and information sciences
+access control,computer security
+microelectronics,natural sciences
+microelectronics,physical sciences
+microelectronics,electromagnetism and electronics
+palaeontology,natural sciences
+palaeontology,earth and related environmental sciences
+optoelectronics,natural sciences
+optoelectronics,physical sciences
+optoelectronics,electromagnetism and electronics
+control engineering,engineering and technology
+control engineering,"electrical engineering, electronic engineering, information engineering"
+control engineering,electrical engineering
+automation and control systems,engineering and technology
+automation and control systems,"electrical engineering, electronic engineering, information engineering"
+automation and control systems,electrical engineering
+nutrition,medical and health sciences
+nutrition,health sciences
+carbon fiber,engineering and technology
+carbon fiber,materials engineering
+carbon fiber,composites
+inflammatory diseases,medical and health sciences
+inflammatory diseases,health sciences
+natural disaster,natural sciences
+natural disaster,earth and related environmental sciences
+natural disaster,physical geography
+nuclear energy,engineering and technology
+nuclear energy,environmental engineering
+nuclear energy,energy and fuels
+amyotrophic lateral sclerosis,medical and health sciences
+amyotrophic lateral sclerosis,basic medicine
+amyotrophic lateral sclerosis,neurology
+nuclear chemistry,natural sciences
+radiochemistry,natural sciences
+nuclear chemistry,chemical sciences
+radiochemistry,chemical sciences
+radiochemistry,nuclear chemistry
+transfer learning,natural sciences
+transfer learning,computer and information sciences
+transfer learning,artificial intelligence
+transfer learning,machine learning
+renal dialysis,medical and health sciences
+renal dialysis,clinical medicine
+renal dialysis,nephrology
+microtechnology,engineering and technology
+microtechnology,other engineering and technologies
+nursing,medical and health sciences
+nursing,health sciences
+monetary and finances,social sciences
+monetary and finances,economics and business
+monetary and finances,economics
+nuclear medicine,medical and health sciences
+nuclear medicine,clinical medicine
+nuclear medicine,radiology
+sustainable building,engineering and technology
+sustainable building,civil engineering
+sustainable building,architecture engineering
+sustainable building,sustainable architecture
+skin cancer,medical and health sciences
+skin cancer,clinical medicine
+skin cancer,oncology
+skin cancer,cancer
+supercomputer,engineering and technology
+supercomputer,"electrical engineering, electronic engineering, information engineering"
+supercomputer,electronic engineering
+supercomputer,computer hardware
+carbohydrates,natural sciences
+carbohydrates,biological sciences
+carbohydrates,biochemistry
+carbohydrates,biomolecules
+ideologies,social sciences
+ideologies,sociology
+geological engineering,engineering and technology
+geological engineering,environmental engineering
+urban studies,social sciences
+urban studies,social and economic geography
+cell signaling,natural sciences
+cell signaling,biological sciences
+cell signaling,cell biology
+art history,humanities
+art history,arts
+visual arts,humanities
+visual arts,arts
+biological behavioural sciences,natural sciences
+behavioural ecology,natural sciences
+biological behavioural sciences,biological sciences
+behavioural ecology,biological sciences
+behavioural ecology,biological behavioural sciences
+geochemistry,natural sciences
+cosmochemistry,natural sciences
+geochemistry,earth and related environmental sciences
+cosmochemistry,earth and related environmental sciences
+cosmochemistry,geochemistry
+meteorites,natural sciences
+meteorites,physical sciences
+meteorites,astronomy
+meteorites,planetary science
+invertebrate zoology,natural sciences
+invertebrate zoology,biological sciences
+invertebrate zoology,zoology
+constitutional law,social sciences
+constitutional law,law
+parasitology,medical and health sciences
+parasitology,health sciences
+physical anthropology,social sciences
+physical anthropology,sociology
+physical anthropology,anthropology
+biocatalysis,engineering and technology
+biocatalysis,industrial biotechnology
+biocatalysis,bioprocessing technologies
+discrete mathematics,natural sciences
+graph theory,natural sciences
+discrete mathematics,mathematics
+graph theory,mathematics
+discrete mathematics,pure mathematics
+graph theory,pure mathematics
+graph theory,discrete mathematics
+political philosophy,humanities
+political philosophy,"philosophy, ethics and religion"
+political philosophy,philosophy
+z boson,natural sciences
+z boson,physical sciences
+z boson,theoretical physics
+z boson,particles
+w boson,natural sciences
+w boson,physical sciences
+w boson,theoretical physics
+w boson,particles
+toxicology,medical and health sciences
+toxicology,basic medicine
+oceanography,natural sciences
+oceanography,earth and related environmental sciences
+psycholinguistics,social sciences
+psycholinguistics,psychology
+performing arts,humanities
+dramaturgy,humanities
+performing arts,arts
+dramaturgy,arts
+dramaturgy,performing arts
+string theory,natural sciences
+string theory,physical sciences
+epilepsy,medical and health sciences
+epilepsy,basic medicine
+epilepsy,neurology
+adverse drug reactions,medical and health sciences
+adverse drug reactions,basic medicine
+adverse drug reactions,pharmacology and pharmacy
+drug safety,medical and health sciences
+drug safety,basic medicine
+drug safety,pharmacology and pharmacy
+swarm robotics,engineering and technology
+swarm robotics,"electrical engineering, electronic engineering, information engineering"
+swarm robotics,electronic engineering
+swarm robotics,robotics
+nanoelectronics,engineering and technology
+nanoelectronics,nanotechnology
+cetology,natural sciences
+cetology,biological sciences
+cetology,zoology
+cetology,mammalogy
+social and cultural anthropology,social sciences
+social and cultural anthropology,sociology
+social and cultural anthropology,anthropology
+alcohols,natural sciences
+alcohols,chemical sciences
+alcohols,organic chemistry
+molecular spintronics,natural sciences
+molecular spintronics,physical sciences
+molecular spintronics,electromagnetism and electronics
+molecular spintronics,spintronics
+inorganic qualitative analysis,natural sciences
+inorganic qualitative analysis,chemical sciences
+inorganic qualitative analysis,analytical chemistry
+biological morphology,natural sciences
+comparative morphology,natural sciences
+biological morphology,biological sciences
+comparative morphology,biological sciences
+comparative morphology,biological morphology
+electric batteries,natural sciences
+electric batteries,chemical sciences
+electric batteries,electrochemistry
+dynamical systems,natural sciences
+dynamical systems,mathematics
+dynamical systems,applied mathematics
+musicology,humanities
+ethnomusicology,humanities
+musicology,arts
+ethnomusicology,arts
+musicology,art history
+ethnomusicology,art history
+ethnomusicology,musicology
+molecular evolution,natural sciences
+molecular evolution,biological sciences
+molecular evolution,molecular biology
+ethnoarchaeology,humanities
+ethnoarchaeology,history and archaeology
+ethnoarchaeology,archaeology
+rheumatology,medical and health sciences
+rheumatology,clinical medicine
+gender studies,social sciences
+gender equality,social sciences
+gender studies,sociology
+gender equality,sociology
+gender equality,gender studies
+molecular genetics,natural sciences
+molecular genetics,biological sciences
+molecular genetics,molecular biology
+internet protocol,natural sciences
+internet protocol,computer and information sciences
+internet protocol,internet
+muscular dystrophy,medical and health sciences
+muscular dystrophy,basic medicine
+muscular dystrophy,neurology
+application software,natural sciences
+simulation software,natural sciences
+application software,computer and information sciences
+simulation software,computer and information sciences
+application software,software
+simulation software,software
+simulation software,application software
+biogeochemistry,natural sciences
+biogeochemistry,earth and related environmental sciences
+biogeochemistry,geochemistry
+andrology,medical and health sciences
+andrology,clinical medicine
+social biomedical sciences,medical and health sciences
+sexual health,medical and health sciences
+social biomedical sciences,health sciences
+sexual health,health sciences
+sexual health,social biomedical sciences
+social work,social sciences
+social work,sociology
+social work,social problems
+electrophoresis,natural sciences
+electrophoresis,chemical sciences
+electrophoresis,electrochemistry
+glaucoma,medical and health sciences
+glaucoma,clinical medicine
+glaucoma,ophthalmology
+multiphysics,natural sciences
+multiphysics,computer and information sciences
+multiphysics,computational science
+paleoanthropology,social sciences
+paleoanthropology,sociology
+paleoanthropology,anthropology
+paleoanthropology,physical anthropology
+clinical microbiology,medical and health sciences
+clinical microbiology,clinical medicine
+multidrug resistance,medical and health sciences
+multidrug resistance,basic medicine
+multidrug resistance,pharmacology and pharmacy
+multidrug resistance,drug resistance
+soil science,natural sciences
+land-based treatment,natural sciences
+soil science,earth and related environmental sciences
+land-based treatment,earth and related environmental sciences
+land-based treatment,soil science
+tidal energy,engineering and technology
+tidal energy,environmental engineering
+tidal energy,energy and fuels
+tidal energy,renewable energy
+tidal energy,hydroelectricity
+astrochemistry,natural sciences
+astrochemistry,physical sciences
+astrochemistry,astronomy
+game theory,natural sciences
+game theory,mathematics
+game theory,applied mathematics
+cognitive psychology,social sciences
+cognitive psychology,psychology
+transport layer,natural sciences
+transport layer,computer and information sciences
+transport layer,internet
+sport and fitness sciences,medical and health sciences
+sport and fitness sciences,health sciences
+microeconomics,social sciences
+microeconomics,economics and business
+microeconomics,economics
+glaciology,natural sciences
+glaciology,earth and related environmental sciences
+glaciology,physical geography
+lithology,natural sciences
+lithology,earth and related environmental sciences
+lithology,geology
+higgs boson,natural sciences
+higgs boson,physical sciences
+higgs boson,theoretical physics
+higgs boson,particles
+plasma physics,natural sciences
+plasma physics,physical sciences
+petrology,natural sciences
+experimental petrology,natural sciences
+petrology,earth and related environmental sciences
+experimental petrology,earth and related environmental sciences
+petrology,geology
+experimental petrology,geology
+experimental petrology,petrology
+computer processor,engineering and technology
+computer processor,"electrical engineering, electronic engineering, information engineering"
+computer processor,electronic engineering
+computer processor,computer hardware
+liver cancer,medical and health sciences
+liver cancer,clinical medicine
+liver cancer,oncology
+liver cancer,cancer
+ocean chemistry,natural sciences
+ocean chemistry,earth and related environmental sciences
+ocean chemistry,oceanography
+polylactic acid,engineering and technology
+polylactic acid,industrial biotechnology
+polylactic acid,biomaterials
+polylactic acid,bioplastics
+organometallic chemistry,natural sciences
+organometallic chemistry,chemical sciences
+organometallic chemistry,organic chemistry
+polyhydroxyalkanoates,engineering and technology
+polyhydroxyalkanoates,industrial biotechnology
+polyhydroxyalkanoates,biomaterials
+polyhydroxyalkanoates,bioplastics
+critical care medicine,medical and health sciences
+critical care medicine,clinical medicine
+synthetic fuels,engineering and technology
+synthetic fuels,environmental engineering
+synthetic fuels,energy and fuels
+bioelectrochemistry,natural sciences
+bioelectrochemistry,chemical sciences
+bioelectrochemistry,electrochemistry
+sedimentology,natural sciences
+sedimentology,earth and related environmental sciences
+sedimentology,geology
+glacial geology,natural sciences
+glacial geology,earth and related environmental sciences
+glacial geology,physical geography
+glacial geology,glaciology
+geomorphology,natural sciences
+geomorphology,earth and related environmental sciences
+geomorphology,geology
+paediatrics,medical and health sciences
+paediatrics,clinical medicine
+construction engineering,engineering and technology
+construction engineering,civil engineering
+emergency medicine,medical and health sciences
+emergency medicine,clinical medicine
+automotive engineering,engineering and technology
+autonomous vehicle,engineering and technology
+automotive engineering,mechanical engineering
+autonomous vehicle,mechanical engineering
+automotive engineering,vehicle engineering
+autonomous vehicle,vehicle engineering
+autonomous vehicle,automotive engineering
+pattern recognition,natural sciences
+pattern recognition,computer and information sciences
+pattern recognition,artificial intelligence
+petroleum,engineering and technology
+petroleum,environmental engineering
+petroleum,energy and fuels
+petroleum,fossil energy
+census,social sciences
+census,sociology
+census,demography
+hiv,medical and health sciences
+hiv,health sciences
+hiv,infectious diseases
+angiology,medical and health sciences
+vascular diseases,medical and health sciences
+cerebrovascular diseases,medical and health sciences
+angiology,clinical medicine
+vascular diseases,clinical medicine
+cerebrovascular diseases,clinical medicine
+vascular diseases,angiology
+cerebrovascular diseases,angiology
+cerebrovascular diseases,vascular diseases
+robotic surgery,medical and health sciences
+robotic surgery,clinical medicine
+robotic surgery,surgery
+history of medicine,medical and health sciences
+history of medicine,other medical sciences
+electroporation,natural sciences
+electroporation,chemical sciences
+electroporation,electrochemistry
+electroporation,bioelectrochemistry
+big bang,natural sciences
+big bang,physical sciences
+big bang,astronomy
+big bang,physical cosmology
+psychotherapy,social sciences
+psychotherapy,psychology
+behavioural psychology,social sciences
+behavioural psychology,psychology
+dairy,agricultural sciences
+dairy,animal and dairy science
+marine biology,natural sciences
+marine biology,biological sciences
+semantic web,natural sciences
+semantic web,computer and information sciences
+semantic web,internet
+computer programming,natural sciences
+computer programming,computer and information sciences
+computer programming,software
+data exchange,natural sciences
+data exchange,computer and information sciences
+data exchange,data science
+structural engineering,engineering and technology
+structural health monitoring,engineering and technology
+structural engineering,civil engineering
+structural health monitoring,civil engineering
+structural health monitoring,structural engineering
+electric power distribution,engineering and technology
+electric power distribution,"electrical engineering, electronic engineering, information engineering"
+electric power distribution,electrical engineering
+electric power distribution,power engineering
+liquid crystal,engineering and technology
+liquid crystal,materials engineering
+silicene,engineering and technology
+silicene,nanotechnology
+silicene,nano-materials
+silicene,two-dimensional nanostructures
+hybrid energy,engineering and technology
+hybrid energy,environmental engineering
+hybrid energy,energy and fuels
+hybrid energy,renewable energy
+fluid statics,natural sciences
+fluid statics,physical sciences
+fluid statics,classical mechanics
+fluid statics,fluid mechanics
+product engineering,engineering and technology
+product engineering,mechanical engineering
+product engineering,manufacturing engineering
+satellite technology,engineering and technology
+satellite technology,mechanical engineering
+satellite technology,vehicle engineering
+satellite technology,aerospace engineering
+public libraries,social sciences
+public libraries,media and communications
+public libraries,library science
+railroad engineering,engineering and technology
+railroad engineering,civil engineering
+railroad engineering,transportation engineering
+geotechnics,engineering and technology
+geotechnics,environmental engineering
+video games,natural sciences
+video games,computer and information sciences
+video games,software
+video games,application software
+internet access,natural sciences
+internet access,computer and information sciences
+internet access,internet
+urology,medical and health sciences
+urology,clinical medicine
+geothermal energy,engineering and technology
+geothermal energy,environmental engineering
+geothermal energy,energy and fuels
+geothermal energy,renewable energy
+world wide web,natural sciences
+world wide web,computer and information sciences
+world wide web,internet
+flood risk management,social sciences
+flood risk management,sociology
+flood risk management,governance
+flood risk management,crisis management
+energy recovery,engineering and technology
+energy recovery,environmental engineering
+energy recovery,waste management
+electromagnetism,natural sciences
+electromagnetism,physical sciences
+electromagnetism,electromagnetism and electronics
+cryosphere,natural sciences
+cryosphere,earth and related environmental sciences
+cryosphere,physical geography
+cryosphere,glaciology
+graphic design,natural sciences
+graphic design,computer and information sciences
+graphic design,software
+graphic design,application software
+nuclear fusion,natural sciences
+nuclear fusion,physical sciences
+nuclear fusion,nuclear physics
+inclusive education,social sciences
+inclusive education,educational sciences
+social aspects of transport,social sciences
+social aspects of transport,social and economic geography
+social aspects of transport,transport
+psychoanalysis,social sciences
+psychoanalysis,psychology
+psychoanalysis,psychotherapy
+active learning,social sciences
+active learning,educational sciences
+active learning,pedagogy
+obstetrics and gynaecology,medical and health sciences
+obstetrics,medical and health sciences
+postnatal,medical and health sciences
+obstetrics and gynaecology,clinical medicine
+obstetrics,clinical medicine
+postnatal,clinical medicine
+obstetrics,obstetrics and gynaecology
+postnatal,obstetrics and gynaecology
+postnatal,obstetrics
+veterinary science,agricultural sciences
+animal husbandry,agricultural sciences
+animal feed,agricultural sciences
+animal husbandry,animal and dairy science
+animal feed,animal and dairy science
+animal feed,animal husbandry
+apiculture,agricultural sciences
+apiculture,animal and dairy science
+gerontology,medical and health sciences
+gerontology,clinical medicine
+heterocyclic compounds,natural sciences
+heterocyclic compounds,chemical sciences
+heterocyclic compounds,organic chemistry
+fourier analysis,natural sciences
+fourier analysis,mathematics
+fourier analysis,pure mathematics
+fourier analysis,mathematical analysis
+posttraumatic stress disorder,medical and health sciences
+posttraumatic stress disorder,clinical medicine
+posttraumatic stress disorder,psychiatry
+mesoscopic physics,natural sciences
+mesoscopic physics,physical sciences
+mesoscopic physics,condensed matter physics
+e-governance,social sciences
+e-governance,political science
+e-governance,government systems
+wave power,engineering and technology
+wave power,environmental engineering
+wave power,energy and fuels
+wave power,renewable energy
+wave power,hydroelectricity
+kidney diseases,medical and health sciences
+kidney diseases,clinical medicine
+kidney diseases,nephrology
+bioinorganic chemistry,natural sciences
+bioinorganic chemistry,chemical sciences
+bioinorganic chemistry,inorganic chemistry
+retinopathy,medical and health sciences
+retinopathy,clinical medicine
+retinopathy,ophthalmology
+semiconductor device,natural sciences
+semiconductor device,physical sciences
+semiconductor device,electromagnetism and electronics
+artificial pancreas,medical and health sciences
+artificial pancreas,medical biotechnology
+artificial pancreas,tissue engineering
+biochemical research methods,natural sciences
+biochemical research methods,biological sciences
+biochemical research methods,biochemistry
+archaeometry,humanities
+archaeometry,history and archaeology
+archaeometry,archaeology
+web accessibility,natural sciences
+web accessibility,computer and information sciences
+web accessibility,internet
+web accessibility,world wide web
+gamma-ray astronomy,natural sciences
+gamma-ray astronomy,physical sciences
+gamma-ray astronomy,astronomy
+gamma-ray astronomy,observational astronomy
+soft matter physics,natural sciences
+soft matter physics,physical sciences
+soft matter physics,condensed matter physics
+reproductive biology,natural sciences
+reproductive biology,biological sciences
+subtractive manufacturing,engineering and technology
+subtractive manufacturing,mechanical engineering
+subtractive manufacturing,manufacturing engineering
+compressed sensing,engineering and technology
+compressed sensing,"electrical engineering, electronic engineering, information engineering"
+compressed sensing,electronic engineering
+compressed sensing,signal processing
+aldehydes,natural sciences
+aldehydes,chemical sciences
+aldehydes,organic chemistry
+white dwarf,natural sciences
+white dwarf,physical sciences
+white dwarf,astronomy
+white dwarf,stellar astronomy
+complex analysis,natural sciences
+complex analysis,mathematics
+complex analysis,pure mathematics
+complex analysis,mathematical analysis
+asteroseismology,natural sciences
+asteroseismology,physical sciences
+asteroseismology,astronomy
+asteroseismology,stellar astronomy
+solar astronomy,natural sciences
+solar astronomy,physical sciences
+solar astronomy,astronomy
+solar astronomy,galactic astronomy
+phytoremediation,engineering and technology
+phytoremediation,environmental biotechnology
+phytoremediation,bioremediation
+paleoecology,natural sciences
+paleoecology,earth and related environmental sciences
+paleoecology,palaeontology
+logarithm,natural sciences
+logarithm,mathematics
+logarithm,pure mathematics
+logarithm,arithmetic
+ethical principles,humanities
+ethical principles,"philosophy, ethics and religion"
+ethical principles,ethics
+duchenne muscular dystrophy,medical and health sciences
+duchenne muscular dystrophy,basic medicine
+duchenne muscular dystrophy,neurology
+duchenne muscular dystrophy,muscular dystrophy
+inquiry based learning,social sciences
+inquiry based learning,educational sciences
+inquiry based learning,pedagogy
+orthodontics,medical and health sciences
+orthodontics,clinical medicine
+orthodontics,odontology
+gynaecology,medical and health sciences
+gynaecology,clinical medicine
+gynaecology,obstetrics and gynaecology
+dietetics,medical and health sciences
+dietetics,health sciences
+meteors,natural sciences
+meteors,physical sciences
+meteors,astronomy
+meteors,planetary science
+nuclear fission,natural sciences
+nuclear fission,physical sciences
+nuclear fission,nuclear physics
+tropical medicine,medical and health sciences
+tropical medicine,health sciences
+folklore,humanities
+folklore,arts
+folklore,art history
+commutative algebra,natural sciences
+commutative algebra,mathematics
+commutative algebra,pure mathematics
+commutative algebra,algebra
+algebraic topology,natural sciences
+algebraic topology,mathematics
+algebraic topology,pure mathematics
+algebraic topology,topology
+ecohydrology,natural sciences
+ecohydrology,earth and related environmental sciences
+ecohydrology,hydrology
+paleoclimatology,natural sciences
+paleoclimatology,earth and related environmental sciences
+paleoclimatology,palaeontology
+drainage basin,natural sciences
+drainage basin,earth and related environmental sciences
+drainage basin,hydrology
+bioarchaeology,humanities
+bioarchaeology,history and archaeology
+bioarchaeology,archaeology
+cultural and economic geography,social sciences
+cultural and economic geography,social and economic geography
+organic acids,natural sciences
+organic acids,chemical sciences
+organic acids,organic chemistry
+medical ethics,medical and health sciences
+medical ethics,health sciences
+computational creativity,natural sciences
+computational creativity,computer and information sciences
+computational creativity,artificial intelligence
+physical oceanography,natural sciences
+physical oceanography,earth and related environmental sciences
+physical oceanography,oceanography
+ethnolichenology,natural sciences
+ethnolichenology,biological sciences
+ethnolichenology,microbiology
+ethnolichenology,mycology
+ichthyology,natural sciences
+ichthyology,biological sciences
+ichthyology,zoology
+ketones,natural sciences
+ketones,chemical sciences
+ketones,organic chemistry
+geochronology,natural sciences
+geochronology,earth and related environmental sciences
+geochronology,geology
+organic geochemistry,natural sciences
+organic geochemistry,earth and related environmental sciences
+organic geochemistry,geochemistry
+optical mineralogy,natural sciences
+optical mineralogy,earth and related environmental sciences
+optical mineralogy,geology
+optical mineralogy,mineralogy
+entomology,natural sciences
+entomology,biological sciences
+entomology,zoology
+dendrology,agricultural sciences
+dendrochronology,agricultural sciences
+dendrology,"agriculture, forestry, and fisheries"
+dendrochronology,"agriculture, forestry, and fisheries"
+dendrology,forestry
+dendrochronology,forestry
+dendrochronology,dendrology
+aromatic compounds,natural sciences
+aromatic compounds,chemical sciences
+aromatic compounds,organic chemistry
+ozone depletion,natural sciences
+ozone depletion,earth and related environmental sciences
+ozone depletion,environmental sciences
+substance abuse,medical and health sciences
+substance abuse,health sciences
+artificial bone,medical and health sciences
+artificial bone,medical biotechnology
+artificial bone,tissue engineering
+palynology,natural sciences
+palynology,earth and related environmental sciences
+palynology,palaeontology
+ornithology,natural sciences
+ornithology,biological sciences
+ornithology,zoology
+isotope geochemistry,natural sciences
+isotope geochemistry,earth and related environmental sciences
+isotope geochemistry,geochemistry
+earthquake engineering,engineering and technology
+earthquake engineering,civil engineering
+earthquake engineering,structural engineering
+didactics,social sciences
+didactics,educational sciences
+liquid fuels,engineering and technology
+liquid fuels,environmental engineering
+liquid fuels,energy and fuels
+history of astronomy,natural sciences
+history of astronomy,physical sciences
+history of astronomy,astronomy
+remanufacturing,engineering and technology
+remanufacturing,environmental engineering
+remanufacturing,waste management
+colors,engineering and technology
+colors,materials engineering
+graft versus host disease,medical and health sciences
+graft versus host disease,clinical medicine
+graft versus host disease,emergency medicine
+bioleaching,engineering and technology
+bioleaching,environmental biotechnology
+bioleaching,bioremediation
+mining and mineral processing,engineering and technology
+mining and mineral processing,environmental engineering
+hydrogeology,natural sciences
+hydrogeology,earth and related environmental sciences
+hydrogeology,hydrology
+analogue electronics,engineering and technology
+analogue electronics,"electrical engineering, electronic engineering, information engineering"
+analogue electronics,electronic engineering
+paediatric cardiology,medical and health sciences
+paediatric cardiology,clinical medicine
+paediatric cardiology,cardiology
+hydraulic engineering,engineering and technology
+hydraulic engineering,civil engineering
+hydraulic engineering,structural engineering
+diabetic nephropathy,medical and health sciences
+diabetic nephropathy,clinical medicine
+diabetic nephropathy,endocrinology
+diabetic nephropathy,diabetes
+airport engineering,engineering and technology
+airport engineering,civil engineering
+airport engineering,transportation engineering
+fetal medicine,medical and health sciences
+fetal medicine,clinical medicine
+fetal medicine,obstetrics and gynaecology
+fetal medicine,obstetrics
+functional morphology,natural sciences
+functional morphology,biological sciences
+functional morphology,biological morphology
+childbirth,medical and health sciences
+childbirth,clinical medicine
+childbirth,obstetrics and gynaecology
+childbirth,obstetrics
+periodontics,medical and health sciences
+periodontics,clinical medicine
+periodontics,odontology
+computational topology,natural sciences
+computational topology,mathematics
+computational topology,pure mathematics
+computational topology,topology
+x-ray radiography,medical and health sciences
+x-ray radiography,clinical medicine
+x-ray radiography,radiology
+x-ray radiography,medical imaging
+microseisms,natural sciences
+microseisms,earth and related environmental sciences
+microseisms,geology
+microseisms,seismology
+science fiction,humanities
+science fiction,languages and literature
+science fiction,literary genres
+science fiction,essay
+landscape ecology,natural sciences
+landscape ecology,biological sciences
+landscape ecology,ecology
+general medicine,medical and health sciences
+general medicine,clinical medicine
+clinical neurology,medical and health sciences
+clinical neurology,clinical medicine
+popular music studies,humanities
+popular music studies,arts
+popular music studies,art history
+popular music studies,musicology
+architectural design,humanities
+architectural design,arts
+underwater archaeology,humanities
+underwater archaeology,history and archaeology
+underwater archaeology,archaeology
+silviculture,agricultural sciences
+silviculture,"agriculture, forestry, and fisheries"
+silviculture,forestry
+base isolation,engineering and technology
+base isolation,civil engineering
+base isolation,structural engineering
+base isolation,earthquake engineering
+cognitive robots,engineering and technology
+cognitive robots,"electrical engineering, electronic engineering, information engineering"
+cognitive robots,electronic engineering
+cognitive robots,robotics
+admiralty law,social sciences
+admiralty law,law
+paleobotany,natural sciences
+paleobotany,earth and related environmental sciences
+paleobotany,palaeontology
+knot theory,natural sciences
+knot theory,mathematics
+knot theory,pure mathematics
+knot theory,topology
+penology,social sciences
+penology,law
+biochemical engineering,engineering and technology
+biochemical engineering,chemical engineering
+speleology,natural sciences
+speleology,earth and related environmental sciences
+speleology,geology
+speleology,geomorphology
+family studies,social sciences
+family studies,sociology
+aqueous geochemistry,natural sciences
+aqueous geochemistry,earth and related environmental sciences
+aqueous geochemistry,geochemistry
+nanoelectromechanical systems,engineering and technology
+nanoelectromechanical systems,nanotechnology
+functional equations,natural sciences
+functional equations,mathematics
+functional equations,pure mathematics
+functional equations,mathematical analysis
+device drivers,natural sciences
+device drivers,computer and information sciences
+device drivers,software
+device drivers,system software
+thermochemistry,natural sciences
+thermochemistry,chemical sciences
+thermochemistry,physical chemistry
+teleology,humanities
+teleology,"philosophy, ethics and religion"
+teleology,philosophy
+teleology,metaphysics
+pets,agricultural sciences
+pets,animal and dairy science
+medical engineering,engineering and technology
+medical laboratory technology,engineering and technology
+diagnostic technologies,engineering and technology
+medical laboratory technology,medical engineering
+diagnostic technologies,medical engineering
+diagnostic technologies,medical laboratory technology
+hydrogen energy,engineering and technology
+hydrogen energy,environmental engineering
+hydrogen energy,energy and fuels
+hydrogen energy,renewable energy
+volumetric analysis,natural sciences
+volumetric analysis,chemical sciences
+volumetric analysis,analytical chemistry
+volumetric analysis,quantitative analysis
+inertial navigation system,social sciences
+inertial navigation system,social and economic geography
+inertial navigation system,transport
+inertial navigation system,navigation systems
+digital electronics,engineering and technology
+digital electronics,"electrical engineering, electronic engineering, information engineering"
+digital electronics,electronic engineering
+seismic loading,engineering and technology
+seismic loading,civil engineering
+seismic loading,structural engineering
+seismic loading,earthquake engineering
+sea vessels,engineering and technology
+sea vessels,mechanical engineering
+sea vessels,vehicle engineering
+sea vessels,naval engineering
+drug allergy,medical and health sciences
+drug allergy,clinical medicine
+drug allergy,allergology
+biostratigraphy,natural sciences
+biostratigraphy,earth and related environmental sciences
+biostratigraphy,palaeontology
+chemical process engineering,engineering and technology
+chemical process engineering,chemical engineering
+pedology,natural sciences
+pedology,earth and related environmental sciences
+pedology,soil science
+organohalogen compounds,natural sciences
+organohalogen compounds,chemical sciences
+organohalogen compounds,organic chemistry
+prime numbers,natural sciences
+prime numbers,mathematics
+prime numbers,pure mathematics
+prime numbers,arithmetic
+radiation chemistry,natural sciences
+radiation chemistry,chemical sciences
+radiation chemistry,nuclear chemistry
+anatomy and morphology,medical and health sciences
+anatomy and morphology,basic medicine
+port and harbor engineering,engineering and technology
+port and harbor engineering,civil engineering
+port and harbor engineering,transportation engineering
+hydrometeorology,natural sciences
+hydrometeorology,earth and related environmental sciences
+hydrometeorology,hydrology
+integrative and complementary medicine,medical and health sciences
+integrative and complementary medicine,clinical medicine
+drive by wire,engineering and technology
+drive by wire,mechanical engineering
+drive by wire,vehicle engineering
+drive by wire,automotive engineering
+other agricultural sciences,agricultural sciences
+family planning,medical and health sciences
+family planning,health sciences
+family planning,social biomedical sciences
+strabismus,medical and health sciences
+strabismus,clinical medicine
+strabismus,ophthalmology
+edaphology,natural sciences
+edaphology,earth and related environmental sciences
+edaphology,soil science
