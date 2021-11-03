@@ -71,7 +71,7 @@ navigation.prototype.getNodes = function (){
 
   //////////console.log(networkGraph.data.nodes[0])
   navPanel.sources.push(networkGraph.data.nodes[0])
-  //////////console.log(navPanel.sources)
+  //console.log(navPanel.sources)
 
   navPanel.sources=navPanel.sources.reverse();
   console.log(navPanel.sources)
@@ -175,14 +175,15 @@ navigation.prototype.navTableTable = function ()
     navPanel.navTable = document.getElementById("navTable");
     console.log(navPanel.navTable)
     console.log(navPanel.navTable.querySelector("nav"))
-    if((navPanel.navTable.querySelector("nav"))&(navPanel.navTable.querySelector("ol"))){
+/*     if((navPanel.navTable.querySelector("nav"))&(navPanel.navTable.querySelector("ol"))){
       navPanel.nav=navPanel.navTable.querySelector("nav")
       navPanel.ol=navPanel.navTable.querySelector("ol")
       ////////////console.log(navPanel.ol)
       navPanel.ol.querySelectorAll("li").forEach(function(li){
         li.remove()
       })
-    }else if(navPanel.navTable.querySelector("nav")){
+    //}else if(navPanel.navTable.querySelector("nav")){
+    if(navPanel.navTable.querySelector("nav")){
       navPanel.nav=navPanel.navTable.querySelector("nav")
       navPanel.ol=document.createElement("ol")
       navPanel.ol.setAttribute("role", "list");
@@ -191,8 +192,26 @@ navigation.prototype.navTableTable = function ()
       navPanel.nav.setAttribute("aria-label", "Progress");
       navPanel.ol=document.createElement("ol")
       navPanel.ol.setAttribute("role", "list");
+    } */
+    if((navPanel.navTable.querySelector("nav"))){
+      navPanel.nav=navPanel.navTable.querySelector("nav")
+      navPanel.ol=navPanel.navTable.querySelector("ol")
+      console.log(navPanel.ol)
+      if(navPanel.ol!=null){
+        navPanel.ol.querySelectorAll("li").forEach(function(li){
+          li.remove()
+        })
+      }else{
+        navPanel.ol=document.createElement("ol")
+        navPanel.ol.setAttribute("role", "list");
+      }
+      
+    }else{
+      navPanel.nav=document.createElement("nav")
+      navPanel.nav.setAttribute("aria-label", "Progress");
+      navPanel.ol=document.createElement("ol")
+      navPanel.ol.setAttribute("role", "list");
     }
-
     //////////////console.log("pasa por aquí")
     //first=true
     //last=true

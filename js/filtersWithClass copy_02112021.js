@@ -1,8 +1,7 @@
 var global=0;
 function addFilters(filters,data){
-    var filterObject,classFilterObject,bubbleId;
-    bubbleId=data.treeData.slice(-1)[0]["id"]
-    //console.log(data.treeData.slice(-1)[0]["id"])
+    var filterObject,classFilterObject;
+    
     filters.forEach(function(d){
       property=d["property"]
       filterType=d["filter_type"]
@@ -12,7 +11,7 @@ function addFilters(filters,data){
 
       if (classesFilterList.filter(c => c.name==classFilter).length==0){
             classFilterObject= new classFilterClass(classFilter)
-            filterObject=new filter(classFilter, property, filterType,parent,bubbleId)
+            filterObject=new filter(classFilter, property, filterType,parent)
             classesFilterList.push(classFilterObject)
             filtersList.push(filterObject)
 
@@ -20,7 +19,7 @@ function addFilters(filters,data){
             filterObject.checkVisibility()
       }else if(!propertiesFilterHist.includes(property)){
 
-            filterObject=new filter(classFilter, property, filterType,parent,bubbleId)
+            filterObject=new filter(classFilter, property, filterType,parent)
             propertiesFilterHist.push(property)
             filtersList.push(filterObject)
             filterObject.checkVisibility()
@@ -114,138 +113,9 @@ function range(element) {
     }, 
   }
 }
-
 function applyFilter(element){
   var element_range,filters=[],valuesFilter=[],values=[],classFilter,allValues,parent;
-  //console.log(element)
-  element_range=document.getElementById(element.getAttribute("id").replace(new RegExp("_start" + '$'), '').replace(new RegExp("_end" + '$'), ''))
-
-  empty=checkFilterIcon(document.getElementById(element.name))
-
-  if((element!=null)&(element_range!=null)){
-    element=element_range
-  }
-
-  element_range=document.getElementById(element.parentNode.parentNode.getAttribute("id").replace("_filter",""))
-
-  if((element!=null)&(element_range!=null)){
-    element=element_range
-  }
-
-  if (filtersList.filter(f => f.id==element.getAttribute("id")).length!=0){
-
-  var hiddenNodes=[],parentHidden=false,selectedFilter;
-
-  selectedFilter=filtersList.filter(f => f.id==element.getAttribute("id"))[0]
-  selectedFilter.applyFilter()
-  
-
-  branch=networkGraph.treeData.filter(function (f){
-    return f.id==selectedFilter["bubbleId"]
-  })
-
-  //console.log(branch)
-
-  checkNodesBranchFilter(selectedFilter,branch)
-
-  branch=networkGraph.treeData.slice(position+1)
-
-  if(branch.length>0){
-    checkNodesFolBranches(branch)
-  }
-  //console.log(networkGraph.treeData)
-  networkGraph.data=flatten(networkGraph.treeData).flatData
-  networkGraph.initializeSimulation();
-  networkGraph.dataJoinGraph()
-  networkGraph.enterGraph()
-  networkGraph.initializeSimulation();
-  networkGraph.dataJoinGraph()
-  networkGraph.exitGraph()
-
-  filtersList.forEach(function (f){
-    f.getValuesFilterVisibleNodes()
-    if(f!=selectedFilter){
-    //if(f.classFilterName!=selectedFilter.classFilterName){
-      f.changeValues()
-      f.checkVisibility()
-    }
-    
-  })
-
-  checkFilterIcon(document.getElementById(element.name))
-
-
-}
-function checkNodesBranchFilter(filter,branch){
-    //console.log(filter)
-    branch[0].children.forEach(function (d){
-      //console.log(d)
-      d.hidden=check_filter(d,filter)
-    })
-}
-function checkNodesFolBranches(branches) {
-  var filtersBranch,resultHidden=false,nodes = [], links=[],number,children=0;
-  function recurse(node) {
-
-    node.children.forEach(function (d){
-      if(node.hidden==true){
-        d.hidden=true
-      }else{
-        if(filtersBranch.length>0){
-          for (i = 0; i < filtersBranch.length; i++) {
-            resultHidden=check_filter(d,filtersBranch[i])
-            if(resultHidden==true){
-              break;
-            }
-          }
-          d.hidden=resultHidden
-        }else{
-          d.hidden=false
-        }
-      }
-    })
-  }
-  branches.forEach(function(b){
-    filtersBranch=filtersList.filter(function(f){
-      return f.bubbleId==b.id
-    })
-    recurse(b);
-  })
-}
-
-function check_filter(node,f){
-  var hidden=false
-  ////console.log(f)
-    if(f.classFilterName==node.class){
-      if(f.valuesField[0]!=""){
-
-        if(!hiddenNodes.includes(node.id)){
-          if(node[f.property]!=undefined){
-            if(f.filterType=="date"){
-              hidden=f.filterDate(node)
-            }else if(f.filterType=="dropdown"){
-              //console.log("filter dropdown")
-              hidden=f.filterDropdown(node)
-            }else if(f.filterType=="number"){
-              hidden=f.filterNumber(node)
-            }else if(f.filterType=="text"){
-              hidden=f.filterText(node)
-            }
-           if(hidden){
-              hiddenNodes.push(node.id)
-            }
-          }
-        }
-      }
-    }
-
-  return hidden
-}
-}
-
-function applyFilter_backup(element){
-  var element_range,filters=[],valuesFilter=[],values=[],classFilter,allValues,parent;
-  //console.log(element)
+  console.log(element)
   element_range=document.getElementById(element.getAttribute("id").replace(new RegExp("_start" + '$'), '').replace(new RegExp("_end" + '$'), ''))
 
   empty=checkFilterIcon(document.getElementById(element.name))
@@ -355,7 +225,118 @@ function check_filter(node,f){
   return hidden
 }
 }
+function applyFilter_backup(element){
+  var element_range,filters=[],valuesFilter=[],values=[],classFilter,allValues,parent;
+  console.log(element)
+  element_range=document.getElementById(element.getAttribute("id").replace(new RegExp("_start" + '$'), '').replace(new RegExp("_end" + '$'), ''))
 
+  empty=checkFilterIcon(document.getElementById(element.name))
+
+  if((element!=null)&(element_range!=null)){
+    element=element_range
+  }
+
+  element_range=document.getElementById(element.parentNode.parentNode.getAttribute("id").replace("_filter",""))
+
+  if((element!=null)&(element_range!=null)){
+    element=element_range
+  }
+
+  if (filtersList.filter(f => f.id==element.getAttribute("id")).length!=0){
+
+  var hiddenNodes=[],parentHidden=false,selectedFilter;
+
+  selectedFilter=filtersList.filter(f => f.id==element.getAttribute("id"))[0]
+  selectedFilter.applyFilter()
+  
+  networkGraph.treeData.forEach(function(t){
+    parentHidden=false
+    if(hiddenNodes.includes(t.id)){
+      t.hidden=true
+      parentHidden=true
+    }else{
+      if(check_filter(t,selectedFilter)){
+        t.hidden=true
+        parentHidden=true
+        if(!hiddenNodes.includes(t.id)){
+          hiddenNodes.push(t.id)
+        }
+      }else{
+        delete t.hidden
+      }
+    }
+    
+    if(t.children!=undefined){
+      t.children.forEach(function(v){
+        if(parentHidden){
+          v["hidden"]=true
+          if(!hiddenNodes.includes(v.id)){
+            hiddenNodes.push(v.id)
+          }
+        }else{
+          if(check_filter(v,selectedFilter)){  
+            v["hidden"]=true
+            if(!hiddenNodes.includes(v.id)){
+              hiddenNodes.push(v.id)
+            }
+          }else{
+            delete v.hidden
+          }
+        }
+        
+      })
+    }
+    
+  })
+  
+  networkGraph.data=flatten(networkGraph.treeData).flatData
+  networkGraph.initializeSimulation();
+  networkGraph.dataJoinGraph()
+  networkGraph.enterGraph()
+  networkGraph.initializeSimulation();
+  networkGraph.dataJoinGraph()
+  networkGraph.exitGraph()
+
+  filtersList.forEach(function (f){
+    f.getValuesFilterVisibleNodes()
+
+    if(f.classFilterName!=selectedFilter.classFilterName){
+      f.changeValues()
+      f.checkVisibility()
+    }
+    
+  })
+
+  checkFilterIcon(document.getElementById(element.name))
+
+}
+function check_filter(node,f){
+  var hidden=false
+    if(f.classFilterName==node.class){
+      if(f.valuesField[0]!=""){
+
+        if(!hiddenNodes.includes(node.id)){
+          if(node[f.property]!=undefined){
+            if(f.filterType=="date"){
+              hidden=f.filterDate(node)
+            }else if(f.filterType=="dropdown"){
+              hidden=f.filterDropdown(node)
+            }else if(f.filterType=="number"){
+              hidden=f.filterNumber(node)
+            }else if(f.filterType=="text"){
+              hidden=f.filterText(node)
+            }
+           if(hidden){
+              hiddenNodes.push(node.id)
+            }
+          }
+        }
+      }
+    }
+
+  return hidden
+}
+}
 function autocomplete(inp, arr) {
   var currentFocus;
   /*execute a function when someone writes in the text field:*/
@@ -669,6 +650,15 @@ function applyFreeGraphFilter(element){
         if(!d.hidden){
           visibleNodesIds.push(d.id)
         }
+      })
+    }
+  }  
+
+  function addVisibleIds(branch) {
+    for (i = 0; i < branch.length; i++) {
+      visibleNodesIds.push(branch[i]["id"])
+      branch[i].children.forEach(function(d){
+        visibleNodesIds.push(d.id)
       })
     }
   }  

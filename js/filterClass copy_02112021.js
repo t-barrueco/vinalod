@@ -1,9 +1,8 @@
-filter = function ( _classFilterName, _property, _filterType,_parent,_bubbleId) {
+filter = function ( _classFilterName, _property, _filterType,_parent) {
     this.property = _property;
     this.filterType = _filterType;
     this.classFilterName = _classFilterName
     this.parent=_parent
-    this.bubbleId=_bubbleId
     this.init();
   };
   
@@ -29,7 +28,7 @@ filter.prototype.getValuesFilterVisibleNodes=function (){
 
   /// VER SI TIENE EL INCLUIDO ALL PARA ASIGNARLO A FI.ALL
   if ((fi.values.length>1)&(fi.filterType=="dropdown")){
-    //console.log(fi.values)
+    console.log(fi.values)
     //fi.values=["All"].concat(fi.values.toLowerCase())
     fi.values=["All"].concat(fi.values)
   }
@@ -85,7 +84,7 @@ filter.prototype.addHtml = function () {
       addDateRange(div)
  
     }else if (filterType=="text"){
-      ////////////////////////////////////console.log(fi)
+      //////////////////////////////////console.log(fi)
       addText(div)
     
     }else if (filterType=="between_numbers"){ 
@@ -103,8 +102,8 @@ filter.prototype.addHtml = function () {
     }else{
       fi.selection="none"
     }
-    //console.log(document.getElementById(fi.id))
-    //console.log(fi.id)
+    console.log(document.getElementById(fi.id))
+    console.log(fi.id)
     fi.htmlEl=document.getElementById(fi.id)
     
     function addDropdown(dropdownType,div){
@@ -509,7 +508,7 @@ filter.prototype.applyFilter=function(){
     }
     
   }else{
-    fi.valuesField=[document.getElementById(fi.id).value.toLowerCase()]
+    fi.valuesField=[document.getElementById(fi.id).value]
   }
 
 }
@@ -546,18 +545,15 @@ filter.prototype.filterNumber=function(node){
 }
 filter.prototype.filterDropdown=function(node){
   var fi=this,hidden=false;
-  //console.log(fi)
-  //console.log(node[fi.property].toLowerCase())
-  if(fi.valuesField.includes("all")){
+  if(fi.valuesField.includes("All")){
     if(node["hidden"]){
       hidden=false
     }
-  }else if(!fi.valuesField.includes(node[fi.property].toLowerCase())){
+  }else if(!fi.valuesField.includes(node[fi.property])){
       hidden=true
   }else{
       hidden=false
   }
-  //console.log(hidden)
   return hidden
 }
 filter.prototype.filterDate=function(node){
