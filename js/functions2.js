@@ -165,8 +165,14 @@ async function buildFreeGraph(form,origin,node){
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
     ////////////////////////////console.log(queryUrl)
     ////////////////////////////console.log(sparqlQuery)
+    d3.select("#spin-message")
+    .text("Waiting for Sparql query")
+
+    d3.select("#spin").style("display","inline-flex")
+
     await $.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
+      d3.select("#spin").style("display","none")
       ////////////////////console.log(results)
       //////////////////////////////////console.log(origin)
       ////////////////////////////////console.log(typeof(node))

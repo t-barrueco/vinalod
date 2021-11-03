@@ -891,7 +891,7 @@ classFreeGraph.prototype.init = function () {
     .attr("href", "#")
     .append("img")
     .attr("class","mx-auto filter-icon")
-    .attr("src","/images/filter_cross.svg")
+    .attr("src","images/filter_cross.svg")
     .attr("width","40")
     .attr("height","40")
     .attr("title","click to clear filters")
