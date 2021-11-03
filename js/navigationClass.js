@@ -8,8 +8,8 @@ navigation = function ( _type) {
    
 navigation.prototype.init = function () {
   var navPanel=this;
-  navPanel.imageArrowUp="/images/arrow-up.svg"
-  navPanel.imageArrowDown="/images/arrow-down.svg"
+  navPanel.imageArrowUp="images/arrow-up.svg"
+  navPanel.imageArrowDown="images/arrow-down.svg"
   //navPanel.node=d3.select("#"+navPanel.element.getAttribute("id")).data()[0]
   navPanel.node=networkGraph.rootNode
   //navPanel.element=networkGraph.rootEl
