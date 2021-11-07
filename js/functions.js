@@ -554,11 +554,11 @@ async function addGraph(node,pageX,pageY,origin){
       indexRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  ////////////////////////console.log(query)
+  console.log(query)
   if(query!=""){
     indexRows=await checkAskResults(indexRows,node)
   }
-  ////////////////////////console.log(indexRows)
+  console.log(indexRows)
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
@@ -764,7 +764,7 @@ function runAskSparlqQuery(url,sparqlQuery){
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
   ////////////////////////////console.log(indexRows)
-  //////////////////////////////////////////////////console.log(node)
+  console.log(node)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
     ////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile[indexRows[i]["position"]])
@@ -773,11 +773,13 @@ async function checkAskResults(indexRows,node){
     //////////////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
     parameters=configFile[singleIndexRow["position"]]["parameters"]
-    ////////////////////////console.log(parameters)
+    console.log(configFile[singleIndexRow["position"]])
+    console.log(parameters)
     if(node["class"]!=undefined){
       ////////////////////////////console.log(node)
       if(parameters!=""){
-        //////////////////////console.log(parameters)
+        //////////////////////
+        console.log(parameters)
         parameters=get_parameters(parameters)
         ////////////////////////////console.log(parameters)
         for (j = 0; j < parameters.length; ++j) { 
@@ -804,10 +806,14 @@ async function checkAskResults(indexRows,node){
       }else{
         ////////////////////////////////console.log(node["class"])
         ////////////////////////////////console.log("undefined else")
-        ////////////console.log(node)
+        console.log(node)
+        //console.log(sparqlQuery)
         if(node[node["class"]+"_uri"]!=undefined){
+          console.log(node[node["class"]+"_uri"])
           sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_uri"]);
         } else{
+          console.log(node["value"])
+          console.log(node["class"])
           sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["value"]+"_code"]);
         }
       }
@@ -818,9 +824,9 @@ async function checkAskResults(indexRows,node){
       sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
-    //////////////////console.log(sparqlQuery)
+    console.log(sparqlQuery)
     results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["endpoint_url"],sparqlQuery)
-    //////////////////////////////////////////////////console.log(results)
+    console.log(results)
     if(results==true){
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
@@ -941,7 +947,16 @@ function getTooltipText(d){
           </table>`;
   return text;
 }
+function getTooltipMenu(d){
+  //////////////////////////////////////////////////////console.log(d)
+  //////////////////////////////////console.log(nodesClassesCorrespondence)
+  //////////////////////////////////console.log(d.class)
+  var text = `
+      <table class="tiptable" style="margin-left: 2.5px">
+          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000"></td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d + `</span></td></tr>`
 
+  return text;
+}
 function fillLegend(dif,addOne){
   //////////////////////////////////////////////////////////////console.log(colorScale.range())
   //////////////////////////////////////////////////////////////console.log(colorScale.domain())
@@ -1113,4 +1128,7 @@ function insertAfter(newNode, existingNode) {
   //////////////////////////////////////////////////////////////////////console.log(newNode)
   //////////////////////////////////////////////////////////////////////console.log(existingNode)
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+}
+function getCommentOption(option){
+  return configFile.filter(d=>d.option==option)[0]["option_text"]
 }

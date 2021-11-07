@@ -48,15 +48,15 @@ svg {
   pointer-events: all;
 }
 
-.d3-tip.style {
+/* .d3-tip.style {
     position:fixed;
     z-index:1; 
-}
+} */
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; 
-  z-index: 1;  /*Sit on top */
+  /*z-index: 1;  Sit on top */
 /*   left: 0;
   top: 0; */
   top: 0px;
@@ -126,6 +126,7 @@ svg {
   /* stroke: fuchsia; */
   stroke: grey;
 }
+
 /* tbody{
   width: "200px";
   display: table;
@@ -238,3 +239,4 @@ svg {
  */  
  text-decoration: none;
 }
+

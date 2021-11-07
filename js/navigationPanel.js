@@ -582,6 +582,7 @@ function clickTrTable(row) {
       return node[node["class"]+"_image"];
     }else{
       if(node[node["class"]+"_uri"]){
+        console.log(filesIcons)
         icon=filesIcons.filter(function(d){
           return d.ID==node[node["class"]+"_uri"];
         })
@@ -628,7 +629,7 @@ function clickTrTable(row) {
   }
 
   function addMenuToTable(node,menuItems){
-    var newText,newCell,element,newRow,span
+    var newText,newCell,element,newRow,span,div,textNode,textTooltip
     d3.selectAll(".menu-table").remove()
     ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(menuItems)
     ////////////////////////////////console.log(node)
@@ -647,16 +648,29 @@ function clickTrTable(row) {
         newRow.className = 'menu-table';
         newCell = newRow.insertCell();
         newCell.className="px-6 py-4 bg-gray-100 whitespace-nowrap"
+        newCell.setAttribute("x-data","{ tooltip: false }")
         // Append a text node to the cell
         a=document.createElement("a")
         a.setAttribute("href", "#");
         a.setAttribute("class", "relative flex items-start group");
+        a.setAttribute("x-on:mouseenter","tooltip = true")
+        a.setAttribute("x-on:mouseleave","tooltip = false")
+
+        div=document.createElement("div")
+        div.setAttribute("x-show","tooltip")
+        div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
+        
+        //textTooltip=d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
+        
+        textNode = document.createTextNode (getCommentOption(menuItems[i]["option"]));
+        
         //a.id=nodesTable[i]["id"]
         span=document.createElement("span")
         span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
         newText = document.createTextNode(menuItems[i]["option"]);
         newCell.appendChild(a).appendChild(span).appendChild(newText);
-  
+        newCell.appendChild(div).appendChild(textNode)
+        
         /* newCell = newRow.insertCell();
         newCell.innerHTML = '<img src="images/right-arrow-button.svg" width="40" height="40">'; */
         d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("dblclick",function(){        

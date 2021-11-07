@@ -44,7 +44,7 @@ function timelineGraph(data){
         }).sort((a,b)=>  b.star-a.start);
     //console.log(data)
 
-    width=900
+    width=1100
     //height=data.length*40
     height=500
     console.log(height)
@@ -85,7 +85,7 @@ function timelineGraph(data){
       .range(d3.schemeCategory10);
 
     var tip = d3.tip()
-      .attr('class', 'd3-tip')
+      .attr('class', 'd3-tip z-50')
       //.offset([50,0])
       .html(function (d) {   
           //console.log(d)      
