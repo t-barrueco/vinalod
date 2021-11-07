@@ -31,6 +31,7 @@ $.xhrPool = [];
             //d3.json("../config_vinalod/config_basicMode_notTree.json",function(dataConfig_notTree){
               d3.tsv("../config_vinalod/graph_icons.txt",function(dataIcons){
                 filesIcons=dataIcons;
+                console.log(dataIcons)
                 //////////////////////////////////////////////////////////////console.log(dataConfig)
                 rowDataConfig=fillDropDown(dataConfig)
                 configFile=dataConfig
