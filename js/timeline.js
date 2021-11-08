@@ -3,7 +3,7 @@ function timelineGraph(data){
     var formatTime=d3.timeFormat("%m-%d-%Y")
 //d3.csv("../data/civilization timelines - civilization timelines.csv",function(data){
     var margin = {top: 30, right: 30, bottom: 30, left: 30}
-    //console.log(data)
+    ////console.log(data)
 /*     d3.select(".modal-header2")
     //.style("background-color","blue")
     .text(function(){
@@ -11,7 +11,7 @@ function timelineGraph(data){
     }) */
     d3.select(".modal-header2 h2").remove()
     modalHeader2=document.getElementsByClassName("modal-header2")[0]
-    ////////console.log(modalHeader2)
+    //////////console.log(modalHeader2)
     //modalHeader2.className="mb-4"
     modalHeader2.classList.add("mb-4");
     var h2=document.createElement("h2")
@@ -26,13 +26,13 @@ function timelineGraph(data){
     data = data.map(d=>{
         treaty=""
         if(d.endDate){
-            //console.log(d.endDate.value)
+            ////console.log(d.endDate.value)
             endDate=d.endDate.value
         }
         if(d.treaty){
             treaty=d.treaty.value
         }
-        //console.log(d.startDate.value)
+        ////console.log(d.startDate.value)
         return {
           org: d.org.value,
           org_desc: d.org_desc.value,
@@ -42,19 +42,19 @@ function timelineGraph(data){
           treaty:treaty
         }
         }).sort((a,b)=>  b.star-a.start);
-    //console.log(data)
+    ////console.log(data)
 
     width=1100
     //height=data.length*40
     height=500
-    console.log(height)
+    //console.log(height)
     if(d3.select("#modalGraph")){
         d3.select("#modalGraph").remove()
     }
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
-    console.log(document.getElementsByClassName("modal-content2"))
+    //console.log(document.getElementsByClassName("modal-content2"))
     document.getElementsByClassName("modal-content2")[0].appendChild(div)
 
     //d3.select("#modalGraph svg").remove()
@@ -70,10 +70,10 @@ function timelineGraph(data){
     //.range([0,height])
     //.padding(0.2)
 
-    console.log(y.domain())
-    console.log(y.range())
-    ////console.log(y("Aegean civilization"))
-    ////console.log(y("Age of pre-colonial civilization (Christian, Islamic, and traditional kingdoms)"))
+    //console.log(y.domain())
+    //console.log(y.range())
+    //////console.log(y("Aegean civilization"))
+    //////console.log(y("Age of pre-colonial civilization (Christian, Islamic, and traditional kingdoms)"))
     //x = d3.scaleLinear()
     x=d3.scaleTime()
       //.domain([d3.min(data, d => d.start), d3.max(data, d => d.end)])
@@ -88,7 +88,7 @@ function timelineGraph(data){
       .attr('class', 'd3-tip z-50')
       //.offset([50,0])
       .html(function (d) {   
-          //console.log(d)      
+          ////console.log(d)      
         var text = `
         <table class="tiptable" style="margin-left: 2.5px">
             <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Code:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.org + `</span></td></tr>
@@ -124,7 +124,7 @@ axisBottom = d3.axisBottom(x)
     .tickPadding(2)
     .tickFormat(d3.timeFormat("%Y"))
     
-console.log(data)
+//console.log(data)
 
 gRects=svg.append("g")
 .attr("class", "rects")
@@ -133,11 +133,11 @@ gRects=svg.append("g")
 
 var bar = gRects.selectAll("g")
     .data(data)
-console.log(bar)
+//console.log(bar)
 bar=bar
   .enter().append("g")
     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-console.log(width)
+//console.log(width)
 bar
     .append("rect")
     //.attr("id",function(d){return d.org})
@@ -163,7 +163,7 @@ bar
 
 xGridLines = xGrid.selectAll("line")
 .data(x.ticks());
-console.log(x.ticks())
+//console.log(x.ticks())
 //xGridLines.exit().remove();
 
 xGridLines.enter().append("line")
@@ -182,20 +182,20 @@ xGrid = svg.append("g")
 
 xGridLines = xGrid.selectAll("line")
 .data(x.ticks());
-console.log(x.ticks())
-console.log(xGridLines)
+//console.log(x.ticks())
+//console.log(xGridLines)
 
 xGridLines.enter().append("line")
     .attr("class", "gridLine") //"grid-line")
     .attr("x1", function(d){
-        console.log(d)
-        //console.log(d.getFullYear())
-        //console.log(parseTime(d.getFullYear().toString()+"-01-01"))
+        //console.log(d)
+        ////console.log(d.getFullYear())
+        ////console.log(parseTime(d.getFullYear().toString()+"-01-01"))
         return x(d);
     } )
     .attr("y1", d => 0)
     .attr("x2", function(d){
-        console.log(d)
+        //console.log(d)
         return x(d);
     } )
     .attr("y2", d => height-margin.top-margin.bottom)
@@ -223,11 +223,11 @@ bar
 .duration(750)
 //.attr("width", d => vis.x(d.value))
 .attr("x", function(d) { 
-    //console.log(d.start)
-    //console.log(parseTime(d.start))
+    ////console.log(d.start)
+    ////console.log(parseTime(d.start))
     return x(parseTime(d.start)); })
 .attr("width", function(d) { 
-    console.log(x(parseTime(d.end)) - x(parseTime(d.start)))
+    //console.log(x(parseTime(d.end)) - x(parseTime(d.start)))
     return (x(parseTime(d.end)) - x(parseTime(d.start)))})
 .attr("height", function(d) { 
     return 20})

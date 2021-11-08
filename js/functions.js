@@ -9,8 +9,8 @@ function clickBubble(element,data) {
   var nodeData,sources2
   nodesSelSources=[]
   nodesSelTarget=[]
-  ////////////////////////////////////////////console.log(element)
-  ////////////////////console.log(classesFilterList)
+  ////////////////////////////////////////////////console.log(element)
+  ////////////////////////console.log(classesFilterList)
   d3.selectAll(".nodeCircle")
   .style("opacity", 0.1)
   .attr("stroke", "grey")
@@ -21,8 +21,8 @@ function clickBubble(element,data) {
   .style("stroke", "#aaaaaa")
   .style("stroke-width", "1px");
 
-  //////////////////////////////////////////console.log(d3.select("#"+element.getAttribute("id")))
-  //////////////////////////////////////////console.log(element.getAttribute("id"))
+  //////////////////////////////////////////////console.log(d3.select("#"+element.getAttribute("id")))
+  //////////////////////////////////////////////console.log(element.getAttribute("id"))
   nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
 
   var idEl=element.getAttribute("id");
@@ -45,13 +45,13 @@ function clickBubble(element,data) {
       sources2=data.links.filter(function(item) {
         return item.target.id == sources2[0]["source"]["id"]
       })
-      ////////////////////////////////////////////////console.log(sources2)
+      ////////////////////////////////////////////////////console.log(sources2)
     }
   }
   
   sources=sources.reverse();
   
-  ////////////////////////////////////////////////console.log(sources)
+  ////////////////////////////////////////////////////console.log(sources)
   sources.forEach(function(t){
     nodesSelSources.push({"class":t.source.class,"id":t.source.id,"value":t.source.value})
     d3.select("#"+t.source.id)
@@ -73,12 +73,12 @@ function clickBubble(element,data) {
     .style("stroke", "black")
     .style("fill","black")
     .style("stroke-width", "3px");
-    ////////////////////////////////////////////////console.log(t)
+    ////////////////////////////////////////////////////console.log(t)
   });
 
   nodesSelSources.push({"class":nodeData.class,"id":nodeData.id,"value":nodeData.value})
 
-  //////////////////////////////////////////console.log(nodesSelSources)
+  //////////////////////////////////////////////console.log(nodesSelSources)
   targets.forEach(function(s){
     nodesSelTarget.push({"class":s.target.class,"id":s.target.id,"value":s.target.value})
     d3.select("#"+ s.target.id)
@@ -96,14 +96,14 @@ function clickBubble(element,data) {
     .style("stroke-width", "3px");
   });
 
-  //////////////////////////////////////////console.log(targets)
-  //////////////////////////////////////////////console.log(nodesSelTarget)
+  //////////////////////////////////////////////console.log(targets)
+  //////////////////////////////////////////////////console.log(nodesSelTarget)
   
   d3.select("#"+element.id)
   .style("opacity", 1)
   .attr("stroke", "black")
   .attr("stroke-width", "3px");
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d3.select("#"+element.id+"_image"))
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d3.select("#"+element.id+"_image"))
   d3.select("#"+element.id+"_g")
   .style("opacity", 1)
 
@@ -144,7 +144,7 @@ function removeChars(chars){
 }
 function get_hierarchy(hierarchy){
   var hierarchy_arr=[]
-  ////////////////////////////////////////////////////////console.log(hierarchy)
+  ////////////////////////////////////////////////////////////console.log(hierarchy)
   hierarchy_arr=[hierarchy[0]["parent"]]
   hierarchy.forEach(function(d){
     hierarchy_arr.push(d["child"])
@@ -155,12 +155,12 @@ function get_hierarchy(hierarchy){
 }
 function getClassesShow(classes){
   var tmp={}
-  ////////////////////////////console.log("entra en getClassesShow")
+  ////////////////////////////////console.log("entra en getClassesShow")
   //classes = classes.split(";");
-  ////////////////////////////console.log(classes)
+  ////////////////////////////////console.log(classes)
   classes.forEach(function(c){
-    //////////////////////////////////console.log(c)
-    //////////////////////////////////console.log(tmp)
+    //////////////////////////////////////console.log(c)
+    //////////////////////////////////////console.log(tmp)
     //temp.push({"class":c.split("-")[0],"classShow":c.split("-")[1]})
     //tmp[c.split("-")[0]]=c.split("-")[1]
     tmp[c["class"]]=c["text"]
@@ -170,7 +170,7 @@ function getClassesShow(classes){
 function get_properties(properties){
   var temp={}
   //properties = properties.split(";");
-  //////////////console.log(properties)
+  //////////////////console.log(properties)
   properties.forEach(function(d){
 /*     if(temp[d.split("-")[0]]){
       temp[d.split("-")[0]].push(d.split("-")[1])
@@ -211,20 +211,20 @@ function getId(idPrefix){
   return id
 }
 function getOptions(configClass,elClass){
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configClass)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configClass)
   var selClass=configClass.filter(function(d){
     return d.class==elClass
   })
   return selClass
 }
 function getTooltip(elClass,option_text){
-  //////////////////////////////////////////////////////////////////////////////console.log(configFile)
-  //////////////////////////////////////////////////////////////////////////////console.log(elClass)
+  //////////////////////////////////////////////////////////////////////////////////console.log(configFile)
+  //////////////////////////////////////////////////////////////////////////////////console.log(elClass)
   var selClass=configFile.filter(function(d){
-    //////////////////////////////////////////////////////////console.log(d)
+    //////////////////////////////////////////////////////////////console.log(d)
     return d.option_text==option_text
   })
-  //////////////////////////////////////////////////////console.log(selClass[0])
+  //////////////////////////////////////////////////////////console.log(selClass[0])
   if(selClass[0]!=undefined){
     return selClass[0]["tooltip"]
   }else{
@@ -233,9 +233,10 @@ function getTooltip(elClass,option_text){
 }
 function fillDropDown(dataConfig){
   var select = document.getElementById("options_basic"); 
-  //////////////////////////////////////////////////console.log(dataConfig)
+  //////////////////////////////////////////////////////console.log(dataConfig)
   for(var i = 0; i < dataConfig.length; i++) {
-    if((!dataConfig[i]["query"].includes("PARAMETER"))&(dataConfig[i]["type"]=="TREE")){
+    //if((!dataConfig[i]["query"].includes("PARAMETER"))&(dataConfig[i]["type"]=="TREE")){
+    if(!dataConfig[i]["query"].includes("PARAMETER")){
       var opt = dataConfig[i].option;
       var el = document.createElement("option");
       el.textContent = opt;
@@ -247,8 +248,8 @@ function fillDropDown(dataConfig){
 }
 
 function changeBasicGraph(){
-  ////////////////////////////////////////////////////////////////////////////console.log(d3.select("#legend").selectAll("li"))
-  ////////////////////console.log("change basic graph")
+  ////////////////////////////////////////////////////////////////////////////////console.log(d3.select("#legend").selectAll("li"))
+  ////////////////////////console.log("change basic graph")
   d3.selectAll(".classFilter").remove()
   d3.select("#legend").selectAll("li").remove()
   d3.selectAll(".graph").remove()
@@ -265,7 +266,7 @@ function changeBasicGraph(){
 /* function labelsClick(element){
   var nodeData,cell,row,nodesTable,li,div,div2,div3,div4,a,span,span2,svg,path,el1,el2,span3,span4,img,colorCircle;
 
-  ////////////////////////////////////////////console.log(element)
+  ////////////////////////////////////////////////console.log(element)
   nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
 
   d3.select("#navTable").select("nav").remove()
@@ -293,10 +294,10 @@ function changeBasicGraph(){
     span.setAttribute("class","h-9 flex items-center")
     
     span2=document.createElement("span")
-    ////////////////////////////////////////////////console.log(nodesSel)
-    ////////////////////////////////////////////////console.log(nodesSel.slice(-1)[0]["class"])
+    ////////////////////////////////////////////////////console.log(nodesSel)
+    ////////////////////////////////////////////////////console.log(nodesSel.slice(-1)[0]["class"])
     colorCircle=colorCorrespondence[colorScale(nodesClassesCorrespondence[nodesSelSources[i]["class"]])]
-    ////////////////////////////////////////////////console.log(colorCircle.split("-"))
+    ////////////////////////////////////////////////////console.log(colorCircle.split("-"))
     span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
 
     img=document.createElement("img")
@@ -318,8 +319,8 @@ function changeBasicGraph(){
     span4.innerHTML = nodesSelSources[i]["value"]
     img=document.createElement("img")
     //nodesSel[i]
-    ////////////////////////////////////////////////console.log(bubbleImage(d3.select("#"+nodesSel[i]["id"]).data()[0]))
-    ////////////////////////////////////////////////console.log(d3.select("#"+nodesSel[i]["id"]).data()[0])
+    ////////////////////////////////////////////////////console.log(bubbleImage(d3.select("#"+nodesSel[i]["id"]).data()[0]))
+    ////////////////////////////////////////////////////console.log(d3.select("#"+nodesSel[i]["id"]).data()[0])
     img.setAttribute("src",bubbleImage(d3.select("#"+nodesSelSources[i]["id"]).data()[0]))
     //img.setAttribute("src",bubbleImage(d3.select("#"+element.getAttribute("id")).data()[0]))
     img.setAttribute('width','40px')
@@ -381,19 +382,19 @@ function changeBasicGraph(){
   $("#myModal").draggable()
 
   d3.selectAll("#navTable a").on("dblclick",function(){ 
-    ////////////////////////////////////////////console.log(this.parentNode)
+    ////////////////////////////////////////////////console.log(this.parentNode)
     dblclickNavTable(this)
     //dblclickTrTable(this)
   })
-  //.on("mouseover",//////////////////////////////////////////console.log("mouseover a navTable"))
+  //.on("mouseover",//////////////////////////////////////////////console.log("mouseover a navTable"))
   .on("click",function(){  
     clickTrTable(this)
   })
   .on('contextmenu',function(){  
     var menuItems=[]
-    ////////////////////////////////////////////////////////////////////////////////////////////////console.log("entra")
-    //////////////////////////////////////////////////////////////////////////////////////////////////console.log(d)
-    ////////////////////////////////////////////////////////////////////////////////////////////////console.log(this)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log("entra")
+    //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(d)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(this)
     //d3.event.preventDefault();
     //networkGraph.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , networkGraph.menuItems, d,"contextMenu");
     //createContextMenu(d, vis.menuItems, 100, 100, vis.g);
@@ -421,7 +422,7 @@ function changeBasicGraph(){
     thead.appendChild(tr).appendChild(th)
     var tbody=document.createElement("tbody")
     tbody.className="bg-white divide-y divide-gray-200"
-    ////////////////////////////////////////////////console.log(nodesSel)
+    ////////////////////////////////////////////////////console.log(nodesSel)
   
     //if(element.getAttribute("root")=="1"){
     nodesTable=nodesSelTarget;
@@ -429,7 +430,7 @@ function changeBasicGraph(){
     //  nodesTable=nodesSelTarget.slice(0, -1);
     //}
   
-    //////////////////////////////////////////////console.log(nodes.nodesSelTarget)
+    //////////////////////////////////////////////////console.log(nodes.nodesSelTarget)
     for (var i = 0; i < nodesTable.length; i++) {
       
       row = tbody.insertRow(-1);
@@ -476,7 +477,7 @@ function changeBasicGraph(){
     d3.selectAll(".modal-content tr").on("dblclick",function(){  
       dblclickTrTable(this)
     })
-    //.on("mouseover",function(){//////////////////////////////////////////console.log("mouseover a Table")})
+    //.on("mouseover",function(){//////////////////////////////////////////////console.log("mouseover a Table")})
     .on("click",function(){  
       clickTrTable(this)
     })
@@ -485,7 +486,7 @@ function changeBasicGraph(){
 
       d3.event.preventDefault();
       var node=d3.select("#"+this.getAttribute("id")).data()[0]
-      ////////////////////////////////////////////////console.log(node)
+      ////////////////////////////////////////////////////console.log(node)
       getMenuItemsContextMenu(node,"table")
 
     });
@@ -539,31 +540,31 @@ function getNodesFromConnected(connectedNodes){
 async function addGraph(node,pageX,pageY,origin){
   var indexRows=[],className,query="";
   className=node["class"]
-  ////////////////////////console.log(nodesClassesCorrespondence[className])
+  ////////////////////////////console.log(nodesClassesCorrespondence[className])
   for (var i = 0; i < configFile.length; i++) {
-    ////////////////////////////console.log(configFile[i]["class"])
-    ////////////////////////////console.log(className)
-    ////////////////////////////console.log(nodesClassesCorrespondence)
-    ////////////////////////////console.log(nodesClassesCorrespondence[className])
+    ////////////////////////////////console.log(configFile[i]["class"])
+    ////////////////////////////////console.log(className)
+    ////////////////////////////////console.log(nodesClassesCorrespondence)
+    ////////////////////////////////console.log(nodesClassesCorrespondence[className])
     //if(configFile[i]["class"]==nodesClassesCorrespondence[className]){
-      //////////////////////////////console.log("igual")
+      //////////////////////////////////console.log("igual")
     //}
     if(configFile[i]["class"]==nodesClassesCorrespondence[className]){
-      //////////////////////////////console.log({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
+      //////////////////////////////////console.log({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
       query=configFile[i]["query"]
       indexRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  console.log(query)
+  ////console.log(query)
   if(query!=""){
     indexRows=await checkAskResults(indexRows,node)
   }
-  console.log(indexRows)
+  ////console.log(indexRows)
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
     await buildBasicGraph(indexRows[0]["position"],node)
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
   }
   return indexRows
 }
@@ -571,14 +572,14 @@ async function addGraph(node,pageX,pageY,origin){
 
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
-  //console.log(items)
-  //console.log(node)
-  //////////////////////////////////////////////////console.log("getMenuItems")
+  //////console.log(items)
+  //////console.log(node)
+  //////////////////////////////////////////////////////console.log("getMenuItems")
   if (origin=="table"){
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(origin)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(origin)
     for (var i = 0; i < items.length; i++) {
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(items[i]["position"])
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(items[i]["option"])
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(items[i]["position"])
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(items[i]["option"])
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
     addMenuToTable(node,menuItems)
@@ -587,13 +588,13 @@ function getMenuItems(items,node,pageX,pageY,origin){
   }else{
     for (var i = 0; i < items.length; i++) {
       position=items[i]["position"]
-      //console.log(position)
+      //////console.log(position)
       element={
         title: items[i]["option"],
         action: (data,d) => {
 
           for (var i = 0; i < configFile.length; i++) {
-                //console.log(d.title)
+                //////console.log(d.title)
                 if(configFile[i]["option"] == d.title){
                   position=i
                 }
@@ -603,7 +604,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
       }
       menuItems.push(element)
     }
-    ////////////////////////////////////////////////////console.log(menuItems)
+    ////////////////////////////////////////////////////////console.log(menuItems)
     networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
   }
   
@@ -611,8 +612,8 @@ function getMenuItems(items,node,pageX,pageY,origin){
 /* function addMenuToTable(node,menuItems){
   var newText,newCell,element,newRow,span
   d3.selectAll(".menu-table").remove()
-  ////////////////////////////////////////////////////////////////////////////////////////////console.log(menuItems)
-  ////////////////////////console.log(node)
+  ////////////////////////////////////////////////////////////////////////////////////////////////console.log(menuItems)
+  ////////////////////////////console.log(node)
   var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex;
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
 
@@ -642,17 +643,17 @@ function getMenuItems(items,node,pageX,pageY,origin){
 } */
 /* async function clickMenuTable(position,node){
   var element=document.getElementById(node["id"])
-  //////////////////////////////////////////////////////////////////////////////////////////////////console.log("entra en clickMenuTable")
+  //////////////////////////////////////////////////////////////////////////////////////////////////////console.log("entra en clickMenuTable")
   await buildBasicGraph(position,node)
-  //////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
   unclickBubble()
   clickBubble(element,networkGraph.data)
 }
 function addContextMenuToTable(node,menuItems){
   var newText,newCell,element,id
   d3.selectAll(".menu-table").remove()
-  //////////////////////////////////////////////console.log(node)
-  //////////////////////////////////////////////////////////////////////////////////////////console.log(menuItems)
+  //////////////////////////////////////////////////console.log(node)
+  //////////////////////////////////////////////////////////////////////////////////////////////console.log(menuItems)
   var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex;
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
 
@@ -675,12 +676,12 @@ function addContextMenuToTable(node,menuItems){
 
 
       d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("dblclick",function(){ 
-        //////////////////////////////////////////////////////////////////////////////////////////console.log(this)       
+        //////////////////////////////////////////////////////////////////////////////////////////////console.log(this)       
         id=this.getAttribute("id").replace("menu-table-","")
         action=menuItems.filter(function(d){
           return (d.position==id)
         })[0]["action"]
-        ////////////////////////////////////////////////////console.log(action)
+        ////////////////////////////////////////////////////////console.log(action)
         eval(action)
         //clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
       })
@@ -688,8 +689,8 @@ function addContextMenuToTable(node,menuItems){
 } */
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var options,indexRows=[],Items,actionFunction;
-  //////////////////////////////////////////console.log(node)
-  //////////////////////////////////////////console.log(origin)
+  //////////////////////////////////////////////console.log(node)
+  //////////////////////////////////////////////console.log(origin)
   if(origin=="table"){
     Items=[{
       option: 'Download data',
@@ -730,7 +731,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       networkGraph.menuFactory(pageX-200, pageY-200 , Items, node,"contextMenu",250);
       //d3.event.preventDefault();
     }  
-    ////////////////////////////////////////////////////////////////////////////////////////////console.log(Items)
+    ////////////////////////////////////////////////////////////////////////////////////////////////console.log(Items)
 }
 function runSparlqQuery(settings){
   return new Promise((resolve, reject) => {
@@ -742,8 +743,8 @@ function runSparlqQuery(settings){
 }
 function runAskSparlqQuery(url,sparqlQuery){
   var prefixes="",settings
-  ////////////////////////////////////////////////////////////////////////////////////////////console.log(url)
-  //console.log(sparqlQuery)
+  ////////////////////////////////////////////////////////////////////////////////////////////////console.log(url)
+  //////console.log(sparqlQuery)
   var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   
   if (url=="https://query.wikidata.org/sparql"){
@@ -752,107 +753,126 @@ function runAskSparlqQuery(url,sparqlQuery){
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   }
   
-  ////////////////////////////////////////////////////////////////////////////////////console.log(settings)
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(settings)
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
     results = _data.boolean;
-    ////////////////////////////////////////////////////////////////////////////////////////////console.log(results)
+    ////////////////////////////////////////////////////////////////////////////////////////////////console.log(results)
     resolve(results)
   })
   })
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  ////////////////////////////console.log(indexRows)
-  console.log(node)
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+  ////////////////////////////////console.log(indexRows)
+  ////console.log(node)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
-    ////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile[indexRows[i]["position"]])
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(configFile[indexRows[i]["position"]])
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
-    //////////////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
+    //////////////////////////////////////////////////////////////////////////////////////console.log(sparqlQuery)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
     parameters=configFile[singleIndexRow["position"]]["parameters"]
-    console.log(configFile[singleIndexRow["position"]])
-    console.log(parameters)
+    ////console.log(configFile[singleIndexRow["position"]])
+    ////console.log(parameters)
     if(node["class"]!=undefined){
-      ////////////////////////////console.log(node)
+      ////////////////////////////////console.log(node)
       if(parameters!=""){
         //////////////////////
-        console.log(parameters)
+        ////console.log(parameters)
         parameters=get_parameters(parameters)
-        ////////////////////////////console.log(parameters)
+        ////////////////////////////////console.log(parameters)
         for (j = 0; j < parameters.length; ++j) { 
-          //////////////////////console.log(node)
-          //////////////////////console.log(node[parameters[j]])
+          //////////////////////////console.log(node)
+          //////////////////////////console.log(node[parameters[j]])
           sparqlQuery=sparqlQuery.replace("PARAMETER"+(j+2).toString(), node[parameters[j]]);
         }  
         //if(node["class"]=="corporateBody"){
-          ////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log("node class corporateBody")
-          ////////////////////////////////console.log(node[node["class"]+"_uri"])
-          ////////////console.log(node)
-          ////////////////console.log(node[node["class"]+"_uri"])
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log("node class corporateBody")
+          ////////////////////////////////////console.log(node[node["class"]+"_uri"])
+          ////////////////console.log(node)
+          ////console.log(node[node["class"]+"_uri"])
           if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
             sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_uri"]);
+
           } else{
             sparqlQuery=sparqlQuery.replace("PARAMETER",node["value"]);
           }
           
         //}else{
-        //  ////////////////////////////////console.log(node["class"])
-        //  ////////////////////////////////console.log("undefined corporatebody")
+        //  ////////////////////////////////////console.log(node["class"])
+        //  ////////////////////////////////////console.log("undefined corporatebody")
         //  sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
         //}
       }else{
-        ////////////////////////////////console.log(node["class"])
-        ////////////////////////////////console.log("undefined else")
-        console.log(node)
-        //console.log(sparqlQuery)
+        ////////////////////////////////////console.log(node["class"])
+        ////////////////////////////////////console.log("undefined else")
+        ////console.log(node)
+        //////console.log(sparqlQuery)
+        //console.log(node[node["class"]+"_uri"])
         if(node[node["class"]+"_uri"]!=undefined){
-          console.log(node[node["class"]+"_uri"])
+          ////console.log(node[node["class"]+"_uri"])
           sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_uri"]);
+          //console.log(sparqlQuery)
         } else{
-          console.log(node["value"])
-          console.log(node["class"])
+          ////console.log(node["value"])
+          ////console.log(node["class"])
           sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["value"]+"_code"]);
         }
       }
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(indexRows[i])
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(indexRows[i])
     }else{
-      ////////////////////////////////console.log(node["class"])
-      ////////////////////////////////console.log("undefined")
+      ////////////////////////////////////console.log(node["class"])
+      ////////////////////////////////////console.log("undefined")
       sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
-    console.log(sparqlQuery)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
+    //console.log(sparqlQuery)
     results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["endpoint_url"],sparqlQuery)
-    console.log(results)
+    ////console.log(results)
     if(results==true){
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow["position"])
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(singleIndexRow)
       resultIndexRows.push(singleIndexRow)
     }
   }
-  //////////////////////////////////////////////////////////////////////////////////console.log(resultIndexRows)
+  //////////////////////////////////////////////////////////////////////////////////////console.log(resultIndexRows)
   return resultIndexRows
 }
 function fromSelectToAskQuery(query){
-  ////////////////////////////////console.log(query)
-  var mySubString = query.substring(
-    query.toLowerCase().indexOf("select"), 
-    query.toLowerCase().indexOf("where") - 1 
-  );
-  ////////////////////////////////console.log(mySubString)
-  query=query.replace(mySubString,"ASK")
-
-  if(query.toLowerCase().indexOf("select")!=-1){
+  console.log(query)
+  var mySubString;
+  if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
       query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().lastIndexOf("where") + 5 
+      query.toLowerCase().indexOf("where") - 1 
     );
-    ////////////////////////////////console.log(mySubString)
-    query=query.replace(mySubString,"")
+    query=query.replace(mySubString,"ASK")
+
+    if(query.toLowerCase().indexOf("select")!=-1){
+      mySubString = query.substring(
+        query.toLowerCase().indexOf("select"), 
+        query.toLowerCase().lastIndexOf("where") + 5 
+      );
+      ////////////////////////////////////console.log(mySubString)
+      query=query.replace(mySubString,"")
+    }
+  }else{
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("{") - 1 
+    );
+    console.log(mySubString)
+    query=query.replace(mySubString,"ASK")
   }
+  
+  console.log(query)
+  //console.log(query.toLowerCase().indexOf("select"))
+  //console.log(query.toLowerCase().indexOf("where") - 1)
+  ////////////////////////////////////console.log(mySubString)
+
+
 
   if(query.toLowerCase().lastIndexOf("group by")!=-1){
     mySubString = query.substring(
@@ -861,7 +881,7 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  ////////////////////////////////////////////////////////////////////////////////////console.log(query)
+  ////////////////////////////////////////////////////////////////////////////////////////console.log(query)
 
   if(query.toLowerCase().lastIndexOf("order by")!=-1){
     mySubString = query.substring(
@@ -878,8 +898,9 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  //////////////////////////////////////////////////////////////////////////////////////console.log(mySubString)
-  //////////////////////////////////console.log(query)
+  query=query.replace("parameter","PARAMETER")
+  //////////////////////////////////////////////////////////////////////////////////////////console.log(mySubString)
+  //console.log(query)
   return query
 }
 /* function bubbleImage(node){
@@ -913,28 +934,28 @@ function zoom() {
 
 
  function findNodeTreemap(nodeId,treeData){
-   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
    var founded=treeData.filter(function(item) {
-     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(item.id)
-     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodeId)
+     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(item.id)
+     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodeId)
      return item.id == nodeId
    })
    return founded
  }
 
 function findNodeTreemap(nodeId,treeData){
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
   var founded=treeData.filter(function(item) {
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(item.id)
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodeId)
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(item.id)
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodeId)
     return item.id == nodeId
   })
   return founded
 }
 function getTooltipText(d){
-  //////////////////////////////////////////////////////console.log(d)
-  //////////////////////////////////console.log(nodesClassesCorrespondence)
-  //////////////////////////////////console.log(d.class)
+  //////////////////////////////////////////////////////////console.log(d)
+  //////////////////////////////////////console.log(nodesClassesCorrespondence)
+  //////////////////////////////////////console.log(d.class)
   var text = `
       <table class="tiptable" style="margin-left: 2.5px">
           <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
@@ -948,9 +969,9 @@ function getTooltipText(d){
   return text;
 }
 function getTooltipMenu(d){
-  //////////////////////////////////////////////////////console.log(d)
-  //////////////////////////////////console.log(nodesClassesCorrespondence)
-  //////////////////////////////////console.log(d.class)
+  //////////////////////////////////////////////////////////console.log(d)
+  //////////////////////////////////////console.log(nodesClassesCorrespondence)
+  //////////////////////////////////////console.log(d.class)
   var text = `
       <table class="tiptable" style="margin-left: 2.5px">
           <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000"></td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d + `</span></td></tr>`
@@ -958,24 +979,24 @@ function getTooltipMenu(d){
   return text;
 }
 function fillLegend(dif,addOne){
-  //////////////////////////////////////////////////////////////console.log(colorScale.range())
-  //////////////////////////////////////////////////////////////console.log(colorScale.domain())
-  //////////////////////////////////////////////////////////////////console.log(networkGraph.colorScale.domain())
-  //////////////////////////////////////////////////////////////////console.log(networkGraph.colorScale.domain())
+  //////////////////////////////////////////////////////////////////console.log(colorScale.range())
+  //////////////////////////////////////////////////////////////////console.log(colorScale.domain())
+  //////////////////////////////////////////////////////////////////////console.log(networkGraph.colorScale.domain())
+  //////////////////////////////////////////////////////////////////////console.log(networkGraph.colorScale.domain())
 
   if ((addOne)&(dif.length>0)){
     //appendLi()
-    //////////////////////////////////////////////////////////////console.log("primero if")
+    //////////////////////////////////////////////////////////////////console.log("primero if")
     appendLi(colorScale.domain().length-1,dif[0])
   }else if(!addOne){
-    //////////////////////////////////////////////////////////////console.log("segundo if")
+    //////////////////////////////////////////////////////////////////console.log("segundo if")
     for (var i = 0; i < colorScale.domain().length; i++) {
-      ////////////////////////////////////////////////////////////////////////////console.log(colorCorrespondence[colorScale.range()[i]])
+      ////////////////////////////////////////////////////////////////////////////////console.log(colorCorrespondence[colorScale.range()[i]])
       appendLi(i,colorScale.domain()[i])
     } 
   }
 
-  ////////////////////////////////////////////////////////////////////////////console.log(d3.select("#legend"))
+  ////////////////////////////////////////////////////////////////////////////////console.log(d3.select("#legend"))
   
 /*   <li class="flex col-span-1 rounded-md shadow-sm">
       <div class="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white bg-pink-600 rounded-l-md">
@@ -989,10 +1010,10 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-  //////////////////////////////////////////////////////////////console.log(textLi)
-  //////////////////////////////////////////////////////////////console.log(i)
-  //////////////////////////////////////////////////////////////console.log(colorScale.range())
-  //////////////////////////////////////////////////////////////console.log(colorScale.range()[i])
+  //////////////////////////////////////////////////////////////////console.log(textLi)
+  //////////////////////////////////////////////////////////////////console.log(i)
+  //////////////////////////////////////////////////////////////////console.log(colorScale.range())
+  //////////////////////////////////////////////////////////////////console.log(colorScale.range()[i])
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -1018,7 +1039,7 @@ function differenceArrays(a1, a2) {
 }
 function autocomplete(inp, arr) {
   var currentFocus;
-  //////////////console.log(inp)
+  //////////////////console.log(inp)
   /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function(e) {
       var a, b, i, val = this.value;
@@ -1028,7 +1049,7 @@ function autocomplete(inp, arr) {
       currentFocus = -1;
       /*create a DIV element that will contain the items (values):*/
       a = document.createElement("DIV");
-      ////////////////////////////////////////////////////////////////////////console.log(a)
+      ////////////////////////////////////////////////////////////////////////////console.log(a)
       a.setAttribute("id", this.id + "autocomplete-list");
       a.setAttribute("class", "autocomplete-items text-sm");
       /*append the DIV element as a child of the autocomplete container:*/
@@ -1125,8 +1146,8 @@ function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
 function insertAfter(newNode, existingNode) {
-  //////////////////////////////////////////////////////////////////////console.log(newNode)
-  //////////////////////////////////////////////////////////////////////console.log(existingNode)
+  //////////////////////////////////////////////////////////////////////////console.log(newNode)
+  //////////////////////////////////////////////////////////////////////////console.log(existingNode)
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
 function getCommentOption(option){
