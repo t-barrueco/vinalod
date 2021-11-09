@@ -578,16 +578,21 @@ function clickTrTable(row) {
   }
   function bubbleImage(node){
     var icon=[];
+    console.log(node)
+    console.log(node[node["class"]+"_image"])
     if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
       return node[node["class"]+"_image"];
     }else{
       if(node[node["class"]+"_uri"]){
-        //console.log(filesIcons)
+        console.log(node[node["class"]+"_uri"])
+        console.log(filesIcons)
         icon=filesIcons.filter(function(d){
           return d.ID==node[node["class"]+"_uri"];
         })
       }
       if(icon.length==0){
+        console.log(nodesClassesCorrespondence[node["class"]])
+        console.log(filesIcons)
         icon=filesIcons.filter(function(d){
           return d.ID==nodesClassesCorrespondence[node["class"]];
         })

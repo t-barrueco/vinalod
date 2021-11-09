@@ -311,6 +311,84 @@ $.xhrPool = [];
   
     return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
   }
+  function flatten_v2(root) {
+    var nodes = [], links=[],number,children=0;
+    function recurse(node) {
+      var i=0
+      if(!node["hidden"]){
+        if (node.children){
+          node.children.forEach(function(c){
+            if(!c["hidden"]){
+              position=links.indexOf(links.filter(function(item) {
+                return ((item.source == node.id)&&(item.target == c.id))
+              })[0])
+              if(position==-1){
+                links.push({"source": node.id, "target": c.id,"id":(removeChars(node.id)+"_"+removeChars(c.id))})
+                i+=1;
+              }
+              recurse(c)
+            }
+          });
+        } 
+      }
+      if(!node["hidden"]){
+        position=nodes.indexOf(nodes.filter(function(item) {
+          return item.id == node.id
+        })[0])
+        if(position==-1){
+          if(node["number"]==undefined){
+            node["number"]=0
+          }
+          nodes.push(node);
+        }
+      }
+      root.forEach(function(r){
+        position=nodes.indexOf(nodes.filter(function(item) {
+          return item.id == r.id
+        })[0])
+        if(position==-1){
+          if (r.children){
+            number=r.children.length
+          }else{
+            if (r["number"]){
+              number=r["number"]
+            }else{
+              number=0
+            }
+          }
+          r["number"]=number
+          if(!r["hidden"]){
+            nodes.push(r);
+          }
+        }
+      })
+    }
+    root.forEach(function(r){
+      position=nodes.indexOf(nodes.filter(function(item) {
+        return item.id == r.id
+      })[0])
+      if(position==-1){
+        if (r.children){
+          number=r.children.length
+        }else{
+          if (r["number"]){
+            number=r["number"]
+          }else{
+            number=0
+          }
+        }
+        r["number"]=number
+        if(!r["hidden"]){
+          nodes.push(r);
+        }
+      }
+    })
+    root.forEach(function(r){
+      recurse(r);
+    })
+  
+    return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
+  }
 function collapse(){
   networkGraph.collapseAll()
 }
@@ -979,7 +1057,7 @@ async function buildBasicGraph(rowDataConfig,node){
         },
         charge: {
             enabled: true,
-            strength: -200,
+            strength: -500,
             distanceMin: 100,
             distanceMax: 2000
         },
