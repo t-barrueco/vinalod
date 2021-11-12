@@ -27,10 +27,7 @@ filter.prototype.getValuesFilterVisibleNodes=function (){
   values=[...new Set(values)].sort()
   fi.values=values
 
-  /// VER SI TIENE EL INCLUIDO ALL PARA ASIGNARLO A FI.ALL
   if ((fi.values.length>1)&(fi.filterType=="dropdown")){
-    //console.log(fi.values)
-    //fi.values=["All"].concat(fi.values.toLowerCase())
     fi.values=["All"].concat(fi.values)
   }
 }
@@ -85,7 +82,6 @@ filter.prototype.addHtml = function () {
       addDateRange(div)
  
     }else if (filterType=="text"){
-      ////////////////////////////////////console.log(fi)
       addText(div)
     
     }else if (filterType=="between_numbers"){ 
@@ -103,8 +99,7 @@ filter.prototype.addHtml = function () {
     }else{
       fi.selection="none"
     }
-    //console.log(document.getElementById(fi.id))
-    //console.log(fi.id)
+
     fi.htmlEl=document.getElementById(fi.id)
     
     function addDropdown(dropdownType,div){
@@ -202,11 +197,7 @@ filter.prototype.addHtml = function () {
       textInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + getKeyByValue(nodesClassesCorrespondence, classFilter) +"_filter"
       textInput.placeholder='Enter Text'
       textInput.setAttribute("onKeyDown","textEnter(this,event)"); 
-/*       .on('keyup', function (e) {
-        if (e.key === 'Enter' || e.keyCode === 13) {
-            // Do something
-        }
-    }); */
+
       document.getElementById(fi.classFilterName+"_filters").appendChild(label);
       document.getElementById(fi.classFilterName+"_filters").appendChild(div).appendChild(textInput);
   
@@ -367,7 +358,6 @@ filter.prototype.changeHtml = function () {
     label.htmlFor = fi.property.split("_")[1] + " End"
     label.id=dateInput.id+"_label"
     label.className="block mb-2 text-base font-light text-gray-700"
-    //throw new Error("Something went badly wrong!");
     fi.mainHtmlEl.appendChild(label)
     fi.mainHtmlEl.appendChild(dateInput)
 
@@ -546,8 +536,6 @@ filter.prototype.filterNumber=function(node){
 }
 filter.prototype.filterDropdown=function(node){
   var fi=this,hidden=false;
-  //console.log(fi)
-  //console.log(node[fi.property].toLowerCase())
   if(fi.valuesField.includes("all")){
     if(node["hidden"]){
       hidden=false
@@ -557,7 +545,6 @@ filter.prototype.filterDropdown=function(node){
   }else{
       hidden=false
   }
-  //console.log(hidden)
   return hidden
 }
 filter.prototype.filterDate=function(node){
@@ -788,7 +775,6 @@ filterFreeGraph.prototype.getValuesFilterVisibleNodes=function (){
 
     fi.values=values
   
-    /// VER SI TIENE EL INCLUIDO ALL PARA ASIGNARLO A FI.ALL
     if ((fi.values.length>1)&(fi.filterType=="dropdown")){
       fi.values=["All"].concat(fi.values)
     }
@@ -827,7 +813,6 @@ filterFreeGraph.prototype.getValuesFilterVisibleNodes_backup=function (){
   values=[...new Set(values)].sort()
   fi.values=values
 
-  /// VER SI TIENE EL INCLUIDO ALL PARA ASIGNARLO A FI.ALL
   if ((fi.values.length>1)&(fi.filterType=="dropdown")){
     fi.values=["All"].concat(fi.values)
   }

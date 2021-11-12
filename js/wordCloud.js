@@ -4,16 +4,13 @@ function wordCloudGraph(words,title){
     var word_count = {};
     
     var wordsNoStop=[]
-    //console.log(words)
 
     d3.select(".modal-header2 h2").remove()
     modalHeader2=document.getElementsByClassName("modal-header2")[0]
-    //////////console.log(modalHeader2)
-    //modalHeader2.className="mb-4"
+
     modalHeader2.classList.add("mb-4");
     var h2=document.createElement("h2")
     h2.className="text-lg font-medium text-gray-900"
-    //h2.innerHTML = node["value"]
     h2.innerHTML = title
     modalHeader2.appendChild(h2);
 
@@ -23,12 +20,8 @@ function wordCloudGraph(words,title){
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
-    //console.log(document.getElementsByClassName("modal-content2"))
     document.getElementsByClassName("modal-content2")[0].appendChild(div)
 
-    //console.log(words)
-
-    // Assigns parent, children, height, depth
     var stopwords=["council","(alde),","(ni)","(verts/ale)","written","mr","mrs","(s&d)","(s&d),","(ppe),","no.","no","(ppe)","(ppe-de)","council.","question","commission:","commission.","eu","ec","(ec)","i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now","european","commission","europe"]
 
     words.forEach(function (w){
@@ -39,7 +32,6 @@ function wordCloudGraph(words,title){
 
     words=wordsNoStop
 
-    //var words = text_string.split(/[ '\-\(\)\*":;\[\]|{},.!?]+/);
       if (words.length == 1){
         word_count[words[0]] = 1;
       } else {
@@ -64,24 +56,6 @@ function wordCloudGraph(words,title){
     width = 1060 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-
-    /*
-
-    var svg =d3.select("#modalGraph").append("svg")
-        .attr("width", width + margin.right + margin.left)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate("
-              + margin.left + "," + margin.top + ")"); */
-              //.attr("transform", "translate(250,250)");
-
-
-    //var svg_location = "#chart";
-    //var width = $(document).width();
-    //var height = $(document).height();
-
-    //var fill = d3.scale.category20();
-
     var word_entries = d3.entries(word_count);
 
     var xScale = d3.scaleLinear()
@@ -103,18 +77,10 @@ function wordCloudGraph(words,title){
 
     function draw(words) {
 
-        //width=document.querySelector('#modalGraph').offsetWidth;
-        //height=document.querySelector('#modalGraph').offsetHeight;
 
         d3.select("#modalGraph").append("svg")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
-/*           .append("g")
-            .attr("transform", "translate("
-                  + margin.left + "," + margin.top + ")");
-      d3.select(modalGraph).append("svg")
-          .attr("width", width)
-          .attr("height", height) */
         .append("g")
           .attr("transform", "translate(" + [width + margin.right + margin.left >> 1, height + margin.top + margin.bottom >> 1] + ")")
         .selectAll("text")
@@ -132,142 +98,5 @@ function wordCloudGraph(words,title){
 
     d3.layout.cloud().stop();
   }
-/* function wordCloudGraph(words,title){
-    var wordsNoStop=[]
-    //console.log(words)
-
-    d3.select(".modal-header2 h2").remove()
-    modalHeader2=document.getElementsByClassName("modal-header2")[0]
-    //////////console.log(modalHeader2)
-    //modalHeader2.className="mb-4"
-    modalHeader2.classList.add("mb-4");
-    var h2=document.createElement("h2")
-    h2.className="text-lg font-medium text-gray-900"
-    //h2.innerHTML = node["value"]
-    h2.innerHTML = title
-    modalHeader2.appendChild(h2);
-
-    if(d3.select("#modalGraph")){
-      d3.select("#modalGraph").remove()
-    }
-    var div=document.createElement("div")
-    div.setAttribute("id","modalGraph")
-    div.setAttribute("style","overflow: auto")
-    //console.log(document.getElementsByClassName("modal-content2"))
-    document.getElementsByClassName("modal-content2")[0].appendChild(div)
-
-//console.log(words)
-
-// Assigns parent, children, height, depth
-var stopwords=["eu","ec","(ec)","i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
-
-words.forEach(function (w){
-    if(!stopwords.includes(w.toLowerCase())){
-        wordsNoStop.push(w)
-    }
-})
-
-words=wordsNoStop
-// append the svg object to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-myWordCloud=wordCloud()
-
-function wordCloud() {
-
-    var fill = d3.scaleOrdinal(d3.schemeCategory20);
-
-    //Construct the word cloud's SVG element
-
-    // Set the dimensions and margins of the diagram
-    var margin = {top: 250, right: 0, bottom: 0, left: 250},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-    var svg =d3.select("#modalGraph").append("svg")
-        .attr("width", width + margin.right + margin.left)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate("
-              + margin.left + "," + margin.top + ")");
-              //.attr("transform", "translate(250,250)");
-
-
-    //Draw the word cloud
-    function draw(words) {
-        var cloud = svg.selectAll("g text")
-                        .data(words, function(d) { return d.text; })
-        //console.log(words)
-        //Entering words
-        cloud.enter()
-            .append("text")
-            .style("font-family", "Impact")
-            .style("fill", function(d, i) { return fill(i); })
-            .attr("text-anchor", "middle")
-            .attr('font-size', 1)
-            .text(function(d) { return d.text; });
-
-        //Entering and existing words
-        cloud
-            .transition()
-                .duration(600)
-                .style("font-size", function(d) { return d.size + "px"; })
-                .attr("transform", function(d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .style("fill-opacity", 1);
-
-        //Exiting words
-        cloud.exit()
-            .transition()
-                .duration(200)
-                .style('fill-opacity', 1e-6)
-                .attr('font-size', 1)
-                .remove();
-    }
-
-
-    //Use the module pattern to encapsulate the visualisation code. We'll
-    // expose only the parts that need to be public.
-    return {
-
-        //Recompute the word cloud for a new set of words. This method will
-        // asycnhronously call draw when the layout has been computed.
-        //The outside world will need to call this function, so make it part
-        // of the wordCloud return value.
-        update: function(words) {
-            d3.layout.cloud().size([500, 500])
-                .words(words)
-                .padding(5)
-                .rotate(function() { return ~~(Math.random() * 2) * 90; })
-                .font("Impact")
-                .fontSize(function(d) { return d.size; })
-                .on("end", draw)
-                .start();
-        }
-    }
-
-}
-
-function getWords(i) {
-    return words
-            .map(function(d) {
-                return {text: d, size: 10 + Math.random() * 60};
-            })
-}
-function showNewWords(vis, i) {
-    i = i || 0;
-
-    vis.update(getWords(i ++ % words.length))
-    //setTimeout(function() { showNewWords(vis, i + 1)}, 2000)
-}
-
-
-//Create a new instance of the word cloud visualisation.
-//var myWordCloud = wordCloud();
-
-//Start cycling through the demo data
-showNewWords(myWordCloud);
-} */
 
 

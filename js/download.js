@@ -16,25 +16,6 @@ function download(data, fileName, mimeType) {
   var csvContent = '';
   var outerArr = [];
 
-  //console.log('inside download');
-  //console.log(data);
-
-  // /// if the data is nested it has to be formated as an array of arrays of primary data
-  // outerArr.push(Object.keys(data[0][0]));
-  // data.forEach(d => {
-  //     //console.log(d.length)
-  //     d.forEach(e=>{
-  //         // //console.log(e)
-  //         for(x in e) {
-  //             innerArr.push(e[x]);
-  //         }
-  //     outerArr.push(innerArr);
-  //     innerArr=[];
-  //     });
-  // });
-
-  /// if the data is not nested
-
   outerArr.push(Object.keys(data[0]));  // column headers 
 
   data.forEach(d => {
@@ -52,8 +33,7 @@ function download(data, fileName, mimeType) {
 
   /// the data is then wrote as a csv string, every row on a new line
   outerArr.forEach(function (d, index) {
-    // dataString = d.join(',');
-
+  
     if (index == 0) {
       str = d + '\n';
       csvContent = str;
@@ -83,11 +63,6 @@ function download(data, fileName, mimeType) {
   }
 };
 
-  // This bit of code goes then into the Main.js or wherever we need it
-
-  // $("#downloadBtn").on("click", function(){
-  //   download(outerArr, 'dowload.csv', 'text/csv;encoding:utf-8');
-  // });  
-
+  
 
 

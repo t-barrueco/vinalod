@@ -2,11 +2,9 @@ var global=0;
 function addFilters(filters,data){
     var filterObject,classFilterObject,bubbleId;
     bubbleId=data.treeData.slice(-1)[0]["id"]
-    //console.log(data.treeData.slice(-1)[0]["id"])
     filters.forEach(function(d){
       property=d["property"]
       filterType=d["filter_type"]
-      // classFilter format example: OP Theme
       classFilter=d["property"].split("_")[0]
       parent=d["parent"]
 
@@ -117,7 +115,6 @@ function range(element) {
 
 function applyFilter(element){
   var element_range,filters=[],valuesFilter=[],values=[],classFilter,allValues,parent;
-  //console.log(element)
   element_range=document.getElementById(element.getAttribute("id").replace(new RegExp("_start" + '$'), '').replace(new RegExp("_end" + '$'), ''))
 
   empty=checkFilterIcon(document.getElementById(element.name))
@@ -144,7 +141,6 @@ function applyFilter(element){
     return f.id==selectedFilter["bubbleId"]
   })
 
-  //console.log(branch)
 
   checkNodesBranchFilter(selectedFilter,branch)
 
@@ -153,7 +149,6 @@ function applyFilter(element){
   if(branch.length>0){
     checkNodesFolBranches(branch)
   }
-  //console.log(networkGraph.treeData)
   networkGraph.data=flatten(networkGraph.treeData).flatData
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
@@ -165,7 +160,6 @@ function applyFilter(element){
   filtersList.forEach(function (f){
     f.getValuesFilterVisibleNodes()
     if(f!=selectedFilter){
-    //if(f.classFilterName!=selectedFilter.classFilterName){
       f.changeValues()
       f.checkVisibility()
     }
@@ -177,9 +171,7 @@ function applyFilter(element){
 
 }
 function checkNodesBranchFilter(filter,branch){
-    //console.log(filter)
     branch[0].children.forEach(function (d){
-      //console.log(d)
       d.hidden=check_filter(d,filter)
     })
 }
@@ -215,7 +207,6 @@ function checkNodesFolBranches(branches) {
 
 function check_filter(node,f){
   var hidden=false
-  ////console.log(f)
     if(f.classFilterName==node.class){
       if(f.valuesField[0]!=""){
 
@@ -224,7 +215,6 @@ function check_filter(node,f){
             if(f.filterType=="date"){
               hidden=f.filterDate(node)
             }else if(f.filterType=="dropdown"){
-              //console.log("filter dropdown")
               hidden=f.filterDropdown(node)
             }else if(f.filterType=="number"){
               hidden=f.filterNumber(node)
@@ -245,7 +235,6 @@ function check_filter(node,f){
 
 function applyFilter_backup(element){
   var element_range,filters=[],valuesFilter=[],values=[],classFilter,allValues,parent;
-  //console.log(element)
   element_range=document.getElementById(element.getAttribute("id").replace(new RegExp("_start" + '$'), '').replace(new RegExp("_end" + '$'), ''))
 
   empty=checkFilterIcon(document.getElementById(element.name))
