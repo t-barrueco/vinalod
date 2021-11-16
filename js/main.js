@@ -90,20 +90,179 @@ $.xhrPool = [];
     networkGraph.forceProperties.link.iterations=value; 
     updateAll();
   }
+  async function buildBasicGraph(rowDataConfig,node){
+    var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns;
+    url=configFile[rowDataConfig]["endpoint_url"]
+    sparqlQuery=configFile[rowDataConfig]["query"]
+    hierarchy=configFile[rowDataConfig]["hierarchy"]
+    properties_full=configFile[rowDataConfig]["properties"]
+    options=configFile[rowDataConfig]["option"]
+    option_text=configFile[rowDataConfig]["option_text"]
+    graphType=configFile[rowDataConfig]["type"]
+    classes=configFile[rowDataConfig]["classes_text"]
+    parameters=configFile[rowDataConfig]["parameters"]
+    filters=configFile[rowDataConfig]["filters"]
+    tooltip=configFile[rowDataConfig]["tooltip"]
+    columns=configFile[rowDataConfig]["columns"]
+    property_names=get_property_names(properties_full)
+    
+    configRow={"url":url,"sparqlQuery":sparqlQuery,"hierarchy":hierarchy,"properties_full":properties_full,
+    "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
+    "filters":filters,"tooltip":tooltip,"columns":columns,"property_names":property_names}
   
+    execQueries.push(sparqlQuery)
+    configClasses = configFile.map(function(d) {
+      return {
+        class:d.class,
+        option:d.option,
+        option_text:d.option_text
+      };
+      })
+    prefixes=""
+    //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
+    if(node!=undefined){
+      if(parameters!=""){
+        parameters=get_parameters(parameters)
+        for (i = 0; i < parameters.length; ++i) { 
+          sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
+        }  
+          if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
+            sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
+          }else{
+            sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
+          }
+      }else{
+        sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
+      }
+      nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(classes));
+      nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(classes)))))
+    }
+  
+    if(graphType=="TREE"){
+    var fn = function(){
+        d3.select("#spin").style("display","none")
+        document.getElementById("sparql-timeout").style.display="inline-block"
+    };
+    
+    interval = setInterval(fn, 8000);
+    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    d3.select("#spin-message")
+      .text("Waiting for Sparql query")
+    d3.select("#spin").style("display","inline-flex")
+  
+    $objectAjax=$.ajax(settings).then  (function( _data ) {
+      var results = _data.results.bindings;
+      d3.select("#spin").style("display","none")
+  
+      graphHistory.push(options)
+      console.log(properties)
+      data=buildDataBasic(results,configRow,configClasses,node)
+      
+      if(node==undefined){
+        d3.selectAll(".graph").remove()
+        forces = {
+          center: {
+              x: 0.5,
+              y: 0.3
+          },
+          charge: {
+              enabled: true,
+              strength: -500,
+              distanceMin: 100,
+              distanceMax: 2000
+          },
+          collide: {
+              enabled: true,
+              strength: .2,
+              iterations: 1,
+              radius: 5
+          },
+          forceX: {
+              enabled: true,
+              strength: .1,
+              x: .2
+          },
+          forceY: {
+              enabled: true,
+              strength: .1,
+              y: .2
+          },
+          link: {
+              enabled: true,
+              distance: 100,
+              iterations: 1
+          }
+        }
+        networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
+        collapse()
+      }else{
+        var dif=differenceArrays(nodesClassesShow,colorScale.domain())
+              
+        networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
+        networkGraph.data=flatten(networkGraph.treeData).flatData
+        networkGraph.initializeSimulation();
+        networkGraph.dataJoinGraph()
+        networkGraph.enterGraph()
+        fillLegend(dif,true)
+        networkGraph.initializeSimulation();
+        if(networkGraph.graphType=="freeGraph"){
+          networkGraph.dataJoinFreeGraph()
+        }else{
+          networkGraph.dataJoinGraph()
+        }
+        networkGraph.exitGraph()
+      }
+      if((results.length>0)&(filters!="")){
+        addFilters(filters,data)
+        
+        filtersInGraph=filtersInGraph.concat(filters)
+      }
+  
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      document.getElementById("sparql-timeout").style.display="inline-block"
+    })
+  
+    .always(function(jqXHR, textStatus, errorThrown) {
+        d3.select("#spin").style("display","none")
+  
+    })
+    .done(function (data, textStatus, jqXHR) {
+      clearInterval(interval)
+      d3.select("#spin").style("display","none")
+      document.getElementById("sparql-timeout").style.display="none"
+    })
+    await $objectAjax
+    }else if (graphType=="TREEGRAPH"){
+      showTreegraph(node,sparqlQuery)
+    }else if (graphType=="WEBPAGE"){
+      showWikipediaPage(node)
+    }else if (graphType=="TIMELINE"){
+      showTimeLine(node)
+    }else if (graphType=="PDF"){
+      showPdf(node,sparqlQuery,url)
+    }else if (graphType=="TABLE"){
+      showTable(node,sparqlQuery,columns,property_names)
+    }else if (graphType=="WORDCLOUD"){
+      showWordcloud(node,sparqlQuery,configRow)
+    }
+  }
+  //function buildDataBasic(results,configRow,configClasses,element){
+
   function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri;
-    hierarchy=get_hierarchy(hierarchy)
+    hierarchy=get_hierarchy(configRow["hierarchy"])
     if(element==undefined){
       nodesClasses=hierarchy
-      nodesClassesCorrespondence=getClassesShow(classes)
+      nodesClassesCorrespondence=getClassesShow(configRow["classes"])
       nodesClassesShow=Object.values(nodesClassesCorrespondence)
       classTooltip=hierarchy[0]
     }else{
       classTooltip=nodesClassesCorrespondence[element["class"]]
     }
-    properties=get_properties(properties_full)
-    tooltip=getTooltip(classTooltip,option_text)
+    properties=get_properties(configRow["properties_full"])
+    tooltip=getTooltip(classTooltip,configRow["option_text"])
     root=results[0][hierarchy[0]]["value"]
     results.forEach(function(r){
       for (i = 0; i < hierarchy.length-1; ++i) {    
@@ -571,37 +730,6 @@ function transformDataTreegraph(node,data){
     return treeData
 }
 
-async function getIterData(property){
-  var nodes = [], links=[],number,children=0;
-  async function recurse(node) {
-    var i=0
-    if (node.children){
-      node.children.forEach(function(c){
-          position=links.indexOf(links.filter(function(item) {
-            return ((item.source == node.id)&&(item.target == c.id))
-          })[0])
-          if(position==-1){
-            links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
-            i+=1;
-          }
-          recurse(c)
-      });
-    } 
-    
-  }
-  for (i = 0; i < configFile.length; ++i) { 
-    if((configFile[i]["CLASS"]==data["class"])&&(configFile[i]["TYPE"]=="ITERATION")){
-      rowDataConfig=i
-      break;
-    }
-  }
-  root.forEach(function(r){
-    recurse(r);
-  })
-
-  return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
-}
-
 function showWikipediaPage(data){
   var rowDataConfig,results,node,page,parameters,parameterTemp="";
   var modal=document.getElementById("myModal")
@@ -656,164 +784,6 @@ function showWikipediaPage(data){
     });
     $("#myModal2").draggable()
   })
-}
-
-async function buildBasicGraph(rowDataConfig,node){
-  var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns;
-  url=configFile[rowDataConfig]["endpoint_url"]
-  sparqlQuery=configFile[rowDataConfig]["query"]
-  hierarchy=configFile[rowDataConfig]["hierarchy"]
-  properties_full=configFile[rowDataConfig]["properties"]
-  options=configFile[rowDataConfig]["option"]
-  option_text=configFile[rowDataConfig]["option_text"]
-  graphType=configFile[rowDataConfig]["type"]
-  classes=configFile[rowDataConfig]["classes_text"]
-  parameters=configFile[rowDataConfig]["parameters"]
-  filters=configFile[rowDataConfig]["filters"]
-  tooltip=configFile[rowDataConfig]["tooltip"]
-  columns=configFile[rowDataConfig]["columns"]
-  property_names=get_property_names(properties_full)
-  
-  configRow={"url":url,"sparqlQuery":sparqlQuery,"hierarchy":hierarchy,"properties_full":properties_full,
-  "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
-  "filters":filters,"tooltip":tooltip,"columns":columns,"property_names":property_names}
-
-  execQueries.push(sparqlQuery)
-  configClasses = configFile.map(function(d) {
-    return {
-      class:d.class,
-      option:d.option,
-      option_text:d.option_text
-    };
-    })
-  prefixes=""
-  //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
-  if(node!=undefined){
-    if(parameters!=""){
-      parameters=get_parameters(parameters)
-      for (i = 0; i < parameters.length; ++i) { 
-        sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
-      }  
-        if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
-          sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
-        }else{
-          sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
-        }
-    }else{
-      sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
-    }
-    nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(classes));
-    nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(classes)))))
-  }
-
-  if(graphType=="TREE"){
-  var fn = function(){
-      d3.select("#spin").style("display","none")
-      document.getElementById("sparql-timeout").style.display="inline-block"
-  };
-  
-  interval = setInterval(fn, 8000);
-  queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  d3.select("#spin-message")
-    .text("Waiting for Sparql query")
-  d3.select("#spin").style("display","inline-flex")
-
-  $objectAjax=$.ajax(settings).then  (function( _data ) {
-    var results = _data.results.bindings;
-    d3.select("#spin").style("display","none")
-
-    graphHistory.push(options)
-    data=buildDataBasic(results,properties,hierarchy,classes,configClasses,node,option_text)
-    
-    if(node==undefined){
-      d3.selectAll(".graph").remove()
-      forces = {
-        center: {
-            x: 0.5,
-            y: 0.3
-        },
-        charge: {
-            enabled: true,
-            strength: -500,
-            distanceMin: 100,
-            distanceMax: 2000
-        },
-        collide: {
-            enabled: true,
-            strength: .2,
-            iterations: 1,
-            radius: 5
-        },
-        forceX: {
-            enabled: true,
-            strength: .1,
-            x: .2
-        },
-        forceY: {
-            enabled: true,
-            strength: .1,
-            y: .2
-        },
-        link: {
-            enabled: true,
-            distance: 100,
-            iterations: 1
-        }
-      }
-      networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
-      collapse()
-    }else{
-      var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-            
-      networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-      networkGraph.data=flatten(networkGraph.treeData).flatData
-      networkGraph.initializeSimulation();
-      networkGraph.dataJoinGraph()
-      networkGraph.enterGraph()
-      fillLegend(dif,true)
-      networkGraph.initializeSimulation();
-      if(networkGraph.graphType=="freeGraph"){
-        networkGraph.dataJoinFreeGraph()
-      }else{
-        networkGraph.dataJoinGraph()
-      }
-      networkGraph.exitGraph()
-    }
-    if((results.length>0)&(filters!="")){
-      addFilters(filters,data)
-      
-      filtersInGraph=filtersInGraph.concat(filters)
-    }
-
-  })
-  .fail(function (jqXHR, textStatus, errorThrown) {
-    document.getElementById("sparql-timeout").style.display="inline-block"
-  })
-
-  .always(function(jqXHR, textStatus, errorThrown) {
-      d3.select("#spin").style("display","none")
-
-  })
-  .done(function (data, textStatus, jqXHR) {
-    clearInterval(interval)
-    d3.select("#spin").style("display","none")
-    document.getElementById("sparql-timeout").style.display="none"
-  })
-  await $objectAjax
-  }else if (graphType=="TREEGRAPH"){
-    showTreegraph(node,sparqlQuery)
-  }else if (graphType=="WEBPAGE"){
-    showWikipediaPage(node)
-  }else if (graphType=="TIMELINE"){
-    showTimeLine(node)
-  }else if (graphType=="PDF"){
-    showPdf(node,sparqlQuery,url)
-  }else if (graphType=="TABLE"){
-    showTable(node,sparqlQuery,columns,property_names)
-  }else if (graphType=="WORDCLOUD"){
-    showWordcloud(node,sparqlQuery,configRow)
-  }
 }
 
 // Get the modal
@@ -949,7 +919,7 @@ function get_parameters(parameters){
   return temp
 }
 
-
+//ADD connect with classes in basic mode
 function checkConfigFileNode(result){
   if(result["o"].type=="uri"){
     //////////////console.log(result)
