@@ -90,7 +90,7 @@ $.xhrPool = [];
     networkGraph.forceProperties.link.iterations=value; 
     updateAll();
   }
-  async function buildBasicGraph(rowDataConfig,node,menuOption){
+  async function buildBasicGraph(rowDataConfig,node){
     var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns;
     url=configFile[rowDataConfig]["endpoint_url"]
     sparqlQuery=configFile[rowDataConfig]["query"]
@@ -105,10 +105,6 @@ $.xhrPool = [];
     tooltip=configFile[rowDataConfig]["tooltip"]
     columns=configFile[rowDataConfig]["columns"]
     property_names=get_property_names(properties_full)
-    
-    if(networkGraph!=undefined){
-      console.log(networkGraph.treeData)
-    }
     
     configRow={"url":url,"sparqlQuery":sparqlQuery,"hierarchy":hierarchy,"properties_full":properties_full,
     "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
@@ -160,11 +156,10 @@ $.xhrPool = [];
       d3.select("#spin").style("display","none")
   
       graphHistory.push(options)
-      //console.log(properties)
-     
+      console.log(properties)
+      data=buildDataBasic(results,configRow,configClasses,node)
       
       if(node==undefined){
-        data=buildDataBasic(results,configRow,configClasses,node)
         d3.selectAll(".graph").remove()
         forces = {
           center: {
@@ -202,18 +197,10 @@ $.xhrPool = [];
         networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
         collapse()
       }else{
-        data=buildDataBasic(results,configRow,configClasses,node,menuOption)
         var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-        console.log(data)
-        position=networkGraph.treeData.indexOf(networkGraph.treeData.filter(function(item) {
-          return (item.id == data.treeData[0]["id"])
-        })[0])
-        if(position==-1){
-          console.log(networkGraph.treeData[position])
-        }
-        console.log(networkGraph.treeData)
-        //networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-        //networkGraph.data=flatten(networkGraph.treeData).flatData
+              
+        networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
+        networkGraph.data=flatten(networkGraph.treeData).flatData
         networkGraph.initializeSimulation();
         networkGraph.dataJoinGraph()
         networkGraph.enterGraph()
@@ -261,12 +248,11 @@ $.xhrPool = [];
       showWordcloud(node,sparqlQuery,configRow)
     }
   }
-  function buildDataBasic(results,configRow,configClasses,element,menuOption){
+  function buildDataBasic(results,configRow,configClasses,element){
 
   //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri;
     hierarchy=get_hierarchy(configRow["hierarchy"])
-    //console.log(menuOption)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(configRow["classes"])
@@ -293,8 +279,6 @@ $.xhrPool = [];
             }
           }
           options=getOptions(configClasses,hierarchy[i])
-          //console.log(options)
-          //console.log(node)
           if(options.length>0){
             optionNode=""
             options.forEach(function(k){
@@ -313,12 +297,6 @@ $.xhrPool = [];
               node[k]=r[k].value
             })
           }
-          if(menuOption!=undefined){
-            node["menuOption"]=menuOption
-          }else{
-            node["menuOption"]="no options"
-          }
-          
           nodes.push(node)
           if(position[i-1]){
             treeData[position[i-1]-1]["children"].push(node)
@@ -344,18 +322,11 @@ $.xhrPool = [];
               })
         }
         node["tooltip"]=getTooltipNode(tooltip,node["class"])
-        //console.log(node)
-        //console.log(menuOption)
-        /* if(menuOption!=undefined){
-          node["menuOption"]=menuOption
-        } */
         nodes.push(node)
         treeData[position[position.length-1]-1]["children"].push(node)
       }
       })
-      //console.log(treeData)
       flatData=flatten_v2(treeData)
-      //console.log(flatData)
       return flatData
   }
 
@@ -695,7 +666,7 @@ function transformDataTreegraph(node,data){
 }
 async function showWordcloud(node,sparqlQuery,configRow){
   var rowDataConfig,results,dataTreegraph=[],title;
-  ////console.log(node)
+  //console.log(node)
 
   if(node!=undefined){
     for (i = 0; i < configFile.length; ++i) { 
@@ -951,7 +922,7 @@ function get_parameters(parameters){
 //ADD connect with classes in basic mode
 function checkConfigFileNode(result){
   if(result["o"].type=="uri"){
-    ////////////////console.log(result)
-    ////////////////console.log(configFile)
+    //////////////console.log(result)
+    //////////////console.log(configFile)
   }
 }

@@ -272,10 +272,10 @@ function getNodesFromConnected(connectedNodes){
   selLinks= [...new Set(selLinks)]
   return {"nodes":selNodes,"links":selLinks}
 }
-async function addGraph(node,pageX,pageY,origin){
-  var indexRows=[],className,query="";
-  className=node["class"]
-  for (var i = 0; i < configFile.length; i++) {
+async function addGraph(node,pageX,pageY,indexRows,menuOption){
+  //var indexRows=[],className,query="";
+  //className=node["class"]
+/*   for (var i = 0; i < configFile.length; i++) {
     if(configFile[i]["class"]==nodesClassesCorrespondence[className]){
       query=configFile[i]["query"]
       indexRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
@@ -283,11 +283,11 @@ async function addGraph(node,pageX,pageY,origin){
   }
   if(query!=""){
     indexRows=await checkAskResults(indexRows,node)
-  }
+  } */
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
-    await buildBasicGraph(indexRows[0]["position"],node)
+    await buildBasicGraph(indexRows[0]["position"],node,menuOption)
   }
   return indexRows
 }
@@ -312,7 +312,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
                   position=i
                 }
               }
-          buildBasicGraph(position,node)
+          buildBasicGraph(position,node,d.title)
         }
       }
       menuItems.push(element)
@@ -389,7 +389,9 @@ function runAskSparlqQuery(url,sparqlQuery){
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
+  ////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
+    //console.log(indexRows[i])
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
     parameters=configFile[singleIndexRow["position"]]["parameters"]
@@ -425,7 +427,7 @@ async function checkAskResults(indexRows,node){
 }
 
 function fromSelectToAskQuery(query){
-  //console.log(query)
+  ////console.log(query)
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
@@ -661,4 +663,17 @@ function insertAfter(newNode, existingNode) {
 }
 function getCommentOption(option){
   return configFile.filter(d=>d.option==option)[0]["option_text"]
+}
+function get_node_from_element(id){
+  return d3.select("#"+id).data()[0]
+}
+function get_configRows_class(classNode){
+  var configRows=[]
+  for(var i = 0; i < configFile.length; i++) {
+    if(configFile[i]["class"]==classNode){
+      configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
+    }
+  }
+  //console.log(configRows)
+  return configRows
 }
