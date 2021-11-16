@@ -91,7 +91,7 @@ $.xhrPool = [];
     updateAll();
   }
   async function buildBasicGraph(rowDataConfig,node,menuOption){
-    var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns;
+    var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns,found;
     url=configFile[rowDataConfig]["endpoint_url"]
     sparqlQuery=configFile[rowDataConfig]["query"]
     hierarchy=configFile[rowDataConfig]["hierarchy"]
@@ -205,15 +205,22 @@ $.xhrPool = [];
         data=buildDataBasic(results,configRow,configClasses,node,menuOption)
         var dif=differenceArrays(nodesClassesShow,colorScale.domain())
         console.log(data)
-        position=networkGraph.treeData.indexOf(networkGraph.treeData.filter(function(item) {
+        found=networkGraph.treeData.filter(function(item) {
+          console.log(item.id)
+          console.log(data.treeData[0]["id"])
           return (item.id == data.treeData[0]["id"])
-        })[0])
-        if(position==-1){
-          console.log(networkGraph.treeData[position])
-        }
+        })
+        console.log(found)
+        if(found.length!=0){
+          console.log(networkGraph.treeData.indexOf(found[0]))
+          create_menuNode(networkGraph.treeData.indexOf(found[0]),data.treeData[0])
+          networkGraph.data=flatten(networkGraph.treeData).flatData
+        }else{
         console.log(networkGraph.treeData)
-        //networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-        //networkGraph.data=flatten(networkGraph.treeData).flatData
+        networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
+        networkGraph.data=flatten(networkGraph.treeData).flatData
+        }
+
         networkGraph.initializeSimulation();
         networkGraph.dataJoinGraph()
         networkGraph.enterGraph()
@@ -260,13 +267,19 @@ $.xhrPool = [];
     }else if (graphType=="WORDCLOUD"){
       showWordcloud(node,sparqlQuery,configRow)
     }
+    function create_menuNode(index,treeData){
+      console.log(networkGraph.treeData[index])
+      if(networkGraph.treeData[index]["class"]!="menuOption"){
+        networkGraph.treeData[index]["children"].concat(treeData.children)
+      }
+    }
   }
   function buildDataBasic(results,configRow,configClasses,element,menuOption){
 
   //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri;
     hierarchy=get_hierarchy(configRow["hierarchy"])
-    //console.log(menuOption)
+    console.log(menuOption)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(configRow["classes"])

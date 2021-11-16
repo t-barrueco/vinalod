@@ -272,7 +272,7 @@ function getNodesFromConnected(connectedNodes){
   selLinks= [...new Set(selLinks)]
   return {"nodes":selNodes,"links":selLinks}
 }
-async function addGraph(node,pageX,pageY,indexRows,menuOption){
+async function addGraph(node,pageX,pageY,indexRows){
   //var indexRows=[],className,query="";
   //className=node["class"]
 /*   for (var i = 0; i < configFile.length; i++) {
@@ -284,10 +284,14 @@ async function addGraph(node,pageX,pageY,indexRows,menuOption){
   if(query!=""){
     indexRows=await checkAskResults(indexRows,node)
   } */
+  console.log(indexRows)
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
-    await buildBasicGraph(indexRows[0]["position"],node,menuOption)
+    console.log(indexRows[0]["position"])
+    console.log(node)
+    console.log(indexRows[0]["option"])
+    await buildBasicGraph(indexRows[0]["position"],node,indexRows[0]["option"])
   }
   return indexRows
 }
@@ -295,6 +299,7 @@ async function addGraph(node,pageX,pageY,indexRows,menuOption){
 
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
+  console.log("getmenuitems")
   if (origin=="table"){
     for (var i = 0; i < items.length; i++) {
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})

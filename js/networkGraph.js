@@ -1010,8 +1010,9 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,event) {
   //console.log(element)
   node=get_node_from_element(element.getAttribute("id").replace("_image",""))
   configRows=get_configRows_class(nodesClassesCorrespondence[node["class"]])
+  console.log(configRows)
   indexRows=await checkAskResults(configRows,node)
-
+  console.log(indexRows)
   if (origin=="table"){
     pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
     pageY=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["y"]
@@ -1026,6 +1027,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,event) {
     pageX=event.screenX
     pageY=event.screenY
   }
+  console.log(node["menuOption"])
   //console.log(indexRows.find(element => element.option === node["menuOption"]))
   indexRows = indexRows.filter(function( obj ) {
     return obj.option !==  node["menuOption"];
