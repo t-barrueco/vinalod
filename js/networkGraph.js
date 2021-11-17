@@ -497,7 +497,7 @@ NetworkGraph.prototype.enterGraph = function(){
   .attr("id",function(d){
     return (d.id+"_g")
   })
-
+  console.log(vis.data)
   
   vis.nodeCircleCircle=vis.nodeCircle
       .append("circle")
@@ -527,13 +527,14 @@ NetworkGraph.prototype.enterGraph = function(){
       })
 
       .attr("r", function(d){
-        ////////console.log(d.number)
+        console.log(d.number)
         return vis.sizeNode(d.number)})
       .attr("stroke", function(d){
         return "grey"
       })
       .attr("stroke-width", "1px")
       .style("fill", function(d){ 
+        console.log(d)
         if(!d.class){
           if ((d.type=="typed-literal")||(d.type=="literal")){
             return "#c5b0d5";
@@ -545,6 +546,7 @@ NetworkGraph.prototype.enterGraph = function(){
             return "#a3cbe2"
           }
         }else{
+          console.log(nodesClassesCorrespondence)
          return vis.colorScale(nodesClassesCorrespondence[d.class]);
         }
         

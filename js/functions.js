@@ -284,15 +284,15 @@ async function addGraph(node,pageX,pageY,indexRows){
   if(query!=""){
     indexRows=await checkAskResults(indexRows,node)
   } */
-  ////console.log(indexRows)
-  ////console.log(networkGraph.treeData)
+  //////console.log(indexRows)
+  //////console.log(networkGraph.treeData)
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
-    ////console.log(indexRows[0]["position"])
-    ////console.log(node)
-    ////console.log(indexRows[0]["option"])
-   // //console.log(networkGraph.treeData)
+    //////console.log(indexRows[0]["position"])
+    //////console.log(node)
+    //////console.log(indexRows[0]["option"])
+   // ////console.log(networkGraph.treeData)
     //throw new Error("Something went badly wrong!");
     await buildBasicGraph(indexRows[0]["position"],node,indexRows[0]["option"])
   }
@@ -302,7 +302,7 @@ async function addGraph(node,pageX,pageY,indexRows){
 
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
-  ////console.log("getmenuitems")
+  //////console.log("getmenuitems")
   if (origin=="table"){
     for (var i = 0; i < items.length; i++) {
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
@@ -397,9 +397,9 @@ function runAskSparlqQuery(url,sparqlQuery){
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  ////////console.log(node)
+  //////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
-    //////console.log(indexRows[i])
+    ////////console.log(indexRows[i])
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
     parameters=configFile[singleIndexRow["position"]]["parameters"]
@@ -435,7 +435,7 @@ async function checkAskResults(indexRows,node){
 }
 
 function fromSelectToAskQuery(query){
-  ////////console.log(query)
+  //////////console.log(query)
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
@@ -507,17 +507,28 @@ function findNodeTreemap(nodeId,treeData){
   return founded
 }
 function getTooltipText(d){
-  var text = `
-      <table class="tiptable" style="margin-left: 2.5px">
-          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
-          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Class:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + nodesClassesCorrespondence[d.class] + `</span></td></tr>`
-          Object.keys(d["tooltip"]).forEach(function(k){
-            text=text + `
-                  <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">`+d["tooltip"][k]+`:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d[k] + `</span></td></tr>`
-          })      
-          text=text+`<tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
-          </table>`;
-  return text;
+  console.log(d)
+  if(d.class=="menuOption"){
+    var text = `
+    <table class="tiptable" style="margin-left: 2.5px">
+        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
+        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
+        </table>`;
+    return text;
+  }else{
+    var text = `
+    <table class="tiptable" style="margin-left: 2.5px">
+        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
+        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Class:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + nodesClassesCorrespondence[d.class] + `</span></td></tr>`
+        Object.keys(d["tooltip"]).forEach(function(k){
+          text=text + `
+                <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">`+d["tooltip"][k]+`:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d[k] + `</span></td></tr>`
+        })      
+        text=text+`<tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
+        </table>`;
+    return text;
+  }
+  
 }
 function getTooltipMenu(d){
   var text = `
@@ -682,6 +693,6 @@ function get_configRows_class(classNode){
       configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  //////console.log(configRows)
+  ////////console.log(configRows)
   return configRows
 }
