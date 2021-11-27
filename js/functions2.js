@@ -763,8 +763,8 @@ function addFreeGraphData(results,node,form){
   }
   async function checkAskResultsFreeGraph(node,so){
     var resultRows=[]
+    //var urls=['https://publications.europa.eu/webapi/rdf/sparql','https://data.europa.eu/sparql','https://query.wikidata.org/bigdata/namespace/wdq/sparql']
     var urls=['https://publications.europa.eu/webapi/rdf/sparql','https://data.europa.eu/sparql']
-
     if(so==undefined){
       subjectObject=['s','o']
     }else{
