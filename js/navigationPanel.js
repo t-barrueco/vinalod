@@ -110,14 +110,20 @@ function labelsClick(element){
   
       var table = document.createElement("table");
       table.className="w-full divide-y divide-gray-200 table-auto"
-    
+      console.log(nodeData)
+
       var thead=document.createElement("thead")
       thead.className="bg-gray-50"
       var tr=document.createElement("tr")
       var th=document.createElement("th")
       th.setAttribute("scope","col")
       th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
-      th.innerHTML=nodeData["value"]
+      if(nodeData["menuOptionText"]!=undefined){
+        th.innerHTML=nodeData["menuOptionText"]
+      }else{
+        th.innerHTML=nodeData["value"]
+      }
+      //th.innerHTML=nodeData["menuOptionText"]
       thead.appendChild(tr).appendChild(th)
       var tbody=document.createElement("tbody")
       tbody.className="bg-white divide-y divide-gray-200"
@@ -165,6 +171,7 @@ function labelsClick(element){
       fullTable.appendChild(thead)
       fullTable.appendChild(tbody);
       d3.selectAll(".modal-content tr").on("dblclick",function(){  
+        console.log("double click")
         dblclickTrTable(this)
       })
       .on("click",function(){  
@@ -186,7 +193,7 @@ function labelsClickFreeGraph(element,newForm,form,propertyEl){
     var property,nodeData,cell,row,nodesTable,li,div,div2,div3,div4,a,span,span2,svg,path,el1,el2,span3,span4,img,colorCircle;
     var imageArrowUp="/images/arrow-up.svg",imageArrowDown="/images/arrow-down.svg"
 
-    
+    console.log(element)
     nodesTable=networkGraph.data.links.filter(function(item) {
       return item.source.id == element["id"]
     })
@@ -455,7 +462,7 @@ function clickTrTable(row) {
     .attr("stroke-width", "6px");
   }
   async function dblclickTrTable(row) {
-    var indexRows=1;
+    var indexRows=1,node;
     var element=document.getElementById(row.getAttribute("id").replace("_a","").replace("_tr",""));
     indexRows=await networkGraph.wrangleData(document.getElementById(row.getAttribute("id").replace("_a","")),"table");
 
@@ -466,6 +473,9 @@ function clickTrTable(row) {
       d3.select("#"+row.getAttribute("id"))
       .attr("stroke", "yellow")
       .attr("stroke-width", "6px");
+    }else{
+      node=d3.select("#"+element.getAttribute("id")).data()[0]
+      addMenuToTable(element,indexRows)
     }
   }
   async function dblclickNavTable(row) {

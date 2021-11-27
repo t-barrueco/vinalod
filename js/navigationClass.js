@@ -1,5 +1,6 @@
-navigation = function ( _type) {
+navigation = function ( _type,_node) {
     this.type = _type;
+    this.node = _node
     this.init();
   };
    
@@ -8,11 +9,13 @@ navigation.prototype.init = function () {
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
   navPanel.node=networkGraph.rootNode
+  //console.log(networkGraph.rootNode)
   navPanel.element=document.getElementById(navPanel.node.id)
   navPanel.getNodes()
   navPanel.initModal()
   navPanel.navTableTable()
   navPanel.contentTable()
+  //////console.log("entra")
 }
 
 navigation.prototype.getNodes = function (){
@@ -142,11 +145,14 @@ navigation.prototype.navTableTable = function ()
     }
     if(navPanel.type=="freeGraph"){
       navPanel.sources.forEach(function (d,i){
+        //////console.log(d)
         if(i==0){
           navPanel.addElementNav(d,i)
         }else{
-          navPanel.addElementNavProp(d,i,true)
-          navPanel.addElementNavProp(d,i,false)
+          if(d["target"]["type"]!="menuOption"){
+            navPanel.addElementNavProp(d,i,true)
+            navPanel.addElementNavProp(d,i,false)
+          }
         }
       })
     }else{
@@ -166,6 +172,7 @@ navigation.prototype.addElementNav = function (source,i){
   li.id=source["id"]+"_li"
 
   if(i<navPanel.sources.length-1){
+      ////console.log("element nav")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
@@ -181,11 +188,13 @@ navigation.prototype.addElementNav = function (source,i){
   span.setAttribute("class","h-9 flex items-center")
   
   span2=document.createElement("span")
-  
+  //////console.log(source["type"])
   if(source["type"]=="uri"){
     colorCircle="green-300"
   }else if(source["type"]=="bnode"){
     colorCircle="yellow-300"
+  }else if(source["type"]=="menuOption"){
+    colorCircle="blue-300"
   }else{
     colorCircle="pink-300"
   }
@@ -218,16 +227,58 @@ navigation.prototype.addElementNav = function (source,i){
 
 navigation.prototype.addElementNavProp = function (source,i,property){
   var li=document.createElement("li")
+  var div,a,li,span,span2,el1
   var navPanel=this;
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
 
-  if((property)|(i<navPanel.sources.length-1)){
+  ////console.log(source)
+  ////console.log(navPanel.sources.length)
+  ////console.log(i)
+  ////console.log(property)
+  ////console.log(source["target"]["menuOption"])
+  ////console.log(navPanel.node)
+/*   if(source["target"]["type"]!="menuOption"){
+    
+  } */
+/*   if(source["target"]["menuOption"]){
+    ////console.log("entra en source target menuOption")
+    if(property){
+      ////console.log("entra en property")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
       li.appendChild(div)
+    }else if((source["target"]["menuOption"].split(";").length<2)&(i<navPanel.sources.length-1)){
+      ////console.log("entra en el largo")
+      //if(i<navPanel.sources.length-1){
+        div=document.createElement("div")
+        div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+        div.setAttribute("aria-hidden", "true");
+        li.appendChild(div)
+      }
+  }else if((property)|(i<navPanel.sources.length-1)){
+    ////console.log("el de por descarte")
+    div=document.createElement("div")
+    div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+    div.setAttribute("aria-hidden", "true");
+    li.appendChild(div)
+  } */
+  //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
+  if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
+  //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))|(navPanel.node.type=="menuOption")){
+    ////console.log("el de por descarte")
+    div=document.createElement("div")
+    div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+    div.setAttribute("aria-hidden", "true");
+    li.appendChild(div)
   }
+
+/*   div=document.createElement("div")
+  div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+  div.setAttribute("aria-hidden", "true");
+  li.appendChild(div) */
+
 
   a=document.createElement("a")
   a.setAttribute("href", "#");
@@ -251,6 +302,8 @@ navigation.prototype.addElementNavProp = function (source,i,property){
       colorCircle="green-300"
     }else if(source["target"]["type"]=="bnode"){
       colorCircle="yellow-300"
+    }else if(source["target"]["type"]=="menuOption"){
+      colorCircle="blue-300"
     }else{
       colorCircle="pink-300"
     }
@@ -272,8 +325,13 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   }
   el1=navPanel.ol.appendChild(li)
 
+  ////console.log(el1)
   if(i<navPanel.sources.length-1){
-      el1.appendChild(div)
+      ////console.log(div)
+      if(div!=undefined){
+        el1.appendChild(div)
+      }
+      
   }
   
   el2=el1.appendChild(a)
@@ -294,7 +352,8 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:indigo;font-weight:bolder")
-    span5.innerHTML=  "   Sparql Endpoint(" + url + ")"
+    //////console.log(source)
+    span5.innerHTML=  "   Sparql Endpoint(" + source["target"]["url"] + ")"
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
     el3.appendChild(span5)
@@ -303,16 +362,16 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
   }
-  
+  ////console.log(el3)
 }
 
-navigation.prototype.addLineElementNav = function (li){
+/* navigation.prototype.addLineElementNav = function (li){
   var navPanel=this;
   var div=document.createElement("div")
   div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
   div.setAttribute("aria-hidden", "true");
   li.appendChild(div)
-}
+} */
 
 navigation.prototype.addEventsNav = function (){
   var navPanel=this;
@@ -334,6 +393,8 @@ navigation.prototype.addEventsNav = function (){
 
 navigation.prototype.contentTable = function (){
   var navPanel=this;
+  var menuOption;
+
   navPanel.contentRows=[]
   d3.selectAll(".modal-content table").remove()
   if (navPanel.targets.length>0){
@@ -348,7 +409,23 @@ navigation.prototype.contentTable = function (){
     th.setAttribute("colspan","2")
     th.setAttribute("scope","colgroup")
     th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
-    th.innerHTML=navPanel.node["value"]
+    if(navPanel.node["type"]=="menuOption"){
+      menuOption=navPanel.node["value"].split(",")
+      th.innerHTML="Sparql Endpoint: "+ menuOption[0]+ " and Position: "+menuOption[1];
+    }else{
+      ////console.log(navPanel.node)
+      menuOption=navPanel.node["menuOption"]
+      if(menuOption.split(";").length>1){
+        //menuOption=navPanel.node["menuOption"].split(",")
+        th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
+      }else{
+        menuOption=menuOption.split(",")
+        th.innerHTML="Sparql Endpoint: "+ menuOption[0]+ " and Position: "+menuOption[1];
+      }
+     
+      //th.innerHTML=navPanel.node["value"]
+    }
+    
     navPanel.thead.appendChild(tr).appendChild(th)
     navPanel.tbody=document.createElement("tbody")
     navPanel.tbody.className="bg-white divide-y divide-gray-200"
@@ -433,11 +510,14 @@ navigation.prototype.addElementContentTable = function (target,i){
   div2.className="flex-shrink-0 w-10 h-10"
   img=document.createElement("img")
   
+  //////console.log(nodesTable[i]["target"]["type"])
   if(!property){
       if(nodesTable[i]["target"]["type"]=="uri"){
           img.className="w-10 h-10 bg-green-300 rounded-full"
         }else if(nodesTable[i]["target"]["type"]=="bnode"){
           img.className="w-10 h-10 bg-yellow-300 rounded-full"
+        }else if(nodesTable[i]["target"]["type"]=="menuOption"){
+          img.className="w-10 h-10 bg-blue-300 rounded-full"
         }else{
           img.className="w-10 h-10 bg-pink-300 rounded-full"
       }
@@ -475,6 +555,7 @@ navigation.prototype.addElementContentTableProp = function (target,i){
   insertContent(false)
   
   function insertContent(property){
+    var menuOption;
     cell = row.insertCell(-1);
     cell.className="px-6 py-4 whitespace-nowrap"
     if(!property){
@@ -497,11 +578,14 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     div2.className="flex-shrink-0 w-10 h-10"
     img=document.createElement("img")
     
+    //////console.log(target["target"]["type"]=="uri")
     if(!property){
         if(target["target"]["type"]=="uri"){
             img.className="w-10 h-10 bg-green-300 rounded-full"
           }else if(target["target"]["type"]=="bnode"){
             img.className="w-10 h-10 bg-yellow-300 rounded-full"
+          }else if(target["target"]["type"]=="menuOption"){
+            img.className="w-10 h-10 bg-blue-300 rounded-full"
           }else{
             img.className="w-10 h-10 bg-pink-300 rounded-full"
         }
@@ -517,18 +601,30 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     if(!property){
         a=document.createElement("a")
         a.setAttribute("href", "#");
-        if((target["target"]["type"]!="bnode")&(target["target"]["type"]!="uri")){
+        if((target["target"]["type"]!="bnode")&(target["target"]["type"]!="uri")&(target["target"]["type"]!="menuOption")){
           a.setAttribute("class", "relative flex items-start group isDisabled");
         }else{
           a.setAttribute("class", "relative flex items-start group");
         }
         
         span=document.createElement("span")
-        newText = document.createTextNode(target["target"]["value"]);
+        //////console.log(target["target"])
+        if(target["target"]["type"]=="menuOption"){
+          menuOption=target["target"]["value"].split(",")
+          newText = document.createTextNode("Sparql Endpoint: "+ menuOption[0]+ "and Position: "+menuOption[1]);
+        }else{
+          newText =document.createTextNode(target["target"]["value"]);
+        }
+        
         div4.appendChild(a).appendChild(span).appendChild(newText);
     }else{
         span=document.createElement("span")
-        newText = document.createTextNode(target["value"]);
+        if(target["value"]!=undefined){
+          newText = document.createTextNode(target["value"]);
+        }else{
+          newText = document.createTextNode("no property");
+        }
+        
         div4.appendChild(span).appendChild(newText);
     }
         
@@ -539,22 +635,43 @@ navigation.prototype.addElementContentTableProp = function (target,i){
   }
 
 navigation.prototype.dblclickCellContent = async function (cell) {
-  var indexRows=1,bubble;
-  if(networkGraph.treeData.filter(d=>d.id==cell.getAttribute("id")).length==0){
+  var indexRows=1,bubble,node;
+  //if(networkGraph.treeData.filter(d=>d.id==cell.getAttribute("id")).length==0){
     indexRows=await networkGraph.wrangleDataFreeGraph(cell,"table");
-    if (indexRows.length<2){
+    //console.log(indexRows)
+    if(indexRows.length==0){
       unclickBubbleFreeGraph()
       bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
+      //console.log(bubble)
+      //console.log(cell)
+      clickBubbleFreeGraph(bubble,networkGraph.data)
+      d3.select("#"+row.getAttribute("id"))
+      .attr("stroke", "yellow")
+      .attr("stroke-width", "6px");
+    }else if (indexRows.length==1){
+      unclickBubbleFreeGraph()
+      node=d3.select("#"+cell.getAttribute("id")).data()[0]
+      //console.log(node)
+      if(node["menuOption"].split(";").length>1){
+        bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
+        //bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
+      }else{
+        bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
+      }
+      //console.log(bubble)
+      //console.log(cell)
       clickBubbleFreeGraph(bubble,networkGraph.data)
       d3.select("#"+row.getAttribute("id"))
       .attr("stroke", "yellow")
       .attr("stroke-width", "6px");
     }
-  }else{
-    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
-    clickBubbleFreeGraph(bubble,networkGraph.data)
+  //}else{
+  //  bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
+  //  clickBubbleFreeGraph(bubble,networkGraph.data)
+  //}
+  function searchMenuOptionChild(){
+    return (networkGraph.treeData.filter(d=>d.id==node["id"])[0]["children"].filter(v=>v.value==indexRows[0].url+","+indexRows[0]["subject-object"])[0])
   }
-
 }
 
 navigation.prototype.clickCellContent = async function (cell){
@@ -640,18 +757,32 @@ navigation.prototype.addMenuToTable = function (node,menuItems){
   })
 }
 navigation.prototype.clickMenuTable = async function (form,element){
-  var propertyEl,bubble;
+  var propertyEl,bubble,node;
   var node=d3.select("#"+element["id"]).data()[0]
   var navPanel=this;
-
+  //console.log(form)
   var newForm={"url":form["new_url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["new_subjectObject"]}
   propertyEl=form["property"]
 
-  var form={"url":form["url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["subject-object"]}
-
-  await buildFreeGraph(newForm,"table",element)
+  var form={"url":form["url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["subjectObject"]}
+  //console.log(element)
+  node=d3.select("#"+element.getAttribute("id")).data()[0]
+  await buildFreeGraph(newForm,"table",node)
   document.getElementById(element.getAttribute("id"))
-  bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+element.getAttribute("id"))
+
+  //console.log(newForm)
+  //console.log(node)
+  //console.log(bubble)
+  if(node["menuOption"].split(";").length>1){
+    //console.log("entra en mayor que 1")
+    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
+    //console.log(bubble)
+  }else{
+    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+element.getAttribute("id"))
+  }
   clickBubbleFreeGraph(bubble,networkGraph.data)
 
+function searchMenuOptionChild(){
+  return (networkGraph.treeData.filter(d=>d.id==node["id"])[0]["children"].filter(v=>v.value==newForm.url+","+newForm["subject-object"])[0])
+}
 }

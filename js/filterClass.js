@@ -755,6 +755,7 @@ filterFreeGraph.prototype.getValuesFilterVisibleNodes=function (){
 
     fi.backValues=fi.values
 
+    //console.log(networkGraph.data["links"])
     networkGraph.data["links"].forEach(function(d){
 
       if(fi.bubbleId==d.source.id){
