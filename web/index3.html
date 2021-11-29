@@ -35,17 +35,30 @@
       
       </head>
     <body>
+        <!-- This example requires Tailwind CSS v2.0+ -->
+<!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full bg-gray-100">
+  <body class="h-full">
+  ```
+-->
+  
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="relative bg-gray-50">
-    <div class="relative bg-white shadow">
+    <div class="relative bg-blue-600 shadow">
 <!--       <div class="max-w-4xl ml-60 px-4 sm:px-6">  
  -->    <div class="max-w-7xl ml-60 px-4 sm:px-6">
         <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
           <div class="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#">
-              <span class="sr-only">Workflow</span>
+            <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                <a href="#">Vinalod</a>
+              </h1>
+<!--             <a href="#">
+              <span class="sr-only"></span>
               <img class="h-8 w-auto sm:h-10" src="vinalod_logo.jpg" alt="">
-            </a>
+            </a> -->
           </div>
           <div class="-mr-2 -my-2 md:hidden">
             <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-expanded="false">
@@ -56,17 +69,17 @@
               </svg>
             </button>
           </div>
-          <nav class="hidden md:flex space-x-60">
+          <nav class="hidden md:flex space-x-20">
             <div class="relative">
               <!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
-              <button type="button" class="text-gray-500 group bg-white rounded-md inline-flex items-center text-3xl font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" aria-expanded="false">
+              <button type="button" class="text-white group bg-blue-600 rounded-md inline-flex items-center text-3xl font-medium hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" aria-expanded="false">
                 <span>Basic mode</span>
                 <!--
                   Heroicon name: solid/chevron-down
   
                   Item active: "text-gray-600", Item inactive: "text-gray-400"
                 -->
-                <svg class="text-gray-400 ml-2 h-5 w-5 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg class="text-white ml-2 h-5 w-5 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
               </button>
@@ -363,12 +376,19 @@
                   </div>
                 </div>
               </div>
+              </div>
             </div>
   <!-- This example requires Tailwind CSS v2.0+ -->
-  
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-              Expert mode
-            </a>
+            <div class="relative">
+            <button type="button" class="text-white group bg-blue-600 rounded-md inline-flex items-center text-3xl font-medium hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" aria-expanded="false">
+                <span>Expert mode</span>
+                <!--
+                Heroicon name: solid/chevron-down
+
+                Item active: "text-gray-600", Item inactive: "text-gray-400"
+                -->
+            </button>
+            </div>
           </nav>
 <!--           <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             <a href="#" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
@@ -454,7 +474,7 @@
     </div>
   
     <main class="lg:relative">
-        <div class="mx-60 max-w-7xl pt-16 pb-20 lg:py-48 lg:text-left">
+        <div class="mx-60 max-w-7xl pt-16 pb-20 lg:py-96 h-full lg:text-left">
 
 <!--       <div class="mx-auto max-w-4xl w-full pt-16 pb-20 text-center lg:py-48 lg:text-left">
  -->        <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
@@ -479,8 +499,12 @@
           </div>
         </div>
       </div>
+<!--       <div class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
+ -->
+<!--  <div class="relative w-auto h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
+ -->
       <div class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
-        <img class="absolute inset-0 w-full h-full object-cover" src="network_graph.jpg" alt="">
+        <img class="absolute inset-0 w-full h-full object-cover" src="network_graph3.jpg" alt="">
       </div>
     </main>
   </div>
