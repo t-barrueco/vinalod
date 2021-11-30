@@ -222,7 +222,7 @@ function fillDropDown(dataConfig){
   return select.options[select.selectedIndex].value;
 }
 
-function changeBasicGraph(){
+function changeBasicGraph(option){
   d3.selectAll(".classFilter").remove()
   d3.select("#legend").selectAll("li").remove()
   d3.selectAll(".graph").remove()
@@ -231,11 +231,29 @@ function changeBasicGraph(){
   filtersInGraph=[]
   classesFilterList=[]
   filtersList=[]
-  var selectedValue = $("#options_basic").val();
+  //var selectedValue = $("#options_basic").val();
   graphHistory=[]
-  buildBasicGraph(selectedValue)
+  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("opacity-0 translate-y-1")
+  console.log(option)
+  console.log($(option).find( "#optionMain" ).text().trim())
+  option=$(option).find( "#optionMain" ).text().trim()
+  let pos = configFile.map(function (e) {
+    return e.option;
+  }).indexOf(option);
+  console.log(pos)
+  showBasicGraph()
+  buildBasicGraph(pos)
 }
-
+function showBasicGraph(){
+  //landing-text
+  //landing-img
+  //networkGraph
+  $("#graph-area").removeClass("hidden")
+  $("#form-container").addClass("hidden")
+  $("#landing-img").addClass("hidden")
+  $("#landing-text").addClass("hidden")
+}
 function findConnectedNodes(idEl){
   var targets=allDataModel.links.filter(function(item) {
     return item.source.id == idEl

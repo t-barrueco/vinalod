@@ -265,7 +265,7 @@
     </div>
   
     <main class="lg:relative">
-        <div class="pt-16 pb-20 lg:h-full xl:h-full mx-60 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20">
+      <div class="pt-16 pb-20 lg:h-full xl:h-full mx-60 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20" id="landing-text">
 
 <!--       <div class="w-full max-w-4xl pt-16 pb-20 mx-auto text-center lg:py-48 lg:text-left">
  -->        <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
@@ -295,8 +295,468 @@
  -->
 <!--  <div class="relative w-auto h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
  -->
-      <div class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
+      <div class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full" id="landing-img">
         <img class="absolute inset-0 object-cover w-full h-full" src="images/network_graph3.jpg" alt="">
+      </div>
+<!--       <div class="flex-col block w-full pr-6 hidden" id="form-container">
+                 
+        <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" name="free-graph" onsubmit="addURLGraph(this);return false">
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 hidden" id="msg-no-results">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                 Heroicon name: solid/exclamation -->
+                <!--<svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  The URL is not valid or does not return any results.
+                  <a href="#" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                    Enter a valid URL.
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2 text-sm font-bold text-gray-700" for="free-uri">
+              Enter URI:
+            </label>
+            <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="free-uri" type="text" placeholder="Type URI..."">
+          </div>
+          <div class="mb-6">
+            <label class="block mb-2 text-sm font-bold text-gray-700" for="subject-object">
+              Select subject/object position:
+            </label>
+            <select class="w-auto px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" placeholder="Regular input" name="subject-object" id="subject-object">
+              <option selected="selected" value="s">Subject</option>
+              <option value="o">Object</option>
+            </select>
+          </div>
+          <div class="flex items-center justify-between">
+            <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit">
+              Search
+            </button>
+
+          </div>
+          
+        </form>
+      </div> -->
+      <!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+<!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full bg-gray-50">
+  <body class="h-full">
+  ```
+-->
+<div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 hidden" id="form-container">
+  <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 hidden" id="msg-no-results">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <!-- Heroicon name: solid/exclamation -->
+        <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-yellow-700">
+          The URL is not valid or does not return any results.
+          <a href="#" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+            Enter a valid URL.
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Start navigation from URI
+    </h2>
+<!--     <p class="mt-2 text-center text-sm text-gray-600">
+      Or
+      <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+        start your 14-day free trial
+      </a>
+    </p> -->
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <form class="space-y-6" action="#"  name="free-graph" onsubmit="addURLGraph(this)">
+     <!--  <form class="space-y-6" action="#"  name="free-graph" onsubmit="addURLGraph(this);return false"> -->
+        <div>
+          <label for="free-uri" class="block text-sm font-medium text-gray-700">
+            Enter URI:
+          </label>
+          <div class="mt-1">
+            <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="free-uri" type="text" placeholder="Type URI..."">
+         
+            <input id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">
+            Password
+          </label>
+          <div class="mt-1">
+            <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+              Remember me
+            </label>
+          </div>
+
+          <div class="text-sm">
+            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+              Forgot your password?
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Sign in
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-3 gap-3">
+          <div>
+            <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Sign in with Facebook</span>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+
+          <div>
+            <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Sign in with Twitter</span>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+              </svg>
+            </a>
+          </div>
+
+          <div>
+            <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Sign in with GitHub</span>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div class="grid grid-cols-12 hidden" id="graph-area">
+<!--         <nav class="col-span-12 py-6 bg-gray-200 shadow">
+          <div class="flex flex-row">
+                <div class="items-center flex-shrink-0">
+                  <img class="block w-auto h-20" src="images/vinalod.png" alt="VINALOD project">
+      
+                </div>     
+                <div class="block w-auto pr-6">
+                  <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
+                    <div class="mb-4" id="select-basic">
+                      <label class="block mb-2 text-sm font-bold text-gray-700" for="graph-selection">
+                        Select graph:
+                      </label>
+                      <select class="w-auto px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" placeholder="Regular input" name="options_basic" id="options_basic" onchange="changeBasicGraph()">
+                      </select>
+      
+                    </div>
+                  </form>
+      
+                </div>
+                <div class="flex-col block w-full pr-6">
+                 
+                  <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" name="free-graph" onsubmit="addURLGraph(this);return false">
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 hidden" id="msg-no-results">
+                      <div class="flex">
+                        <div class="flex-shrink-0">
+                           Heroicon name: solid/exclamation -->
+<!--                           <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <div class="ml-3">
+                          <p class="text-sm text-yellow-700">
+                            The URL is not valid or does not return any results.
+                            <a href="#" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                              Enter a valid URL.
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-4">
+                      <label class="block mb-2 text-sm font-bold text-gray-700" for="free-uri">
+                        Enter URI:
+                      </label>
+                      <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="free-uri" type="text" placeholder="Type URI..."">
+                    </div>
+                    <div class="mb-6">
+                      <label class="block mb-2 text-sm font-bold text-gray-700" for="subject-object">
+                        Select subject/object position:
+                      </label>
+                      <select class="w-auto px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" placeholder="Regular input" name="subject-object" id="subject-object">
+                        <option selected="selected" value="s">Subject</option>
+                        <option value="o">Object</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit">
+                        Search
+                      </button>
+      
+                    </div>
+                    
+                  </form>
+              </div>
+      
+          </div>
+        </nav> -->
+       
+        <div class="col-span-2 bg-gray-100 border-r-2">
+          <div class="object-contain filter justify-items-center">
+             <div class="border-b border-gray-200 divide-y divide-gray-200 justify-items-center controls">
+                  <div class="block px-12 py-3 font-semibold text-gray-700">
+                      <button type="button" @click="open = !open" class="flex items-center px-3 py-1 font-medium text-gray-700 rounded"> 
+                        <div class="flex items-center">
+                          <span class="text-2xl font-semibold text-gray-700 dark:text-white">Filters</span>
+                          <i class="fas fa-filter"></i>
+                        </div>
+                      </button>
+                  </div>
+      
+                </div>
+                  
+          </div>
+        </div>
+        <div class="object-contain col-span-10 bg-white">
+          
+          <div class="object-contain w-full h-full" id="networkGraph">
+      
+            <div class="bg-gray-100">
+              <div class="mx-10 bg-gray-100">
+                <h2 class="text-xs font-medium tracking-wide text-gray-500 uppercase">legend</h2>
+                <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
+                  
+                </ul>
+              </div>
+              <div class="flex object-contain border-b-2">
+                  <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
+                    <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                      <span>Zoom In</span>
+                    </button>
+                    <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                      <span>Zoom Out</span>
+                    </button>
+                  </span>
+      
+      
+                  <span class="relative z-0 inline-flex w-1/2 my-10 rounded-md md:justify-center">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                      Collapse all
+                    </button>
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                      Expand all
+                    </button>
+            
+                  </span>
+              </div>
+            </div>
+      
+          </div>
+      
+          <div id="myModal" class="z-40 modal">
+            
+            <div class="modal-content">
+              <div class="flex items-start justify-between p-6 border-2 bg-gray-50">
+                <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
+                  Navigation panel
+                </h2>
+                <div class="flex ml-3 items-right h-7">
+                  <span class="close">&times;</span>
+                </div>
+              </div>
+      
+              <div id="navTable" style="overflow: auto" class="mt-6"></div>
+              <div id="dvTable" style="overflow: auto">
+                
+              </div>
+      
+            </div>
+        
+          </div>
+          <div id="myModal2" class="z-40 modal2">
+            
+            <!-- Modal content -->
+            <div class="rounded-lg shadow-xl modal-content2">
+              <span class="close2">&times;</span>
+              <div class="modal-header2" id="modalHeader2"></div>          
+              </div> -->
+              <div class="modal-footer" id="modalFooter">
+          
+              </div>
+            </div>
+            
+          </div>
+          <div id="myModal3" class="z-40 modal">
+            <div class="modal-content">
+          <!-- This example requires Tailwind CSS v2.0+ -->
+                <div class="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+              <!--
+                Background overlay, show/hide based on modal state.
+      
+                Entering: "ease-out duration-300"
+                  From: "opacity-0"
+                  To: "opacity-100"
+                Leaving: "ease-in duration-200"
+                  From: "opacity-100"
+                  To: "opacity-0"
+              -->
+              <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+      
+              <!-- This element is to trick the browser into centering the modal contents. -->
+              <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      
+              <!--
+                Modal panel, show/hide based on modal state.
+      
+                Entering: "ease-out duration-300"
+                  From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  To: "opacity-100 translate-y-0 sm:scale-100"
+                Leaving: "ease-in duration-200"
+                  From: "opacity-100 translate-y-0 sm:scale-100"
+                  To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              -->
+              
+          <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-indigo-100 border-2 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+      
+            <!-- This example requires Tailwind CSS v2.0+ -->
+      
+      
+            <div id="modal3-content"></div>
+      <!--       <div>
+              <div class="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full">
+                <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div class="mt-3 text-center sm:mt-5">
+                <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                  Payment successful
+                </h3>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius aliquam laudantium explicabo pariatur iste dolorem animi vitae error totam. At sapiente aliquam accusamus facere veritatis.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+              <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm">
+                Deactivate
+              </button>
+              <button type="button" class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm">
+                Cancel
+              </button>
+            </div> -->
+          </div>
+        </div>
+                </div>
+            </div>
+          </div>
+          <div id="sparql-timeout" class="z-50" style="display:none;">
+            <div class="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+              <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      
+                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+      
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      
+      
+                <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                      <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                        Stop Sparql Query
+                      </h3>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          The Sparql Query is taking more time than expected. The reason might be that it is retrieving hundreds of thousands results. Do you want to stop the query. This action cannot be undone.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="stopSparql(this)">
+                      Stop
+                    </button>
+                    <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" onclick="continueSparql(this)">
+                      Continue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+          <div wire:loading class="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen overflow-hidden bg-gray-700 opacity-30" id="spin" style="display:none;">  
+            <div class="fixed top-0 right-0 z-50 flex items-center justify-center w-screen h-screen">
+              <div class="w-32 h-32 border-t-2 border-b-2 border-gray-900 rounded-full animate-spin"></div>
+            </div>
+            <h2 class="text-xl font-semibold text-center text-white" id="spin-message"></h2>
+                <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+          </div>
       </div>
     </main>
   </div>

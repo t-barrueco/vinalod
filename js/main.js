@@ -1244,6 +1244,10 @@ function expertMode(){
       $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
       $("#flyoutMenu").addClass("opacity-0 translate-y-1")
   }
+  $("#graph-area").addClass("hidden")
+  $("#form-container").removeClass("hidden")
+  $("#landing-img").addClass("hidden")
+  $("#landing-text").addClass("hidden")
 }
 function basicMode(){
   console.log("basicMode")
@@ -1260,11 +1264,11 @@ function basicMode(){
   }
   
 }
-function changeBasicGraph(option){
+/* function changeBasicGraph(option){
   console.log(option)
   console.log($(option).find( "#optionMain" ).text().trim())
   
-}
+} */
 function changeCollectionOptions(collection){
   var newCollection,oldCollection;
   console.log(collection)
