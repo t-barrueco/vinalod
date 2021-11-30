@@ -53,7 +53,8 @@
         "columns": [],
         "type": "TREE",
         "option": "PUBLICATIONS - Publications by OP Theme",
-        "option_text": "PUBLICATIONS - Publications by OP Theme"
+        "option_text": "PUBLICATIONS - Publications by OP Theme",
+        "collection": "eu_publications"
     },
     {
         "class": "Membership",
@@ -288,7 +289,8 @@
         "columns": [],
         "type": "TREE",
         "option": "Eurovoc domains, thesauri and concepts",
-        "option_text": "Eurovoc concepts by thesauri and domain"
+        "option_text": "Eurovoc concepts by thesauri and domain",
+        "collection":"eu_vocabularies"
     },
     {
         "class": "Eurovoc Concept",
@@ -398,8 +400,9 @@
         "function": "",
         "columns": [],
         "type": "TREE",
-        "option": "NUTS Tree",
-        "option_text": "NUTS Tree"
+        "option": "NUTS Tree (Nomenclature of Territorial Units for Statistics)",
+        "option_text": "NUTS Tree",
+        "collection":"eu_vocabularies"
     },
     {
         "class": "taxonomy",
@@ -463,7 +466,8 @@
         "columns": [],
         "type": "TREE",
         "option": "Taxonomies",
-        "option_text": "Taxonomies"
+        "option_text": "Taxonomies",
+        "collection":"eu_vocabularies"
     },
     {
         "class": "Taxonomy Level",
@@ -558,7 +562,8 @@
         "columns": [],
         "type": "TREE",
         "option": "Digital Europa Thesaurus",
-        "option_text": "Digital Europa Thesaurus"
+        "option_text": "Digital Europa Thesaurus",
+        "collection":"eu_vocabularies"
     },
     {
         "class": "Eurovoc Concept",
@@ -761,7 +766,8 @@
         "columns": [],
         "type": "TREE",
         "option": "Languages by country and continent",
-        "option_text": "Languages by country and continent"
+        "option_text": "Languages by country and continent",
+        "collection":"eu_vocabularies"
     },
     {
         "class": "Continents",
@@ -833,7 +839,8 @@
         "columns": [],
         "type": "TREE",
         "option": "Continents countries and organisations",
-        "option_text": "Continents countries and organisations those countries belong to"
+        "option_text": "Continents countries and organisations those countries belong to",
+        "collection":"eu_vocabularies"
     },
     {
         "class": "Organisation",
@@ -964,13 +971,14 @@
         "function": "",
         "columns": [],
         "type": "TREE",
-        "option": "WHOISWHO EURUN Suborganizations",
-        "option_text": "WHOISWHO EURUN Suborganizations"
+        "option": "European Union Institutions and bodies",
+        "option_text": "European Union Institutions and bodies",
+        "collection":"eu_whoiswho"
     },
     {
         "class": "corporateBody",
         "endpoint_url": "https://publications.europa.eu/webapi/rdf/sparql",
-        "query": "\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n    PREFIX org: <http://www.w3.org/ns/org#>\n    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n    PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>\n    PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>\n    PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\n            SELECT DISTINCT ?corporateBody ?directoryOrg ?directoryOrg_uri ?directoryOrg_order ?directoryOrg_protocolLevel ?directoryOrg_email ?directoryOrg_telephone ?directoryOrg_locality ?directoryOrg_postalCode ?directoryOrg_streetAddress ?directoryOrg_homepage\n            where {{?corporateBody_uri skos:prefLabel ?corporateBody.\n                    ?corporateBody_uri org:hasSubOrganization ?directoryOrg_uri. \n                    ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n                    OPTIONAL {\n                    ?directoryOrg_uri euvoc:order ?directoryOrg_order.\n                    }\n                    OPTIONAL {\n                    ?directoryOrg_uri euvoc:protocolLevel ?directoryOrg_protocolLevel.\n                    }\n                    } \n                   filter(?corporateBody_uri=<PARAMETER>).\n                   FILTER(langMatches(lang(?directoryOrg), \"en\")).\n                   FILTER(langMatches(lang(?corporateBody), \"en\")).\n                   }",
+        "query": "\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n    PREFIX org: <http://www.w3.org/ns/org#>\n    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n    PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>\n    PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n    PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>\n    PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\n            SELECT DISTINCT ?corporateBody ?directoryOrg ?directoryOrg_uri ?directoryOrg_order ?directoryOrg_protocolLevel ?directoryOrg_email ?directoryOrg_telephone ?directoryOrg_locality ?directoryOrg_postalCode ?directoryOrg_streetAddress ?directoryOrg_homepage\n            where {{?corporateBody_uri skos:prefLabel ?corporateBody.\n                    ?directoryOrg_uri org:subOrganizationOf ?corporateBody_uri. \n                    ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n                    OPTIONAL {\n                    ?directoryOrg_uri euvoc:order ?directoryOrg_order.\n                    }\n                    OPTIONAL {\n                    ?directoryOrg_uri euvoc:protocolLevel ?directoryOrg_protocolLevel.\n                    }\n                    #OPTIONAL {\n                    #?directoryOrg_uri euvoc:contactPoint ?directoryOrg_contactPoint.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_contactPoint vcard:hasEmail ?directoryOrg_email.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_contactPoint vcard:hasTelephone ?directoryOrg_telephoneBN.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_contactPoint vcard:locality ?directoryOrg_locality.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_contactPoint vcard:postal-code ?directoryOrg_postalCode.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_contactPoint vcard:street-address ?directoryOrg_streetAddress.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_contactPoint foaf:homepage ?directoryOrg_homepage.\n                    #}\n                    #OPTIONAL {\n                    #?directoryOrg_telephoneBN vcard:hasValue ?directoryOrg_telephone.  \n                    #}\n                    } \n                   filter(?corporateBody_uri=<PARAMETER>).\n                   FILTER(langMatches(lang(?directoryOrg), \"en\")).\n                   FILTER(langMatches(lang(?corporateBody), \"en\")).\n                   }\n                   #ORDER BY ?whoiswhoOrg ?country ?location\n                   #LIMIT 50\n    \n",
         "hierarchy": [
             {
                 "parent": "corporateBody",
@@ -1049,7 +1057,6 @@
         ],
         "function": "",
         "columns": [],
-        "modelClass":"http://publications.europa.eu/ontology/euvoc#Corporate",
         "type": "TREE",
         "option": "WHOISWHO Suborganizations",
         "option_text": "WHOISWHO Suborganizations"
@@ -1452,7 +1459,8 @@
         "columns": [],
         "type": "TREE",
         "option": "DATASETS20210831_1142 - Catalogues of datasets of data.europa.eu",
-        "option_text": "DATASETS20210831_1142 - Catalogues of datasets of data.europa.eu"
+        "option_text": "DATASETS20210831_1142 - Catalogues of datasets of data.europa.eu",
+        "collection":"eu_data"
     },
     {
         "class": "Publication Manifestation",
@@ -1689,7 +1697,8 @@
         "columns": [],
         "type": "TREE",
         "option": "EULaw Classes from Resource Legal",
-        "option_text": "EULaw Classes from Resource Legal"
+        "option_text": "EULaw Classes from Resource Legal",
+        "collection":"eu_law"
     },
     {
         "class": "mainEULawClass",
@@ -1740,7 +1749,8 @@
         "columns": [],
         "type": "TREE",
         "option": "EULaw Properties from Resource Legal",
-        "option_text": "EULaw Properties from Resource Legal"
+        "option_text": "EULaw Properties from Resource Legal",
+        "collection":"eu_law"
     },
     {
         "class": "Property",
@@ -2053,13 +2063,14 @@
         "function": "",
         "columns": [],
         "type": "TREE",
-        "option": "DATASETS20211021_0955beta (TIME OUT)- Catalogues of datasets of data.europa.eu",
-        "option_text": "DATASETS - Catalogues of datasets of data.europa.eu"
+        "option": "DATASETS (TIME OUT)- Catalogues of datasets of data.europa.eu",
+        "option_text": "DATASETS - Catalogues of datasets of data.europa.eu",
+        "collection":"eu_data"
     },
 	{
         "class": "dataeuropa",
         "endpoint_url": "https://data.europa.eu/sparql",
-        "query": "SELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ('data.europa.eu' as ?dataeuropa) ('http://data.europa.eu' as ?dataeuropa_uri)\n  WHERE{ ?DEUCatalog_uri <http://purl.org/dc/terms/title>  ?title\n  OPTIONAL\n  { ?DEUCatalog_uri <http://purl.org/dc/terms/description>  ?description\n  } ?DEUCatalog_uri <http://purl.org/dc/terms/modified> ?DEUCatalog_Modified    { SELECT  ?DEUCatalog_uri \n        WHERE\n          { ?DEUCatalog_uri a <http://www.w3.org/ns/dcat#Catalog>}\n        }\n        } ORDER BY ?DEUCatalogRoot ?DEUCatalog_uri \n    ",
+        "query": "SELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ('data.europa.eu' as ?dataeuropa) ('http://data.europa.eu' as ?dataeuropa_uri)\n  WHERE{ ?DEUCatalog_uri <http://purl.org/dc/terms/title>  ?title\n  OPTIONAL\n  { ?DEUCatalog_uri <http://purl.org/dc/terms/description>  ?description\n  } ?DEUCatalog_uri <http://purl.org/dc/terms/modified> ?DEUCatalog_Modified. ?DEUCatalog_uri <http://purl.org/dc/terms/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri \n        WHERE\n          { ?DEUCatalog_uri a <http://www.w3.org/ns/dcat#Catalog>}\n        }\n        } ORDER BY ?DEUCatalogRoot ?DEUCatalog_uri \n    ",
         "hierarchy": [
             {
                 "parent": "dataeuropa",
@@ -2086,6 +2097,12 @@
                 "class": "DEUCatalog",
                 "property": "DEUCatalog_Modified",
                 "property_name": "DEU Catalog modification date"
+            }
+			,
+            {
+                "class": "DEUCatalog",
+                "property": "DEUCatalog_Language",
+                "property_name": "DEU Catalog Language"
             }
         ],
         "classes_text": [
@@ -2118,8 +2135,9 @@
         "function": "",
         "columns": [],
         "type": "TREE",
-        "option": "DATASETS20211108_1542 - Catalogues of datasets of data.europa.eu",
-        "option_text": "Desription - DATASETS - Catalogues of datasets of data.europa.eu"
+        "option": "DATASETS20211109_1346 - Catalogues of datasets of data.europa.eu",
+        "option_text": "Desription - DATASETS - Catalogues of datasets of data.europa.eu",
+        "collection":"eu_data"
     },
 	{
         "class": "corporateBody",
@@ -2134,7 +2152,7 @@
         "function": "",
         "columns": [],
         "type": "WORDCLOUD",
-        "option": "Wordcloud testing 20211108_1431",
-        "option_text": "Wordcloud testing for corporate body"
+        "option": "Wordcloud of the organisation",
+        "option_text": "This will show the most representing topics of the organisation"
     }
 ]
