@@ -780,7 +780,7 @@ NetworkGraph.prototype.enterFreeGraph = function(){
     return d["source"]["id"]+d["target"]["id"]
   })
   .attr("value",d=>d["type"])
-  .attr("stroke", "red")
+  .attr("stroke", "steelblues")
   .attr('marker-end','url(#arrowhead)') 
   .on('mouseover', function(d){
     vis.tip.show(d,this);

@@ -1104,9 +1104,14 @@ var modal = document.getElementById("myModal");
 
 var span = document.getElementsByClassName("close")[0];
 
+console.log(span)
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-  modal.style.display = "none";
+  console.log("entra")
+  //modal.style.display = "none";
+  $("#myModal").removeClass("translate-x-0")
+  $("#myModal").addClass("translate-x-full")
 }
 
 // When the user clicks anywhere outside of the modal, close it
