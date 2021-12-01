@@ -1281,11 +1281,11 @@ function changeCollectionOptions(collection){
   console.log($("#"+collection))
   console.log($("#"+collection).find(".bg-transparent"))
   console.log($("#"+collection).find(".bg-transparent").length)
-  console.log($("#tabs-sections").find("nav").find("bg-indigo-500"))
-  oldCollection=$("#tabs-sections").find(".bg-indigo-500")
+  console.log($("#tabs-sections").find("nav").find("bg-blue-500"))
+  oldCollection=$("#tabs-sections").find(".bg-blue-500")
   
   console.log(oldCollection)
-  oldCollection.removeClass("bg-indigo-500")
+  oldCollection.removeClass("bg-blue-500")
   oldCollection.addClass("bg-transparent")
   oldCollection.parent().removeClass("text-gray-900")
   oldCollection.parent().addClass("text-gray-500")
@@ -1293,7 +1293,7 @@ function changeCollectionOptions(collection){
   if($("#"+collection).find(".bg-transparent").length==1){
       newCollection=$("#"+collection).find(".bg-transparent")
       newCollection.removeClass("bg-transparent")
-      newCollection.addClass("bg-indigo-500")
+      newCollection.addClass("bg-blue-500")
       newCollection.parent().addClass("text-gray-900")
       newCollection.parent().removeClass("text-gray-500")
   }

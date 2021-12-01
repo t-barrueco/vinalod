@@ -110,8 +110,10 @@ navigation.prototype.selectBubbles = function (){
 }
 navigation.prototype.initModal = function (){
   var navPanel=this;
-  navPanel.modal=document.getElementById("myModal")
-  navPanel.modal.style.display = "block";
+  //navPanel.modal=document.getElementById("myModal")
+  //navPanel.modal.style.display = "block";
+  $("#myModal").addClass("translate-x-0")
+  $("#myModal").removeClass("translate-x-full")
   $('#myModal').resizable({
 
   });
@@ -351,7 +353,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
-    span5.setAttribute("style","color:indigo;font-weight:bolder")
+    span5.setAttribute("style","color:blue;font-weight:bolder")
     //////console.log(source)
     span5.innerHTML=  "   Sparql Endpoint(" + source["target"]["url"] + ")"
     el3=el2.appendChild(span3)
@@ -729,7 +731,7 @@ navigation.prototype.addMenuToTable = function (node,menuItems){
 
       div=document.createElement("div")
       div.setAttribute("x-show","tooltip")
-      div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
+      div.setAttribute("class","z-50 absolute bg-blue-300 border-graphite border-2 rounded p-4 mt-1")
       if(menuItems[i]["subject-object"]=="s"){
         textTooltip="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
       }else{

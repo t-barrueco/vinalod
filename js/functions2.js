@@ -991,7 +991,7 @@ function addFreeGraphData(results,node,form){
 
     button=document.createElement("button")
     button.setAttribute("type","submit")
-    button.setAttribute("class","relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500")
+    button.setAttribute("class","relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500")
     button.innerHTML="Show graph"
 
     div4.appendChild(dt)
@@ -1169,7 +1169,7 @@ function addFreeGraphData(results,node,form){
     classesConfig=configFile.filter(d=>d.modelClass!=undefined).map(v=>v.modelClass)
     //console.log(classesConfig)
     for (var i = 0; i < results.length; i++) {
-      //console.log(results[i])
+      console.log(results[i])
       classes=results[i]["classes"]["value"].split(";")
       //console.log(classes)
       for (var j = 0; j < classes.length; j++) {
