@@ -10,6 +10,7 @@ $(document).ajaxSend(function(event,request, settings){
 
 async function addURLGraph(field){
   var indexRows
+  console.log(field)
   d3.selectAll(".classFilter").remove()
   if(document.getElementById("navTable").querySelector('ol')){
     document.getElementById("navTable").querySelector('ol').remove()
@@ -17,6 +18,8 @@ async function addURLGraph(field){
   
   fillLegendFreeGraph()
   filtersList=[]
+  $("#graph-area").removeClass("hidden")
+  $("#form-container").addClass("hidden")
   indexRows=await checkQueries(field.querySelector('#free-uri').value,field.querySelector('#subject-object').value,"form")
 }
 /* function flatten_freeGraph(root) {
@@ -603,12 +606,41 @@ function addFreeGraphData(results,node,form){
     if(d.type=="menuOption"){
       menuOptions=d.value.split(",")
       var text = `
-      <table class="tiptable" style="margin-left: 2.5px">
-      <tr><th>Option values:</th></tr>
-      <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">URI:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.uri + `</span></td></tr>
-          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Sparql Endpoint:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + menuOptions[0] + `</span></td></tr>
-          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Position:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + menuOptions[1] + `</span></td></tr>
-          </table>`;
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-2 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Option values
+          </h3>
+        </div>
+        <div class="border-t border-gray-200">
+          <dl>
+            <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              URI
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + d.uri + `
+              </dd>
+            </div>
+            <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              Sparql Endpoint
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + menuOptions[0] + `
+              </dd>
+            </div>
+            <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              Position
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + menuOptions[1] + `
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>`;
     }else if(typeof(d)=="string"){
       var text = `
         <table class="tiptable" style="margin-left: 2.5px">
@@ -625,11 +657,33 @@ function addFreeGraphData(results,node,form){
       }
       if(d.property){
         var text = `
-        <table class="tiptable" style="margin-left: 2.5px">
-            <tr><th>Node values:</th></tr>
-            <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Property:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.property + `</span></td></tr>
-            <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
-            </table>`;
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-2 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Node values
+            </h3>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Property
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.property + `
+                </dd>
+              </div>
+              <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Name
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.value + `
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>`;
         getOptionChosen()
       }else{
         var text = `
@@ -642,11 +696,34 @@ function addFreeGraphData(results,node,form){
       function getOptionChosen(){
         if(d.menuOption!=undefined){
           if(sparqlEndpoint!="several"){
-            text=text+  `<hr><table class="tiptable" style="margin-left: 2.5px">
-            <tr><th>Option chosen:</th></tr>
-            <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Sparlq Endpoint:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + sparqlEndpoint + `</span></td></tr>
-            <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Option:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + position + `</span></td></tr>
-            </table>`
+            text=text+  `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-2 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Option chosen
+              </h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Sparlq Endpoint
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + sparqlEndpoint + `
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Position
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + position + `
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>`
           }else{
             text=text+  `<hr><table class="tiptable" style="margin-left: 2.5px">
             <tr><th>Several options displayed in graph. Click on each option to see results values:</th></tr>

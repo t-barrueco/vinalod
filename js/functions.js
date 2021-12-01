@@ -234,7 +234,7 @@ function changeBasicGraph(option){
   //var selectedValue = $("#options_basic").val();
   graphHistory=[]
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("opacity-0 translate-y-1")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   console.log(option)
   console.log($(option).find( "#optionMain" ).text().trim())
   option=$(option).find( "#optionMain" ).text().trim()

@@ -1,6 +1,6 @@
 var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,dataInstances,allDataModel,
 dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,
-nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow,nodesClassesCorrespondence,
+nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow=[],nodesClassesCorrespondence,
 filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],
 graphHistory=[],filtersInGraph=[],filtersList=[],classesFilterList=[],optionsMenuHtml;
 $.xhrPool = [];
@@ -1242,7 +1242,7 @@ function checkConfigFileNode(result){
 function expertMode(){
   if($("#flyoutMenu").hasClass("opacity-100")){
       $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-      $("#flyoutMenu").addClass("opacity-0 translate-y-1")
+      $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   }
   $("#graph-area").addClass("hidden")
   $("#form-container").removeClass("hidden")
@@ -1255,12 +1255,12 @@ function basicMode(){
   console.log($("#flyoutMenu").hasClass("opacity-0"))
   if($("#flyoutMenu").hasClass("opacity-0")){
       $("#flyoutMenu").addClass("transition ease-out duration-200")
-      $("#flyoutMenu").removeClass("opacity-0 translate-y-1")
+      $("#flyoutMenu").removeClass("hidden opacity-0 translate-y-1")
       $("#flyoutMenu").addClass("opacity-100 translate-y-0")
   }else{
       changeCollectionOptions("eu_vocabularies")
       $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-      $("#flyoutMenu").addClass("opacity-0 translate-y-1")
+      $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   }
   
 }
@@ -1304,7 +1304,7 @@ function appendHtmlOptions(optionsMenu){
       //optionsMenu=dataConfig.filter(d=>d.collection=="EU Vocabularies")
       //htmlObject = document.createElement(data)
       //htmlObject.innerHTML = data;
-      html=optionsMenuHtml.replace("textTitle",element.option).replace("textComment",element.option_text)
+      html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       //data.replace("textComment",element.option_text)
       $("#options-menu").append($(html))
 /*                     $.get("optionMainMenu.html", function (data) {

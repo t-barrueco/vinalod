@@ -95,7 +95,7 @@
                   To: "opacity-0 translate-y-1"
               -->
               
-              <div class="absolute z-10 w-screen max-w-4xl px-2 mt-3 -ml-4 transform translate-y-1 opacity-0 sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2" id="flyoutMenu">
+              <div class="absolute z-10 hidden w-screen max-w-4xl px-2 mt-3 -ml-4 transform translate-y-1 opacity-0 sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2" id="flyoutMenu">
                 <div class="absolute inset-x-0 z-10 transform shadow-lg">
                     <div class="bg-white">
                 <!--
@@ -298,21 +298,21 @@
       <div class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full" id="landing-img">
         <img class="absolute inset-0 object-cover w-full h-full" src="images/network_graph3.jpg" alt="">
       </div>
-<!--       <div class="flex-col block w-full pr-6 hidden" id="form-container">
+<!--       <div class="flex-col hidden block w-full pr-6" id="form-container">
                  
         <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" name="free-graph" onsubmit="addURLGraph(this);return false">
-          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 hidden" id="msg-no-results">
+          <div class="hidden p-4 border-l-4 border-yellow-400 bg-yellow-50" id="msg-no-results">
             <div class="flex">
               <div class="flex-shrink-0">
                  Heroicon name: solid/exclamation -->
-                <!--<svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <!--<svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                 </svg>
               </div>
               <div class="ml-3">
                 <p class="text-sm text-yellow-700">
                   The URL is not valid or does not return any results.
-                  <a href="#" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                  <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600">
                     Enter a valid URL.
                   </a>
                 </p>
@@ -367,19 +367,19 @@
   <body class="h-full">
   ```
 -->
-<div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 hidden" id="form-container">
-  <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 hidden" id="msg-no-results">
+<div class="flex flex-col justify-center hidden min-h-full py-12 sm:px-6 lg:px-8" id="form-container">
+  <div class="hidden p-4 border-l-4 border-yellow-400 bg-yellow-50" id="msg-no-results">
     <div class="flex">
       <div class="flex-shrink-0">
         <!-- Heroicon name: solid/exclamation -->
-        <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
       </div>
       <div class="ml-3">
         <p class="text-sm text-yellow-700">
           The URL is not valid or does not return any results.
-          <a href="#" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+          <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600">
             Enter a valid URL.
           </a>
         </p>
@@ -387,10 +387,10 @@
     </div>
   </div>
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">
       Start navigation from URI
     </h2>
-<!--     <p class="mt-2 text-center text-sm text-gray-600">
+<!--     <p class="mt-2 text-sm text-center text-gray-600">
       Or
       <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
         start your 14-day free trial
@@ -399,33 +399,34 @@
   </div>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-      <form class="space-y-6" action="#"  name="free-graph" onsubmit="addURLGraph(this)">
+    <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+      <form class="space-y-6" name="free-graph" onsubmit="addURLGraph(this);return false">
      <!--  <form class="space-y-6" action="#"  name="free-graph" onsubmit="addURLGraph(this);return false"> -->
         <div>
           <label for="free-uri" class="block text-sm font-medium text-gray-700">
             Enter URI:
           </label>
-          <div class="mt-1">
-            <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="free-uri" type="text" placeholder="Type URI..."">
-         
-            <input id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <div class="mt-1">         
+            <input id="free-uri" name="uri" type="text" autocomplete="text" required class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
           </div>
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">
-            Password
+          <label for="subject-object" class="block text-sm font-medium text-gray-700">
+            Select subject/object position:
           </label>
           <div class="mt-1">
-            <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <select class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Regular input" name="subject-object" id="subject-object">
+              <option class="block px-4 py-2 text-sm text-gray-700" selected="selected" value="s">Subject</option>
+              <option class="block px-4 py-2 text-sm text-gray-700" value="o">Object</option>
+            </select>
           </div>
         </div>
 
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
           <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+            <input id="remember-me" name="remember-me" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+            <label for="remember-me" class="block ml-2 text-sm text-gray-900">
               Remember me
             </label>
           </div>
@@ -435,61 +436,20 @@
               Forgot your password?
             </a>
           </div>
-        </div>
+        </div> -->
 
         <div>
-          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Sign in
+          <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Search
           </button>
         </div>
       </form>
 
-      <div class="mt-6">
-        <div class="relative">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">
-              Or continue with
-            </span>
-          </div>
-        </div>
-
-        <div class="mt-6 grid grid-cols-3 gap-3">
-          <div>
-            <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <span class="sr-only">Sign in with Facebook</span>
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clip-rule="evenodd" />
-              </svg>
-            </a>
-          </div>
-
-          <div>
-            <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <span class="sr-only">Sign in with Twitter</span>
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
-              </svg>
-            </a>
-          </div>
-
-          <div>
-            <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <span class="sr-only">Sign in with GitHub</span>
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
 
-      <div class="grid grid-cols-12 hidden" id="graph-area">
+      <div class="grid hidden grid-cols-12" id="graph-area">
 <!--         <nav class="col-span-12 py-6 bg-gray-200 shadow">
           <div class="flex flex-row">
                 <div class="items-center flex-shrink-0">
@@ -512,18 +472,18 @@
                 <div class="flex-col block w-full pr-6">
                  
                   <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" name="free-graph" onsubmit="addURLGraph(this);return false">
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 hidden" id="msg-no-results">
+                    <div class="hidden p-4 border-l-4 border-yellow-400 bg-yellow-50" id="msg-no-results">
                       <div class="flex">
                         <div class="flex-shrink-0">
                            Heroicon name: solid/exclamation -->
-<!--                           <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+<!--                           <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                           </svg>
                         </div>
                         <div class="ml-3">
                           <p class="text-sm text-yellow-700">
                             The URL is not valid or does not return any results.
-                            <a href="#" class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                            <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600">
                               Enter a valid URL.
                             </a>
                           </p>
