@@ -643,9 +643,13 @@ function addFreeGraphData(results,node,form){
       </div>`;
     }else if(typeof(d)=="string"){
       var text = `
-        <table class="tiptable" style="margin-left: 2.5px">
-            <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000"></td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d + `</span></td></tr>
-            </table>`;
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          ` + d + `
+          </h3>
+        </div>
+        </div>`;
     }else{
       if(d.menuOption!=undefined){
         if(d.menuOption.split(";").length==1){
@@ -686,11 +690,25 @@ function addFreeGraphData(results,node,form){
         </div>`;
         getOptionChosen()
       }else{
-        var text = `
-        <table class="tiptable" style="margin-left: 2.5px">
-        <tr><th>Node values:</th></tr>
-            <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
-            </table>`;
+        var text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-2 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Node values
+              </h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Name
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + d.value + `
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>`;
         getOptionChosen()
       }
       function getOptionChosen(){
@@ -725,9 +743,14 @@ function addFreeGraphData(results,node,form){
             </div>
           </div>`
           }else{
-            text=text+  `<hr><table class="tiptable" style="margin-left: 2.5px">
-            <tr><th>Several options displayed in graph. Click on each option to see results values:</th></tr>
-            </table>`
+            text=text+ `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Several options displayed in graph. Click on each option to see results values
+              </h3>
+            </div>
+            </div>`
           }
         }
       }
@@ -1000,6 +1023,7 @@ function addFreeGraphData(results,node,form){
     var node=d3.select("#"+element.getAttribute("id")).data()[0]
     console.log(node)
     console.log(items)
+  
     if(node["configRow"]){
       node["configRow"].forEach(function(r){
         console.log(configFile[r])
@@ -1010,7 +1034,7 @@ function addFreeGraphData(results,node,form){
   
     if (origin=="table"){
       for (var i = 0; i < items.length; i++) {
-        if(item[i]["subject-object"]){
+        if(items[i]["subject-object"]){
           menuItems.push({"url":items[i]["url"],"uri":items[i]["uri"],"subject-object":items[i]["subject-object"]})
         }
         else{
