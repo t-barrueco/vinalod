@@ -1169,7 +1169,7 @@ function addFreeGraphData(results,node,form){
     classesConfig=configFile.filter(d=>d.modelClass!=undefined).map(v=>v.modelClass)
     //console.log(classesConfig)
     for (var i = 0; i < results.length; i++) {
-      console.log(results[i])
+      //console.log(results[i])
       classes=results[i]["classes"]["value"].split(";")
       //console.log(classes)
       for (var j = 0; j < classes.length; j++) {

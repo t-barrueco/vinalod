@@ -72,7 +72,7 @@
           <nav class="hidden space-x-20 md:flex 2xl:space-x-10 xl:space-x-10">
             <div class="relative">
               <!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
-              <button type="button" class="inline-flex items-center font-medium text-white bg-blue-600 rounded-sm text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" aria-expanded="false" onclick="basicMode()">
+              <button type="button" class="inline-flex items-center font-medium text-white bg-blue-600 rounded-sm text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="basicMode()">
                 <span>Basic mode</span>
                 <!--
                   Heroicon name: solid/chevron-down
@@ -171,7 +171,7 @@
             </div>
   <!-- This example requires Tailwind CSS v2.0+ -->
             <div class="relative">
-            <button type="button" class="inline-flex items-center font-medium text-white bg-blue-600 rounded-md text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" aria-expanded="false" onclick="expertMode()">
+            <button type="button" class="inline-flex items-center font-medium text-white bg-blue-600 rounded-md text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="expertMode()">
                 <span>Expert mode</span>
                 <!--
                 Heroicon name: solid/chevron-down
@@ -521,17 +521,20 @@
         <div class="col-span-2 bg-gray-100 border-r-2">
           <div class="object-contain filter justify-items-center">
              <div class="border-b border-gray-200 divide-y divide-gray-200 justify-items-center controls">
-                  <div class="block px-12 py-3 font-semibold text-gray-700">
-                      <button type="button" @click="open = !open" class="flex items-center px-3 py-1 font-medium text-gray-700 rounded"> 
+                  <div class="items-center block p-6 mt-3 font-semibold text-center text-gray-700 bg-blue-100 border-2">
+                    <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
+                      Filters
+                    </h2>
+<!--                       <button type="button" @click="open = !open" class="flex items-center px-3 py-1 font-medium text-gray-700 rounded"> 
                         <div class="flex items-center">
-                          <div class="flex items-start justify-between p-6 border-2 bg-blue-100">
+                          <div class="flex items-start justify-between p-6 border-2">
                             <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
                               Filters
-                            </h2>
+                            </h2> -->
 <!--                           <span class="text-2xl font-semibold text-gray-700 dark:text-white">Filters</span>
  --><!--                           <i class="fas fa-filter"></i>
- -->                        </div>
-                      </button>
+ --> <!--                        </div>
+                      </button> -->
                   </div>
       
                 </div>
@@ -543,7 +546,7 @@
           <div class="object-contain w-full h-full" id="networkGraph">
       
             <div class="bg-gray-100">
-              <div class="mx-10 p-10 bg-gray-100">
+              <div class="p-10 mx-10 bg-gray-100">
                 <h2 class="text-xs font-medium tracking-wide text-gray-500 uppercase">legend</h2>
                 <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
                   
@@ -596,7 +599,7 @@
                   <div class="w-screen max-w-5xl">
                     <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
                       <div class="px-4 sm:px-6">
-                        <div class="flex items-start justify-between p-6 border-2 bg-blue-100">
+                        <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
                           <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
                             Navigation panel
                           </h2>

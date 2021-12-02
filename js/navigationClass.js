@@ -392,10 +392,9 @@ navigation.prototype.addEventsNav = function (){
     var node=d3.select("#"+this.getAttribute("id")).data()[0]
   });
 }
-
 navigation.prototype.contentTable = function (){
   var navPanel=this;
-  var menuOption;
+  var menuOption, numStart=1, numTot=97, numEnd=10, numCurrent=1;
 
   navPanel.contentRows=[]
   d3.selectAll(".modal-content table").remove()
@@ -413,7 +412,18 @@ navigation.prototype.contentTable = function (){
     th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
-      th.innerHTML="Sparql Endpoint: "+ menuOption[0]+ " and Position: "+menuOption[1];
+      th.innerHTML=`<div>
+      <label for="account-number" class="block text-sm font-medium text-gray-700"> Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1] + `</label>
+      <div class="mt-1 relative rounded-md shadow-sm">
+        <input type="text" name="account-number" id="account-number" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-sm border-gray-300 rounded-md" placeholder="000-00-0000">
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <!-- Heroicon name: solid/question-mark-circle -->
+          <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+      </div>`
     }else{
       ////console.log(navPanel.node)
       menuOption=navPanel.node["menuOption"]
@@ -422,18 +432,43 @@ navigation.prototype.contentTable = function (){
         th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
       }else{
         menuOption=menuOption.split(",")
-        th.innerHTML="Sparql Endpoint: "+ menuOption[0]+ " and Position: "+menuOption[1];
+        th.innerHTML=`<div>
+        <label for="account-number" class="block text-sm font-medium text-gray-700"> Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1] + `</label>
+        <div class="mt-1 relative rounded-md shadow-sm w-1/2">
+          <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
+          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+            <!-- Heroicon name: solid/question-mark-circle -->
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        </div>`
+/*         th.innerHTML=`<div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <div class="mt-1 relative rounded-md shadow-sm">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <!-- Heroicon name: solid/mail -->
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+          </div>
+          <input type="email" name="email" id="email" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com">
+        </div>
+      </div>` */
       }
      
       //th.innerHTML=navPanel.node["value"]
     }
+    
     
     navPanel.thead.appendChild(tr).appendChild(th)
     navPanel.tbody=document.createElement("tbody")
     navPanel.tbody.className="bg-white divide-y divide-gray-200"
 
     
-    for (var i = 0; i < navPanel.targets.length; i++) {
+/*     for (var i = 0; i < navPanel.targets.length; i++) {
       row = navPanel.tbody.insertRow(-1);
       row.id=navPanel.targets[i]["target"]["id"]+"_row"
       navPanel.contentRows.push(row)
@@ -442,7 +477,10 @@ navigation.prototype.contentTable = function (){
       }else{
         navPanel.addElementContentTable(navPanel.targets[i],i)
       }
-    }
+    } */
+    console.log(numCurrent)
+    showLines(numCurrent)
+
     var dvTable = document.getElementById("dvTable");
     dvTable.innerHTML = "";
   
@@ -452,13 +490,93 @@ navigation.prototype.contentTable = function (){
     div2.className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
     div3=document.createElement("div")    
     div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll sm:rounded-lg"
+
+    divPag=document.createElement("div")
+    divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
+    divPag.innerHTML=`<div class="flex-1 flex justify-between sm:hidden">
+        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Previous
+        </a>
+        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Next
+        </a>
+      </div>
+      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-gray-700">
+            Showing
+            <span class="font-medium">`+ numStart +`</span>
+            to
+            <span class="font-medium">` + numEnd + `</span>
+            of
+            <span class="font-medium">` + numTot + `</span>
+            results
+          </p>
+        </div>
+        <div>
+          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Previous</span>
+              <!-- Heroicon name: solid/chevron-left -->
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+            <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->`
+
+    divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
+    divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" onClick="showLines(this.text())">
+          2
+        </a>`
+    divPag.innerHTML +=`<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Next</span>
+              <!-- Heroicon name: solid/chevron-right -->
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </nav>
+        </div>
+      </div>`
+    
     navPanel.fullTable=dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.table)
     navPanel.fullTable.appendChild(navPanel.thead)
     navPanel.fullTable.appendChild(navPanel.tbody); 
+    dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(divPag);
     
     navPanel.addEventsContentNav()
   }
+  function showLines(numCurrent){
+    var numLinesShown=10,linesShown;
+    //console.log(d3.selectAll("#dvTable tr"))
+    //console.log(document.getElementById("#dvTable").querySelector('tr'))
+    console.log(numCurrent*numLinesShown)
+    console.log(numCurrent*numLinesShown+numLinesShown)
+    linesShown=navPanel.targets.slice(numCurrent*numLinesShown, numCurrent*numLinesShown+numLinesShown);
+    console.log(linesShown)
+    for (var i = 0; i < linesShown.length; i++) {
+      row = navPanel.tbody.insertRow(-1);
+      row.id=linesShown[i]["target"]["id"]+"_row"
+      navPanel.contentRows.push(row)
+      if(navPanel.type=="freeGraph"){
+        navPanel.addElementContentTableProp(linesShown[i],i)
+      }else{
+        navPanel.addElementContentTable(linesShown[i],i)
+      }
+    }
+  }
 }
+
+/* for (var i = 0; i < navPanel.targets.length; i++) {
+  row = navPanel.tbody.insertRow(-1);
+  row.id=navPanel.targets[i]["target"]["id"]+"_row"
+  navPanel.contentRows.push(row)
+  if(navPanel.type=="freeGraph"){
+    navPanel.addElementContentTableProp(navPanel.targets[i],i)
+  }else{
+    navPanel.addElementContentTable(navPanel.targets[i],i)
+  }
+} */
 
 navigation.prototype.addEventsContentNav = function (){
   var navPanel=this,cell;
