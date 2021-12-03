@@ -394,8 +394,12 @@ navigation.prototype.addEventsNav = function (){
 }
 navigation.prototype.contentTable = function (){
   var navPanel=this;
-  var menuOption, numStart=1, numTot=97, numEnd=10, numCurrent=1;
-
+  var menuOption;
+  navPanel.numStart=1
+  navPanel.numTot=navPanel.targets.length
+  navPanel.numLinesShown=10
+  navPanel.numEnd=navPanel.numLinesShown
+  navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
   d3.selectAll(".modal-content table").remove()
   if (navPanel.targets.length>0){
@@ -478,8 +482,8 @@ navigation.prototype.contentTable = function (){
         navPanel.addElementContentTable(navPanel.targets[i],i)
       }
     } */
-    console.log(numCurrent)
-    showLines(numCurrent)
+    console.log(navPanel.numCurrent)
+    navPanel.showLines(navPanel.numCurrent)
 
     var dvTable = document.getElementById("dvTable");
     dvTable.innerHTML = "";
@@ -493,6 +497,7 @@ navigation.prototype.contentTable = function (){
 
     divPag=document.createElement("div")
     divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
+    divPag.id="div-pagination"
     divPag.innerHTML=`<div class="flex-1 flex justify-between sm:hidden">
         <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
           Previous
@@ -505,17 +510,17 @@ navigation.prototype.contentTable = function (){
         <div>
           <p class="text-sm text-gray-700">
             Showing
-            <span class="font-medium">`+ numStart +`</span>
+            <span class="font-medium" id="numStart">`+ navPanel.numStart +`</span>
             to
-            <span class="font-medium">` + numEnd + `</span>
+            <span class="font-medium" id="numEnd">` + navPanel.numEnd + `</span>
             of
-            <span class="font-medium">` + numTot + `</span>
+            <span class="font-medium" id="numTot">` + navPanel.numTot + `</span>
             results
           </p>
         </div>
         <div>
           <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-prev">
               <span class="sr-only">Previous</span>
               <!-- Heroicon name: solid/chevron-left -->
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -523,12 +528,8 @@ navigation.prototype.contentTable = function (){
               </svg>
             </a>
             <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->`
-
-    divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
-    divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" onClick="showLines(this.text())">
-          2
-        </a>`
-    divPag.innerHTML +=`<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+    navPanel.showPageNumbers()
+    divPag.innerHTML +=`<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-next">
               <span class="sr-only">Next</span>
               <!-- Heroicon name: solid/chevron-right -->
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -546,27 +547,102 @@ navigation.prototype.contentTable = function (){
     
     navPanel.addEventsContentNav()
   }
-  function showLines(numCurrent){
-    var numLinesShown=10,linesShown;
-    //console.log(d3.selectAll("#dvTable tr"))
-    //console.log(document.getElementById("#dvTable").querySelector('tr'))
-    console.log(numCurrent*numLinesShown)
-    console.log(numCurrent*numLinesShown+numLinesShown)
-    linesShown=navPanel.targets.slice(numCurrent*numLinesShown, numCurrent*numLinesShown+numLinesShown);
-    console.log(linesShown)
-    for (var i = 0; i < linesShown.length; i++) {
-      row = navPanel.tbody.insertRow(-1);
-      row.id=linesShown[i]["target"]["id"]+"_row"
-      navPanel.contentRows.push(row)
-      if(navPanel.type=="freeGraph"){
-        navPanel.addElementContentTableProp(linesShown[i],i)
-      }else{
-        navPanel.addElementContentTable(linesShown[i],i)
+
+  
+}
+navigation.prototype.showPageNumbers = function (){
+  //function showPageNumbers(){
+    var navPanel=this,pagePrev,textHtml=""
+    var numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
+    console.log(numPages)
+    console.log(navPanel.numCurrent)
+    console.log(document.querySelectorAll('[aria-label="Pagination"]'))
+    console.log(document.querySelectorAll('#div-pagination .num-page'))
+    var numPagesElements = document.querySelectorAll('#div-pagination .num-page');
+    console.log(numPagesElements)
+    if(numPagesElements.length>0){
+      numPagesElements.forEach(function(el){
+        el.remove()
+      })
+      pagePrev = document.getElementById('page-prev');
+      for (i=1;i<=numPages-1;i++) {
+        if(i==navPanel.numCurrent){
+          textHtml +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ i + `</a>`
+        }else{
+          textHtml +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
+          + i + `</a>`
+        }
+      }
+      pagePrev.insertAdjacentHTML('afterend', textHtml);
+    }else{
+      for (i=1;i<=numPages-1;i++) {
+        if(i==navPanel.numCurrent){
+          divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ i + `</a>`
+        }else{
+          divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
+          + i + `</a>`
+        }
       }
     }
+
+    //divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
+    
+  }
+/* navigation.prototype.showPageNumbers = function (){
+//function showPageNumbers(){
+  var navPanel=this
+  var numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
+  console.log(numPages)
+  console.log(navPanel.numCurrent)
+  //divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
+  for (i=1;i<=numPages-1;i++) {
+    if(i==navPanel.numCurrent){
+      divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ i + `</a>`
+    }else{
+      divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" onClick="showLines(this.textContent)">`
+      + i + `</a>`
+    }
+  }
+  
+} */
+function showLines(numCurrent){
+  console.log(numCurrent)
+  navigation.showLines(numCurrent)
+}
+navigation.prototype.showLines = function (numCurrent){
+  var navPanel=this,linesShown;
+  navPanel.numCurrent=numCurrent
+  //console.log(d3.selectAll("#dvTable tr"))
+  //console.log(document.getElementById("#dvTable").querySelector('tr'))
+  var sel=document.querySelectorAll("#dvTable tbody tr")
+  console.log(sel)
+  if(sel.length>0){
+    sel.forEach(
+      function(currentValue, currentIndex, listObj) {
+        //console.log(currentValue + ', ' + currentIndex + ', ' + this);
+        currentValue.remove()
+      }
+    )
+  }
+
+  //console.log(navPanel.numCurrent*navPanel.numLinesShown)
+  //console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
+  linesShown=navPanel.targets.slice(navPanel.numCurrent*navPanel.numLinesShown, navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown);
+  console.log(linesShown)
+  for (var i = 0; i < linesShown.length; i++) {
+    row = navPanel.tbody.insertRow(-1);
+    row.id=linesShown[i]["target"]["id"]+"_row"
+    navPanel.contentRows.push(row)
+    if(navPanel.type=="freeGraph"){
+      navPanel.addElementContentTableProp(linesShown[i],i)
+    }else{
+      navPanel.addElementContentTable(linesShown[i],i)
+    }
+  }
+  if(navPanel.numCurrent!=1){
+    navPanel.showPageNumbers()
   }
 }
-
 /* for (var i = 0; i < navPanel.targets.length; i++) {
   row = navPanel.tbody.insertRow(-1);
   row.id=navPanel.targets[i]["target"]["id"]+"_row"
