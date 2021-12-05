@@ -10,7 +10,7 @@ $(document).ajaxSend(function(event,request, settings){
 
 async function addURLGraph(field){
   var indexRows
-  console.log(field)
+  //console.log(field)
   d3.selectAll(".classFilter").remove()
   if(document.getElementById("navTable").querySelector('ol')){
     document.getElementById("navTable").querySelector('ol').remove()
@@ -106,12 +106,12 @@ function buildTreeData (results,form,node){
         }
         
         obj["menuOption"]=menuOption
-        //////////////console.log(networkGraph.treeData)
+        ////////////////console.log(networkGraph.treeData)
         //throw new Error("Something went badly wrong!");
       //treeData=[{"id":node["id"],"value":node["value"],"type":node["type"],"children":menuOptionNodes,"hidden":false,"more_results":more_results,"menuOption":menuOption}]
       //nodesIds=networkGraph.data.nodes.filter(d=>d.is==nosw["o"]["value"])
     }else{
-      //////console.log(node)
+      ////////console.log(node)
       menuOption=form["url"]+","+form["subject-object"]
       treeData=[{"id":node["id"],"value":results[0]["s"]["value"],"type":results[0]["s"]["type"],"children":children,"hidden":false,"more_results":more_results,"menuOption":menuOption,"configRow":configRow}]
     }
@@ -180,17 +180,17 @@ function buildTreeData (results,form,node){
     }
     treeData=[{"id":idParent,"value":results[0]["o"]["value"],"type":results[0]["o"]["type"],"children":children,"hidden":false,"more_results":more_results}]
   }
-  ////////////////console.log(treeData[0]["menuOption"])
-  ////////////////console.log(node)
+  //////////////////console.log(treeData[0]["menuOption"])
+  //////////////////console.log(node)
 
   if(node!=undefined){
     treeData[0]["menuOption"]=node["menuOption"]+";"+form["url"]+","+form["subject-object"]
   }else{
     treeData[0]["menuOption"]=form["url"]+","+form["subject-object"]
   } */
-  //////////console.log(treeData)
+  ////////////console.log(treeData)
 
-  //////////console.log(networkGraph.treeData)
+  ////////////console.log(networkGraph.treeData)
   
   return treeData
 }
@@ -210,7 +210,7 @@ function flatten_freeGraph(root) {
       if (node.children){
         nodes[position]["number"]=node.children.length
         node.children.forEach(function(c){
-          //////console.log(c)
+          ////////console.log(c)
           if(!c["hidden"]){
             position=links.indexOf(links.filter(function(item) {
               return ((item.source == node.id)&&(item.target == c.id))
@@ -229,7 +229,7 @@ function flatten_freeGraph(root) {
   }
 
   root.forEach(function(r){
-    //////////console.log(r)
+    ////////////console.log(r)
     recurse(r);
   })
 
@@ -237,9 +237,9 @@ function flatten_freeGraph(root) {
 }
 function buildTreeData_copy (results,form,links,nodes,node){
   var children=[],treeData,nodesIds,id,idParent,idTarget,more_results;
-  //////////////////console.log(nodes)
-  //////////////////console.log(links)
-  //////////////////console.log(form)
+  ////////////////////console.log(nodes)
+  ////////////////////console.log(links)
+  ////////////////////console.log(form)
   results.forEach(element => {
 
     if(form["subject-object"]=="s"){
@@ -296,8 +296,8 @@ function buildTreeData_copy (results,form,links,nodes,node){
     }
     treeData=[{"id":idParent,"value":results[0]["o"]["value"],"type":results[0]["o"]["type"],"children":children,"hidden":false,"more_results":more_results}]
   }
-  ////////////////console.log(treeData[0]["menuOption"])
-  ////////////////console.log(node)
+  //////////////////console.log(treeData[0]["menuOption"])
+  //////////////////console.log(node)
 
   if(node!=undefined){
     treeData[0]["menuOption"]=node["menuOption"]+";"+form["url"]+","+form["subject-object"]
@@ -309,11 +309,11 @@ function buildTreeData_copy (results,form,links,nodes,node){
   return treeData
 }
 async function buildFreeGraph(form,origin,node){
-    ////////////////console.log(form)
+    //////////////////console.log(form)
     var sparqlQuery,sparqlQueryCount,queryUrl,uri,url,subjectObject,newForm,nodes,menuOptionBasic;
     var $objectAjax;
     prefixes=""
-    ////////////////console.log(origin)
+    //////////////////console.log(origin)
     if(origin=="form"){
       uri=form.querySelector("#uri").innerHTML
       url=form.querySelector("#url").innerHTML
@@ -355,7 +355,7 @@ async function buildFreeGraph(form,origin,node){
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'   ,
       success: function(data) {
         //do something
-        //console.log("SUCCESS")
+        ////console.log("SUCCESS")
         
         $objectAjax = null;
       }
@@ -364,12 +364,12 @@ async function buildFreeGraph(form,origin,node){
     .text("Waiting for Sparql query")
     
     d3.select("#spin").style("display","inline-flex")
-    //console.log(sparqlQuery)
-    //////////////////console.log(origin)
+    ////console.log(sparqlQuery)
+    ////////////////////console.log(origin)
     $objectAjax=$.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
-        //console.log(results)
-        //console.log("THEN")
+        ////console.log(results)
+        ////console.log("THEN")
         d3.select("#spin").style("display","none")
         results=clusterResults(results,subjectObject)
         return checkClassesBasicGraph(results,subjectObject,node)
@@ -386,8 +386,8 @@ async function buildFreeGraph(form,origin,node){
     //.success()
     .done(function (data, textStatus, jqXHR) {
       //createGraph()
-      //console.log(data)
-      //console.log("DONE")
+      ////console.log(data)
+      ////console.log("DONE")
       createGraph(data)
       clearInterval(interval)
       d3.select("#spin").style("display","none")
@@ -396,11 +396,11 @@ async function buildFreeGraph(form,origin,node){
     try{
       await $objectAjax
     }catch(e){
-      //////////////////////////console.log(e)
+      ////////////////////////////console.log(e)
     }
     function createGraph(results){
       if((origin === 'form')|(origin === 'first')){
-        //////////////////console.log("if")
+        ////////////////////console.log("if")
         data=getFreeGraphData(results,form)
         d3.selectAll(".graph").remove()
         forces = {
@@ -446,8 +446,8 @@ async function buildFreeGraph(form,origin,node){
         
         addFiltersFreeGraph(uri,data.treeData[0]["id"])
       }else{
-        //////////////////console.log("else")
-        ////////////////console.log(form)
+        ////////////////////console.log("else")
+        //////////////////console.log(form)
         links=addFreeGraphData(results,node,form)
         networkGraph.initializeSimulation();
         networkGraph.dataJoinFreeGraph()
@@ -457,8 +457,8 @@ async function buildFreeGraph(form,origin,node){
         networkGraph.exitGraph()
         networkGraph.zoomOut()
         networkGraph.zoomOut()
-        //////////////console.log(networkGraph.treeData)
-        //////////console.log(links)
+        ////////////////console.log(networkGraph.treeData)
+        ////////////console.log(links)
         //links=addFreeGraphData(results,d3.select("#"+ node.getAttribute("id")),form)
         addFiltersFreeGraph(form["uri"],links[0]["source"]["id"])
       }
@@ -499,7 +499,7 @@ function getFreeGraphData(results,form){
     results.forEach(function (r){
       checkConfigFileNode(r)
       objectId=genRandomString()
-      //////////////////////console.log(r)
+      ////////////////////////console.log(r)
       if(subjectObject=="o"){
         if(r["s"]["more_results"]){
           more_results=r["s"]["more_results"]
@@ -532,22 +532,22 @@ function getFreeGraphData(results,form){
     treeData=buildTreeData(results,form)
     flattenData=flatten_freeGraph(treeData)
     data={"flatData":flattenData.flatData,"allData":flattenData.flatData,"treeData":treeData}
-    ////////////////console.log(data)
+    //////////////////console.log(data)
     return data
   }
 function addFreeGraphData(results,node,form){
 
-    //////////////////console.log(node)
+    ////////////////////console.log(node)
     var subjectId,objectId,subjectNode,objectNode,links=[],nodes=[],treeData;
     subjectObject=form["subject-object"]
-    ////////////////console.log(node)
-    ////////////////console.log(form)
-    ////////////////console.log()
+    //////////////////console.log(node)
+    //////////////////console.log(form)
+    //////////////////console.log()
 /*     subjectNode=networkGraph.data.nodes.filter(function (n){
       return n.value==node["value"]
       //return n.value==node.data()[0]["value"]
     })[0]
-    //////////////////console.log(form)
+    ////////////////////console.log(form)
     results.forEach(function (r){
 
       objectId=genRandomString()
@@ -564,9 +564,9 @@ function addFreeGraphData(results,node,form){
     if(treeData.length>0){
       flattenData=flatten_freeGraph(treeData)
 
-      //////////console.log(flattenData)
+      ////////////console.log(flattenData)
       data={"flatData":flattenData.flatData,"allData":flattenData.flatData,"treeData":treeData}
-      //////////console.log(data)
+      ////////////console.log(data)
   
       networkGraph.treeData=networkGraph.treeData.concat(treeData)
     }
@@ -575,10 +575,10 @@ function addFreeGraphData(results,node,form){
 
     //networkGraph.data.nodes= networkGraph.data.nodes.filter(d=>d.id!=data.flatData.nodes[0].id)
     //networkGraph.data.nodes=networkGraph.data.nodes.concat(data.flatData.nodes)
-    //////////////////console.log(networkGraph.data)
+    ////////////////////console.log(networkGraph.data)
 
     networkGraph.data=flatten_freeGraph(networkGraph.treeData).flatData
-    ////////////////console.log(networkGraph.data)
+    //////////////////console.log(networkGraph.data)
     networkGraph.allData.nodes=networkGraph.data.nodes
     networkGraph.allData.links=networkGraph.data.links
 
@@ -600,9 +600,9 @@ function addFreeGraphData(results,node,form){
 
   function getTooltipTextFreeGraph(d){
     var menuOptions,sparqlEndpoint="",position="";
-    //console.log(d)
-    //////////console.log(d.type)
-    //////////console.log(d["type"])
+    ////console.log(d)
+    ////////////console.log(d.type)
+    ////////////console.log(d["type"])
     if(d.type=="menuOption"){
       menuOptions=d.value.split(",")
       var text = `
@@ -761,18 +761,18 @@ function addFreeGraphData(results,node,form){
   async function checkQueries(element,subjectObject,origin,pageX,pageY){
     var msgNoResults,node,menuOption;
     var resultRows=await checkAskResultsFreeGraph(element,subjectObject)
-    //////////////////console.log(resultRows)
-    //console.log(element)
+    ////////////////////console.log(resultRows)
+    ////console.log(element)
     if(typeof(element)!="string"){
       node=d3.select("#"+element.getAttribute("id")).data()[0]
     }
-    //console.log(node)
+    ////console.log(node)
     if((origin=="bubble")|(origin=="table")){
       if(node.menuOption!=undefined){
         filterResultRows()
       }
     }
-    //////////////////console.log(resultRows)
+    ////////////////////console.log(resultRows)
     if(resultRows.length>1){
 
       if(origin=="form"){
@@ -781,7 +781,7 @@ function addFreeGraphData(results,node,form){
         msgNoResults.classList.remove("inline-block");
         getOptionsWindow(resultRows)
       }else if(origin=="bubble"){
-        ////////console.log(element)
+        //////////console.log(element)
         getMenuItemsFreeGraph(resultRows,element,pageX,pageY,origin)
       }else if(origin=="table"){
         getMenuItemsFreeGraph(resultRows,element,pageX,pageY,origin)
@@ -792,72 +792,72 @@ function addFreeGraphData(results,node,form){
       //}
 
       form=resultRows[0]
-      ////////////////console.log(resultRows[0])
-      ////////////////console.log(form)
+      //////////////////console.log(resultRows[0])
       //////////////////console.log(form)
+      ////////////////////console.log(form)
       if(origin=="form"){
         msgNoResults = document.getElementById("msg-no-results");
         msgNoResults.classList.add("hidden");
         msgNoResults.classList.remove("inline-block");
         origin="first"
       }
-      //////////////////console.log(node)
-      await buildFreeGraph(form,origin,node)//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
+      ////////////////////console.log(node)
+      await buildFreeGraph(form,origin,node)////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(networkGraph.data)
     }else if((resultRows.length==0)&(origin=="form")){
       d3.selectAll(".graph").remove()
       msgNoResults = document.getElementById("msg-no-results");
       msgNoResults.classList.remove("hidden");
       msgNoResults.classList.add("inline-block");
     }
-    //////////////////////console.log(resultRows)
+    ////////////////////////console.log(resultRows)
     return resultRows
     function filterResultRows(){
       //var menuOption=node.menuOption.split(",")
       var menuOption=node.menuOption.split(";")
-      //////console.log(node.menuOption)
+      ////////console.log(node.menuOption)
       //if(menuOption.length)
-      ////////////////console.log(resultRows)
-      //////console.log(menuOption)
+      //////////////////console.log(resultRows)
+      ////////console.log(menuOption)
       menuOption.forEach(function (d){
-        ////////////////console.log(d)
+        //////////////////console.log(d)
         d=d.split(",")
         resultRows=resultRows.filter(function (r){
-          ////////////////console.log(r)
-          ////////////////console.log(r.uri)
-          ////////////////console.log(node.value)
-          ////////////////console.log(r.url)
-          ////////////////console.log(d[0])
-          ////////////////console.log(r["subject-object"])
-          ////////////////console.log(d[1])
-          ////////////////////console.log(r.uri)
-          ////////////////////console.log(node.value)
-          ////////////////////console.log(r.url)
-          ////////////////////console.log(menuOption[0])
-          ////////////////////console.log(r["subject-object"])
-          ////////////////////console.log(menuOption[1])
+          //////////////////console.log(r)
+          //////////////////console.log(r.uri)
+          //////////////////console.log(node.value)
+          //////////////////console.log(r.url)
+          //////////////////console.log(d[0])
+          //////////////////console.log(r["subject-object"])
+          //////////////////console.log(d[1])
+          //////////////////////console.log(r.uri)
+          //////////////////////console.log(node.value)
+          //////////////////////console.log(r.url)
+          //////////////////////console.log(menuOption[0])
+          //////////////////////console.log(r["subject-object"])
+          //////////////////////console.log(menuOption[1])
           return (r.uri!=node.value)|(r.url!=d[0])|(r["subject-object"]!=d[1])
         })
       })
-      //////console.log(resultRows)
-      ////////////////////console.log(node.menuOption)
-      ////////////////////console.log(resultRows)
-      ////////////////////console.log(node.value)
-      ////////////////////console.log(menuOption)
+      ////////console.log(resultRows)
+      //////////////////////console.log(node.menuOption)
+      //////////////////////console.log(resultRows)
+      //////////////////////console.log(node.value)
+      //////////////////////console.log(menuOption)
       //resultRows=resultRows.filter(r=>(r.uri!=node.value)&(r.url!=menuOption[0])&(r["subject-object"]!=menuOption[1]))
       
 
 /*       var childrenMenuOption;
       element["children"]=[{"value":arrayMenuOptions[0],"id":genRandomString(),"class":"menuOption","shape":1,"number":0,"children":element["children"]}]
       element["children"].push({"value":arrayMenuOptions[1],"id":genRandomString(),"class":"menuOption","shape":1,"number":0,"children":[]})
-      //////////////////////console.log(nodesClassesCorrespondence)
+      ////////////////////////console.log(nodesClassesCorrespondence)
       if(!("menuOption" in nodesClassesCorrespondence)){
         nodesClassesCorrespondence["menuOption"]="Menu option"
       }
-      //////////////////////console.log(nodesClassesShow)
+      ////////////////////////console.log(nodesClassesShow)
       if(!nodesClassesShow.includes("Menu option")){
         nodesClassesShow.push("Menu option")
       } */
-      ////////////////////console.log(resultRows)
+      //////////////////////console.log(resultRows)
       
     }
   }
@@ -1021,12 +1021,12 @@ function addFreeGraphData(results,node,form){
   function getMenuItemsFreeGraph(items,element,pageX,pageY,origin){
     var menuItems=[],elementMenu,position,form,uri,url,subjectObject,row
     var node=d3.select("#"+element.getAttribute("id")).data()[0]
-    console.log(node)
-    console.log(items)
+    //console.log(node)
+    //console.log(items)
   
     if(node["configRow"]){
       node["configRow"].forEach(function(r){
-        console.log(configFile[r])
+        //console.log(configFile[r])
         items.push({"rowNumber":r,"row":configFile[r],"menuOption":configFile[r]["option"]})
         //buildBasicGraph(rowDataConfig,node,menuOption)
       })
@@ -1045,7 +1045,7 @@ function addFreeGraphData(results,node,form){
     }else{
       for (var i = 0; i < items.length; i++) {
         if(items[i]["subject-object"]){
-          console.log(items[i])
+          //console.log(items[i])
           uri=items[i]["uri"]
           url=items[i]["url"]
           subjectObject=items[i]["subject-object"]
@@ -1056,9 +1056,9 @@ function addFreeGraphData(results,node,form){
               url = d.title.match("Sparql Endpoint: (.*) and Position:")[1]; 
               subjectObject=d.title.match("and Position: (.*)")[1];
               form={"url":url,"uri":uri,"subjectObject":subjectObject}
-              ////////console.log(typeof(element))
-              ////////console.log(element)
-              ////////console.log(d3.select("#"+element.getAttribute("id")).data()[0])
+              //////////console.log(typeof(element))
+              //////////console.log(element)
+              //////////console.log(d3.select("#"+element.getAttribute("id")).data()[0])
               buildFreeGraph(form,origin,node)
 
             }
@@ -1067,17 +1067,17 @@ function addFreeGraphData(results,node,form){
           elementMenu={
             title: items[i]["menuOption"],
             action: (data,d) => {
-            console.log(data)
-            console.log(d)
+            //console.log(data)
+            //console.log(d)
             row=configFile.findIndex(v=>v.option==d.title)
-            console.log(row)
+            //console.log(row)
             buildBasicGraph(row,d3.select("#"+data.getAttribute("id")).data()[0],d.title)
             }
           }
         }
         menuItems.push(elementMenu)
       }
-      console.log(menuItems)
+      //console.log(menuItems)
       networkGraph.menuFactory(pageX-400,pageY-450, menuItems, element,"dblClick",500)
     }
     
@@ -1167,32 +1167,32 @@ function addFreeGraphData(results,node,form){
     //var ocurrences=[],small,big,results_small,results_big,num_occ,results_big_filtered;
     var classes,classesConfig,sparqlQuery,askQuery,endpoint_url,configRows,resultsAsk;
     classesConfig=configFile.filter(d=>d.modelClass!=undefined).map(v=>v.modelClass)
-    //console.log(classesConfig)
+    ////console.log(classesConfig)
     for (var i = 0; i < results.length; i++) {
-      //console.log(results[i])
+      ////console.log(results[i])
       classes=results[i]["classes"]["value"].split(";")
-      //console.log(classes)
+      ////console.log(classes)
       for (var j = 0; j < classes.length; j++) {
         if(classesConfig.includes(classes[j])){
           //configRow=configFile.findIndex(d=>d.modelClass==classes[j])
           configRows=getAllIndexes(configFile,classes[j],"modelClass")
-          //console.log(configRows)
+          ////console.log(configRows)
           for (const row of configRows) {
           //configRows.forEach(function(row){
             if((!configFile[row]["query"].includes("PARAMETER2"))&(configFile[row]["type"]=="TREE")){
               askQuery=fromSelectToAskQuery(configFile[row]["query"])
-              //console.log(node)
-              //console.log(results[i])
+              ////console.log(node)
+              ////console.log(results[i])
               if(subjectObject=="s"){
                 askQuery=askQuery.replace("PARAMETER",results[i]["o"]["value"]);
               }else if(subjectObject=="o"){
                 askQuery=askQuery.replace("PARAMETER",results[i]["s"]["value"]);
               }
               
-              //console.log(askQuery)
+              ////console.log(askQuery)
               endpoint_url=configFile[row]["endpoint_url"]
               resultsAsk = await runAskSparlqQuery(endpoint_url,askQuery)
-              //console.log(resultsAsk)
+              ////console.log(resultsAsk)
               if(resultsAsk==true){
                 if(results[i]["configRow"]){
                   if(subjectObject=="s"){
@@ -1212,20 +1212,20 @@ function addFreeGraphData(results,node,form){
 
           //})
           }
-          ////console.log(results)
-          ////console.log(configFile[results[i]["configRow"]])
+          //////console.log(results)
+          //////console.log(configFile[results[i]["configRow"]])
           // Now the one-liner would be:
           //results[i]["configRow"] = configFile.filter(d=>d.modelClass==classes[j])[0];
         }
       }
     }
-    //console.log(results)
+    ////console.log(results)
     
     return results
     
   }
   function getCommentMenuFreeGraph(title){
-    ////////////////////////////console.log(title)
+    //////////////////////////////console.log(title)
   }
   function continueSparql(element){
     document.getElementById("sparql-timeout").style.display="none"

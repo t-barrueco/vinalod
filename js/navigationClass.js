@@ -9,13 +9,13 @@ navigation.prototype.init = function () {
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
   navPanel.node=networkGraph.rootNode
-  //console.log(networkGraph.rootNode)
+  //////console.log(networkGraph.rootNode)
   navPanel.element=document.getElementById(navPanel.node.id)
   navPanel.getNodes()
   navPanel.initModal()
   navPanel.navTableTable()
   navPanel.contentTable()
-  //////console.log("entra")
+  //////////console.log("entra")
 }
 
 navigation.prototype.getNodes = function (){
@@ -147,7 +147,7 @@ navigation.prototype.navTableTable = function ()
     }
     if(navPanel.type=="freeGraph"){
       navPanel.sources.forEach(function (d,i){
-        //////console.log(d)
+        //////////console.log(d)
         if(i==0){
           navPanel.addElementNav(d,i)
         }else{
@@ -174,7 +174,7 @@ navigation.prototype.addElementNav = function (source,i){
   li.id=source["id"]+"_li"
 
   if(i<navPanel.sources.length-1){
-      ////console.log("element nav")
+      ////////console.log("element nav")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
@@ -190,7 +190,7 @@ navigation.prototype.addElementNav = function (source,i){
   span.setAttribute("class","h-9 flex items-center")
   
   span2=document.createElement("span")
-  //////console.log(source["type"])
+  //////////console.log(source["type"])
   if(source["type"]=="uri"){
     colorCircle="green-300"
   }else if(source["type"]=="bnode"){
@@ -234,25 +234,25 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
 
-  ////console.log(source)
-  ////console.log(navPanel.sources.length)
-  ////console.log(i)
-  ////console.log(property)
-  ////console.log(source["target"]["menuOption"])
-  ////console.log(navPanel.node)
+  ////////console.log(source)
+  ////////console.log(navPanel.sources.length)
+  ////////console.log(i)
+  ////////console.log(property)
+  ////////console.log(source["target"]["menuOption"])
+  ////////console.log(navPanel.node)
 /*   if(source["target"]["type"]!="menuOption"){
     
   } */
 /*   if(source["target"]["menuOption"]){
-    ////console.log("entra en source target menuOption")
+    ////////console.log("entra en source target menuOption")
     if(property){
-      ////console.log("entra en property")
+      ////////console.log("entra en property")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
       li.appendChild(div)
     }else if((source["target"]["menuOption"].split(";").length<2)&(i<navPanel.sources.length-1)){
-      ////console.log("entra en el largo")
+      ////////console.log("entra en el largo")
       //if(i<navPanel.sources.length-1){
         div=document.createElement("div")
         div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
@@ -260,7 +260,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
         li.appendChild(div)
       }
   }else if((property)|(i<navPanel.sources.length-1)){
-    ////console.log("el de por descarte")
+    ////////console.log("el de por descarte")
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -269,7 +269,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
   if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
   //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))|(navPanel.node.type=="menuOption")){
-    ////console.log("el de por descarte")
+    ////////console.log("el de por descarte")
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -327,9 +327,9 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   }
   el1=navPanel.ol.appendChild(li)
 
-  ////console.log(el1)
+  ////////console.log(el1)
   if(i<navPanel.sources.length-1){
-      ////console.log(div)
+      ////////console.log(div)
       if(div!=undefined){
         el1.appendChild(div)
       }
@@ -354,7 +354,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
-    //////console.log(source)
+    //////////console.log(source)
     span5.innerHTML=  "   Sparql Endpoint(" + source["target"]["url"] + ")"
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
@@ -364,7 +364,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
   }
-  ////console.log(el3)
+  ////////console.log(el3)
 }
 
 /* navigation.prototype.addLineElementNav = function (li){
@@ -396,6 +396,7 @@ navigation.prototype.contentTable = function (){
   var navPanel=this;
   var menuOption;
   navPanel.numStart=1
+  console.log(navPanel.targets)
   navPanel.numTot=navPanel.targets.length
   navPanel.numLinesShown=10
   navPanel.numEnd=navPanel.numLinesShown
@@ -417,26 +418,6 @@ navigation.prototype.contentTable = function (){
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       th.innerHTML=`<div>
-      <label for="account-number" class="block text-sm font-medium text-gray-700"> Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1] + `</label>
-      <div class="mt-1 relative rounded-md shadow-sm">
-        <input type="text" name="account-number" id="account-number" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-sm border-gray-300 rounded-md" placeholder="000-00-0000">
-        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-          <!-- Heroicon name: solid/question-mark-circle -->
-          <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
-          </svg>
-        </div>
-      </div>
-      </div>`
-    }else{
-      ////console.log(navPanel.node)
-      menuOption=navPanel.node["menuOption"]
-      if(menuOption.split(";").length>1){
-        //menuOption=navPanel.node["menuOption"].split(",")
-        th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
-      }else{
-        menuOption=menuOption.split(",")
-        th.innerHTML=`<div>
         <label for="account-number" class="block text-sm font-medium text-gray-700"> Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1] + `</label>
         <div class="mt-1 relative rounded-md shadow-sm w-1/2">
           <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
@@ -447,6 +428,28 @@ navigation.prototype.contentTable = function (){
             </svg>
           </div>
         </div>
+        </div>`
+    }else{
+      ////////console.log(navPanel.node)
+      menuOption=navPanel.node["menuOption"]
+      if(menuOption.split(";").length>1){
+        //menuOption=navPanel.node["menuOption"].split(",")
+        th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
+      }else{
+        menuOption=menuOption.split(",")
+        th.innerHTML=`<div>
+        <label for="account-number" class="block text-sm font-medium text-gray-700"> Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1] + `</label>
+        <div class="mt-1 relative rounded-md shadow-sm w-1/2 inline-block">
+          <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
+          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Select nodes
+          </button>
         </div>`
 /*         th.innerHTML=`<div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
@@ -482,8 +485,8 @@ navigation.prototype.contentTable = function (){
         navPanel.addElementContentTable(navPanel.targets[i],i)
       }
     } */
-    console.log(navPanel.numCurrent)
-    navPanel.showLines(navPanel.numCurrent)
+    ////console.log(navPanel.numCurrent)
+    navPanel.showLines(navPanel.numCurrent,true)
 
     var dvTable = document.getElementById("dvTable");
     dvTable.innerHTML = "";
@@ -495,10 +498,10 @@ navigation.prototype.contentTable = function (){
     div3=document.createElement("div")    
     div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll sm:rounded-lg"
 
-    divPag=document.createElement("div")
-    divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
-    divPag.id="div-pagination"
-    divPag.innerHTML=`<div class="flex-1 flex justify-between sm:hidden">
+    navPanel.divPag=document.createElement("div")
+    navPanel.divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
+    navPanel.divPag.id="div-pagination"
+    navPanel.divPag.innerHTML=`<div class="flex-1 flex justify-between sm:hidden">
         <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
           Previous
         </a>
@@ -520,7 +523,14 @@ navigation.prototype.contentTable = function (){
         </div>
         <div>
           <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-prev">
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hidden" id="page-first" onClick="showLines('page-first')">
+              <span class="sr-only">Previous</span>
+              <!-- Heroicon name: solid/chevron-double-left -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hidden" id="page-prev" onClick="showLines('page-prev')">
               <span class="sr-only">Previous</span>
               <!-- Heroicon name: solid/chevron-left -->
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -528,72 +538,255 @@ navigation.prototype.contentTable = function (){
               </svg>
             </a>
             <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->`
-    navPanel.showPageNumbers()
-    divPag.innerHTML +=`<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-next">
+    navPanel.showNumberPages()
+    navPanel.divPag.innerHTML +=`<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-next" onClick="showLines('page-next')">
               <span class="sr-only">Next</span>
               <!-- Heroicon name: solid/chevron-right -->
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
               </svg>
             </a>
+            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-last" onClick="showLines('page-last')">
+            <span class="sr-only">Previous</span>
+            <!-- Heroicon name: solid/chevron-double-right -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </a>
           </nav>
         </div>
       </div>`
-    
+    /* //console.log(navPanel)
+    navPanel.showNumberPages() */
     navPanel.fullTable=dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.table)
     navPanel.fullTable.appendChild(navPanel.thead)
     navPanel.fullTable.appendChild(navPanel.tbody); 
-    dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(divPag);
+    dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.divPag);
     
     navPanel.addEventsContentNav()
   }
 
   
 }
+navigation.prototype.paginationNumbers = function (){
+  var navPanel=this
+  /* function paginate(
+    totalItems: number,
+    currentPage: number = 1,
+    pageSize: number = 10,
+    maxPages: number = 10
+
+    navPanel.numStart=1
+    navPanel.numTot=navPanel.targets.length
+    navPanel.numLinesShown=10
+    navPanel.numEnd=navPanel.numLinesShown
+    navPanel.numCurrent=navPanel.numStart
+) */ {
+    // calculate total pages
+    //let totalPages = Math.ceil(navPanel.numTot / navPanel.numLinesShown);
+    //console.log(navPanel.numPages)
+    // ensure current page isn't out of range
+    if (navPanel.numCurrent < 1) {
+      navPanel.numCurrent = 1;
+    } else if (navPanel.numCurrent > navPanel.numPages) {
+      navPanel.numCurrent = navPanel.numPages;
+    }
+
+    let startPage,endPage;
+    //console.log(navPanel.numPages)
+    //console.log(navPanel.paginationLimit)
+    //console.log(navPanel.numCurrent)
+    //console.log(navPanel.numPages)
+    if (navPanel.numPages <= navPanel.paginationLimit) {
+        // total pages less than max so show all pages
+        startPage = 1;
+        endPage = navPanel.numPages;
+    } else {
+        // total pages more than max so calculate start and end pages
+        let maxPagesBeforeCurrentPage = Math.floor(navPanel.paginationLimit / 2);
+        //console.log(maxPagesBeforeCurrentPage)
+        let maxPagesAfterCurrentPage = Math.ceil(navPanel.paginationLimit / 2) - 1;
+        //console.log(maxPagesAfterCurrentPage)
+        ////console.log(navPanel.numPages)
+        ////console.log(navPanel.numCurrent)
+        if(navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages){
+          ////console.log("mayor")
+          ////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+        }else{
+          ////console.log("menor")
+          ////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+        }
+        if (navPanel.numCurrent <= maxPagesBeforeCurrentPage) {
+            // current page near the start
+            ////console.log("near start")
+            startPage = 1;
+            endPage = navPanel.paginationLimit;
+        } else if (navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages) {
+            // current page near the end
+            ////console.log("near end")
+            ////console.log(navPanel.numCurrent)
+            ////console.log(maxPagesAfterCurrentPage)
+            ////console.log(navPanel.numPages)
+            startPage = navPanel.numPages - navPanel.paginationLimit + 1;
+            endPage = navPanel.numPages;
+        } else {
+            // current page somewhere in the middle
+            ////console.log("near middle")
+            startPage = navPanel.numCurrent - maxPagesBeforeCurrentPage;
+            endPage = navPanel.numCurrent + maxPagesAfterCurrentPage;
+        }
+    }
+
+    // calculate start and end item indexes
+    let startIndex = ((navPanel.numCurrent - 1) * navPanel.numLinesShown)+1;
+    let endIndex = Math.min(startIndex + navPanel.numLinesShown - 1, navPanel.numTot);
+
+    //console.log(endPage)
+    //console.log(startPage)
+    
+    // create an array of pages to ng-repeat in the pager control
+    let pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
+
+    // return object with all pager properties required by the view
+    return {
+        totalItems: navPanel.numTot,
+        currentPage: navPanel.numCurrent,
+        pageSize: navPanel.numLinesShown,
+        totalPages: navPanel.numPages,
+        startPage: startPage,
+        endPage: endPage,
+        startIndex: startIndex,
+        endIndex: endIndex,
+        pages: pages
+    };
+}
+}
+navigation.prototype.showNumberPages = function (){
+  var navPanel=this,textHtml=""
+
+  navPanel.firstPage=1
+  navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
+  navPanel.arrNumberPages=[]
+  navPanel.paginationLimit=10
+  //console.log(navPanel)
+
+  navPanel.pages = navPanel.paginationNumbers()
+  //console.log(navPanel.pages)
+  //console.log(navPanel.pages.pages.length)
+
+  pagePrev = document.getElementById('page-prev');
+      //for (i=1;i<=navPanel.numPages-1;i++) {
+  //showNumberPages()
+  for (i=0;i<=navPanel.pages.pages.length-1;i++) {
+    //console.log(navPanel.pages.pages[i])
+    if(navPanel.pages.pages[i]==navPanel.numCurrent){
+      if(pagePrev==null){
+        navPanel.divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
+      }else{
+        textHtml +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
+      } 
+    }else{
+      if(pagePrev==null){
+        navPanel.divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
+        + navPanel.pages.pages[i] + `</a>`
+      }else{
+        textHtml +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
+        + navPanel.pages.pages[i] + `</a>`
+      }
+    }
+  }
+  if(pagePrev!=null){
+    pagePrev.insertAdjacentHTML('afterend', textHtml);
+  }
+  /* //console.log(textHtml)
+  return textHtml */
+}
 navigation.prototype.showPageNumbers = function (){
   //function showPageNumbers(){
-    var navPanel=this,pagePrev,textHtml=""
-    var numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
-    console.log(numPages)
-    console.log(navPanel.numCurrent)
-    console.log(document.querySelectorAll('[aria-label="Pagination"]'))
-    console.log(document.querySelectorAll('#div-pagination .num-page'))
+    
+
+    var navPanel=this,pagePrev,textHtml="",numPages
+    navPanel.firstPage=1
+    navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
+    navPanel.arrNumberPages=[]
+    navPanel.paginationLimit=10
+
+    for (var i = navPanel.firstPage; i <= navPanel.numTot; i++) {
+      navPanel.arrNumberPages.push(i);
+    }
+
+    ////console.log(navPanel.numCurrent)
+    var pages = navPanel.paginationNumbers()
+    ////console.log(pages)
+    if(navPanel.numPages>navPanel.paginationLimit){
+      getNumbersInterval(navPanel.numCurrent)
+    }
+    ////console.log(document.querySelectorAll('[aria-label="Pagination"]'))
+    ////console.log(document.querySelectorAll('#div-pagination .num-page'))
     var numPagesElements = document.querySelectorAll('#div-pagination .num-page');
-    console.log(numPagesElements)
+    ////console.log(numPagesElements)
     if(numPagesElements.length>0){
       numPagesElements.forEach(function(el){
         el.remove()
       })
       pagePrev = document.getElementById('page-prev');
-      for (i=1;i<=numPages-1;i++) {
-        if(i==navPanel.numCurrent){
-          textHtml +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ i + `</a>`
-        }else{
-          textHtml +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
-          + i + `</a>`
-        }
-      }
+      //for (i=1;i<=navPanel.numPages-1;i++) {
+      showNumberPages()
       pagePrev.insertAdjacentHTML('afterend', textHtml);
+      document.getElementById("numStart").textContent=navPanel.numCurrent*navPanel.numLinesShown
+      document.getElementById("numEnd").textContent=navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown
+      document.getElementById("numTot").textContent=navPanel.numTot
     }else{
-      for (i=1;i<=numPages-1;i++) {
-        if(i==navPanel.numCurrent){
-          divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ i + `</a>`
-        }else{
-          divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
-          + i + `</a>`
-        }
-      }
+        divPag.innerHTML += showNumberPages()
+        /* for (i=1;i<=navPanel.numPages-1;i++) {
+          if(i==navPanel.numCurrent){
+            divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ i + `</a>`
+          }else{
+            divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
+            + i + `</a>`
+          }
+        } */      
     }
 
+
+    function showNumberPages(){
+      var textHtml=""
+      for (i=1;i<=pages.pages.length;i++) {
+        if(pages.pages[i]==navPanel.numCurrent){
+          textHtml +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ pages.pages[i] + `</a>`
+        }else{
+          textHtml +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
+          + pages.pages[i] + `</a>`
+        }
+      }
+      return textHtml
+    }
+    function getNumbersInterval(num){
+      var list = [],lowEnd,highEnd;
+      lowEnd=num - Math.round((Math.round(navPanel.paginationLimit/2)-1)/2)
+          higEnd=num + Math.round((Math.round(navPanel.paginationLimit/2)-1)/2)
+          for (var i = lowEnd; i <= highEnd; i++) {
+            list.push(i);
+          }
+      ////console.log(list)
+      return list
+    }
+   /*  function buildPagination(currPage,numberPerPage) {
+      const trimStart = (navPanel.numCurrent-1)*navPanel.numLinesShown
+      const trimEnd = trimStart + navPanel.numLinesShown
+      ////console.log(navPanel.arrNumberPages.slice(trimStart, trimEnd))
+  } */
     //divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
     
   }
+
 /* navigation.prototype.showPageNumbers = function (){
 //function showPageNumbers(){
   var navPanel=this
   var numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
-  console.log(numPages)
-  console.log(navPanel.numCurrent)
+  ////console.log(numPages)
+  ////console.log(navPanel.numCurrent)
   //divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
   for (i=1;i<=numPages-1;i++) {
     if(i==navPanel.numCurrent){
@@ -606,29 +799,92 @@ navigation.prototype.showPageNumbers = function (){
   
 } */
 function showLines(numCurrent){
-  console.log(numCurrent)
-  navigation.showLines(numCurrent)
+  //console.log(numCurrent)
+  navigation.showLines(numCurrent,false)
 }
-navigation.prototype.showLines = function (numCurrent){
-  var navPanel=this,linesShown;
-  navPanel.numCurrent=numCurrent
-  //console.log(d3.selectAll("#dvTable tr"))
-  //console.log(document.getElementById("#dvTable").querySelector('tr'))
+navigation.prototype.showLines = function (numCurrent,first){
+  var navPanel=this,linesShown,numPagesElements;
+  
+  if(numCurrent=='page-first'){
+    numCurrent=navPanel.firstPage
+  }else if (numCurrent=='page-prev'){
+    numCurrent=navPanel.numCurrent-1
+  }else if (numCurrent=='page-last'){
+    numCurrent=navPanel.pages.totalPages
+  }else if (numCurrent=='page-next'){
+    numCurrent=navPanel.numCurrent+1
+  }
+  navPanel.numCurrent=parseInt(numCurrent)
+  
+/*   if(!first){
+    navPanel.showNumberPages()
+  } */
+  
+
+  //////console.log(d3.selectAll("#dvTable tr"))
+  //////console.log(document.getElementById("#dvTable").querySelector('tr'))
   var sel=document.querySelectorAll("#dvTable tbody tr")
-  console.log(sel)
+  ////console.log(sel)
   if(sel.length>0){
     sel.forEach(
       function(currentValue, currentIndex, listObj) {
-        //console.log(currentValue + ', ' + currentIndex + ', ' + this);
+        //////console.log(currentValue + ', ' + currentIndex + ', ' + this);
         currentValue.remove()
       }
     )
   }
 
-  //console.log(navPanel.numCurrent*navPanel.numLinesShown)
-  //console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
-  linesShown=navPanel.targets.slice(navPanel.numCurrent*navPanel.numLinesShown, navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown);
-  console.log(linesShown)
+  //////console.log(navPanel.numCurrent*navPanel.numLinesShown)
+  //////console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
+  
+  
+  //if(navPanel.numCurrent!=1){
+  if(!first){
+    numPagesElements = document.querySelectorAll('#div-pagination .num-page');
+    numPagesElements.forEach(function(el){
+      el.remove()
+    })
+    navPanel.showNumberPages()
+    document.getElementById("numStart").textContent=navPanel.pages.startIndex
+    document.getElementById("numEnd").textContent=navPanel.pages.endIndex
+    document.getElementById("numTot").textContent=navPanel.numTot
+    //console.log(navPanel)
+    //console.log(navPanel.firstPage)
+    //console.log(typeof(navPanel.firstPage))
+    //console.log(typeof(navPanel.pages.pages[0]))
+    if(navPanel.pages.pages.includes(navPanel.firstPage)&(navPanel.pages.pages.includes(navPanel.pages.totalPages))){
+      document.getElementById("page-first").classList.add("hidden");
+      document.getElementById("page-prev").classList.add("hidden");
+      document.getElementById("page-next").classList.add("hidden");
+      document.getElementById("page-last").classList.add("hidden"); 
+    }else if(navPanel.pages.pages.includes(navPanel.pages.totalPages)){
+      document.getElementById("page-first").classList.remove("hidden");
+      document.getElementById("page-prev").classList.remove("hidden");
+      document.getElementById("page-next").classList.add("hidden");
+      document.getElementById("page-last").classList.add("hidden"); 
+    }else if(navPanel.pages.pages.includes(navPanel.firstPage)){
+      document.getElementById("page-first").classList.add("hidden");
+      document.getElementById("page-prev").classList.add("hidden");
+      document.getElementById("page-next").classList.remove("hidden");
+      document.getElementById("page-last").classList.remove("hidden"); 
+    }else{
+      document.getElementById("page-first").classList.remove("hidden");
+      document.getElementById("page-prev").classList.remove("hidden");
+      document.getElementById("page-next").classList.remove("hidden");
+      document.getElementById("page-last").classList.remove("hidden");
+    }
+
+
+  }
+  console.log(navPanel.pages)
+  
+  if(first){
+    linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
+  }else{
+    linesShown=navPanel.targets.slice(navPanel.pages.startIndex - 1, navPanel.pages.endIndex);
+  }
+  
+  ////console.log(linesShown)
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
@@ -639,9 +895,7 @@ navigation.prototype.showLines = function (numCurrent){
       navPanel.addElementContentTable(linesShown[i],i)
     }
   }
-  if(navPanel.numCurrent!=1){
-    navPanel.showPageNumbers()
-  }
+  //}
 }
 /* for (var i = 0; i < navPanel.targets.length; i++) {
   row = navPanel.tbody.insertRow(-1);
@@ -706,7 +960,7 @@ navigation.prototype.addElementContentTable = function (target,i){
   div2.className="flex-shrink-0 w-10 h-10"
   img=document.createElement("img")
   
-  //////console.log(nodesTable[i]["target"]["type"])
+  //////////console.log(nodesTable[i]["target"]["type"])
   if(!property){
       if(nodesTable[i]["target"]["type"]=="uri"){
           img.className="w-10 h-10 bg-green-300 rounded-full"
@@ -774,7 +1028,7 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     div2.className="flex-shrink-0 w-10 h-10"
     img=document.createElement("img")
     
-    //////console.log(target["target"]["type"]=="uri")
+    //////////console.log(target["target"]["type"]=="uri")
     if(!property){
         if(target["target"]["type"]=="uri"){
             img.className="w-10 h-10 bg-green-300 rounded-full"
@@ -804,7 +1058,7 @@ navigation.prototype.addElementContentTableProp = function (target,i){
         }
         
         span=document.createElement("span")
-        //////console.log(target["target"])
+        //////////console.log(target["target"])
         if(target["target"]["type"]=="menuOption"){
           menuOption=target["target"]["value"].split(",")
           newText = document.createTextNode("Sparql Endpoint: "+ menuOption[0]+ "and Position: "+menuOption[1]);
@@ -834,12 +1088,12 @@ navigation.prototype.dblclickCellContent = async function (cell) {
   var indexRows=1,bubble,node;
   //if(networkGraph.treeData.filter(d=>d.id==cell.getAttribute("id")).length==0){
     indexRows=await networkGraph.wrangleDataFreeGraph(cell,"table");
-    //console.log(indexRows)
+    //////console.log(indexRows)
     if(indexRows.length==0){
       unclickBubbleFreeGraph()
       bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
-      //console.log(bubble)
-      //console.log(cell)
+      //////console.log(bubble)
+      //////console.log(cell)
       clickBubbleFreeGraph(bubble,networkGraph.data)
       d3.select("#"+row.getAttribute("id"))
       .attr("stroke", "yellow")
@@ -847,15 +1101,15 @@ navigation.prototype.dblclickCellContent = async function (cell) {
     }else if (indexRows.length==1){
       unclickBubbleFreeGraph()
       node=d3.select("#"+cell.getAttribute("id")).data()[0]
-      //console.log(node)
+      //////console.log(node)
       if(node["menuOption"].split(";").length>1){
         bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
         //bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
       }else{
         bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
       }
-      //console.log(bubble)
-      //console.log(cell)
+      //////console.log(bubble)
+      //////console.log(cell)
       clickBubbleFreeGraph(bubble,networkGraph.data)
       d3.select("#"+row.getAttribute("id"))
       .attr("stroke", "yellow")
@@ -956,23 +1210,23 @@ navigation.prototype.clickMenuTable = async function (form,element){
   var propertyEl,bubble,node;
   var node=d3.select("#"+element["id"]).data()[0]
   var navPanel=this;
-  //console.log(form)
+  //////console.log(form)
   var newForm={"url":form["new_url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["new_subjectObject"]}
   propertyEl=form["property"]
 
   var form={"url":form["url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["subjectObject"]}
-  //console.log(element)
+  //////console.log(element)
   node=d3.select("#"+element.getAttribute("id")).data()[0]
   await buildFreeGraph(newForm,"table",node)
   document.getElementById(element.getAttribute("id"))
 
-  //console.log(newForm)
-  //console.log(node)
-  //console.log(bubble)
+  //////console.log(newForm)
+  //////console.log(node)
+  //////console.log(bubble)
   if(node["menuOption"].split(";").length>1){
-    //console.log("entra en mayor que 1")
+    //////console.log("entra en mayor que 1")
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
-    //console.log(bubble)
+    //////console.log(bubble)
   }else{
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+element.getAttribute("id"))
   }
