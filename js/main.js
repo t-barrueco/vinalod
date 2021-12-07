@@ -185,11 +185,11 @@ $.xhrPool = [];
       .text("Waiting for Sparql query")
     d3.select("#spin").style("display","inline-flex")
   
-    //console.log(sparqlQuery)
+    console.log(sparqlQuery)
     //console.log(queryUrl)
     $objectAjax=$.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
-      //console.log(results)
+      console.log(results)
       d3.select("#spin").style("display","none")
       ////console.log(results)
       graphHistory.push(options)

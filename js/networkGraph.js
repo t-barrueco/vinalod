@@ -884,6 +884,7 @@ NetworkGraph.prototype.enterFreeGraph = function(){
       })
       .on('clickout', function(d){
       })
+      //noun-circle.svg
       .on("click",function(d){
         var element=this
         clearTimeout(vis.clickTimeout);

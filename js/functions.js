@@ -678,9 +678,13 @@ function autocomplete(inp, arr) {
     except the one passed as an argument:*/
     var x = document.getElementsByClassName("autocomplete-items");
     for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != inp) {
+      if(elmnt){
+        if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }else{
         x[i].parentNode.removeChild(x[i]);
-      }
+      }     
     }
   }
   /*execute a function when someone clicks in the document:*/
@@ -688,7 +692,21 @@ function autocomplete(inp, arr) {
       closeAllLists(e.target);
   });
 }
-function get_name_euroscivoc(name){
+function closeAllLists(elmnt) {
+  /*close all autocomplete lists in the document,
+  except the one passed as an argument:*/
+  var x = document.getElementsByClassName("autocomplete-items");
+  for (var i = 0; i < x.length; i++) {
+    if(elmnt){
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }else{
+      x[i].parentNode.removeChild(x[i]);
+    }     
+  }
+}
+/* function get_name_euroscivoc(name){
   var n = name.indexOf("others")
   if (n!=-1){
     var res = name.substring(0, n-1);
@@ -697,7 +715,7 @@ function get_name_euroscivoc(name){
     return name
   }
   
-}
+} */
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }

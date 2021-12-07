@@ -118,7 +118,7 @@ navigation.prototype.initModal = function (){
 
   });
   $("#myModal").draggable()
-  d3.selectAll(".modal-content table").remove()
+  d3.selectAll("#modal-content table").remove()
 }
 
 navigation.prototype.navTableTable = function ()
@@ -402,7 +402,8 @@ navigation.prototype.contentTable = function (){
   navPanel.numEnd=navPanel.numLinesShown
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
-  d3.selectAll(".modal-content table").remove()
+  console.log(d3.selectAll("#modal-content"))
+  d3.selectAll("#modal-content table").remove()
   if (navPanel.targets.length>0){
 
     navPanel.table = document.createElement("table");
@@ -412,7 +413,7 @@ navigation.prototype.contentTable = function (){
     navPanel.thead.className="bg-gray-50"
     var tr=document.createElement("tr")
     var th=document.createElement("th")
-    th.setAttribute("colspan","2")
+    th.setAttribute("colspan","3")
     th.setAttribute("scope","colgroup")
     th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
     if(navPanel.node["type"]=="menuOption"){
@@ -447,8 +448,11 @@ navigation.prototype.contentTable = function (){
             </svg>
           </div>
         </div>
-          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            Select nodes
+          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="remove-sel" onclick="removeSelection(this)">
+            Remove selection
+          </button>
+          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="add-sel-graph" onclick="addSelToGraph(this)">
+            Add to graph
           </button>
         </div>`
 /*         th.innerHTML=`<div>
@@ -573,16 +577,22 @@ navigation.prototype.contentTableSearch = function (){
   var menuOption;
   navPanel.numStart=1
   //console.log(navPanel.targets)
-  navPanel.numTot=navPanel.targets.length
-  navPanel.numLinesShown=10
-  navPanel.numEnd=navPanel.numLinesShown
-  navPanel.numCurrent=navPanel.numStart
-  navPanel.contentRows=[]
   
-  if (navPanel.targets.length>0){    
-    navPanel.showLines(navPanel.numCurrent,true)
+  console.log("contentTableSearch")
+  if (navPanel.targets.length>0){  
+    navPanel.numTot=navPanel.targets.length
+    navPanel.numLinesShown=10
+    navPanel.numEnd=navPanel.numLinesShown
+    navPanel.numCurrent=navPanel.numStart
+    navPanel.contentRows=[]
+    //console.log("pasa por aquí")
+    //removeLinesNavContent()  
+    //console.log(navPanel.numTot)
+    navPanel.showLines(navPanel.numCurrent,false)
+    //navPanel.paginationNumbers()
     navPanel.divPag=document.createElement("div")
-    navPanel.showNumberPages()    
+    
+    //navPanel.showNumberPages()    
   } 
 }
 navigation.prototype.paginationNumbers = function (){
@@ -682,6 +692,7 @@ navigation.prototype.showNumberPages = function (){
   var navPanel=this,textHtml=""
 
   navPanel.firstPage=1
+  console.log(navPanel.numTot)
   navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
   navPanel.arrNumberPages=[]
   navPanel.paginationLimit=10
@@ -718,109 +729,14 @@ navigation.prototype.showNumberPages = function (){
   /* ////console.log(textHtml)
   return textHtml */
 }
-navigation.prototype.showPageNumbers = function (){
-  //function showPageNumbers(){
-    
 
-    var navPanel=this,pagePrev,textHtml="",numPages
-    navPanel.firstPage=1
-    navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
-    navPanel.arrNumberPages=[]
-    navPanel.paginationLimit=10
-
-    for (var i = navPanel.firstPage; i <= navPanel.numTot; i++) {
-      navPanel.arrNumberPages.push(i);
-    }
-
-    //////console.log(navPanel.numCurrent)
-    var pages = navPanel.paginationNumbers()
-    //////console.log(pages)
-    if(navPanel.numPages>navPanel.paginationLimit){
-      getNumbersInterval(navPanel.numCurrent)
-    }
-    //////console.log(document.querySelectorAll('[aria-label="Pagination"]'))
-    //////console.log(document.querySelectorAll('#div-pagination .num-page'))
-    var numPagesElements = document.querySelectorAll('#div-pagination .num-page');
-    //////console.log(numPagesElements)
-    if(numPagesElements.length>0){
-      numPagesElements.forEach(function(el){
-        el.remove()
-      })
-      pagePrev = document.getElementById('page-prev');
-      //for (i=1;i<=navPanel.numPages-1;i++) {
-      showNumberPages()
-      pagePrev.insertAdjacentHTML('afterend', textHtml);
-      document.getElementById("numStart").textContent=navPanel.numCurrent*navPanel.numLinesShown
-      document.getElementById("numEnd").textContent=navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown
-      document.getElementById("numTot").textContent=navPanel.numTot
-    }else{
-        divPag.innerHTML += showNumberPages()
-        /* for (i=1;i<=navPanel.numPages-1;i++) {
-          if(i==navPanel.numCurrent){
-            divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ i + `</a>`
-          }else{
-            divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
-            + i + `</a>`
-          }
-        } */      
-    }
-
-
-    function showNumberPages(){
-      var textHtml=""
-      for (i=1;i<=pages.pages.length;i++) {
-        if(pages.pages[i]==navPanel.numCurrent){
-          textHtml +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ pages.pages[i] + `</a>`
-        }else{
-          textHtml +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent)">`
-          + pages.pages[i] + `</a>`
-        }
-      }
-      return textHtml
-    }
-    function getNumbersInterval(num){
-      var list = [],lowEnd,highEnd;
-      lowEnd=num - Math.round((Math.round(navPanel.paginationLimit/2)-1)/2)
-          higEnd=num + Math.round((Math.round(navPanel.paginationLimit/2)-1)/2)
-          for (var i = lowEnd; i <= highEnd; i++) {
-            list.push(i);
-          }
-      //////console.log(list)
-      return list
-    }
-   /*  function buildPagination(currPage,numberPerPage) {
-      const trimStart = (navPanel.numCurrent-1)*navPanel.numLinesShown
-      const trimEnd = trimStart + navPanel.numLinesShown
-      //////console.log(navPanel.arrNumberPages.slice(trimStart, trimEnd))
-  } */
-    //divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
-    
-  }
-
-/* navigation.prototype.showPageNumbers = function (){
-//function showPageNumbers(){
-  var navPanel=this
-  var numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
-  //////console.log(numPages)
-  //////console.log(navPanel.numCurrent)
-  //divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ numCurrent+ `</a>`
-  for (i=1;i<=numPages-1;i++) {
-    if(i==navPanel.numCurrent){
-      divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">`+ i + `</a>`
-    }else{
-      divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" onClick="showLines(this.textContent)">`
-      + i + `</a>`
-    }
-  }
-  
-} */
 function showLines(numCurrent){
   ////console.log(numCurrent)
   navigation.showLines(numCurrent,false)
 }
 function removeLinesNavContent(){
   var sel=document.querySelectorAll("#dvTable tbody tr")
-  //////console.log(sel)
+  console.log(sel)
   if(sel.length>0){
     sel.forEach(
       function(currentValue, currentIndex, listObj) {
@@ -832,7 +748,7 @@ function removeLinesNavContent(){
 }
 navigation.prototype.showLines = function (numCurrent,first){
   var navPanel=this,linesShown,numPagesElements;
-  
+  console.log(navPanel.pages)
   if(numCurrent=='page-first'){
     numCurrent=navPanel.firstPage
   }else if (numCurrent=='page-prev'){
@@ -892,7 +808,7 @@ navigation.prototype.showLines = function (numCurrent,first){
 
 
   }
-  //console.log(navPanel.pages)
+  console.log(navPanel.pages)
   
   if(first){
     linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
@@ -900,7 +816,7 @@ navigation.prototype.showLines = function (numCurrent,first){
     linesShown=navPanel.targets.slice(navPanel.pages.startIndex - 1, navPanel.pages.endIndex);
   }
   
-  //////console.log(linesShown)
+  console.log(linesShown)
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
@@ -925,7 +841,7 @@ navigation.prototype.showLines = function (numCurrent,first){
 } */
 
 navigation.prototype.addEventsContentNav = function (){
-  var navPanel=this,cell,nodeSearchField;
+  var navPanel=this,cell,nodeSearchField,node;
   navPanel.isDblclick = false;
 
   ////console.log(navPanel.targets)
@@ -949,16 +865,21 @@ navigation.prototype.addEventsContentNav = function (){
     //navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value)).map(d=>d.target.value);
     //console.log(navPanel.resultsSearch)
 
-   
-    console.log(navPanel.backupNavPanel)
+    //console.log(navPanel.backupNavPanel)
+
+    //contentRows
+    //numPages
+    //numTot
+    //sources
     
-    if(navPanel.backupNavPanel){
+    
+    if(navPanel.targetsBackup){
       console.log("entra if")
-      navPanel.resultsSearch = navPanel.backupNavPanel.targets.filter(a =>(a.target.value.includes(nodeSearchField.value)|(a.target.value==nodeSearchField.value)));
+      navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.includes(nodeSearchField.value)|(a.target.value==nodeSearchField.value)));
     }else{
       console.log("entra else")
       navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
-      navPanel.backupNavPanel=navPanel
+      navPanel.targetsBackup=navPanel.targets
     }
     
     navPanel.targets=navPanel.resultsSearch
@@ -966,6 +887,7 @@ navigation.prototype.addEventsContentNav = function (){
     console.log(navPanel)
 
     navPanel.contentTableSearch()
+    closeAllLists()
     /* navPanel.numStart=1
     //console.log(navPanel.targets)
     navPanel.numTot=navPanel.targets.length
@@ -985,14 +907,23 @@ navigation.prototype.addEventsContentNav = function (){
   });
 
   navPanel.timeoutTiming = 500;
-  d3.selectAll(".modal-content td").on("dblclick",function(){ 
+  console.log(d3.selectAll("#modal-content"))
+  console.log(d3.selectAll("#modal-content td"))
+  d3.selectAll("#modal-content td").on("dblclick",function(){ 
     d3.event.preventDefault();
     navPanel.isDblclick = true;
     clearTimeout(navPanel.dblclickTimeout);
     navPanel.dblclickTimeout = setTimeout(function () {
       navPanel.isDblclick = false;
     }, navPanel.timeoutTiming);
-    dblclickCellContent(this)
+    console.log("pasa por aquí")
+    console.log(this)
+    node=d3.select("#"+this.getAttribute("id")).data()[0]
+    if(node.more_results.length>0){
+      dblclickCellCluster(node)
+    }else{
+      dblclickCellContent(this)
+    }
     return false;
   })
   .on("click",function(){  
@@ -1070,12 +1001,29 @@ navigation.prototype.addElementContentTable = function (target,i){
   el1.appendChild(div3).appendChild(div4)
 }
 
+
 navigation.prototype.addElementContentTableProp = function (target,i){
   var navPanel=this;
-
+  insertCheckBox()
   insertContent(true)
   insertContent(false)
-  
+  function insertCheckBox(){
+    cell = row.insertCell(-1);
+    cell.className="px-6 py-4 whitespace-nowrap"
+    //cell.id=target["target"]["id"]+"_check"
+    div=document.createElement("div")
+    div.className="flex items-center h-5"
+    input=document.createElement("input")
+    input.id=target["target"]["id"]+"_check"
+    input.setAttribute("name","nodeTable")
+    input.setAttribute("type","checkbox")
+    //input.className="w-4 h-4 text-red-600 border-red-300 rounded focus:ring-red-500"
+    input.className="form-checkbox"
+    cell.appendChild(div).appendChild(input)
+/*     <div class="flex items-center h-5">
+      <input id="comments" aria-describedby="comments-description" name="comments" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+    </div> */
+  }
   function insertContent(property){
     var menuOption;
     cell = row.insertCell(-1);
@@ -1155,7 +1103,46 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     el1.appendChild(div3).appendChild(div4)
   }
   }
+  function dblclickCellCluster(el){
+    navigation.dblclickCellCluster(el)
+  }
+  navigation.prototype.dblclickCellCluster = async function (cell) {
+    var navPanel=this,results;
+    console.log(cell)
+    results=await checkClassesBasicGraph(cell["more_results"],cell["subject-object"])
+    console.log(results)
+    results=results.map(function (d){
+      if(cell["subject-object"]=="s"){
+        d.o.id=genRandomString()
+      }else if(cell["subject-object"]=="o"){
+        d.s.id=genRandomString()
+      }
+      return d
+    })
 
+    if(cell["subject-object"]=="s"){
+      navPanel.targets=results.map(function(d){
+          return {
+            "value":d.o.value,
+            "id":d.o.id
+          }
+      })
+    }else if(cell["subject-object"]=="o"){
+      navPanel.targets=results.map(function(d){
+        return {
+          "value":d.s.value,
+          "id":d.s.id
+        }
+      })
+      //navPanel.targets=results.map(d=>d.s.value)
+    }
+    console.log(navPanel.targets)
+    navPanel.pages.endIndex=navPanel.targets.length
+    navPanel.pages.numTot=navPanel.targets.length
+    //navPanel.paginationNumbers()
+    navPanel.showLines(1,false)
+    
+  }
 navigation.prototype.dblclickCellContent = async function (cell) {
   var indexRows=1,bubble,node;
   //if(networkGraph.treeData.filter(d=>d.id==cell.getAttribute("id")).length==0){
@@ -1240,7 +1227,7 @@ navigation.prototype.addMenuToTable = function (node,menuItems){
       newRow.className = 'menu-table';
       newCell = newRow.insertCell();
       newCell.className="px-6 py-4 bg-gray-100 whitespace-nowrap"
-      newCell.setAttribute("colspan","2")
+      newCell.setAttribute("colspan","3")
       newCell.setAttribute("x-data","{ tooltip: false }")
 
       a=document.createElement("a")
@@ -1307,4 +1294,33 @@ navigation.prototype.clickMenuTable = async function (form,element){
 function searchMenuOptionChild(){
   return (networkGraph.treeData.filter(d=>d.id==node["id"])[0]["children"].filter(v=>v.value==newForm.url+","+newForm["subject-object"])[0])
 }
+}
+
+function removeSelection(element){
+  console.log(element)
+  navigation.removeSelection()
+}
+navigation.prototype.removeSelection = function (){
+  var navPanel=this;
+
+  navPanel.targets=navPanel.targetsBackup
+    
+  console.log(navPanel)
+
+  navPanel.contentTableSearch()
+  $("#remove-sel").addClass("hidden")
+  $("#node-search").val("")
+}
+function addSelToGraph(element){
+  console.log(element)
+  navigation.addSelToGraph()
+}
+navigation.prototype.addSelToGraph = function (){
+  var navPanel=this;
+  var $boxes = $('input[name=nodeTable]:checked');
+  $boxes.each(function(){
+    // Do stuff here with this
+  });
+  console.log($boxes)
+  $boxes.length;
 }

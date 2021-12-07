@@ -6,3 +6,4 @@ OP Theme	images/publication.svg
 corporateBody	images/organization_icon.svg
 Catalog of open datasets	https://static.thenounproject.com/png/3972987-200.png
 data service	https://static.thenounproject.com/png/3422130-200.png
+Cluster images/noun-circle.svg
