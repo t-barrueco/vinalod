@@ -448,7 +448,7 @@ async function buildFreeGraph(form,origin,node){
       }else{
         ////////////////////console.log("else")
         //////////////////console.log(form)
-        links=addFreeGraphData(results,node,form)
+        /* links=addFreeGraphData(results,node,form)
         networkGraph.initializeSimulation();
         networkGraph.dataJoinFreeGraph()
         networkGraph.enterFreeGraph()
@@ -460,10 +460,26 @@ async function buildFreeGraph(form,origin,node){
         ////////////////console.log(networkGraph.treeData)
         ////////////console.log(links)
         //links=addFreeGraphData(results,d3.select("#"+ node.getAttribute("id")),form)
-        addFiltersFreeGraph(form["uri"],links[0]["source"]["id"])
+        addFiltersFreeGraph(form["uri"],links[0]["source"]["id"]) */
+        addNodesGraph(results,node,form)
       }
     }
   }
+function addNodesGraph(results,node,form){
+  links=addFreeGraphData(results,node,form)
+  networkGraph.initializeSimulation();
+  networkGraph.dataJoinFreeGraph()
+  networkGraph.enterFreeGraph()
+  networkGraph.initializeSimulation();
+  networkGraph.dataJoinFreeGraph()
+  networkGraph.exitGraph()
+  networkGraph.zoomOut()
+  networkGraph.zoomOut()
+  ////////////////console.log(networkGraph.treeData)
+  console.log(links)
+  //links=addFreeGraphData(results,d3.select("#"+ node.getAttribute("id")),form)
+  //addFiltersFreeGraph(form["uri"],links[0]["source"]["id"])
+}
 function dblclickCellContent(cell){
   navigation.dblclickCellContent(cell)
 }
@@ -536,8 +552,6 @@ function getFreeGraphData(results,form){
     return data
   }
 function addFreeGraphData(results,node,form){
-
-    ////////////////////console.log(node)
     var subjectId,objectId,subjectNode,objectNode,links=[],nodes=[],treeData;
     subjectObject=form["subject-object"]
     //////////////////console.log(node)
@@ -590,6 +604,9 @@ function addFreeGraphData(results,node,form){
     networkGraph.exitGraph()
     networkGraph.zoomOut()
     networkGraph.zoomOut() */
+    console.log(treeData.length)
+    console.log(data)
+    console.log(networkGraph.data)
     if(treeData.length>0){
       return data.flatData.links;
     }else{

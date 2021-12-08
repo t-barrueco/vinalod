@@ -100,9 +100,9 @@ $.xhrPool = [];
     updateAll();
   }
   async function buildBasicGraph(rowDataConfig,node,menuOption){
-    //console.log(rowDataConfig)
-    //console.log(node)
-    //console.log(menuOption)
+    ////console.log(rowDataConfig)
+    ////console.log(node)
+    ////console.log(menuOption)
     var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns,found;
     url=configFile[rowDataConfig]["endpoint_url"]
     sparqlQuery=configFile[rowDataConfig]["query"]
@@ -119,9 +119,9 @@ $.xhrPool = [];
     property_names=get_property_names(properties_full)
     
     /* if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-      //////////////////console.log(menuOption)
-      //////////////////console.log(networkGraph.treeData)
-      //////////////////console.log(menuOption)
+      ////////////////////console.log(menuOption)
+      ////////////////////console.log(networkGraph.treeData)
+      ////////////////////console.log(menuOption)
       throw new Error("Something went badly wrong!");
     } */
     
@@ -141,35 +141,35 @@ $.xhrPool = [];
     //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
     if(node!=undefined){
       if(parameters!=""){
-        //console.log(parameters)
+        ////console.log(parameters)
         parameters=get_parameters(parameters)
         for (i = 0; i < parameters.length; ++i) { 
-          //////console.log(node[parameters[i]])
+          ////////console.log(node[parameters[i]])
           sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
         }  
-        //console.log(node)
+        ////console.log(node)
           if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
-            //console.log("primera")
+            ////console.log("primera")
             sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
           }else{
-            //console.log("segunda")
+            ////console.log("segunda")
             sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
           }
       }else{
-        //console.log(node)
+        ////console.log(node)
         if(node["configRow"]){
           sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
         }else{
           sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
         }
-        ////console.log(node[node["class"]+"_uri"])
+        //////console.log(node[node["class"]+"_uri"])
         
       }
 
       nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(classes));
       nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(classes)))))
-      ////////////console.log(nodesClassesCorrespondence)
-      ////////////console.log(nodesClassesShow)
+      //////////////console.log(nodesClassesCorrespondence)
+      //////////////console.log(nodesClassesShow)
     }
   
     if(graphType=="TREE"){
@@ -185,15 +185,15 @@ $.xhrPool = [];
       .text("Waiting for Sparql query")
     d3.select("#spin").style("display","inline-flex")
   
-    console.log(sparqlQuery)
-    //console.log(queryUrl)
+    //console.log(sparqlQuery)
+    ////console.log(queryUrl)
     $objectAjax=$.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
-      console.log(results)
+      //console.log(results)
       d3.select("#spin").style("display","none")
-      ////console.log(results)
+      //////console.log(results)
       graphHistory.push(options)
-      //////////////////////console.log(properties)
+      ////////////////////////console.log(properties)
      
       
       if(node==undefined){
@@ -235,31 +235,31 @@ $.xhrPool = [];
         networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
         collapse()
       }else{
-        //////////////////console.log(networkGraph.treeData)
+        ////////////////////console.log(networkGraph.treeData)
         data=buildDataBasic(results,configRow,configClasses,node,menuOption)
         var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-        ////////////console.log(dif)
-        //////////console.log(nodesClassesShow)
-        //////////console.log(colorScale.domain())
+        //////////////console.log(dif)
+        ////////////console.log(nodesClassesShow)
+        ////////////console.log(colorScale.domain())
         found=networkGraph.treeData.filter(function(item) {
-          ////////////////////console.log(item.id)
-          ////////////////////console.log(data.treeData[0]["id"])
+          //////////////////////console.log(item.id)
+          //////////////////////console.log(data.treeData[0]["id"])
           return (item.id == data.treeData[0]["id"])
         })
-        ////////////////////console.log(found)
+        //////////////////////console.log(found)
         if(found.length!=0){
          /*  if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-            //////////////////console.log(menuOption)
-            //////////////////console.log(networkGraph.treeData)
-            //////////////////console.log(menuOption)
-            ////////////////////console.log(treeData[position[i-1]-1])
+            ////////////////////console.log(menuOption)
+            ////////////////////console.log(networkGraph.treeData)
+            ////////////////////console.log(menuOption)
+            //////////////////////console.log(treeData[position[i-1]-1])
            // throw new Error("Something went badly wrong!");
           } */
-          ////////////////////console.log(networkGraph.treeData.indexOf(found[0]))
+          //////////////////////console.log(networkGraph.treeData.indexOf(found[0]))
           create_menuNode(networkGraph.treeData.indexOf(found[0]),data.treeData[0])
           networkGraph.data=flatten(networkGraph.treeData).flatData
         }else{
-        ////////////////////console.log(networkGraph.treeData)
+        //////////////////////console.log(networkGraph.treeData)
         networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
         networkGraph.data=flatten(networkGraph.treeData).flatData
         }
@@ -311,9 +311,9 @@ $.xhrPool = [];
       showWordcloud(node,sparqlQuery,configRow)
     }
     function create_menuNode(index,treeData){
-      ////////////////////console.log(networkGraph.treeData[index])
-      ////////////////////console.log(treeData)
-      //////////////////console.log(networkGraph.treeData)
+      //////////////////////console.log(networkGraph.treeData[index])
+      //////////////////////console.log(treeData)
+      ////////////////////console.log(networkGraph.treeData)
       if(networkGraph.treeData[index]["class"]!="menuOption"){
         networkGraph.treeData[index]["children"].concat(treeData.children)
       }
@@ -324,48 +324,31 @@ $.xhrPool = [];
   //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri,arrayMenuOptions=[];
     hierarchy=get_hierarchy(configRow["hierarchy"])
-    ////////////////////console.log(menuOption)
+    //console.log(hierarchy)
+    //console.log(element)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(configRow["classes"])
+      //console.log(nodesClassesCorrespondence)
       nodesClassesShow=Object.values(nodesClassesCorrespondence)
+      //console.log(nodesClassesShow)
       classTooltip=hierarchy[0]
     }else{
       classTooltip=nodesClassesCorrespondence[element["class"]]
-      /* //////////////////console.log(element)
-      //////////////////console.log(menuOption)
-      if(element["menuOption"]){
-        arrayMenuOptions=element["menuOption"].split(";")
-        //////////////////console.log(arrayMenuOptions)
-        if(!arrayMenuOptions.includes(menuOption)){
-          arrayMenuOptions.push(menuOption)
-        }
-      } */
-      ////////////////console.log(element)
       if((element["menuOption"]!=undefined)&(element["menuOption"]!="no option")){
-        ////////////////console.log("distinto de undefined")
-        ////////////////console.log(element["menuOption"])
-        ////////////////console.log(menuOption)
         arrayMenuOptions.push(element["menuOption"])
         arrayMenuOptions.push(menuOption)
-        //arrayMenuOptions=[element["menuOption"]].push(menuOption)
-        ////////////////console.log(arrayMenuOptions)
         if(arrayMenuOptions.length>1){
-          ////////////////console.log("call add menuoptions")
           addMenuOptionNode()
         }
       }
-      ////////////////console.log(element)
     }
     
     
     properties=get_properties(configRow["properties_full"])
     tooltip=getTooltip(classTooltip,configRow["option_text"])
-    //console.log(results)
-    //console.log(hierarchy)
-    ////console.log(hierarchy[0])
     root=results[0][hierarchy[0]]["value"]
-    //////////////////console.log(results)
+
     results.forEach(function(r){
       for (i = 0; i < hierarchy.length-1; ++i) {    
         if((!procNode[i])||(procNode[i]!=r[hierarchy[i]].value)){  
@@ -374,6 +357,7 @@ $.xhrPool = [];
           }else{
             node={"id":genRandomString(),"value":r[hierarchy[i]].value,"shape":1,"class":hierarchy[i]}
           }
+          //console.log(node)
           if(r[hierarchy[i]].value==root){
             node["root"]=true
             if(element!=undefined){
@@ -381,8 +365,7 @@ $.xhrPool = [];
             }
           }
           options=getOptions(configClasses,hierarchy[i])
-          //////////////////////console.log(options)
-          //////////////////////console.log(node)
+
           if(options.length>0){
             optionNode=""
             options.forEach(function(k){
@@ -404,7 +387,6 @@ $.xhrPool = [];
           if(menuOption!=undefined){
             if(node["menuOption"]==undefined){
               node["menuOption"]=menuOption
-              ////console.log(node)
               node["menuOptionText"]=configFile.filter(d=>d.option==menuOption)[0]["option_text"]
             }else{
               node["menuOption"]+=";"+menuOption
@@ -412,30 +394,23 @@ $.xhrPool = [];
             }
             
           }else{
-            ////console.log(node)
-            ////console.log(configFile)
+            //console.log(node)
+            //console.log(configFile)
+            //console.log(node.class)
             node["menuOption"]="no options"
-            node["menuOptionText"]=configFile.filter(d=>d.class==node.class)[0]["option_text"]
           }
           
           nodes.push(node)
-          //////////////////console.log(position)
-          //////////////////console.log(i)
           if(position[i-1]){
-            //////////////////console.log(treeData[position[i-1]-1]["children"])
+            //console.log(treeData[position[i-1]-1])
+            //console.log(node)
+            if(treeData[position[i-1]-1]["children"]==undefined){
+              treeData[position[i-1]-1]["children"]=[]
+            }
             treeData[position[i-1]-1]["children"].push(node)
           }
           if(i!=(hierarchy.length-1)){
-            //////////////////console.log(node["children"])
-            //node["children"]=[]
             position[i]=treeData.push(node)
-           /*  if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-              //////////////////console.log(menuOption)
-              //////////////////console.log(networkGraph.treeData)
-              //////////////////console.log(menuOption)
-              //////////////////console.log(treeData)
-              throw new Error("Something went badly wrong!");
-            } */
           }
           procNode[i]=node.value
         }
@@ -455,24 +430,13 @@ $.xhrPool = [];
               })
         }
         node["tooltip"]=getTooltipNode(tooltip,node["class"])
-        //////////////////////console.log(node)
-        //////////////////////console.log(menuOption)
-        /* if(menuOption!=undefined){
-          node["menuOption"]=menuOption
-        } */
         nodes.push(node)
-        //if()
-        //////////////////console.log(treeData[position[position.length-1]-1])
-        //////////////////console.log(node)
+
         if(treeData[position[position.length-1]-1]["children"]==undefined){
           treeData[position[position.length-1]-1]["children"]=[]
         }
         if(treeData[position[position.length-1]-1]["menuOption"]){
-          //arrayMenuOptions=treeData[position[position.length-1]-1]["menuOption"].split(";")
           if(arrayMenuOptions.length>1){
-            //addMenuOptionNode(treeData[position[position.length-1]-1],node)
-            //////////////////console.log(element)
-            ////////////////console.log(treeData[position[position.length-1]-1]["children"])
             treeData[position[position.length-1]-1]["children"][1]["children"].push(node)
           }else{
             treeData[position[position.length-1]-1]["children"].push(node)
@@ -484,46 +448,20 @@ $.xhrPool = [];
         
       }
       })
-      //////////////////////console.log(treeData)
       
       flatData=flatten_v2(treeData)
-      //////////////////////console.log(flatData)
       return flatData
       function addMenuOptionNode(){
         var childrenMenuOption;
         element["children"]=[{"value":arrayMenuOptions[0],"id":genRandomString(),"class":"menuOption","shape":1,"number":0,"children":element["children"]}]
         element["children"].push({"value":arrayMenuOptions[1],"id":genRandomString(),"class":"menuOption","shape":1,"number":0,"children":[]})
-        //////////console.log(nodesClassesCorrespondence)
         if(!("menuOption" in nodesClassesCorrespondence)){
           nodesClassesCorrespondence["menuOption"]="Menu option"
         }
-        //////////console.log(nodesClassesShow)
         if(!nodesClassesShow.includes("Menu option")){
           nodesClassesShow.push("Menu option")
         }
-        
-        //parent["children"]=arrayMenuOptions[0]["children"]=parent["children"]
 
-/*         parent["children"]=[]
-        arrayMenuOptions.forEach(function(d){
-          ////////////////console.log(d)
-          ////////////////console.log(childrenMenuOption)
-          if(d!=menuOption){
-            d.children=childrenMenuOption
-          }else{
-            if(d.children){
-              d.children.push(child)
-            }else{
-              d.children=[child]
-            }
-          }
-          ////////////////console.log(d.children)
-          parent.children.push(d)
-        }) */
-        //////////////////console.log(arrayMenuOptions)
-        //////////////////console.log(menuOption)
-        //////////////////console.log(parent["children"])
-        //////////////////console.log(child)
       }
   }
   function buildDataBasic_copy(results,configRow,configClasses,element,menuOption){
@@ -531,7 +469,7 @@ $.xhrPool = [];
     //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
       var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri;
       hierarchy=get_hierarchy(configRow["hierarchy"])
-      ////////////////////console.log(menuOption)
+      //////////////////////console.log(menuOption)
       if(element==undefined){
         nodesClasses=hierarchy
         nodesClassesCorrespondence=getClassesShow(configRow["classes"])
@@ -558,8 +496,8 @@ $.xhrPool = [];
               }
             }
             options=getOptions(configClasses,hierarchy[i])
-            //////////////////////console.log(options)
-            //////////////////////console.log(node)
+            ////////////////////////console.log(options)
+            ////////////////////////console.log(node)
             if(options.length>0){
               optionNode=""
               options.forEach(function(k){
@@ -595,14 +533,14 @@ $.xhrPool = [];
               treeData[position[i-1]-1]["children"].push(node)
             }
             if(i!=(hierarchy.length-1)){
-              //////////////////console.log(node["children"])
+              ////////////////////console.log(node["children"])
               //node["children"]=[]
               position[i]=treeData.push(node)
              /*  if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-                //////////////////console.log(menuOption)
-                //////////////////console.log(networkGraph.treeData)
-                //////////////////console.log(menuOption)
-                //////////////////console.log(treeData)
+                ////////////////////console.log(menuOption)
+                ////////////////////console.log(networkGraph.treeData)
+                ////////////////////console.log(menuOption)
+                ////////////////////console.log(treeData)
                 throw new Error("Something went badly wrong!");
               } */
             }
@@ -624,8 +562,8 @@ $.xhrPool = [];
                 })
           }
           node["tooltip"]=getTooltipNode(tooltip,node["class"])
-          //////////////////////console.log(node)
-          //////////////////////console.log(menuOption)
+          ////////////////////////console.log(node)
+          ////////////////////////console.log(menuOption)
           /* if(menuOption!=undefined){
             node["menuOption"]=menuOption
           } */
@@ -637,10 +575,10 @@ $.xhrPool = [];
           treeData[position[position.length-1]-1]["children"].push(node)
         }
         })
-        //////////////////////console.log(treeData)
+        ////////////////////////console.log(treeData)
         
         flatData=flatten_v2(treeData)
-        //////////////////////console.log(flatData)
+        ////////////////////////console.log(flatData)
         return flatData
     }
   function flatten(root) {
@@ -791,8 +729,10 @@ async function showTimeLine(data){
   while (results[0]["replaces"]!=undefined) 
   
   timelineGraph(dataTimeline)
-  modal2=document.getElementById("myModal2")
-  modal2.style.display = "block";
+  //modal2=document.getElementById("myModal2")
+  //modal2.style.display = "block";
+  $("#myModal2").removeClass("translate-x-full")
+  $("#myModal2").addClass("translate-x-0")
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
@@ -979,7 +919,7 @@ function transformDataTreegraph(node,data){
 }
 async function showWordcloud(node,sparqlQuery,configRow){
   var rowDataConfig,results,dataTreegraph=[],title;
-  ////////////////////////console.log(node)
+  //////////////////////////console.log(node)
 
   if(node!=undefined){
     for (i = 0; i < configFile.length; ++i) { 
@@ -1104,11 +1044,11 @@ var modal = document.getElementById("myModal");
 
 var span = document.getElementsByClassName("close")[0];
 
-//console.log(span)
+////console.log(span)
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-  //console.log("entra")
+  ////console.log("entra")
   //modal.style.display = "none";
   $("#myModal").removeClass("translate-x-0")
   $("#myModal").addClass("translate-x-full")
@@ -1129,7 +1069,9 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  modal2.style.display = "none";
+  //modal2.style.display = "none";
+  $("#myModal2").removeClass("translate-x-0")
+  $("#myModal2").addClass("translate-x-full")
 }
 
 // When the user clicks anywhere outside of the modal, close it
@@ -1240,8 +1182,8 @@ function get_parameters(parameters){
 //ADD connect with classes in basic mode
 function checkConfigFileNode(result){
   if(result["o"].type=="uri"){
-    ////////////////////////////////////console.log(result)
-    ////////////////////////////////////console.log(configFile)
+    //////////////////////////////////////console.log(result)
+    //////////////////////////////////////console.log(configFile)
   }
 }
 function expertMode(){
@@ -1255,9 +1197,9 @@ function expertMode(){
   $("#landing-text").addClass("hidden")
 }
 function basicMode(){
-  //console.log("basicMode")
-  //console.log($("#flyoutMenu").attr("class"))
-  //console.log($("#flyoutMenu").hasClass("opacity-0"))
+  ////console.log("basicMode")
+  ////console.log($("#flyoutMenu").attr("class"))
+  ////console.log($("#flyoutMenu").hasClass("opacity-0"))
   if($("#flyoutMenu").hasClass("opacity-0")){
       $("#flyoutMenu").addClass("transition ease-out duration-200")
       $("#flyoutMenu").removeClass("hidden opacity-0 translate-y-1")
@@ -1270,21 +1212,21 @@ function basicMode(){
   
 }
 /* function changeBasicGraph(option){
-  //console.log(option)
-  //console.log($(option).find( "#optionMain" ).text().trim())
+  ////console.log(option)
+  ////console.log($(option).find( "#optionMain" ).text().trim())
   
 } */
 function changeCollectionOptions(collection){
   var newCollection,oldCollection;
-  //console.log(collection)
-  //console.log(configFile)
-  //console.log($("#"+collection))
-  //console.log($("#"+collection).find(".bg-transparent"))
-  //console.log($("#"+collection).find(".bg-transparent").length)
-  //console.log($("#tabs-sections").find("nav").find("bg-blue-500"))
+  ////console.log(collection)
+  ////console.log(configFile)
+  ////console.log($("#"+collection))
+  ////console.log($("#"+collection).find(".bg-transparent"))
+  ////console.log($("#"+collection).find(".bg-transparent").length)
+  ////console.log($("#tabs-sections").find("nav").find("bg-blue-500"))
   oldCollection=$("#tabs-sections").find(".bg-blue-500")
   
-  //console.log(oldCollection)
+  ////console.log(oldCollection)
   oldCollection.removeClass("bg-blue-500")
   oldCollection.addClass("bg-transparent")
   oldCollection.parent().removeClass("text-gray-900")
@@ -1298,14 +1240,14 @@ function changeCollectionOptions(collection){
       newCollection.parent().removeClass("text-gray-500")
   }
   optionsMenu=configFile.filter(d=>d.collection==collection)
-  //console.log(optionsMenu)
+  ////console.log(optionsMenu)
   appendHtmlOptions(optionsMenu)
-  ////console.log(optionsMenuHtml)
+  //////console.log(optionsMenuHtml)
 }
 function appendHtmlOptions(optionsMenu){
   $("#options-menu").find("a").remove()
   optionsMenu.forEach(element => {
-      //console.log(element)
+      ////console.log(element)
       //optionsMenu=dataConfig.filter(d=>d.collection=="EU Vocabularies")
       //htmlObject = document.createElement(data)
       //htmlObject.innerHTML = data;
@@ -1314,8 +1256,8 @@ function appendHtmlOptions(optionsMenu){
       $("#options-menu").append($(html))
 /*                     $.get("optionMainMenu.html", function (data) {
           //$("#appendToThis").append(data);
-          //console.log(data)
-          //console.log(typeof(data))
+          ////console.log(data)
+          ////console.log(typeof(data))
       }); */
 /*                         $("#options-menu").load("optionMainMenu.html", function(responseTxt, statusTxt, jqXHR){
           if(statusTxt == "error"){

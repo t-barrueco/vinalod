@@ -3,7 +3,7 @@ function timelineGraph(data){
     var formatTime=d3.timeFormat("%m-%d-%Y")
     var margin = {top: 30, right: 30, bottom: 30, left: 30}
     d3.select(".modal-header2 h2").remove()
-    modalHeader2=document.getElementsByClassName("modal-header2")[0]
+    modalHeader2=document.getElementById("modalHeader2")
     modalHeader2.classList.add("mb-4");
     var h2=document.createElement("h2")
     h2.className="text-lg font-medium text-gray-900"
@@ -38,7 +38,7 @@ function timelineGraph(data){
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
-    document.getElementsByClassName("modal-content2")[0].appendChild(div)
+    document.getElementById("modal-content2").appendChild(div)
 
     svg=d3.select("#modalGraph").append("svg")
     .style("width", width - margin.left + 'px')

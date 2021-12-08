@@ -394,7 +394,7 @@ NetworkGraph.prototype.updateForces= function() {
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
   var vis = this,linkId,classElement,text;
-  //////////////////console.log(vis.data)
+  ////////////////////console.log(vis.data)
   vis.tip = d3.tip()
   .attr('class', 'd3-tip z-50')
   .offset([-25,0])
@@ -499,12 +499,12 @@ NetworkGraph.prototype.dataJoinFreeGraph = function(){
 }
 NetworkGraph.prototype.enterGraph = function(){
   var vis=this,r;
-  console.log(vis.colors)
-  console.log(nodesClassesShow)
+  //console.log(vis.colors)
+  //console.log(nodesClassesShow)
   vis.colorScale.range(vis.colors.slice(0,nodesClassesShow.length))
   vis.colorScale.domain(nodesClassesShow)
-  ////////console.log(vis.colorScale.range())
-  ////////console.log(vis.colorScale.domain())
+  //////////console.log(vis.colorScale.range())
+  //////////console.log(vis.colorScale.domain())
 
   colorScale=vis.colorScale
   
@@ -531,7 +531,7 @@ NetworkGraph.prototype.enterGraph = function(){
   .attr("id",function(d){
     return (d.id+"_g")
   })
-  //////////console.log(vis.data)
+  ////////////console.log(vis.data)
   
   vis.nodeCircleCircle=vis.nodeCircle
       .append("circle")
@@ -561,14 +561,14 @@ NetworkGraph.prototype.enterGraph = function(){
       })
 
       .attr("r", function(d){
-        //////////console.log(d.number)
+        ////////////console.log(d.number)
         return vis.sizeNode(d.number)})
       .attr("stroke", function(d){
         return "grey"
       })
       .attr("stroke-width", "1px")
       .style("fill", function(d){ 
-        //////////console.log(d)
+        ////////////console.log(d)
         if(!d.class){
           if ((d.type=="typed-literal")||(d.type=="literal")){
             return "#c5b0d5";
@@ -580,10 +580,10 @@ NetworkGraph.prototype.enterGraph = function(){
             return "#a3cbe2"
           }
         }else{
-          ////////console.log(d.class)
-          ////////console.log(nodesClassesCorrespondence)
-          ////////console.log(vis.colorScale.domain())
-          ////////console.log(vis.colorScale.range())
+          //////////console.log(d.class)
+          //////////console.log(nodesClassesCorrespondence)
+          //////////console.log(vis.colorScale.domain())
+          //////////console.log(vis.colorScale.range())
          return vis.colorScale(nodesClassesCorrespondence[d.class]);
         }
         
@@ -622,9 +622,9 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.dblclickTimeout = setTimeout(function () {
           vis.isDblclick = false;
         }, vis.timeoutTiming);
-        ////////////////console.log(d3.event)
+        //////////////////console.log(d3.event)
         if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
-          ////////////console.log(vis.treeData)
+          //////////////console.log(vis.treeData)
           vis.wrangleData(this,"bubble",d3.event);
         }
         //vis.wrangleData(this,"bubble");
@@ -659,9 +659,9 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.dblclickTimeout = setTimeout(function () {
           vis.isDblclick = false;
         }, vis.timeoutTiming);
-        ////////////////console.log(d3.event)
+        //////////////////console.log(d3.event)
 
-        ////////////////console.log(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"])
+        //////////////////console.log(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"])
         if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
           vis.wrangleData(this,"bubble",d3.event);
         }
@@ -836,7 +836,7 @@ NetworkGraph.prototype.enterFreeGraph = function(){
     vis.nodeCircleCircle=vis.nodeCircle
       .append("circle")
       .attr("class",function(d){
-        //////////////////console.log(d.class)
+        ////////////////////console.log(d.class)
         return d.class + " nodeCircleCircle"
       }) 
       .attr("r", function(d){
@@ -952,7 +952,9 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
   if(data instanceof Element){
     uri=d3.select("#"+data.getAttribute("id")).data()[0]["uri"]
   }
-  
+  //console.log(x)
+  //console.log(y)
+  //console.log(menuItems)
   d3.select(".contextMenu").remove();
   vis.g
       .append('g').attr('class', "contextMenu")
@@ -966,6 +968,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       .attr('uri',data[data["class"]+"_uri"])
       .attr('x', x)
       .attr('y', (d, i) => { 
+        //console.log(i)
+        //console.log(y)
         return y + (i * 30); })
       .attr('rx', 2)
       .attr('width', width)
@@ -997,6 +1001,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
   d3.selectAll(".menuEntry")
       .append('text')
       .text((d) => { 
+        //console.log(d)
         return d.title; })
       .attr('uri',data[data["class"]+"_uri"])
       .attr('x', x)
@@ -1007,7 +1012,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         d3.selectAll(".d3-tip").each(function () {
           this.style.opacity = "0"
         })
-        //////////////////console.log(d.action(data,d))
+        ////////////////////console.log(d.action(data,d))
         d.action(data,d) })
       .on('mouseover', function(d){
         if(vis.graphType=="freeGraph"){
@@ -1052,48 +1057,47 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,event) {
   var vis = this;
   var children,pageX,pageY,founded,indexRows=1,node,configRows=0,arrayMenuOptions
   founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
-  ////////////////console.log(element)
-  ////////////console.log(networkGraph.treeData)
+  //////////////////console.log(element)
+  //////////////console.log(networkGraph.treeData)
 
   node=get_node_from_element(element.getAttribute("id").replace("_image",""))
   configRows=get_configRows_class(nodesClassesCorrespondence[node["class"]])
-  //////////////console.log(configRows)
+  ////////////////console.log(configRows)
   indexRows=await checkAskResults(configRows,node)
-  //////////////console.log(indexRows)
+  ////////////////console.log(indexRows)
   if (origin=="table"){
     pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
     pageY=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["y"]
   }else{
-    //////////////////console.log(d3.event)
+    ////////////////////console.log(d3.event)
     //pageX=d3.event.pageX
     //pageY=d3.event.pageY
     //pageX=event.pageX
     //pageY=event.pageY
     //pageX=event.offsetX
     //pageY=event.offsetY
-    pageX=event.screenX
-    pageY=event.screenY
+    pageX=event.pageX
+    pageY=event.pageY
   }
-  ////////////console.log(node["menuOption"])
+  //////////////console.log(node["menuOption"])
   if(node["menuOption"]!=undefined){
     arrayMenuOptions=node["menuOption"].split(";")
-    ////////////console.log(arrayMenuOptions)
+    //////////////console.log(arrayMenuOptions)
     indexRows = indexRows.filter(function( obj ) {
       return !arrayMenuOptions.includes(obj.option);
     });
   }
   
-  ////////////////console.log(indexRows.find(element => element.option === node["menuOption"]))
+  //////////////////console.log(indexRows.find(element => element.option === node["menuOption"]))
  
-  ////////////console.log(indexRows)
+  //////////////console.log(indexRows)
 /*   position=indexRows.indexOf(indexRows.filter(function(item) {
     return (item.id == node["menuOption"])
   })[0])
   if(position!=-1){
     indexRows.slice(position,1)
   }  */ 
-  //////////////console.log(indexRows)
-
+  ////////////////console.log(indexRows)
   if(founded.length==0){
     indexRows=await addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
     vis.data=flatten(vis.treeData).flatData
@@ -1101,7 +1105,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,event) {
     vis.dataJoinGraph()
     vis.exitGraph()
   }else if(indexRows.length>0){
-    ////////////console.log(vis.treeData)
+    //////////////console.log(vis.treeData)
     //throw new Error("Something went badly wrong!");
     indexRows=await addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
     vis.data=flatten(vis.treeData).flatData
@@ -1158,9 +1162,9 @@ NetworkGraph.prototype.wrangleDataFreeGraph = async function (element,origin) {
     pageX=d3.event.pageX
     pageY=d3.event.pageY
   }
-  //console.log("wrangleDataFreeGraph")
-  //////console.log(element)
-  //////console.log(d3.select("#"+element.getAttribute("id")).data())
+  ////console.log("wrangleDataFreeGraph")
+  ////////console.log(element)
+  ////////console.log(d3.select("#"+element.getAttribute("id")).data())
   resultRows=await checkQueries(element,undefined,origin,pageX,pageY)
   return resultRows
 };

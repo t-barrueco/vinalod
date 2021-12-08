@@ -9,13 +9,13 @@ navigation.prototype.init = function () {
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
   navPanel.node=networkGraph.rootNode
-  ////////console.log(networkGraph.rootNode)
+  //////////console.log(networkGraph.rootNode)
   navPanel.element=document.getElementById(navPanel.node.id)
   navPanel.getNodes()
   navPanel.initModal()
   navPanel.navTableTable()
   navPanel.contentTable()
-  ////////////console.log("entra")
+  //////////////console.log("entra")
 }
 
 navigation.prototype.getNodes = function (){
@@ -147,7 +147,7 @@ navigation.prototype.navTableTable = function ()
     }
     if(navPanel.type=="freeGraph"){
       navPanel.sources.forEach(function (d,i){
-        ////////////console.log(d)
+        //////////////console.log(d)
         if(i==0){
           navPanel.addElementNav(d,i)
         }else{
@@ -174,7 +174,7 @@ navigation.prototype.addElementNav = function (source,i){
   li.id=source["id"]+"_li"
 
   if(i<navPanel.sources.length-1){
-      //////////console.log("element nav")
+      ////////////console.log("element nav")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
@@ -190,7 +190,7 @@ navigation.prototype.addElementNav = function (source,i){
   span.setAttribute("class","h-9 flex items-center")
   
   span2=document.createElement("span")
-  ////////////console.log(source["type"])
+  //////////////console.log(source["type"])
   if(source["type"]=="uri"){
     colorCircle="green-300"
   }else if(source["type"]=="bnode"){
@@ -234,25 +234,25 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
 
-  //////////console.log(source)
-  //////////console.log(navPanel.sources.length)
-  //////////console.log(i)
-  //////////console.log(property)
-  //////////console.log(source["target"]["menuOption"])
-  //////////console.log(navPanel.node)
+  ////////////console.log(source)
+  ////////////console.log(navPanel.sources.length)
+  ////////////console.log(i)
+  ////////////console.log(property)
+  ////////////console.log(source["target"]["menuOption"])
+  ////////////console.log(navPanel.node)
 /*   if(source["target"]["type"]!="menuOption"){
     
   } */
 /*   if(source["target"]["menuOption"]){
-    //////////console.log("entra en source target menuOption")
+    ////////////console.log("entra en source target menuOption")
     if(property){
-      //////////console.log("entra en property")
+      ////////////console.log("entra en property")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
       li.appendChild(div)
     }else if((source["target"]["menuOption"].split(";").length<2)&(i<navPanel.sources.length-1)){
-      //////////console.log("entra en el largo")
+      ////////////console.log("entra en el largo")
       //if(i<navPanel.sources.length-1){
         div=document.createElement("div")
         div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
@@ -260,7 +260,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
         li.appendChild(div)
       }
   }else if((property)|(i<navPanel.sources.length-1)){
-    //////////console.log("el de por descarte")
+    ////////////console.log("el de por descarte")
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -269,7 +269,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
   if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
   //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))|(navPanel.node.type=="menuOption")){
-    //////////console.log("el de por descarte")
+    ////////////console.log("el de por descarte")
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -327,9 +327,9 @@ navigation.prototype.addElementNavProp = function (source,i,property){
   }
   el1=navPanel.ol.appendChild(li)
 
-  //////////console.log(el1)
+  ////////////console.log(el1)
   if(i<navPanel.sources.length-1){
-      //////////console.log(div)
+      ////////////console.log(div)
       if(div!=undefined){
         el1.appendChild(div)
       }
@@ -354,7 +354,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
-    ////////////console.log(source)
+    //////////////console.log(source)
     span5.innerHTML=  "   Sparql Endpoint(" + source["target"]["url"] + ")"
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
@@ -364,7 +364,7 @@ navigation.prototype.addElementNavProp = function (source,i,property){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
   }
-  //////////console.log(el3)
+  ////////////console.log(el3)
 }
 
 /* navigation.prototype.addLineElementNav = function (li){
@@ -396,13 +396,13 @@ navigation.prototype.contentTable = function (){
   var navPanel=this;
   var menuOption;
   navPanel.numStart=1
-  //console.log(navPanel.targets)
+  ////console.log(navPanel.targets)
   navPanel.numTot=navPanel.targets.length
   navPanel.numLinesShown=10
   navPanel.numEnd=navPanel.numLinesShown
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
-  console.log(d3.selectAll("#modal-content"))
+  //console.log(d3.selectAll("#modal-content"))
   d3.selectAll("#modal-content table").remove()
   if (navPanel.targets.length>0){
 
@@ -431,7 +431,7 @@ navigation.prototype.contentTable = function (){
         </div>
         </div>`
     }else{
-      //////////console.log(navPanel.node)
+      ////////////console.log(navPanel.node)
       menuOption=navPanel.node["menuOption"]
       if(menuOption.split(";").length>1){
         //menuOption=navPanel.node["menuOption"].split(",")
@@ -488,7 +488,7 @@ navigation.prototype.contentTable = function (){
         navPanel.addElementContentTable(navPanel.targets[i],i)
       }
     } */
-    //////console.log(navPanel.numCurrent)
+    ////////console.log(navPanel.numCurrent)
     navPanel.showLines(navPanel.numCurrent,true)
 
     var dvTable = document.getElementById("dvTable");
@@ -560,7 +560,7 @@ navigation.prototype.contentTable = function (){
           </nav>
         </div>
       </div>`
-    /* ////console.log(navPanel)
+    /* //////console.log(navPanel)
     navPanel.showNumberPages() */
     navPanel.fullTable=dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.table)
     navPanel.fullTable.appendChild(navPanel.thead)
@@ -576,18 +576,18 @@ navigation.prototype.contentTableSearch = function (){
   var navPanel=this;
   var menuOption;
   navPanel.numStart=1
-  //console.log(navPanel.targets)
+  ////console.log(navPanel.targets)
   
-  console.log("contentTableSearch")
+  //console.log("contentTableSearch")
   if (navPanel.targets.length>0){  
     navPanel.numTot=navPanel.targets.length
     navPanel.numLinesShown=10
     navPanel.numEnd=navPanel.numLinesShown
     navPanel.numCurrent=navPanel.numStart
     navPanel.contentRows=[]
-    //console.log("pasa por aquí")
+    ////console.log("pasa por aquí")
     //removeLinesNavContent()  
-    //console.log(navPanel.numTot)
+    ////console.log(navPanel.numTot)
     navPanel.showLines(navPanel.numCurrent,false)
     //navPanel.paginationNumbers()
     navPanel.divPag=document.createElement("div")
@@ -611,7 +611,7 @@ navigation.prototype.paginationNumbers = function (){
 ) */ {
     // calculate total pages
     //let totalPages = Math.ceil(navPanel.numTot / navPanel.numLinesShown);
-    ////console.log(navPanel.numPages)
+    //////console.log(navPanel.numPages)
     // ensure current page isn't out of range
     if (navPanel.numCurrent < 1) {
       navPanel.numCurrent = 1;
@@ -620,10 +620,10 @@ navigation.prototype.paginationNumbers = function (){
     }
 
     let startPage,endPage;
-    ////console.log(navPanel.numPages)
-    ////console.log(navPanel.paginationLimit)
-    ////console.log(navPanel.numCurrent)
-    ////console.log(navPanel.numPages)
+    //////console.log(navPanel.numPages)
+    //////console.log(navPanel.paginationLimit)
+    //////console.log(navPanel.numCurrent)
+    //////console.log(navPanel.numPages)
     if (navPanel.numPages <= navPanel.paginationLimit) {
         // total pages less than max so show all pages
         startPage = 1;
@@ -631,34 +631,34 @@ navigation.prototype.paginationNumbers = function (){
     } else {
         // total pages more than max so calculate start and end pages
         let maxPagesBeforeCurrentPage = Math.floor(navPanel.paginationLimit / 2);
-        ////console.log(maxPagesBeforeCurrentPage)
+        //////console.log(maxPagesBeforeCurrentPage)
         let maxPagesAfterCurrentPage = Math.ceil(navPanel.paginationLimit / 2) - 1;
-        ////console.log(maxPagesAfterCurrentPage)
-        //////console.log(navPanel.numPages)
-        //////console.log(navPanel.numCurrent)
+        //////console.log(maxPagesAfterCurrentPage)
+        ////////console.log(navPanel.numPages)
+        ////////console.log(navPanel.numCurrent)
         if(navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages){
-          //////console.log("mayor")
-          //////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+          ////////console.log("mayor")
+          ////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
         }else{
-          //////console.log("menor")
-          //////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+          ////////console.log("menor")
+          ////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
         }
         if (navPanel.numCurrent <= maxPagesBeforeCurrentPage) {
             // current page near the start
-            //////console.log("near start")
+            ////////console.log("near start")
             startPage = 1;
             endPage = navPanel.paginationLimit;
         } else if (navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages) {
             // current page near the end
-            //////console.log("near end")
-            //////console.log(navPanel.numCurrent)
-            //////console.log(maxPagesAfterCurrentPage)
-            //////console.log(navPanel.numPages)
+            ////////console.log("near end")
+            ////////console.log(navPanel.numCurrent)
+            ////////console.log(maxPagesAfterCurrentPage)
+            ////////console.log(navPanel.numPages)
             startPage = navPanel.numPages - navPanel.paginationLimit + 1;
             endPage = navPanel.numPages;
         } else {
             // current page somewhere in the middle
-            //////console.log("near middle")
+            ////////console.log("near middle")
             startPage = navPanel.numCurrent - maxPagesBeforeCurrentPage;
             endPage = navPanel.numCurrent + maxPagesAfterCurrentPage;
         }
@@ -668,8 +668,8 @@ navigation.prototype.paginationNumbers = function (){
     let startIndex = ((navPanel.numCurrent - 1) * navPanel.numLinesShown)+1;
     let endIndex = Math.min(startIndex + navPanel.numLinesShown - 1, navPanel.numTot);
 
-    ////console.log(endPage)
-    ////console.log(startPage)
+    //////console.log(endPage)
+    //////console.log(startPage)
     
     // create an array of pages to ng-repeat in the pager control
     let pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
@@ -692,21 +692,21 @@ navigation.prototype.showNumberPages = function (){
   var navPanel=this,textHtml=""
 
   navPanel.firstPage=1
-  console.log(navPanel.numTot)
+  //console.log(navPanel.numTot)
   navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
   navPanel.arrNumberPages=[]
   navPanel.paginationLimit=10
-  ////console.log(navPanel)
+  //////console.log(navPanel)
 
   navPanel.pages = navPanel.paginationNumbers()
-  ////console.log(navPanel.pages)
-  ////console.log(navPanel.pages.pages.length)
+  //////console.log(navPanel.pages)
+  //////console.log(navPanel.pages.pages.length)
 
   pagePrev = document.getElementById('page-prev');
       //for (i=1;i<=navPanel.numPages-1;i++) {
   //showNumberPages()
   for (i=0;i<=navPanel.pages.pages.length-1;i++) {
-    ////console.log(navPanel.pages.pages[i])
+    //////console.log(navPanel.pages.pages[i])
     if(navPanel.pages.pages[i]==navPanel.numCurrent){
       if(pagePrev==null){
         navPanel.divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
@@ -726,29 +726,29 @@ navigation.prototype.showNumberPages = function (){
   if(pagePrev!=null){
     pagePrev.insertAdjacentHTML('afterend', textHtml);
   }
-  /* ////console.log(textHtml)
+  /* //////console.log(textHtml)
   return textHtml */
 }
 
 function showLines(numCurrent){
-  ////console.log(numCurrent)
+  //////console.log(numCurrent)
   navigation.showLines(numCurrent,false)
 }
 function removeLinesNavContent(){
   var sel=document.querySelectorAll("#dvTable tbody tr")
-  console.log(sel)
+  //console.log(sel)
   if(sel.length>0){
     sel.forEach(
       function(currentValue, currentIndex, listObj) {
-        ////////console.log(currentValue + ', ' + currentIndex + ', ' + this);
+        //////////console.log(currentValue + ', ' + currentIndex + ', ' + this);
         currentValue.remove()
       }
     )
   }
 }
-navigation.prototype.showLines = function (numCurrent,first){
+navigation.prototype.showLines = function (numCurrent,first,cluster){
   var navPanel=this,linesShown,numPagesElements;
-  console.log(navPanel.pages)
+  //console.log(navPanel.pages)
   if(numCurrent=='page-first'){
     numCurrent=navPanel.firstPage
   }else if (numCurrent=='page-prev'){
@@ -766,10 +766,10 @@ navigation.prototype.showLines = function (numCurrent,first){
   
   removeLinesNavContent()
 
-  ////////console.log(navPanel.numCurrent*navPanel.numLinesShown)
-  ////////console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
+  //////////console.log(navPanel.numCurrent*navPanel.numLinesShown)
+  //////////console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
   
-  
+  ////console.log(navPanel.numTot)
   //if(navPanel.numCurrent!=1){
   if(!first){
     numPagesElements = document.querySelectorAll('#div-pagination .num-page');
@@ -780,10 +780,10 @@ navigation.prototype.showLines = function (numCurrent,first){
     document.getElementById("numStart").textContent=navPanel.pages.startIndex
     document.getElementById("numEnd").textContent=navPanel.pages.endIndex
     document.getElementById("numTot").textContent=navPanel.numTot
-    ////console.log(navPanel)
-    ////console.log(navPanel.firstPage)
-    ////console.log(typeof(navPanel.firstPage))
-    ////console.log(typeof(navPanel.pages.pages[0]))
+    //////console.log(navPanel)
+    //////console.log(navPanel.firstPage)
+    //////console.log(typeof(navPanel.firstPage))
+    //////console.log(typeof(navPanel.pages.pages[0]))
     if(navPanel.pages.pages.includes(navPanel.firstPage)&(navPanel.pages.pages.includes(navPanel.pages.totalPages))){
       document.getElementById("page-first").classList.add("hidden");
       document.getElementById("page-prev").classList.add("hidden");
@@ -808,7 +808,7 @@ navigation.prototype.showLines = function (numCurrent,first){
 
 
   }
-  console.log(navPanel.pages)
+  //console.log(navPanel.pages)
   
   if(first){
     linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
@@ -816,13 +816,18 @@ navigation.prototype.showLines = function (numCurrent,first){
     linesShown=navPanel.targets.slice(navPanel.pages.startIndex - 1, navPanel.pages.endIndex);
   }
   
-  console.log(linesShown)
+  //console.log(linesShown)
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
     navPanel.contentRows.push(row)
     if(navPanel.type=="freeGraph"){
-      navPanel.addElementContentTableProp(linesShown[i],i)
+      if(cluster){
+        navPanel.addElementContentTableProp(linesShown[i],i,cluster)
+      }else{
+        navPanel.addElementContentTableProp(linesShown[i],i)
+      }
+      
     }else{
       navPanel.addElementContentTable(linesShown[i],i)
     }
@@ -844,11 +849,11 @@ navigation.prototype.addEventsContentNav = function (){
   var navPanel=this,cell,nodeSearchField,node;
   navPanel.isDblclick = false;
 
-  ////console.log(navPanel.targets)
+  //////console.log(navPanel.targets)
   navPanel.searchValues=navPanel.targets.map(d=>d.target.value)
 
   nodeSearchField=document.getElementById("node-search")
-  //console.log(navPanel.searchValues)
+  ////console.log(navPanel.searchValues)
   autocomplete(nodeSearchField, navPanel.searchValues);
 
 // Execute a function when the user releases a key on the keyboard
@@ -860,12 +865,12 @@ navigation.prototype.addEventsContentNav = function (){
     
     removeLinesNavContent()
 
-    console.log(nodeSearchField.value)
+    //console.log(nodeSearchField.value)
     //navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
     //navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value)).map(d=>d.target.value);
-    //console.log(navPanel.resultsSearch)
+    ////console.log(navPanel.resultsSearch)
 
-    //console.log(navPanel.backupNavPanel)
+    ////console.log(navPanel.backupNavPanel)
 
     //contentRows
     //numPages
@@ -874,22 +879,22 @@ navigation.prototype.addEventsContentNav = function (){
     
     
     if(navPanel.targetsBackup){
-      console.log("entra if")
+      //console.log("entra if")
       navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.includes(nodeSearchField.value)|(a.target.value==nodeSearchField.value)));
     }else{
-      console.log("entra else")
+      //console.log("entra else")
       navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
       navPanel.targetsBackup=navPanel.targets
     }
     
     navPanel.targets=navPanel.resultsSearch
     
-    console.log(navPanel)
+    //console.log(navPanel)
 
     navPanel.contentTableSearch()
     closeAllLists()
     /* navPanel.numStart=1
-    //console.log(navPanel.targets)
+    ////console.log(navPanel.targets)
     navPanel.numTot=navPanel.targets.length
     navPanel.numLinesShown=10
     navPanel.numEnd=navPanel.numLinesShown
@@ -907,8 +912,8 @@ navigation.prototype.addEventsContentNav = function (){
   });
 
   navPanel.timeoutTiming = 500;
-  console.log(d3.selectAll("#modal-content"))
-  console.log(d3.selectAll("#modal-content td"))
+  //console.log(d3.selectAll("#modal-content"))
+  //console.log(d3.selectAll("#modal-content td"))
   d3.selectAll("#modal-content td").on("dblclick",function(){ 
     d3.event.preventDefault();
     navPanel.isDblclick = true;
@@ -916,14 +921,19 @@ navigation.prototype.addEventsContentNav = function (){
     navPanel.dblclickTimeout = setTimeout(function () {
       navPanel.isDblclick = false;
     }, navPanel.timeoutTiming);
-    console.log("pasa por aquí")
-    console.log(this)
-    node=d3.select("#"+this.getAttribute("id")).data()[0]
-    if(node.more_results.length>0){
-      dblclickCellCluster(node)
+    //console.log("pasa por aquí")
+    //console.log(this)
+    if(this.getAttribute("cluster")){
+      dblclickCellContent
     }else{
-      dblclickCellContent(this)
+      node=d3.select("#"+this.getAttribute("id")).data()[0]
+      if(node.more_results.length>0){
+        dblclickCellCluster(node)
+      }else{
+        dblclickCellContent(this)
+      }
     }
+
     return false;
   })
   .on("click",function(){  
@@ -963,7 +973,7 @@ navigation.prototype.addElementContentTable = function (target,i){
   div2.className="flex-shrink-0 w-10 h-10"
   img=document.createElement("img")
   
-  ////////////console.log(nodesTable[i]["target"]["type"])
+  //////////////console.log(nodesTable[i]["target"]["type"])
   if(!property){
       if(nodesTable[i]["target"]["type"]=="uri"){
           img.className="w-10 h-10 bg-green-300 rounded-full"
@@ -1002,7 +1012,7 @@ navigation.prototype.addElementContentTable = function (target,i){
 }
 
 
-navigation.prototype.addElementContentTableProp = function (target,i){
+navigation.prototype.addElementContentTableProp = function (target,i,cluster){
   var navPanel=this;
   insertCheckBox()
   insertContent(true)
@@ -1012,7 +1022,12 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     cell.className="px-6 py-4 whitespace-nowrap"
     //cell.id=target["target"]["id"]+"_check"
     div=document.createElement("div")
-    div.className="flex items-center h-5"
+    if(cluster){
+      div.className="flex items-center h-5"
+    }else{
+      div.className="flex items-center hidden h-5"
+    }
+    
     input=document.createElement("input")
     input.id=target["target"]["id"]+"_check"
     input.setAttribute("name","nodeTable")
@@ -1028,12 +1043,15 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     var menuOption;
     cell = row.insertCell(-1);
     cell.className="px-6 py-4 whitespace-nowrap"
+    if(cluster){
+      cell.setAttribute("cluster",cluster)
+    }
     if(!property){
       cell.id=target["target"]["id"]
     }else{
       cell.id=target["source"]["id"]+target["target"]["id"]
     }
-    
+    //console.log(target["source"])
     div=document.createElement("div")
     if(!property){
       div.className="flex items-center w-full"
@@ -1048,7 +1066,7 @@ navigation.prototype.addElementContentTableProp = function (target,i){
     div2.className="flex-shrink-0 w-10 h-10"
     img=document.createElement("img")
     
-    ////////////console.log(target["target"]["type"]=="uri")
+    //////////////console.log(target["target"]["type"]=="uri")
     if(!property){
         if(target["target"]["type"]=="uri"){
             img.className="w-10 h-10 bg-green-300 rounded-full"
@@ -1078,7 +1096,7 @@ navigation.prototype.addElementContentTableProp = function (target,i){
         }
         
         span=document.createElement("span")
-        ////////////console.log(target["target"])
+        //////////////console.log(target["target"])
         if(target["target"]["type"]=="menuOption"){
           menuOption=target["target"]["value"].split(",")
           newText = document.createTextNode("Sparql Endpoint: "+ menuOption[0]+ "and Position: "+menuOption[1]);
@@ -1091,8 +1109,11 @@ navigation.prototype.addElementContentTableProp = function (target,i){
         span=document.createElement("span")
         if(target["value"]!=undefined){
           newText = document.createTextNode(target["value"]);
+          //console.log(newText)
         }else{
+          //console.log(target)
           newText = document.createTextNode("no property");
+          //console.log(newText)
         }
         
         div4.appendChild(span).appendChild(newText);
@@ -1108,9 +1129,9 @@ navigation.prototype.addElementContentTableProp = function (target,i){
   }
   navigation.prototype.dblclickCellCluster = async function (cell) {
     var navPanel=this,results;
-    console.log(cell)
+    //console.log(cell)
     results=await checkClassesBasicGraph(cell["more_results"],cell["subject-object"])
-    console.log(results)
+    //console.log(results)
     results=results.map(function (d){
       if(cell["subject-object"]=="s"){
         d.o.id=genRandomString()
@@ -1122,37 +1143,46 @@ navigation.prototype.addElementContentTableProp = function (target,i){
 
     if(cell["subject-object"]=="s"){
       navPanel.targets=results.map(function(d){
-          return {
-            "value":d.o.value,
-            "id":d.o.id
-          }
+        return {
+          "target":{"value":d.o.value,
+          "id":d.s.id,"type":d.o.type},
+          "source":{"id":cell["id"]},
+          "value":cell["property"],
+          "url":cell["url"],
+          "subject-object":cell["subject-object"]
+        }
       })
     }else if(cell["subject-object"]=="o"){
       navPanel.targets=results.map(function(d){
         return {
-          "value":d.s.value,
-          "id":d.s.id
+          "target":{"value":d.s.value,
+          "id":d.s.id,"type":d.s.type},
+          "source":{"id":cell["id"]},
+          "value":cell["property"],
+          "url":cell["url"],
+          "subject-object":cell["subject-object"]
         }
       })
       //navPanel.targets=results.map(d=>d.s.value)
     }
-    console.log(navPanel.targets)
+    //console.log(navPanel)
     navPanel.pages.endIndex=navPanel.targets.length
-    navPanel.pages.numTot=navPanel.targets.length
+    navPanel.numTot=navPanel.targets.length
+    ////console.log(nav)
     //navPanel.paginationNumbers()
-    navPanel.showLines(1,false)
-    
+    navPanel.showLines(1,false,cell["id"])
+    navPanel.addEventsContentNav()
   }
 navigation.prototype.dblclickCellContent = async function (cell) {
   var indexRows=1,bubble,node;
   //if(networkGraph.treeData.filter(d=>d.id==cell.getAttribute("id")).length==0){
     indexRows=await networkGraph.wrangleDataFreeGraph(cell,"table");
-    ////////console.log(indexRows)
+    //////////console.log(indexRows)
     if(indexRows.length==0){
       unclickBubbleFreeGraph()
       bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
-      ////////console.log(bubble)
-      ////////console.log(cell)
+      //////////console.log(bubble)
+      //////////console.log(cell)
       clickBubbleFreeGraph(bubble,networkGraph.data)
       d3.select("#"+row.getAttribute("id"))
       .attr("stroke", "yellow")
@@ -1160,15 +1190,15 @@ navigation.prototype.dblclickCellContent = async function (cell) {
     }else if (indexRows.length==1){
       unclickBubbleFreeGraph()
       node=d3.select("#"+cell.getAttribute("id")).data()[0]
-      ////////console.log(node)
+      //////////console.log(node)
       if(node["menuOption"].split(";").length>1){
         bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
         //bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
       }else{
         bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
       }
-      ////////console.log(bubble)
-      ////////console.log(cell)
+      //////////console.log(bubble)
+      //////////console.log(cell)
       clickBubbleFreeGraph(bubble,networkGraph.data)
       d3.select("#"+row.getAttribute("id"))
       .attr("stroke", "yellow")
@@ -1269,23 +1299,23 @@ navigation.prototype.clickMenuTable = async function (form,element){
   var propertyEl,bubble,node;
   var node=d3.select("#"+element["id"]).data()[0]
   var navPanel=this;
-  ////////console.log(form)
+  //////////console.log(form)
   var newForm={"url":form["new_url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["new_subjectObject"]}
   propertyEl=form["property"]
 
   var form={"url":form["url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["subjectObject"]}
-  ////////console.log(element)
+  //////////console.log(element)
   node=d3.select("#"+element.getAttribute("id")).data()[0]
   await buildFreeGraph(newForm,"table",node)
   document.getElementById(element.getAttribute("id"))
 
-  ////////console.log(newForm)
-  ////////console.log(node)
-  ////////console.log(bubble)
+  //////////console.log(newForm)
+  //////////console.log(node)
+  //////////console.log(bubble)
   if(node["menuOption"].split(";").length>1){
-    ////////console.log("entra en mayor que 1")
+    //////////console.log("entra en mayor que 1")
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
-    ////////console.log(bubble)
+    //////////console.log(bubble)
   }else{
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+element.getAttribute("id"))
   }
@@ -1297,7 +1327,7 @@ function searchMenuOptionChild(){
 }
 
 function removeSelection(element){
-  console.log(element)
+  //console.log(element)
   navigation.removeSelection()
 }
 navigation.prototype.removeSelection = function (){
@@ -1305,22 +1335,43 @@ navigation.prototype.removeSelection = function (){
 
   navPanel.targets=navPanel.targetsBackup
     
-  console.log(navPanel)
+  //console.log(navPanel)
 
   navPanel.contentTableSearch()
   $("#remove-sel").addClass("hidden")
   $("#node-search").val("")
 }
 function addSelToGraph(element){
-  console.log(element)
+  //console.log(element)
   navigation.addSelToGraph()
 }
 navigation.prototype.addSelToGraph = function (){
-  var navPanel=this;
+  var navPanel=this,selected=[],results;
   var $boxes = $('input[name=nodeTable]:checked');
-  $boxes.each(function(){
+  //console.log(d3.select("#"+document.getElementById($boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0])
+  
+  ////console.log(d3.select("#"+$boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster"))
+  ////console.log(d3.select("#"+d3.select("#"+$boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0])
+  
+  var node=d3.select("#"+document.getElementById($boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0]
+  ////console.log(d3.select("#"+$boxes[0].getAttribute("cluster")).data())
+  $boxes.each(function(i){
     // Do stuff here with this
+    ////console.log(d)
+    //console.log($boxes[i])
+    selected.push(document.getElementById($boxes[i].getAttribute("id").replace("_check","")).querySelector("a span").innerText)
+
   });
-  console.log($boxes)
-  $boxes.length;
+  //console.log($boxes)
+  //console.log(networkGraph.treeData)
+  if(node["subject-object"]=="s"){
+    results=node["more_results"].filter(d=>selected.includes(d.o.value))
+  }else if(node["subject-object"]=="o"){
+    results=node["more_results"].filter(d=>selected.includes(d.s.value))
+  }
+  //console.log(results)
+  addNodesGraph(results,node,form)
+  $("#myModal").removeClass("translate-x-0")
+  $("#myModal").addClass("translate-x-full")
+  //$boxes.length;
 }

@@ -9,7 +9,7 @@ function clickBubble(element,data) {
   var nodeData,sources2
   nodesSelSources=[]
   nodesSelTarget=[]
-  console.log("clickBubble")
+  //console.log("clickBubble")
   d3.selectAll(".nodeCircle")
   .style("opacity", 0.1)
   .attr("stroke", "grey")
@@ -235,13 +235,13 @@ function changeBasicGraph(option){
   graphHistory=[]
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
   $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  console.log(option)
-  console.log($(option).find( "#optionMain" ).text().trim())
+  //console.log(option)
+  //console.log($(option).find( "#optionMain" ).text().trim())
   option=$(option).find( "#optionMain" ).text().trim()
   let pos = configFile.map(function (e) {
     return e.option;
   }).indexOf(option);
-  console.log(pos)
+  //console.log(pos)
   showBasicGraph()
   buildBasicGraph(pos)
 }
@@ -307,15 +307,15 @@ async function addGraph(node,pageX,pageY,indexRows){
   if(query!=""){
     indexRows=await checkAskResults(indexRows,node)
   } */
-  //////////////console.log(indexRows)
-  //////////////console.log(networkGraph.treeData)
+  ////////////////console.log(indexRows)
+  ////////////////console.log(networkGraph.treeData)
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
-    //////////////console.log(indexRows[0]["position"])
-    //////////////console.log(node)
-    //////////////console.log(indexRows[0]["option"])
-   // ////////////console.log(networkGraph.treeData)
+    ////////////////console.log(indexRows[0]["position"])
+    ////////////////console.log(node)
+    ////////////////console.log(indexRows[0]["option"])
+   // //////////////console.log(networkGraph.treeData)
     //throw new Error("Something went badly wrong!");
     await buildBasicGraph(indexRows[0]["position"],node,indexRows[0]["option"])
   }
@@ -325,7 +325,7 @@ async function addGraph(node,pageX,pageY,indexRows){
 
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
-  //////////////console.log("getmenuitems")
+  ////////////////console.log("getmenuitems")
   if (origin=="table"){
     for (var i = 0; i < items.length; i++) {
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
@@ -348,6 +348,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
       }
       menuItems.push(element)
     }
+    //console.log(pageX)
     networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
   }
   
@@ -420,9 +421,9 @@ function runAskSparlqQuery(url,sparqlQuery){
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  //////////////////console.log(node)
+  ////////////////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
-    ////////////////console.log(indexRows[i])
+    //////////////////console.log(indexRows[i])
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
     parameters=configFile[singleIndexRow["position"]]["parameters"]
@@ -458,7 +459,7 @@ async function checkAskResults(indexRows,node){
 }
 
 function fromSelectToAskQuery(query){
-  //////////////////console.log(query)
+  ////////////////////console.log(query)
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
@@ -530,39 +531,95 @@ function findNodeTreemap(nodeId,treeData){
   return founded
 }
 function getTooltipText(d){
-  ////////console.log(d)
+  //////////console.log(d)
   if(d.class=="menuOption"){
-    var text = `
-    <table class="tiptable" style="margin-left: 2.5px">
-        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
-        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
-        </table>`;
+    text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-2 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Node values
+        </h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Name
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            ` + d.value + `
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Degree
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            ` + d.number + `
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>`;
     return text;
   }else{
     var text = `
-    <table class="tiptable" style="margin-left: 2.5px">
-        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Name:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.value + `</span></td></tr>
-        <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Class:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + nodesClassesCorrespondence[d.class] + `</span></td></tr>`
-        Object.keys(d["tooltip"]).forEach(function(k){
-          text=text + `
-                <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">`+d["tooltip"][k]+`:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d[k] + `</span></td></tr>`
-        })      
-        text=text+`<tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000">Degree:</td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d.number + `</span></td></tr>
-        </table>`;
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-2 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Node values
+        </h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Name
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            ` + d.value + `
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Class
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            ` + nodesClassesCorrespondence[d.class] + `
+            </dd>
+          </div>`
+          Object.keys(d["tooltip"]).forEach(function(k){
+            text=text + `
+            <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">` + d["tooltip"][k] + `</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">`+ d[k] + `</dd>
+            </div>`
+          })      
+          text=text + `<div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Degree
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            ` + d.number + `
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>`;
     return text;
   }
   
 }
 function getTooltipMenu(d){
-  var text = `
-      <table class="tiptable" style="margin-left: 2.5px">
-          <tr><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#000000"></td><td style="text-align:left;vertical-align:top;word-wrap: break-word;color:#1f77b4">` + d + `</span></td></tr>`
-
+  var text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="border-t border-gray-200 py-3 px-2">
+          ` + d + `
+          </div>
+        </div>`;
   return text;
 }
 function fillLegend(dif,addOne){
-  //////console.log(dif)
-  //////console.log(colorScale.domain())
+  ////////console.log(dif)
+  ////////console.log(colorScale.domain())
   if ((addOne)&(dif.length>0)){
     appendLi(colorScale.domain().length-1,dif[0])
   }else if(!addOne){
@@ -735,6 +792,6 @@ function get_configRows_class(classNode){
       configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  ////////////////console.log(configRows)
+  //////////////////console.log(configRows)
   return configRows
 }
