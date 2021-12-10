@@ -620,7 +620,7 @@
                           <div id="dvTable" style="overflow: auto"></div> -->
                         <!-- Replace with your content -->
                           <div class="absolute inset-0 px-4 sm:px-6">
-                            <div class="h-full border-2 border-gray-200 border-dashed" aria-hidden="true"></div>
+                            <!-- <div class="h-full border-2 border-gray-200 border-dashed" aria-hidden="true"></div> -->
                           </div>
                         <!-- /End replace -->
                         </div>
@@ -634,21 +634,10 @@
           </div>
           
 
-          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id=myModal2>
+          <!-- <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700 modal2" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id=myModal2>
             <div class="absolute inset-0 overflow-hidden">
-              <!-- Background overlay, show/hide based on slide-over state. -->
               <div class="absolute inset-0" aria-hidden="true">
                 <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
-                  <!--
-                    Slide-over panel, show/hide based on slide-over state.
-
-                    Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                      From: "translate-x-full"
-                      To: "translate-x-0"
-                    Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                      From: "translate-x-0"
-                      To: "translate-x-full"
-                  -->
 
                   <div class="w-screen max-w-5xl">
                     <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
@@ -659,7 +648,6 @@
                           <div class="flex items-center ml-3 h-7">
                             <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close2">
                               <span class="sr-only">Close panel</span>
-                              <!-- Heroicon name: outline/x -->
                               <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                               </svg>
@@ -667,7 +655,33 @@
                           </div>
                         </div>
                       </div>
-                      <div class="relative flex-1 px-4 mt-6 sm:px-6">
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div> -->
+          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal2">
+            <div class="absolute inset-0 overflow-hidden">
+              <div class="absolute inset-0" aria-hidden="true">
+                <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+                  <div class="w-screen max-w-5xl">
+                    <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
+                      <div class="px-4 sm:px-6">
+                        <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
+                          <h2 class="text-lg font-medium text-gray-500 uppercase" id="modalHeader2">
+                          </h2>
+                          <div class="flex items-center ml-3 h-7">
+                            <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close2">
+                              <span class="sr-only">Close panel</span>
+                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -676,10 +690,18 @@
               </div>
             </div>
           </div>
-
-          <!--           <div id="myModal2" class="z-40 modal2">
+<!--           <div id=myModal2 class="z-40 modal2">         
+              <div class="rounded-lg shadow-xl" id="modal-content2">
+              <span class="close2">&times;</span>
+              <div class="modal-header2" id="modalHeader2"></div>          
+              </div>
+              <div class="modal-footer" id="modalFooter">
+          
+              </div>
+          </div> -->
+<!--             <div id="myModal2" class="z-40 modal2">
             
-            <div class="rounded-lg shadow-xl modal-content2">
+            <div class="rounded-lg shadow-xl" id="modal-content2">
               <span class="close2">&times;</span>
               <div class="modal-header2" id="modalHeader2"></div>          
               </div>
@@ -786,8 +808,8 @@
     <script src="js/filtersWithClass.js"></script>
     <script src="js/filterClass.js"></script>
     <script src="js/navigationClass.js"></script>
-    <script src="js/navigationPanel.js"></script>
-    <script src="js/functions.js"></script>
+<!--     <script src="js/navigationPanel.js"></script>
+ -->    <script src="js/functions.js"></script>
     <script src="js/functions2.js"></script>
     <script src="js/timeline.js"></script>
     <script src="js/treeGraph.js"></script>

@@ -103,7 +103,7 @@ $.xhrPool = [];
     ////console.log(rowDataConfig)
     ////console.log(node)
     ////console.log(menuOption)
-    var configRow,sparqlQuery,queryUrl, hierarchy, parameters,properties,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns,found;
+    var configRow,sparqlQuery,queryUrl, hierarchy, parameters,modal2,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns,found;
     url=configFile[rowDataConfig]["endpoint_url"]
     sparqlQuery=configFile[rowDataConfig]["query"]
     hierarchy=configFile[rowDataConfig]["hierarchy"]
@@ -297,18 +297,23 @@ $.xhrPool = [];
       document.getElementById("sparql-timeout").style.display="none"
     })
     await $objectAjax
-    }else if (graphType=="TREEGRAPH"){
-      showTreegraph(node,sparqlQuery)
-    }else if (graphType=="WEBPAGE"){
-      showWikipediaPage(node)
-    }else if (graphType=="TIMELINE"){
-      showTimeLine(node)
-    }else if (graphType=="PDF"){
-      showPdf(node,sparqlQuery,url)
-    }else if (graphType=="TABLE"){
-      showTable(node,sparqlQuery,columns,property_names)
-    }else if (graphType=="WORDCLOUD"){
-      showWordcloud(node,sparqlQuery,configRow)
+    }else{
+      modal2=getModal2()
+      if (graphType=="TREEGRAPH"){
+        showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent)
+      }else if (graphType=="WEBPAGE"){
+        showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
+        //showWikipediaPage(node)
+      }else if (graphType=="TIMELINE"){
+        showTimeLine(node,modal2.modalHeader,modal2.modalContent)
+      }else if (graphType=="PDF"){
+        showPdf(node,sparqlQuery,url,modal2.modalHeader,modal2.modalContent)
+      }else if (graphType=="TABLE"){
+        showTable(node,sparqlQuery,columns,property_names,modal2.modalHeader,modal2.modalContent)
+      }else if (graphType=="WORDCLOUD"){
+        showWordcloud(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
+      }
+      showModal("#myModal2")
     }
     function create_menuNode(index,treeData){
       //////////////////////console.log(networkGraph.treeData[index])
@@ -688,7 +693,17 @@ function zoomIn(){
 function zoomOut(){
   networkGraph.zoomOut()
 }
-async function showTimeLine(data){
+function getModal2(){
+  if(d3.select("#modalGraph")){
+    d3.select("#modalGraph").remove()
+  }
+  return {"modalHeader":document.getElementById("modalHeader2"),"modalContent":document.getElementById("modal-content2")}
+}
+function showModal(id){
+  $(id).removeClass("translate-x-full")
+  $(id).addClass("translate-x-0")
+}
+async function showTimeLine(data,modalHeader,modalContent){
   var rowDataConfig,results,node,dataTimeline=[];
 
   for (i = 0; i < configFile.length; ++i) { 
@@ -728,48 +743,48 @@ async function showTimeLine(data){
     }
   while (results[0]["replaces"]!=undefined) 
   
-  timelineGraph(dataTimeline)
+  timelineGraph(dataTimeline,modalHeader,modalContent)
   //modal2=document.getElementById("myModal2")
   //modal2.style.display = "block";
-  $("#myModal2").removeClass("translate-x-full")
-  $("#myModal2").addClass("translate-x-0")
+
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
   });
   $("#myModal2").draggable()
 }
-async function showPdf(node,sparqlQuery,url){
+async function showPdf(node,sparqlQuery,url,modalHeader,modalContent){
   prefixes=""
   queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
   results = await runSparlqQuery(settings)
   var pdf=results[0]["item"]["value"]
-  modal2=document.getElementById("myModal2")
+  /* modal2=document.getElementById("myModal2")
   modal2.style.display = "block";
   d3.select(".modal-header2 h2").remove()
-  modalHeader2=document.getElementsByClassName("modal-header2")[0]
-  modalHeader2.classList.add("mb-4");
-  var h2=document.createElement("h2")
-  h2.className="text-lg font-medium text-gray-900"
-  h2.innerHTML = "PDF"
-  modalHeader2.appendChild(h2);
+  modalHeader=document.getElementsByClassName("modal-header2")[0]
+  modalHeader.classList.add("mb-4");
+  var h2=document.createElement("h2") */
+  //h2.className="text-lg font-medium text-gray-900"
+  modalHeader.innerHTML = "PDF"
+  //modalHeader.appendChild(h2);
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
   });
   $("#myModal2").draggable()
-  if(d3.select("#modalGraph")){
+/*   if(d3.select("#modalGraph")){
     d3.select("#modalGraph").remove()
-  }
+  } */
   var div=document.createElement("div")
+  div.className="h-full"
   div.setAttribute("id","modalGraph")
   div.setAttribute("style","overflow: auto")
-  document.getElementsByClassName("modal-content2")[0].appendChild(div)
+  modalContent.appendChild(div)
   PDFObject.embed(pdf, "#modalGraph");
 }
-async function showTable(node,sparqlQuery,columns,column_names){
+async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modalContent){
   var rowDataConfig,results,data=[],modalHeader2;
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TABLE")){
@@ -783,24 +798,24 @@ async function showTable(node,sparqlQuery,columns,column_names){
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
   results = await runSparlqQuery(settings)
-  table(results,columns,column_names)
-  modal2=document.getElementById("myModal2")
+  table(results,columns,column_names,modalContent)
+  //modal2=document.getElementById("myModal2")
 
-  d3.select(".modal-header2 h2").remove()
-  modalHeader2=document.getElementsByClassName("modal-header2")[0]
+  //d3.select(".modal-header2 h2").remove()
+  //modalHeader2=document.getElementsByClassName("modal-header2")[0]
   var h2=document.createElement("h2")
   h2.className="text-lg font-medium text-gray-900"
   h2.innerHTML = node["value"]
-  modalHeader2.appendChild(h2);
+  modalHeader.appendChild(h2);
 
-  modal2.style.display = "block";
+  //modal2.style.display = "block";
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
   });
   $("#myModal2").draggable()
 }
-function table(data,columns,column_names){
+function table(data,columns,column_names,modalContent){
   var cellContent;
   if(d3.select("#modalGraph")){
     d3.select("#modalGraph").remove()
@@ -808,7 +823,7 @@ function table(data,columns,column_names){
   var div=document.createElement("div")
   div.setAttribute("id","modalGraph")
   div.setAttribute("style","overflow: auto")
-  document.getElementsByClassName("modal-content2")[0].appendChild(div)
+  modalContent.appendChild(div)
   var mainEl=document.getElementById("modalGraph")
   var div=document.createElement("div");
   div.className="flex flex-col mt-6"
@@ -872,7 +887,7 @@ function table(data,columns,column_names){
   mainEl.appendChild(div).appendChild(div2).appendChild(div3).appendChild(div4).appendChild(table);
 
 }
-async function showTreegraph(node,sparqlQuery){
+async function showTreegraph(node,sparqlQuery,modalHeader,modalContent){
   var rowDataConfig,results,dataTreegraph=[];
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TREEGRAPH")){
@@ -889,9 +904,9 @@ async function showTreegraph(node,sparqlQuery){
   results = await runSparlqQuery(settings)
   
   dataTreegraph=transformDataTreegraph(node,results)
-  treeGraph(dataTreegraph,node["value"])
-  modal2=document.getElementById("myModal2")
-  modal2.style.display = "block";
+  treeGraph(dataTreegraph,node["value"],modalHeader,modalContent)
+  //modal2=document.getElementById("myModal2")
+  //modal2.style.display = "block";
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
@@ -917,7 +932,7 @@ function transformDataTreegraph(node,data){
 
     return treeData
 }
-async function showWordcloud(node,sparqlQuery,configRow){
+async function showWordcloud(node,sparqlQuery,configRow,modalHeader,modalContent){
   var rowDataConfig,results,dataTreegraph=[],title;
   //////////////////////////console.log(node)
 
@@ -942,9 +957,11 @@ async function showWordcloud(node,sparqlQuery,configRow){
   results = await runSparlqQuery(settings)
   
   dataWordCloud=transformDataWordCloud(results)
-  wordCloudGraph(dataWordCloud,title)
-  modal2=document.getElementById("myModal2")
-  modal2.style.display = "block";
+  wordCloudGraph(dataWordCloud,title,modalHeader,modalContent)
+  //modal2=document.getElementById("myModal2")
+  //modal2.style.display = "block";
+  $("#myModal2").removeClass("translate-x-full")
+  $("#myModal2").addClass("translate-x-0")
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
@@ -983,10 +1000,10 @@ function transformDataTreegraph(node,data){
     return treeData
 }
 
-function showWikipediaPage(data){
+function showWikipediaPage(data,modalHeader,modalContent){
   var rowDataConfig,results,node,page,parameters,parameterTemp="";
-  var modal=document.getElementById("myModal")
-  modal.style.display = "none";
+  //var modal=document.getElementById("myModal")
+  //modal.style.display = "none";
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WEBPAGE")){
       rowDataConfig=i
@@ -1010,27 +1027,30 @@ function showWikipediaPage(data){
   $.ajax(settings).then  (function( _data ) {
     results = _data.results.bindings;
     page=results[0]["article"]["value"]
-    if(d3.select("#modalGraph")){
+/*     if(d3.select("#modalGraph")){
       d3.select("#modalGraph").remove()
-    }
+    } */
     var div=document.createElement("div")
+    div.className="h-full"
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
-    document.getElementsByClassName("modal-content2")[0].appendChild(div)
+    modalContent.appendChild(div)
     iframe=d3.select("#modalGraph").append("iframe")
     .attr("src",page)
       .style("width", "100%")
       .style("height","100%");
-    d3.select(".modal-header2 h2").remove()
-    modalHeader2=document.getElementsByClassName("modal-header2")[0]
-    modalHeader2.classList.add("mb-4");
-    var h2=document.createElement("h2")
-    h2.className="text-lg font-medium text-gray-900"
-    h2.innerHTML = "Wikipedia Page"
+    //d3.select(".modal-header2 h2").remove()
+    //modalHeader2=document.getElementById("modalHeader2")
+    //modalHeader2.classList.add("mb-4");
+    //var h2=document.createElement("h2")
+    //h2.className="text-lg font-medium text-gray-900"
+    modalHeader.innerHTML = "Wikipedia Page"
 
-    modalHeader2.appendChild(h2);
-    modal2=document.getElementById("myModal2")
-    modal2.style.display = "block";
+    //modalHeader2.appendChild(h2);
+    //modal2=document.getElementById("myModal2")
+    //modal2.style.display = "block";
+    //$("#myModal2").removeClass("translate-x-full")
+    //$("#myModal2").addClass("translate-x-0")
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
       //minHeight: 150
@@ -1057,7 +1077,9 @@ span.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+    //modal.style.display = "none";
+    $("#myModal").removeClass("translate-x-0")
+    $("#myModal").addClass("translate-x-full")
   }
 }
 
