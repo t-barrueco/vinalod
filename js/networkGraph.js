@@ -21,21 +21,22 @@ NetworkGraph = function (_parentElement, _data, _forces, _graphType) {
 /////////////////// initVis Method //////////////////////
 NetworkGraph.prototype.initTypeVis = function () {
   var vis = this;
-  if(vis.graphType=="fromConfig"){
-    vis.initVis();
-  }else if(this.graphType=="freeGraph"){
-    vis.initFreeVis();
-  }
+  //if(vis.graphType=="fromConfig"){
+  vis.initVis();
+  //}else if(this.graphType=="freeGraph"){
+  //  vis.initFreeVis();
+  //}
 };
 
 NetworkGraph.prototype.initVis = function () {
   var vis = this;
 
   if(vis.data.treeData){
-  vis.treeData=vis.data.treeData
-  vis.data=vis.data.flatData
+    vis.treeData=vis.data.treeData
+    vis.allData=vis.data.allData
+    vis.data=vis.data.flatData
   }
-
+  vis.rootNode=vis.data.nodes[0]
   vis.width = +d3.select(this.parentElement).node().getBoundingClientRect().width;
   vis.height = +d3.select(this.parentElement).node().getBoundingClientRect().height;
   vis.height=1200
@@ -50,7 +51,7 @@ NetworkGraph.prototype.initVis = function () {
     .attr("pointer-events", "all")
     .attr("width", vis.width)
     .attr("height", vis.height)
-    .on("click",function() { unclickBubble() })
+    .on("click",function() { unclickBubbleFreeGraph() })
     .call(d3.zoom()
         .on("zoom",function(){
           zoom()
@@ -59,7 +60,19 @@ NetworkGraph.prototype.initVis = function () {
         }))
         .on("wheel.zoom", null);
 
-
+  vis.svg.append('defs').append('marker')
+        .attr("id",'arrowhead')
+        .attr('viewBox','-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
+         .attr('refX',23) // x coordinate for the reference point of the marker. If circle is bigger, this need to be bigger.
+         .attr('refY',0)
+         .attr('orient','auto')
+            .attr('markerWidth',13)
+            .attr('markerHeight',13)
+            .attr('xoverflow','visible')
+        .append('svg:path')
+        .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+        .attr('fill', '#999')
+        .style('stroke','none');  
 
   vis.g=vis.svg.append("g")
   .attr("class", "gMain");
@@ -74,10 +87,10 @@ NetworkGraph.prototype.initVis = function () {
   vis.gNodesRect=vis.g.append("g")
   .attr("class", "nodesRect")
 
-
-  if(nodesClassesShow!=undefined){
-    
-    colorCorrespondence={
+  vis.gNodesFree=vis.g.append("g")
+  .attr("class", "nodesFree")
+      
+  colorCorrespondence={
     "#6EE7B7":"green-300",
     "#FCA5A5":"red-300",
     "#FCD34D":"yellow-300",
@@ -91,7 +104,7 @@ NetworkGraph.prototype.initVis = function () {
     "#EC4899":"pink-500",
     "#8B5CF6":"purple-500",
     "#3B82F6":"blue-500",
-    "#6B7280":"gray-s500"}
+    "#6B7280":"gray-500"}
 
     vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
     ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
@@ -103,8 +116,6 @@ NetworkGraph.prototype.initVis = function () {
     colorScale=vis.colorScale
 
     fillLegend([],false)
-  }
-  
   
 
   vis.simulation = d3.forceSimulation()
@@ -151,132 +162,6 @@ NetworkGraph.prototype.initVis = function () {
   vis.initializeDisplay();
 };
 
-NetworkGraph.prototype.initFreeVis = function () {
-  var vis = this;
-
-  if(vis.data.treeData){
-    vis.treeData=vis.data.treeData
-    vis.allData=vis.data.allData
-    vis.data=vis.data.flatData
-  }
-  vis.rootNode=vis.data.nodes[0]
-  vis.width = +d3.select(this.parentElement).node().getBoundingClientRect().width;
-  vis.height = +d3.select(this.parentElement).node().getBoundingClientRect().height;
-  vis.height=800
-  vis.svg = d3.select(this.parentElement).append("svg")
-  .attr("class", "graph")
-  .attr("width", vis.width)
-  .attr("height", vis.height)
-
-  vis.rect=vis.svg.append("rect")
-    .attr('class', 'zoom')
-    .attr("fill", "none")
-    .attr("pointer-events", "all")
-    .attr("width", vis.width)
-    .attr("height", vis.height)
-    .on("click",function() { unclickBubble() })
-    .call(d3.zoom()
-        .on("zoom",function(){
-          zoom()
-          zoomY=d3.event.transform.y
-          zoomX=d3.event.transform.x
-        }))
-        .on("wheel.zoom", null);
-
-  vis.svg.append('defs').append('marker')
-        .attr("id",'arrowhead')
-        .attr('viewBox','-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
-         .attr('refX',23) // x coordinate for the reference point of the marker. If circle is bigger, this need to be bigger.
-         .attr('refY',0)
-         .attr('orient','auto')
-            .attr('markerWidth',13)
-            .attr('markerHeight',13)
-            .attr('xoverflow','visible')
-        .append('svg:path')
-        .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-        .attr('fill', '#999')
-        .style('stroke','none');
-
-  vis.g=vis.svg.append("g")
-  .attr("class", "gMain");
-
-  vis.gLinks=vis.g.append("g")
-  .attr("class", "links")
-
-
-  vis.gNodes=vis.g.append("g")
-  .attr("class", "nodes")
-
-  vis.gNodesRect=vis.g.append("g")
-  .attr("class", "nodesRect")
-
-  colorCorrespondence={
-    "#6EE7B7":"green-300",
-    "#FCA5A5":"red-300",
-    "#FCD34D":"yellow-300",
-    "#F9A8D4":"pink-300",
-    "#C4B5FD":"purple-300",
-    "#93C5FD":"blue-300",
-    "#D1D5DB":"gray-300",
-    "#10B981":"green-500",
-    "#EF4444":"red-500",
-    "#F59E0B":"yellow-500",
-    "#EC4899":"pink-500",
-    "#8B5CF6":"purple-500",
-    "#3B82F6":"blue-500",
-    "#6B7280":"gray-s500"}
-
-    vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
-    ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
-
-    vis.colorScale = d3.scaleOrdinal()
-    .domain(nodesClassesShow)
-    .range(vis.colors.slice(0,nodesClassesShow.length))
-
-    colorScale=vis.colorScale
-  
-    vis.sizeNode = d3.scaleLinear()
-    .domain([0,300])
-    .range([ 15, 45])  
-  vis.simulation = d3.forceSimulation();
-
-  vis.forceProperties = {
-    center: {
-        x: vis.forces.center.x,
-        y: vis.forces.center.y
-    },
-    charge: {
-        enabled: vis.forces.charge.enabled,
-        strength: vis.forces.charge.strength,
-        distanceMin: vis.forces.charge.distanceMin,
-        distanceMax: vis.forces.charge.distanceMax
-    },
-    collide: {
-        enabled: vis.forces.collide.enabled,
-        strength: vis.forces.collide.strength,
-        iterations: vis.forces.collide.iterations,
-        radius: vis.forces.collide.radius
-    },
-    forceX: {
-        enabled: vis.forces.forceX.enabled,
-        strength: vis.forces.forceX.strength,
-        x: vis.forces.forceX.x
-    },
-    forceY: {
-        enabled: vis.forces.forceY.enabled,
-        strength: vis.forces.forceY.strength,
-        y: vis.forces.forceY.y
-    },
-    link: {
-        enabled: vis.forces.link.enabled,
-        distance: vis.forces.link.distance,
-        iterations: vis.forces.link.iterations
-    }
-  }
-
-  vis.initializeSimulation();
-  vis.initializeFreeDisplay();
-};
 NetworkGraph.prototype.zoomIn = function () {
   var vis = this;
   var zoom = d3.zoom()
@@ -317,11 +202,12 @@ NetworkGraph.prototype.initializeForces = function() {
       .force("forceX", d3.forceX())
       .force("forceY", d3.forceY());
 
-  if(vis.graphType=="freeGraph"){
+  vis.simulation.on("tick", ticked);    
+/*   if(vis.graphType=="freeGraph"){
     vis.simulation.on("tick", tickedFreeGraph);
   }else{
     vis.simulation.on("tick", ticked);
-  }
+  } */
 
   vis.updateForces();
 
@@ -333,27 +219,20 @@ NetworkGraph.prototype.initializeForces = function() {
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    
-    vis.nodeCircle
-        .attr("transform", function(d) { 
-
-          return "translate(" + d.x + "," + d.y + ")"; })
-
-    d3.select('#alpha_value').style('flex-basis', (vis.simulation.alpha()*100) + '%');
-  }
-  function tickedFreeGraph(){
     vis.edgepaths.attr('d', function (d){
-      return   'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
-    });
-    vis.link
-        .attr("x1", function(d) { 
-            return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
+          return   'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
+        });
+
     vis.nodeCircle
         .attr("transform", function(d) { 
+          ////console.log(d)
           return "translate(" + d.x + "," + d.y + ")"; })
+
+    vis.nodeCircleFree
+          .attr("transform", function(d) { 
+            ////console.log(d)
+  
+            return "translate(" + d.x + "," + d.y + ")"; })
 
     d3.select('#alpha_value').style('flex-basis', (vis.simulation.alpha()*100) + '%');
   }
@@ -394,16 +273,22 @@ NetworkGraph.prototype.updateForces= function() {
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
   var vis = this,linkId,classElement,text;
-  ////////////////////console.log(vis.data)
+  //////////////////////console.log(vis.data)
   vis.tip = d3.tip()
   .attr('class', 'd3-tip z-50')
   .offset([-25,0])
   .html(function (d) {
-      if(typeof(d)=="string"){
-        text=getTooltipMenu(d)
+      //console.log(d)
+      if(d["class"]){
+        if(d["class"]=="free"){
+          text=getTooltipTextFreeGraph(d)
+       }else{
+               text=getTooltipText(d)
+       }
       }else{
-        text=getTooltipText(d)
+        text=getTooltipMenu(d)
       }
+      
     return text;
   });
   
@@ -424,23 +309,7 @@ NetworkGraph.prototype.initializeDisplay = function() {
   vis.updateDisplay();
 
 }
-NetworkGraph.prototype.initializeFreeDisplay = function() {
-  var vis = this,linkId,classElement;
-  vis.tip = d3.tip()
-  .attr('class', 'd3-tip z-50')
-  .offset([-25,0])
-  .html(function (d) {
-      var text=getTooltipTextFreeGraph(d)
-    return text;
-  });
-  
-  vis.g.call(vis.tip);
-  vis.dataJoinFreeGraph()
-  vis.exitGraph()
-  vis.enterFreeGraph()
 
-  vis.updateDisplay();
-}
 NetworkGraph.prototype.updateDisplay = function () {
   var vis = this;
 
@@ -468,328 +337,93 @@ NetworkGraph.prototype.dataJoinGraph = function(){
     return d.id;
   })
 
+  vis.edgepaths = vis.gLinks.selectAll(".edgepath")
+  .data(vis.data.links.filter(function(item) {
+    return item["source"]["class"] == "free"
+  }), function(d) { return d.id; })
+
+/*   vis.nodeCircle=vis.circleSel
+  .data(vis.data.nodes.filter(function(item) {
+    return item.shape == 1
+  }), function(d) { return d.id; }) */
+
+  vis.edgelabels = vis.gLinks.selectAll(".edgelabel")
+  .data(vis.data.links.filter(function(item) {
+    return item["source"]["class"] == "free"
+  }), function(d) { return d.id; })
+
   vis.circleSel=vis.gNodes
-  .selectAll('.nodeCircle')
+  .selectAll('.nodeCircleBasic')
 
   vis.nodeCircle=vis.circleSel
   .data(vis.data.nodes.filter(function(item) {
-    return item.shape == 1
+    ////console.log(item)
+    return item["class"] != "free"
   }), function(d) { return d.id; })
 
+  //console.log(vis.nodeCircle)
+
+  vis.circleSelFree=vis.gNodesFree
+  .selectAll('.nodeCircleFree')
+
+  vis.nodeCircleFree=vis.circleSelFree
+  .data(vis.data.nodes.filter(function(item) {
+    ////console.log(item)
+    return item["class"] == "free"
+  }), function(d) { return d.id; })
+
+  //console.log(vis.nodeCircleFree)
+/*   vis.nodeCircleImage=vis.circleSel
+  .data(vis.data.nodes.filter(function(item) {
+    ////console.log(item)
+    return item["class"] == "free"
+  }), function(d) { return d.id; })
+  //console.log(vis.nodeCircleImage) */
 }
-NetworkGraph.prototype.dataJoinFreeGraph = function(){
-  var vis=this;
-  vis.link = vis.gLinks.selectAll(".link")
-  .data(vis.data.links)
 
-  vis.edgepaths = vis.gLinks.selectAll(".edgepath")
-  .data(vis.data.links)
-
-  vis.edgelabels = vis.gLinks.selectAll(".edgelabel")
-        .data(vis.data.links)
-
-  vis.circleSel=vis.gNodes
-  .selectAll('.nodeCircle')
-
-  vis.nodeCircle=vis.circleSel
-  .data(vis.data.nodes,function(d){
-    return d.id;
-  })
-
-}
 NetworkGraph.prototype.enterGraph = function(){
-  var vis=this,r;
-  //console.log(vis.colors)
-  //console.log(nodesClassesShow)
-  vis.colorScale.range(vis.colors.slice(0,nodesClassesShow.length))
-  vis.colorScale.domain(nodesClassesShow)
-  //////////console.log(vis.colorScale.range())
-  //////////console.log(vis.colorScale.domain())
-
-  colorScale=vis.colorScale
+    var vis=this,r;
+    ////console.log(vis.colors)
+    ////console.log(nodesClassesShow)
+    vis.colorScale.range(vis.colors.slice(0,nodesClassesShow.length))
+    vis.colorScale.domain(nodesClassesShow)
+    ////////////console.log(vis.colorScale.range())
+    ////////////console.log(vis.colorScale.domain())
   
-  vis.isDblclick = false;
-
-  vis.timeoutTiming = 500;
-
-  vis.link=vis.link
-      .enter().append("line")
-      .attr("class", "link")
-      .attr("origId",function(d){
-        return (d.source.id+"_"+d.target.id)
-      })
-      .attr("index",function(d){
-        return d.index;
-      })
-      .attr("id",function(d){
-        return (d.source.id+"_"+d.target.id)
-      }); 
-
-  vis.nodeCircle=vis.nodeCircle
-  .enter().append("g")
-  .attr("class", "nodeCircle")
-  .attr("id",function(d){
-    return (d.id+"_g")
-  })
-  ////////////console.log(vis.data)
+    colorScale=vis.colorScale
+    
+    vis.isDblclick = false;
   
-  vis.nodeCircleCircle=vis.nodeCircle
-      .append("circle")
-      .attr("class",function(d){
-        return d.class + " nodeCircleCircle"
-      }) 
-      .attr("origId",function(d){
-        return d.value
-      })
-      .attr("id",function(d){
-        return (d.id)
-      })
-      .attr("root", function(d){
-        if(d.root){
-          return 1;
-        }else{
-          return 0;
-        }
-      })
-      .attr("options",function(d){
-        if(d.options){
-          return (d.options);
-        }else{
-          return 0;
-        }
-        
-      })
-
-      .attr("r", function(d){
-        ////////////console.log(d.number)
-        return vis.sizeNode(d.number)})
-      .attr("stroke", function(d){
-        return "grey"
-      })
-      .attr("stroke-width", "1px")
-      .style("fill", function(d){ 
-        ////////////console.log(d)
-        if(!d.class){
-          if ((d.type=="typed-literal")||(d.type=="literal")){
-            return "#c5b0d5";
-          }else if(d.type=="bnode"){
-            return "#98df8a";
-          }else if(d.root){
-            return "#f9e14c"
-          }else{
-            return "#a3cbe2"
-          }
-        }else{
-          //////////console.log(d.class)
-          //////////console.log(nodesClassesCorrespondence)
-          //////////console.log(vis.colorScale.domain())
-          //////////console.log(vis.colorScale.range())
-         return vis.colorScale(nodesClassesCorrespondence[d.class]);
-        }
-        
-      })
-      .on('mouseover', function(d){
-        vis.tip.show(d,this);
-      })
-      .on('mouseout', function(d){
-        vis.tip.hide(d,this);
-      })
-      .on('clickout', function(d){
-      })
-      .on("click",function(d){
-        var element=this
-        clearTimeout(vis.clickTimeout);
-        vis.clickTimeout = setTimeout(function () {
-          if(!vis.isDblclick) {
-            // here goes your click codes
-            if(!d.comment){
-              if (element.getAttribute("stroke-width")=="1px"){
-                clickBubble(element,vis.data)
-              }else{
-                unclickBubble()
-              }
-            }else{
-              modelClick(element,vis.data)
-            }
-          }
-        }, vis.timeoutTiming);
-  
-      })
-      .on('dblclick', function(d){
-        d3.event.preventDefault();
-        vis.isDblclick = true;
-        clearTimeout(vis.dblclickTimeout);
-        vis.dblclickTimeout = setTimeout(function () {
-          vis.isDblclick = false;
-        }, vis.timeoutTiming);
-        //////////////////console.log(d3.event)
-        if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
-          //////////////console.log(vis.treeData)
-          vis.wrangleData(this,"bubble",d3.event);
-        }
-        //vis.wrangleData(this,"bubble");
-        return false;
-      })
-      .on('contextmenu', (d) => {
-        d3.event.preventDefault();
-        vis.menuItems=getMenuItemsContextMenu(d,"bubble")
-        createContextMenu(d, vis.menuItems, 100, 100, vis.g);
-      })
-      .call(d3.drag()
-              .on("start", dragstarted)
-              .on("drag", dragged)
-              .on("end", dragended));
-
-  vis.nodeCircleImage=vis.nodeCircle.append("svg:image")
-      .attr("class", "nodeCircleImage")
-      .attr("id",function(d){
-        return (d.id+"_image")
-      })
-      .attr("xlink:href", function(d){
-        return bubbleImage(d);
-      })
-      .attr("x",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
-      .attr("y",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
-      .attr("width",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
-      .attr("height",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
-      .on('dblclick', function(d){
-        d3.event.preventDefault();
-        vis.isDblclick = true;
-        clearTimeout(vis.dblclickTimeout);
-        vis.dblclickTimeout = setTimeout(function () {
-          vis.isDblclick = false;
-        }, vis.timeoutTiming);
-        //////////////////console.log(d3.event)
-
-        //////////////////console.log(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"])
-        if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
-          vis.wrangleData(this,"bubble",d3.event);
-        }
-        return false;
-      })
-      .on('mouseover', function(d){
-        vis.tip.show(d,this);
-        d3.select("#"+(this.getAttribute("id").replace("_image","")))
-        .transition()
-        .attr("r", function(d) { 
-          r=vis.sizeNode(d.number)*2
-          return r;
+    vis.timeoutTiming = 500;
+   //aquí hay un origId y id en basicGraph y id en freeGraph
+   //también en basicGraph tiene un "_" y no lo tiene en 
+    vis.link=vis.link
+        .enter().append("line")
+        .attr("class", "link")
+        .attr("origId",function(d){
+          return (d.source.id+"_"+d.target.id)
         })
-
-        d3.select("#"+this.getAttribute("id"))
-        .transition()
-        .attr("x",function(d){return "-"+(r-5)+"px"})
-        .attr("y",function(d){return "-"+(r-5)+"px"})
-        .attr("height", function(d) { 
-          return (vis.sizeNode(d.number)*1.5*2)+"px";
+        .attr("index",function(d){
+          return d.index;
+                })
+        .attr("value",d=>d["type"])
+        //.attr("stroke", "steelblues")
+        //.style("opacity", 1)
+        .style("stroke", "grey")
+        .style("fill","grey")
+        .style("stroke-width", "1px")
+        .attr('marker-end','url(#arrowhead)') 
+        .on('mouseover', function(d){
+          vis.tip.show(d,this);
         })
-        .attr("width", function(d) { 
-          return (vis.sizeNode(d.number)*1.5*2)+"px";
+        .attr("id",function(d){
+          return (d.source.id+"_"+d.target.id)
         })
-      })
-      .on('mouseout', function(d){
-        vis.tip.hide(d,this);
-        d3.select("#"+(this.getAttribute("id").replace("_image","")))
-        .transition()
-        .attr("r", function(d) { 
-          return vis.sizeNode(d.number);})
-        d3.select("#"+this.getAttribute("id"))
-        .transition()
-        .attr("x",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
-        .attr("y",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
-        .attr("width", function(d) { 
-          return (vis.sizeNode(d.number)*1.5)+"px";
-        })
-        .attr("height", function(d) { 
-          return (vis.sizeNode(d.number)*1.5)+"px";
-        })
-      })
-      .on("click",function(d){
-        var element=this
-        clearTimeout(vis.clickTimeout);
-        vis.clickTimeout = setTimeout(function () {
-          if(!vis.isDblclick) {
-            element=document.getElementById(element.getAttribute("id").replace("_image",""));
-            if (element.getAttribute("stroke-width")=="1px"){
-              clickBubble(element,vis.data)
-            }else{
-              unclickBubble()
-            }
-          }
-        }, vis.timeoutTiming);
-  
-      })
-      .on('contextmenu', (d) => {
-        d3.event.preventDefault();
-        getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
-      })
+        .on('mouseout', function(d){
+          vis.tip.hide(d,this);
+        });    
 
-    function color(d) {
-      return d._children ? "#e86935" : "#f5aa41";
-    }
-  
-    function dragstarted(d) {
-      if (!d3.event.active) vis.simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-  
-    function dragged(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-  
-    function dragended(d) {
-      if (!d3.event.active) vis.simulation.alphaTarget(0.0001);
-      d.fx = null;
-      d.fy = null;
-    }
-    function createContextMenu (d, menuItems, width, height, svgId) {
-      vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
-      d3.event.preventDefault();
-    }
-  vis.allData=allData()
-
-  function allData(){
-    var data=[]
-    vis.treeData.forEach(function(d){
-      if(!data.includes(d)){
-        data.push(d)
-      }
-      if(d.children){
-        d.children.forEach(function(v){
-          if(!data.includes(v)){
-            data.push(v)
-          }
-        })
-      }
-    })
-    return data;
-  }
-}
-NetworkGraph.prototype.enterFreeGraph = function(){
-  var vis=this,r;
-  vis.isDblclick = false;
-
-  vis.timeoutTiming = 500;
-
-  vis.link=vis.link.enter()
-  .append("line")
-  .attr("class", "link")
-  .attr("id",function(d){
-    return d["source"]["id"]+d["target"]["id"]
-  })
-  .attr("value",d=>d["type"])
-  .attr("stroke", "steelblues")
-  .attr('marker-end','url(#arrowhead)') 
-  .on('mouseover', function(d){
-    vis.tip.show(d,this);
-  })
-  .on('mouseout', function(d){
-    vis.tip.hide(d,this);
-  });
-
-  vis.edgepaths = vis.edgepaths
+    vis.edgepaths = vis.edgepaths
         .enter()
         .append('path')
         .attr('class', 'edgepath')
@@ -825,136 +459,407 @@ NetworkGraph.prototype.enterFreeGraph = function(){
         .text(function(d){
           return d.value
         });
-        
+  
     vis.nodeCircle=vis.nodeCircle
-      .enter().append("g")
-      .attr("class", "nodeCircle")
-      .attr("id",function(d){
-        return (d.id+"_g")
-      })
-
+    .enter().append("g")
+    .attr("class", "nodeCircleBasic")
+    .attr("id",function(d){
+      return (d.id+"_g")
+    })
+    //////////////console.log(vis.data)
+    
     vis.nodeCircleCircle=vis.nodeCircle
-      .append("circle")
-      .attr("class",function(d){
-        ////////////////////console.log(d.class)
-        return d.class + " nodeCircleCircle"
-      }) 
-      .attr("r", function(d){
-        if((d.more_results!="")&(d.more_results!=undefined)){
-          return 50;
-        }else{
-          return 17;
-        }
-      })
-      .attr("id",d=>d.id)
-      .attr("stroke-width", "1px")
-      .style("stroke", function(d){
-        if((d.more_results!="")&(d.more_results!=undefined)){
-          return "purple";
-        }else{
-          return "gray";
-        }
-      })
-      .style("stroke-opacity",1)
-      .style("stroke-width", function(d){
-        if((d.more_results!="")&(d.more_results!=undefined)){
-          return 5;
-        }else{
-          return 1;
-        }
-      })
-      .style("fill", function (d){
-        if(d.type=="menuOption"){
-          return "#93C5FD"
-        }else if(d.configRow!=""){
-          return "#E5E7EB";
-        }else if(d.type=="uri"){
-          return "#6EE7B7";
-        }else if(d.type=="bnode"){
-          return "#FCD34D";
-        }else{
-          return "#F9A8D4";
-        }
-      })
-      .on('mouseover', function(d){
-        vis.tip.show(d,this);
-      })
-      .on('mouseout', function(d){
-        vis.tip.hide(d,this);
-      })
-      .on('clickout', function(d){
-      })
-      //noun-circle.svg
-      .on("click",function(d){
-        var element=this
-        clearTimeout(vis.clickTimeout);
-        vis.clickTimeout = setTimeout(function () {
-          if(!vis.isDblclick) {
-            if (element.getAttribute("stroke-width")=="1px"){
-              clickBubbleFreeGraph(element,vis.data)
-            }else{
-              //unclickBubbleFreeGraph()
-            }
+        .append("circle")
+        .attr("class",function(d){
+          return d.class + " nodeCircleCircle"
+        }) 
+        .attr("origId",function(d){
+          return d.value
+        })
+        .attr("id",function(d){
+          return (d.id)
+        })
+        .attr("root", function(d){
+          if(d.root){
+            return 1;
+          }else{
+            return 0;
           }
-        }, vis.timeoutTiming);
-      })
-      .on('dblclick', function(d){
-        if((d.type=="uri")|(d.type=="bnode")){
+        })
+        .attr("options",function(d){
+          if(d.options){
+            return (d.options);
+          }else{
+            return 0;
+          }
+          
+        })
+  
+        .attr("r", function(d){
+          if(!d.number){
+            if((d.more_results!="")&(d.more_results!=undefined)){
+              return 50;
+            }else{
+              return 17;
+            }
+          }else{
+            return vis.sizeNode(d.number)
+          }
+          //////////////console.log(d.number)
+          })
+        .attr("stroke", function(d){
+          return "grey"
+        })
+        .attr("stroke-width", "1px")
+        .style("fill", function(d){ 
+          //////////////console.log(d)
+          /* if(d.type=="menuOption"){
+            return "#93C5FD"
+          }else if(d.configRow!=""){
+            return "#E5E7EB";
+          }else if(d.type=="uri"){
+            return "#6EE7B7";
+          }else if(d.type=="bnode"){
+            return "#FCD34D";
+          }else{
+            if(!d.class){
+              if ((d.type=="typed-literal")||(d.type=="literal")){
+                return "#c5b0d5";
+              }else if(d.type=="bnode"){
+                return "#98df8a";
+              }else if(d.root){
+                return "#f9e14c"
+              }else{
+                return "#a3cbe2"
+              }
+              //return "#F9A8D4";
+            }else{
+              ////////////console.log(d.class)
+              ////////////console.log(nodesClassesCorrespondence)
+              ////////////console.log(vis.colorScale.domain())
+              ////////////console.log(vis.colorScale.range())
+             return vis.colorScale(nodesClassesCorrespondence[d.class]);
+            }
+          } */
+          if(!d.class){
+            if ((d.type=="typed-literal")||(d.type=="literal")){
+              return "#c5b0d5";
+            }else if(d.type=="bnode"){
+              return "#98df8a";
+            }else if(d.root){
+              return "#f9e14c"
+            }else{
+              return "#a3cbe2"
+            }
+          }else{
+            ////////////console.log(d.class)
+            ////////////console.log(nodesClassesCorrespondence)
+            ////////////console.log(vis.colorScale.domain())
+            ////////////console.log(vis.colorScale.range())
+           return vis.colorScale(nodesClassesCorrespondence[d.class]);
+          }
+        })
+        .on('mouseover', function(d){
+          vis.tip.show(d,this);
+        })
+        .on('mouseout', function(d){
+          vis.tip.hide(d,this);
+        })
+        .on('clickout', function(d){
+        })
+        .on("click",function(d){
+          var element=this
+          console.log(d)
+          clearTimeout(vis.clickTimeout);
+          vis.clickTimeout = setTimeout(function () {
+            if(!vis.isDblclick) {
+              console.log(d)
+              // here goes your click codes
+              if(!d.comment){
+                if (element.getAttribute("stroke-width")=="1px"){
+                  clickBubbleFreeGraph(element,vis.data)
+                }else{
+                  unclickBubbleFreeGraph()
+                }
+              }else{
+                modelClick(element,vis.data)
+              }
+            }
+          }, vis.timeoutTiming);
+    
+        })
+        .on('dblclick', function(d){
+          if((d.type=="uri")|(d.type=="bnode")){
+            d3.event.preventDefault();
+            vis.isDblclick = true;
+            clearTimeout(vis.dblclickTimeout);
+            vis.dblclickTimeout = setTimeout(function () {
+              vis.isDblclick = false;
+            }, vis.timeoutTiming);
+            vis.wrangleData(this,"bubble");
+            return false;
+          }
           d3.event.preventDefault();
           vis.isDblclick = true;
           clearTimeout(vis.dblclickTimeout);
           vis.dblclickTimeout = setTimeout(function () {
             vis.isDblclick = false;
           }, vis.timeoutTiming);
-          vis.wrangleDataFreeGraph(this,"bubble");
+          ////////////////////console.log(d3.event)
+          if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
+            ////////////////console.log(vis.treeData)
+            vis.wrangleData(this,"bubble",d3.event);
+          }
+          //vis.wrangleData(this,"bubble");
           return false;
+        })
+        .on('contextmenu', (d) => {
+          d3.event.preventDefault();
+          vis.menuItems=getMenuItemsContextMenu(d,"bubble")
+          createContextMenu(d, vis.menuItems, 100, 100, vis.g);
+        })
+        .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+  
+    ////console.log(vis.nodeCircleImage)
+    vis.nodeCircleImage=vis.nodeCircle.append("svg:image")
+    //vis.nodeCircleImage.enter().append("svg:image")
+        .attr("class", "nodeCircleImage")
+        .attr("id",function(d){
+          return (d.id+"_image")
+        })
+        .attr("xlink:href", function(d){
+          //console.log(d)
+          return bubbleImage(d);
+        })
+        .attr("x",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
+        .attr("y",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
+        .attr("width",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
+        .attr("height",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
+        .on('dblclick', function(d){
+          d3.event.preventDefault();
+          vis.isDblclick = true;
+          clearTimeout(vis.dblclickTimeout);
+          vis.dblclickTimeout = setTimeout(function () {
+            vis.isDblclick = false;
+          }, vis.timeoutTiming);
+          ////////////////////console.log(d3.event)
+  
+          ////////////////////console.log(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"])
+          if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
+            vis.wrangleData(this,"bubble",d3.event);
+          }
+          return false;
+        })
+        .on('mouseover', function(d){
+          vis.tip.show(d,this);
+          d3.select("#"+(this.getAttribute("id").replace("_image","")))
+          .transition()
+          .attr("r", function(d) { 
+            r=vis.sizeNode(d.number)*2
+            return r;
+          })
+  
+          d3.select("#"+this.getAttribute("id"))
+          .transition()
+          .attr("x",function(d){return "-"+(r-5)+"px"})
+          .attr("y",function(d){return "-"+(r-5)+"px"})
+          .attr("height", function(d) { 
+            return (vis.sizeNode(d.number)*1.5*2)+"px";
+          })
+          .attr("width", function(d) { 
+            return (vis.sizeNode(d.number)*1.5*2)+"px";
+          })
+        })
+        .on('mouseout', function(d){
+          vis.tip.hide(d,this);
+          d3.select("#"+(this.getAttribute("id").replace("_image","")))
+          .transition()
+          .attr("r", function(d) { 
+            return vis.sizeNode(d.number);})
+          d3.select("#"+this.getAttribute("id"))
+          .transition()
+          .attr("x",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
+          .attr("y",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
+          .attr("width", function(d) { 
+            return (vis.sizeNode(d.number)*1.5)+"px";
+          })
+          .attr("height", function(d) { 
+            return (vis.sizeNode(d.number)*1.5)+"px";
+          })
+        })
+        .on("click",function(d){
+          var element=this
+          //console.log(d)
+          clearTimeout(vis.clickTimeout);
+          vis.clickTimeout = setTimeout(function () {
+            if(!vis.isDblclick) {
+              element=document.getElementById(element.getAttribute("id").replace("_image",""));
+              console.log(element.getAttribute("stroke-width"))
+              if (element.getAttribute("stroke-width")=="1px"){
+                //console.log(element)
+                clickBubbleFreeGraph(element,vis.data)
+              }else{
+                unclickBubbleFreeGraph()
+              }
+            }
+          }, vis.timeoutTiming);
+    
+        })
+        .on('contextmenu', (d) => {
+          d3.event.preventDefault();
+          getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
+        })
+  
+    vis.nodeCircleFree=vis.nodeCircleFree
+        .enter().append("g")
+        .attr("class", "nodeCircleFree")
+        .attr("id",function(d){
+          return (d.id+"_g")
+        })
+  
+      vis.nodeCircleCircleFree=vis.nodeCircleFree
+        .append("circle")
+        .attr("class",function(d){
+          //////////////////////console.log(d.class)
+          return d.class + " nodeCircleCircleFree"
+        }) 
+        .attr("r", function(d){
+          if((d.more_results!="")&(d.more_results!=undefined)){
+            return 50;
+          }else{
+            return 17;
+          }
+        })
+        .attr("id",d=>d.id)
+        .attr("stroke-width", "1px")
+        .style("stroke", function(d){
+          if((d.more_results!="")&(d.more_results!=undefined)){
+            return "purple";
+          }else{
+            return "gray";
+          }
+        })
+        .style("stroke-opacity",1)
+        .style("stroke-width", function(d){
+          if((d.more_results!="")&(d.more_results!=undefined)){
+            return 5;
+          }else{
+            return 1;
+          }
+        })
+        .style("fill", function (d){
+          if(d.type=="menuOption"){
+            return "#93C5FD"
+          }else if(d.configRow!=""){
+            return "#A855F7";
+          }else if(d.type=="uri"){
+            return "#6EE7B7";
+          }else if(d.type=="bnode"){
+            return "#FCD34D";
+          }else{
+            return "#F9A8D4";
+          }
+        })
+        .on('mouseover', function(d){
+          vis.tip.show(d,this);
+        })
+        .on('mouseout', function(d){
+          vis.tip.hide(d,this);
+        })
+        .on('clickout', function(d){
+        })
+        //noun-circle.svg
+        .on("click",function(d){
+          var element=this
+          clearTimeout(vis.clickTimeout);
+          vis.clickTimeout = setTimeout(function () {
+            if(!vis.isDblclick) {
+              if (element.getAttribute("stroke-width")=="1px"){
+                clickBubbleFreeGraph(element,vis.data)
+              }else{
+                //unclickBubbleFreeGraph()
+              }
+            }
+          }, vis.timeoutTiming);
+        })
+        .on('dblclick', function(d){
+          if((d.type=="uri")|(d.type=="bnode")){
+            d3.event.preventDefault();
+            vis.isDblclick = true;
+            clearTimeout(vis.dblclickTimeout);
+            vis.dblclickTimeout = setTimeout(function () {
+              vis.isDblclick = false;
+            }, vis.timeoutTiming);
+            vis.wrangleData(this,"bubble");
+            return false;
+          }
+        })
+        .on('contextmenu', (d) => {
+          d3.event.preventDefault();
+          vis.menuItems=getMenuItemsContextMenu(d,"bubble")
+          createContextMenu(d, vis.menuItems, 100, 100, vis.g);
+        })
+        .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+        
+      function color(d) {
+        return d._children ? "#e86935" : "#f5aa41";
+      }
+    
+      function dragstarted(d) {
+        if (!d3.event.active) vis.simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+    
+      function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      }
+    
+      function dragended(d) {
+        if (!d3.event.active) vis.simulation.alphaTarget(0.0001);
+        d.fx = null;
+        d.fy = null;
+      }
+      function createContextMenu (d, menuItems, width, height, svgId) {
+        vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
+        d3.event.preventDefault();
+      }
+    /* vis.allData=allData()
+  
+    function allData(){
+      var data=[]
+      vis.treeData.forEach(function(d){
+        if(!data.includes(d)){
+          data.push(d)
+        }
+        if(d.children){
+          d.children.forEach(function(v){
+            if(!data.includes(v)){
+              data.push(v)
+            }
+          })
         }
       })
-      .on('contextmenu', (d) => {
-        d3.event.preventDefault();
-        vis.menuItems=getMenuItemsContextMenu(d,"bubble")
-        createContextMenu(d, vis.menuItems, 100, 100, vis.g);
-      })
-      .call(d3.drag()
-              .on("start", dragstarted)
-              .on("drag", dragged)
-              .on("end", dragended));
+      return data;
+    } */
+  }
 
-    function color(d) {
-      return d._children ? "#e86935" : "#f5aa41";
-    }
-    //////////// UI EVENTS ////////////
-  
-    function dragstarted(d) {
-      if (!d3.event.active) vis.simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-  
-    function dragged(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-  
-    function dragended(d) {
-      if (!d3.event.active) vis.simulation.alphaTarget(0.0001);
-      d.fx = null;
-      d.fy = null;
-    }
-    function createContextMenu (d, menuItems, width, height, svgId) {
-      vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
-      d3.event.preventDefault();
-    }
-}
 NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width){
 
   var vis=this,uri="",url,subjectObject;
   if(data instanceof Element){
     uri=d3.select("#"+data.getAttribute("id")).data()[0]["uri"]
   }
-  //console.log(x)
-  //console.log(y)
-  //console.log(menuItems)
+  ////console.log(x)
+  ////console.log(y)
+  console.log(menuItems)
   d3.select(".contextMenu").remove();
   vis.g
       .append('g').attr('class', "contextMenu")
@@ -968,8 +873,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       .attr('uri',data[data["class"]+"_uri"])
       .attr('x', x)
       .attr('y', (d, i) => { 
-        //console.log(i)
-        //console.log(y)
+        ////console.log(i)
+        ////console.log(y)
         return y + (i * 30); })
       .attr('rx', 2)
       .attr('width', width)
@@ -986,10 +891,10 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         }
       })
       .on('mouseover', function(d){
-        if(vis.graphType=="freeGraph"){
-          vis.tip.show(getTooltip(d.title,uri),this);
-        }else{
+        if(configFile.filter(v=>v.option==d.title).length>0){
           vis.tip.show(getCommentOption(d.title),this);
+        }else{
+          vis.tip.show(getTooltip(d.title,uri),this);
         }
         d3.select(this).style("fill","#DCDDF5")
       })
@@ -1001,7 +906,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
   d3.selectAll(".menuEntry")
       .append('text')
       .text((d) => { 
-        //console.log(d)
+        ////console.log(d)
         return d.title; })
       .attr('uri',data[data["class"]+"_uri"])
       .attr('x', x)
@@ -1012,14 +917,30 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         d3.selectAll(".d3-tip").each(function () {
           this.style.opacity = "0"
         })
-        ////////////////////console.log(d.action(data,d))
+        console.log(data)
+        console.log(d)
+        console.log(d.action)
+        //////////////////////console.log(d.action(data,d))
         d.action(data,d) })
       .on('mouseover', function(d){
-        if(vis.graphType=="freeGraph"){
+        //console.log(d)
+        if(configFile.filter(v=>v.option==d.title).length>0){
+          vis.tip.show(getCommentOption(d.title),this);
+        }else{
+          vis.tip.show(getTooltip(d.title,uri),this);
+        }
+/*         if(d["class"]){
+          if(d["class"]=="free"){
+            vis.tip.show(getTooltip(d.title,uri),this);
+          }else{
+            vis.tip.show(getCommentOption(d.title),this)
+          }
+        } */
+/*         if(vis.graphType=="freeGraph"){
           vis.tip.show(getTooltip(d.title,uri),this);
         }else{
           vis.tip.show(getCommentOption(d.title),this);
-        }
+        } */
         d3.select(this).style("fill","#DCDDF5")
       })
       .on('mouseout', function(d){
@@ -1057,116 +978,101 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,event) {
   var vis = this;
   var children,pageX,pageY,founded,indexRows=1,node,configRows=0,arrayMenuOptions
   founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
-  //////////////////console.log(element)
-  //////////////console.log(networkGraph.treeData)
-
-  node=get_node_from_element(element.getAttribute("id").replace("_image",""))
-  configRows=get_configRows_class(nodesClassesCorrespondence[node["class"]])
-  ////////////////console.log(configRows)
-  indexRows=await checkAskResults(configRows,node)
-  ////////////////console.log(indexRows)
-  if (origin=="table"){
-    pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
-    pageY=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["y"]
-  }else{
-    ////////////////////console.log(d3.event)
-    //pageX=d3.event.pageX
-    //pageY=d3.event.pageY
-    //pageX=event.pageX
-    //pageY=event.pageY
-    //pageX=event.offsetX
-    //pageY=event.offsetY
-    pageX=event.pageX
-    pageY=event.pageY
-  }
-  //////////////console.log(node["menuOption"])
-  if(node["menuOption"]!=undefined){
-    arrayMenuOptions=node["menuOption"].split(";")
-    //////////////console.log(arrayMenuOptions)
-    indexRows = indexRows.filter(function( obj ) {
-      return !arrayMenuOptions.includes(obj.option);
-    });
-  }
+  console.log(element)
+  console.log(origin)
+  console.log(event)
+  ////////////////console.log(networkGraph.treeData)
   
-  //////////////////console.log(indexRows.find(element => element.option === node["menuOption"]))
- 
-  //////////////console.log(indexRows)
-/*   position=indexRows.indexOf(indexRows.filter(function(item) {
-    return (item.id == node["menuOption"])
-  })[0])
-  if(position!=-1){
-    indexRows.slice(position,1)
-  }  */ 
-  ////////////////console.log(indexRows)
-  if(founded.length==0){
-    indexRows=await addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
-    vis.data=flatten(vis.treeData).flatData
-    vis.initializeSimulation();
-    vis.dataJoinGraph()
-    vis.exitGraph()
-  }else if(indexRows.length>0){
-    //////////////console.log(vis.treeData)
-    //throw new Error("Something went badly wrong!");
-    indexRows=await addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
-    vis.data=flatten(vis.treeData).flatData
-    vis.initializeSimulation();
-    vis.dataJoinGraph()
-    vis.exitGraph()
-  }else{
-    if (founded[0]["children"]){
-       if (element.getAttribute("root")=="1"){
-          children=founded[0]["children"]
-          children.forEach(function(d){
-            vis.collapseBranch(d)
-          })
+  node=get_node_from_element(element.getAttribute("id").replace("_image",""))
+  //console.log(node)
+  if(node.class!="free"){
+    configRows=get_configRows_class(nodesClassesCorrespondence[node["class"]])
+    indexRows=await checkAskResults(configRows,node)
+    if (origin=="table"){
+      pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
+      pageY=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["y"]
+    }else{
+      //////////////////////console.log(d3.event)
+      //pageX=d3.event.pageX
+      //pageY=d3.event.pageY
+      //pageX=event.pageX
+      //pageY=event.pageY
+      //pageX=event.offsetX
+      //pageY=event.offsetY
+      pageX=event.pageX
+      pageY=event.pageY
+    }
+    if(node["menuOption"]!=undefined){
+      arrayMenuOptions=node["menuOption"].split(";")
+      indexRows = indexRows.filter(function( obj ) {
+        return !arrayMenuOptions.includes(obj.option);
+      });
+    }
+  
+    if(founded.length==0){
+      indexRows=await addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
+      vis.data=flatten(vis.treeData).flatData
+      vis.initializeSimulation();
+      vis.dataJoinGraph()
+      vis.exitGraph()
+    }else if(indexRows.length>0){
+      //throw new Error("Something went badly wrong!");
+      indexRows=await addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
+      vis.data=flatten(vis.treeData).flatData
+      vis.initializeSimulation();
+      vis.dataJoinGraph()
+      vis.exitGraph()
+    }else{
+      if (founded[0]["children"]){
+         if (element.getAttribute("root")=="1"){
+            children=founded[0]["children"]
+            children.forEach(function(d){
+              vis.collapseBranch(d)
+            })
+          }else{
+            vis.collapseBranch(founded[0])
+          }
+          vis.data=flatten(vis.treeData).flatData
+          vis.initializeSimulation();
+          vis.dataJoinGraph()
+          vis.exitGraph()
+    
         }else{
-          vis.collapseBranch(founded[0])
-        }
+          if (element.getAttribute("root")=="1"){
+            children=founded[0]["children"]
+            children.forEach(function(d){
+              vis.expandLevelBranch(d)
+            })
+          }else{
+            vis.expandLevelBranch(founded[0])
+          }
+          
         vis.data=flatten(vis.treeData).flatData
+        vis.initializeSimulation();
+        vis.dataJoinGraph()
+        vis.enterGraph()
+        
         vis.initializeSimulation();
         vis.dataJoinGraph()
         vis.exitGraph()
   
-      }else{
-        if (element.getAttribute("root")=="1"){
-          children=founded[0]["children"]
-          children.forEach(function(d){
-            vis.expandLevelBranch(d)
-          })
-        }else{
-          vis.expandLevelBranch(founded[0])
-        }
-        
-      vis.data=flatten(vis.treeData).flatData
-      vis.initializeSimulation();
-      vis.dataJoinGraph()
-      vis.enterGraph()
+      }
       
-      vis.initializeSimulation();
-      vis.dataJoinGraph()
-      vis.exitGraph()
-
     }
-    
-  }
-  return indexRows
-};
-
-NetworkGraph.prototype.wrangleDataFreeGraph = async function (element,origin) {
-  var vis = this;
-  var children,pageX,pageY,founded,resultRows
-  if (origin=="table"){
-    pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
-    pageY=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["y"]
   }else{
-    pageX=d3.event.pageX
-    pageY=d3.event.pageY
+    if (origin=="table"){
+      pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
+      pageY=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["y"]
+    }else{
+      pageX=d3.event.pageX
+      pageY=d3.event.pageY
+    }
+  
+    indexRows=await checkQueries(element,undefined,origin,pageX,pageY)
+    //return resultRows
   }
-  ////console.log("wrangleDataFreeGraph")
-  ////////console.log(element)
-  ////////console.log(d3.select("#"+element.getAttribute("id")).data())
-  resultRows=await checkQueries(element,undefined,origin,pageX,pageY)
-  return resultRows
+
+  return indexRows
 };
 
 NetworkGraph.prototype.collapseAll = function () {
@@ -1183,7 +1089,6 @@ NetworkGraph.prototype.collapseAll = function () {
 
 }
 
-
 NetworkGraph.prototype.expandAll = function () {
   var vis = this;
   var children;
@@ -1195,11 +1100,12 @@ NetworkGraph.prototype.expandAll = function () {
   vis.data=flatten(vis.treeData).flatData
   vis.initializeSimulation();
   vis.dataJoinGraph()
-  if(vis.graphType=="freeGraph"){
-    vis.enterFreeGraph()
-  }else{
-    vis.enterGraph()
-  }
+  //if(vis.graphType=="freeGraph"){
+  //  vis.enterFreeGraph()
+  //}else{
+  vis.enterGraph()
+  //}
+
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.exitGraph()

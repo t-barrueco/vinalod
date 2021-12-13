@@ -1055,6 +1055,7 @@
                 "tooltip_text": "Locality"
             }
         ],
+        "modelClass":"http://publications.europa.eu/ontology/euvoc#Corporate",
         "function": "",
         "columns": [],
         "type": "TREE",
@@ -1366,6 +1367,7 @@
                 "property": "corporateBody_opTheme"
             }
         ],
+        "modelClass":"http://publications.europa.eu/ontology/euvoc#Corporate",
         "filters": [],
         "tooltip": [],
         "function": "",

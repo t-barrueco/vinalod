@@ -110,7 +110,7 @@ function labelsClick(element){
   
       var table = document.createElement("table");
       table.className="w-full divide-y divide-gray-200 table-auto"
-      console.log(nodeData)
+      //console.log(nodeData)
 
       var thead=document.createElement("thead")
       thead.className="bg-gray-50"
@@ -171,7 +171,7 @@ function labelsClick(element){
       fullTable.appendChild(thead)
       fullTable.appendChild(tbody);
       d3.selectAll(".modal-content tr").on("dblclick",function(){  
-        console.log("double click")
+        //console.log("double click")
         dblclickTrTable(this)
       })
       .on("click",function(){  
@@ -193,7 +193,7 @@ function labelsClickFreeGraph(element,newForm,form,propertyEl){
     var property,nodeData,cell,row,nodesTable,li,div,div2,div3,div4,a,span,span2,svg,path,el1,el2,span3,span4,img,colorCircle;
     var imageArrowUp="/images/arrow-up.svg",imageArrowDown="/images/arrow-down.svg"
 
-    console.log(element)
+    //console.log(element)
     nodesTable=networkGraph.data.links.filter(function(item) {
       return item.source.id == element["id"]
     })
@@ -250,7 +250,7 @@ function labelsClickFreeGraph(element,newForm,form,propertyEl){
       d3.selectAll(".modal-content td").on("dblclick",function(){  
         dblclickTrTableFreeGraph(this)
       })
-      //.on("mouseover",function(){////////////////////////////////////////////////////////////console.log("mouseover a Table")})
+      //.on("mouseover",function(){//////////////////////////////////////////////////////////////console.log("mouseover a Table")})
       .on("click",function(){  
         clickTrTableFreeGraph(this)
       })
@@ -488,21 +488,21 @@ function clickTrTable(row) {
   }
   function bubbleImage(node){
     var icon=[];
-    //console.log(node)
-    //console.log(node[node["class"]+"_image"])
+    ////console.log(node)
+    ////console.log(node[node["class"]+"_image"])
     if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
       return node[node["class"]+"_image"];
     }else{
       if(node[node["class"]+"_uri"]){
-        //console.log(node[node["class"]+"_uri"])
-        //console.log(filesIcons)
+        ////console.log(node[node["class"]+"_uri"])
+        ////console.log(filesIcons)
         icon=filesIcons.filter(function(d){
           return d.ID==node[node["class"]+"_uri"];
         })
       }
       if(icon.length==0){
-        //console.log(nodesClassesCorrespondence[node["class"]])
-        //console.log(filesIcons)
+        ////console.log(nodesClassesCorrespondence[node["class"]])
+        ////console.log(filesIcons)
         icon=filesIcons.filter(function(d){
           return d.ID==nodesClassesCorrespondence[node["class"]];
         })
