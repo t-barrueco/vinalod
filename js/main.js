@@ -194,11 +194,11 @@ $.xhrPool = [];
       .text("Waiting for Sparql query")
     d3.select("#spin").style("display","inline-flex")
   
-    //////console.log(sparqlQuery)
+    console.log(sparqlQuery)
     ////////console.log(queryUrl)
     $objectAjax=$.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
-      //////console.log(results)
+      console.log(results)
       d3.select("#spin").style("display","none")
       //////////console.log(results)
       graphHistory.push(options)
@@ -244,7 +244,7 @@ $.xhrPool = [];
         networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
         collapse()
       }else{
-        ////////////////////////console.log(networkGraph.treeData)
+        console.log(networkGraph.treeData)
         data=buildDataBasic(results,configRow,configClasses,node,menuOption)
         var dif=differenceArrays(nodesClassesShow,colorScale.domain())
         //////////////////console.log(dif)
@@ -316,8 +316,10 @@ $.xhrPool = [];
       modal2=getModal2()
       if (graphType=="TREEGRAPH"){
         showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent)
-      }else if (graphType=="WEBPAGE"){
+      }else if (graphType=="WIKIPEDIA"){
         showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
+      }else if (graphType=="WEBPAGE"){
+        showWebPage(page,modal2.modalHeader,modal2.modalContent)
         //showWikipediaPage(node)
       }else if (graphType=="TIMELINE"){
         showTimeLine(node,modal2.modalHeader,modal2.modalContent)
@@ -344,8 +346,8 @@ $.xhrPool = [];
   //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri,arrayMenuOptions=[];
     hierarchy=get_hierarchy(configRow["hierarchy"])
-    //////console.log(hierarchy)
-    //////console.log(element)
+    console.log(hierarchy)
+    console.log(element)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(configRow["classes"])
@@ -370,14 +372,17 @@ $.xhrPool = [];
     root=results[0][hierarchy[0]]["value"]
 
     results.forEach(function(r){
-      for (i = 0; i < hierarchy.length-1; ++i) {    
+      console.log(hierarchy)
+      for (i = 0; i < hierarchy.length-1; ++i) {   
+        console.log(procNode[i])
+        console.log(r[hierarchy[i]].value) 
         if((!procNode[i])||(procNode[i]!=r[hierarchy[i]].value)){  
           if(element!=undefined){
             node=element
           }else{
             node={"id":genRandomString(),"value":r[hierarchy[i]].value,"shape":1,"class":hierarchy[i]}
           }
-          //////console.log(node)
+          console.log(node)
           if(r[hierarchy[i]].value==root){
             node["root"]=true
             if(element!=undefined){
@@ -436,10 +441,13 @@ $.xhrPool = [];
         }
         
       } 
-      
+      console.log(r)
+      console.log(hierarchy[hierarchy.length-1])
+      console.log(hierarchy.length-1)
       if (r[hierarchy[hierarchy.length-1]]!=undefined){
         value=r[hierarchy[hierarchy.length-1]].value
         node={"id":genRandomString(),"value":value,"shape":1,"class":hierarchy[hierarchy.length-1]}
+        console.log(node)
         if(properties[hierarchy[hierarchy.length-1]]){
               properties[hierarchy[hierarchy.length-1]].forEach(function(k){
                 if(r[k]==undefined){
@@ -455,6 +463,7 @@ $.xhrPool = [];
         if(treeData[position[position.length-1]-1]["children"]==undefined){
           treeData[position[position.length-1]-1]["children"]=[]
         }
+        //console.log(treeData[position[position.length-1]-1])
         if(treeData[position[position.length-1]-1]["menuOption"]){
           if(arrayMenuOptions.length>1){
             treeData[position[position.length-1]-1]["children"][1]["children"].push(node)
@@ -468,7 +477,7 @@ $.xhrPool = [];
         
       }
       })
-      
+      console.log(treeData)
       flatData=flatten_v2(treeData)
       return flatData
       function addMenuOptionNode(){
@@ -709,9 +718,10 @@ function zoomOut(){
   networkGraph.zoomOut()
 }
 function getModal2(){
-  if(d3.select("#modalGraph")){
-    d3.select("#modalGraph").remove()
-  }
+  //if(d3.select("#modalGraph")){
+  //  d3.select("#modalGraph").remove()
+  //}
+  showModal("#myModal2")
   return {"modalHeader":document.getElementById("modalHeader2"),"modalContent":document.getElementById("modal-content2")}
 }
 function showModal(id){
@@ -1076,7 +1086,34 @@ function showWikipediaPage(data,modalHeader,modalContent){
     $("#myModal2").draggable()
   })
 }
+function showWebPage(page,title,modalHeader,modalContent){
+    console.log(page)
+    /* var div=document.createElement("div")
+    div.className="h-full"
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto") */
+    //modalContent.appendChild(div)
+    $("#webpage").remove()
+    var iframe=document.createElement("iframe")
+    iframe.id="webpage"
+    
+    //iframe=modalContent.append("iframe")
+    iframe.setAttribute("src",page)
+    iframe.setAttribute("style","width: 100%") 
+    iframe.setAttribute("style","height: 100%") 
+/*     .attr("src",page)
+      .style("width", "100%")
+      .style("height","100%"); */
+    modalContent.appendChild(iframe)
+    modalHeader.innerHTML = title
 
+    $('#myModal2').resizable({
+      //alsoResize: ".modal-dialog",
+      //minHeight: 150
+    });
+    $("#myModal2").draggable()
+  //})
+}
 // Get the modal
 var modal = document.getElementById("myModal");
 

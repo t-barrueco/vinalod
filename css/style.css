@@ -173,4 +173,6 @@ body{
   cursor: not-allowed;
  text-decoration: none;
 }
-
+.autocomplete-items{
+  text-transform: capitalize;
+}

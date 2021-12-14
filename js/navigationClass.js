@@ -8,10 +8,11 @@ navigationPanel.prototype.init = function () {
   var navPanel=this;
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
-  if(networkGraph.rootNode!=undefined){
+  if(navPanel.node==undefined){
     navPanel.node=networkGraph.rootNode
   }
 
+  //console.log(navPanel.node)
   navPanel.element=document.getElementById(navPanel.node.id)
   navPanel.getNodes()
   navPanel.initModal()
@@ -111,14 +112,15 @@ navigationPanel.prototype.selectBubbles = function (){
 }
 navigationPanel.prototype.initModal = function (){
   var navPanel=this;
-  //showModal("#myModal")
-  console.log("pasa por init")
-  $("#myModal").addClass("translate-x-0")
-  $("#myModal").removeClass("translate-x-full")
+  showModal("#myModal")
+  //console.log("pasa por init")
+  //$("#myModal").addClass("translate-x-0")
+  //$("#myModal").removeClass("translate-x-full")
   $('#myModal').resizable({
 
   });
   $("#myModal").draggable()
+  //console.log($("#myModal"))
   d3.selectAll("#modal-content table").remove()
 }
 
@@ -146,10 +148,10 @@ navigationPanel.prototype.navTableTable = function ()
       navPanel.ol=document.createElement("ol")
       navPanel.ol.setAttribute("role", "list");
     }
-    ////console.log(navPanel.sources[0])
+    //////console.log(navPanel.sources[0])
     navPanel.sources.forEach(function (d,i){
-      ////console.log(d)
-      ////console.log(i)
+      //////console.log(d)
+      //////console.log(i)
       if(d.source){
         nodeClass=d.source.class
       }else{
@@ -191,13 +193,13 @@ navigationPanel.prototype.navTableTable = function ()
 
 navigationPanel.prototype.addElementNav = function (source,i){
   var navPanel=this, last=false, imageSource="images/check.svg",imageSourceLast="images/location.svg",nodeClass
-  ////console.log(source)
+  //////console.log(source)
   if(source.source){
     nodeClass=source.source.class
   }else{
     nodeClass=source.class
   }
-  ////console.log(nodeClass)
+  //////console.log(nodeClass)
   if(nodeClass=="free"){
     addFreeGraph()
   }else{
@@ -338,26 +340,26 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   var navPanel=this;
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
-  ////console.log("entra")
-  //////////////////console.log(source)
-  //////////////////console.log(navPanel.sources.length)
-  //////////////////console.log(i)
-  //////////////////console.log(property)
-  //////////////////console.log(source["target"]["menuOption"])
-  //////////////////console.log(navPanel.node)
+  //////console.log("entra")
+  ////////////////////console.log(source)
+  ////////////////////console.log(navPanel.sources.length)
+  ////////////////////console.log(i)
+  ////////////////////console.log(property)
+  ////////////////////console.log(source["target"]["menuOption"])
+  ////////////////////console.log(navPanel.node)
 /*   if(source["target"]["type"]!="menuOption"){
     
   } */
 /*   if(source["target"]["menuOption"]){
-    //////////////////console.log("entra en source target menuOption")
+    ////////////////////console.log("entra en source target menuOption")
     if(property){
-      //////////////////console.log("entra en property")
+      ////////////////////console.log("entra en property")
       div=document.createElement("div")
       div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
       div.setAttribute("aria-hidden", "true");
       li.appendChild(div)
     }else if((source["target"]["menuOption"].split(";").length<2)&(i<navPanel.sources.length-1)){
-      //////////////////console.log("entra en el largo")
+      ////////////////////console.log("entra en el largo")
       //if(i<navPanel.sources.length-1){
         div=document.createElement("div")
         div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
@@ -365,7 +367,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
         li.appendChild(div)
       }
   }else if((property)|(i<navPanel.sources.length-1)){
-    //////////////////console.log("el de por descarte")
+    ////////////////////console.log("el de por descarte")
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -374,7 +376,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
   if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
   //if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))|(navPanel.node.type=="menuOption")){
-    //////////////////console.log("el de por descarte")
+    ////////////////////console.log("el de por descarte")
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -432,9 +434,9 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   }
   el1=navPanel.ol.appendChild(li)
 
-  //////////////////console.log(el1)
+  ////////////////////console.log(el1)
   if(i<navPanel.sources.length-1){
-      //////////////////console.log(div)
+      ////////////////////console.log(div)
       if(div!=undefined){
         el1.appendChild(div)
       }
@@ -459,7 +461,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
-    ////////////////////console.log(source)
+    //////////////////////console.log(source)
     span5.innerHTML=  "   Sparql Endpoint(" + source["target"]["url"] + ")"
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
@@ -469,7 +471,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
   }
-  //////////////////console.log(el3)
+  ////////////////////console.log(el3)
 }
 
 /* navigationPanel.prototype.addLineElementNav = function (li){
@@ -503,14 +505,14 @@ navigationPanel.prototype.contentTable = function (){
   navPanel.numStart=1
   navPanel.numTot=navPanel.targets.length
   navPanel.numLinesShown=10
-  navPanel.numEnd=navPanel.numLinesShown
+  navPanel.numEnd=(navPanel.numLinesShown>navPanel.numTot) ? navPanel.numTot : navPanel.numLinesShown;
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
   
 
   if (navPanel.targets.length>0){
-
+    $("#dvTable").show()
     navPanel.table = document.createElement("table");
     navPanel.table.className="w-full divide-y divide-gray-200 table-auto"
   
@@ -523,7 +525,7 @@ navigationPanel.prototype.contentTable = function (){
     th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
-      //////console.log(node)
+      ////////console.log(node)
       if(node.class=="free"){
         labelFreeGraph()
       }else{
@@ -537,22 +539,25 @@ navigationPanel.prototype.contentTable = function (){
       
       th.innerHTML=`<div>
         <label for="account-number" class="block text-sm font-medium text-gray-700">` + label + `</label>
-        <div class="mt-1 relative rounded-md shadow-sm w-1/2">
-          <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
-          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <!-- Heroicon name: solid/question-mark-circle -->
-            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
-            </svg>
-          </div>
+        <div class="mt-1 relative rounded-md shadow-sm w-1/2 inline-block">
+        <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
+        <div class="absolute inset-y-0 right-0 pr-3 pt-3 flex items-top pointer-events-auto cursor-pointer hidden inline-block" id="nav-search" onclick="navSearch()">
+        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
+        </svg>
         </div>
-        </div>`
+        <div class="absolute inset-y-0 right-0 pr-3 pt-3 flex items-top pointer-events-auto cursor-pointer hidden inline-block" id="nav-delete">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+    </div>`
     }else{
       menuOption=navPanel.node["menuOption"]
       if(menuOption.split(";").length>1){
         th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
       }else{
-        ////console.log(navPanel.node)
+        //////console.log(navPanel.node)
         menuOption=menuOption.split(",")
         if(navPanel.node.class=="free"){
           labelFreeGraph()
@@ -564,21 +569,25 @@ navigationPanel.prototype.contentTable = function (){
         }else if(navPanel.type=="basicGraph"){
           labelBasicGraph()
         } */
-
+        //heroicons https://heroicons.com/ x-circle
         th.innerHTML=`<div>
-        <label for="account-number" class="block text-sm font-medium text-gray-700">` + label + `</label>
-        <div class="mt-1 relative rounded-md shadow-sm w-1/2 inline-block">
-          <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
-          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
-            </svg>
+          <label for="account-number" class="block text-sm font-medium text-gray-700">` + label + `</label>
+          <div class="mt-1 relative rounded-md shadow-sm w-1/2 inline-block">
+            <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
+            <div class="absolute inset-y-0 right-0 pr-3 pt-3 flex items-top pointer-events-auto cursor-pointer hidden inline-block">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" id="nav-search" onclick="navSearch()">
+                <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="nav-delete">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
           </div>
-        </div>
-          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="remove-sel" onclick="removeSelection(this)">
+
+          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden" id="remove-sel" onclick="removeSelection(this)">
             Remove selection
           </button>
-          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="add-sel-graph" onclick="addSelToGraph(this)">
+          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden" id="add-sel-graph" onclick="addSelToGraph(this)">
             Add to graph
           </button>
         </div>`
@@ -668,6 +677,8 @@ navigationPanel.prototype.contentTable = function (){
     dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.divPag);
     
     navPanel.addEventsContentNav()
+  }else{
+    $("#dvTable").hide()
   }
 
   function labelFreeGraph(){
@@ -700,6 +711,7 @@ navigationPanel.prototype.contentTableSearch = function (){
 }
 navigationPanel.prototype.paginationNumbers = function (){
   var navPanel=this
+  ////console.log("pasa por pagination numbers")
  {
     if (navPanel.numCurrent < 1) {
       navPanel.numCurrent = 1;
@@ -718,28 +730,28 @@ navigationPanel.prototype.paginationNumbers = function (){
         let maxPagesBeforeCurrentPage = Math.floor(navPanel.paginationLimit / 2);
         let maxPagesAfterCurrentPage = Math.ceil(navPanel.paginationLimit / 2) - 1;
         if(navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages){
-          //////////////console.log("mayor")
-          //////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+          ////////////////console.log("mayor")
+          ////////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
         }else{
-          //////////////console.log("menor")
-          //////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+          ////////////////console.log("menor")
+          ////////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
         }
         if (navPanel.numCurrent <= maxPagesBeforeCurrentPage) {
             // current page near the start
-            //////////////console.log("near start")
+            ////////////////console.log("near start")
             startPage = 1;
             endPage = navPanel.paginationLimit;
         } else if (navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages) {
             // current page near the end
-            //////////////console.log("near end")
-            //////////////console.log(navPanel.numCurrent)
-            //////////////console.log(maxPagesAfterCurrentPage)
-            //////////////console.log(navPanel.numPages)
+            ////////////////console.log("near end")
+            ////////////////console.log(navPanel.numCurrent)
+            ////////////////console.log(maxPagesAfterCurrentPage)
+            ////////////////console.log(navPanel.numPages)
             startPage = navPanel.numPages - navPanel.paginationLimit + 1;
             endPage = navPanel.numPages;
         } else {
             // current page somewhere in the middle
-            //////////////console.log("near middle")
+            ////////////////console.log("near middle")
             startPage = navPanel.numCurrent - maxPagesBeforeCurrentPage;
             endPage = navPanel.numCurrent + maxPagesAfterCurrentPage;
         }
@@ -749,8 +761,8 @@ navigationPanel.prototype.paginationNumbers = function (){
     let startIndex = ((navPanel.numCurrent - 1) * navPanel.numLinesShown)+1;
     let endIndex = Math.min(startIndex + navPanel.numLinesShown - 1, navPanel.numTot);
 
-    ////////////console.log(endPage)
-    ////////////console.log(startPage)
+    //////////////console.log(endPage)
+    //////////////console.log(startPage)
     
     // create an array of pages to ng-repeat in the pager control
     let pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
@@ -773,21 +785,21 @@ navigationPanel.prototype.showNumberPages = function (){
   var navPanel=this,textHtml=""
 
   navPanel.firstPage=1
-  ////////console.log(navPanel.numTot)
+  //////////console.log(navPanel.numTot)
   navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
   navPanel.arrNumberPages=[]
   navPanel.paginationLimit=10
-  ////////////console.log(navPanel)
+  //////////////console.log(navPanel)
 
   navPanel.pages = navPanel.paginationNumbers()
-  ////////////console.log(navPanel.pages)
-  ////////////console.log(navPanel.pages.pages.length)
+  //////////////console.log(navPanel.pages)
+  //////////////console.log(navPanel.pages.pages.length)
 
   pagePrev = document.getElementById('page-prev');
       //for (i=1;i<=navPanel.numPages-1;i++) {
   //showNumberPages()
   for (i=0;i<=navPanel.pages.pages.length-1;i++) {
-    ////////////console.log(navPanel.pages.pages[i])
+    //////////////console.log(navPanel.pages.pages[i])
     if(navPanel.pages.pages[i]==navPanel.numCurrent){
       if(pagePrev==null){
         navPanel.divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
@@ -807,12 +819,12 @@ navigationPanel.prototype.showNumberPages = function (){
   if(pagePrev!=null){
     pagePrev.insertAdjacentHTML('afterend', textHtml);
   }
-  /* ////////////console.log(textHtml)
+  /* //////////////console.log(textHtml)
   return textHtml */
 }
 
 function showLines(numCurrent,type){
-  //////console.log(numCurrent)
+  ////////console.log(numCurrent)
   if(type=="basicGraph"){
     navigation.showLines(numCurrent,false)
   }else{
@@ -821,11 +833,11 @@ function showLines(numCurrent,type){
 }
 function removeLinesNavContent(){
   var sel=document.querySelectorAll("#dvTable tbody tr")
-  ////////console.log(sel)
+  //////////console.log(sel)
   if(sel.length>0){
     sel.forEach(
       function(currentValue, currentIndex, listObj) {
-        ////////////////console.log(currentValue + ', ' + currentIndex + ', ' + this);
+        //////////////////console.log(currentValue + ', ' + currentIndex + ', ' + this);
         currentValue.remove()
       }
     )
@@ -833,7 +845,7 @@ function removeLinesNavContent(){
 }
 navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   var navPanel=this,linesShown,numPagesElements;
-  ////////console.log(navPanel.pages)
+  //////////console.log(navPanel.pages)
   if(numCurrent=='page-first'){
     numCurrent=navPanel.firstPage
   }else if (numCurrent=='page-prev'){
@@ -851,10 +863,10 @@ navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   
   removeLinesNavContent()
 
-  ////////////////console.log(navPanel.numCurrent*navPanel.numLinesShown)
-  ////////////////console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
+  //////////////////console.log(navPanel.numCurrent*navPanel.numLinesShown)
+  //////////////////console.log(navPanel.numCurrent*navPanel.numLinesShown+navPanel.numLinesShown)
   
-  //////////console.log(navPanel.numTot)
+  ////////////console.log(navPanel.numTot)
   //if(navPanel.numCurrent!=1){
   if(!first){
     numPagesElements = document.querySelectorAll('#div-pagination .num-page');
@@ -865,10 +877,10 @@ navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     document.getElementById("numStart").textContent=navPanel.pages.startIndex
     document.getElementById("numEnd").textContent=navPanel.pages.endIndex
     document.getElementById("numTot").textContent=navPanel.numTot
-    ////////////console.log(navPanel)
-    ////////////console.log(navPanel.firstPage)
-    ////////////console.log(typeof(navPanel.firstPage))
-    ////////////console.log(typeof(navPanel.pages.pages[0]))
+    //////////////console.log(navPanel)
+    //////////////console.log(navPanel.firstPage)
+    //////////////console.log(typeof(navPanel.firstPage))
+    //////////////console.log(typeof(navPanel.pages.pages[0]))
     if(navPanel.pages.pages.includes(navPanel.firstPage)&(navPanel.pages.pages.includes(navPanel.pages.totalPages))){
       document.getElementById("page-first").classList.add("hidden");
       document.getElementById("page-prev").classList.add("hidden");
@@ -893,7 +905,7 @@ navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 
 
   }
-  ////////console.log(navPanel.pages)
+  //////////console.log(navPanel.pages)
   
   if(first){
     linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
@@ -901,15 +913,20 @@ navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     linesShown=navPanel.targets.slice(navPanel.pages.startIndex - 1, navPanel.pages.endIndex);
   }
   
-  //////console.log(linesShown)
+  ////////console.log(linesShown)
+  if(cluster){
+    $("#add-sel-graph").show()
+  }
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
     navPanel.contentRows.push(row)
     if(linesShown[i]["target"]["class"]=="free"){
       if(cluster){
+        //console.log(cluster)
         navPanel.addElementContentTableProp(linesShown[i],i,cluster)
       }else{
+        //console.log("no cluster")
         navPanel.addElementContentTableProp(linesShown[i],i)
       }
       
@@ -934,52 +951,33 @@ navigationPanel.prototype.addEventsContentNav = function (){
   var navPanel=this,cell,nodeSearchField,node;
   navPanel.isDblclick = false;
 
-  ////////////console.log(navPanel.targets)
+  //////////////console.log(navPanel.targets)
   navPanel.searchValues=navPanel.targets.map(d=>d.target.value)
 
   nodeSearchField=document.getElementById("node-search")
-  //////////console.log(navPanel.searchValues)
+  ////////////console.log(navPanel.searchValues)
   autocomplete(nodeSearchField, navPanel.searchValues);
 
 // Execute a function when the user releases a key on the keyboard
   nodeSearchField.addEventListener("keyup", function(event) {
+    ////console.log(nodeSearchField.value)
   // Number 13 is the "Enter" key on the keyboard
   if (event.key === 'Enter' ) {
     // Cancel the default action, if needed
     event.preventDefault();
-    
     removeLinesNavContent()
-
-    ////////console.log(nodeSearchField.value)
-    //navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
-    //navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value)).map(d=>d.target.value);
-    //////////console.log(navPanel.resultsSearch)
-
-    //////////console.log(navPanel.backupNavPanel)
-
-    //contentRows
-    //numPages
-    //numTot
-    //sources
-    
-    
     if(navPanel.targetsBackup){
-      ////////console.log("entra if")
       navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.includes(nodeSearchField.value)|(a.target.value==nodeSearchField.value)));
     }else{
-      ////////console.log("entra else")
       navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
       navPanel.targetsBackup=navPanel.targets
     }
     
     navPanel.targets=navPanel.resultsSearch
-    
-    ////////console.log(navPanel)
-
     navPanel.contentTableSearch()
     closeAllLists()
     /* navPanel.numStart=1
-    //////////console.log(navPanel.targets)
+    ////////////console.log(navPanel.targets)
     navPanel.numTot=navPanel.targets.length
     navPanel.numLinesShown=10
     navPanel.numEnd=navPanel.numLinesShown
@@ -993,37 +991,49 @@ navigationPanel.prototype.addEventsContentNav = function (){
     }  */
     // Trigger the button element with a click
     //document.getElementById("myBtn").click();
+  }else{
+    if(this.value==""){
+      $("#nav-search").hide()
+      $("#nav-delete").hide()
+    }else{
+      $("#nav-delete").show()
+      $("#nav-search").show()
+    }
   }
   });
 
   navPanel.timeoutTiming = 500;
-  ////////console.log(d3.selectAll("#modal-content"))
-  ////////console.log(d3.selectAll("#modal-content td"))
+  //////////console.log(d3.selectAll("#modal-content"))
+  //////////console.log(d3.selectAll("#modal-content td"))
   d3.selectAll("#modal-content td").on("dblclick",function(){ 
-    ////console.log("entra")
+    //console.log("entra")
+    //console.log(this)
+    //console.log(node)
+    node=d3.select("#"+this.getAttribute("id")).data()[0]
     d3.event.preventDefault();
     navPanel.isDblclick = true;
     clearTimeout(navPanel.dblclickTimeout);
     navPanel.dblclickTimeout = setTimeout(function () {
       navPanel.isDblclick = false;
     }, navPanel.timeoutTiming);
-    ////////console.log("pasa por aquí")
-    ////////console.log(this)
-    ////console.log(navPanel.type)
+    //////////console.log("pasa por aquí")
+    //console.log(this)
+    //console.log(d3.select("#"+this.getAttribute("id")).data()[0])
+    //////console.log(navPanel.type)
     if(this.getAttribute("cluster")){
       //if(navPanel.type=="basicGraph"){
-      dblclickCellContent(node)
+      dblclickCellCluster(node)
       //}else{
       //  dblclickCellContent(node,"freeGraph")
       //}
     }else{
       node=d3.select("#"+this.getAttribute("id")).data()[0]
-      ////console.log(this)
-      ////console.log(node)
+      //////console.log(this)
+      //////console.log(node)
       if(node.more_results){
         if(node.more_results.length>0){
           //if(navPanel.type=="basicGraph"){
-          dblclickCellContent(node)
+          navPanel.dblclickCellCluster(node)
           //}else{
           //  dblclickCellContent(node,"freeGraph")
           //}
@@ -1061,11 +1071,11 @@ navigationPanel.prototype.addEventsContentNav = function (){
 
 navigationPanel.prototype.addElementContentTable = function (target,i){
   var navPanel=this;
-  ////console.log(target)
+  //console.log(target)
   if(target["class"]=="free"){
     addFreeGraph()
   }else{
-    //////console.log("add Content row")
+    ////////console.log("add Content row")
     addBasicGraph()
   }
 
@@ -1074,7 +1084,7 @@ navigationPanel.prototype.addElementContentTable = function (target,i){
     row = navPanel.tbody.insertRow(-1);
     
     cell = row.insertCell(-1);
-    ////console.log(target)
+    //////console.log(target)
     cell.className="px-6 py-4 whitespace-nowrap"
     cell.id=target["target"]["id"]
     div=document.createElement("div")
@@ -1121,7 +1131,7 @@ navigationPanel.prototype.addElementContentTable = function (target,i){
   div2.className="flex-shrink-0 w-10 h-10"
   img=document.createElement("img")
   
-  ////////////////////console.log(nodesTable[i]["target"]["type"])
+  //////////////////////console.log(nodesTable[i]["target"]["type"])
   if(!property){
       if(nodesTable[i]["target"]["type"]=="uri"){
           img.className="w-10 h-10 bg-green-300 rounded-full"
@@ -1200,7 +1210,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     }else{
       cell.id=target["source"]["id"]+target["target"]["id"]
     }
-    ////////console.log(target["source"])
+    //////////console.log(target["source"])
     div=document.createElement("div")
     if(!property){
       div.className="flex items-center w-full"
@@ -1215,7 +1225,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     div2.className="flex-shrink-0 w-10 h-10"
     img=document.createElement("img")
     
-    ////////////////////console.log(target["target"]["type"]=="uri")
+    //////////////////////console.log(target["target"]["type"]=="uri")
     if(!property){
         if(target["target"]["type"]=="uri"){
             img.className="w-10 h-10 bg-green-300 rounded-full"
@@ -1245,7 +1255,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         }
         
         span=document.createElement("span")
-        ////////////////////console.log(target["target"])
+        //////////////////////console.log(target["target"])
         if(target["target"]["type"]=="menuOption"){
           menuOption=target["target"]["value"].split(",")
           newText = document.createTextNode("Sparql Endpoint: "+ menuOption[0]+ "and Position: "+menuOption[1]);
@@ -1258,11 +1268,11 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         span=document.createElement("span")
         if(target["value"]!=undefined){
           newText = document.createTextNode(target["value"]);
-          ////////console.log(newText)
+          //////////console.log(newText)
         }else{
-          ////////console.log(target)
+          //////////console.log(target)
           newText = document.createTextNode("no property");
-          ////////console.log(newText)
+          //////////console.log(newText)
         }
         
         div4.appendChild(span).appendChild(newText);
@@ -1274,13 +1284,16 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   }
   }
   function dblclickCellCluster(el){
-    navigationPanel.dblclickCellCluster(el)
+    navigation.dblclickCellCluster(el)
   }
   navigationPanel.prototype.dblclickCellCluster = async function (cell) {
     var navPanel=this,results;
-    ////////console.log(cell)
-    results=await checkClassesBasicGraph(cell["more_results"],cell["subject-object"])
-    ////////console.log(results)
+    console.log("dblclickcellcluster")
+    console.log(cell)
+    //results=await checkClassesBasicGraph(cell["more_results"],cell["subject-object"])
+    //////////console.log(results)
+    results=cell.more_results
+    
     results=results.map(function (d){
       if(cell["subject-object"]=="s"){
         d.o.id=genRandomString()
@@ -1294,7 +1307,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
       navPanel.targets=results.map(function(d){
         return {
           "target":{"value":d.o.value,
-          "id":d.s.id,"type":d.o.type},
+          "id":d.s.id,"type":d.o.type,"class":"free"},
           "source":{"id":cell["id"]},
           "value":cell["property"],
           "url":cell["url"],
@@ -1305,7 +1318,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
       navPanel.targets=results.map(function(d){
         return {
           "target":{"value":d.s.value,
-          "id":d.s.id,"type":d.s.type},
+          "id":d.s.id,"type":d.s.type,"class":"free"},
           "source":{"id":cell["id"]},
           "value":cell["property"],
           "url":cell["url"],
@@ -1314,34 +1327,48 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
       })
       //navPanel.targets=results.map(d=>d.s.value)
     }
-    ////////console.log(navPanel)
+    //////////console.log(navPanel)
     navPanel.pages.endIndex=navPanel.targets.length
     navPanel.numTot=navPanel.targets.length
-    //////////console.log(nav)
+    ////////////console.log(nav)
     //navPanel.paginationNumbers()
+    //console.log("antes de llamar a showlines")
     navPanel.showLines(1,false,cell["id"])
     navPanel.addEventsContentNav()
   }
 navigationPanel.prototype.dblclickCellContent = async function (cell) {
   var navPanel=this,indexRows=1,bubble,node;
   //console.log(cell)
-  bubble=d3.select("#"+cell.getAttribute("id")).data()[0]
-  ////console.log(navPanel.type)
-  //console.log(bubble)
-  if(bubble.class=="free"){
-    freeGraph()
+  
+  //if(typeof(cell)!="object"){
+  if(cell instanceof Element){
+    bubble=d3.select("#"+cell.getAttribute("id")).data()[0]
   }else{
-    basicGraph()
+    bubble=cell
   }
+  
+  //}
+  
+  //////console.log(navPanel.type)
+  //console.log(bubble)
+  console.log("dblclickcellcontent")
+  if(bubble){
+    if(bubble.class=="free"){
+      freeGraph()
+    }else{
+      basicGraph()
+    }
+  }
+
   function searchMenuOptionChild(){
     return (networkGraph.treeData.filter(d=>d.id==node["id"])[0]["children"].filter(v=>v.value==indexRows[0].url+","+indexRows[0]["subject-object"])[0])
   }
   async function basicGraph(){
     //var indexRows=1,node;
     var element=document.getElementById(cell.getAttribute("id"));
-    ////console.log(element)
+    //////console.log(element)
     indexRows=await networkGraph.wrangleData(element,"table");
-    ////console.log(indexRows)
+    //////console.log(indexRows)
     if (indexRows.length<2){
       unclickBubbleFreeGraph()
 
@@ -1357,12 +1384,12 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
   async function freeGraph(){
     //if(networkGraph.treeData.filter(d=>d.id==cell.getAttribute("id")).length==0){
       indexRows=await networkGraph.wrangleData(cell,"table");
-      ////////////////console.log(indexRows)
+      //////////////////console.log(indexRows)
       if(indexRows.length==0){
         unclickBubbleFreeGraph()
         bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
-        ////////////////console.log(bubble)
-        ////////////////console.log(cell)
+        //////////////////console.log(bubble)
+        //////////////////console.log(cell)
         clickBubbleFreeGraph(bubble,networkGraph.data)
         d3.select("#"+row.getAttribute("id"))
         .attr("stroke", "yellow")
@@ -1370,15 +1397,15 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
       }else if (indexRows.length==1){
         unclickBubbleFreeGraph()
         node=d3.select("#"+cell.getAttribute("id")).data()[0]
-        ////////////////console.log(node)
+        //////////////////console.log(node)
         if(node["menuOption"].split(";").length>1){
           bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
           //bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
         }else{
           bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
         }
-        ////////////////console.log(bubble)
-        ////////////////console.log(cell)
+        //////////////////console.log(bubble)
+        //////////////////console.log(cell)
         clickBubbleFreeGraph(bubble,networkGraph.data)
         d3.select("#"+row.getAttribute("id"))
         .attr("stroke", "yellow")
@@ -1420,8 +1447,8 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   var navPanel=this;
   var textTooltip,div,textNode,newText,newCell,element,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
   d3.selectAll(".menu-table").remove()
-  ////console.log(node)
-  ////console.log(menuItems)
+  //////console.log(node)
+  //////console.log(menuItems)
   var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
 
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
@@ -1470,29 +1497,29 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
     navPanel.clickMenuTable(form,node)
   })
 }
-navigationPanel.prototype.clickMenuTable = async function (form,element){
-  var propertyEl,bubble,node;
-  var node=d3.select("#"+element["id"]).data()[0]
+navigationPanel.prototype.clickMenuTable = async function (form,node){
+  var propertyEl,bubble;
+  //var node=d3.select("#"+element["id"]).data()[0]
   var navPanel=this;
-  ////////////////console.log(form)
-  var newForm={"url":form["new_url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["new_subjectObject"]}
+  //////////////////console.log(form)
+  var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
   propertyEl=form["property"]
 
-  var form={"url":form["url"],"uri":d3.select("#"+element.id).data()[0]["value"],"subject-object":form["subjectObject"]}
-  ////////////////console.log(element)
-  node=d3.select("#"+element.getAttribute("id")).data()[0]
+  var form={"url":form["url"],"uri":node["value"],"subject-object":form["subjectObject"]}
+  //console.log(node)
+  //node=d3.select("#"+element.getAttribute("id")).data()[0]
   await buildFreeGraph(newForm,"table",node)
-  document.getElementById(element.getAttribute("id"))
+  //document.getElementById(element.getAttribute("id"))
 
-  ////////////////console.log(newForm)
-  ////////////////console.log(node)
-  ////////////////console.log(bubble)
+  //////////////////console.log(newForm)
+  //////////////////console.log(node)
+  //////////////////console.log(bubble)
   if(node["menuOption"].split(";").length>1){
-    ////////////////console.log("entra en mayor que 1")
+    //////////////////console.log("entra en mayor que 1")
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
-    ////////////////console.log(bubble)
+    //////////////////console.log(bubble)
   }else{
-    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+element.getAttribute("id"))
+    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+node.id)
   }
   clickBubbleFreeGraph(bubble,networkGraph.data)
 
@@ -1502,7 +1529,7 @@ function searchMenuOptionChild(){
 }
 
 function removeSelection(element){
-  ////////console.log(element)
+  //////////console.log(element)
   navigationPanel.removeSelection()
 }
 navigationPanel.prototype.removeSelection = function (){
@@ -1510,41 +1537,44 @@ navigationPanel.prototype.removeSelection = function (){
 
   navPanel.targets=navPanel.targetsBackup
     
-  ////////console.log(navPanel)
+  //////////console.log(navPanel)
 
   navPanel.contentTableSearch()
   $("#remove-sel").addClass("hidden")
   $("#node-search").val("")
 }
 function addSelToGraph(element){
-  ////////console.log(element)
-  navigationPanel.addSelToGraph()
+  //////////console.log(element)
+  navigation.addSelToGraph()
 }
 navigationPanel.prototype.addSelToGraph = function (){
-  var navPanel=this,selected=[],results;
+  var navPanel=this,selected=[],results,form;
   var $boxes = $('input[name=nodeTable]:checked');
-  ////////console.log(d3.select("#"+document.getElementById($boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0])
+  //////////console.log(d3.select("#"+document.getElementById($boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0])
   
-  //////////console.log(d3.select("#"+$boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster"))
-  //////////console.log(d3.select("#"+d3.select("#"+$boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0])
+  ////////////console.log(d3.select("#"+$boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster"))
+  ////////////console.log(d3.select("#"+d3.select("#"+$boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0])
   
   var node=d3.select("#"+document.getElementById($boxes[0].getAttribute("id").replace("_check","")).getAttribute("cluster")).data()[0]
-  //////////console.log(d3.select("#"+$boxes[0].getAttribute("cluster")).data())
+  ////////////console.log(d3.select("#"+$boxes[0].getAttribute("cluster")).data())
   $boxes.each(function(i){
     // Do stuff here with this
-    //////////console.log(d)
-    ////////console.log($boxes[i])
+    ////////////console.log(d)
+    console.log($boxes[i])
     selected.push(document.getElementById($boxes[i].getAttribute("id").replace("_check","")).querySelector("a span").innerText)
 
   });
-  ////////console.log($boxes)
-  ////////console.log(networkGraph.treeData)
+  //////////console.log($boxes)
+  //////////console.log(networkGraph.treeData)
+  console.log(node)
   if(node["subject-object"]=="s"){
     results=node["more_results"].filter(d=>selected.includes(d.o.value))
   }else if(node["subject-object"]=="o"){
     results=node["more_results"].filter(d=>selected.includes(d.s.value))
   }
-  ////////console.log(results)
+  //////////console.log(results)
+  console.log(form)
+  form={"uri":node["uri"],"url":node["url"],"subject-object":node["subject-object"]}
   addNodesGraph(results,node,form)
   //$("#myModal").removeClass("translate-x-0")
   //$("#myModal").addClass("translate-x-full")
@@ -1553,7 +1583,7 @@ navigationPanel.prototype.addSelToGraph = function (){
 function addMenuToTable(node,menuItems){
   var newText,newCell,element,newRow,span,div,textNode,textTooltip
   d3.selectAll(".menu-table").remove()
-  console.log(node)
+  //console.log(node)
   var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex;
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
 
@@ -1575,6 +1605,8 @@ function addMenuToTable(node,menuItems){
       div.setAttribute("x-show","tooltip")
       div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
               
+      //console.log(menuItems[i])
+
       textNode = document.createTextNode (getCommentOption(menuItems[i]["option"]));
       
       span=document.createElement("span")
@@ -1591,7 +1623,7 @@ function addMenuToTable(node,menuItems){
 }
 async function clickMenuTable(position,node){
   var element=document.getElementById(node["id"])
-  console.log(node)
+  //console.log(node)
   await buildBasicGraph(position,node)
   unclickBubbleFreeGraph()
   clickBubbleFreeGraph(element,networkGraph.data)

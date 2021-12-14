@@ -9,8 +9,8 @@
   var nodeData,sources2
   nodesSelSources=[]
   nodesSelTarget=[]
-  //console.log(element)
-  //////console.log("clickBubble")
+  ////console.log(element)
+  ////////console.log("clickBubble")
   d3.selectAll(".nodeCircle")
   .style("opacity", 0.1)
   .attr("stroke", "grey")
@@ -99,13 +99,13 @@
   d3.select("#"+element.id+"_g")
   .style("opacity", 1)
 
-  ////console.log(typeof(navigationBasic))
+  //////console.log(typeof(navigationBasic))
   if(typeof(navigation)!="object"){
-    ////console.log("entra en distinto object")
-    ////console.log(nodeData)
+    //////console.log("entra en distinto object")
+    //////console.log(nodeData)
     navigation = new navigationPanel("basicGraph",nodeData);
   }else{
-    //////console.log("entra en init")
+    ////////console.log("entra en init")
     //navigationBasic.init()
     nodesSelSources=[]
     nodesSelTarget=[]
@@ -253,13 +253,13 @@ function changeBasicGraph(option){
   graphHistory=[]
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
   $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  //////console.log(option)
-  //////console.log($(option).find( "#optionMain" ).text().trim())
+  ////////console.log(option)
+  ////////console.log($(option).find( "#optionMain" ).text().trim())
   option=$(option).find( "#optionMain" ).text().trim()
   let pos = configFile.map(function (e) {
     return e.option;
   }).indexOf(option);
-  //////console.log(pos)
+  ////////console.log(pos)
   showBasicGraph()
   buildBasicGraph(pos)
 }
@@ -349,7 +349,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
       }
       menuItems.push(element)
     }
-    //////console.log(pageX)
+    ////////console.log(pageX)
     networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
   }
   
@@ -422,9 +422,9 @@ function runAskSparlqQuery(url,sparqlQuery){
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  ////////////////////////console.log(node)
+  //////////////////////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
-    //////////////////////console.log(indexRows[i])
+    ////////////////////////console.log(indexRows[i])
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
     parameters=configFile[singleIndexRow["position"]]["parameters"]
@@ -450,6 +450,7 @@ async function checkAskResults(indexRows,node){
     }else{
       sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
     }
+    console.log(sparqlQuery)
     results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["endpoint_url"],sparqlQuery)
 
     if(results==true){
@@ -460,7 +461,7 @@ async function checkAskResults(indexRows,node){
 }
 
 function fromSelectToAskQuery(query){
-  ////////////////////////console.log(query)
+  //////////////////////////console.log(query)
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
@@ -532,7 +533,7 @@ function findNodeTreemap(nodeId,treeData){
   return founded
 }
 function getTooltipText(d){
-  //////////////console.log(d)
+  ////////////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -619,10 +620,10 @@ function getTooltipMenu(d){
   return text;
 }
 function fillLegend(dif,addOne){
-  ////////////console.log(dif)
-  ////////////console.log(colorScale.domain())
+  //////////////console.log(dif)
+  //////////////console.log(colorScale.domain())
   if ((addOne)&(dif.length>0)){
-    //console.log(colorScale.domain().length-1)
+    ////console.log(colorScale.domain().length-1)
     appendLi(colorScale.domain().length-1,dif[0])
   }else if(!addOne){
     for (var i = 0; i < colorScale.domain().length; i++) {
@@ -633,8 +634,8 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-  //console.log(colorCorrespondence)
-  //console.log(colorScale.range()[i])
+  ////console.log(colorCorrespondence)
+  ////console.log(colorScale.range()[i])
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -648,7 +649,7 @@ function appendLi(i,textLi){
   .attr("class","font-medium text-gray-900 hover:text-gray-600")
   .append("text")
   .text(textLi);
-  //console.log(li)
+  ////console.log(li)
 }
 function differenceArrays(a1, a2) {
   var result = [];
@@ -678,10 +679,10 @@ function autocomplete(inp, arr) {
         //if (arr[i].toUpperCase().includes(val.toUpperCase())) {
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
-          console.log(arr[i].substr(0,arr[i].indexOf(val)))
-          b.innerHTML = arr[i].substr(0,arr[i].indexOf(val));
-          b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
+          b.setAttribute("class", "cursor-pointer");
+          b.innerHTML = arr[i].toUpperCase().substr(0,arr[i].toUpperCase().indexOf(val.toUpperCase()));
+          b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
+          b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
@@ -799,26 +800,26 @@ function get_configRows_class(classNode){
       configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  //////////////////////console.log(configRows)
+  ////////////////////////console.log(configRows)
   return configRows
 }
 function bubbleImage(node){
   var icon=[];
-  //console.log(node)
-  //////console.log(node[node["class"]+"_image"])
+  ////console.log(node)
+  ////////console.log(node[node["class"]+"_image"])
   if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
     if(node[node["class"]+"_uri"]){
-      //////console.log(node[node["class"]+"_uri"])
-      //////console.log(filesIcons)
+      ////////console.log(node[node["class"]+"_uri"])
+      ////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==node[node["class"]+"_uri"];
       })
     }
     if(icon.length==0){
-      //////console.log(nodesClassesCorrespondence[node["class"]])
-      //////console.log(filesIcons)
+      ////////console.log(nodesClassesCorrespondence[node["class"]])
+      ////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==nodesClassesCorrespondence[node["class"]];
       })
