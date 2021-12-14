@@ -5,144 +5,6 @@
 *    created by Teresa Barrueco
 */
 
-/* function clickBubble(element,data) {
-  var nodeData,sources2
-  nodesSelSources=[]
-  nodesSelTarget=[]
-  ////console.log(element)
-  ////////console.log("clickBubble")
-  d3.selectAll(".nodeCircle")
-  .style("opacity", 0.1)
-  .attr("stroke", "grey")
-  .attr("stroke-width", "1px");
-
-  d3.selectAll(".link")
-  .style("opacity", 0.1)
-  .style("stroke", "#aaaaaa")
-  .style("stroke-width", "1px");
-
-  nodeData=d3.select("#"+element.getAttribute("id")).data()[0]
-
-  var idEl=element.getAttribute("id");
-  var targets=data.links.filter(function(item) {
-    return item.source.id == idEl
-  })
-  var sources=data.links.filter(function(item) {
-    return item.target.id == idEl
-  })
-
-  if (sources.length>0){
-    sources2=data.links.filter(function(item) {
-      return item.target.id == sources[0]["source"]["id"]
-    })
-
-    while(sources2.length>0){
-      sources2.forEach(function(d){
-        sources.push(d)
-      })
-      sources2=data.links.filter(function(item) {
-        return item.target.id == sources2[0]["source"]["id"]
-      })
-    }
-  }
-  
-  sources=sources.reverse();
-  
-  sources.forEach(function(t){
-    nodesSelSources.push({"class":t.source.class,"id":t.source.id,"value":t.source.value})
-    d3.select("#"+t.source.id)
-    .style("opacity", 1)
-    .attr("stroke", "black")
-    .attr("stroke-width", "3px");
-
-    d3.select("#"+t.source.id+"_g")
-    .style("opacity", 1)
-
-    d3.select("#"+t.source.id+"_"+element.id)
-    .style("opacity", 1)
-    .style("stroke", "black")
-    .style("fill","black")
-    .style("stroke-width", "3px");
-
-    d3.select("#"+t.source.id+"_"+t.target.id)
-    .style("opacity", 1)
-    .style("stroke", "black")
-    .style("fill","black")
-    .style("stroke-width", "3px");
-  });
-
-  nodesSelSources.push({"class":nodeData.class,"id":nodeData.id,"value":nodeData.value})
-
-  targets.forEach(function(s){
-    nodesSelTarget.push({"class":s.target.class,"id":s.target.id,"value":s.target.value})
-    d3.select("#"+ s.target.id)
-    .style("opacity", 1)
-    .attr("stroke", "black")
-    .attr("stroke-width", "3px");
-
-    d3.select("#"+ s.target.id+"_g")
-    .style("opacity", 1)
-
-    d3.select("#"+element.id+"_"+s.target.id)
-    .style("opacity", 1)
-    .style("stroke", "black")
-    .style("fill","black")
-    .style("stroke-width", "3px");
-  });
-
-  
-  d3.select("#"+element.id)
-  .style("opacity", 1)
-  .attr("stroke", "black")
-  .attr("stroke-width", "3px");
-
-  d3.select("#"+element.id+"_g")
-  .style("opacity", 1)
-
-  //////console.log(typeof(navigationBasic))
-  if(typeof(navigation)!="object"){
-    //////console.log("entra en distinto object")
-    //////console.log(nodeData)
-    navigation = new navigationPanel("basicGraph",nodeData);
-  }else{
-    ////////console.log("entra en init")
-    //navigationBasic.init()
-    nodesSelSources=[]
-    nodesSelTarget=[]
-
-    navigation.element=element
-    navigation.node=d3.select("#"+element.getAttribute("id")).data()[0]
-    navigation.getNodes()
-    navigation.initModal()
-    navigation.navTableTable()
-    navigation.contentTable()
-  }
-  //labelsClick(element)
-  //if(typeof(navigation)!="object"){
-  //navigation = new navigation("basicGraph",nodeData);
-  //}else{
-  //  navigation.init()
-  //}
-} */
-
-/* function unclickBubble() {
-  nodesSelSources=[]
-  nodesSelTarget=[]
-  //$("#myModal").removeClass("in");
-  //$("#myModal").hide();
-  d3.selectAll(".nodeCircle")
-      .style("opacity", 1)
-  d3.selectAll(".nodeCircleCircle")
-      .style("opacity", 1)
-      .attr("stroke", "grey")
-      .attr("stroke-width", "1px");
-  d3.selectAll(".link")
-      .style("opacity", 1)
-      .style("stroke", "grey")
-      .style("fill","grey")
-      .style("stroke-width", "1px");
-} */
-
 function removeChars(chars){
   var invalid=["~","!","@","$","%","^","&","*","(",")","+","=",",",".","/","'",";",":",'"',"?",">","<","[","]","\\","{","}","|","`","#","]"]
   var pieces;
@@ -249,17 +111,14 @@ function changeBasicGraph(option){
   filtersInGraph=[]
   classesFilterList=[]
   filtersList=[]
-  //var selectedValue = $("#options_basic").val();
   graphHistory=[]
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
   $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  ////////console.log(option)
-  ////////console.log($(option).find( "#optionMain" ).text().trim())
+  
   option=$(option).find( "#optionMain" ).text().trim()
   let pos = configFile.map(function (e) {
     return e.option;
   }).indexOf(option);
-  ////////console.log(pos)
   showBasicGraph()
   buildBasicGraph(pos)
 }
@@ -349,7 +208,6 @@ function getMenuItems(items,node,pageX,pageY,origin){
       }
       menuItems.push(element)
     }
-    ////////console.log(pageX)
     networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
   }
   
@@ -422,9 +280,7 @@ function runAskSparlqQuery(url,sparqlQuery){
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  //////////////////////////console.log(node)
   for (var i = 0; i < indexRows.length; i++) {
-    ////////////////////////console.log(indexRows[i])
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
     parameters=configFile[singleIndexRow["position"]]["parameters"]
@@ -461,7 +317,6 @@ async function checkAskResults(indexRows,node){
 }
 
 function fromSelectToAskQuery(query){
-  //////////////////////////console.log(query)
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
@@ -533,7 +388,6 @@ function findNodeTreemap(nodeId,treeData){
   return founded
 }
 function getTooltipText(d){
-  ////////////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -620,10 +474,7 @@ function getTooltipMenu(d){
   return text;
 }
 function fillLegend(dif,addOne){
-  //////////////console.log(dif)
-  //////////////console.log(colorScale.domain())
   if ((addOne)&(dif.length>0)){
-    ////console.log(colorScale.domain().length-1)
     appendLi(colorScale.domain().length-1,dif[0])
   }else if(!addOne){
     for (var i = 0; i < colorScale.domain().length; i++) {
@@ -634,8 +485,7 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-  ////console.log(colorCorrespondence)
-  ////console.log(colorScale.range()[i])
+
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -649,7 +499,6 @@ function appendLi(i,textLi){
   .attr("class","font-medium text-gray-900 hover:text-gray-600")
   .append("text")
   .text(textLi);
-  ////console.log(li)
 }
 function differenceArrays(a1, a2) {
   var result = [];
@@ -771,16 +620,7 @@ function closeAllLists(elmnt) {
     }     
   }
 }
-/* function get_name_euroscivoc(name){
-  var n = name.indexOf("others")
-  if (n!=-1){
-    var res = name.substring(0, n-1);
-    return res
-  }else{
-    return name
-  }
-  
-} */
+
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
@@ -800,26 +640,19 @@ function get_configRows_class(classNode){
       configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
-  ////////////////////////console.log(configRows)
   return configRows
 }
 function bubbleImage(node){
   var icon=[];
-  ////console.log(node)
-  ////////console.log(node[node["class"]+"_image"])
   if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
     if(node[node["class"]+"_uri"]){
-      ////////console.log(node[node["class"]+"_uri"])
-      ////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==node[node["class"]+"_uri"];
       })
     }
     if(icon.length==0){
-      ////////console.log(nodesClassesCorrespondence[node["class"]])
-      ////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==nodesClassesCorrespondence[node["class"]];
       })

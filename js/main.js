@@ -9,9 +9,7 @@ $.xhrPool = [];
           d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
               d3.tsv("../config_vinalod/graph_icons.txt",function(dataIcons){
                 filesIcons=dataIcons;
-                //rowDataConfig=fillDropDown(dataConfig)
                 configFile=dataConfig
-                //buildBasicGraph(rowDataConfig)
                 optionsMenu=dataConfig.filter(d=>d.collection=="eu_vocabularies")
                 $.get("optionMainMenu.html", function (data) {
                     optionsMenuHtml=data
@@ -100,12 +98,6 @@ $.xhrPool = [];
     updateAll();
   }
   async function buildBasicGraph(rowDataConfig,node,menuOption){
-    ////////console.log(rowDataConfig)
-    ////
-    
-    
-    console.log(node)
-    ////console.log(menuOption)
     var configRow,sparqlQuery,queryUrl, hierarchy, parameters,modal2,property_names,options,prefixes,configClasses,classes,option_text,legendWidth,legendElements,legendElPosition=[],graphType,columns,found;
     url=configFile[rowDataConfig]["endpoint_url"]
     sparqlQuery=configFile[rowDataConfig]["query"]
@@ -120,13 +112,6 @@ $.xhrPool = [];
     tooltip=configFile[rowDataConfig]["tooltip"]
     columns=configFile[rowDataConfig]["columns"]
     property_names=get_property_names(properties_full)
-    
-    /* if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-      ////////////////////////console.log(menuOption)
-      ////////////////////////console.log(networkGraph.treeData)
-      ////////////////////////console.log(menuOption)
-      throw new Error("Something went badly wrong!");
-    } */
     
     configRow={"url":url,"sparqlQuery":sparqlQuery,"hierarchy":hierarchy,"properties_full":properties_full,
     "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
@@ -144,41 +129,28 @@ $.xhrPool = [];
     //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
     if(node!=undefined){
       if(parameters!=""){
-        ////////console.log(parameters)
         parameters=get_parameters(parameters)
         for (i = 0; i < parameters.length; ++i) { 
-          ////////////console.log(node[parameters[i]])
           sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
         }  
-        ////////console.log(node)
           if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
-            ////////console.log("primera")
             sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
           }else{
-            ////////console.log("segunda")
             sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
           }
       }else{
-        ////////console.log(node)
         if(node["configRow"]){
           sparqlQuery=sparqlQuery.replace("PARAMETER", node["value"]);
         }else{
           sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]);
-        }
-        //////////console.log(node[node["class"]+"_uri"])
-        
+        }        
       }
-      ////console.log(nodesClassesCorrespondence)
-      ////console.log(classes)
-      ////console.log(getClassesShow(classes))
       if(nodesClassesCorrespondence==null){
         nodesClassesCorrespondence=getClassesShow(configRow["classes"])
       }
       
       nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(classes));
       nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(classes)))))
-      //////////////////console.log(nodesClassesCorrespondence)
-      //////////////////console.log(nodesClassesShow)
     }
   
     if(graphType=="TREE"){
@@ -195,16 +167,12 @@ $.xhrPool = [];
     d3.select("#spin").style("display","inline-flex")
   
     console.log(sparqlQuery)
-    ////////console.log(queryUrl)
     $objectAjax=$.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
       console.log(results)
       d3.select("#spin").style("display","none")
-      //////////console.log(results)
       graphHistory.push(options)
-      ////////////////////////////console.log(properties)
-     
-      
+
       if(node==undefined){
         data=buildDataBasic(results,configRow,configClasses,node)
         d3.selectAll(".graph").remove()
@@ -247,28 +215,13 @@ $.xhrPool = [];
         console.log(networkGraph.treeData)
         data=buildDataBasic(results,configRow,configClasses,node,menuOption)
         var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-        //////////////////console.log(dif)
-        ////////////////console.log(nodesClassesShow)
-        ////////////////console.log(colorScale.domain())
         found=networkGraph.treeData.filter(function(item) {
-          //////////////////////////console.log(item.id)
-          //////////////////////////console.log(data.treeData[0]["id"])
           return (item.id == data.treeData[0]["id"])
         })
-        //////////////////////////console.log(found)
         if(found.length!=0){
-         /*  if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-            ////////////////////////console.log(menuOption)
-            ////////////////////////console.log(networkGraph.treeData)
-            ////////////////////////console.log(menuOption)
-            //////////////////////////console.log(treeData[position[i-1]-1])
-           // throw new Error("Something went badly wrong!");
-          } */
-          //////////////////////////console.log(networkGraph.treeData.indexOf(found[0]))
           create_menuNode(networkGraph.treeData.indexOf(found[0]),data.treeData[0])
           networkGraph.data=flatten(networkGraph.treeData).flatData
         }else{
-        //////////////////////////console.log(networkGraph.treeData)
         networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
         networkGraph.data=flatten(networkGraph.treeData).flatData
         }
@@ -276,20 +229,10 @@ $.xhrPool = [];
         networkGraph.initializeSimulation();
         networkGraph.dataJoinGraph()
         networkGraph.enterGraph()
-        ////console.log(dif)
         fillLegend(dif,true)
         networkGraph.initializeSimulation();
-        //if(networkGraph.graphType=="freeGraph"){
-        //  networkGraph.dataJoinFreeGraph()
-        //}else{
         networkGraph.dataJoinGraph()
-        //}
         networkGraph.exitGraph()
-        /* d3.selectAll(".link")
-        .style("opacity", 1)
-        .style("stroke", "grey")
-        .style("fill","grey")
-        .style("stroke-width", "1px"); */
       }
       if((results.length>0)&(filters!="")){
         addFilters(filters,data)
@@ -320,7 +263,6 @@ $.xhrPool = [];
         showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
       }else if (graphType=="WEBPAGE"){
         showWebPage(page,modal2.modalHeader,modal2.modalContent)
-        //showWikipediaPage(node)
       }else if (graphType=="TIMELINE"){
         showTimeLine(node,modal2.modalHeader,modal2.modalContent)
       }else if (graphType=="PDF"){
@@ -333,27 +275,18 @@ $.xhrPool = [];
       showModal("#myModal2")
     }
     function create_menuNode(index,treeData){
-      //////////////////////////console.log(networkGraph.treeData[index])
-      //////////////////////////console.log(treeData)
-      ////////////////////////console.log(networkGraph.treeData)
       if(networkGraph.treeData[index]["class"]!="menuOption"){
         networkGraph.treeData[index]["children"].concat(treeData.children)
       }
     }
   }
   function buildDataBasic(results,configRow,configClasses,element,menuOption){
-
-  //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
     var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri,arrayMenuOptions=[];
     hierarchy=get_hierarchy(configRow["hierarchy"])
-    console.log(hierarchy)
-    console.log(element)
     if(element==undefined){
       nodesClasses=hierarchy
       nodesClassesCorrespondence=getClassesShow(configRow["classes"])
-      //////console.log(nodesClassesCorrespondence)
       nodesClassesShow=Object.values(nodesClassesCorrespondence)
-      //////console.log(nodesClassesShow)
       classTooltip=hierarchy[0]
     }else{
       classTooltip=nodesClassesCorrespondence[element["class"]]
@@ -364,9 +297,7 @@ $.xhrPool = [];
           addMenuOptionNode()
         }
       }
-    }
-    
-    
+    }    
     properties=get_properties(configRow["properties_full"])
     tooltip=getTooltip(classTooltip,configRow["option_text"])
     root=results[0][hierarchy[0]]["value"]
@@ -419,16 +350,11 @@ $.xhrPool = [];
             }
             
           }else{
-            //////console.log(node)
-            //////console.log(configFile)
-            //////console.log(node.class)
             node["menuOption"]="no options"
           }
           
           nodes.push(node)
           if(position[i-1]){
-            //////console.log(treeData[position[i-1]-1])
-            //////console.log(node)
             if(treeData[position[i-1]-1]["children"]==undefined){
               treeData[position[i-1]-1]["children"]=[]
             }
@@ -441,13 +367,10 @@ $.xhrPool = [];
         }
         
       } 
-      console.log(r)
-      console.log(hierarchy[hierarchy.length-1])
-      console.log(hierarchy.length-1)
+
       if (r[hierarchy[hierarchy.length-1]]!=undefined){
         value=r[hierarchy[hierarchy.length-1]].value
         node={"id":genRandomString(),"value":value,"shape":1,"class":hierarchy[hierarchy.length-1]}
-        console.log(node)
         if(properties[hierarchy[hierarchy.length-1]]){
               properties[hierarchy[hierarchy.length-1]].forEach(function(k){
                 if(r[k]==undefined){
@@ -463,7 +386,6 @@ $.xhrPool = [];
         if(treeData[position[position.length-1]-1]["children"]==undefined){
           treeData[position[position.length-1]-1]["children"]=[]
         }
-        //console.log(treeData[position[position.length-1]-1])
         if(treeData[position[position.length-1]-1]["menuOption"]){
           if(arrayMenuOptions.length>1){
             treeData[position[position.length-1]-1]["children"][1]["children"].push(node)
@@ -477,7 +399,6 @@ $.xhrPool = [];
         
       }
       })
-      console.log(treeData)
       flatData=flatten_v2(treeData)
       return flatData
       function addMenuOptionNode(){
@@ -493,123 +414,7 @@ $.xhrPool = [];
 
       }
   }
-  function buildDataBasic_copy(results,configRow,configClasses,element,menuOption){
 
-    //function buildDataBasic(results,properties,hierarchy,classes,configClasses,element,option_text){
-      var nodes=[],options=[],optionNode="",procNode=[],treeData=[],root,position=[],value,tooltip=[],classTooltip,uri;
-      hierarchy=get_hierarchy(configRow["hierarchy"])
-      //////////////////////////console.log(menuOption)
-      if(element==undefined){
-        nodesClasses=hierarchy
-        nodesClassesCorrespondence=getClassesShow(configRow["classes"])
-        nodesClassesShow=Object.values(nodesClassesCorrespondence)
-        classTooltip=hierarchy[0]
-      }else{
-        classTooltip=nodesClassesCorrespondence[element["class"]]
-      }
-      properties=get_properties(configRow["properties_full"])
-      tooltip=getTooltip(classTooltip,configRow["option_text"])
-      root=results[0][hierarchy[0]]["value"]
-      results.forEach(function(r){
-        for (i = 0; i < hierarchy.length-1; ++i) {    
-          if((!procNode[i])||(procNode[i]!=r[hierarchy[i]].value)){  
-            if(element!=undefined){
-              node=element
-            }else{
-              node={"id":genRandomString(),"value":r[hierarchy[i]].value,"shape":1,"class":hierarchy[i]}
-            }
-            if(r[hierarchy[i]].value==root){
-              node["root"]=true
-              if(element!=undefined){
-                node["id"]=element.id
-              }
-            }
-            options=getOptions(configClasses,hierarchy[i])
-            ////////////////////////////console.log(options)
-            ////////////////////////////console.log(node)
-            if(options.length>0){
-              optionNode=""
-              options.forEach(function(k){
-                if(optionNode==""){
-                  optionNode=k.option+"-"+k.option_text
-                }else{
-                  optionNode=optionNode+";"+k.option+"-"+k.option_text
-                }
-              })
-              node["options"]=optionNode
-            }
-  
-            node["tooltip"]=getTooltipNode(tooltip,node["class"])
-            if(properties[hierarchy[i]]){
-              properties[hierarchy[i]].forEach(function(k){
-                node[k]=r[k].value
-              })
-            }
-            if(menuOption!=undefined){
-              if(node["menuOption"]==undefined){
-                node["menuOption"]=menuOption
-              }else{
-                node["menuOption"]+=";"+menuOption
-            }
-              
-            }else{
-              node["menuOption"]="no options"
-            }
-            
-            nodes.push(node)
-  
-            if(position[i-1]){
-              treeData[position[i-1]-1]["children"].push(node)
-            }
-            if(i!=(hierarchy.length-1)){
-              ////////////////////////console.log(node["children"])
-              //node["children"]=[]
-              position[i]=treeData.push(node)
-             /*  if((networkGraph!=undefined)&(menuOption!="OP Themes and publication author")){
-                ////////////////////////console.log(menuOption)
-                ////////////////////////console.log(networkGraph.treeData)
-                ////////////////////////console.log(menuOption)
-                ////////////////////////console.log(treeData)
-                throw new Error("Something went badly wrong!");
-              } */
-            }
-            procNode[i]=node.value
-          }
-          
-        } 
-        
-        if (r[hierarchy[hierarchy.length-1]]!=undefined){
-          value=r[hierarchy[hierarchy.length-1]].value
-          node={"id":genRandomString(),"value":value,"shape":1,"class":hierarchy[hierarchy.length-1]}
-          if(properties[hierarchy[hierarchy.length-1]]){
-                properties[hierarchy[hierarchy.length-1]].forEach(function(k){
-                  if(r[k]==undefined){
-                    node[k]=""
-                  }else{
-                    node[k]=r[k].value
-                  }              
-                })
-          }
-          node["tooltip"]=getTooltipNode(tooltip,node["class"])
-          ////////////////////////////console.log(node)
-          ////////////////////////////console.log(menuOption)
-          /* if(menuOption!=undefined){
-            node["menuOption"]=menuOption
-          } */
-          nodes.push(node)
-          //if()
-          if(treeData[position[position.length-1]-1]["children"]==undefined){
-            treeData[position[position.length-1]-1]["children"]=[]
-          }
-          treeData[position[position.length-1]-1]["children"].push(node)
-        }
-        })
-        ////////////////////////////console.log(treeData)
-        
-        flatData=flatten_v2(treeData)
-        ////////////////////////////console.log(flatData)
-        return flatData
-    }
   function flatten(root) {
     var nodes = [], links=[],number,children=0;
     function recurse(node) {
@@ -718,9 +523,6 @@ function zoomOut(){
   networkGraph.zoomOut()
 }
 function getModal2(){
-  //if(d3.select("#modalGraph")){
-  //  d3.select("#modalGraph").remove()
-  //}
   showModal("#myModal2")
   return {"modalHeader":document.getElementById("modalHeader2"),"modalContent":document.getElementById("modal-content2")}
 }
@@ -769,8 +571,6 @@ async function showTimeLine(data,modalHeader,modalContent){
   while (results[0]["replaces"]!=undefined) 
   
   timelineGraph(dataTimeline,modalHeader,modalContent)
-  //modal2=document.getElementById("myModal2")
-  //modal2.style.display = "block";
 
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
@@ -785,23 +585,13 @@ async function showPdf(node,sparqlQuery,url,modalHeader,modalContent){
 
   results = await runSparlqQuery(settings)
   var pdf=results[0]["item"]["value"]
-  /* modal2=document.getElementById("myModal2")
-  modal2.style.display = "block";
-  d3.select(".modal-header2 h2").remove()
-  modalHeader=document.getElementsByClassName("modal-header2")[0]
-  modalHeader.classList.add("mb-4");
-  var h2=document.createElement("h2") */
-  //h2.className="text-lg font-medium text-gray-900"
   modalHeader.innerHTML = "PDF"
-  //modalHeader.appendChild(h2);
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
   });
   $("#myModal2").draggable()
-/*   if(d3.select("#modalGraph")){
-    d3.select("#modalGraph").remove()
-  } */
+
   var div=document.createElement("div")
   div.className="h-full"
   div.setAttribute("id","modalGraph")
@@ -824,16 +614,12 @@ async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modal
 
   results = await runSparlqQuery(settings)
   table(results,columns,column_names,modalContent)
-  //modal2=document.getElementById("myModal2")
 
-  //d3.select(".modal-header2 h2").remove()
-  //modalHeader2=document.getElementsByClassName("modal-header2")[0]
   var h2=document.createElement("h2")
   h2.className="text-lg font-medium text-gray-900"
   h2.innerHTML = node["value"]
   modalHeader.appendChild(h2);
 
-  //modal2.style.display = "block";
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
@@ -930,40 +716,17 @@ async function showTreegraph(node,sparqlQuery,modalHeader,modalContent){
   
   dataTreegraph=transformDataTreegraph(node,results)
   treeGraph(dataTreegraph,node["value"],modalHeader,modalContent)
-  //modal2=document.getElementById("myModal2")
-  //modal2.style.display = "block";
+
   $('#myModal2').resizable({
     //alsoResize: ".modal-dialog",
     //minHeight: 150
   });
   $("#myModal2").draggable()
 }
-function transformDataTreegraph(node,data){
-  var treeData,membership=[]
 
-    for (i = 0; i < data.length; ++i) { 
-      membership.push({
-        "name": data[i]["membership"]["value"],
-        //"parent": node["value"],
-        "children": [
-        {
-            "name": data[i]["person"]["value"],
-            //"parent": data[i]["membership"]["value"]
-        }]})
-    }
-    treeData={"name":"Organisation",
-                   //"parent":"null",
-                  "children":membership}
-
-    return treeData
-}
 async function showWordcloud(node,sparqlQuery,configRow,modalHeader,modalContent){
   var rowDataConfig,results,dataTreegraph=[],title;
-  console.log(node)
-  console.log(sparqlQuery)
-  console.log(configRow)
-  console.log(modalHeader)
-  console.log(modalContent)
+
   if(node!=undefined){
     for (i = 0; i < configFile.length; ++i) { 
       if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="WORDCLOUD")){
@@ -986,8 +749,7 @@ async function showWordcloud(node,sparqlQuery,configRow,modalHeader,modalContent
   
   dataWordCloud=transformDataWordCloud(results)
   wordCloudGraph(dataWordCloud,title,modalHeader,modalContent)
-  //modal2=document.getElementById("myModal2")
-  //modal2.style.display = "block";
+
   $("#myModal2").removeClass("translate-x-full")
   $("#myModal2").addClass("translate-x-0")
   $('#myModal2').resizable({
@@ -1030,8 +792,7 @@ function transformDataTreegraph(node,data){
 
 function showWikipediaPage(data,modalHeader,modalContent){
   var rowDataConfig,results,node,page,parameters,parameterTemp="";
-  //var modal=document.getElementById("myModal")
-  //modal.style.display = "none";
+
   for (i = 0; i < configFile.length; ++i) { 
     if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WEBPAGE")){
       rowDataConfig=i
@@ -1055,9 +816,7 @@ function showWikipediaPage(data,modalHeader,modalContent){
   $.ajax(settings).then  (function( _data ) {
     results = _data.results.bindings;
     page=results[0]["article"]["value"]
-/*     if(d3.select("#modalGraph")){
-      d3.select("#modalGraph").remove()
-    } */
+
     var div=document.createElement("div")
     div.className="h-full"
     div.setAttribute("id","modalGraph")
@@ -1067,18 +826,9 @@ function showWikipediaPage(data,modalHeader,modalContent){
     .attr("src",page)
       .style("width", "100%")
       .style("height","100%");
-    //d3.select(".modal-header2 h2").remove()
-    //modalHeader2=document.getElementById("modalHeader2")
-    //modalHeader2.classList.add("mb-4");
-    //var h2=document.createElement("h2")
-    //h2.className="text-lg font-medium text-gray-900"
+
     modalHeader.innerHTML = "Wikipedia Page"
 
-    //modalHeader2.appendChild(h2);
-    //modal2=document.getElementById("myModal2")
-    //modal2.style.display = "block";
-    //$("#myModal2").removeClass("translate-x-full")
-    //$("#myModal2").addClass("translate-x-0")
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
       //minHeight: 150
@@ -1088,22 +838,15 @@ function showWikipediaPage(data,modalHeader,modalContent){
 }
 function showWebPage(page,title,modalHeader,modalContent){
     console.log(page)
-    /* var div=document.createElement("div")
-    div.className="h-full"
-    div.setAttribute("id","modalGraph")
-    div.setAttribute("style","overflow: auto") */
-    //modalContent.appendChild(div)
+
     $("#webpage").remove()
     var iframe=document.createElement("iframe")
     iframe.id="webpage"
     
-    //iframe=modalContent.append("iframe")
     iframe.setAttribute("src",page)
     iframe.setAttribute("style","width: 100%") 
     iframe.setAttribute("style","height: 100%") 
-/*     .attr("src",page)
-      .style("width", "100%")
-      .style("height","100%"); */
+
     modalContent.appendChild(iframe)
     modalHeader.innerHTML = title
 
@@ -1112,19 +855,14 @@ function showWebPage(page,title,modalHeader,modalContent){
       //minHeight: 150
     });
     $("#myModal2").draggable()
-  //})
 }
 // Get the modal
 var modal = document.getElementById("myModal");
 
 var span = document.getElementsByClassName("close")[0];
 
-////////console.log(span)
-
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-  ////////console.log("entra")
-  //modal.style.display = "none";
   $("#myModal").removeClass("translate-x-0")
   $("#myModal").addClass("translate-x-full")
 }
@@ -1132,7 +870,6 @@ span.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
-    //modal.style.display = "none";
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
   }
@@ -1146,7 +883,6 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  //modal2.style.display = "none";
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
@@ -1259,8 +995,7 @@ function get_parameters(parameters){
 //ADD connect with classes in basic mode
 function checkConfigFileNode(result){
   if(result["o"].type=="uri"){
-    //////////////////////////////////////////console.log(result)
-    //////////////////////////////////////////console.log(configFile)
+
   }
 }
 function expertMode(){
@@ -1274,9 +1009,6 @@ function expertMode(){
   $("#landing-text").addClass("hidden")
 }
 function basicMode(){
-  ////////console.log("basicMode")
-  ////////console.log($("#flyoutMenu").attr("class"))
-  ////////console.log($("#flyoutMenu").hasClass("opacity-0"))
   if($("#flyoutMenu").hasClass("opacity-0")){
       $("#flyoutMenu").addClass("transition ease-out duration-200")
       $("#flyoutMenu").removeClass("hidden opacity-0 translate-y-1")
@@ -1288,22 +1020,12 @@ function basicMode(){
   }
   
 }
-/* function changeBasicGraph(option){
-  ////////console.log(option)
-  ////////console.log($(option).find( "#optionMain" ).text().trim())
-  
-} */
+
 function changeCollectionOptions(collection){
   var newCollection,oldCollection;
-  ////////console.log(collection)
-  ////////console.log(configFile)
-  ////////console.log($("#"+collection))
-  ////////console.log($("#"+collection).find(".bg-transparent"))
-  ////////console.log($("#"+collection).find(".bg-transparent").length)
-  ////////console.log($("#tabs-sections").find("nav").find("bg-blue-500"))
+
   oldCollection=$("#tabs-sections").find(".bg-blue-500")
   
-  ////////console.log(oldCollection)
   oldCollection.removeClass("bg-blue-500")
   oldCollection.addClass("bg-transparent")
   oldCollection.parent().removeClass("text-gray-900")
@@ -1317,29 +1039,12 @@ function changeCollectionOptions(collection){
       newCollection.parent().removeClass("text-gray-500")
   }
   optionsMenu=configFile.filter(d=>d.collection==collection)
-  ////////console.log(optionsMenu)
   appendHtmlOptions(optionsMenu)
-  //////////console.log(optionsMenuHtml)
 }
 function appendHtmlOptions(optionsMenu){
   $("#options-menu").find("a").remove()
   optionsMenu.forEach(element => {
-      ////////console.log(element)
-      //optionsMenu=dataConfig.filter(d=>d.collection=="EU Vocabularies")
-      //htmlObject = document.createElement(data)
-      //htmlObject.innerHTML = data;
       html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
-      //data.replace("textComment",element.option_text)
       $("#options-menu").append($(html))
-/*                     $.get("optionMainMenu.html", function (data) {
-          //$("#appendToThis").append(data);
-          ////////console.log(data)
-          ////////console.log(typeof(data))
-      }); */
-/*                         $("#options-menu").load("optionMainMenu.html", function(responseTxt, statusTxt, jqXHR){
-          if(statusTxt == "error"){
-              alert("Error: " + jqXHR.status + " " + jqXHR.statusText);
-          }
-      }) */
   });
 }

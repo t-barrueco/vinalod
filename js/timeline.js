@@ -2,13 +2,7 @@ function timelineGraph(data,modalHeader,modalContent){
     var endDate,treaty;
     var formatTime=d3.timeFormat("%m-%d-%Y")
     var margin = {top: 30, right: 30, bottom: 30, left: 30}
-/*     d3.select(".modal-header2 h2").remove()
-    modalHeader=document.getElementById("modalHeader2")
-    modalHeader.classList.add("mb-4");
-    var h2=document.createElement("h2")
-    h2.className="text-lg font-medium text-gray-900" */
     modalHeader.innerHTML = "Timeline EU Members"
-    //modalHeader.appendChild(h2);
 
     var xFormat = "%Y-%m-%d";;
     var parseTime = d3.timeParse("%Y-%m-%d");
@@ -32,9 +26,7 @@ function timelineGraph(data,modalHeader,modalContent){
 
     width=1100
     height=500
-/*     if(d3.select("#modalGraph")){
-        d3.select("#modalGraph").remove()
-    } */
+
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")

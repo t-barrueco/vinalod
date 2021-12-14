@@ -1,51 +1,38 @@
 function treeGraph(treeData,title,modalHeader,modalContent){
-    /* d3.select(".modal-header2 h2").remove()
-    //modalHeader2=document.getElementById("modalHeader2")
-    modalHeader.classList.add("mb-4");
-    var h2=document.createElement("h2")
-    h2.className="text-lg font-medium text-gray-900"
-    h2.innerHTML = title
-    modalHeader.appendChild(h2); */
-    modalHeader.innerHTML = title
-
-/*     if(d3.select("#modalGraph")){
-      d3.select("#modalGraph").remove()
-    } */
+    
   var div=document.createElement("div")
   div.setAttribute("id","modalGraph")
   div.setAttribute("style","overflow: auto")
   modalContent.appendChild(div)
-//console.log(treeData)
+  modalHeader.innerHTML = title
 
-// Assigns parent, children, height, depth
-root = d3.hierarchy(treeData, function(d) { return d.children; });
-root.x0 = height / 2;
-root.y0 = 0;
+  root = d3.hierarchy(treeData, function(d) { return d.children; });
+  root.x0 = height / 2;
+  root.y0 = 0;
 
-//console.log(root.children)
-height=40*root.children.length
+  height=40*root.children.length
 
-// Set the dimensions and margins of the diagram
-var margin = {top: 20, right: 90, bottom: 30, left: 180},
-    width = 960 - margin.left - margin.right,
-    height = height - margin.top - margin.bottom;
+  // Set the dimensions and margins of the diagram
+  var margin = {top: 20, right: 90, bottom: 30, left: 180},
+      width = 960 - margin.left - margin.right,
+      height = height - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select("#modalGraph").append("svg")
-    .attr("width", width + margin.right + margin.left)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate("
-          + margin.left + "," + margin.top + ")");
+  // append the svg object to the body of the page
+  // appends a 'group' element to 'svg'
+  // moves the 'group' element to the top left margin
+  var svg = d3.select("#modalGraph").append("svg")
+      .attr("width", width + margin.right + margin.left)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate("
+            + margin.left + "," + margin.top + ")");
 
-var i = 0,
-    duration = 750,
-    root;
+  var i = 0,
+      duration = 750,
+      root;
 
-// declares a tree layout and assigns the size
-var treemap = d3.tree().size([height, width]);
+  // declares a tree layout and assigns the size
+  var treemap = d3.tree().size([height, width]);
 
 
 

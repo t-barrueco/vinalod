@@ -5,14 +5,7 @@ function wordCloudGraph(words,title,modalHeader,modalContent){
     
     var wordsNoStop=[]
 
-    //d3.select(".modal-header2 h2").remove()
-    //modalHeader=document.getElementById("modalHeader2")
-
-    //modalHeader.classList.add("mb-4");
-    //var h2=document.createElement("h2")
-    //h2.className="text-lg font-medium text-gray-900"
     modalHeader.innerHTML = title
-    //modalHeader.appendChild(h2);
 
     if(d3.select("#modalGraph")){
       d3.select("#modalGraph").remove()
