@@ -627,6 +627,15 @@ function getModal2(){
   if($("#modal-content2 #modalGraph")){
     $("#modal-content2 #modalGraph").remove()
   }
+  if($("#modal-content2 iframe")){
+    $("#modal-content2 iframe").remove()
+  }
+  /* if($("#modalHeader2 h2")){
+    $("#modalHeader2 h2").remove()
+  }
+  if($("#modal-content2 h2")){
+    $("#modal-content2 h2").remove()
+  } */
   showModal("#myModal2")
   return {"modalHeader":document.getElementById("modalHeader2"),"modalContent":document.getElementById("modal-content2")}
 }
@@ -721,9 +730,10 @@ async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modal
   results = await runSparlqQuery(settings)
   table(results,columns,column_names,modalContent)
 
-  var h2=document.createElement("h2")
-  h2.className="text-lg font-medium text-gray-900"
-  h2.innerHTML = node["value"]
+  //var h2=document.createElement("h2")
+  //h2.className="text-lg font-medium text-gray-900"
+  //h2.innerHTML = node["value"]
+  modalHeader.innerHTML = node["value"]
   modalHeader.appendChild(h2);
 
   $('#myModal2').resizable({
@@ -736,6 +746,7 @@ function table(data,columns,column_names,modalContent){
   var cellContent;
   if(d3.select("#modalGraph")){
     d3.select("#modalGraph").remove()
+    $("#modal-content iframe").remove()
   }
   var div=document.createElement("div")
   div.setAttribute("id","modalGraph")
