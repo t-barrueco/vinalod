@@ -2,7 +2,10 @@ var nodes=[],links=[],data={},networkGraph,configFile=null,configFileExp=null,da
 dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,
 nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow=[],nodesClassesCorrespondence,
 filesIcons,zoomScale=1,zoomY=0,zoomX=0,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],
-graphHistory=[],filtersInGraph=[],filtersList=[],classesFilterList=[],optionsMenuHtml;
+graphHistory=[],filtersInGraph=[],filtersList=[],classesFilterList=[],optionsMenuHtml,showNavigation=true,numClicks = 0;
+var timer = 0;
+var delay = 200;
+var prevent = false;
 $.xhrPool = [];
   function dataViz(){
     var rowDataConfig,optionsMenu;
@@ -112,7 +115,9 @@ $.xhrPool = [];
     tooltip=configFile[rowDataConfig]["tooltip"]
     columns=configFile[rowDataConfig]["columns"]
     property_names=get_property_names(properties_full)
+    //console.log(node)
     
+    //console.log(node)
     configRow={"url":url,"sparqlQuery":sparqlQuery,"hierarchy":hierarchy,"properties_full":properties_full,
     "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
     "filters":filters,"tooltip":tooltip,"columns":columns,"property_names":property_names}
@@ -166,10 +171,10 @@ $.xhrPool = [];
       .text("Waiting for Sparql query")
     d3.select("#spin").style("display","inline-flex")
   
-    console.log(sparqlQuery)
+    ////console.log(sparqlQuery)
     $objectAjax=$.ajax(settings).then  (function( _data ) {
       var results = _data.results.bindings;
-      console.log(results)
+      ////console.log(results)
       d3.select("#spin").style("display","none")
       graphHistory.push(options)
 
@@ -209,23 +214,45 @@ $.xhrPool = [];
               iterations: 1
           }
         }
+        //console.log(data.flatData.nodes[0])
         networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
+        //console.log(showNavigation)
+        /* if(showNavigation){
+          if (typeof (navigation) != "object") {
+            console.log(data.flatData.nodes[0])
+            navigation = new navigationPanel("freeGraph", data.flatData.nodes[0]);
+          } else if (navigation.type != "freeGraph") {
+            navigation = new navigationPanel("freeGraph", data.flatData.nodes[0]);
+          } else {
+            navigation.init()
+          }
+        } */
         collapse()
       }else{
-        console.log(networkGraph.treeData)
-        data=buildDataBasic(results,configRow,configClasses,node,menuOption)
-        var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-        found=networkGraph.treeData.filter(function(item) {
-          return (item.id == data.treeData[0]["id"])
-        })
-        if(found.length!=0){
-          create_menuNode(networkGraph.treeData.indexOf(found[0]),data.treeData[0])
-          networkGraph.data=flatten(networkGraph.treeData).flatData
+        ////console.log(networkGraph.treeData)
+        //console.log(node)
+        //console.log(networkGraph.treeData)
+        //throw new Error("Something went badly wrong!");
+        if(networkGraph.treeData.filter(d=>d.id==node.id).length==0){
+          ////console.log(networkGraph.treeData.filter(d=>d.id==node.id))
+        //throw new Error("Something went badly wrong!");
+          data=buildDataBasic(results,configRow,configClasses,node,menuOption)
+          var dif=differenceArrays(nodesClassesShow,colorScale.domain())
+          found=networkGraph.treeData.filter(function(item) {
+            return (item.id == data.treeData[0]["id"])
+          })
+          if(found.length!=0){
+            create_menuNode(networkGraph.treeData.indexOf(found[0]),data.treeData[0])
+            //networkGraph.data=flatten(networkGraph.treeData).flatData
+          }else{
+          networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
+          //networkGraph.data=flatten(networkGraph.treeData).flatData
+          }
         }else{
-        networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-        networkGraph.data=flatten(networkGraph.treeData).flatData
+          networkGraph.treeData=showTreeData(node,networkGraph.treeData)
+          //console.log(networkGraph.treeData)
         }
-
+        networkGraph.data=flatten(networkGraph.treeData).flatData
         networkGraph.initializeSimulation();
         networkGraph.dataJoinGraph()
         networkGraph.enterGraph()
@@ -233,6 +260,17 @@ $.xhrPool = [];
         networkGraph.initializeSimulation();
         networkGraph.dataJoinGraph()
         networkGraph.exitGraph()
+        console.log(showNavigation)
+        if(showNavigation){
+          if (typeof (navigation) != "object") {
+            navigation = new navigationPanel("freeGraph", node);
+          } else if (navigation.type != "freeGraph") {
+            navigation = new navigationPanel("freeGraph", node);
+          } else {
+            console.log("navigation.init()")
+            navigation.init()
+          }
+        }
       }
       if((results.length>0)&(filters!="")){
         addFilters(filters,data)
@@ -299,21 +337,21 @@ $.xhrPool = [];
       }
     }    
     properties=get_properties(configRow["properties_full"])
-    tooltip=getTooltip(classTooltip,configRow["option_text"])
+    tooltip=getTooltip(configRow["option_text"])
     root=results[0][hierarchy[0]]["value"]
 
     results.forEach(function(r){
-      console.log(hierarchy)
+      ////console.log(hierarchy)
       for (i = 0; i < hierarchy.length-1; ++i) {   
-        console.log(procNode[i])
-        console.log(r[hierarchy[i]].value) 
+        ////console.log(procNode[i])
+        ////console.log(r[hierarchy[i]].value) 
         if((!procNode[i])||(procNode[i]!=r[hierarchy[i]].value)){  
           if(element!=undefined){
             node=element
           }else{
             node={"id":genRandomString(),"value":r[hierarchy[i]].value,"shape":1,"class":hierarchy[i]}
           }
-          console.log(node)
+          ////console.log(node)
           if(r[hierarchy[i]].value==root){
             node["root"]=true
             if(element!=undefined){
@@ -399,6 +437,9 @@ $.xhrPool = [];
         
       }
       })
+      //console.log(treeData)
+      //throw new Error("Something went badly wrong!");
+
       flatData=flatten_v2(treeData)
       return flatData
       function addMenuOptionNode(){
@@ -414,7 +455,21 @@ $.xhrPool = [];
 
       }
   }
-
+  function showTreeData(node,treeData){
+    var children
+    //console.log(node)
+    //console.log(treeData)
+    var indexNode=treeData.findIndex(d=>d.id==node.id)
+    //console.log(indexNode)
+    children=treeData[indexNode]["_children"]
+    delete treeData[indexNode]._children;
+    treeData[indexNode]["children"]=children
+    for (let i = 0; i < treeData[indexNode]["children"].length; i++) {
+      treeData[indexNode]["children"][i]["hidden"]=false
+    }
+    //console.log(treeData)
+    return treeData
+  }
   function flatten(root) {
     var nodes = [], links=[],number,children=0;
     function recurse(node) {
@@ -486,6 +541,7 @@ $.xhrPool = [];
         }
         if (node.children){
           nodes[position]["number"]=node.children.length
+          //console.log(node.children.length)
           node.children.forEach(function(c){
             if(!c["hidden"]){
               position=links.indexOf(links.filter(function(item) {
@@ -510,6 +566,51 @@ $.xhrPool = [];
   
     return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
   }
+  function flatten_v3(root) {
+    var nodes = [], links=[];
+    function recurse(node) {
+      if(!node["hidden"]){
+        //console.log(node)
+        position=nodes.indexOf(nodes.filter(function(item) {
+          return item.id == node.id
+        })[0])
+        //console.log(position)
+        if(position==-1){
+          nodes.push(node)
+          position=(nodes.length)-1
+        }
+        if (node.children){
+          nodes[position]["number"]=node.children.length
+          //console.log(nodes[position]["number"])
+          ////console.log(node.children.length)
+          node.children.forEach(function(c){
+            //console.log(c)
+            if(!c["hidden"]){
+              position=links.indexOf(links.filter(function(item) {
+                return ((item.source == node.id)&&(item.target == c.id))
+              })[0])
+              //console.log(position)
+              if(position==-1){
+                links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
+                //console.log({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
+              }
+              recurse(c)
+            }
+          });
+        }else{
+          nodes[position]["number"]=0;
+        } 
+      }
+
+    }
+
+    root.forEach(function(r){
+      recurse(r);
+    })
+    //console.log(nodes)
+    //console.log(links)
+    return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
+  }
 function collapse(){
   networkGraph.collapseAll()
 }
@@ -523,12 +624,17 @@ function zoomOut(){
   networkGraph.zoomOut()
 }
 function getModal2(){
+  if($("#modal-content2 #modalGraph")){
+    $("#modal-content2 #modalGraph").remove()
+  }
   showModal("#myModal2")
   return {"modalHeader":document.getElementById("modalHeader2"),"modalContent":document.getElementById("modal-content2")}
 }
 function showModal(id){
+
   $(id).removeClass("translate-x-full")
   $(id).addClass("translate-x-0")
+  console.log($(id))
 }
 async function showTimeLine(data,modalHeader,modalContent){
   var rowDataConfig,results,node,dataTimeline=[];
@@ -794,7 +900,7 @@ function showWikipediaPage(data,modalHeader,modalContent){
   var rowDataConfig,results,node,page,parameters,parameterTemp="";
 
   for (i = 0; i < configFile.length; ++i) { 
-    if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WEBPAGE")){
+    if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WIKIPEDIA")){
       rowDataConfig=i
       break;
     }
@@ -837,7 +943,7 @@ function showWikipediaPage(data,modalHeader,modalContent){
   })
 }
 function showWebPage(page,title,modalHeader,modalContent){
-    console.log(page)
+    ////console.log(page)
 
     $("#webpage").remove()
     var iframe=document.createElement("iframe")
@@ -863,6 +969,11 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
+  //console.log("close")
+  if(navigation){
+    navigation.clusterElSelected=[]
+  }
+  
   $("#myModal").removeClass("translate-x-0")
   $("#myModal").addClass("translate-x-full")
 }
@@ -870,6 +981,7 @@ span.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
+    //console.log("pasa por aquí")
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
   }
@@ -883,6 +995,7 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
+  ////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
@@ -890,7 +1003,8 @@ span2.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal2) {
-    modal2.style.display = "none";
+    //console.log("pasa por aquí")
+    //modal2.style.display = "none";
   }
 }
 

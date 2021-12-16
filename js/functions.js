@@ -5,7 +5,7 @@
 *    created by Teresa Barrueco
 */
 
-function removeChars(chars){
+/* function removeChars(chars){
   var invalid=["~","!","@","$","%","^","&","*","(",")","+","=",",",".","/","'",";",":",'"',"?",">","<","[","]","\\","{","}","|","`","#","]"]
   var pieces;
   invalid.forEach(function(c){
@@ -17,7 +17,7 @@ function removeChars(chars){
     chars="_"+chars
   }
   return chars
-}
+} */
 function get_hierarchy(hierarchy){
   var hierarchy_arr=[]
   hierarchy_arr=[hierarchy[0]["parent"]]
@@ -78,7 +78,7 @@ function getOptions(configClass,elClass){
   })
   return selClass
 }
-function getTooltip(elClass,option_text){
+function getTooltip(option_text){
   var selClass=configFile.filter(function(d){
     return d.option_text==option_text
   })
@@ -88,7 +88,7 @@ function getTooltip(elClass,option_text){
     return ""
   } 
 }
-function fillDropDown(dataConfig){
+/* function fillDropDown(dataConfig){
   var select = document.getElementById("options_basic"); 
   for(var i = 0; i < dataConfig.length; i++) {
     if(!dataConfig[i]["query"].includes("PARAMETER")){
@@ -100,7 +100,7 @@ function fillDropDown(dataConfig){
     }
   }
   return select.options[select.selectedIndex].value;
-}
+} */
 
 function changeBasicGraph(option){
   d3.selectAll(".classFilter").remove()
@@ -186,12 +186,16 @@ async function addGraph(node,pageX,pageY,indexRows){
 
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
+  //console.log("entra en functions")
+  //console.log(origin)
   if (origin=="table"){
     for (var i = 0; i < items.length; i++) {
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
+    //console.log("add menu to table")
     addMenuToTable(node,menuItems)
   }else{
+    //console.log("else")
     for (var i = 0; i < items.length; i++) {
       position=items[i]["position"]
       element={
@@ -306,7 +310,7 @@ async function checkAskResults(indexRows,node){
     }else{
       sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
     }
-    console.log(sparqlQuery)
+    ////console.log(sparqlQuery)
     results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["endpoint_url"],sparqlQuery)
 
     if(results==true){
@@ -381,12 +385,7 @@ function zoom() {
    return founded
  }
 
-function findNodeTreemap(nodeId,treeData){
-  var founded=treeData.filter(function(item) {
-    return item.id == nodeId
-  })
-  return founded
-}
+
 function getTooltipText(d){
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -540,6 +539,7 @@ function autocomplete(inp, arr) {
               inp.value = this.getElementsByTagName("input")[0].value;
               /*close the list of autocompleted values,
               (or any other open lists of autocompleted values:*/
+              autocompleteValSelected(this)
               closeAllLists();
           });
           a.appendChild(b);
@@ -665,3 +665,28 @@ function bubbleImage(node){
   }
   
 }
+function autocompleteValSelected(el){
+  //console.log(el.parentNode)
+  //console.log(el.getElementsByTagName("input")[0])
+  if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
+    //console.log("node search")
+    navigation.valueSelected()
+  }
+}
+function handleClick(){
+  numClicks++;
+  console.log("entra en handleClick")
+  console.log(numClicks)
+  if (numClicks === 1) {
+    console.log("entra en 1")
+    singleClickTimer = setTimeout(() => {
+      numClicks = 0;
+      return 1;
+    }, 100);
+  } else if (numClicks === 2) {
+    console.log("entra en 2")
+    clearTimeout(singleClickTimer);
+    numClicks = 0;
+    return 2;
+  }
+};

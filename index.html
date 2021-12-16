@@ -36,13 +36,13 @@
       </head>
     <body onload="dataViz()">
 
-<div class="relative bg-gray-50">
+  <div class="relative bg-gray-50">
     <div class="relative bg-blue-600 shadow-lg">
       <div class="max-w-4xl px-4 ml-60 sm:px-6 lg:px-10 xl:ml-48 2xl:px-10 xl:px-10">
         <div class="flex items-center justify-between py-6 xl:justify-start md:justify-start md:space-x-10 2xl:space-x-10">
           <div class="flex justify-start lg:w-0 lg:flex-1">
             <h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
-                <a href="#">Vinalod</a>
+                <a id="logo" href="#">Vinalod</a>
               </h1>
           </div>
           <div class="-my-2 -mr-2 md:hidden">
@@ -166,7 +166,9 @@
           <div class="px-5 pt-5 pb-6">
             <div class="flex items-center justify-between">
               <div>
-                <img class="w-auto h-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+                <h1 class="text-2xl font-extrabold tracking-tight text-blue-600 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                  <a href="#">Vinalod</a>
+                </h1>
               </div>
               <div class="-mr-2">
                 <button type="button" class="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
@@ -182,39 +184,24 @@
           <div class="px-5 py-6 space-y-6">
             <div class="grid grid-cols-2 gap-y-4 gap-x-8">
               <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                Pricing
+                Basic Mode
               </a>
   
               <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                Docs
+                Expert Mode
               </a>
-  
-              <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                Help Center
-              </a>
-  
-              <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                Guides
-              </a>
-  
-              <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                Events
-              </a>
-  
-              <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                Security
-              </a>
+
             </div>
             <div>
               <a href="#" class="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700">
-                Sign up
+                Start
               </a>
-              <p class="mt-6 text-base font-medium text-center text-gray-500">
+<!--               <p class="mt-6 text-base font-medium text-center text-gray-500">
                 Existing customer?
                 <a href="#" class="text-blue-600 hover:text-blue-500">
                   Sign in
                 </a>
-              </p>
+              </p> -->
             </div>
           </div>
         </div>
@@ -222,7 +209,7 @@
     </div>
   
     <main class="lg:relative">
-      <div class="pt-16 pb-20 lg:h-full xl:h-full mx-60 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20" id="landing-text">
+      <div class="pt-16 pb-20 lg:h-full xl:h-full lg:mx-60 mx-6 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20" id="landing-text">
 
        <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
           <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
@@ -329,9 +316,69 @@
 </div>
 
       <div class="grid hidden grid-cols-12" id="graph-area">
-
         <div class="col-span-2 bg-gray-100 border-r-2">
+          <div class="bg-gray-100 px-2 py-2 border-b border-gray-200 sm:px-6">
+            <div class="ml-2 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
+<!--                 <div class="ml-4 mt-2">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                  Zoom
+                </h3>
+                
+              </div> -->
+              <div class="ml-4 mt-2 flex-shrink-0">
+                <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-2 rounded-md md:flex md:justify-center">
+                  <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    <span>Zoom In</span>
+                  </button>
+                  <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    <span>Zoom Out</span>
+                  </button>
+                </span>
+                <span class="relative z-0 inline-flex w-1/2 my-2 rounded-md md:justify-center">
+                  <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                    Collapse all
+                  </button>
+                  <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                    Expand all
+                  </button>
+          
+                </span>
+                <!-- <legend class="sr-only">Notifications</legend> -->
+                <div class="relative flex items-start pt-2" onclick="showHideNavigation()">
+                  <div class="flex items-center h-5">
+                    <input id="show-nav" name="show-nav" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked>
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="show-nav" class="font-medium text-gray-700">Show Navigation</label>
+<!--                     <p id="comments-description" class="text-gray-500">Get notified when someones posts a comment on a posting.</p>
+ -->                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="object-contain filter justify-items-center">
+            
+            <!-- <div class="flex object-contain border-b-2">
+              <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
+                <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  <span>Zoom In</span>
+                </button>
+                <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  <span>Zoom Out</span>
+                </button>
+              </span>
+  
+  
+              <span class="relative z-0 inline-flex w-1/2 my-10 rounded-md md:justify-center">
+                <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                  Collapse all
+                </button>
+                <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                  Expand all
+                </button>
+        
+              </span>
+          </div> -->
              <div class="border-b border-gray-200 divide-y divide-gray-200 justify-items-center controls">
                   <div class="items-center block p-6 mt-3 font-semibold text-center text-gray-700 bg-blue-100 border-2">
                     <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
@@ -354,7 +401,7 @@
                   
                 </ul>
               </div>
-              <div class="flex object-contain border-b-2">
+<!--               <div class="flex object-contain border-b-2">
                   <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
                     <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                       <span>Zoom In</span>
@@ -374,13 +421,13 @@
                     </button>
             
                   </span>
-              </div>
+              </div> -->
             </div>
       
           </div>
           <!-- This example requires Tailwind CSS v2.0+ -->
    
-          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-0 sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal">
+          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal">
             <div class="absolute inset-0 overflow-hidden">
               <!-- Background overlay, show/hide based on slide-over state. -->
               <div class="absolute inset-0" aria-hidden="true">
@@ -431,7 +478,7 @@
           </div>
           
 
-            <div class="absolute inset-0 overflow-hidden">
+<!--             <div class="absolute inset-0 overflow-hidden">
               <div class="absolute inset-0" aria-hidden="true">
                 <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
 
@@ -456,8 +503,8 @@
                 </div>
 
               </div>
-            </div>
-          </div> -->
+            </div> -->
+          <!-- </div> --> 
           <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal2">
             <div class="absolute inset-0 overflow-hidden">
               <div class="absolute inset-0" aria-hidden="true">

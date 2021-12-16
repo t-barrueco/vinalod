@@ -290,7 +290,7 @@
         "type": "TREE",
         "option": "Eurovoc domains, thesauri and concepts",
         "option_text": "Eurovoc concepts by thesauri and domain",
-        "collection":"eu_vocabularies"
+        "collection": "eu_vocabularies"
     },
     {
         "class": "Eurovoc Concept",
@@ -402,7 +402,7 @@
         "type": "TREE",
         "option": "NUTS Tree (Nomenclature of Territorial Units for Statistics)",
         "option_text": "NUTS Tree",
-        "collection":"eu_vocabularies"
+        "collection": "eu_vocabularies"
     },
     {
         "class": "taxonomy",
@@ -467,7 +467,7 @@
         "type": "TREE",
         "option": "Taxonomies",
         "option_text": "Taxonomies",
-        "collection":"eu_vocabularies"
+        "collection": "eu_vocabularies"
     },
     {
         "class": "Taxonomy Level",
@@ -563,7 +563,7 @@
         "type": "TREE",
         "option": "Digital Europa Thesaurus",
         "option_text": "Digital Europa Thesaurus",
-        "collection":"eu_vocabularies"
+        "collection": "eu_vocabularies"
     },
     {
         "class": "Eurovoc Concept",
@@ -767,10 +767,10 @@
         "type": "TREE",
         "option": "Languages by country and continent",
         "option_text": "Languages by country and continent",
-        "collection":"eu_vocabularies"
+        "collection": "eu_vocabularies"
     },
     {
-        "class": "Continents",
+        "class": "continent",
         "endpoint_url": "https://publications.europa.eu/webapi/rdf/sparql",
         "query": "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n            PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>\n            PREFIX dcterms: <http://purl.org/dc/terms/>\n            PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n            PREFIX authority: <http://publications.europa.eu/ontology/authority/>\n            PREFIX org: <http://www.w3.org/ns/org#>\n                    SELECT DISTINCT ?continent ?continent_uri ?continentName ?continentName_uri ?country_uri ?country ?org ?org_uri ?org_desc\n                    where {{?continentName_uri skos:prefLabel ?continentName;\n                               skos:inScheme ?continent_uri.\n                            ?continent_uri skos:prefLabel ?continent.\n                            ?country_uri geo:sfWithin ?continentName_uri;\n                                         skos:prefLabel ?country;\n                                         authority:deprecated ?deprecated.\n                            OPTIONAL {\n                                    ?country_uri org:hasMembership ?o.\n                                    ?o org:organization ?org_uri.\n                                    ?org_uri authority:deprecated ?deprecated2;\n                                              authority:authority-code ?org;\n                                              skos:prefLabel ?org_desc.\n                                    filter(?deprecated2=\"false\").\n                                    FILTER(langMatches(lang(?org_desc), \"en\")).\n                            }\n                            } \n                           filter(?continent_uri=<http://publications.europa.eu/resource/authority/continent>).\n                           FILTER(langMatches(lang(?continent), \"en\")).\n                           FILTER(langMatches(lang(?continentName), \"en\")).\n                           FILTER(langMatches(lang(?country), \"en\")).\n                           filter(?deprecated=\"false\").\n                           }ORDER BY ?continent ?continentName ?country ?org",
         "hierarchy": [
@@ -840,7 +840,7 @@
         "type": "TREE",
         "option": "Continents countries and organisations",
         "option_text": "Continents countries and organisations those countries belong to",
-        "collection":"eu_vocabularies"
+        "collection": "eu_vocabularies"
     },
     {
         "class": "Organisation",
@@ -885,7 +885,7 @@
         "option_text": "Timeline organisations"
     },
     {
-        "class": "eurun",
+        "class": "European Union",
         "endpoint_url": "https://publications.europa.eu/webapi/rdf/sparql",
         "query": "\n    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n    PREFIX org: <http://www.w3.org/ns/org#>\n    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n    PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>\n    PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n            SELECT DISTINCT ?eurun ?eurun_uri ?eurun_image ?corporateBody ?corporateBody_uri ?corporateBody_image ?corporateBody_country ?corporateBody_countryUri ?corporateBody_location ?corporateBody_locationUri   \n            where {{?eurun_uri org:hasSubOrganization ?corporateBody_uri;\n                           skos:prefLabel ?eurun;\n                           foaf:depiction ?eurun_image.\n                    ?corporateBody_uri skos:prefLabel ?corporateBody;\n                       foaf:depiction ?corporateBody_image;\n                       geo:location ?corporateBody_locationUri.\n                    ?corporateBody_locationUri skos:prefLabel ?corporateBody_location;\n                              geosparql:sfWithin ?corporateBody_countryUri.\n                    ?corporateBody_countryUri skos:prefLabel ?corporateBody_country          \n                    } \n                   filter(?eurun_uri=<http://publications.europa.eu/resource/authority/corporate-body/EURUN>).\n                   FILTER(langMatches(lang(?eurun), \"en\")).\n                   FILTER(langMatches(lang(?corporateBody), \"en\")).\n                   FILTER(langMatches(lang(?corporateBody_location), \"en\")).\n                   FILTER(langMatches(lang(?corporateBody_country), \"en\")).\n                   }ORDER BY ?eurun ?corporateBody\n                   #LIMIT 50\n    ",
         "hierarchy": [
@@ -973,7 +973,7 @@
         "type": "TREE",
         "option": "European Union Institutions and bodies",
         "option_text": "European Union Institutions and bodies",
-        "collection":"eu_whoiswho"
+        "collection": "eu_whoiswho"
     },
     {
         "class": "corporateBody",
@@ -1055,6 +1055,7 @@
                 "tooltip_text": "Locality"
             }
         ],
+        "modelClass": "http://publications.europa.eu/ontology/euvoc#Corporate",
         "function": "",
         "columns": [],
         "type": "TREE",
@@ -1213,7 +1214,7 @@
         "tooltip": [],
         "function": "showWikipediaPage",
         "columns": [],
-        "type": "WEBPAGE",
+        "type": "WIKIPEDIA",
         "option": "WHOISWHO Wikipedia page",
         "option_text": "WHOISWHO Wikipedia page"
     },
@@ -1366,6 +1367,7 @@
                 "property": "corporateBody_opTheme"
             }
         ],
+        "modelClass": "http://publications.europa.eu/ontology/euvoc#Corporate",
         "filters": [],
         "tooltip": [],
         "function": "",
@@ -1460,7 +1462,7 @@
         "type": "TREE",
         "option": "DATASETS20210831_1142 - Catalogues of datasets of data.europa.eu",
         "option_text": "DATASETS20210831_1142 - Catalogues of datasets of data.europa.eu",
-        "collection":"eu_data"
+        "collection": "eu_data"
     },
     {
         "class": "Publication Manifestation",
@@ -1698,7 +1700,7 @@
         "type": "TREE",
         "option": "EULaw Classes from Resource Legal",
         "option_text": "EULaw Classes from Resource Legal",
-        "collection":"eu_law"
+        "collection": "eu_law"
     },
     {
         "class": "mainEULawClass",
@@ -1750,7 +1752,7 @@
         "type": "TREE",
         "option": "EULaw Properties from Resource Legal",
         "option_text": "EULaw Properties from Resource Legal",
-        "collection":"eu_law"
+        "collection": "eu_law"
     },
     {
         "class": "Property",
@@ -2065,9 +2067,9 @@
         "type": "TREE",
         "option": "DATASETS (TIME OUT)- Catalogues of datasets of data.europa.eu",
         "option_text": "DATASETS - Catalogues of datasets of data.europa.eu",
-        "collection":"eu_data"
+        "collection": "eu_data"
     },
-	{
+    {
         "class": "dataeuropa",
         "endpoint_url": "https://data.europa.eu/sparql",
         "query": "SELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ('data.europa.eu' as ?dataeuropa) ('http://data.europa.eu' as ?dataeuropa_uri)\n  WHERE{ ?DEUCatalog_uri <http://purl.org/dc/terms/title>  ?title\n  OPTIONAL\n  { ?DEUCatalog_uri <http://purl.org/dc/terms/description>  ?description\n  } ?DEUCatalog_uri <http://purl.org/dc/terms/modified> ?DEUCatalog_Modified. ?DEUCatalog_uri <http://purl.org/dc/terms/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri \n        WHERE\n          { ?DEUCatalog_uri a <http://www.w3.org/ns/dcat#Catalog>}\n        }\n        } ORDER BY ?DEUCatalogRoot ?DEUCatalog_uri \n    ",
@@ -2097,8 +2099,7 @@
                 "class": "DEUCatalog",
                 "property": "DEUCatalog_Modified",
                 "property_name": "DEU Catalog modification date"
-            }
-			,
+            },
             {
                 "class": "DEUCatalog",
                 "property": "DEUCatalog_Language",
@@ -2137,9 +2138,9 @@
         "type": "TREE",
         "option": "DATASETS20211109_1346 - Catalogues of datasets of data.europa.eu",
         "option_text": "Desription - DATASETS - Catalogues of datasets of data.europa.eu",
-        "collection":"eu_data"
+        "collection": "eu_data"
     },
-	{
+    {
         "class": "corporateBody",
         "endpoint_url": "https://publications.europa.eu/webapi/rdf/sparql",
         "query": "\nSELECT ?prefLabel as ?text { ?eurovoc <http://www.w3.org/2004/02/skos/core#prefLabel> ?prefLabel. FILTER(LANG(?prefLabel)='en') ?work <http://publications.europa.eu/ontology/cdm#work_is_about_concept_eurovoc> ?eurovoc. optional{?eurovoc <http://www.w3.org/2004/02/skos/core#broader> ?eurovoc.} ?work <http://publications.europa.eu/ontology/cdm#work_authored_by_agent> <PARAMETER>}limit 9999",
@@ -2154,5 +2155,85 @@
         "type": "WORDCLOUD",
         "option": "Wordcloud of the organisation",
         "option_text": "This will show the most representing topics of the organisation"
+    },
+    {
+        "class": "Catalog of open datasets",
+        "endpoint_url": "https://data.europa.eu/sparql",
+        "query": "\nPREFIX dcat: <http://www.w3.org/ns/dcat#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\nSELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ?viz_theme ?viz_distribution ?viz_dataset ?viz ?viz_accessURL\n  WHERE{{ ?DEUCatalog_uri <http://purl.org/dc/terms/title>  ?title;\n                         dcat:dataset ?viz_dataset.\n        ?viz_dataset dcat:distribution ?viz_distribution;\n           dcat:theme ?viz_theme;\n           dcterms:publisher ?viz_publisher.\n        ?viz_distribution dcterms:title ?viz;\n              dcterms:type <http://publications.europa.eu/resource/authority/distribution-type/VISUALIZATION>;\n              dcat:accessURL ?viz_accessURL\n  OPTIONAL\n  { ?DEUCatalog_uri <http://purl.org/dc/terms/description>  ?description\n  } ?DEUCatalog_uri <http://purl.org/dc/terms/modified> ?DEUCatalog_Modified. ?DEUCatalog_uri <http://purl.org/dc/terms/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri \n        WHERE\n          { ?DEUCatalog_uri a <http://www.w3.org/ns/dcat#Catalog>}\n        }}\n        filter(?DEUCatalog_uri=<PARAMETER>).\n        }\n",
+        "hierarchy": [
+            {
+                "parent": "DEUCatalog",
+                "child": "viz"
+            }
+        ],
+        "properties": [
+            {
+                "class": "DEUCatalog",
+                "property": "DEUCatalog_uri",
+                "property_name": "DEU Catalog URI"
+            },
+            {
+                "class": "DEUTheme",
+                "property": "DEUTheme_uri",
+                "property_name": "DEU Theme URI"
+            },
+            {
+                "class": "DEUCatalog",
+                "property": "DEUCatalog_Modified",
+                "property_name": "DEU Catalog modification date"
+            },
+            {
+                "class": "viz",
+                "property": "viz_theme",
+                "property_name": "Dataviz Theme"
+            },
+            {
+                "class": "viz",
+                "property": "viz_distribution",
+                "property_name": "Dataviz Distribution"
+            },
+            {
+                "class": "viz",
+                "property": "viz_accessURL",
+                "property_name": "Dataviz URL"
+            }
+        ],
+        "classes_text": [
+            {
+                "class": "DEUCatalog",
+                "text": "Catalog of open datasets"
+            },
+            {
+                "class": "viz",
+                "text": "Dataviz"
+            }
+        ],
+        "parameters": [],
+        "filters": [],
+        "tooltip": [],
+        "function": "",
+        "columns": [],
+        "type": "TREE",
+        "option": "Dataviz per Datacalog",
+        "option_text": "Data visualizations in the Data Catalog"
+    },
+    {
+        "class": "Dataviz",
+        "properties": [
+            {
+                "class": "viz",
+                "property": "viz_accessURL",
+                "property_name": "Dataviz URL"
+            }
+        ],
+        "classes_text": [
+            {
+                "class": "viz",
+                "text": "Dataviz"
+            }
+        ],
+        "type": "WEBPAGE",
+        "option": "Dataviz on webpage",
+        "option_text": "Show the Data visualizations in a webpage"
     }
 ]

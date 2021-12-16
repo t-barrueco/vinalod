@@ -176,3 +176,5 @@ body{
 .autocomplete-items{
   text-transform: capitalize;
 }
+
+#logo:hover { text-decoration: none; }
