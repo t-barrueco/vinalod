@@ -255,6 +255,17 @@ async function buildFreeGraph(form, origin, node) {
     } else {
 
       addNodesGraph(results, node, form)
+      if(showNavigation){
+        if (typeof (navigation) != "object") {
+          navigation = new navigationPanel("freeGraph", node);
+        } else if (navigation.type != "freeGraph") {
+          navigation = new navigationPanel("freeGraph", node);
+        } else {
+          console.log("navigation.init()")
+          navigation.node=node
+          navigation.init()
+        }
+      }
     }
   }
 }

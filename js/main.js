@@ -268,6 +268,7 @@ $.xhrPool = [];
             navigation = new navigationPanel("freeGraph", node);
           } else {
             console.log("navigation.init()")
+            navigation.node=node
             navigation.init()
           }
         }

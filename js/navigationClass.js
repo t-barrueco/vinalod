@@ -16,7 +16,11 @@ navigationPanel.prototype.init = function () {
   }
 
   navPanel.element=document.getElementById(navPanel.node.id)
+  console.log(navPanel.element)
+  console.log(navPanel.node)
   navPanel.getNodes()
+  console.log(navPanel.targets)
+  console.log(navPanel.sources)
   navPanel.initModal()
   navPanel.navTableTable()
   navPanel.contentTable()
@@ -434,7 +438,7 @@ navigationPanel.prototype.contentTable = function (){
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
   ////console.log("pasa por aquí")
-
+  console.log(navPanel.targets)
   if (navPanel.targets.length>0){
     $("#dvTable").show()
     navPanel.table = document.createElement("table");
