@@ -563,6 +563,8 @@ NetworkGraph.prototype.enterGraph = function(){
               navigation = new navigationPanel("freeGraph", node);
             } else {
               console.log("navigation.init()")
+              console.log(d)
+              navigation.node=d
               navigation.init()
             }
           }
@@ -597,6 +599,8 @@ NetworkGraph.prototype.enterGraph = function(){
           /* vis.dblclickTimeout = setTimeout(function () {
             vis.isDblclick = false;
           }, vis.timeoutTiming); */
+          console.log(d)
+
           clearTimeout(timer);
           prevent = true;
           console.log(nodesClassesCorrespondence[get_node_from_element(this.getAttribute("id"))["class"]])
