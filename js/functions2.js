@@ -15,12 +15,18 @@ async function addURLGraph(field) {
     document.getElementById("navTable").querySelector('ol').remove()
   }
 
-  fillLegendFreeGraph()
+  //fillLegendFreeGraph()
   filtersList = []
-  $("#graph-area").removeClass("hidden")
-  $("#form-container").addClass("hidden")
-  //console.log("add URL Graph")
+
+  //////console.log("add URL Graph")
   indexRows = await checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
+  //console.log(indexRows)
+  if(indexRows.length==0){
+    //console.log("0 results")
+  }else{
+    $("#graph-area").removeClass("hidden")
+    $("#form-container").addClass("hidden")
+  }
 }
 
 function buildTreeData(results, form, node) {
@@ -55,10 +61,10 @@ function buildTreeData(results, form, node) {
 
 
   })
-  //console.log(children)
+  //////console.log(children)
   if (node != undefined) {
     if (node["menuOption"]) {
-      //console.log("entra en menuOption")
+      //////console.log("entra en menuOption")
       menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
       networkGraph.treeData.filter(d => d.id == node["id"])
       let obj = networkGraph.treeData.find(n => n.id == node["id"]);
@@ -73,13 +79,13 @@ function buildTreeData(results, form, node) {
 
       obj["menuOption"] = menuOption
     } else {
-      //console.log(node)
+      //////console.log(node)
       menuOption = node["url"] + "," + node["subject-object"]
       treeData = [{ "id": node["id"], "value": node["value"], "type": node["type"], "children": children, "hidden": false, "more_results": more_results, "menuOption": menuOption, "configRow": configRow, "class": "free" }]
     }
 
   } else {
-    //console.log("else")
+    //////console.log("else")
     menuOption = form["url"] + "," + form["subject-object"]
     treeData = [{ "id": genRandomString(), "value": results[0][form["subject-object"]]["value"], "type": results[0][form["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
   }
@@ -129,8 +135,8 @@ async function buildFreeGraph(form, origin, node) {
   var sparqlQuery, queryUrl, uri, url, subjectObject;
   var $objectAjax;
   prefixes = ""
-  //console.log(origin)
-  //console.log(form)
+  //////console.log(origin)
+  //////console.log(form)
   if (origin == "form") {
     uri = form.querySelector("#uri").innerHTML
     url = form.querySelector("#url").innerHTML
@@ -239,7 +245,17 @@ async function buildFreeGraph(form, origin, node) {
           iterations: 1
         }
       }
-      networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
+      ////console.log(networkGraph)
+      if(networkGraph){
+        networkGraph.graphType="freeGraph"
+        networkGraph.data=data
+        networkGraph.forces=forces
+        networkGraph.initVis()
+      }else{
+        networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
+      }
+      
+      //console.log(networkGraph)
      /*  if(showNavigation){
         if (typeof (navigation) != "object") {
           navigation = new navigationPanel("freeGraph", node);
@@ -261,7 +277,7 @@ async function buildFreeGraph(form, origin, node) {
         } else if (navigation.type != "freeGraph") {
           navigation = new navigationPanel("freeGraph", node);
         } else {
-          console.log("navigation.init()")
+          ////console.log("navigation.init()")
           navigation.node=node
           navigation.init()
         }
@@ -270,8 +286,8 @@ async function buildFreeGraph(form, origin, node) {
   }
 }
 function addNodesGraph(results, node, form) {
-  console.log(results)
-  console.log(node)
+  ////console.log(results)
+  ////console.log(node)
   links = addFreeGraphData(results, node, form)
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
@@ -280,7 +296,7 @@ function addNodesGraph(results, node, form) {
   networkGraph.dataJoinGraph()
   networkGraph.exitGraph()
   networkGraph.zoomOut()
-  networkGraph.zoomOut()
+  //networkGraph.zoomOut()
 
 }
 function dblclickCellContent(cell) {
@@ -306,7 +322,7 @@ function getFreeGraphData(results, form) {
 function addFreeGraphData(results, node, form) {
   var subjectId, objectId, subjectNode, objectNode, links = [], nodes = [], treeData;
   subjectObject = form["subject-object"]
-  //console.log("addfreegraphdata")
+  //////console.log("addfreegraphdata")
   treeData = buildTreeData(results, form, node)
 
   if (treeData.length > 0) {
@@ -486,7 +502,7 @@ function getTooltipTextFreeGraph(d) {
 }
 async function checkQueries(element, subjectObject, origin, pageX, pageY) {
   var msgNoResults, node, menuOption;
-  //console.log("check queries")
+  //////console.log("check queries")
   var resultRows = await checkAskResultsFreeGraph(element, subjectObject)
   if (typeof (element) != "string") {
     node = d3.select("#" + element.getAttribute("id")).data()[0]
@@ -537,7 +553,7 @@ async function checkQueries(element, subjectObject, origin, pageX, pageY) {
 }
 async function checkAskResultsFreeGraph(node, so) {
   var resultRows = []
-  //console.log("check ask results")
+  //////console.log("check ask results")
   var urls = ['https://publications.europa.eu/webapi/rdf/sparql', 'https://data.europa.eu/sparql']
   if (so == undefined) {
     subjectObject = ['s', 'o']
@@ -589,7 +605,7 @@ function getOptionsWindow(results) {
 
   var content = document.getElementById("modal3-content");
 
-  console.log(content)
+  ////console.log(content)
 
   results.forEach(function (r) {
     content.appendChild(getHtmlOption(r, i))
@@ -752,9 +768,10 @@ function clickBubbleFreeGraph(element, data) {
   var nodeData, sources2, node
   nodesSelSources = []
   nodesSelTarget = []
-  //console.log(element)
+  //////console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
-  console.log("pasa por clickBubble")
+  ////console.log("pasa por clickBubble")
+  //console.log(node)
   if (navigation == undefined) {
     navigation = new navigationPanel("freeGraph", node);
   } else {
@@ -766,7 +783,7 @@ function clickBubbleFreeGraph(element, data) {
     //navigation.navTableTable()
     //navigation.contentTable()
   }
-  //console.log("showModal")
+  //////console.log("showModal")
   //showModal("#myModal")
   $("#myModal").removeClass("translate-x-full")
   $("#myModal").addClass("translate-x-0")
@@ -790,9 +807,9 @@ function unclickBubbleFreeGraph() {
 }
 function fillLegendFreeGraph() {
   var colorsFreeGraph = [{ "name": "uri", "color": "bg-green-300" }, { "name": "bnode", "color": "bg-yellow-300" }, { "name": "literal", "color": "bg-pink-300" }, { "name": "menu Option", "color": "bg-blue-300" }, { "name": "guided mode graph", "color": "bg-purple-500" }]
-  //console.log(d3.selectAll("#legend li"))
+  //////console.log(d3.selectAll("#legend li"))
   $("#legend li").remove()
-  console.log(colorsFreeGraph)
+  //console.log(colorsFreeGraph)
   colorsFreeGraph.forEach(function (c) {
     appendLiFreeGraph(c.color, c.name)
   })
@@ -890,7 +907,7 @@ async function checkClassesBasicGraph(results, subjectObject, node) {
 
 }
 function getCommentMenuFreeGraph(title) {
-  ////////////////////////////////////////console.log(title)
+  ////////////////////////////////////////////console.log(title)
 }
 function continueSparql(element) {
   document.getElementById("sparql-timeout").style.display = "none"
