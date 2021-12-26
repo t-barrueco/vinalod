@@ -101,25 +101,36 @@ function getTooltip(option_text){
   }
   return select.options[select.selectedIndex].value;
 } */
-
+// changeBasicGraph is the function called when changing option in flyout menu
+// of basic mode menu
+  
 function changeBasicGraph(option){
+
+  //remove filter, legend and graph
   d3.selectAll(".classFilter").remove()
   d3.select("#legend").selectAll("li").remove()
   d3.selectAll(".graph").remove()
+
+  //reset global variables
   propertiesFilterHist=[]
   execQueries=[]
   filtersInGraph=[]
   classesFilterList=[]
   filtersList=[]
   graphHistory=[]
+
+  //hide flyout menu
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
   $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   
   option=$(option).find( "#optionMain" ).text().trim()
+
   let pos = configFile.map(function (e) {
     return e.option;
   }).indexOf(option);
+
   showBasicGraph()
+
   buildBasicGraph(pos)
 }
 function showBasicGraph(){
@@ -180,22 +191,23 @@ async function addGraph(node,pageX,pageY,indexRows){
     //throw new Error("Something went badly wrong!");
     await buildBasicGraph(indexRows[0]["position"],node,indexRows[0]["option"])
   }
+  //console.log("pasa por addGraph")
   return indexRows
 }
 
 
 function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
-  //console.log("entra en functions")
-  //console.log(origin)
+  //////console.log("entra en functions")
+  //////console.log(origin)
   if (origin=="table"){
     for (var i = 0; i < items.length; i++) {
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
-    //console.log("add menu to table")
+    //////console.log("add menu to table")
     addMenuToTable(node,menuItems)
   }else{
-    //console.log("else")
+    //////console.log("else")
     for (var i = 0; i < items.length; i++) {
       position=items[i]["position"]
       element={
@@ -284,6 +296,7 @@ function runAskSparlqQuery(url,sparqlQuery){
 }
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
+  ////console.log(indexRows)
   for (var i = 0; i < indexRows.length; i++) {
     sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     singleIndexRow=indexRows[i]
@@ -317,6 +330,7 @@ async function checkAskResults(indexRows,node){
       resultIndexRows.push(singleIndexRow)
     }
   }
+  ////console.log(resultIndexRows)
   return resultIndexRows
 }
 
@@ -484,7 +498,7 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-
+  ////console.log("pasa por appendLi")
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -501,6 +515,8 @@ function appendLi(i,textLi){
 }
 function differenceArrays(a1, a2) {
   var result = [];
+  //console.log(a1)
+  //console.log(a2)
   for (var i = 0; i < a1.length; i++) {
     if (a2.indexOf(a1[i]) === -1) {
       result.push(a1[i]);
@@ -666,25 +682,25 @@ function bubbleImage(node){
   
 }
 function autocompleteValSelected(el){
-  //console.log(el.parentNode)
-  //console.log(el.getElementsByTagName("input")[0])
+  //////console.log(el.parentNode)
+  //////console.log(el.getElementsByTagName("input")[0])
   if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
-    //console.log("node search")
+    //////console.log("node search")
     navigation.valueSelected()
   }
 }
 function handleClick(){
   numClicks++;
-  console.log("entra en handleClick")
-  console.log(numClicks)
+  ////console.log("entra en handleClick")
+  ////console.log(numClicks)
   if (numClicks === 1) {
-    console.log("entra en 1")
+    ////console.log("entra en 1")
     singleClickTimer = setTimeout(() => {
       numClicks = 0;
       return 1;
     }, 100);
   } else if (numClicks === 2) {
-    console.log("entra en 2")
+    ////console.log("entra en 2")
     clearTimeout(singleClickTimer);
     numClicks = 0;
     return 2;

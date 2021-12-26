@@ -209,7 +209,7 @@
     </div>
   
     <main class="lg:relative">
-      <div class="pt-16 pb-20 lg:h-full xl:h-full lg:mx-60 mx-6 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20" id="landing-text">
+      <div class="pt-16 pb-20 mx-6 lg:h-full xl:h-full lg:mx-60 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20" id="landing-text">
 
        <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
           <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
@@ -256,25 +256,26 @@
 -->
 
 <div class="flex flex-col justify-center hidden min-h-full py-12 sm:px-6 lg:px-8" id="form-container">
-  <div class="hidden p-4 border-l-4 border-yellow-400 bg-yellow-50" id="msg-no-results">
-    <div class="flex">
-      <div class="flex-shrink-0">
-        <!-- Heroicon name: solid/exclamation -->
-        <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div class="ml-3">
-        <p class="text-sm text-yellow-700">
-          The URL is not valid or does not return any results.
-          <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600">
-            Enter a valid URL.
-          </a>
-        </p>
+  
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="hidden p-4 border-l-4 border-yellow-400 bg-yellow-50" id="msg-no-results">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <!-- Heroicon name: solid/exclamation -->
+          <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-yellow-700">
+            The URL is not valid or does not return any results.
+            <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600">
+              Enter a valid URL.
+            </a>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">
       Start navigation from URI
     </h2>
@@ -317,15 +318,15 @@
 
       <div class="grid hidden grid-cols-12" id="graph-area">
         <div class="col-span-2 bg-gray-100 border-r-2">
-          <div class="bg-gray-100 px-2 py-2 border-b border-gray-200 sm:px-6">
-            <div class="ml-2 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
-<!--                 <div class="ml-4 mt-2">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <div class="px-2 py-2 bg-gray-100 border-b border-gray-200 sm:px-6">
+            <div class="flex flex-wrap items-center justify-between ml-2 -mt-2 sm:flex-nowrap">
+<!--                 <div class="mt-2 ml-4">
+                <h3 class="text-lg font-medium leading-6 text-gray-900">
                   Zoom
                 </h3>
                 
               </div> -->
-              <div class="ml-4 mt-2 flex-shrink-0">
+              <div class="flex-shrink-0 mt-2 ml-4">
                 <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-2 rounded-md md:flex md:justify-center">
                   <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                     <span>Zoom In</span>
@@ -346,7 +347,7 @@
                 <!-- <legend class="sr-only">Notifications</legend> -->
                 <div class="relative flex items-start pt-2" onclick="showHideNavigation()">
                   <div class="flex items-center h-5">
-                    <input id="show-nav" name="show-nav" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked>
+                    <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
                   </div>
                   <div class="ml-3 text-sm">
                     <label for="show-nav" class="font-medium text-gray-700">Show Navigation</label>
@@ -511,8 +512,10 @@
                 <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
 
                   <div class="w-screen max-w-5xl">
-                    <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
-                      <div class="px-4 sm:px-6">
+                    <div class="flex flex-col h-full pb-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
+                    <!-- <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2"> -->
+                      <div>
+                      <!-- <div class="px-4 sm:px-6"> -->
                         <div class="flex items-start justify-between p-6 mb-2 bg-blue-100 border-2">
                           <h2 class="text-lg font-medium text-gray-500 uppercase" id="modalHeader2">
                           </h2>
@@ -627,7 +630,9 @@
       </div>
     </main>
   </div>
-  <script src="js/main.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/no_network_graphs.js"></script>
+    <script src="js/transform_data.js"></script>
     <script src="js/filtersWithClass.js"></script>
     <script src="js/filterClass.js"></script>
     <script src="js/navigationClass.js"></script>
