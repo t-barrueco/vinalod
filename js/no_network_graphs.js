@@ -18,7 +18,7 @@ function getModal2(){
   
     $(id).removeClass("translate-x-full")
     $(id).addClass("translate-x-0")
-    //console.log($(id))
+    ////console.log($(id))
   }
   async function showTimeLine(data,modalHeader,modalContent){
     var rowDataConfig,results,node,dataTimeline=[];
@@ -72,10 +72,17 @@ function getModal2(){
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    
+    //console.log(sparqlQuery)
     results = await runSparlqQuery(settings)
-    console.log(node)
-    var pdf=results[0]["item"]["value"]
+    //console.log(node)
+
+    
+    if(results[0]["item"]){
+      var pdf=results[0]["item"]["value"]
+    }
+
+    ////console.log(checkUrl(pdf))
+    //console.log(pdf)
     modalHeader.innerHTML = "PDF"
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
@@ -90,6 +97,174 @@ function getModal2(){
     modalContent.appendChild(div)
     PDFObject.embed(pdf, "#modalGraph");
     //PDFObject.embed(pdf, "#modalGraph");
+  }
+  async function showWebPageQuery(node,sparqlQuery,url){
+    var page;
+    prefixes=""
+    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    //console.log(sparqlQuery)
+    results = await runSparlqQuery(settings)
+    //console.log(node)
+    //console.log(results)
+    if(results[0]["item"]){
+      page=results[0]["item"]["value"]
+    }else{
+      page=results[0]["item1"]["value"]
+    }
+    var url = page;
+
+    /*var req = new XMLHttpRequest();
+    req.open('GET', page, false);
+    req.send(null);
+    var headers = req.getAllResponseHeaders().toLowerCase();
+    alert(headers); */
+    /* try {
+      const data = await ky.get(url)
+      //console.log(data)
+      ////console.log(data.products)
+    } catch (error) {
+      if (error.response) {
+        //console.log(error.response.status)
+      } else {
+        //console.log(error.message)
+      }
+    } */
+    
+    //const axios = require('axios');
+    
+/*     axios.get(url).then(resp => {
+
+      //console.log(resp.data);
+  })
+    .catch(function(error) {
+       //console.log(resp)
+       //console.log(error);  
+    }) */
+    /* axios.get(url).then(resp => {
+
+        //console.log(resp.data);
+    })
+    .catch(function(error) {
+      //console.log(error.data);  
+      //console.log(error.status);  
+      //console.log(error.headers);  
+  }) */
+    /* .catch(function(error) {
+      //console.log(error);
+      //console.log(error.status)
+    }); */
+/*     axios.get('network error')
+     .then((response) => {})
+     .catch((error) => {
+         //console.log(error. request );
+     }) */
+    
+    /* $.ajax({
+      type: "GET",
+      url: url,
+      success: function (response) {
+        alert("Details saved successfully!!!");
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        //console.log(xhr.status);
+        //console.log(ajaxOptions)
+        //console.log(thrownError);
+      }
+    })
+    .done(function() {
+        //console.log("ok");
+    }).fail(function (jqXHR, textStatus, error) {
+        // Handle error here
+        //console.log(jqXHR.responseText);
+        //console.log(textStatus)
+        //console.log(error)
+    }); */
+
+    /* fetch(url)
+    .then(function(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }).then(function(response) {
+        //console.log("ok");
+    }).catch(function(error) {
+        //console.log(error);
+    }); */
+    //var output = document.getElementById("output");
+    /* var http = new XMLHttpRequest();
+    checkFileExist()
+
+    function checkFileExist() {
+        if (url.length === 0) {
+            output.innerHTML = "Please enter File URL";
+        } else {
+            try{
+              http.open('HEAD', url, false);
+            }catch(err){
+              //console.log(err)
+            }
+            try{
+              http.send();
+            }catch(err){
+              //console.log(err)
+              //console.log(HEAD)
+            }
+              
+            if (http.status === 200) {
+                alert("File exists");
+            } else {
+                alert("File doesn't exists");
+            }
+        }
+    } */
+/*     var req = new XMLHttpRequest();
+    req.open('GET', page, false);
+    req.send(null);
+    var headers = req.getAllResponseHeaders().toLowerCase();
+    alert(headers); */
+    /* var request = new XMLHttpRequest();
+    request.open('GET', page, true);
+    //console.log(request.status)
+    //console.log(request)
+    request.onreadystatechange = function(){
+        if (request.readyState === 4){
+            //console.log(request.status)
+            if (request.status !== 404) {  
+                //alert("Oh no, it does not exist!");
+                request.send();
+            }  
+        }
+    }; */
+    /* var request = new XMLHttpRequest();  
+    request.open('GET', page, true);
+    request.onreadystatechange = function(){
+        if (request.readyState === 4){
+            if (request.status !== 404) {  
+                //alert("Oh no, it does not exist!");
+                request.send();
+            }  
+        }
+    }; */
+    //request.send();
+    /* $("#webpage").remove()
+    var iframe=document.createElement("iframe")
+    iframe.id="webpage"
+    
+    iframe.setAttribute("src",page)
+    iframe.setAttribute("style","width: 100%") 
+    iframe.setAttribute("style","height: 100%") 
+
+    modalContent.appendChild(iframe)
+    modalHeader.innerHTML = node.value
+
+    $('#myModal2').resizable({
+      //alsoResize: ".modal-dialog",
+      //minHeight: 150
+    });
+    $("#myModal2").draggable() */
+    window.open(page, '_blank').focus();
   }
   async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modalContent){
     var rowDataConfig,results,data=[],modalHeader2;
@@ -309,7 +484,7 @@ function getModal2(){
     settings = { url: queryUrl, async: true       }; 
     $.ajax(settings).then  (function( _data ) {
       results = _data.results.bindings;
-      //console.log(results)
+      ////console.log(results)
       page=results[0]["article"]["value"]
   
       var div=document.createElement("div")
@@ -332,7 +507,7 @@ function getModal2(){
     })
   }
   function showWebPage(page,title,modalHeader,modalContent){
-      //////console.log(page)
+      ////////console.log(page)
   
       $("#webpage").remove()
       var iframe=document.createElement("iframe")

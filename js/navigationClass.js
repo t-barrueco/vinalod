@@ -6,26 +6,38 @@ navigationPanel = function ( _type,_node) {
    
 navigationPanel.prototype.init = function () {
   var navPanel=this;
-  ////////console.log("entra en init")
+  ////////////////////console.log("entra en init")
   navPanel.clusterElSelected=[]
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
-  //////////console.log(navPanel.node)
+  //////////////////////console.log(navPanel.node)
   if(navPanel.node==undefined){
     navPanel.node=networkGraph.rootNode
   }
 
-  navPanel.element=document.getElementById(navPanel.node.id)
-  ////////console.log(navPanel.element)
   ////////console.log(navPanel.node)
+  navPanel.element=document.getElementById(navPanel.node.id)
+  ////////////////////console.log(navPanel.element)
+  ////////////////////console.log(navPanel.node)
   navPanel.getNodes()
-  //////console.log(navPanel.targets)
-  //////console.log(navPanel.sources)
+  //////////////////console.log(navPanel.targets)
+  //////////////////console.log(navPanel.sources)
   navPanel.initModal()
   navPanel.navTableTable()
   navPanel.contentTable()
+  navPanel.showChildrenDetails()
 }
-
+navigationPanel.prototype.showChildrenDetails = function (){
+  var navPanel=this;
+  ////////console.log(navPanel.targets)
+  ////////console.log(navPanel.node)
+  if((navPanel.targets.length==0)|((navPanel.node.detail=="")|(navPanel.node.detail==undefined))){
+    $("#tabsNav").addClass("hidden")
+  }else{
+    $("#tabsNav").removeClass("hidden")
+    $("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav");
+  }
+}
 navigationPanel.prototype.getNodes = function (){
   var navPanel=this;
   var nodeData,sources2
@@ -133,11 +145,11 @@ navigationPanel.prototype.navTableTable = function ()
     navPanel.navTable = document.getElementById("navTable");
 
     if((navPanel.navTable.querySelector("nav"))){
-      ////console.log("entra por aquí")
+      ////////////////console.log("entra por aquí")
       navPanel.nav=navPanel.navTable.querySelector("nav")
       navPanel.ol=navPanel.navTable.querySelector("ol")
-      ////console.log(navPanel.nav)
-      ////console.log(navPanel.ol)
+      ////////////////console.log(navPanel.nav)
+      ////////////////console.log(navPanel.ol)
       if(navPanel.ol!=null){
         navPanel.ol.querySelectorAll("li").forEach(function(li){
           li.remove()
@@ -148,7 +160,7 @@ navigationPanel.prototype.navTableTable = function ()
       }
       
     }else{
-      ////console.log("entra por else")
+      ////////////////console.log("entra por else")
       navPanel.nav=navPanel.navTable.appendChild(document.createElement("nav"))
       //navPanel.nav=document.createElement("nav")
       navPanel.nav.setAttribute("aria-label", "Progress");
@@ -156,7 +168,7 @@ navigationPanel.prototype.navTableTable = function ()
       navPanel.ol.setAttribute("role", "list");
     }
     navPanel.sources.forEach(function (d,i){
-      //////console.log(d)
+      //////////////////console.log(d)
       if(d.source){
         nodeClass=d.source.class
       }else{
@@ -164,17 +176,17 @@ navigationPanel.prototype.navTableTable = function ()
       }
       if(nodeClass=="free"){
         if(i==0){
-          ////console.log("entra if segund")
+          ////////////////console.log("entra if segund")
           navPanel.addElementNav(d,i)
         }else{
-          ////console.log("entra else segundo")
+          ////////////////console.log("entra else segundo")
           if(d["target"]["type"]!="menuOption"){
             navPanel.addElementNavProp(d,i,true)
             navPanel.addElementNavProp(d,i,false)
           }
         }
       }else{
-        ////console.log("entra tercer else")
+        ////////////////console.log("entra tercer else")
         navPanel.addElementNav(d,i)
       }
     })
@@ -214,7 +226,7 @@ navigationPanel.prototype.addElementNav = function (source,i){
     a=document.createElement("a")
     a.setAttribute("href", "#");
     a.setAttribute("class", "relative flex items-start group");
-    //////console.log(navPanel.sources[i])
+    //////////////////console.log(navPanel.sources[i])
     if(navPanel.sources[i]["target"]!=undefined){
       a.id=navPanel.sources[i]["target"]["id"]+"_a"
     }else{
@@ -249,7 +261,7 @@ navigationPanel.prototype.addElementNav = function (source,i){
     span3=document.createElement("span")
     span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
     span4=document.createElement("span")
-    span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
+    span4.setAttribute("class","text-sm font-semibold tracking-wide uppercase")
     if(navPanel.sources[i]["target"]){
       span4.innerHTML = navPanel.sources[i]["target"]["value"]
     }else{
@@ -306,19 +318,19 @@ navigationPanel.prototype.addElementNav = function (source,i){
     img=document.createElement("img")
   
     if(i<navPanel.sources.length-1){
-      //////console.log(navPanel.nav.querySelectorAll("ol").length)
-      //////console.log("entra en el primer if de nav")
+      //////////////////console.log(navPanel.nav.querySelectorAll("ol").length)
+      //////////////////console.log("entra en el primer if de nav")
       if((navPanel.nav.querySelectorAll("ol").length)==0){
         navPanel.nav=navPanel.nav.appendChild(navPanel.ol)
       }
       //el1=navPanel.navTable.appendChild(navPanel.nav).appendChild(navPanel.ol).appendChild(li)
-      //////console.log(navPanel.nav)
-      //////console.log(navPanel.ol)
+      //////////////////console.log(navPanel.nav)
+      //////////////////console.log(navPanel.ol)
       el1=navPanel.ol.appendChild(li)
       el1.appendChild(div)
     }else{
-      ////console.log("entra el primer else de nav")
-      ////console.log(navPanel.nav)
+      ////////////////console.log("entra el primer else de nav")
+      ////////////////console.log(navPanel.nav)
       el1=navPanel.navTable.appendChild(navPanel.nav).appendChild(navPanel.ol).appendChild(li)
     }
   
@@ -343,21 +355,21 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   var li=document.createElement("li")
   var div,a,li,span,span2,el1
   var navPanel=this;
-  //////console.log(source)
-  //////console.log(i)
-  //////console.log(property)
+  //////////////////console.log(source)
+  //////////////////console.log(i)
+  //////////////////console.log(property)
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
-  //////console.log(property)
-  //////console.log(navPanel.sources.length-1)
-  //////console.log(navPanel.node.type)
+  //////////////////console.log(property)
+  //////////////////console.log(navPanel.sources.length-1)
+  //////////////////console.log(navPanel.node.type)
   if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
     li.appendChild(div)
   }
-  //////console.log(div)
+  //////////////////console.log(div)
   a=document.createElement("a")
   a.setAttribute("href", "#");
   if(property){
@@ -367,12 +379,12 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   }
   
   a.id=source["target"]["id"]+"_a"
-  //////console.log(a)
+  //////////////////console.log(a)
   span=document.createElement("span")
   span.setAttribute("class","h-9 flex items-center")
   
   span2=document.createElement("span")
-  //////console.log(span)
+  //////////////////console.log(span)
   if(property){
     colorCircle="gray-300"
   }else{
@@ -389,7 +401,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
 
 
   span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-  //////console.log(span2)
+  //////////////////console.log(span2)
   img=document.createElement("img")
 
   if(property){
@@ -401,17 +413,17 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
     img.setAttribute('width','40px')
     img.setAttribute('height','40px')
   }
-  //////console.log(navPanel.ol)
+  //////////////////console.log(navPanel.ol)
   el1=navPanel.ol.appendChild(li)
 
   if(i<navPanel.sources.length-1){
       if(div!=undefined){
         el1.appendChild(div)
       }else{
-        //////console.log("undefined")
+        //////////////////console.log("undefined")
       }  
   }
-  //////console.log(el1)
+  //////////////////console.log(el1)
   el2=el1.appendChild(a)
   
   if(property){
@@ -439,14 +451,14 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
   }
-  //////console.log(el3)
+  //////////////////console.log(el3)
 }
 
 navigationPanel.prototype.addEventsNav = function (){
   var navPanel=this;
   d3.selectAll("#navTable a").on("dblclick",function(){ 
     d3.event.preventDefault();
-    //////console.log("pasa por aquí")
+    //////////////////console.log("pasa por aquí")
     dblclickNav(this)
     d3.event.stopPropagation()
   })
@@ -469,8 +481,9 @@ navigationPanel.prototype.contentTable = function (){
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
-  ////////////console.log("pasa por aquí")
-  ////////console.log(navPanel.targets)
+  ////////////////////////console.log("pasa por aquí")
+  ////////////////////console.log(navPanel.targets)
+  //////console.log(navPanel.node)
   if (navPanel.targets.length>0){
     $("#dvTable").show()
     navPanel.table = document.createElement("table");
@@ -482,7 +495,7 @@ navigationPanel.prototype.contentTable = function (){
     var th=document.createElement("th")
     th.setAttribute("colspan","3")
     th.setAttribute("scope","colgroup")
-    th.setAttribute("class","px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
+    th.setAttribute("class","px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       if(navPanel.node.class=="free"){
@@ -494,11 +507,12 @@ navigationPanel.prototype.contentTable = function (){
       th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
+      //////////console.log(navPanel.node["menuOption"])
       if(menuOption.split(";").length>1){
         th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
       }else{
         menuOption=menuOption.split(",")
-        ////////////console.log(menuOption)
+        ////////////////////////console.log(menuOption)
         if(navPanel.node.class=="free"){
           labelFreeGraph()
         }else{
@@ -522,12 +536,12 @@ navigationPanel.prototype.contentTable = function (){
     div=document.createElement("div")    
     div.className="flex flex-col"
     div2=document.createElement("div")    
-    div2.className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+    div2.className="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2"
     div3=document.createElement("div")    
     div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll sm:rounded-lg"
 
     navPanel.divPag=document.createElement("div")
-    navPanel.divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
+    navPanel.divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-2"
     navPanel.divPag.id="div-pagination"
     navPanel.divPag.innerHTML=`<div class="flex-1 flex justify-between sm:hidden">
         <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
@@ -593,41 +607,47 @@ navigationPanel.prototype.contentTable = function (){
     navPanel.prevNextVisibility()
     navPanel.addEventsContentNav()
   }else{
-    $("#dvTable").hide()
+    /* $("#dvTable").hide()
+    itemDetails() */
+    if(navPanel.node.detail!=undefined){
+      console.log(navPanel.node.detail)
+      navPanel.showDetails()
+    }
   }
 
   function labelFreeGraph(){
     label=`Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1]
   }
   function labelBasicGraph(){
-    ////////////console.log(menuOption)
+    ////////////////////////console.log(menuOption)
     var exists;
     label=menuOption[0]
-    ////////////console.log(navPanel.node.class)
-    ////////////console.log()
-    ////////////console.log(configFile.filter(d=>d.class==navPanel.node.class)[0])
+    ////////////////////////console.log(navPanel.node.class)
+    ////////////////////////console.log()
+    ////////////////////////console.log(configFile.filter(d=>d.class==navPanel.node.class)[0])
     if(label=="no options"){
-      //////////console.log(nodesClassesCorrespondence)
-      //////////console.log(navPanel.node.class)
-      ////////console.log(navPanel.node.class)
+      //////////////////////console.log(nodesClassesCorrespondence)
+      //////////////////////console.log(navPanel.node.class)
+      ////////////////////console.log(navPanel.node.class)
       if(configFile.filter(d=>d.class==navPanel.node.class)[0]){
         label=configFile.filter(d=>d.class==navPanel.node.class)[0]["option_text"]
       }else{
         const res = configFile.filter(function (x){
-            ////////console.log(x)
+            ////////////////////console.log(x)
             if(x.hierarchy){
               exists=x.hierarchy.some(y => y.parent === navPanel.node.class)
             }
             //exists=x.hierarchy.some(y => y.parent === navPanel.node.class)
-            ////////console.log(exists)
-            //////////console.log(x)
+            ////////////////////console.log(exists)
+            //////////////////////console.log(x)
           return exists
         })
-        ////////console.log(res) 
+        ////////////////////console.log(res) 
         label=res[0]["option_text"]
       }
       
     }else{
+      ////////console.log(label)
       label=configFile.filter(d=>d.option==label)[0]["option_text"]
     }
     
@@ -657,6 +677,98 @@ navigationPanel.prototype.contentTable = function (){
     return text
   }
 }
+
+navigationPanel.prototype.showDetails = function (){
+  var navPanel=this;
+  $("#dvTable").hide()
+  itemDetails()
+  function itemDetails(){
+    ////////console.log("itemDetails")
+    let navDetailHeader,navDetailRow0,navDetailRow1;
+    ////////console.log(navPanel.node)
+    $("#dvDetails").empty()
+    $.get("nav_detail.html", function (header) {
+      $.get("nav_detail_row_0.html", function (row0) {
+        $.get("nav_detail_row_1.html", function (row1) {
+          $.get("nav_detail_row_attach.html", function (rowAttach) {
+
+            navDetailHeader=header.replace("Title",navPanel.node["value"]).toUpperCase()
+            ////////console.log(navDetailHeader)
+            ////////console.log(navPanel.node)
+/*             navPanel.node.detail.forEach(element => {
+              ////////console.log(element)
+            }) */
+            $("#dvDetails").append($(navDetailHeader))
+            //initMap()
+            console.log(navPanel.node)
+            if(navPanel.node.detail){
+              Object.keys(navPanel.node.detail).forEach(key => {
+                ////////console.log(key)
+                if((key % 2 == 0)| (key == 0)){  
+                  if(navPanel.node[navPanel.node.detail[key]["property"]]!=undefined){
+                    ////////console.log(navPanel.node.detail[key])
+                    navDetailRow0=row0.replace("Title",navPanel.node.detail[key]["text"].toUpperCase())
+                    navDetailRow0=fieldItemDetails(navDetailRow0,navPanel.node[navPanel.node.detail[key]["property"]],navPanel.node.detail[key]["type"])
+                    //navDetailRow0=navDetailRow0.replace("Content",navPanel.node[navPanel.node.detail[key]["property"]])
+                    $("#dvDetails").append($(navDetailRow0))
+                  }  
+                }else{
+                  if(navPanel.node[navPanel.node.detail[key]["property"]]!=undefined){
+                    ////////console.log(navPanel.node.detail[key])
+                    navDetailRow1=row1.replace("Title",navPanel.node.detail[key]["text"].toUpperCase())
+                    navDetailRow1=fieldItemDetails(navDetailRow1,navPanel.node[navPanel.node.detail[key]["property"]],navPanel.node.detail[key]["type"])
+                    $("#dvDetails").append($(navDetailRow1))
+                  }
+                }
+                ////////console.log(navPanel.node.detail[key])
+              })
+            }
+
+            
+            //$("#dvDetails").append($(row0))
+
+            //$('#dvTable').show();
+            //appendHtmlOptions(optionsMenu)
+            /* $("#options-menu").find("a").remove()
+            optionsMenu.forEach(element => {
+                html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
+                $("#options-menu").append($(html))
+            }); */
+          });
+        });
+      });
+    });
+  }
+  function fieldItemDetails(item,field,type){
+    ////////console.log(item)
+    ////////console.log(field)
+    ////////console.log(type)
+    if(type=="link"){
+      item=item.replace("Content",'<a href="'+field+'" target="_blank">'+field+'</a>')
+    }else if(type=="telephone"){
+        item=item.replace("Content",'<a href="'+field+'" target="_blank">'+field.replace("tel:","") +'</a>')
+    }else if(type=="email"){
+      item=item.replace("Content",'<a href="'+field+'" target="_blank">'+field.replace("mailto:","") +'</a>')
+    }else if(type=="geojson"){
+      //item=item.replace("Content",'<a href="' + "http://geojson.io/#data=data:text/x-url,"+encodeURIComponent(field)+'" target="_blank">'+field+'</a>')
+      //////console.log(item)
+      //////console.log(field)
+      item=item.replace("Content",'<a href="'+field+'" target="_blank">'+field+'</a>')
+    }else{
+      item=item.replace("Content",field)
+      //item=item.replace("Content2","\n      <wrxml>\n        <description>&lt;p&gt;La política de seguridad alimentaria de la &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/eu_union.html&quot; target=&quot;_blank&quot;&gt;Unión Europea&lt;/a&gt; (UE) se rige principalmente por los artículos &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E168&quot; target=&quot;_blank&quot;&gt;168&lt;/a&gt; (salud pública) y &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E169&quot; target=&quot;_blank&quot;&gt;169&lt;/a&gt; (protección de los consumidores) del Tratado de Funcionamiento de la Unión Europea.&lt;/p&gt;&lt;p&gt;El objetivo de la política de seguridad alimentaria de la UE es proteger a los consumidores, al tiempo que se garantiza el buen funcionamiento del &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/internal_market.html&quot; target=&quot;_blank&quot;&gt;mercado interior&lt;/a&gt;. La legislación de la UE abarca toda la cadena alimentaria —«de la granja a la mesa»— de forma integrada y aplicando el concepto «Una sola salud».\xa0&lt;/p&gt;&lt;p&gt;Trata los aspectos de seguridad que abarcan la producción primaria, las condiciones de higiene en la elaboración de los alimentos, el envasado, el etiquetado y los controles oficiales sobre el cumplimiento de la normativa relativa a seguridad alimentaria.&lt;/p&gt;&lt;p&gt;La UE ha establecido determinadas normas para garantizar la higiene de los alimentos, la salud y el bienestar de los animales, la fitosanidad y la prevención de los riesgos de contaminación por sustancias externas, como por ejemplo los plaguicidas. Se realizan estrictas comprobaciones en cada fase, y las importaciones (por ejemplo, carne) procedentes de fuera de la UE deben cumplir las mismas normas y someterse a las mismas comprobaciones que los alimentos producidos en la UE.&lt;/p&gt;</description>\n      </wrxml>\n")
+      //var parser = new DOMParser();
+	    //var doc = parser.parseFromString("\n      <wrxml>\n        <description>&lt;p&gt;La política de seguridad alimentaria de la &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/eu_union.html&quot; target=&quot;_blank&quot;&gt;Unión Europea&lt;/a&gt; (UE) se rige principalmente por los artículos &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E168&quot; target=&quot;_blank&quot;&gt;168&lt;/a&gt; (salud pública) y &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E169&quot; target=&quot;_blank&quot;&gt;169&lt;/a&gt; (protección de los consumidores) del Tratado de Funcionamiento de la Unión Europea.&lt;/p&gt;&lt;p&gt;El objetivo de la política de seguridad alimentaria de la UE es proteger a los consumidores, al tiempo que se garantiza el buen funcionamiento del &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/internal_market.html&quot; target=&quot;_blank&quot;&gt;mercado interior&lt;/a&gt;. La legislación de la UE abarca toda la cadena alimentaria —«de la granja a la mesa»— de forma integrada y aplicando el concepto «Una sola salud».\xa0&lt;/p&gt;&lt;p&gt;Trata los aspectos de seguridad que abarcan la producción primaria, las condiciones de higiene en la elaboración de los alimentos, el envasado, el etiquetado y los controles oficiales sobre el cumplimiento de la normativa relativa a seguridad alimentaria.&lt;/p&gt;&lt;p&gt;La UE ha establecido determinadas normas para garantizar la higiene de los alimentos, la salud y el bienestar de los animales, la fitosanidad y la prevención de los riesgos de contaminación por sustancias externas, como por ejemplo los plaguicidas. Se realizan estrictas comprobaciones en cada fase, y las importaciones (por ejemplo, carne) procedentes de fuera de la UE deben cumplir las mismas normas y someterse a las mismas comprobaciones que los alimentos producidos en la UE.&lt;/p&gt;</description>\n      </wrxml>\n", 'text/html');
+      //item=item.replace("Content",doc)
+      //document.getElementById("testhtml").innerHTML="\n      <wrxml>\n        <description>&lt;p&gt;La política de seguridad alimentaria de la &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/eu_union.html&quot; target=&quot;_blank&quot;&gt;Unión Europea&lt;/a&gt; (UE) se rige principalmente por los artículos &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E168&quot; target=&quot;_blank&quot;&gt;168&lt;/a&gt; (salud pública) y &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E169&quot; target=&quot;_blank&quot;&gt;169&lt;/a&gt; (protección de los consumidores) del Tratado de Funcionamiento de la Unión Europea.&lt;/p&gt;&lt;p&gt;El objetivo de la política de seguridad alimentaria de la UE es proteger a los consumidores, al tiempo que se garantiza el buen funcionamiento del &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/internal_market.html&quot; target=&quot;_blank&quot;&gt;mercado interior&lt;/a&gt;. La legislación de la UE abarca toda la cadena alimentaria —«de la granja a la mesa»— de forma integrada y aplicando el concepto «Una sola salud».\xa0&lt;/p&gt;&lt;p&gt;Trata los aspectos de seguridad que abarcan la producción primaria, las condiciones de higiene en la elaboración de los alimentos, el envasado, el etiquetado y los controles oficiales sobre el cumplimiento de la normativa relativa a seguridad alimentaria.&lt;/p&gt;&lt;p&gt;La UE ha establecido determinadas normas para garantizar la higiene de los alimentos, la salud y el bienestar de los animales, la fitosanidad y la prevención de los riesgos de contaminación por sustancias externas, como por ejemplo los plaguicidas. Se realizan estrictas comprobaciones en cada fase, y las importaciones (por ejemplo, carne) procedentes de fuera de la UE deben cumplir las mismas normas y someterse a las mismas comprobaciones que los alimentos producidos en la UE.&lt;/p&gt;</description>\n      </wrxml>\n"
+      //$("#testhtml").innerHTML("\n      <wrxml>\n        <description>&lt;p&gt;La política de seguridad alimentaria de la &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/eu_union.html&quot; target=&quot;_blank&quot;&gt;Unión Europea&lt;/a&gt; (UE) se rige principalmente por los artículos &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E168&quot; target=&quot;_blank&quot;&gt;168&lt;/a&gt; (salud pública) y &lt;a href=&quot;http://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:12016E169&quot; target=&quot;_blank&quot;&gt;169&lt;/a&gt; (protección de los consumidores) del Tratado de Funcionamiento de la Unión Europea.&lt;/p&gt;&lt;p&gt;El objetivo de la política de seguridad alimentaria de la UE es proteger a los consumidores, al tiempo que se garantiza el buen funcionamiento del &lt;a href=&quot;http://eur-lex.europa.eu/summary/glossary/internal_market.html&quot; target=&quot;_blank&quot;&gt;mercado interior&lt;/a&gt;. La legislación de la UE abarca toda la cadena alimentaria —«de la granja a la mesa»— de forma integrada y aplicando el concepto «Una sola salud».\xa0&lt;/p&gt;&lt;p&gt;Trata los aspectos de seguridad que abarcan la producción primaria, las condiciones de higiene en la elaboración de los alimentos, el envasado, el etiquetado y los controles oficiales sobre el cumplimiento de la normativa relativa a seguridad alimentaria.&lt;/p&gt;&lt;p&gt;La UE ha establecido determinadas normas para garantizar la higiene de los alimentos, la salud y el bienestar de los animales, la fitosanidad y la prevención de los riesgos de contaminación por sustancias externas, como por ejemplo los plaguicidas. Se realizan estrictas comprobaciones en cada fase, y las importaciones (por ejemplo, carne) procedentes de fuera de la UE deben cumplir las mismas normas y someterse a las mismas comprobaciones que los alimentos producidos en la UE.&lt;/p&gt;</description>\n      </wrxml>\n")
+    }
+    return item
+    //<a href="url">link text</a>
+  }
+
+}
+
 navigationPanel.prototype.contentTableSearch = function (){
   var navPanel=this;
   var menuOption;
@@ -693,11 +805,11 @@ navigationPanel.prototype.paginationNumbers = function (){
         let maxPagesBeforeCurrentPage = Math.floor(navPanel.paginationLimit / 2);
         let maxPagesAfterCurrentPage = Math.ceil(navPanel.paginationLimit / 2) - 1;
 /*         if(navPanel.numCurrent + maxPagesAfterCurrentPage >= navPanel.numPages){
-          ////////////////////////////console.log("mayor")
-          ////////////////////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+          ////////////////////////////////////////console.log("mayor")
+          ////////////////////////////////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
         }else{
-          ////////////////////////////console.log("menor")
-          ////////////////////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
+          ////////////////////////////////////////console.log("menor")
+          ////////////////////////////////////////console.log(navPanel.numCurrent + maxPagesAfterCurrentPage)
         } */
         if (navPanel.numCurrent <= maxPagesBeforeCurrentPage) {
             // current page near the start
@@ -770,7 +882,7 @@ navigationPanel.prototype.showNumberPages = function (){
 }
 
 function showLines(numCurrent,type){
-  //////////console.log(numCurrent)
+  //////////////////////console.log(numCurrent)
   var div=$("#modal-content tbody td div")[0]
   if(div.classList.contains("hidden")){
     navigation.showLines(numCurrent,false,false)
@@ -878,46 +990,50 @@ navigationPanel.prototype.addEventsContentNav = function (){
 /*   checkboxes=document.getElementsByClassName("cluster-check")
   for (let item of checkboxes) {
     item.addEventListener("onclick",function(){
-      //////////console.log(this)
-      //////////console.log("checked")
+      //////////////////////console.log(this)
+      //////////////////////console.log("checked")
     })
   }; */
   nodeSearchField=document.getElementById("node-search")
-  autocomplete(nodeSearchField, navPanel.searchValues);
+  if(nodeSearchField){
+    autocomplete(nodeSearchField, navPanel.searchValues);
 
-// Execute a function when the user releases a key on the keyboard
-  nodeSearchField.addEventListener("keyup", function(event) {
-  if (event.key === 'Enter' ) {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    /* removeLinesNavContent()
-    if(navPanel.targetsBackup){
-      navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.includes(nodeSearchField.value)|(a.target.value==nodeSearchField.value)));
-    }else{
-      navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
-      navPanel.targetsBackup=navPanel.targets
-    }
+    // Execute a function when the user releases a key on the keyboard
+      nodeSearchField.addEventListener("keyup", function(event) {
+      if (event.key === 'Enter' ) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        /* removeLinesNavContent()
+        if(navPanel.targetsBackup){
+          navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.includes(nodeSearchField.value)|(a.target.value==nodeSearchField.value)));
+        }else{
+          navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.includes(nodeSearchField.value));
+          navPanel.targetsBackup=navPanel.targets
+        }
+        
+        navPanel.targets=navPanel.resultsSearch
+        navPanel.contentTableSearch() */
+        navPanel.valueSelected()
+        //navPanel.addEventsContentNav()
+        closeAllLists()
     
-    navPanel.targets=navPanel.resultsSearch
-    navPanel.contentTableSearch() */
-    navPanel.valueSelected()
-    //navPanel.addEventsContentNav()
-    closeAllLists()
-
-  }else{
-    if(this.value==""){
-      $("#nav-search").addClass("hidden")
-      //$("#nav-delete").hide()
-    }else{
-      //$("#nav-delete").show()
-      $("#nav-search").removeClass("hidden")
-    }
+      }else{
+        if(this.value==""){
+          $("#nav-search").addClass("hidden")
+          //$("#nav-delete").hide()
+        }else{
+          //$("#nav-delete").show()
+          $("#nav-search").removeClass("hidden")
+        }
+      }
+      });
   }
-  });
+
 
   navPanel.timeoutTiming = 500;
   d3.selectAll("#modal-content td").on("dblclick",function(){ 
-    //////////console.log("dblclick")
+    //////////////////////console.log("dblclick")
+    $("#dvDetails").empty()
     node=d3.select("#"+this.getAttribute("id")).data()[0]
     d3.event.preventDefault();
     navPanel.isDblclick = true;
@@ -946,7 +1062,12 @@ navigationPanel.prototype.addEventsContentNav = function (){
   })
   .on("click",function(){  
     cell=this;
+    $("#dvDetails").empty()
+    //////console.log(cell)
     clearTimeout(navPanel.clickTimeout);
+    //if(navPanel.node.detail!=undefined){
+    //  navPanel.showDetails()
+    //}
 /*     navPanel.clickTimeout = setTimeout(function () {
       if(!navPanel.isDblclick) {
         // here goes your click codes
@@ -960,15 +1081,15 @@ navigationPanel.prototype.valueSelected=function(){
   var navPanel=this;
   nodeSearchField=document.getElementById("node-search")
   removeLinesNavContent()
-  //////////console.log(navPanel.targets)
-  //////////console.log(nodeSearchField.value)
+  //////////////////////console.log(navPanel.targets)
+  //////////////////////console.log(nodeSearchField.value)
   if(navPanel.targetsBackup){
     navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.toUpperCase().includes(nodeSearchField.value.toUpperCase())|(a.target.value.toUpperCase()==nodeSearchField.value.toUpperCase())));
   }else{
     navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.toUpperCase().includes(nodeSearchField.value.toUpperCase()));
     navPanel.targetsBackup=navPanel.targets
   }
-  //////////console.log(navPanel.resultsSearch)
+  //////////////////////console.log(navPanel.resultsSearch)
   navPanel.targets=navPanel.resultsSearch
   navPanel.contentTableSearch()
   $("#nav-search").addClass("hidden")
@@ -988,7 +1109,7 @@ navigationPanel.prototype.addElementContentTable = function (target,i){
     row = navPanel.tbody.insertRow(-1);
     
     cell = row.insertCell(-1);
-    cell.className="px-6 py-4 whitespace-nowrap"
+    cell.className="px-2 py-4 whitespace-nowrap"
     cell.id=target["target"]["id"]
     div=document.createElement("div")
     div.className="flex items-center w-full"
@@ -1013,7 +1134,7 @@ navigationPanel.prototype.addElementContentTable = function (target,i){
   }
   function addFreeGraph(){
     cell = row.insertCell(-1);
-  cell.className="px-6 py-4 whitespace-nowrap"
+  cell.className="px-2 py-4 whitespace-nowrap"
   if(!property){
     cell.id=nodesTable[i]["target"]["id"]
   }else{
@@ -1031,22 +1152,22 @@ navigationPanel.prototype.addElementContentTable = function (target,i){
   }
   
   div2=document.createElement("div")
-  div2.className="flex-shrink-0 w-10 h-10"
+  div2.className="flex-shrink-0 w-5 h-5"
   img=document.createElement("img")
   
   if(!property){
       if(nodesTable[i]["target"]["type"]=="uri"){
-          img.className="w-10 h-10 bg-green-300 rounded-full"
+          img.className="w-5 h-5 bg-green-300 rounded-full"
         }else if(nodesTable[i]["target"]["type"]=="bnode"){
-          img.className="w-10 h-10 bg-yellow-300 rounded-full"
+          img.className="w-5 h-5 bg-yellow-300 rounded-full"
         }else if(nodesTable[i]["target"]["type"]=="menuOption"){
-          img.className="w-10 h-10 bg-blue-300 rounded-full"
+          img.className="w-5 h-5 bg-blue-300 rounded-full"
         }else{
-          img.className="w-10 h-10 bg-pink-300 rounded-full"
+          img.className="w-5 h-5 bg-pink-300 rounded-full"
       }
       
   }else{
-      img.className="w-10 h-10 bg-gray-300 rounded-full"
+      img.className="w-5 h-5 bg-gray-300 rounded-full"
   }
 
   div3=document.createElement("div")
@@ -1073,7 +1194,7 @@ navigationPanel.prototype.addElementContentTable = function (target,i){
 }
 
 function addElChecked(el){
-  //////////console.log(el)
+  //////////////////////console.log(el)
   navigation.addElChecked(el)
 }
 navigationPanel.prototype.addElChecked = function (el){
@@ -1083,7 +1204,7 @@ navigationPanel.prototype.addElChecked = function (el){
   }else{
     navPanel.clusterElSelected.splice(navPanel.clusterElSelected.indexOf(el.getAttribute("id")), 1);
   }
-  //////////console.log(navPanel.clusterElSelected)
+  //////////////////////console.log(navPanel.clusterElSelected)
 }
 navigationPanel.prototype.addElementContentTableProp = function (target,i,cluster){
   var navPanel=this;
@@ -1092,7 +1213,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   insertContent(false)
   function insertCheckBox(){
     cell = row.insertCell(-1);
-    cell.className="px-6 py-4 whitespace-nowrap"
+    cell.className="px-2 py-4 whitespace-nowrap"
     div=document.createElement("div")
     if(cluster){
       div.className="flex items-center h-5"
@@ -1113,7 +1234,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   function insertContent(property){
     var menuOption;
     cell = row.insertCell(-1);
-    cell.className="px-6 py-4 whitespace-nowrap"
+    cell.className="px-2 py-4 whitespace-nowrap"
     if(cluster){
       cell.setAttribute("cluster",cluster)
     }
@@ -1133,28 +1254,28 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     }
     
     div2=document.createElement("div")
-    div2.className="flex-shrink-0 w-10 h-10"
+    div2.className="flex-shrink-0 w-5 h-5"
     img=document.createElement("img")
     
     if(!property){
         if(target["target"]["type"]=="uri"){
-            img.className="w-10 h-10 bg-green-300 rounded-full"
+            img.className="w-5 h-5 bg-green-300 rounded-full"
           }else if(target["target"]["type"]=="bnode"){
-            img.className="w-10 h-10 bg-yellow-300 rounded-full"
+            img.className="w-5 h-5 bg-yellow-300 rounded-full"
           }else if(target["target"]["type"]=="menuOption"){
-            img.className="w-10 h-10 bg-blue-300 rounded-full"
+            img.className="w-5 h-5 bg-blue-300 rounded-full"
           }else{
-            img.className="w-10 h-10 bg-pink-300 rounded-full"
+            img.className="w-5 h-5 bg-pink-300 rounded-full"
         }
         
     }else{
-        img.className="w-10 h-10 bg-gray-300 rounded-full"
+        img.className="w-5 h-5 bg-gray-300 rounded-full"
     }
   
     div3=document.createElement("div")
     div3.className="relative ml-4"
     div4=document.createElement("div")
-    div4.className="relative text-sm font-medium text-gray-900"
+    div4.className="relative text-xs font-medium text-gray-900"
     if(!property){
         a=document.createElement("a")
         a.setAttribute("href", "#");
@@ -1165,6 +1286,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         }
         
         span=document.createElement("span")
+        //span.className="text-sm"
         if(target["target"]["type"]=="menuOption"){
           menuOption=target["target"]["value"].split(",")
           newText = document.createTextNode("Sparql Endpoint: "+ menuOption[0]+ "and Position: "+menuOption[1]);
@@ -1175,6 +1297,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         div4.appendChild(a).appendChild(span).appendChild(newText);
     }else{
         span=document.createElement("span")
+        //span.className="text-sm"
         if(target["value"]!=undefined){
           newText = document.createTextNode(target["value"]);
         }else{
@@ -1255,40 +1378,53 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
   }
   async function basicGraph(){
     var element=document.getElementById(cell.getAttribute("id"));
-    ////////console.log(element)
-    ////////console.log(bubble)
-    //////////console.log("dblclick basic graph")
-    //////////console.log(d3.select("#"+element.getAttribute("id")).data()[0])
+    ////console.log(element)
+    ////////////////////console.log(element)
+    ////////////////////console.log(bubble)
+    //////////////////////console.log("dblclick basic graph")
+    //////////////////////console.log(d3.select("#"+element.getAttribute("id")).data()[0])
     
     if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]){
+      ////console.log("if")
       if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]["type"]=="WEBPAGE"){
         modal2=getModal2()
-        ////////console.log("entra")
+        ////////////////////console.log("entra")
         showWebPage(get_node_from_element(element.getAttribute("id"))[Object.keys(get_property_names(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]["properties"]))[0]],get_node_from_element(element.getAttribute("id"))["value"],modal2.modalHeader,modal2.modalContent)
         //return false
       }else{
         indexRows=await networkGraph.wrangleData(element,"table");
+        //////console.log(indexRows)
         //throw new Error("Something went badly wrong!");
-        //////console.log(indexRows[0]["position"])
-        //////console.log(element)
+        //////////////////console.log(indexRows[0]["position"])
+        //////////////////console.log(element)
         //throw new Error("Something went badly wrong!");
         //buildBasicGraph(indexRows[0]["position"],element,undefined)
-        if (indexRows.length<2){
+/*         if (indexRows.length<2){
           unclickBubbleFreeGraph()
-
+          ////console.log("if")
           clickBubbleFreeGraph(element,networkGraph.data)
           d3.select("#"+row.getAttribute("id"))
           .attr("stroke", "yellow")
           .attr("stroke-width", "6px");
         }else{
+          ////console.log("else")
           node=d3.select("#"+element.getAttribute("id")).data()[0]
-          //////////console.log("addMenuToTable")
+          //////////////////////console.log("addMenuToTable")
           addMenuToTable(node,indexRows)
-        }
+        } */
       }
     }else{
+      ////console.log("else")
       indexRows=await networkGraph.wrangleData(element,"table");
-      if (indexRows.length<2){
+      //////console.log(d3.select("#"+element.getAttribute("id")).data())
+      ////console.log(d3.select("#"+element.getAttribute("id")).data()[0]["children"])
+      if(d3.select("#"+element.getAttribute("id")).data()[0]["children"]){
+        ////console.log("children")
+      }
+      //////console.log(cell)
+      //////console.log(indexRows)
+/*       if (indexRows.length<2){
+        ////console.log("if")
         unclickBubbleFreeGraph()
   
         clickBubbleFreeGraph(element,networkGraph.data)
@@ -1296,12 +1432,21 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
         .attr("stroke", "yellow")
         .attr("stroke-width", "6px");
       }else{
+        ////console.log("else")
         node=d3.select("#"+element.getAttribute("id")).data()[0]
-        //////////console.log("addMenuToTable")
+        //////////////////////console.log("addMenuToTable")
         addMenuToTable(node,indexRows)
+      } */
+    }
+    //console.log(indexRows)
+    //console.log(d3.select("#"+element.getAttribute("id")).data()[0])
+    if((indexRows.length==0)&(d3.select("#"+element.getAttribute("id")).data()[0]["children"]==undefined)){
+      //console.log("es el caso")
+      if(d3.select("#"+element.getAttribute("id")).data()[0].detail!=undefined){
+        //navPanel.node=d3.select("#"+element.getAttribute("id")).data()[0]
+        clickBubbleFreeGraph(element,networkGraph.data)
       }
     }
-    
   }
   async function freeGraph(){
       indexRows=await networkGraph.wrangleData(cell,"table");
@@ -1340,10 +1485,11 @@ navigationPanel.prototype.clickCellContent = async function (cell){
 
 navigationPanel.prototype.dblclickNav = async function (cell) {
   var navPanel=this,bubble;
-  //////console.log(cell)
+  //////////////////console.log(cell)
   bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","").replace("_li","")))
   //unclickBubbleFreeGraph()
-  //////console.log(bubble)
+  //////////////////console.log(bubble)
+  $("#dvDetails").empty()
   clickBubbleFreeGraph(bubble,networkGraph.data)
   d3.select("#"+row.getAttribute("id"))
   .attr("stroke", "yellow")
@@ -1362,19 +1508,20 @@ navigationPanel.prototype.clickNav = async function (cell){
 navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   var navPanel=this;
   var textTooltip,div,textNode,newText,newCell,element,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
+  ////console.log("addMenuToTable method")
   d3.selectAll(".menu-table").remove()
-  //////////console.log("entra en navigation")
+  //////////////////////console.log("entra en navigation")
   var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
 
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
 
   for (var i = 0; i < menuItems.length; i++) {
-      //////////console.log(menuItems[i])
+      //////////////////////console.log(menuItems[i])
       newRow = tbodyRef.insertRow(rowIndex+i);
       newRow.id="menu-table-"+ node.id + "-" + [i]
       newRow.className = 'menu-table';
       newCell = newRow.insertCell();
-      newCell.className="px-6 py-4 bg-gray-100 whitespace-nowrap"
+      newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
       newCell.setAttribute("colspan","3")
       newCell.setAttribute("x-data","{ tooltip: false }")
 
@@ -1386,7 +1533,7 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
 
       div=document.createElement("div")
       div.setAttribute("x-show","tooltip")
-      div.setAttribute("class","z-50 absolute bg-blue-300 border-graphite border-2 rounded p-4 mt-1")
+      div.setAttribute("class","z-50 absolute text-xs bg-blue-300 border-graphite border-2 rounded p-4 mt-1")
       if(menuItems[i]["subject-object"]=="s"){
         textTooltip="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
       }else{
@@ -1395,7 +1542,7 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
       textNode = document.createTextNode (textTooltip);
 
       span=document.createElement("span")
-      span.className="inline-flex px-2 text-sm font-semibold leading-5 text-gray-800 bg-white rounded-full"
+      span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
       newText = document.createTextNode("Sparql Endpoint: "+ menuItems[i]["url"]+" Position: " +menuItems[i]["subject-object"]);
       newCell.appendChild(a).appendChild(span).appendChild(newText);
       newCell.appendChild(div).appendChild(textNode)      
@@ -1453,18 +1600,18 @@ function addSelToGraph(element){
 navigationPanel.prototype.addSelToGraph = function (){
   var navPanel=this,selected=[],results,form,parent,configRow,children=[],clusterNode;
   //var $boxes = $('input[name=nodeTable]:checked');
-  //////////console.log(navPanel.clusterElSelected)
-  ////console.log(navPanel.clusterElSelected[0])
-  ////console.log((navPanel.clusterElSelected[0].replace("_check","")))
-  ////console.log(document.getElementById((navPanel.clusterElSelected[0].replace("_check",""))))
+  //////////////////////console.log(navPanel.clusterElSelected)
+  ////////////////console.log(navPanel.clusterElSelected[0])
+  ////////////////console.log((navPanel.clusterElSelected[0].replace("_check","")))
+  ////////////////console.log(document.getElementById((navPanel.clusterElSelected[0].replace("_check",""))))
   //d3.select("#"+document.getElementById(navPanel.clusterElSelected[0].replace("_check","")).getAttribute("cluster"))
   var node=d3.select("#"+document.getElementById(navPanel.clusterElSelected[0].replace("_check","")).getAttribute("cluster")).data()[0]
   for (var i = 0; i < navPanel.clusterElSelected.length; i++) {
     selected.push(document.getElementById(navPanel.clusterElSelected[i].replace("_check","")).querySelector("a span").innerText)
   };
-  //////////console.log(networkGraph.treeData)
-  //////////console.log(networkGraph.data)
-  //////////console.log(node)
+  //////////////////////console.log(networkGraph.treeData)
+  //////////////////////console.log(networkGraph.data)
+  //////////////////////console.log(node)
   if(node["subject-object"]=="s"){
     results=node["more_results"].filter(d=>selected.includes(d.o.value))
   }else if(node["subject-object"]=="o"){
@@ -1472,7 +1619,7 @@ navigationPanel.prototype.addSelToGraph = function (){
   }
   form={"uri":node["uri"],"url":node["url"],"subject-object":node["subject-object"]}
   getChildren()
-  //////////console.log(children)
+  //////////////////////console.log(children)
   for (var i = 0; i < networkGraph.treeData.length; i++) {
     parent=networkGraph.treeData[i]["children"].filter(d=>d.id==node.id)
     if(parent.length>0){
@@ -1482,25 +1629,25 @@ navigationPanel.prototype.addSelToGraph = function (){
       //const filteredItems = networkGraph.treeData[i]["children"].filter(item => Boolean(item.more_results))
       const indexMoreResults = networkGraph.treeData[i]["children"].findIndex(item => Boolean(item.more_results))
       for (var j = 0; j < selected.length; j++) {
-        //////////console.log(selected[j])
-        //////////console.log(networkGraph.treeData[i]["children"][indexMoreResults]["more_results"])
+        //////////////////////console.log(selected[j])
+        //////////////////////console.log(networkGraph.treeData[i]["children"][indexMoreResults]["more_results"])
         networkGraph.treeData[i]["children"][indexMoreResults]["more_results"].splice(networkGraph.treeData[i]["children"][indexMoreResults]["more_results"].indexOf(selected[j]),1)
       }
       networkGraph.treeData[i]["children"][indexMoreResults]["value"]=parseInt(networkGraph.treeData[i]["children"][indexMoreResults]["value"].split(" ")[0])-selected.length + " results"
       networkGraph.treeData[i]["children"]=networkGraph.treeData[i]["children"].concat(children)
-      ////////console.log(networkGraph.treeData[i])
+      ////////////////////console.log(networkGraph.treeData[i])
       clusterNode=networkGraph.treeData[i]
       break;
     }
     
   }
-  ////console.log(clusterNode)
-  //////////console.log(parent)
-  //////////console.log(selected)
-  //////////console.log(node)
-  //////////console.log(results)
-  //////////console.log(networkGraph.treeData)
-  //////////console.log(networkGraph.data)
+  ////////////////console.log(clusterNode)
+  //////////////////////console.log(parent)
+  //////////////////////console.log(selected)
+  //////////////////////console.log(node)
+  //////////////////////console.log(results)
+  //////////////////////console.log(networkGraph.treeData)
+  //////////////////////console.log(networkGraph.data)
   
   //addNodesGraph(results,parent[0],form)
   networkGraph.data = flatten_freeGraph(networkGraph.treeData).flatData
@@ -1512,7 +1659,7 @@ navigationPanel.prototype.addSelToGraph = function (){
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
   networkGraph.exitGraph()
-  //////////console.log(clusterNode)
+  //////////////////////console.log(clusterNode)
   clickBubbleFreeGraph(document.getElementById(clusterNode.id),networkGraph.data)
   navPanel.clusterElSelected=[]
   
@@ -1549,20 +1696,21 @@ navigationPanel.prototype.addSelToGraph = function (){
 }
 function addMenuToTable(node,menuItems){
   var newText,newCell,element,newRow,span,div,textNode,textTooltip
+  ////console.log("entra addçmenuToTable")
   d3.selectAll(".menu-table").remove()
-  //////////console.log(node["id"])
-  //////////console.log($('#myModal #'+ node["id"]).parent()[0].rowIndex)
+  //////////////////////console.log(node["id"])
+  //////////////////////console.log($('#myModal #'+ node["id"]).parent()[0].rowIndex)
   var rowIndex=$('#myModal #'+ node["id"]).parent()[0].rowIndex
   //var rowIndex=$('#myModal #'+ node["id"])[0].rowIndex;
-  //////////console.log(rowIndex)
+  //////////////////////console.log(rowIndex)
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-  //////////console.log("entra en la function addMenutottalbe")
+  //////////////////////console.log("entra en la function addMenutottalbe")
   for (var i = 0; i < menuItems.length; i++) {
       newRow = tbodyRef.insertRow(rowIndex+i);
       newRow.id="menu-table-"+menuItems[i]["position"]
       newRow.className = 'menu-table';
       newCell = newRow.insertCell();
-      newCell.className="px-6 py-4 bg-gray-100 whitespace-nowrap"
+      newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
       newCell.setAttribute("x-data","{ tooltip: false }")
       // Append a text node to the cell
       a=document.createElement("a")
@@ -1596,8 +1744,8 @@ async function clickMenuTable(position,node){
   clickBubbleFreeGraph(element,networkGraph.data)
 }
 function showHideNavigation(){
-  ////////////console.log("checkbox")
-  //////////console.log(document.getElementById("show-nav").checked)
+  ////////////////////////console.log("checkbox")
+  //////////////////////console.log(document.getElementById("show-nav").checked)
 /*   if(document.getElementById("show-nav").checked){
     document.getElementById("show-nav").checked = false;
     showNavigation=false

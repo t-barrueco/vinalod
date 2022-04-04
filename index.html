@@ -29,20 +29,22 @@
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script type="text/javascript" src="jslib/d3-tip.js"></script>
       
+      <script src="https://gisco-services.ec.europa.eu/distribution/v2/nuts/distribution/BE-region-03m-4326-2016.geojson"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       
       </head>
     <body onload="dataViz()">
-
+      
   <div class="relative bg-gray-50">
-    <div class="relative bg-blue-600 shadow-lg">
+    <div class="relative bg-blue-800 shadow-lg">
       <div class="max-w-4xl px-4 ml-60 sm:px-6 lg:px-10 xl:ml-48 2xl:px-10 xl:px-10">
-        <div class="flex items-center justify-between py-6 xl:justify-start md:justify-start md:space-x-10 2xl:space-x-10">
+        <div class="flex items-center justify-between py-2 xl:justify-start md:justify-start md:space-x-10 2xl:space-x-10">
           <div class="flex justify-start lg:w-0 lg:flex-1">
-            <h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
-                <a id="logo" href="#">Vinalod</a>
+<!--             <h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+ -->            <h1 class="font-semibold tracking-tight text-white text-lh sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                <a class="text-white"id="logo" href="#">Vinalod</a>
               </h1>
           </div>
           <div class="-my-2 -mr-2 md:hidden">
@@ -57,7 +59,7 @@
           <nav class="hidden space-x-20 md:flex 2xl:space-x-10 xl:space-x-10">
             <div class="relative">
               <!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
-              <button type="button" class="inline-flex items-center font-medium text-white bg-blue-600 rounded-sm text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="basicMode()">
+              <button type="button" class="inline-flex items-center text-sm font-medium text-white bg-blue-800 rounded-sm group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="basicMode()">
                 <span>Basic mode</span>
                 <!--
                   Heroicon name: solid/chevron-down
@@ -136,7 +138,7 @@
             </div>
   <!-- This example requires Tailwind CSS v2.0+ -->
             <div class="relative">
-            <button type="button" class="inline-flex items-center font-medium text-white bg-blue-600 rounded-md text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="expertMode()">
+            <button type="button" class="inline-flex items-center font-medium text-white bg-blue-800 rounded-md text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="expertMode()">
                 <span>Expert mode</span>
                 <!--
                 Heroicon name: solid/chevron-down
@@ -163,10 +165,10 @@
       -->
       <div class="absolute inset-x-0 top-0 z-10 p-2 transition origin-top-right transform md:hidden">
         <div class="bg-white divide-y-2 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 divide-gray-50">
-          <div class="px-5 pt-5 pb-6">
+          <div class="px-5 pt-2 pb-3">
             <div class="flex items-center justify-between">
               <div>
-                <h1 class="text-2xl font-extrabold tracking-tight text-blue-600 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                <h1 class="text-lg font-extrabold tracking-tight text-blue-600 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
                   <a href="#">Vinalod</a>
                 </h1>
               </div>
@@ -283,7 +285,7 @@
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-      <form class="space-y-6" name="free-graph" onsubmit="addURLGraph(this);return false">
+      <form class="space-y-6" name="free-graph" onsubmit="addURLGraph(this);">
         <div>
           <label for="free-uri" class="block text-sm font-medium text-gray-700">
             Enter URI:
@@ -316,25 +318,12 @@
   </div>
 </div>
 
-      <div class="grid hidden grid-cols-12" id="graph-area">
-        <div class="col-span-2 bg-gray-100 border-r-2">
-          <div class="px-2 py-2 bg-gray-100 border-b border-gray-200 sm:px-6">
+      <div class="grid hidden grid-cols-14" id="graph-area">
+        <div class="hidden col-span-2 bg-white border-r-2">
+<!--           <div class="px-2 py-2 bg-gray-100 border-b border-gray-200 sm:px-6">
             <div class="flex flex-wrap items-center justify-between ml-2 -mt-2 sm:flex-nowrap">
-<!--                 <div class="mt-2 ml-4">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                  Zoom
-                </h3>
-                
-              </div> -->
               <div class="flex-shrink-0 mt-2 ml-4">
-                <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-2 rounded-md md:flex md:justify-center">
-                  <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    <span>Zoom In</span>
-                  </button>
-                  <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    <span>Zoom Out</span>
-                  </button>
-                </span>
+
                 <span class="relative z-0 inline-flex w-1/2 my-2 rounded-md md:justify-center">
                   <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
                     Collapse all
@@ -344,19 +333,27 @@
                   </button>
           
                 </span>
-                <!-- <legend class="sr-only">Notifications</legend> -->
+                
+
                 <div class="relative flex items-start pt-2" onclick="showHideNavigation()">
                   <div class="flex items-center h-5">
-                    <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
+                    <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
                   </div>
                   <div class="ml-3 text-sm">
                     <label for="show-nav" class="font-medium text-gray-700">Show Navigation</label>
-<!--                     <p id="comments-description" class="text-gray-500">Get notified when someones posts a comment on a posting.</p>
- -->                  </div>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="annual-billing-label" onclick="nestedNodes(this)">
+                    <span aria-hidden="true" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                  </button>
+                  <span class="ml-3" id="annual-billing-label">
+                    <span class="text-sm font-medium text-gray-900">Nested nodes </span>
+                </span>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="object-contain filter justify-items-center">
             
             <!-- <div class="flex object-contain border-b-2">
@@ -391,17 +388,88 @@
                   
           </div>
         </div>
-        <div class="object-contain col-span-10 bg-white">
+        <div class="object-contain col-span-12 bg-white">
           
-          <div class="object-contain w-full h-full" id="networkGraph">
+          <div class="object-contain w-full h-full">
       
-            <div class="bg-gray-100">
-              <div class="p-10 mx-10 bg-gray-100">
+            <div class="bg-white">
+              <div class="overflow-hidden bg-white rounded-md">
+                <ul role="list" class="">
+                  <li class="px-6 pt-4">
+                    SETTINGS BUTTONS
+                    <div>
+                      <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+                          <!-- <dt class="text-sm font-medium text-gray-500 truncate">Total Subscribers</dt> -->
+                          <dd class="mt-1 text-sm font-semibold text-gray-900">
+                            <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                              Collapse all
+                            </button>
+                            <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                              Expand all
+                            </button>
+                          </dd>
+                        </div>
+                    
+                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+                          <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                              <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+<!--                               <input id="comments" name="comments" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+ -->                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="comments" class="font-medium text-gray-700">Show navigation</label>
+                              <p class="text-gray-500">Show navigation panel after clicking on panel.</p>
+                            </div>
+                          </div>
+<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
+                          <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
+                        </div>
+                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+                          <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                              <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="nested-nodes-label" onclick="nestedNodes(this)">
+                                <span aria-hidden="true" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                              </button>
+<!--                               <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+ --><!--                               <input id="comments" name="comments" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+ -->                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="comments" class="font-medium text-gray-700">Nested nodes</label>
+                              <p class="text-gray-500">Show duplicates nodes.</p>
+                            </div>
+                          </div>
+<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
+                          <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
+                        </div>
+<!--                         <div class="px-4 py-2 overflow-hidden bg-white border-2 rounded-lg shadow-sm sm:p-6">
+                          <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="nested-nodes-label" onclick="nestedNodes(this)">
+                            <span aria-hidden="true" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                          </button>
+                          <div class="ml-3 text-sm">
+                            <label for="comments" class="font-medium text-gray-700">Show navigation</label>
+                            <p class="text-gray-500">Show navigation panel after clicking on panel.</p>
+                          </div>
+                        </div> -->
+                      </dl>
+                    </div>
+                    
+                  </li>
+                  <li class="px-6 pb-4">
+                    LEGEND
+                    <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
+                  
+                    </ul>
+                  </li>
+                  <!-- More items... -->
+                </ul>
+              </div>
+              <!-- <div class="z-10 p-10 mx-10 bg-gray-100">
                 <h2 class="text-xs font-medium tracking-wide text-gray-500 uppercase">legend</h2>
                 <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
                   
                 </ul>
-              </div>
+              </div> -->
 <!--               <div class="flex object-contain border-b-2">
                   <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
                     <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
@@ -423,8 +491,19 @@
             
                   </span>
               </div> -->
+              <div class="grid w-full grid-cols-11 bg-white border-t shadow-2xl grid-child place-items-center">
+                <div class="col-span-5 border-t">
+                </div>
+                <div class="col-span-1 p-2 bg-white border-b border-l border-r rounded-lg shadow-2xl" id="collapse-legend">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div class="col-span-5 bg-white border-t">
+                </div>
+              </div>
             </div>
-      
+            <div class="z-0 object-contain w-full h-full" id="networkGraph">
           </div>
           <!-- This example requires Tailwind CSS v2.0+ -->
    
@@ -444,7 +523,8 @@
                       To: "translate-x-full"
                   -->
         
-                  <div class="w-screen max-w-5xl">
+<!--                   <div class="w-screen max-w-5xl">
+ -->                  <div class="w-screen max-w-xl">
                     <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
                       <div class="px-4 sm:px-6">
                         <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
@@ -462,13 +542,59 @@
                           </div>
                         </div>
                       </div>
-                      <div class="relative flex-1 px-4 mt-6 sm:px-6">
+                      <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
                         <div id="navTable" style="overflow: auto" class="mt-6"></div>
+                        <!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+                        <div id="tabsNav" class="hidden">
+                            <div class="sm:hidden">
+                              <label for="tabs" class="sr-only">Select a tab</label>
+                              <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
+                              <select id="tabs" name="tabs" class="block w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                                <option selected>Children nodes</option>
+
+                                <option>Details</option>
+
+                              </select>
+                            </div>
+                            <div class="hidden sm:block">
+                              <nav class="relative z-0 flex divide-x divide-gray-200 rounded-lg shadow-md" aria-label="Tabs">
+                                <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+                                <a id="childNodesLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-900 bg-white rounded-l-lg group hover:bg-gray-50 focus:z-10" aria-current="page" onclick="selectTab(this,'detailsLink');">
+                                  <span>Children nodes</span>
+                                  <span aria-hidden="true" class="bg-blue-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+                                </a>
+
+                                <a id="detailsLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" onclick="selectTab(this,'childNodesLink');">
+                                  <span>Details</span>
+                                  <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                                </a>
+                              </nav>
+                            </div>
+                        </div>
+
                         <div id="dvTable" style="overflow: auto">
                           <div class="absolute inset-0 px-4 sm:px-6">
                           </div>
                         <!-- /End replace -->
                         </div>
+                        <div id="dvDetails" class="overflow-auto bg-white shadow sm:rounded-lg">
+                        </div>
+                        <div id="map"></div>
                       </div>
                     </div>
                   </div>
@@ -512,6 +638,8 @@
                 <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
 
                   <div class="w-screen max-w-5xl">
+<!--                   <div class="w-screen max-w-xl">
+ -->
                     <div class="flex flex-col h-full pb-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
                     <!-- <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2"> -->
                       <div>
@@ -627,7 +755,8 @@
             <h2 class="text-xl font-semibold text-center text-white" id="spin-message"></h2>
                 <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
           </div>
-      </div>
+          </div>
+        </div>
     </main>
   </div>
     <script src="js/main.js"></script>
@@ -636,11 +765,13 @@
     <script src="js/filtersWithClass.js"></script>
     <script src="js/filterClass.js"></script>
     <script src="js/navigationClass.js"></script>
+    <script src="js/legendClass.js"></script>
     <script src="js/functions.js"></script>
-    <script src="js/functions2.js"></script>
+    <script src="js/mainFreeGraph.js"></script>
     <script src="js/timeline.js"></script>
     <script src="js/treeGraph.js"></script>
     <script src="js/wordCloud.js"></script>
+    <script src="js/detail_fields.js"></script>
     <script src="js/download.js"></script>
     <script src="js/networkGraph.js"></script>
     </body>

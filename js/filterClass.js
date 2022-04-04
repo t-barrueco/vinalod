@@ -21,7 +21,11 @@ filter.prototype.getValuesFilterVisibleNodes=function (){
   networkGraph.data["nodes"].forEach(function(d){
 
     if(d["class"]==fi.classFilterName){
-      values.push(d[fi.property].toLowerCase())
+      //CAMBIAR PORQUE LO HE PUESTO EVENTUAL
+      if(d[fi.property]!=undefined){
+        values.push(d[fi.property].toLowerCase())
+      }
+      
     }
   })
   values=[...new Set(values)].sort()

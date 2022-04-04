@@ -19,11 +19,12 @@ async function addURLGraph(field) {
   filtersList = []
 
   //////console.log("add URL Graph")
-  indexRows = await checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
-  //console.log(indexRows)
-  if(indexRows.length==0){
-    //console.log("0 results")
-  }else{
+  indexRows = checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
+  //////console.log(indexRows)
+  //if(indexRows.length==0){
+  //////console.log("0 results")
+  //}else{
+  if(indexRows.length!=0){
     $("#graph-area").removeClass("hidden")
     $("#form-container").addClass("hidden")
   }
@@ -61,10 +62,10 @@ function buildTreeData(results, form, node) {
 
 
   })
-  //////console.log(children)
+  //////////console.log(children)
   if (node != undefined) {
     if (node["menuOption"]) {
-      //////console.log("entra en menuOption")
+      //////////console.log("entra en menuOption")
       menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
       networkGraph.treeData.filter(d => d.id == node["id"])
       let obj = networkGraph.treeData.find(n => n.id == node["id"]);
@@ -79,13 +80,13 @@ function buildTreeData(results, form, node) {
 
       obj["menuOption"] = menuOption
     } else {
-      //////console.log(node)
+      //////////console.log(node)
       menuOption = node["url"] + "," + node["subject-object"]
       treeData = [{ "id": node["id"], "value": node["value"], "type": node["type"], "children": children, "hidden": false, "more_results": more_results, "menuOption": menuOption, "configRow": configRow, "class": "free" }]
     }
 
   } else {
-    //////console.log("else")
+    //////////console.log("else")
     menuOption = form["url"] + "," + form["subject-object"]
     treeData = [{ "id": genRandomString(), "value": results[0][form["subject-object"]]["value"], "type": results[0][form["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
   }
@@ -135,8 +136,8 @@ async function buildFreeGraph(form, origin, node) {
   var sparqlQuery, queryUrl, uri, url, subjectObject;
   var $objectAjax;
   prefixes = ""
-  //////console.log(origin)
-  //////console.log(form)
+  //////////console.log(origin)
+  //////////console.log(form)
   if (origin == "form") {
     uri = form.querySelector("#uri").innerHTML
     url = form.querySelector("#url").innerHTML
@@ -159,16 +160,18 @@ async function buildFreeGraph(form, origin, node) {
   }
   form = { "uri": uri, "url": url, "subject-object": subjectObject }
   if (subjectObject == "s") {
-    sparqlQuery = "SELECT distinct ?s ?p ?o (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s ?p ?o. ?o <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?s=<" + uri + ">).}"
+    sparqlQuery = "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?s=<" + uri + ">).}"
+    //sparqlQuery = "SELECT distinct ?s ?p ?o (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s ?p ?o. ?o <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?s=<" + uri + ">).}"
   } else {
-    sparqlQuery = "SELECT distinct ?s ?p ?o (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s ?p ?o; <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?o=<" + uri + ">).}"
+    sparqlQuery = "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?o=<" + uri + ">).}"
+    //sparqlQuery = "SELECT distinct ?s ?p ?o (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s ?p ?o; <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?o=<" + uri + ">).}"
   }
 
   var fn = function () {
     d3.select("#spin").style("display", "none")
     document.getElementById("sparql-timeout").style.display = "inline-block"
   };
-
+  ////console.log(sparqlQuery)
   interval = setInterval(fn, 8000);
   queryUrl = url + "?query=" + prefixes + encodeURIComponent(sparqlQuery) + "&format=json";
   settings = {
@@ -185,9 +188,12 @@ async function buildFreeGraph(form, origin, node) {
 
   $objectAjax = $.ajax(settings).then(function (_data) {
     var results = _data.results.bindings;
+    ////console.log(results.length)
     d3.select("#spin").style("display", "none")
     results = clusterResults(results, subjectObject)
-    return checkClassesBasicGraph(results, subjectObject, node)
+    ////console.log(results)
+    return results
+    //return checkClassesBasicGraph(results, subjectObject, node)
   })
 
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -211,6 +217,7 @@ async function buildFreeGraph(form, origin, node) {
   function createGraph(results) {
     if ((origin === 'form') | (origin === 'first')) {
       data = getFreeGraphData(results, form)
+      ////console.log(data)
       d3.selectAll(".graph").remove()
       forces = {
         center: {
@@ -245,7 +252,7 @@ async function buildFreeGraph(form, origin, node) {
           iterations: 1
         }
       }
-      ////console.log(networkGraph)
+      ////////console.log(networkGraph)
       if(networkGraph){
         networkGraph.graphType="freeGraph"
         networkGraph.data=data
@@ -255,7 +262,7 @@ async function buildFreeGraph(form, origin, node) {
         networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
       }
       
-      //console.log(networkGraph)
+      //////console.log(networkGraph)
      /*  if(showNavigation){
         if (typeof (navigation) != "object") {
           navigation = new navigationPanel("freeGraph", node);
@@ -277,7 +284,7 @@ async function buildFreeGraph(form, origin, node) {
         } else if (navigation.type != "freeGraph") {
           navigation = new navigationPanel("freeGraph", node);
         } else {
-          ////console.log("navigation.init()")
+          ////////console.log("navigation.init()")
           navigation.node=node
           navigation.init()
         }
@@ -286,8 +293,8 @@ async function buildFreeGraph(form, origin, node) {
   }
 }
 function addNodesGraph(results, node, form) {
-  ////console.log(results)
-  ////console.log(node)
+  ////////console.log(results)
+  ////////console.log(node)
   links = addFreeGraphData(results, node, form)
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
@@ -322,7 +329,7 @@ function getFreeGraphData(results, form) {
 function addFreeGraphData(results, node, form) {
   var subjectId, objectId, subjectNode, objectNode, links = [], nodes = [], treeData;
   subjectObject = form["subject-object"]
-  //////console.log("addfreegraphdata")
+  //////////console.log("addfreegraphdata")
   treeData = buildTreeData(results, form, node)
 
   if (treeData.length > 0) {
@@ -503,7 +510,8 @@ function getTooltipTextFreeGraph(d) {
 async function checkQueries(element, subjectObject, origin, pageX, pageY) {
   var msgNoResults, node, menuOption;
   //////console.log("check queries")
-  var resultRows = await checkAskResultsFreeGraph(element, subjectObject)
+  var resultRows =await checkAskResultsFreeGraph(element, subjectObject)
+  ////console.log(resultRows)
   if (typeof (element) != "string") {
     node = d3.select("#" + element.getAttribute("id")).data()[0]
   }
@@ -515,29 +523,21 @@ async function checkQueries(element, subjectObject, origin, pageX, pageY) {
   if (resultRows.length > 1) {
 
     if (origin == "form") {
-      msgNoResults = document.getElementById("msg-no-results");
-      msgNoResults.classList.add("hidden");
-      msgNoResults.classList.remove("inline-block");
+      removeMsgNoResults()
       getOptionsWindow(resultRows)
-    } else if (origin == "bubble") {
-      getMenuItemsFreeGraph(resultRows, element, pageX, pageY, origin)
-    } else if (origin == "table") {
+    } else {
       getMenuItemsFreeGraph(resultRows, element, pageX, pageY, origin)
     }
   } else if (resultRows.length == 1) {
     form = resultRows[0]
     if (origin == "form") {
-      msgNoResults = document.getElementById("msg-no-results");
-      msgNoResults.classList.add("hidden");
-      msgNoResults.classList.remove("inline-block");
+      removeMsgNoResults()
       origin = "first"
     }
     await buildFreeGraph(form, origin, node)
   } else if ((resultRows.length == 0) & (origin == "form")) {
     d3.selectAll(".graph").remove()
-    msgNoResults = document.getElementById("msg-no-results");
-    msgNoResults.classList.remove("hidden");
-    msgNoResults.classList.add("inline-block");
+    addMsgNoResults()
   }
   return resultRows
   function filterResultRows() {
@@ -551,30 +551,44 @@ async function checkQueries(element, subjectObject, origin, pageX, pageY) {
 
   }
 }
+function removeMsgNoResults(){
+    var msgNoResults = document.getElementById("msg-no-results");
+    msgNoResults.classList.add("hidden");
+    msgNoResults.classList.remove("inline-block");
+}
+function addMsgNoResults(){
+    var msgNoResults = document.getElementById("msg-no-results");
+    msgNoResults.classList.remove("hidden");
+    msgNoResults.classList.add("inline-block");
+}
 async function checkAskResultsFreeGraph(node, so) {
   var resultRows = []
-  //////console.log("check ask results")
-  var urls = ['https://publications.europa.eu/webapi/rdf/sparql', 'https://data.europa.eu/sparql']
-  if (so == undefined) {
-    subjectObject = ['s', 'o']
-  } else {
-    subjectObject = [so]
-  }
-  if (typeof node === 'object') {
-    uri = d3.select("#" + node.id).data()[0].value
-  } else {
-    uri = node
-  }
-  for (var j = 0; j < subjectObject.length; j++) {
-    for (var i = 0; i < urls.length; i++) {
-      results = await runAskSparlqQueryFreeGraph(urls[i], uri, subjectObject[j])
-      if (results == true) {
-        resultRows.push({ "url": urls[i], "subject-object": subjectObject[j], "uri": uri })
-      }
-    }
-  }
-  return resultRows
+
+  return new Promise((resolve, reject) => {
+    d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
+        if (so == undefined) {
+          subjectObject = ['s', 'o']
+        } else {
+          subjectObject = [so]
+        }
+        if (typeof node === 'object') {
+          uri = d3.select("#" + node.id).data()[0].value
+        } else {
+          uri = node
+        }
+        for (var j = 0; j < subjectObject.length; j++) {
+          for (var i = 0; i < urls.length; i++) {
+            results = await runAskSparlqQueryFreeGraph(urls[i].sparqlEndpoint, uri, subjectObject[j])
+            if (results == true) {
+              resultRows.push({ "url": urls[i].sparqlEndpoint, "subject-object": subjectObject[j], "uri": uri })
+            }
+          }
+        }
+      resolve(resultRows)
+    })
+  })
 }
+
 async function runAskSparlqQueryFreeGraph(url, uri, subjectObject) {
   var prefixes = "", settings
   if (subjectObject == "s") {
@@ -582,13 +596,14 @@ async function runAskSparlqQueryFreeGraph(url, uri, subjectObject) {
   } else {
     sparqlQuery = "ASK where {?s ?p <" + uri + ">}"
   }
+  ////console.log(sparqlQuery)
   var queryUrl = url + "?query=" + prefixes + encodeURIComponent(sparqlQuery) + "&format=json";
   if (url == "https://query.wikidata.org/sparql") {
     settings = { url: queryUrl, async: true };
   } else {
     settings = { url: queryUrl, async: true, dataType: 'jsonp' };
   }
-
+  ////console.log(queryUrl)
   return new Promise((resolve, reject) => {
     $.ajax(settings).then(function (_data) {
       results = _data.boolean;
@@ -605,7 +620,7 @@ function getOptionsWindow(results) {
 
   var content = document.getElementById("modal3-content");
 
-  ////console.log(content)
+  ////////console.log(content)
 
   results.forEach(function (r) {
     content.appendChild(getHtmlOption(r, i))
@@ -768,22 +783,23 @@ function clickBubbleFreeGraph(element, data) {
   var nodeData, sources2, node
   nodesSelSources = []
   nodesSelTarget = []
-  //////console.log(element)
+  //////////console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
-  ////console.log("pasa por clickBubble")
-  //console.log(node)
+  ////////console.log("pasa por clickBubble")
+  ////console.log(node)
   if (navigation == undefined) {
     navigation = new navigationPanel("freeGraph", node);
   } else {
     navigation.element = element
     navigation.node = node
     navigation.init()
+    //console.log("clickBubbleFreeGraph")
     //navigation.getNodes()
     //navigation.initModal()
     //navigation.navTableTable()
     //navigation.contentTable()
   }
-  //////console.log("showModal")
+  //////////console.log("showModal")
   //showModal("#myModal")
   $("#myModal").removeClass("translate-x-full")
   $("#myModal").addClass("translate-x-0")
@@ -806,10 +822,13 @@ function unclickBubbleFreeGraph() {
     .style("stroke-width", "1px");
 }
 function fillLegendFreeGraph() {
-  var colorsFreeGraph = [{ "name": "uri", "color": "bg-green-300" }, { "name": "bnode", "color": "bg-yellow-300" }, { "name": "literal", "color": "bg-pink-300" }, { "name": "menu Option", "color": "bg-blue-300" }, { "name": "guided mode graph", "color": "bg-purple-500" }]
-  //////console.log(d3.selectAll("#legend li"))
+  //var colorsFreeGraph = [{ "name": "uri", "color": "bg-green-300" }, { "name": "bnode", "color": "bg-yellow-300" }, { "name": "literal", "color": "bg-pink-300" }, { "name": "menu Option", "color": "bg-blue-300" }, { "name": "guided mode graph", "color": "bg-purple-500" }]
+  //var colorsFreeGraph = [{ "name": "uri", "color": "bg-green-300" }, { "name": "bnode", "color": "bg-yellow-300" }, { "name": "literal", "color": "bg-pink-300" }, { "name": "menu Option", "color": "bg-blue-300" }, { "name": "guided mode graph", "color": "bg-black" }]
+  var colorsFreeGraph = [{ "name": "uri", "color": "bg-green-300" }, { "name": "bnode", "color": "bg-yellow-300" }, { "name": "literal", "color": "bg-pink-300" }, { "name": "menu Option", "color": "bg-blue-300" }]
+
+  //////////console.log(d3.selectAll("#legend li"))
   $("#legend li").remove()
-  //console.log(colorsFreeGraph)
+  //////console.log(colorsFreeGraph)
   colorsFreeGraph.forEach(function (c) {
     appendLiFreeGraph(c.color, c.name)
   })
@@ -857,16 +876,237 @@ function clusterResults(results, subjectObject) {
   })
   return results_small
 }
+async function checkBasicGraph(node){
+    var indexNode,nodes=[],classesInConfig=[],classesLinesConfig={},results;
+    nodes.push(node)
+    
+    //indexNode=networkGraph.treeData.findIndex(d=>d.id==node.id)
+/*     if(indexNode!=-1){
+       nodes=nodes.concat(networkGraph.treeData[indexNode]["children"].filter(d=>d.type=="uri"))
+    } */
+    ////console.log(nodes)
+    //classesInConfig = configFile.filter(d => d.modelClass != undefined).map(v => v.modelClass)
+    //classesInConfig=[...new Set(classesInConfig)]
+
+    for (var i = 0; i < configFile.length; i++) {
+      if(configFile[i].modelClass!=undefined){
+        if(classesInConfig.includes(configFile[i].modelClass)){
+          classesLinesConfig[configFile[i].modelClass]["lines"].push(i)
+        }else{
+          classesLinesConfig[configFile[i].modelClass]={"class":configFile[i]["class"],"lines":[i]}
+          classesInConfig.push(configFile[i].modelClass)
+        }
+      }
+    }
+    //console.log(classesInConfig)
+    //console.log(classesLinesConfig)
+    ////console.log(node.children[0])
+    //sparqlQuery=buildSparqlQueryClasses(classesInConfig,node)
+    results=await checkClassesNode(classesInConfig,node)
+    addColorsBasicGraph(results,classesLinesConfig,node["children"])
+/*     for (var i = 0; i < nodes.length; i++) {
+      classNode=await checkClassesNode(nodes[i],sparqlQuery)
+      //console.log(nodes[i])
+      if(classNode!=""){
+        ////console.log(d3.select("#"+nodes[i].id).style("fill","#CBD5E1"))
+        ////console.log(d3.select("#"+nodes[i].id).style("fill","#000000"))
+        d3.select("#"+nodes[i].id).style("fill","#000000")
+      }
+    } */
+    /* if(classesInConfig.length>0){
+      alert("bubbles linked to guided graph")
+    }else{
+      alert("no bubbles linked to guided graph")
+    } */
+}
+function addColorsBasicGraph(results,classesLinesConfig,children){
+  var classesFound=[],idNode
+  //console.log(classesLinesConfig)
+  //console.log(results)
+/*   "#EF4444":"red-500",
+  "#F59E0B":"yellow-500",
+  "#EC4899":"pink-500",
+  "#8B5CF6":"purple-500",
+  "#3B82F6":"blue-500", */
+  for (var i = 0; i < results.length; i++) {
+    //console.log(results[i]["class"])
+    ////console.log()
+    //console.log(classesLinesConfig[results[i]["class"]["value"]]["class"])
+    if(!classesFound.includes(classesLinesConfig[results[i]["class"]["value"]]["class"])){
+      appendLiFreeGraph("bg-red-500", classesLinesConfig[results[i]["class"]["value"]]["class"]) 
+      classesFound.push(classesLinesConfig[results[i]["class"]["value"]]["class"])
+    }
+    idNode=children.filter(d=>d.value==results[i]["child"]["value"]).map(v=>v.id)
+    //console.log(idNode)
+    d3.select("#"+idNode).style("fill","#EF4444")
+  }
+  //appendLiFreeGraph(color, textLi) 
+}
+async function checkClassesNode(classesInConfig,node){
+  var filterClasses="",subjectObject=node.children[0]["subject-object"],sparqlQuery,settings,endpoint_url=node.children[0]["url"],results;
+  for (var i = 0; i < classesInConfig.length; i++) {
+    if(filterClasses==""){
+      filterClasses+="(<"+classesInConfig[i]+">"
+    }else{
+      filterClasses+=",<"+classesInConfig[i]+">"
+    }
+  }
+  filterClasses+=")"
+
+  if(subjectObject=="s"){
+    sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?s ?p ?child. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
+  }else{
+    sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?child ?p ?o. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?o=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
+  }
+
+  ////console.log(sparqlQuery)
+  prefixes=""
+/*   if(node.children){
+    endpoint_url=node.children[0]["url"]
+  }else{
+    endpoint_url=node.url
+  } */
+  //sparqlQuery="SELECT distinct (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?s=<" + node.value + ">).}"
+  queryUrl = endpoint_url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  //console.log(queryUrl)
+  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+  results = await runSparlqQuery(settings)
+  //console.log(results)
+
+  //d3.select("#"+nodes[i].id).style("fill","#000000")
+  /* if(results.length>0){
+    //Solo se recoge la primera clase
+    //ampliarlo para el caso que haya más de una
+    return results[0]["class"]["value"]
+  }else{
+    return ""
+  } */
+  //////console.log(results[0]["class"]["value"])
+  //classes=results[0]["classes"]["value"].split(";")
+  //classes.push("http://publications.europa.eu/ontology/euvoc#Corporate")
+  //////console.log(classes)
+  //////console.log(classesConfig)
+  //const classesInConfig = classes.filter(value => classesConfig.includes(value));
+  //////console.log(classesInConfig)
+  
+  /* if (results == true) {
+    if (results[i]["configRow"]) {
+      if (subjectObject == "s") {
+        results[i]["o"]["configRow"].push(row)
+      } else {
+        results[i]["s"]["configRow"].push(row)
+      }
+    } else {
+      if (subjectObject == "s") {
+        results[i]["o"]["configRow"] = [row]
+      } else {
+        results[i]["s"]["configRow"] = [row]
+      }
+    }
+  }
+  */
+  
+  return results
+
+}
+async function checkClassesNode_copy2(node,sparqlQuery) {
+  var classes=[],settings,askQuery, endpoint_url, configRows, results;
+  //console.log(node)
+  sparqlQuery=sparqlQuery.replace("PARAMETER",node.value)
+  ////console.log(sparqlQuery)
+  prefixes=""
+  if(node.children){
+    endpoint_url=node.children[0]["url"]
+  }else{
+    endpoint_url=node.url
+  }
+  //sparqlQuery="SELECT distinct (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?s=<" + node.value + ">).}"
+  queryUrl = endpoint_url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  //console.log(queryUrl)
+  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+  results = await runSparlqQuery(settings)
+  //console.log(results)
+  if(results.length>0){
+    //Solo se recoge la primera clase
+    //ampliarlo para el caso que haya más de una
+    return results[0]["class"]["value"]
+  }else{
+    return ""
+  }
+  //////console.log(results[0]["class"]["value"])
+  //classes=results[0]["classes"]["value"].split(";")
+  //classes.push("http://publications.europa.eu/ontology/euvoc#Corporate")
+  //////console.log(classes)
+  //////console.log(classesConfig)
+  //const classesInConfig = classes.filter(value => classesConfig.includes(value));
+  //////console.log(classesInConfig)
+  
+  /* if (results == true) {
+    if (results[i]["configRow"]) {
+      if (subjectObject == "s") {
+        results[i]["o"]["configRow"].push(row)
+      } else {
+        results[i]["s"]["configRow"].push(row)
+      }
+    } else {
+      if (subjectObject == "s") {
+        results[i]["o"]["configRow"] = [row]
+      } else {
+        results[i]["s"]["configRow"] = [row]
+      }
+    }
+  }
+  */
+  
+  return 
+
+}
+async function checkClassesNode_copy(node,classesConfig) {
+    var classes=[], sparqlQuery,settings,askQuery, endpoint_url, configRows, results;
+    prefixes=""
+    sparqlQuery="SELECT distinct (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?s=<" + node.value + ">).}"
+    queryUrl = node.url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    results = await runSparlqQuery(settings)
+    ////console.log(results[0]["classes"]["value"])
+    classes=results[0]["classes"]["value"].split(";")
+    //classes.push("http://publications.europa.eu/ontology/euvoc#Corporate")
+    ////console.log(classes)
+    ////console.log(classesConfig)
+    const classesInConfig = classes.filter(value => classesConfig.includes(value));
+    ////console.log(classesInConfig)
+    
+    /* if (results == true) {
+      if (results[i]["configRow"]) {
+        if (subjectObject == "s") {
+          results[i]["o"]["configRow"].push(row)
+        } else {
+          results[i]["s"]["configRow"].push(row)
+        }
+      } else {
+        if (subjectObject == "s") {
+          results[i]["o"]["configRow"] = [row]
+        } else {
+          results[i]["s"]["configRow"] = [row]
+        }
+      }
+    }
+    */
+    
+    return 
+  
+}
 async function checkClassesBasicGraph(results, subjectObject, node) {
-  var classes, classesConfig, sparqlQuery, askQuery, endpoint_url, configRows, resultsAsk;
+  var classes=[], classesConfig, sparqlQuery, askQuery, endpoint_url, configRows, resultsAsk;
   classesConfig = configFile.filter(d => d.modelClass != undefined).map(v => v.modelClass)
 
+  ////console.log(results)
   for (var i = 0; i < results.length; i++) {
-    if (classes = results[i]["classes"]) {
+    /* if (classes == results[i]["classes"]) {
       classes = results[i]["classes"]["value"].split(";")
     } else {
       classes = []
-    }
+    } */
 
     for (var j = 0; j < classes.length; j++) {
       if (classesConfig.includes(classes[j])) {
@@ -907,7 +1147,7 @@ async function checkClassesBasicGraph(results, subjectObject, node) {
 
 }
 function getCommentMenuFreeGraph(title) {
-  ////////////////////////////////////////////console.log(title)
+  ////////////////////////////////////////////////console.log(title)
 }
 function continueSparql(element) {
   document.getElementById("sparql-timeout").style.display = "none"

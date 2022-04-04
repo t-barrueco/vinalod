@@ -5,19 +5,9 @@
 *    created by Teresa Barrueco
 */
 
-/* function removeChars(chars){
-  var invalid=["~","!","@","$","%","^","&","*","(",")","+","=",",",".","/","'",";",":",'"',"?",">","<","[","]","\\","{","}","|","`","#","]"]
-  var pieces;
-  invalid.forEach(function(c){
-    pieces = chars.split(c);
-    chars = pieces.join("");
-  })
-  chars=chars.replaceAll(" ","_")
-  if (chars.match(/^\d/)) {
-    chars="_"+chars
-  }
-  return chars
-} */
+//Transform data from hierarchy in Config File to an array
+// format : [parent,child,grandchild...]
+
 function get_hierarchy(hierarchy){
   var hierarchy_arr=[]
   hierarchy_arr=[hierarchy[0]["parent"]]
@@ -27,19 +17,22 @@ function get_hierarchy(hierarchy){
 
   return hierarchy_arr
 }
+
+//Get classes and text from Config File to show for every class
+// format: {"className":textClass,"className2":textClass2}
 function getClassesShow(classes){
   var tmp={}
-
   classes.forEach(function(c){
     tmp[c["class"]]=c["text"]
   })
   return tmp
 }
+
+//Get properties for classes in the Config File
+// format: {"className":[property1,property2...],"className2":[property1,property2...]}
 function get_properties(properties){
   var temp={}
-
   properties.forEach(function(d){
-
     if(temp[d["class"]]){
       temp[d["class"]].push(d["property"])
     }else{
@@ -48,10 +41,12 @@ function get_properties(properties){
   })
   return temp
 }
+
+//Get full names for properties
+// format: {"property":property_name,"property2":property_name...}
 function get_property_names(properties){
   var temp={}
   properties.forEach(function(d){
-
         temp[d["property"]]=d["property_name"]
       })
       return temp
@@ -66,18 +61,21 @@ function genRandomString(){
   return s; 
 }
 
-
-function getId(idPrefix){
+/* function getId(idPrefix){
   idValue+=1
   id=idPrefix+idValue.toString()
   return id
-}
-function getOptions(configClass,elClass){
+} */
+
+/* function getOptions(configClass,elClass){
   var selClass=configClass.filter(function(d){
     return d.class==elClass
   })
   return selClass
-}
+} */
+
+//Get tooltip from Config File
+// format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
 function getTooltip(option_text){
   var selClass=configFile.filter(function(d){
     return d.option_text==option_text
@@ -88,19 +86,7 @@ function getTooltip(option_text){
     return ""
   } 
 }
-/* function fillDropDown(dataConfig){
-  var select = document.getElementById("options_basic"); 
-  for(var i = 0; i < dataConfig.length; i++) {
-    if(!dataConfig[i]["query"].includes("PARAMETER")){
-      var opt = dataConfig[i].option;
-      var el = document.createElement("option");
-      el.textContent = opt;
-      el.value = i;
-      select.appendChild(el);
-    }
-  }
-  return select.options[select.selectedIndex].value;
-} */
+
 // changeBasicGraph is the function called when changing option in flyout menu
 // of basic mode menu
   
@@ -109,7 +95,7 @@ function changeBasicGraph(option){
   //remove filter, legend and graph
   d3.selectAll(".classFilter").remove()
   d3.select("#legend").selectAll("li").remove()
-  d3.selectAll(".graph").remove()
+  d3.selectAll(".graph").remove()                                                                      
 
   //reset global variables
   propertiesFilterHist=[]
@@ -117,12 +103,13 @@ function changeBasicGraph(option){
   filtersInGraph=[]
   classesFilterList=[]
   filtersList=[]
-  graphHistory=[]
+  //graphHistory=[]
 
   //hide flyout menu
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
   $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   
+  //get option selected for searching in Config File
   option=$(option).find( "#optionMain" ).text().trim()
 
   let pos = configFile.map(function (e) {
@@ -131,8 +118,10 @@ function changeBasicGraph(option){
 
   showBasicGraph()
 
+  //build and show graph
   buildBasicGraph(pos)
 }
+//Remove all elements from screen and show graph area
 function showBasicGraph(){
   //landing-text
   //landing-img
@@ -142,7 +131,7 @@ function showBasicGraph(){
   $("#landing-img").addClass("hidden")
   $("#landing-text").addClass("hidden")
 }
-function findConnectedNodes(idEl){
+/* function findConnectedNodes(idEl){
   var targets=allDataModel.links.filter(function(item) {
     return item.source.id == idEl
   })
@@ -182,54 +171,102 @@ function getNodesFromConnected(connectedNodes){
   selNodes= [...new Set(selNodes)]
   selLinks= [...new Set(selLinks)]
   return {"nodes":selNodes,"links":selLinks}
-}
-async function addGraph(node,pageX,pageY,indexRows){
+} */
+
+//Add a graph when clicking on bubble. 
+//node=data from bubble clicked
+//pageX and pageY= position of bubble in screen
+//indexRows=lines from Config File for the class of bubble clicked.
+// Ask queries for lines in Config File has been executed to show options that give results.
+
+
+/* async function addGraph(node,pageX,pageY,indexRows){
+
+  //if more than one line in Config File is returned, show options in menu
   if(indexRows.length>1){
     getMenuItems(indexRows,node,pageX,pageY,origin)
   }else if (indexRows.length==1){
 
     //throw new Error("Something went badly wrong!");
-    await buildBasicGraph(indexRows[0]["position"],node,indexRows[0]["option"])
+
+    //if only one option is returned build graph.
+    await buildBasicGraph(indexRows[0]["position"],node)
   }
-  //console.log("pasa por addGraph")
+  //no se necesita devolver el indexRows?????
   return indexRows
-}
+} */
 
-
+//Show options from the Config File in menu
 function getMenuItems(items,node,pageX,pageY,origin){
-  var menuItems=[],element,position
-  //////console.log("entra en functions")
-  //////console.log(origin)
+  var menuItems=[],element,position,option
+  
+  //if click on Navigation panel then origin=table
   if (origin=="table"){
     for (var i = 0; i < items.length; i++) {
+      //add all items to menu in table. Get options text and line in config file
+      //and add it to the table
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
-    //////console.log("add menu to table")
+    //function that add menu items to table
+    ////console.log("antes de add...")
     addMenuToTable(node,menuItems)
   }else{
-    //////console.log("else")
+    //if click on bubble in graph, fill menu to show on screen next to bubble
+    //and add action to build basic graph in case the option in the menu is clicked
     for (var i = 0; i < items.length; i++) {
       position=items[i]["position"]
       element={
         title: items[i]["option"],
         action: (data,d) => {
-
+          
           for (var i = 0; i < configFile.length; i++) {
                 if(configFile[i]["option"] == d.title){
                   position=i
                 }
               }
-          buildBasicGraph(position,node,d.title)
+          ////////////////////////////console.log("build basic graph else")
+          ////////console.log(node.menuOption)
+          if(node.menuOption!=undefined){
+            ////////console.log(node)
+            if(node.menuOption.split(";")[0]==d.title){
+              networkGraph.expandLevelBranch(node)          
+              networkGraph.data=flatten(networkGraph.treeData).flatData
+              networkGraph.initializeSimulation();
+              networkGraph.dataJoinGraph()
+              networkGraph.enterGraph()
+              
+              networkGraph.initializeSimulation();
+              networkGraph.dataJoinGraph()
+              networkGraph.exitGraph()
+            }else{
+              ////////console.log(node.menuOption.split(";")[0])
+              ////////console.log(d.title)
+              buildBasicGraph(position,node,d.title)
+            }
+          }else{
+            buildBasicGraph(position,node,d.title)
+          }
         }
       }
       menuItems.push(element)
     }
-    networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
+    //Send menuItems to menuFactory which will draw the menu in the graph
+    //////////console.log(networkGraph.zoomScale)
+    //networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
+    networkGraph.menuFactory(0 ,0, menuItems, node,"dblClick",250)
+    //networkGraph.menuFactory(pageX-200 ,pageY-300, menuItems, node,"dblClick",250)
+
   }
-  
 }
+/* var dcx = (window.innerWidth/2-d.x*zoom.scale());
+	var dcy = (window.innerHeight/2-d.y*zoom.scale());
+	zoom.translate([dcx,dcy]);
+	 g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+ */
+//Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
-  var options,indexRows=[],Items,actionFunction;
+  var Items;
+  //if right click on table get all options in a format for table
   if(origin=="table"){
     Items=[{
       option: 'Download data',
@@ -240,8 +277,16 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       position: 2,
       action:"downloadQuery()"
     }]
-      
+    //if type of graph is Free Graph add option to check if there are links to Basic Graph
+    if(node.class=="free"){
+      Items.push({
+        option: 'Check Basic Graph',
+        position: 3,
+        action:"checkBasicGraph(node)"
+      })
+    }
   }else{
+    //if right click on bubble get all options in a format for bubble
     Items = [
       {
         title: 'Download data',
@@ -259,16 +304,32 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
           downloadQuery()
         }
       }]
+    //if type of graph=Free show one more option that connect Free Graph with Basic Graph
+    if(node.class=="free"){
+      Items.push({
+        title: 'Check Basic Graph',
+        position: 3,
+        action: (d) => {
+          // TODO: add any action you want to perform
+          checkBasicGraph(d)
+        }
+      })
+    }
   }
 
-
+    //add a different menu if clicking from table or bubble
     if(origin=="table"){
+      //DIFERENTE FUNCIÓN PARA LLAMAR SI ES CON BOTÓN DERECHO??
+      //UNIFICAR!!!
       addContextMenuToTable(node,Items)
     }else{
-      networkGraph.menuItems=Items
+
+      //networkGraph.menuItems=Items
       networkGraph.menuFactory(pageX-200, pageY-200 , Items, node,"contextMenu",250);
     }  
 }
+//execute sparql query
+//NO SE LLAMA TODAS LAS VECES QUE SE PUEDE LLAMAR
 function runSparlqQuery(settings){
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
@@ -277,16 +338,18 @@ function runSparlqQuery(settings){
   })
 })
 }
+//run Ask Sparql Query
 function runAskSparlqQuery(url,sparqlQuery){
   var prefixes="",settings
   var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   
+  ////////////////console.log(sparqlQuery)
   if (url=="https://query.wikidata.org/sparql"){
     settings = { url: queryUrl, async: true       }; 
   }else{
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   }
-  
+  //console.log(sparqlQuery)
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
     results = _data.boolean;
@@ -294,46 +357,100 @@ function runAskSparlqQuery(url,sparqlQuery){
   })
   })
 }
+
+//check how many queries return results for the specific node. 
+//run ask sparql queries
 async function checkAskResults(indexRows,node){
-  var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow
-  ////console.log(indexRows)
+  var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow,arrayMenuOptions
+
+  //SE MIRA LAS OPCIONES QUE SE HAN SELECCIONADO PREVIAMENTE
+  if(node.menuOption){
+    arrayMenuOptions=node.menuOption.split(";")
+    indexRows=indexRows.filter(d=>!arrayMenuOptions.includes(d.option))
+  }
+
   for (var i = 0; i < indexRows.length; i++) {
-    sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
-    singleIndexRow=indexRows[i]
-    parameters=configFile[singleIndexRow["position"]]["parameters"]
+    //first we transform the select to ask query
+    //////////console.log(configFile[indexRows[i]["position"]]["askquery"])
+    if(configFile[indexRows[i]["position"]]["askquery"]){
+      sparqlQuery=configFile[indexRows[i]["position"]]["askquery"]
+    }else{
+      sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
+    }
+    
+    //singleIndexRow=indexRows[i]
+    //get parameters from config file
+    //CAMBIAR ESTO CON LO QUE HABLÉ EN LA CONVERSACIÓN CON X.
+    //ESTO YA DEBERÍA ESTAR EN ALGÚN SITIO????
+    //TENDRÍA QU ESTAR SOLO EN UN SITIO PORQUE SE LLAMA DESDE EL ASK Y DESDE EL SELECT
+    //CREAR UNA FUNCIÓN Y LLAMAR DESDE LOS DOS SITIOS
+    parameters=configFile[indexRows[i]["position"]]["parameters"]
+    //console.log(node)
     if(node["class"]!=undefined){
-      if(parameters!=""){
+      /* if(sparqlQuery.indexOf("PARAMETER2")){
+        replaceParametersQuery(node,sparqlQuery)
+      } */
+      if((parameters!="")&(parameters!=undefined)){
+        //if there are parameters we have to replace everything form the node with the
+        //parameters in the config file
         parameters=get_parameters(parameters)
         for (j = 0; j < parameters.length; ++j) { 
-          sparqlQuery=sparqlQuery.replace("PARAMETER"+(j+2).toString(), node[parameters[j]]);
+          sparqlQuery=sparqlQuery.replaceAll("PARAMETER"+(j+2).toString(), node[parameters[j]]);
         }  
+        ////console.log(node[node["class"]+"_uri"])
           if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
-            sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_uri"]);
+            sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
 
           } else{
-            sparqlQuery=sparqlQuery.replace("PARAMETER",node["value"]);
+            sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node["value"]);
           }
       }else{
         if(node[node["class"]+"_uri"]!=undefined){
-          sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["class"]+"_uri"]);
+          ////console.log(node)
+          sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
+        //ELIMINAR LO DE ACABAR EN CODE, TODAS DEBERÍAN ACABAR EN URI
         } else{
-          sparqlQuery=sparqlQuery.replace("PARAMETER",node[node["value"]+"_code"]);
+          sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["value"]+"_code"]);
         }
       }
+    //NO DEBERÍA DE HABER UN NODO SIN CLASS. HABRÍA QUE ELIMINAR ESTO
     }else{
-      sparqlQuery=sparqlQuery.replace(node,"PARAMETER"); 
+      sparqlQuery=sparqlQuery.replaceAll(node,"PARAMETER"); 
     }
-    ////console.log(sparqlQuery)
-    results = await runAskSparlqQuery(configFile[singleIndexRow["position"]]["endpoint_url"],sparqlQuery)
 
+    
+    ////////////console.log(sparqlQuery)
+    results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery)
+    
+    //add row to the results if there are results returned
+    //////////console.log(results)
     if(results==true){
-      resultIndexRows.push(singleIndexRow)
+      resultIndexRows.push(indexRows[i])
     }
   }
-  ////console.log(resultIndexRows)
+  ////////////////////////////////////console.log(resultIndexRows)
   return resultIndexRows
 }
-
+function replaceParametersQuery(node,sparqlQuery){
+var j=2,result;
+while(sparqlQuery.indexOf("PARAMETER"+(j).toString())!=-1){
+  //FILTER(?caseLawConceptParent_country=<PARAMETER2>).
+  var regex = new RegExp('(?<='+escapeRegExp("FILTER(?")+').*(?='+"=<PARAMETER2"+')')
+  //var result = sparqlQuery.match((?=cow).*(?=milk));
+  result=regex.exec(sparqlQuery)[0]
+  //////////console.log("PARAMETER"+(j).toString())
+  //////////console.log(sparqlQuery)
+  //////////console.log(result)
+  //////////console.log(node)
+  //////////console.log(node[result])
+  j+=1
+}
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+}
+//MIRAR SI CAMBIO ESTO DE TRANSFORMAR LA ASK QUERY Y LA PONGO DIRECTAMENTE EN EL
+//CONFIG FILE PARA EVITAR ERRORES!!!!
 function fromSelectToAskQuery(query){
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
@@ -341,8 +458,9 @@ function fromSelectToAskQuery(query){
       query.toLowerCase().indexOf("select"), 
       query.toLowerCase().indexOf("where") - 1 
     );
+    ////////////////console.log(mySubString)
     query=query.replace(mySubString,"ASK")
-
+    ////////////////console.log(query)
     if(query.toLowerCase().indexOf("select")!=-1){
       mySubString = query.substring(
         query.toLowerCase().indexOf("select"), 
@@ -355,7 +473,10 @@ function fromSelectToAskQuery(query){
       query.toLowerCase().indexOf("select"), 
       query.toLowerCase().indexOf("{") - 1 
     );
+    ////////////////console.log(mySubString)
+    ////////////////console.log(query)
     query=query.replace(mySubString,"ASK")
+    ////////////////console.log(query)
   }
   
 
@@ -382,16 +503,14 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  query=query.replace("parameter","PARAMETER")
+  query=query.replaceAll("parameter","PARAMETER")
+  ////////////console.log(query)
   return query
 }
 
-function zoom() {
-  networkGraph.g
-  .attr("transform", "translate("+zoomX+","+zoomY+")"+d3.event.transform+"scale(" + zoomScale + ")")
-}
-
-
+ //function that return node in the treeMap if founded
+ //SI NO SE ENCUENTRA DEVUELVE -1???
+ //MIRAR SI LO PUEDO UTILIZAR DESDE MÁS SITIOS
  function findNodeTreemap(nodeId,treeData){
    var founded=treeData.filter(function(item) {
      return item.id == nodeId
@@ -399,7 +518,8 @@ function zoom() {
    return founded
  }
 
-
+//Tooltip added to the network graph if hover over bubble
+//This is the toolip for Basic Graph
 function getTooltipText(d){
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -475,9 +595,9 @@ function getTooltipText(d){
       </div>
     </div>`;
     return text;
-  }
-  
+  } 
 }
+//This is the tooltip for the menu options
 function getTooltipMenu(d){
   var text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="border-t border-gray-200 py-3 px-2">
@@ -486,6 +606,10 @@ function getTooltipMenu(d){
         </div>`;
   return text;
 }
+// Add to legend
+// REVISAR COMO SE RELLENA LA LEGEND
+//////////////////////////////////////
+
 function fillLegend(dif,addOne){
   if ((addOne)&(dif.length>0)){
     appendLi(colorScale.domain().length-1,dif[0])
@@ -498,7 +622,8 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-  ////console.log("pasa por appendLi")
+  ////////////////////console.log(colorScale.range())
+  ////////////////////////////////////console.log("pasa por appendLi")
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -515,8 +640,8 @@ function appendLi(i,textLi){
 }
 function differenceArrays(a1, a2) {
   var result = [];
-  //console.log(a1)
-  //console.log(a2)
+  //////////////////////////////////console.log(a1)
+  //////////////////////////////////console.log(a2)
   for (var i = 0; i < a1.length; i++) {
     if (a2.indexOf(a1[i]) === -1) {
       result.push(a1[i]);
@@ -524,6 +649,9 @@ function differenceArrays(a1, a2) {
   }
   return result;
 }
+//function to autocomplete in search field
+//PONER LAS ATRIBUCIONES DEL CÓDIGO PORQUE ES UN CÓDIGO COPIADO
+//REVISAR SI QUITO O NO LOS COMENTARIOS Y PONGO MÍOS
 function autocomplete(inp, arr) {
   var currentFocus;
   inp.addEventListener("input", function(e) {
@@ -622,6 +750,7 @@ function autocomplete(inp, arr) {
       closeAllLists(e.target);
   });
 }
+//function used in autocomplete to close list shown
 function closeAllLists(elmnt) {
   /*close all autocomplete lists in the document,
   except the one passed as an argument:*/
@@ -636,33 +765,50 @@ function closeAllLists(elmnt) {
     }     
   }
 }
-
+//function used in autocomplete to add value selected to the navigation panel.
+function autocompleteValSelected(el){
+  if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
+    navigation.valueSelected()
+  }
+}
+//function that get a key of an object from value
+//MIRAR SI MERECE LA PENA DEJARLA!!!!
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
+//REVISAR ESTA FUNCIÓN
 function insertAfter(newNode, existingNode) {
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
+//ESTA FUNCIÓN SE PODRÍA ELIMINAR
 function getCommentOption(option){
   return configFile.filter(d=>d.option==option)[0]["option_text"]
 }
+//ESTA FUNCTION SE PODRÍA ELIMINAR??????
 function get_node_from_element(id){
   return d3.select("#"+id).data()[0]
 }
+
+//REVISAR SI USO ESTA FUNCIÓN Y SI ES ÚTIL
 function get_configRows_class(classNode){
   var configRows=[]
   for(var i = 0; i < configFile.length; i++) {
+    ////////////////////////console.log(configFile[i]["class"])
+    ////////////////////////console.log(classNode)
     if(configFile[i]["class"]==classNode){
       configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
   }
   return configRows
 }
+
+//get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[];
   if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
+    ////console.log(node[node["class"]+"_uri"])
     if(node[node["class"]+"_uri"]){
       icon=filesIcons.filter(function(d){
         return d.ID==node[node["class"]+"_uri"];
@@ -681,28 +827,161 @@ function bubbleImage(node){
   }
   
 }
-function autocompleteValSelected(el){
-  //////console.log(el.parentNode)
-  //////console.log(el.getElementsByTagName("input")[0])
-  if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
-    //////console.log("node search")
-    navigation.valueSelected()
-  }
-}
-function handleClick(){
+
+/* function handleClick(){
   numClicks++;
-  ////console.log("entra en handleClick")
-  ////console.log(numClicks)
   if (numClicks === 1) {
-    ////console.log("entra en 1")
     singleClickTimer = setTimeout(() => {
       numClicks = 0;
       return 1;
     }, 100);
   } else if (numClicks === 2) {
-    ////console.log("entra en 2")
     clearTimeout(singleClickTimer);
     numClicks = 0;
     return 2;
   }
-};
+}; */
+
+/* function checkUrl(url) {
+  var request = false;
+  if (window.XMLHttpRequest) {
+          request = new XMLHttpRequest;
+  } else if (window.ActiveXObject) {
+          request = new ActiveXObject("Microsoft.XMLHttp");
+  }
+
+  if (request) {
+          request.open("GET", url);
+          if (request.status == 200) { return true; }
+  }
+
+  return false;
+} */
+
+//function for transition from bubble image to text in bubbles when zoom in and zoom out
+function textImageZoom(zoomScale){
+  if(zoomScale>1.5){
+    d3.selectAll(".nodeCircleImage")
+    .transition()
+    .attr('opacity', function(d) {
+      /*           if (d.scaleThreshold < 1) {
+                  return 1;
+                } */
+                return 0;
+              })
+    //}
+    d3.selectAll(".nodeCircleText")
+    .transition()
+    .attr('opacity', function(d) {
+      /*           if (d.scaleThreshold < 1) {
+                  return 1;
+                } */
+                return 1;
+              })
+  }else{
+    d3.selectAll(".nodeCircleImage")
+    .transition()
+    .attr('opacity', function(d) {
+      /*           if (d.scaleThreshold < 1) {
+                  return 1;
+                } */
+                return 1;
+              })
+    //}
+    d3.selectAll(".nodeCircleText")
+    .transition()
+    .attr('opacity', function(d) {
+      /*           if (d.scaleThreshold < 1) {
+                  return 1;
+                } */
+                return 0;
+              })
+  }
+}
+//select tab from navigation panel. Show children or show detail for node
+//A LO MEJOR SE PODRÍA INCLUIR EN EL FICHERO DE NAVIGATION PANEL
+//SE PODRÍAN HACER FUNCIONES MÁS PEQUEÑAS QUE ACLARARAN EL POR QUE SE 
+function selectTab(element,otherText){
+  var otherEl;
+  var elements = element.querySelectorAll('span');
+  elements[1].classList.remove("bg-transparent")
+  elements[1].classList.add("bg-blue-500")
+  otherEl=document.getElementById(otherText)
+  otherEl.classList.remove("text-gray-900")
+  otherEl.classList.add("text-gray-500")
+  elements = otherEl.querySelectorAll('span');
+  elements[1].classList.add("bg-transparent")
+  elements[1].classList.remove("bg-blue-500")
+  element.classList.remove("text-gray-500")
+  element.classList.add("text-gray-900")
+  ////////////console.log(d3.select("#"+element.parentElement.getAttribute("id").replace("_tabsNav","")).data()[0])
+  ////////////console.log(navigation)
+  if(otherText=="detailsLink"){
+    navigation.contentTable()
+  }else{
+    navigation.showDetails()
+  }
+  
+}
+/* function detailTab(element){
+  selectTab(element,"childNodesLink")
+}
+function childNodesTab(element){
+  selectTab(element,"detailsLink")
+} */
+
+//Save detail properties in node. When click on detail tab, the detail will shown
+//based on structure
+//QUIZÁS DEBERÍA ESTAR CERCA DE DONDE SE MUESTRA EL DETAIL?????
+function getDetail(detail,nodeClass){
+  var detailNode="";
+
+  if(detail!=undefined){
+    if(detail!=""){
+      for (let k of detail) {
+        if(k["class"]==nodeClass){
+          detailNode=k["details"]
+          break
+        }
+      }
+    }
+  }
+  return detailNode;
+}
+
+//change networkgraph type of visualization
+//with this function we have unique bubbles per value and all links will point to
+//the same bubble
+//DEBERÍA DE AÑADIR FUNCIONES PARA QUE SEA MÁS CLARO LO QUE SE ESTÁ HACIENDO
+function nestedNodes(el){
+  if(el.classList.contains("bg-gray-200")){
+    el.classList.remove("bg-gray-200")
+    el.classList.add("bg-blue-600")
+    const span=el.querySelector("span")
+    span.classList.remove("translate-x-0")
+    span.classList.add("translate-x-5")
+    
+    networkGraph.data=treeDataNestedNodes().flatData
+    networkGraph.initializeSimulation();
+    networkGraph.dataJoinGraph()
+    networkGraph.enterGraph()
+    networkGraph.initializeSimulation();
+    networkGraph.dataJoinGraph()
+    networkGraph.exitGraph()
+  }else{
+    el.classList.remove("bg-blue-600")
+    el.classList.add("bg-gray-200")
+    const span=el.querySelector("span")
+    span.classList.remove("translate-x-5")
+    span.classList.add("translate-x-0")
+    //////////console.log(networkGraph.treeData)
+    //////////console.log(networkGraph.treeDataNested)
+    networkGraph.data=flatten_v2(networkGraph.treeData).flatData
+    networkGraph.initializeSimulation();
+    networkGraph.dataJoinGraph()
+    networkGraph.enterGraph()
+    networkGraph.initializeSimulation();
+    networkGraph.dataJoinGraph()
+    networkGraph.exitGraph()
+  }  
+}

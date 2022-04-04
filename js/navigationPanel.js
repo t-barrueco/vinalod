@@ -139,9 +139,9 @@ function labelsClick(element){
         div=document.createElement("div")
         div.className="flex items-center w-full"
         div2=document.createElement("div")
-        div2.className="flex-shrink-0 w-10 h-10"
+        div2.className="flex-shrink-0 w-5 h-5"
         img=document.createElement("img")
-        img.className="w-10 h-10 rounded-full bg-"+colorCorrespondence[colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]])]
+        img.className="w-5 h-5 rounded-full bg-"+colorCorrespondence[colorScale(nodesClassesCorrespondence[nodesTable[i]["class"]])]
         img.setAttribute("src",bubbleImage(d3.select("#"+nodesTable[i]["id"]).data()[0]))
         div3=document.createElement("div")
         div3.className="relative ml-4"
@@ -277,20 +277,20 @@ function labelsClickFreeGraph(element,newForm,form,propertyEl){
     }
     
     div2=document.createElement("div")
-    div2.className="flex-shrink-0 w-10 h-10"
+    div2.className="flex-shrink-0 w-5 h-5"
     img=document.createElement("img")
     
     if(!property){
         if(nodesTable[i]["target"]["type"]=="uri"){
-            img.className="w-10 h-10 bg-green-300 rounded-full"
+            img.className="w-5 h-5 bg-green-300 rounded-full"
           }else if(nodesTable[i]["target"]["type"]=="bnode"){
-            img.className="w-10 h-10 bg-yellow-300 rounded-full"
+            img.className="w-5 h-5 bg-yellow-300 rounded-full"
           }else{
-            img.className="w-10 h-10 bg-pink-300 rounded-full"
+            img.className="w-5 h-5 bg-pink-300 rounded-full"
         }
         
     }else{
-        img.className="w-10 h-10 bg-gray-300 rounded-full"
+        img.className="w-5 h-5 bg-gray-300 rounded-full"
     }
 
     div3=document.createElement("div")
