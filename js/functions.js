@@ -121,7 +121,7 @@ function showBasicGraph(){
 
 //Show options from the Config File in menu
 function getMenuItems(items,node,pageX,pageY,origin){
-  var menuItems=[],element,position,option
+  var menuItems=[],element,position
   
   //if click on Navigation panel then origin=table
   if (origin=="table"){
@@ -258,8 +258,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       console.log("pageY after: "+ pageY)
       console.log(d3.select("#networkGraph").node())
       console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
-      var width=d3.select("#networkGraph").node().getBoundingClientRect().width
-      var height=d3.select("#networkGraph").node().getBoundingClientRect().height
       //pageX - width / 2, pageY - height / 1.5
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
@@ -294,7 +292,7 @@ function runAskSparlqQuery(url,sparqlQuery){
 //check how many queries return results for the specific node. 
 //run ask sparql queries
 async function checkAskResults(indexRows,node){
-  var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow,arrayMenuOptions
+  var sparqlQuery,resultIndexRows=[],parameters,arrayMenuOptions
 
   if(node.menuOption){
     arrayMenuOptions=node.menuOption.split(";")
@@ -312,14 +310,14 @@ async function checkAskResults(indexRows,node){
     //get parameters from config file
     parameters=configFile[indexRows[i]["position"]]["parameters"]
     if(node["class"]!=undefined){
-      if((parameters!="")&(parameters!=undefined)){
+      if((parameters!="")&&(parameters!=undefined)){
         //if there are parameters we have to replace everything form the node with the
         //parameters in the config file
         parameters=get_parameters(parameters)
-        for (j = 0; j < parameters.length; ++j) { 
+        for (let j = 0; j < parameters.length; ++j) { 
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER"+(j+2).toString(), node[parameters[j]]);
         }  
-          if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
+          if((node[node["class"]+"_uri"]!=undefined)&&(node[node["class"]+"_uri"]!="")){
             sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
 
           } else{
@@ -506,7 +504,7 @@ function getTooltipMenu(d){
 // Add to legend
 
 function fillLegend(dif,addOne){
-  if ((addOne)&(dif.length>0)){
+  if ((addOne)&&(dif.length>0)){
     appendLi(colorScale.domain().length-1,dif[0])
   }else if(!addOne){
     for (var i = 0; i < colorScale.domain().length; i++) {
@@ -687,7 +685,7 @@ function get_configRows_class(classNode){
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[];
-  if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
+  if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
     if(node[node["class"]+"_uri"]){
