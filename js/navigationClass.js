@@ -24,7 +24,7 @@ navigationPanel.prototype.init = function () {
 navigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
 
-  if((navPanel.targets.length==0)|((navPanel.node.detail=="")|(navPanel.node.detail==undefined))){
+  if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
     $("#tabsNav").addClass("hidden")
   }else{
     $("#tabsNav").removeClass("hidden")
@@ -33,7 +33,7 @@ navigationPanel.prototype.showChildrenDetails = function (){
 }
 navigationPanel.prototype.getNodes = function (){
   var navPanel=this;
-  var nodeData,sources2
+  var sources2
   navPanel.targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == navPanel.node.id
   })
@@ -335,7 +335,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   var navPanel=this;
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
-  if((property)|((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
+  if((property)||((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -386,8 +386,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   if(i<navPanel.sources.length-1){
       if(div!=undefined){
         el1.appendChild(div)
-      }else{
-      }  
+      }
   }
   el2=el1.appendChild(a)
   
@@ -431,7 +430,7 @@ navigationPanel.prototype.addEventsNav = function (){
   .on('contextmenu',function(){  
     var menuItems=[]
     d3.event.preventDefault();
-    var node=d3.select("#"+this.getAttribute("id")).data()[0]
+    //var node=d3.select("#"+this.getAttribute("id")).data()[0]
   });
 }
 navigationPanel.prototype.contentTable = function (){
@@ -640,7 +639,7 @@ navigationPanel.prototype.showDetails = function (){
             console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
-                if((key % 2 == 0)| (key == 0)){  
+                if((key % 2 == 0)|| (key == 0)){  
                   if(navPanel.node[navPanel.node.detail[key]["property"]]!=undefined){
                     navDetailRow0=row0.replace("Title",navPanel.node.detail[key]["text"].toUpperCase())
                     navDetailRow0=fieldItemDetails(navDetailRow0,navPanel.node[navPanel.node.detail[key]["property"]],navPanel.node.detail[key]["type"])
@@ -680,7 +679,6 @@ navigationPanel.prototype.showDetails = function (){
 
 navigationPanel.prototype.contentTableSearch = function (){
   var navPanel=this;
-  var menuOption;
   navPanel.numStart=1
 
   if (navPanel.targets.length>0){  
@@ -761,7 +759,7 @@ navigationPanel.prototype.showNumberPages = function (){
 
   pagePrev = document.getElementById('page-prev');
 
-  for (i=0;i<=navPanel.pages.pages.length-1;i++) {
+  for (let i=0;i<=navPanel.pages.pages.length-1;i++) {
     if(navPanel.pages.pages[i]==navPanel.numCurrent){
       if(pagePrev==null){
         navPanel.divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
@@ -883,7 +881,7 @@ navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 }
 
 navigationPanel.prototype.addEventsContentNav = function (){
-  var navPanel=this,cell,nodeSearchField,node,checkboxes;
+  var navPanel=this,nodeSearchField,node;
   navPanel.isDblclick = false;
 
   navPanel.searchValues=navPanel.targets.map(d=>d.target.value)
@@ -954,7 +952,7 @@ navigationPanel.prototype.valueSelected=function(){
   removeLinesNavContent()
 
   if(navPanel.targetsBackup){
-    navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.toUpperCase().includes(nodeSearchField.value.toUpperCase())|(a.target.value.toUpperCase()==nodeSearchField.value.toUpperCase())));
+    navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.toUpperCase().includes(nodeSearchField.value.toUpperCase())||(a.target.value.toUpperCase()==nodeSearchField.value.toUpperCase())));
   }else{
     navPanel.resultsSearch = navPanel.targets.filter(a =>a.target.value.toUpperCase().includes(nodeSearchField.value.toUpperCase()));
     navPanel.targetsBackup=navPanel.targets
@@ -1146,7 +1144,7 @@ navigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     if(!property){
         a=document.createElement("a")
         a.setAttribute("href", "#");
-        if((target["target"]["type"]!="bnode")&(target["target"]["type"]!="uri")&(target["target"]["type"]!="menuOption")){
+        if((target["target"]["type"]!="bnode")&&(target["target"]["type"]!="uri")&&(target["target"]["type"]!="menuOption")){
           a.setAttribute("class", "relative flex items-start group isDisabled");
         }else{
           a.setAttribute("class", "relative flex items-start group");
@@ -1253,8 +1251,8 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
       }
     }else{
       indexRows=await networkGraph.wrangleData(element,"table");
-      if(d3.select("#"+element.getAttribute("id")).data()[0]["children"]){
-      }
+      /* if(d3.select("#"+element.getAttribute("id")).data()[0]["children"]){
+      } */
     }
 
     if((indexRows.length==0)&(d3.select("#"+element.getAttribute("id")).data()[0]["children"]==undefined)){
@@ -1319,7 +1317,7 @@ navigationPanel.prototype.clickNav = async function (cell){
 }
 navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   var navPanel=this;
-  var textTooltip,div,textNode,newText,newCell,element,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
+  var textTooltip,div,textNode,newText,newCell,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
   d3.selectAll(".menu-table").remove()
   var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
 
@@ -1370,12 +1368,9 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   })
 }
 navigationPanel.prototype.clickMenuTable = async function (form,node){
-  var propertyEl,bubble;
+  var bubble;
   var navPanel=this;
   var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
-  propertyEl=form["property"]
-
-  var form={"url":form["url"],"uri":node["value"],"subject-object":form["subjectObject"]}
 
   await buildFreeGraph(newForm,"table",node)
 
@@ -1478,7 +1473,7 @@ navigationPanel.prototype.addSelToGraph = function (){
 
 }
 function addMenuToTable(node,menuItems){
-  var newText,newCell,element,newRow,span,div,textNode,textTooltip
+  var newText,newCell,newRow,span,div,textNode
   d3.selectAll(".menu-table").remove()
   var rowIndex=$('#myModal #'+ node["id"]).parent()[0].rowIndex
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
