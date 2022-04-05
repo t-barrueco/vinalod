@@ -193,7 +193,7 @@ async function buildFreeGraph(form, origin, node) {
   } catch (e) {
   }
   function createGraph(results) {
-    if ((origin === 'form') | (origin === 'first')) {
+    if ((origin === 'form') || (origin === 'first')) {
       data = getFreeGraphData(results, form)
       d3.selectAll(".graph").remove()
       forces = {
@@ -277,7 +277,7 @@ function clickNav(cell) {
   navigation.clickNav(cell)
 }
 function getFreeGraphData(results, form) {
-  var nodes = [], links = [], subjectId, objectId, more_results, classBubble, data, treeData, flattenData;
+  var nodes = [], links = [], data, treeData, flattenData;
 
   treeData = buildTreeData(results, form)
   flattenData = flatten_freeGraph(treeData)
@@ -285,7 +285,7 @@ function getFreeGraphData(results, form) {
   return data
 }
 function addFreeGraphData(results, node, form) {
-  var subjectId, objectId, subjectNode, objectNode, links = [], nodes = [], treeData;
+  var links = [], nodes = [], treeData;
   subjectObject = form["subject-object"]
   treeData = buildTreeData(results, form, node)
 
@@ -308,10 +308,10 @@ function addFreeGraphData(results, node, form) {
 }
 
 function getTooltipTextFreeGraph(d) {
-  var menuOptions, sparqlEndpoint = "", position = "";
+  var menuOptions, sparqlEndpoint = "", position = "",text;
   if (d.type == "menuOption") {
     menuOptions = d.value.split(",")
-    var text = `
+    text = `
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
         <div class="px-4 py-2 sm:px-6">
           <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -348,7 +348,7 @@ function getTooltipTextFreeGraph(d) {
         </div>
       </div>`;
   } else if (typeof (d) == "string") {
-    var text = `
+    text = `
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
           <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -366,7 +366,7 @@ function getTooltipTextFreeGraph(d) {
       }
     }
     if (d.property) {
-      var text = `
+      text = `
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="px-4 py-2 sm:px-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -396,7 +396,7 @@ function getTooltipTextFreeGraph(d) {
         </div>`;
       getOptionChosen()
     } else {
-      var text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-2 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Node values
@@ -465,12 +465,12 @@ function getTooltipTextFreeGraph(d) {
   return text;
 }
 async function checkQueries(element, subjectObject, origin, pageX, pageY) {
-  var msgNoResults, node, menuOption;
+  var node;
   var resultRows =await checkAskResultsFreeGraph(element, subjectObject)
   if (typeof (element) != "string") {
     node = d3.select("#" + element.getAttribute("id")).data()[0]
   }
-  if ((origin == "bubble") | (origin == "table")) {
+  if ((origin == "bubble") || (origin == "table")) {
     if (node.menuOption != undefined) {
       filterResultRows()
     }
@@ -490,7 +490,7 @@ async function checkQueries(element, subjectObject, origin, pageX, pageY) {
       origin = "first"
     }
     await buildFreeGraph(form, origin, node)
-  } else if ((resultRows.length == 0) & (origin == "form")) {
+  } else if ((resultRows.length == 0) && (origin == "form")) {
     d3.selectAll(".graph").remove()
     addMsgNoResults()
   }
@@ -500,7 +500,7 @@ async function checkQueries(element, subjectObject, origin, pageX, pageY) {
     menuOption.forEach(function (d) {
       d = d.split(",")
       resultRows = resultRows.filter(function (r) {
-        return (r.uri != node.value) | (r.url != d[0]) | (r["subject-object"] != d[1])
+        return (r.uri != node.value) || (r.url != d[0]) || (r["subject-object"] != d[1])
       })
     })
 
@@ -589,8 +589,6 @@ function getOptionsWindow(results) {
 }
 
 function getHtmlOption(r, i) {
-  var subjectObject = { "s": "Subject", "o": "Object" }
-
   form = document.createElement("form")
   form.setAttribute("class", "px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md")
   form.setAttribute("name", "option" + i)
@@ -680,7 +678,7 @@ function getHtmlOption(r, i) {
   return form
 }
 function getMenuItemsFreeGraph(items, element, pageX, pageY, origin) {
-  var menuItems = [], elementMenu, position, form, uri, url, subjectObject, row
+  var menuItems = [], elementMenu,form, uri, url, subjectObject, row
   var node = d3.select("#" + element.getAttribute("id")).data()[0]
 
   if (node["configRow"]) {
@@ -732,7 +730,7 @@ function getMenuItemsFreeGraph(items, element, pageX, pageY, origin) {
 
 }
 function clickBubbleFreeGraph(element, data) {
-  var nodeData, sources2, node
+  var node
   nodesSelSources = []
   nodesSelTarget = []
   node = d3.select("#" + element.getAttribute("id")).data()[0]
@@ -815,8 +813,8 @@ function clusterResults(results, subjectObject) {
   return results_small
 }
 async function checkBasicGraph(node){
-    var indexNode,nodes=[],classesInConfig=[],classesLinesConfig={},results;
-    nodes.push(node)
+    var classesInConfig=[],classesLinesConfig={},results;
+    //nodes.push(node)
 
 
     for (var i = 0; i < configFile.length; i++) {
@@ -869,44 +867,9 @@ async function checkClassesNode(classesInConfig,node){
   return results
 
 }
-async function checkClassesNode_copy2(node,sparqlQuery) {
-  var classes=[],settings,askQuery, endpoint_url, configRows, results;
-  sparqlQuery=sparqlQuery.replace("PARAMETER",node.value)
-  prefixes=""
-  if(node.children){
-    endpoint_url=node.children[0]["url"]
-  }else{
-    endpoint_url=node.url
-  }
-  queryUrl = endpoint_url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  results = await runSparlqQuery(settings)
-  if(results.length>0){
-    return results[0]["class"]["value"]
-  }else{
-    return ""
-  }
-  
-  return 
 
-}
-async function checkClassesNode_copy(node,classesConfig) {
-    var classes=[], sparqlQuery,settings,askQuery, endpoint_url, configRows, results;
-    prefixes=""
-    sparqlQuery="SELECT distinct (group_concat(distinct ?class;separator=';') as ?classes) WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class} FILTER (?s=<" + node.value + ">).}"
-    queryUrl = node.url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    results = await runSparlqQuery(settings)
-    classes=results[0]["classes"]["value"].split(";")
-    //classes.push("http://publications.europa.eu/ontology/euvoc#Corporate")
-
-    const classesInConfig = classes.filter(value => classesConfig.includes(value));
-    
-    return 
-  
-}
 async function checkClassesBasicGraph(results, subjectObject, node) {
-  var classes=[], classesConfig, sparqlQuery, askQuery, endpoint_url, configRows, resultsAsk;
+  var classes=[], classesConfig, askQuery, endpoint_url, configRows, resultsAsk;
   classesConfig = configFile.filter(d => d.modelClass != undefined).map(v => v.modelClass)
 
   for (var i = 0; i < results.length; i++) {
@@ -915,7 +878,7 @@ async function checkClassesBasicGraph(results, subjectObject, node) {
       if (classesConfig.includes(classes[j])) {
         configRows = getAllIndexes(configFile, classes[j], "modelClass")
         for (const row of configRows) {
-          if ((!configFile[row]["query"].includes("PARAMETER2")) & (configFile[row]["type"] == "TREE")) {
+          if ((!configFile[row]["query"].includes("PARAMETER2")) && (configFile[row]["type"] == "TREE")) {
             askQuery = fromSelectToAskQuery(configFile[row]["query"])
             if (subjectObject == "s") {
               askQuery = askQuery.replace("PARAMETER", results[i]["o"]["value"]);
