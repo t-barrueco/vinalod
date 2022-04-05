@@ -7,7 +7,7 @@ function treeGraph(treeData,title,modalHeader,modalContent){
   modalHeader.innerHTML = title
 
   root = d3.hierarchy(treeData, function(d) { return d.children; });
-  height=40*root.children.length
+  var height=40*root.children.length
   root.x0 = height / 2;
   root.y0 = 0;
 

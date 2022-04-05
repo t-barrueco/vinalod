@@ -267,7 +267,7 @@ function getModal2(){
   }
   async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modalContent){
     var rowDataConfig,results,data=[];
-    for (i = 0; i < configFile.length; ++i) { 
+    for (let i = 0; i < configFile.length; ++i) { 
       if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TABLE")){
         rowDataConfig=i
         break;

@@ -686,7 +686,7 @@ function copyDuplicates(index,i,node){
     //////////////console.log(networkGraph.treeDataNested[indexP]["children"])
     //////////////console.log(node["children"]==networkGraph.treeDataNested[indexP]["children"])
     //////////////console.log(node["children"].length)
-    for (l = 0; l < node["children"].length; l++) {
+    for (let l = 0; l < node["children"].length; l++) {
       if((networkGraph.treeDataNested[indexP]["children"].findIndex(d=>d.id==node["children"][l]["id"]))!=-1){
         node["children"].splice(l,1); 
         //////////////console.log(node["children"][l])

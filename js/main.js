@@ -272,7 +272,7 @@ async function buildBasicGraph(rowDataConfig,node){
     function replaceParmtrsQuery(){
       if(configRow.parameters!=""){
         parameters=get_parameters(configRow.parameters)
-        for (i = 0; i < parameters.length; ++i) { 
+        for (let i = 0; i < parameters.length; ++i) { 
           sparqlQuery=configRow.sparqlQuery.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]]);
         }  
         //The value for the PARAMETER in the Sparql query is the "[class]_uri" or the
@@ -349,7 +349,7 @@ function getFieldsConfigFile(configFile,rowDataConfig){
   if(configFile[rowDataConfig]["hierarchy"]){
     hierarchy=configFile[rowDataConfig]["hierarchy"]
   }else{
-    hierarchy=configFile[rowDataConfig]["hierarchy"]
+    hierarchy=""
   }
   
   if(configFile[rowDataConfig]["properties"]){
@@ -488,7 +488,7 @@ function downloadData(element){
     
   })[0]
 
-  for (i = 0; i < nodesClasses.length; ++i) { 
+  for (let i = 0; i < nodesClasses.length; ++i) { 
     if(nodesClasses[i]==root["class"]){
       classIndex=i
     }
