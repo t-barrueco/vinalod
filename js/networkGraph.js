@@ -1334,8 +1334,8 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
     
         }else{
           if (element.getAttribute("root")=="1"){
-            children=founded[0]["children"]
-            children.forEach(function(d){
+            //children=founded[0]["children"]
+            founded[0]["children"].forEach(function(d){
               vis.expandLevelBranch(d)
             })
           }else{
