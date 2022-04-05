@@ -7,10 +7,11 @@ function treeGraph(treeData,title,modalHeader,modalContent){
   modalHeader.innerHTML = title
 
   root = d3.hierarchy(treeData, function(d) { return d.children; });
+  height=40*root.children.length
   root.x0 = height / 2;
   root.y0 = 0;
 
-  height=40*root.children.length
+  
 
   // Set the dimensions and margins of the diagram
   var margin = {top: 20, right: 90, bottom: 30, left: 180},
@@ -157,13 +158,13 @@ function update(source) {
       .attr('d', function(d){ return diagonal(d, d.parent) });
 
   // Remove any exiting links
-  var linkExit = link.exit().transition()
+/*   var linkExit = link.exit().transition()
       .duration(duration)
       .attr('d', function(d) {
         var o = {x: source.x, y: source.y}
         return diagonal(o, o)
       })
-      .remove();
+      .remove(); */
 
   // Store the old positions for transition.
   nodes.forEach(function(d){

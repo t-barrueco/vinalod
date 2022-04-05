@@ -83,7 +83,7 @@ function buildDataBasic2(results,configRow,configClasses,node){
   return flatData
 
   function idFromHierarchy(i){
-    var k=1,lastIndex;
+    var k=1;
     var indexParent,tmpNode,tmpId,tmpIndex,lastIndex="";
     while(k<i){
       if(k==1){
@@ -111,14 +111,14 @@ function buildDataBasic2(results,configRow,configClasses,node){
       id=genRandomString()
     }
     node={"id":id,"value":r[hierarchy[index]].value,"shape":1,"class":hierarchy[index]}
-    if((index==0)|((hierarchy.length>2)&(index<(hierarchy.length-1)))){
+    if((index==0)||((hierarchy.length>2)&&(index<(hierarchy.length-1)))){
       node["menuOption"]=configRow.options
     }
     //HACER UN TEST PARA VER SI SE UTILIZA!!!!
     node["tooltip"]=getTooltipNode(configRow.tooltip,node["class"])
     ////////////////////console.log("getDetail")
     ////////////////////console.log(configRow)
-    if((configRow.detail!="")&(configRow.detail!=undefined)){
+    if((configRow.detail!="")&&(configRow.detail!=undefined)){
       node["detail"]=getDetail(configRow.detail,node["class"])
     }
     ////////////////////console.log(node)
@@ -137,7 +137,7 @@ function buildDataBasic2(results,configRow,configClasses,node){
   function updateNodeChildren(tD){
     var indexChild,index;
     tD=tD.reverse()
-    for (i = 0; i < tD.length; ++i) {
+    for (let i = 0; i < tD.length; ++i) {
       index=tD.findIndex(function(d){
         if(d.children.filter(v=>v.id==tD[i]["id"]).length>0){
           return true;
@@ -185,11 +185,11 @@ function buildDataBasic(results,configRow,configClasses,node){
   }   
   ////////console.log(results)
   ////////////////////console.log(hierarchy)
-  for (j = 0; j < results.length; ++j) {
+  for (let j = 0; j < results.length; ++j) {
     //////////console.log(Object.keys(results[j]));
     treeResults=get_hierarchy_from_keys(Object.keys(results[j]))
     //////////console.log(treeResults)
-    for (i = 0; i < treeResults.length; ++i) {
+    for (let i = 0; i < treeResults.length; ++i) {
       ////////////////////console.log(results[j][hierarchy[i]])
       ////////////console.log(results[j])
 
@@ -258,7 +258,7 @@ function buildDataBasic(results,configRow,configClasses,node){
 
   return flatData
 
-  function splitInMenuOption(newTreeData,treeData){
+  function splitInMenuOption(newTreeData){
     var menuOptionNodes=[],newMenuOption;
 
     let obj = networkGraph.treeData.find(n => n.id == newTreeData[0]["id"]);
@@ -316,7 +316,7 @@ function buildDataBasic(results,configRow,configClasses,node){
     return keysH
   }
   function idFromHierarchy(i){
-    var k=1,lastIndex;
+    var k=1;
     var indexParent,tmpNode,tmpId,tmpIndex,lastIndex="";
     while(k<i){
       if(k==1){
@@ -350,14 +350,14 @@ function buildDataBasic(results,configRow,configClasses,node){
     //////console.log(configRow)
     node={"id":id,"value":r[treeResults[index]].value,"shape":1,"class":treeResults[index]}
     ////////////////////console.log("nodeValues")
-    if((index==0)|((treeResults.length>2)&(index<(treeResults.length-1)))){
+    if((index==0)||((treeResults.length>2)&&(index<(treeResults.length-1)))){
       node["menuOption"]=configRow.options
     }
     //PARECE QUE NO SE UTILIZA!!!!
     node["tooltip"]=getTooltipNode(configRow.tooltip,node["class"])
     ////////////////////console.log("getDetail")
     ////////////////////console.log(configRow)
-    if((configRow.detail!="")&(configRow.detail!=undefined)){
+    if((configRow.detail!="")&&(configRow.detail!=undefined)){
       node["detail"]=getDetail(configRow.detail,node["class"])
     }
     ////////////console.log(node)
@@ -377,7 +377,7 @@ function buildDataBasic(results,configRow,configClasses,node){
   function updateNodeChildren(tD){
     var indexChild,index;
     tD=tD.reverse()
-    for (i = 0; i < tD.length; ++i) {
+    for (let i = 0; i < tD.length; ++i) {
       index=tD.findIndex(function(d){
         if(d.children.filter(v=>v.id==tD[i]["id"]).length>0){
           return true;
@@ -628,7 +628,7 @@ function copyDuplicates(index,i,node){
   }
   ////////////////console.log(index+1)
   ////////////////console.log(networkGraph.treeDataNested.length)
-  for (j = index+1; j < networkGraph.treeDataNested.length; j++) {
+  for (let j = index+1; j < networkGraph.treeDataNested.length; j++) {
     ////////////////console.log(j)
     copyInParent(j,node)
     copyInChildren(j,0,node)
@@ -643,7 +643,7 @@ function copyDuplicates(index,i,node){
     j=parseInt(i)
     //////////////////console.log(++j)
     //////////////////console.log(j) */
-    for (k = i; k < childLength; k++) {
+    for (let k = i; k < childLength; k++) {
       /* ////////////////console.log(index)
       ////////////////console.log(networkGraph.treeDataNested)
       ////////////////console.log(k)
@@ -653,7 +653,7 @@ function copyDuplicates(index,i,node){
       //////////////////console.log(j)
       //////////////////console.log(node[node["class"]+"_uri"])
       ////////////////console.log(networkGraph.treeDataNested[index]["children"][k][networkGraph.treeDataNested[index]["children"][k]["class"]+"_uri"])
-      if((node[node["class"]+"_uri"]==networkGraph.treeDataNested[index]["children"][k][networkGraph.treeDataNested[index]["children"][k]["class"]+"_uri"])&(node.id!=networkGraph.treeDataNested[index]["children"][k]["id"])){
+      if((node[node["class"]+"_uri"]==networkGraph.treeDataNested[index]["children"][k][networkGraph.treeDataNested[index]["children"][k]["class"]+"_uri"])&&(node.id!=networkGraph.treeDataNested[index]["children"][k]["id"])){
         //////////////console.log(node)
         //////////////console.log(networkGraph.treeDataNested)
         //////////////console.log(index)
