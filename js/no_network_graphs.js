@@ -23,7 +23,7 @@ function getModal2(){
   async function showTimeLine(data,modalHeader,modalContent){
     var rowDataConfig,results,node,dataTimeline=[];
   
-    for (i = 0; i < configFile.length; ++i) { 
+    for (let i = 0; i < configFile.length; ++i) { 
       if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="TIMELINE")){
         rowDataConfig=i
         break;
@@ -112,7 +112,6 @@ function getModal2(){
     }else{
       page=results[0]["item1"]["value"]
     }
-    var url = page;
 
     /*var req = new XMLHttpRequest();
     req.open('GET', page, false);
@@ -267,7 +266,7 @@ function getModal2(){
     window.open(page, '_blank').focus();
   }
   async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modalContent){
-    var rowDataConfig,results,data=[],modalHeader2;
+    var rowDataConfig,results,data=[];
     for (i = 0; i < configFile.length; ++i) { 
       if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TABLE")){
         rowDataConfig=i
@@ -305,7 +304,7 @@ function getModal2(){
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
     var mainEl=document.getElementById("modalGraph")
-    var div=document.createElement("div");
+    div=document.createElement("div");
     div.className="flex flex-col mt-6"
   
     var div2=document.createElement("div");
@@ -345,7 +344,7 @@ function getModal2(){
         row.className="bg-gray-50"
       }
       for (var i = 0; i < columns.length; i++) {
-        cell = row.insertCell();
+        var cell = row.insertCell();
         cell.className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap"
         if(data[j][columns[i]]!=undefined){
           if (columns[i].slice(-6)=="_image"){
@@ -369,7 +368,7 @@ function getModal2(){
   }
   async function showTreegraph(node,sparqlQuery,modalHeader,modalContent){
     var rowDataConfig,results,dataTreegraph=[];
-    for (i = 0; i < configFile.length; ++i) { 
+    for (let i = 0; i < configFile.length; ++i) { 
       if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TREEGRAPH")){
         rowDataConfig=i
         break;
@@ -397,7 +396,7 @@ function getModal2(){
     var rowDataConfig,results,dataTreegraph=[],title;
   
     if(node!=undefined){
-      for (i = 0; i < configFile.length; ++i) { 
+      for (let i = 0; i < configFile.length; ++i) { 
         if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="WORDCLOUD")){
           rowDataConfig=i
           break;
@@ -429,7 +428,7 @@ function getModal2(){
   }
   function transformDataWordCloud(data){
     var wordCloudData=[],splittedStr=[]
-    for (i = 0; i < data.length; ++i) { 
+    for (let i = 0; i < data.length; ++i) { 
       splittedStr=data[i]["text"]["value"]
       if(splittedStr.includes(".")){
         splittedStr=splittedStr.split(".")[1]
@@ -442,7 +441,7 @@ function getModal2(){
   function transformDataTreegraph(node,data){
     var treeData,membership=[]
   
-      for (i = 0; i < data.length; ++i) { 
+      for (let i = 0; i < data.length; ++i) { 
         membership.push({
           "name": data[i]["membership"]["value"],
           //"parent": node["value"],
@@ -462,7 +461,7 @@ function getModal2(){
   function showWikipediaPage(data,modalHeader,modalContent){
     var rowDataConfig,results,node,page,parameters,parameterTemp="";
   
-    for (i = 0; i < configFile.length; ++i) { 
+    for (let i = 0; i < configFile.length; ++i) { 
       if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WIKIPEDIA")){
         rowDataConfig=i
         break;
@@ -476,7 +475,7 @@ function getModal2(){
   
     if(parameters.length>0){
       parameters=get_parameters(parameters)
-      for (i = 0; i < parameters.length; ++i) { 
+      for (let i = 0; i < parameters.length; ++i) { 
         sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
       }  
     }
