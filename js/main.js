@@ -278,7 +278,7 @@ async function buildBasicGraph(rowDataConfig,node){
         //The value for the PARAMETER in the Sparql query is the "[class]_uri" or the
         //name of the class with no "_uri"
 
-        if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
+        if((node[node["class"]+"_uri"]!=undefined)&&(node[node["class"]+"_uri"]!="")){
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER", node[node["class"]+"_uri"]);
         }else{
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER", node["value"]);
@@ -361,7 +361,7 @@ function getFieldsConfigFile(configFile,rowDataConfig){
   if(configFile[rowDataConfig]["option"]){
     options=configFile[rowDataConfig]["option"]
   }else{
-    options=configFile[rowDataConfig]["option"]
+    options=""
   }
 
   if(configFile[rowDataConfig]["option_text"]){
@@ -391,7 +391,7 @@ function getFieldsConfigFile(configFile,rowDataConfig){
   if(configFile[rowDataConfig]["filters"]){
     filters=configFile[rowDataConfig]["filters"]
   }else{
-    filters=configFile[rowDataConfig]["filters"]
+    filters=""
   }
 
   if(configFile[rowDataConfig]["tooltip"]){

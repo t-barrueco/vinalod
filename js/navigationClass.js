@@ -335,7 +335,7 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   var navPanel=this;
   li.setAttribute("class", "relative pb-10");
   li.id=source["target"]["id"]+"_li"
-  if((property)||((i<navPanel.sources.length-1)&(navPanel.node.type!="menuOption"))){
+  if((property)||((i<navPanel.sources.length-1)&&(navPanel.node.type!="menuOption"))){
     div=document.createElement("div")
     div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
     div.setAttribute("aria-hidden", "true");
@@ -1255,7 +1255,7 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
       } */
     }
 
-    if((indexRows.length==0)&(d3.select("#"+element.getAttribute("id")).data()[0]["children"]==undefined)){
+    if((indexRows.length==0)&&(d3.select("#"+element.getAttribute("id")).data()[0]["children"]==undefined)){
       if(d3.select("#"+element.getAttribute("id")).data()[0].detail!=undefined){
         clickBubbleFreeGraph(element,networkGraph.data)
       }
