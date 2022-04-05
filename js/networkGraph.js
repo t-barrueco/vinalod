@@ -114,6 +114,7 @@ NetworkGraph.prototype.initVis = function () {
     var dragSvg = d3.zoom()
     .on("zoom", function(){
       vis.zoomed.call(vis);
+      vis.zoomScale=d3.event.transform.k
       return true;
     })
     .on("start", function(){
@@ -688,10 +689,12 @@ NetworkGraph.prototype.enterGraph = function(){
           console.log(d.x)
           var dcx = (window.innerWidth/2-d.x*zoom.scale());
           var dcy = (window.innerHeight/2-d.y*zoom.scale());
-          //console.log(dcx)
+          console.log(dcx)
+          console.log(dcy)
+
           //zoom.translate([dcx,dcy]);
           vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
-           
+          vis.zoomScale=d3.event.transform.k
            
         })
         .on('contextmenu', (d) => {
@@ -749,7 +752,7 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("height",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
         .on('dblclick', function(d){
           handleDblClickEvent()
-          console.log(d.x)
+
           if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
             //////////////console.log(d3.mouse(vis.g.node()))
             event.pageX=d3.mouse(vis.g.node())[0]
@@ -757,19 +760,27 @@ NetworkGraph.prototype.enterGraph = function(){
             ////////////console.log(d3.mouse(vis.g.node()))
             ////////////console.log(d3.event.clientX)
             ////////////console.log(d3.event.clientY)
-            vis.wrangleData(this,"bubble",d3.event.clientX,d3.event.clientY);
+            var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
+            var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
+            console.log(d.x)
+            console.log(d.y)
+            console.log(dcx)
+            console.log(dcy)
+            //vis.wrangleData(this,"bubble",d3.event.clientX,d3.event.clientY);
+            vis.wrangleData(this,"bubble",d.x + dcx,d.y + dcy);
           }
           return false;
         })
         .on("dblclick.zoom", function(d) { 
           d3.event.stopPropagation();
-          console.log(d.x)
           var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
           var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
+          console.log(dcx)
+          console.log(dcy)
           //console.log(dcx)
           //zoom.translate([dcx,dcy]);
           //vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + vis.zoomScale + ")");
-          vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")");
+          //vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")");
         })
         .on('mouseover', function(d){
           handleMouseover(d,this.getAttribute("id").replace("_image",""))
@@ -1075,6 +1086,9 @@ NetworkGraph.prototype.enterGraph = function(){
       function createContextMenu (d, menuItems, width, height, svgId) {
         //////////////////////////console.log(d)
         //////////////////////////console.log(menuItems)
+        console.log(d3.event.pageX)
+        console.log(d3.event.pageY)
+
         vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
         d3.event.preventDefault();
       }
@@ -1305,6 +1319,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
       vis.initializeSimulation();
       vis.dataJoinGraph()
       vis.exitGraph()
+      //console.log(node)
     }else{
       ////console.log("else")
       if (founded[0]["children"]){
@@ -1349,7 +1364,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
         handleNavigation(founded[0])
 
       }
-      
+      //console.log(node)
     }
   }else{
     if (origin=="table"){
@@ -1368,10 +1383,26 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
     indexRows=await checkQueries(element,undefined,origin,pageX,pageY)
     ////////console.log(indexRows)
   }
+  console.log(node)
+  console.log(d3.select("#"+node.id))
+  console.log(document.getElementById(node.id).getBoundingClientRect())
+  console.log(d3.select("#"+node.id))
+  //var circle = document.getElementById(node.id),
+  //cx = +circle.getAttribute('cx'),
+  //cy = +circle.getAttribute('cy'),
+  //ctm = circle.getCTM(),
+  //coords = getScreenCoords(cx, cy, ctm);
+  //console.log(coords.x, coords.y); // shows coords relative to my svg container
+  //console.log(d3.select("#"+node.id).attr('cy'))
+
   //alert("pasa por wrangle data")
   //////////////////////////////console.log(indexRows)
   return indexRows
-  
+  //function getScreenCoords(x, y, ctm) {
+  //  var xn = ctm.e + x*ctm.a + y*ctm.c;
+  //  var yn = ctm.f + x*ctm.b + y*ctm.d;
+  //  return { x: xn, y: yn };
+  //}
   async function addGraph(node,pageX,pageY,indexRows){
 
     //if more than one line in Config File is returned, show options in menu

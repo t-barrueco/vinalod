@@ -61,19 +61,6 @@ function genRandomString(){
   return s; 
 }
 
-/* function getId(idPrefix){
-  idValue+=1
-  id=idPrefix+idValue.toString()
-  return id
-} */
-
-/* function getOptions(configClass,elClass){
-  var selClass=configClass.filter(function(d){
-    return d.class==elClass
-  })
-  return selClass
-} */
-
 //Get tooltip from Config File
 // format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
 function getTooltip(option_text){
@@ -131,70 +118,6 @@ function showBasicGraph(){
   $("#landing-img").addClass("hidden")
   $("#landing-text").addClass("hidden")
 }
-/* function findConnectedNodes(idEl){
-  var targets=allDataModel.links.filter(function(item) {
-    return item.source.id == idEl
-  })
-  var sources=allDataModel.links.filter(function(item) {
-    return item.target.id == idEl
-  })
-  return {"sources":sources,"targets":targets,"id":idEl}
-}
-function getNodesFromConnected(connectedNodes){
-  var selNodes=[connectedNodes.id],selLinks=[],properties=[],connectedNodesProp;
-  connectedNodes.sources.forEach(function(d){
-    selNodes.push(d.source.id)
-    if(d.source.shape==2){
-      properties.push(d.source.id)
-    }
-  })
-  connectedNodes.targets.forEach(function(d){
-    selNodes.push(d.target.id)
-    if(d.target.shape==2){
-      properties.push(d.target.id)
-    }
-  })
-
-  properties.forEach(function(d){
-    connectedNodesProp=findConnectedNodes(d)
-    selNodes.push(connectedNodesProp.sources[0]["source"]["id"])
-    selNodes.push(connectedNodesProp.targets[0]["target"]["id"])
-    selLinks.push(connectedNodesProp.sources[0])
-    selLinks.push(connectedNodesProp.targets[0])
-  })
-  selNodes= [...new Set(selNodes)]
-  selLinks= [...new Set(selLinks)]
-  selNodes=allDataModel.nodes.filter(function(d){
-    return selNodes.includes(d.id)
-  })
-  selLinks=selLinks.concat(connectedNodes.sources.concat(connectedNodes.targets))
-  selNodes= [...new Set(selNodes)]
-  selLinks= [...new Set(selLinks)]
-  return {"nodes":selNodes,"links":selLinks}
-} */
-
-//Add a graph when clicking on bubble. 
-//node=data from bubble clicked
-//pageX and pageY= position of bubble in screen
-//indexRows=lines from Config File for the class of bubble clicked.
-// Ask queries for lines in Config File has been executed to show options that give results.
-
-
-/* async function addGraph(node,pageX,pageY,indexRows){
-
-  //if more than one line in Config File is returned, show options in menu
-  if(indexRows.length>1){
-    getMenuItems(indexRows,node,pageX,pageY,origin)
-  }else if (indexRows.length==1){
-
-    //throw new Error("Something went badly wrong!");
-
-    //if only one option is returned build graph.
-    await buildBasicGraph(indexRows[0]["position"],node)
-  }
-  //no se necesita devolver el indexRows?????
-  return indexRows
-} */
 
 //Show options from the Config File in menu
 function getMenuItems(items,node,pageX,pageY,origin){
@@ -224,10 +147,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
                   position=i
                 }
               }
-          ////////////////////////////console.log("build basic graph else")
-          ////////console.log(node.menuOption)
           if(node.menuOption!=undefined){
-            ////////console.log(node)
             if(node.menuOption.split(";")[0]==d.title){
               networkGraph.expandLevelBranch(node)          
               networkGraph.data=flatten(networkGraph.treeData).flatData
@@ -239,8 +159,6 @@ function getMenuItems(items,node,pageX,pageY,origin){
               networkGraph.dataJoinGraph()
               networkGraph.exitGraph()
             }else{
-              ////////console.log(node.menuOption.split(";")[0])
-              ////////console.log(d.title)
               buildBasicGraph(position,node,d.title)
             }
           }else{
@@ -251,11 +169,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
       menuItems.push(element)
     }
     //Send menuItems to menuFactory which will draw the menu in the graph
-    //////////console.log(networkGraph.zoomScale)
-    //networkGraph.menuFactory(pageX-200 ,pageY-200, menuItems, node,"dblClick",250)
-    networkGraph.menuFactory(0 ,0, menuItems, node,"dblClick",250)
-    //networkGraph.menuFactory(pageX-200 ,pageY-300, menuItems, node,"dblClick",250)
-
+    networkGraph.menuFactory(100,0, menuItems, node,"dblClick",250)
   }
 }
 /* var dcx = (window.innerWidth/2-d.x*zoom.scale());
@@ -319,17 +233,38 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 
     //add a different menu if clicking from table or bubble
     if(origin=="table"){
-      //DIFERENTE FUNCIÓN PARA LLAMAR SI ES CON BOTÓN DERECHO??
-      //UNIFICAR!!!
       addContextMenuToTable(node,Items)
     }else{
 
-      //networkGraph.menuItems=Items
-      networkGraph.menuFactory(pageX-200, pageY-200 , Items, node,"contextMenu",250);
+      console.log("-------------------------")
+      console.log("pageX: "+pageX)
+      console.log("pageY: "+pageY)
+      console.log(pageX-200)
+      console.log(pageY-200)
+      console.log("zoomScale: "+networkGraph.zoomScale)
+      if(pageY-200<0){
+        console.log("pageY menos")
+        pageY=pageY+100
+      }else{
+        pageY=pageY-100
+      }
+      if(pageX-200<150){
+        console.log("pageX menos")
+        pageX=pageX+150
+      }else{
+        //pageX=pageX-200
+      }
+      console.log("pageX after: "+pageX)
+      console.log("pageY after: "+ pageY)
+      console.log(d3.select("#networkGraph").node())
+      console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
+      var width=d3.select("#networkGraph").node().getBoundingClientRect().width
+      var height=d3.select("#networkGraph").node().getBoundingClientRect().height
+      //pageX - width / 2, pageY - height / 1.5
+      networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
 }
 //execute sparql query
-//NO SE LLAMA TODAS LAS VECES QUE SE PUEDE LLAMAR
 function runSparlqQuery(settings){
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
@@ -343,13 +278,11 @@ function runAskSparlqQuery(url,sparqlQuery){
   var prefixes="",settings
   var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   
-  ////////////////console.log(sparqlQuery)
   if (url=="https://query.wikidata.org/sparql"){
     settings = { url: queryUrl, async: true       }; 
   }else{
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   }
-  //console.log(sparqlQuery)
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
     results = _data.boolean;
@@ -363,7 +296,6 @@ function runAskSparlqQuery(url,sparqlQuery){
 async function checkAskResults(indexRows,node){
   var sparqlQuery,resultIndexRows=[],parameters,singleIndexRow,arrayMenuOptions
 
-  //SE MIRA LAS OPCIONES QUE SE HAN SELECCIONADO PREVIAMENTE
   if(node.menuOption){
     arrayMenuOptions=node.menuOption.split(";")
     indexRows=indexRows.filter(d=>!arrayMenuOptions.includes(d.option))
@@ -371,25 +303,15 @@ async function checkAskResults(indexRows,node){
 
   for (var i = 0; i < indexRows.length; i++) {
     //first we transform the select to ask query
-    //////////console.log(configFile[indexRows[i]["position"]]["askquery"])
     if(configFile[indexRows[i]["position"]]["askquery"]){
       sparqlQuery=configFile[indexRows[i]["position"]]["askquery"]
     }else{
       sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     }
     
-    //singleIndexRow=indexRows[i]
     //get parameters from config file
-    //CAMBIAR ESTO CON LO QUE HABLÉ EN LA CONVERSACIÓN CON X.
-    //ESTO YA DEBERÍA ESTAR EN ALGÚN SITIO????
-    //TENDRÍA QU ESTAR SOLO EN UN SITIO PORQUE SE LLAMA DESDE EL ASK Y DESDE EL SELECT
-    //CREAR UNA FUNCIÓN Y LLAMAR DESDE LOS DOS SITIOS
     parameters=configFile[indexRows[i]["position"]]["parameters"]
-    //console.log(node)
     if(node["class"]!=undefined){
-      /* if(sparqlQuery.indexOf("PARAMETER2")){
-        replaceParametersQuery(node,sparqlQuery)
-      } */
       if((parameters!="")&(parameters!=undefined)){
         //if there are parameters we have to replace everything form the node with the
         //parameters in the config file
@@ -397,7 +319,6 @@ async function checkAskResults(indexRows,node){
         for (j = 0; j < parameters.length; ++j) { 
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER"+(j+2).toString(), node[parameters[j]]);
         }  
-        ////console.log(node[node["class"]+"_uri"])
           if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
             sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
 
@@ -406,51 +327,36 @@ async function checkAskResults(indexRows,node){
           }
       }else{
         if(node[node["class"]+"_uri"]!=undefined){
-          ////console.log(node)
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
-        //ELIMINAR LO DE ACABAR EN CODE, TODAS DEBERÍAN ACABAR EN URI
         } else{
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["value"]+"_code"]);
         }
       }
-    //NO DEBERÍA DE HABER UN NODO SIN CLASS. HABRÍA QUE ELIMINAR ESTO
     }else{
       sparqlQuery=sparqlQuery.replaceAll(node,"PARAMETER"); 
     }
-
-    
-    ////////////console.log(sparqlQuery)
     results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery)
     
     //add row to the results if there are results returned
-    //////////console.log(results)
     if(results==true){
       resultIndexRows.push(indexRows[i])
     }
   }
-  ////////////////////////////////////console.log(resultIndexRows)
   return resultIndexRows
 }
 function replaceParametersQuery(node,sparqlQuery){
 var j=2,result;
 while(sparqlQuery.indexOf("PARAMETER"+(j).toString())!=-1){
-  //FILTER(?caseLawConceptParent_country=<PARAMETER2>).
   var regex = new RegExp('(?<='+escapeRegExp("FILTER(?")+').*(?='+"=<PARAMETER2"+')')
-  //var result = sparqlQuery.match((?=cow).*(?=milk));
   result=regex.exec(sparqlQuery)[0]
-  //////////console.log("PARAMETER"+(j).toString())
-  //////////console.log(sparqlQuery)
-  //////////console.log(result)
-  //////////console.log(node)
-  //////////console.log(node[result])
+
   j+=1
 }
 function escapeRegExp(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 }
-//MIRAR SI CAMBIO ESTO DE TRANSFORMAR LA ASK QUERY Y LA PONGO DIRECTAMENTE EN EL
-//CONFIG FILE PARA EVITAR ERRORES!!!!
+
 function fromSelectToAskQuery(query){
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
@@ -458,9 +364,7 @@ function fromSelectToAskQuery(query){
       query.toLowerCase().indexOf("select"), 
       query.toLowerCase().indexOf("where") - 1 
     );
-    ////////////////console.log(mySubString)
     query=query.replace(mySubString,"ASK")
-    ////////////////console.log(query)
     if(query.toLowerCase().indexOf("select")!=-1){
       mySubString = query.substring(
         query.toLowerCase().indexOf("select"), 
@@ -473,13 +377,9 @@ function fromSelectToAskQuery(query){
       query.toLowerCase().indexOf("select"), 
       query.toLowerCase().indexOf("{") - 1 
     );
-    ////////////////console.log(mySubString)
-    ////////////////console.log(query)
     query=query.replace(mySubString,"ASK")
-    ////////////////console.log(query)
   }
   
-
   if(query.toLowerCase().lastIndexOf("group by")!=-1){
     mySubString = query.substring(
       query.toLowerCase().lastIndexOf("group by"), 
@@ -504,13 +404,10 @@ function fromSelectToAskQuery(query){
     query=query.replace(mySubString,"")
   }
   query=query.replaceAll("parameter","PARAMETER")
-  ////////////console.log(query)
   return query
 }
 
  //function that return node in the treeMap if founded
- //SI NO SE ENCUENTRA DEVUELVE -1???
- //MIRAR SI LO PUEDO UTILIZAR DESDE MÁS SITIOS
  function findNodeTreemap(nodeId,treeData){
    var founded=treeData.filter(function(item) {
      return item.id == nodeId
@@ -607,8 +504,6 @@ function getTooltipMenu(d){
   return text;
 }
 // Add to legend
-// REVISAR COMO SE RELLENA LA LEGEND
-//////////////////////////////////////
 
 function fillLegend(dif,addOne){
   if ((addOne)&(dif.length>0)){
@@ -622,8 +517,6 @@ function fillLegend(dif,addOne){
 }
 function appendLi(i,textLi){
   var li,classLi;
-  ////////////////////console.log(colorScale.range())
-  ////////////////////////////////////console.log("pasa por appendLi")
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
   li=d3.select("#legend").append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
@@ -640,8 +533,6 @@ function appendLi(i,textLi){
 }
 function differenceArrays(a1, a2) {
   var result = [];
-  //////////////////////////////////console.log(a1)
-  //////////////////////////////////console.log(a2)
   for (var i = 0; i < a1.length; i++) {
     if (a2.indexOf(a1[i]) === -1) {
       result.push(a1[i]);
@@ -650,8 +541,6 @@ function differenceArrays(a1, a2) {
   return result;
 }
 //function to autocomplete in search field
-//PONER LAS ATRIBUCIONES DEL CÓDIGO PORQUE ES UN CÓDIGO COPIADO
-//REVISAR SI QUITO O NO LOS COMENTARIOS Y PONGO MÍOS
 function autocomplete(inp, arr) {
   var currentFocus;
   inp.addEventListener("input", function(e) {
@@ -772,29 +661,22 @@ function autocompleteValSelected(el){
   }
 }
 //function that get a key of an object from value
-//MIRAR SI MERECE LA PENA DEJARLA!!!!
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
-//REVISAR ESTA FUNCIÓN
 function insertAfter(newNode, existingNode) {
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
-//ESTA FUNCIÓN SE PODRÍA ELIMINAR
 function getCommentOption(option){
   return configFile.filter(d=>d.option==option)[0]["option_text"]
 }
-//ESTA FUNCTION SE PODRÍA ELIMINAR??????
 function get_node_from_element(id){
   return d3.select("#"+id).data()[0]
 }
 
-//REVISAR SI USO ESTA FUNCIÓN Y SI ES ÚTIL
 function get_configRows_class(classNode){
   var configRows=[]
   for(var i = 0; i < configFile.length; i++) {
-    ////////////////////////console.log(configFile[i]["class"])
-    ////////////////////////console.log(classNode)
     if(configFile[i]["class"]==classNode){
       configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
     }
@@ -808,7 +690,6 @@ function bubbleImage(node){
   if((node[node["class"]+"_image"]!=undefined)&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
-    ////console.log(node[node["class"]+"_uri"])
     if(node[node["class"]+"_uri"]){
       icon=filesIcons.filter(function(d){
         return d.ID==node[node["class"]+"_uri"];
@@ -828,35 +709,6 @@ function bubbleImage(node){
   
 }
 
-/* function handleClick(){
-  numClicks++;
-  if (numClicks === 1) {
-    singleClickTimer = setTimeout(() => {
-      numClicks = 0;
-      return 1;
-    }, 100);
-  } else if (numClicks === 2) {
-    clearTimeout(singleClickTimer);
-    numClicks = 0;
-    return 2;
-  }
-}; */
-
-/* function checkUrl(url) {
-  var request = false;
-  if (window.XMLHttpRequest) {
-          request = new XMLHttpRequest;
-  } else if (window.ActiveXObject) {
-          request = new ActiveXObject("Microsoft.XMLHttp");
-  }
-
-  if (request) {
-          request.open("GET", url);
-          if (request.status == 200) { return true; }
-  }
-
-  return false;
-} */
 
 //function for transition from bubble image to text in bubbles when zoom in and zoom out
 function textImageZoom(zoomScale){
@@ -864,43 +716,29 @@ function textImageZoom(zoomScale){
     d3.selectAll(".nodeCircleImage")
     .transition()
     .attr('opacity', function(d) {
-      /*           if (d.scaleThreshold < 1) {
-                  return 1;
-                } */
                 return 0;
               })
     //}
     d3.selectAll(".nodeCircleText")
     .transition()
     .attr('opacity', function(d) {
-      /*           if (d.scaleThreshold < 1) {
-                  return 1;
-                } */
                 return 1;
               })
   }else{
     d3.selectAll(".nodeCircleImage")
     .transition()
     .attr('opacity', function(d) {
-      /*           if (d.scaleThreshold < 1) {
-                  return 1;
-                } */
                 return 1;
               })
-    //}
     d3.selectAll(".nodeCircleText")
     .transition()
     .attr('opacity', function(d) {
-      /*           if (d.scaleThreshold < 1) {
-                  return 1;
-                } */
+
                 return 0;
               })
   }
 }
 //select tab from navigation panel. Show children or show detail for node
-//A LO MEJOR SE PODRÍA INCLUIR EN EL FICHERO DE NAVIGATION PANEL
-//SE PODRÍAN HACER FUNCIONES MÁS PEQUEÑAS QUE ACLARARAN EL POR QUE SE 
 function selectTab(element,otherText){
   var otherEl;
   var elements = element.querySelectorAll('span');
@@ -914,8 +752,7 @@ function selectTab(element,otherText){
   elements[1].classList.remove("bg-blue-500")
   element.classList.remove("text-gray-500")
   element.classList.add("text-gray-900")
-  ////////////console.log(d3.select("#"+element.parentElement.getAttribute("id").replace("_tabsNav","")).data()[0])
-  ////////////console.log(navigation)
+
   if(otherText=="detailsLink"){
     navigation.contentTable()
   }else{
@@ -923,16 +760,9 @@ function selectTab(element,otherText){
   }
   
 }
-/* function detailTab(element){
-  selectTab(element,"childNodesLink")
-}
-function childNodesTab(element){
-  selectTab(element,"detailsLink")
-} */
 
 //Save detail properties in node. When click on detail tab, the detail will shown
 //based on structure
-//QUIZÁS DEBERÍA ESTAR CERCA DE DONDE SE MUESTRA EL DETAIL?????
 function getDetail(detail,nodeClass){
   var detailNode="";
 
@@ -952,7 +782,6 @@ function getDetail(detail,nodeClass){
 //change networkgraph type of visualization
 //with this function we have unique bubbles per value and all links will point to
 //the same bubble
-//DEBERÍA DE AÑADIR FUNCIONES PARA QUE SEA MÁS CLARO LO QUE SE ESTÁ HACIENDO
 function nestedNodes(el){
   if(el.classList.contains("bg-gray-200")){
     el.classList.remove("bg-gray-200")
@@ -974,8 +803,7 @@ function nestedNodes(el){
     const span=el.querySelector("span")
     span.classList.remove("translate-x-5")
     span.classList.add("translate-x-0")
-    //////////console.log(networkGraph.treeData)
-    //////////console.log(networkGraph.treeDataNested)
+
     networkGraph.data=flatten_v2(networkGraph.treeData).flatData
     networkGraph.initializeSimulation();
     networkGraph.dataJoinGraph()

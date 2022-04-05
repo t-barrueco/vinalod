@@ -1,18 +1,13 @@
-// Todas las variables que voy a utilizar como globales.
-// Hay que itentar que sean las menos posibles. Tengo que verificar que se utilizan
-//REVISAR SI NO PUEDO AÑADIR ALGUNAS A UN OBJETO DE UNA CLASE QUE SE UTILIZE.
-//AGRUPARLAS!!!!
+
 var nodes=[],links=[],data={},networkGraph,legend,configFile=null,configFileExp=null,dataInstances,allDataModel,
 dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,
 nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow=[],nodesClassesCorrespondence,
 filesIcons,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],
 graphHistory=[],filtersInGraph=[],filtersList=[],classesFilterList=[],optionsMenuHtml,showNavigation=true,numClicks = 0;
-//estas variables se pueden pasar a la clase networkGraph: timer, delay and prevent
 var timer = 0;
 var delay = 200;
 var prevent = false;
-//verificar que esto se usa
-$.xhrPool = [];
+
 function dataViz(){
     var optionsMenu;
     //get configuration from config_basicMode.json where all options for basic mode
@@ -21,7 +16,6 @@ function dataViz(){
               d3.tsv("../config_vinalod/graph_icons.txt",function(dataIcons){
                 configFile=dataConfig;
                 filesIcons=dataIcons;
-                //console.log(dataIcons)
                 //the collection chosen per default in the flyout menu is 
                 //eu_vocabularies
                 optionsMenu=dataConfig.filter(d=>d.collection=="eu_vocabularies")
@@ -36,7 +30,6 @@ function dataViz(){
 function updateAll(){
     networkGraph.updateAll();
   }
-//estas funciones o se adaptan para cambiar las forces del graph o se quitan
 function forceYChecked(checked){
   networkGraph.forceProperties.forceY.enabled = checked; 
   updateAll();
@@ -116,10 +109,10 @@ function forceLinksIterations(value){
 
   
 async function buildBasicGraph(rowDataConfig,node){
-    var configRow,sparqlQuery,queryUrl, hierarchy, parameters,modal2,property_names,options,prefixes,configClasses,classes,graphType,columns,found,menuOptions;
+    var configRow,sparqlQuery,queryUrl, parameters,modal2,prefixes,configClasses;
     
     //get all fields from config file and save them in configRow.
-    //configRow is a is an object with all fields from Config File Row.
+    //configRow is an object with all fields from Config File Row.
     configRow=getFieldsConfigFile(configFile,rowDataConfig)
 
     //add a query to array. This will be used in download query menu option from right menu
@@ -140,10 +133,7 @@ async function buildBasicGraph(rowDataConfig,node){
     if(node!=undefined){
       //if we come from a bubble clicked or a row in a table
       //we have to replace the PARAMETERS in the original query with the values
-      //LLAMAR A ESTA FUNCIÓN DESDE EL ASK QUERY
       replaceParmtrsQuery()
-
-      //MIRAR ESTA CORRESPONDENCIA DE CLASES!!!!
       if(nodesClassesCorrespondence==null){
         nodesClassesCorrespondence=getClassesShow(configRow["classes"])
       } 
@@ -155,7 +145,6 @@ async function buildBasicGraph(rowDataConfig,node){
     //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
     if(configRow.graphType=="TREE"){
       //message shown when executing query
-      //PONER EN UNA FUNCIÓN?????????????
       var fn = function(){
           d3.select("#spin").style("display","none")
           document.getElementById("sparql-timeout").style.display="inline-block"
@@ -169,14 +158,11 @@ async function buildBasicGraph(rowDataConfig,node){
       queryUrl = configRow.url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
       settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
-      //console.log(sparqlQuery)
       $objectAjax=$.ajax(settings).then  (function( _data ) {
         var results = _data.results.bindings;
 
         //stop displaing message when executing query
         d3.select("#spin").style("display","none")
-        //POR QUÉ AÑADO ESTA GRAPHHISTORY
-        //graphHistory.push(options)
 
         //if no bubble is clicked or row in the table
         if(node==undefined){
@@ -185,42 +171,18 @@ async function buildBasicGraph(rowDataConfig,node){
           //get data from results in query
           data=buildDataBasic(results,configRow,configClasses,node)
           //add forces to graph
-          //HAY QUE PASAR LOS PARÁMETROS PARA QUE SEA DINÁMICO
           setForcesGraph()
 
           networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
           legend=new Legend("legend")
-          /* if(showNavigation){
-            if (typeof (navigation) != "object") {
-              navigation = new navigationPanel("freeGraph", data.flatData.nodes[0]);
-            } else if (navigation.type != "freeGraph") {
-              navigation = new navigationPanel("freeGraph", data.flatData.nodes[0]);
-            } else {
-              navigation.init()
-            }
-          } */
-          //PENSAR SI QUIERO COLAPSAR O NO EL GRÁFICO
+
           collapse(networkGraph.treeData[0])
         }else{
           //build data for the graph
           
           data=buildDataBasic(results,configRow,configClasses,node)
 
-/*           found=networkGraph.treeData.filter(function(item) {
-            return (item.id == data.treeData[0]["id"])
-          }) */
-
-          //QUIZÁS ESTAS LÍNEAS DEBERÍAN DE IR EN EL FICHERO DE LOS DATOS
-          //if node has no children, concat the new treeData with the
-          //data already in the treeData of the Networkgraph
-          //if(networkGraph.treeData.filter(d=>d.id==node.id).length==0){
-          //  networkGraph.treeData=networkGraph.treeData.concat(data.treeData)
-          //}else{
-          //if we have clicked already an option for the node
-          //click on splitInMenuOption
-          //  splitInMenuOption(data.treeData,networkGraph.treeData)
-          //}
-          //legend.addColors(colorScale)
+          
           networkGraph.data=flatten(networkGraph.treeData).flatData
           networkGraph.initializeSimulation();
           networkGraph.dataJoinGraph()
@@ -229,35 +191,31 @@ async function buildBasicGraph(rowDataConfig,node){
           networkGraph.dataJoinGraph()
           networkGraph.exitGraph()
 
-          //CAMBIAR COMO MOSTRAR LA LEGEND
-          //var dif=differenceArrays(nodesClassesShow,colorScale.domain())
-          //fillLegend(dif,true)
-          //////console.log(legend)
-          //////console.log(colorScale.range())
-          //////console.log(colorScale.domain())
-          //////console.log(networkGraph.colorScale.domain())
           legend.addColors(colorScale)
           handleNavigation(node)
-          //////console.log(results)
-          //////console.log(configRow)
-          //////console.log(configRow.hierarchy.length)
+
+          var circle = document.getElementById(node.id),
+          cx = +circle.getAttribute('cx'),
+          cy = +circle.getAttribute('cy'),
+          ctm = circle.getCTM(),
+          coords = getScreenCoords(cx, cy, ctm);
+          console.log(coords.x, coords.y); // shows coords relative to my svg container
+          console.log(document.getElementById(node.id).getBoundingClientRect())
+          var dcx = (window.innerWidth/2-coords.x*networkGraph.zoomScale);
+          var dcy = (window.innerHeight/2-coords.y*networkGraph.zoomScale);
+          console.log(dcx)
+          console.log(dcy)
+
+          networkGraph.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + networkGraph.zoomScale + ")");
+           
           if(configRow.hierarchy.length>1){
-            //////console.log(configRow.hierarchy)
-            //////console.log(networkGraph.treeData)
-            //////console.log(networkGraph.treeData.filter(d=>d.id==node.id)[0])
+
             collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
           }
-          //collapse()
         }
 
-        //manage filters
-        /* if((results.length>0)&(configRow.filters!="")){
-          addFilters(configRow.filters,data)
-          filtersInGraph=filtersInGraph.concat(configRow.filters)
-        } */
     
       })
-      //REVISAR SI ME HACEN FALTA TODOS FAIL, ALWAYS...
       .fail(function (jqXHR, textStatus, errorThrown) {
         document.getElementById("sparql-timeout").style.display="inline-block"
       })
@@ -306,7 +264,11 @@ async function buildBasicGraph(rowDataConfig,node){
         showModal("#myModal2")
       }
     }
-
+    function getScreenCoords(x, y, ctm) {
+      var xn = ctm.e + x*ctm.a + y*ctm.c;
+      var yn = ctm.f + x*ctm.b + y*ctm.d;
+      return { x: xn, y: yn };
+    }
     function replaceParmtrsQuery(){
       if(configRow.parameters!=""){
         parameters=get_parameters(configRow.parameters)
@@ -315,7 +277,6 @@ async function buildBasicGraph(rowDataConfig,node){
         }  
         //The value for the PARAMETER in the Sparql query is the "[class]_uri" or the
         //name of the class with no "_uri"
-        //REVISAR ESTO PORQUE TIENE QUE SER SIEMPRE CLASS_URI
 
         if((node[node["class"]+"_uri"]!=undefined)&(node[node["class"]+"_uri"]!="")){
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER", node[node["class"]+"_uri"]);
@@ -323,8 +284,6 @@ async function buildBasicGraph(rowDataConfig,node){
           sparqlQuery=sparqlQuery.replaceAll("PARAMETER", node["value"]);
         }
       }else{
-        //En qué casos se tiene el valor del configRow en el node??????
-        //MIRAR LOS CASOS EN LOS QUE SE GUARDA EL CONFIGROW?????
         if(node["configRow"]){
           sparqlQuery=configRow.sparqlQuery.replaceAll("PARAMETER", node["value"]);
         }else{
@@ -332,12 +291,11 @@ async function buildBasicGraph(rowDataConfig,node){
         }        
       }
     }
-    //PONER PARA QUE SIRVE CADA UNA DE LAS FORCES
     function setForcesGraph(){
       forces = {
         center: {
             x: 0.5,
-            y: 0.2
+            y: 0.5
         },
         charge: {
             enabled: true,
@@ -369,28 +327,6 @@ async function buildBasicGraph(rowDataConfig,node){
       }
     }
 
-    //REVISAR LAS MENUOPTIONS!!!!!!!
-/*     function splitInMenuOption(newTreeData,treeData){
-      var menuOptionNodes=[]
-
-      let obj = networkGraph.treeData.find(n => n.id == newTreeData[0]["id"]);
-      menuOptionNodes.push({ "id": genRandomString(), "value": obj.menuOption, "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
-      menuOptionNodes.push({ "id": genRandomString(), "value": newTreeData[0].menuOption, "type": "menuOption", "children": newTreeData[0].children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
-      obj.children = menuOptionNodes;
-    } */
-/*     function splitInMenuOption(node,menuOptions){
-      var menuOptionNodes=[]
-      ////////////////////////////console.log(node)
-      ////////////////////////////console.log(menuOptions.split(";"))
-      let obj = networkGraph.treeData.find(n => n.id == node["id"]);
-      ////////////////////////////console.log(obj.children)
-      menuOptionNodes.push({ "id": genRandomString(), "value": menuOptions.split(";")[0], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
-      menuOptionNodes.push({ "id": genRandomString(), "value": menuOptions.split(";")[1], "type": "menuOption", "children": [], "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
-      obj.children = menuOptionNodes;
-      //} else {
-      //obj.children.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
-      //}
-    } */
   }
 
 //get all fields from config file. if the field does not exists it will be empty
@@ -488,24 +424,12 @@ function getFieldsConfigFile(configFile,rowDataConfig){
 }
 
 function collapse(root){
-  //////console.log("pasa por collapse")
-  //////console.log(root)
+
   networkGraph.collapseAll(root)
 }
 function expand(){
   networkGraph.expandAll()
 }
-/* function zoomIn(){
-  networkGraph.zoomIn()
-}
-function zoomOut(){
-  networkGraph.zoomOut()
-} */
-
-
-//REVISAR COMO SE TOMAN TODAS LOS ELEMENTOS COMO EL MODAL, ETC...
-//SE SIGUE UTILIZANDO??????
-//PONER TODAS EN UNA FUNCION AL PRINCIPIO!!!!
 
 // Get the modal
 var modal = document.getElementById("myModal");
@@ -513,33 +437,6 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 
-/* function get_geojson(field){
-  function callbackfn(data) {
-    //////////console.log("callback", data);
-  };
-  
-  
-  $.ajax({
-        type: 'GET',
-        url: field,
-        contentType: "application/javascript",
-        dataType: "jsonp",
-        jsonpCallback:'callbackfn',
-        //data: { 'username': 'Jack' },
-        crossDomain: true,
-        success: function(data){
-          //////////console.log('callback success');
-          //////////console.log(data);
-        },
-        error: function (xhr, status, err) {
-            //////////console.log(status, err);
-        }
-  });
- 
-} */
-
-
-//"http://geojson.io/#data=data:text/x-url,"+encodeURIComponent("https://gisco-services.ec.europa.eu/distribution/v2/nuts/distribution/BE1-region-03m-4326-2016.geojson")
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   if(navigation){
@@ -576,21 +473,7 @@ span2.onclick = function() {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-//PONER ALGO DENTRO!!!!!
 window.onclick = function(event) {
-  //////////////////////console.log("click window")
-  ////////////////////////console.log($("#myModal2").attr("class"))
-  /* if($("#myModal2").hasClass("translate-x-full")){
-    
-    $("#myModal2").removeClass("translate-x-full")
-    $("#myModal2").addClass("translate-x-0")
-  }
-  if (event.target == modal2) {
-    //////////////////////console.log("pasa por aquí")
-    //modal2.style.display = "none";
-    $("#myModal2").removeClass("translate-x-0")
-    $("#myModal2").addClass("translate-x-full")
-  } */
 }
 
 function downloadData(element){
@@ -667,13 +550,11 @@ function downloadData(element){
   }
   
 }
-//AÑADIR ESTA FUNCIONALIDAD!!!!
 function downloadQuery(){
   execQueries.forEach(function(q){
     download([{"query":q}], 'testQuery.csv', 'text/csv;encoding:utf-8');       
   })
 }
-//PARECE QUE NO SE UTILIZA!!!!
 function getTooltipNode(tooltip,nodeClass){
   var tooltipNode={}
   if(tooltip!=""){
@@ -692,7 +573,6 @@ function get_parameters(parameters){
   })
   return temp
 }
-//GESTIONAR EL FLYOUT MENU CUANDO SE PASA A EXPERT Y BASIC MODE
 function expertMode(){
   if($("#flyoutMenu").hasClass("opacity-100")){
       $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
@@ -715,7 +595,6 @@ function basicMode(){
   }
   
 }
-//FLYOUT MENU SE GESTIONA EL CAMBIO DE COLLECCIÓN. SE MUESTRAN LAS OPCIONES PARA LA COLECCIÓN
 function changeCollectionOptions(collection){
   var newCollection,oldCollection;
 
@@ -744,7 +623,6 @@ function appendHtmlOptions(optionsMenu){
       $("#options-menu").append($(html))
   });
 }
-//VER CUANDO SE UTILIZA!!!
 function handleNavigation(node){
   if(showNavigation){
     if (typeof (navigation) != "object") {
@@ -752,7 +630,6 @@ function handleNavigation(node){
     } else if (navigation.type != "freeGraph") {
       navigation = new navigationPanel("freeGraph", node);
     } else {
-      ////////////////////////////////////console.log("navigation.init()")
       navigation.node=node
       navigation.init()
     }

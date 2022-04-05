@@ -180,5 +180,5 @@ body{
 #logo:hover { text-decoration: none; }
 
 div#networkgraph{
-  overflow-y: hidden;
+  overflow-y: auto;
   }
