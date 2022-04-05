@@ -89,7 +89,7 @@ NetworkGraph.prototype.initVis = function () {
   //REVISAR QUE TODO ESTO SE ESTÁ UTILIZANDO!!!!
   vis.drag = d3.drag()
           .subject(function(d){
-            var t = d3.select(this);
+            //var t = d3.select(this);
             return {x: 0, y: 0};
           })
           .on("start",function(){
@@ -391,7 +391,7 @@ NetworkGraph.prototype.updateForces= function() {
 
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
-  var vis = this,linkId,classElement,text;
+  var vis = this,text;
 
   //tooltip for the bubbles
   //if class=free call the function that gets tooltip for free graph
@@ -487,7 +487,7 @@ NetworkGraph.prototype.dataJoinGraph = function(){
 }
 
 NetworkGraph.prototype.enterGraph = function(){
-    var vis=this,r,cluster;
+    var vis=this,r;
     let lineHeight = 12;
     vis.colorScale.range(vis.colors.slice(0,nodesClassesShow.length))
     //console.log(nodesClassesShow)
@@ -630,7 +630,7 @@ NetworkGraph.prototype.enterGraph = function(){
         })
         .attr("r", function(d){
           if(!d.number){
-            if((d.more_results!="")&(d.more_results!=undefined)){
+            if((d.more_results!="")&&(d.more_results!=undefined)){
               return 50;
             }else{
               return 17;
@@ -814,7 +814,7 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.nodeCircleFree=vis.nodeCircleFree
         .enter().append("g")
         .attr("class",function(d){
-          if((d.more_results!="")&(d.more_results!=undefined)){
+          if((d.more_results!="")&&(d.more_results!=undefined)){
             return "nodeCircleFree g-cluster"
           }else{
             return "nodeCircleFree"
@@ -827,14 +827,14 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.nodeCircleCircleFree=vis.nodeCircleFree
             .append("circle")
             .attr("class",function(d){
-              if((d.more_results!="")&(d.more_results!=undefined)){
+              if((d.more_results!="")&&(d.more_results!=undefined)){
                 return d.class + " nodeCircleCircleFree cluster"
               }else{
                 return d.class + " nodeCircleCircleFree"
               }
             }) 
             .attr("r", function(d){
-              if((d.more_results!="")&(d.more_results!=undefined)){
+              if((d.more_results!="")&&(d.more_results!=undefined)){
                 return 50;
               }else{
                 return 17;
@@ -872,7 +872,6 @@ NetworkGraph.prototype.enterGraph = function(){
             })
             .on("click",function(d){
               var element=this
-              var element=this
               timer = setTimeout(function() {
                 if (!prevent) {
                   //////////////////////////////////////////////////////////console.log("entra en circle")
@@ -893,7 +892,7 @@ NetworkGraph.prototype.enterGraph = function(){
               //d3.event.sourceEvent.stopPropagation();
               d3.event.preventDefault();
               //d3.event.preventDefault();
-              if((d.type=="uri")|(d.type=="bnode")){
+              if((d.type=="uri")||(d.type=="bnode")){
       /*             d3.event.preventDefault();
                 vis.isDblclick = true;
                 clearTimeout(vis.dblclickTimeout);
@@ -962,7 +961,7 @@ NetworkGraph.prototype.enterGraph = function(){
           //d3.event.sourceEvent.stopPropagation();
           d3.event.preventDefault();
           //d3.event.preventDefault();
-          if((d.type=="uri")|(d.type=="bnode")){
+          if((d.type=="uri")||(d.type=="bnode")){
             /* d3.event.preventDefault();
             vis.isDblclick = true;
             clearTimeout(vis.dblclickTimeout);
@@ -1083,7 +1082,7 @@ NetworkGraph.prototype.enterGraph = function(){
         d.fx = null;
         d.fy = null;
       }
-      function createContextMenu (d, menuItems, width, height, svgId) {
+/*       function createContextMenu (d, menuItems, width, height, svgId) {
         //////////////////////////console.log(d)
         //////////////////////////console.log(menuItems)
         console.log(d3.event.pageX)
@@ -1091,7 +1090,7 @@ NetworkGraph.prototype.enterGraph = function(){
 
         vis.menuFactory(d3.event.pageX-200, d3.event.pageY-200 , menuItems, d,"contextMenu");
         d3.event.preventDefault();
-      }
+      } */
       function words(text){
         const words = text.split(/\s+/g); // To hyphenate: /\s+|(?<=-)/
         if (!words[words.length - 1]) words.pop();
@@ -1124,9 +1123,9 @@ NetworkGraph.prototype.enterGraph = function(){
         //////////////////////console.log(lines)
         return lines;
       }
-      function longestString(strs) {
+/*       function longestString(strs) {
         return strs.sort(function(a, b) {return b.length - a.length})[0];
-      }
+      } */
       function textRadius(lines){
         let radius = 0;
         for (let i = 0, n = lines.length; i < n; ++i) {
@@ -1175,11 +1174,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         p.each(function () {
           this.style.opacity = "0"
         })
-        if (origin=="contextMenu"){
-          d.action(data,d)
-        }else{
-          d.action(data,d)
-        }
+        d.action(data,d)
+
       })
       .on('mouseover', function(d){
         if(configFile.filter(v=>v.option==d.title).length>0){
