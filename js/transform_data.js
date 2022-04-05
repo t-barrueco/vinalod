@@ -32,8 +32,8 @@ function buildDataBasic2(results,configRow,configClasses,node){
   }   
   ////////////////////console.log(results)
   ////////////////////console.log(hierarchy)
-  for (j = 0; j < results.length; ++j) {
-    for (i = 0; i < hierarchy.length; ++i) {
+  for (let j = 0; j < results.length; ++j) {
+    for (let i = 0; i < hierarchy.length; ++i) {
       ////////////////////console.log(results[j][hierarchy[i]])
       if(results[j][hierarchy[i]]){
         ////////////////////console.log(procNode[i])
