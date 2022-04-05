@@ -12,7 +12,7 @@ async function addURLGraph(field) {
 
   filtersList = []
 
-  indexRows = checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
+  indexRows = await checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
   if(indexRows.length!=0){
     $("#graph-area").removeClass("hidden")
     $("#form-container").addClass("hidden")
@@ -20,7 +20,7 @@ async function addURLGraph(field) {
 }
 
 function buildTreeData(results, form, node) {
-  var children = [], treeData = [], nodesIds, id, idParent, idTarget, more_results, menuOption, menuOptionNodes = [], configRow;
+  var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
 
   results.forEach(r => {
     if (form["subject-object"] == "s") {
@@ -56,7 +56,7 @@ function buildTreeData(results, form, node) {
       menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
       networkGraph.treeData.filter(d => d.id == node["id"])
       let obj = networkGraph.treeData.find(n => n.id == node["id"]);
-      if (obj)
+      if (obj["children"])
         if (obj.children[0].type != "menuOption") {
           menuOptionNodes.push({ "id": genRandomString(), "value": node["menuOption"], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
           menuOptionNodes.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
@@ -237,8 +237,6 @@ async function buildFreeGraph(form, origin, node) {
       }else{
         networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
       }     
-
-      addFiltersFreeGraph(uri, data.treeData[0]["id"])
     } else {
 
       addNodesGraph(results, node, form)
