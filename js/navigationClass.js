@@ -443,9 +443,11 @@ navigationPanel.prototype.contentTable = function (){
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
+  
 
   if (navPanel.targets.length>0){
     $("#dvTable").show()
+    $("#dvDetails").empty()
     navPanel.table = document.createElement("table");
     navPanel.table.className="w-full divide-y divide-gray-200 table-auto"
   
@@ -565,10 +567,12 @@ navigationPanel.prototype.contentTable = function (){
     navPanel.prevNextVisibility()
     navPanel.addEventsContentNav()
   }else{
-
+    $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
       console.log(navPanel.node.detail)
       navPanel.showDetails()
+    }else{
+      $("#dvDetails").empty()
     }
   }
 

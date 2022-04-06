@@ -3,14 +3,9 @@
 function buildDataBasic2(results,configRow,configClasses,node){
   var procNode=[],indexParent,treeData=[],tmpNode;
   var hierarchy=(configRow["hierarchy"])
-  //////////////////////console.log("buildDataBasic")
-  //hierarchy=hierarchy.reverse()
-  //alert("pasa")
-  if(networkGraph){
+  //if(networkGraph){
     ////////////////////////console.log(networkGraph.treeData)
-  }
-  //////////////////////console.log(results)
-  //////////////////////console.log(configRow["properties_full"])
+  //}
   var properties=get_properties(configRow["properties_full"])
   //////////////////////console.log(properties)
   if(node==undefined){
@@ -19,19 +14,13 @@ function buildDataBasic2(results,configRow,configClasses,node){
     nodesClassesShow=Object.values(nodesClassesCorrespondence)
     classTooltip=hierarchy[0]
   }else{
-    ////////////////////////////console.log(node)
-    ////////////////////////////console.log(configRow)
-    //////////////////////////console.log(node.menuOption)
     classTooltip=nodesClassesCorrespondence[node["class"]]
-    //////////////////////////console.log(node.menuOption)
     if(node.menuOption==undefined){
       node.menuOption=configRow.options
     }else{
       node.menuOption=node.menuOption + ";"+ configRow.options
     }
   }   
-  ////////////////////console.log(results)
-  ////////////////////console.log(hierarchy)
   for (let j = 0; j < results.length; ++j) {
     for (let i = 0; i < hierarchy.length; ++i) {
       ////////////////////console.log(results[j][hierarchy[i]])
@@ -40,7 +29,7 @@ function buildDataBasic2(results,configRow,configClasses,node){
         //////////console.log(treeData)
         if(procNode[i]!=results[j][hierarchy[i]].value){
           if(i>1){
-            indexParent=idFromHierarchy(i)
+            indexParent=idFromHierarchy(i,j)
             ////////////console.log(treeData)
             treeData[indexParent]["children"].push(nodeValues(results[j],i))
           }else if(i==1){
@@ -82,7 +71,7 @@ function buildDataBasic2(results,configRow,configClasses,node){
   flatData=flatten_v2(treeData)
   return flatData
 
-  function idFromHierarchy(i){
+  function idFromHierarchy(i,j){
     var k=1;
     var indexParent,tmpNode,tmpId,tmpIndex,lastIndex="";
     while(k<i){
@@ -199,7 +188,7 @@ function buildDataBasic(results,configRow,configClasses,node){
         //////////console.log(results[j][treeResults[i]])
         if(procNode[i]!=results[j][treeResults[i]].value){
           if(i>1){
-            indexParent=idFromHierarchy(i)
+            indexParent=idFromHierarchy(i,j)
             ////////////console.log(treeData)
             treeData[indexParent]["children"].push(nodeValues(results[j],i))
           }else if(i==1){
@@ -315,7 +304,7 @@ function buildDataBasic(results,configRow,configClasses,node){
     })
     return keysH
   }
-  function idFromHierarchy(i){
+  function idFromHierarchy(i,j){
     var k=1;
     var indexParent,tmpNode,tmpId,tmpIndex,lastIndex="";
     while(k<i){

@@ -436,7 +436,22 @@ var modal = document.getElementById("myModal");
 
 var span = document.getElementsByClassName("close")[0];
 
+var expand_settings_legend = document.getElementById("expand-settings-legend");
+var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
+expand_settings_legend.onclick = function() {
+  console.log("collapse")
+  $("#settings-legend").removeClass("hidden")
+  $("#expand-settings-legend").addClass("hidden")
+  $("#collapse-settings-legend").removeClass("hidden")
+}
+
+collapse_settings_legend.onclick = function() {
+  console.log("collapse")
+  $("#settings-legend").addClass("hidden")
+  $("#expand-settings-legend").removeClass("hidden")
+  $("#collapse-settings-legend").addClass("hidden")
+}
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   if(navigation){
