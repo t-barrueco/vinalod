@@ -1,0 +1,47 @@
+ID	FILE
+Directory Organization	images/organization_icon.svg
+Membership Type	images/briefcase.svg
+Person	images/person_icon.svg
+OP Theme	images/publication.svg
+corporateBody	images/organization_icon.svg
+Catalog of open datasets	https://static.thenounproject.com/png/3972987-200.png
+data service	https://static.thenounproject.com/png/3422130-200.png
+Continents	https://static.thenounproject.com/png/22641-200.png
+NUTS Level 0	https://static.thenounproject.com/png/2010364-84.png
+NUTS Level 1	https://static.thenounproject.com/png/2010363-200.png
+NUTS Level 2	https://static.thenounproject.com/png/2010370-200.png
+NUTS Level 3	https://static.thenounproject.com/png/2010367-200.png
+Language	https://static.thenounproject.com/png/3325116-200.png
+Resource legal	https://static.thenounproject.com/png/2492909-200.png
+location	images/noun-city-198234.svg
+Treaty	images/noun-treaty-3338094.svg
+Treaty Type	images/noun-treaty-3858022.svg
+Treaty Classification	images/noun-contract-3606172.svg
+Authority table classification	images/vocabulary.svg
+http://publications.europa.eu/resource/authority/continent	images/earth.svg
+http://publications.europa.eu/resource/authority/class-sum-leg	images/summary.svg
+Summaries of EU legislation classification	images/classification.svg
+Summary of EU legislation	images/legislation.svg
+http://publications.europa.eu/resource/authority/continent/AFRICA	images/africa.svg
+http://publications.europa.eu/resource/authority/continent/AMERICA	images/america.svg
+http://publications.europa.eu/resource/authority/continent/ANTARCTICA	images/antartica.svg
+http://publications.europa.eu/resource/authority/continent/ASIA	images/asia.svg
+http://publications.europa.eu/resource/authority/continent/EUROPE	images/europe.svg
+http://publications.europa.eu/resource/authority/continent/OCEANIA	images/oceania.svg
+Country	images/country.svg
+Case-law concept	images/classification.svg
+Case-law	images/legislation.svg
+Empty	images/empty.svg
+Data theme	images/theme.svg
+Dataset	images/dataset.svg
+Dataset documentation	images/documentation.svg
+Publications Themes Classification	images/publications.svg
+Corporate Body Type	images/classification.svg
+Publication Document	images/publication-newspaper.svg
+Taxonomy Type	images/taxonomy.svg
+Taxonomy Level	images/label.svg
+DET	images/dictionary.svg
+DET Level	images/classification.svg
+Eurovoc Concept	images/concept.svg
+Aligment	images/link.svg
+menuOption	images/options.svg

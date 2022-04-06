@@ -21,7 +21,7 @@ function download(data, fileName, mimeType) {
   data.forEach(d => {
     var dataString = "";
     var toStr = "";
-    for (x in d) {
+    for (let x in d) {
       toStr = String(d[x]);
       toStr = toStr.replace(/["',]/g, " ").trim();   // to replace all commas with a space 
       toStr = toStr.replace(/(\r\n|\n|\r)/gm, "");  // to remove all line brakes
