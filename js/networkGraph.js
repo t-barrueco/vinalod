@@ -27,7 +27,7 @@ NetworkGraph.prototype.initTypeVis = function () {
 };
 
 NetworkGraph.prototype.initVis = function () {
-  var vis = this;
+  var vis = this,coorX,coorY;
   
   if(vis.data.treeData){
     vis.treeData=vis.data.treeData
@@ -35,6 +35,9 @@ NetworkGraph.prototype.initVis = function () {
     vis.data=vis.data.flatData
   }
   vis.rootNode=vis.data.nodes[0]
+
+
+
 
   //REVISAR EL TAMAÑO DEL GRÁFICO
   //vis.width = +d3.select(this.parentElement).node().getBoundingClientRect().width;
@@ -62,7 +65,8 @@ NetworkGraph.prototype.initVis = function () {
     
 
   vis.zoomScale=1
-
+  vis.dragX=0
+  vis.dragY=0
   vis.svg.append('defs').append('marker')
         .attr("id",'arrowhead')
         .attr('viewBox','-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
@@ -75,14 +79,28 @@ NetworkGraph.prototype.initVis = function () {
         .append('svg:path')
         .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
         .attr('fill', '#999')
-        .style('stroke','none');  
-
+        .style('stroke','none')
+        
+  
   
 
   vis.g=vis.svg.append("g")
   .attr("class", "gMain")
   .attr("transform","translate(0,0)")
+
+  vis.svg
+  .on("mousemove", function (actual, i) {
+    vis.coorX=((d3.mouse(this)[0] - vis.dragX) /vis.zoomScale )
+    vis.coorY=((d3.mouse(this)[1] - vis.dragY) /vis.zoomScale )
+  })
   //.call(networkGraph.drag);
+
+  /* vis.g.append("text")
+  .attr("x", (1400 / 2))             
+  .attr("y", (800 / 2))
+  .attr("text-anchor", "middle")  
+  .style("font-size", "16px") 
+  .text("test2");   */
 
   //REVISAR QUE TODO ESTO SE ESTÁ UTILIZANDO!!!!
   vis.drag = d3.drag()
@@ -571,7 +589,8 @@ NetworkGraph.prototype.enterGraph = function(){
           handleClickEvent(this)    
         })
         .on('dblclick', function(){
-          handleDblClickEvent()
+          console.log(d3.mouse(this))
+          handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1])
           if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
             vis.wrangleData(this,"bubble",d3.event);
           }
@@ -581,12 +600,18 @@ NetworkGraph.prototype.enterGraph = function(){
         .on("dblclick.zoom", function(d) { 
           d3.event.stopPropagation();
           console.log(d.x)
-          var dcx = (window.innerWidth/2-d.x*zoom.scale());
-          var dcy = (window.innerHeight/2-d.y*zoom.scale());
+          //var dcx = (window.innerWidth/2-d.x*zoom.scale());
+          //var dcy = (window.innerHeight/2-d.y*zoom.scale());
+          var dcx = (window.innerWidth/2-vis.coorX);
+          var dcy = (window.innerHeight/2-vis.cooY);
           console.log(dcx)
           console.log(dcy)
 
-          vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+          //vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+          vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")");
+
+          vis.dragX=d3.event.transform.x
+          vis.dragY=d3.event.transform.y
           vis.zoomScale=d3.event.transform.k
            
         })
@@ -644,7 +669,8 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("width",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
         .attr("height",function(d){return (vis.sizeNode(d.number)*1.5)+"px"})
         .on('dblclick', function(d){
-          handleDblClickEvent()
+          console.log(d3.mouse(this))
+          handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1])
 
           if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
             event.pageX=d3.mouse(vis.g.node())[0]
@@ -661,11 +687,26 @@ NetworkGraph.prototype.enterGraph = function(){
           return false;
         })
         .on("dblclick.zoom", function(d) { 
-          d3.event.stopPropagation();
+/*           d3.event.stopPropagation();
           var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
           var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
           console.log(dcx)
+          console.log(dcy) */
+          d3.event.stopPropagation();
+          console.log(d.x)
+          //var dcx = (window.innerWidth/2-d.x*zoom.scale());
+          //var dcy = (window.innerHeight/2-d.y*zoom.scale());
+          var dcx = (window.innerWidth/2-vis.coorX);
+          var dcy = (window.innerHeight/2-vis.coorY);
+          console.log(dcx)
           console.log(dcy)
+
+          //vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+          vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")");
+
+          vis.dragX=d3.event.transform.x
+          vis.dragY=d3.event.transform.y
+          vis.zoomScale=d3.event.transform.k
         })
         .on('mouseover', function(d){
           handleMouseover(d,this.getAttribute("id").replace("_image",""))
@@ -833,11 +874,15 @@ NetworkGraph.prototype.enterGraph = function(){
                 .on("end", dragended));
 
       }
-      function handleDblClickEvent(){
+      function handleDblClickEvent(mouseX,mouseY){
         d3.event.stopPropagation();
         d3.event.preventDefault();
         clearTimeout(timer);
         prevent = true;
+        console.log(mouseX)
+        console.log(mouseY)
+        //vis.coorX=((mouseX - vis.dragX) /vis.zoomScale )
+        //vis.coorY=((mouseY - vis.dragY) /vis.zoomScale )
       }
       function handleClickEvent(element){
           timer = setTimeout(function() {
@@ -972,9 +1017,9 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
   d3.selectAll(".menuEntry")
       .append('rect')
       .attr('uri',data[data["class"]+"_uri"])
-      .attr('x', x)
+      .attr('x', vis.coorX)
       .attr('y', (d, i) => { 
-        return y + (i * 30); })
+        return vis.coorY + (i * 30); })
       .attr('rx', 2)
       .attr('width', width)
       .attr('height', 30)
@@ -1004,8 +1049,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       .text((d) => { 
         return d.title; })
       .attr('uri',data[data["class"]+"_uri"])
-      .attr('x', x)
-      .attr('y', (d, i) => { return y + (i * 30); })
+      .attr('x', vis.coorX)
+      .attr('y', (d, i) => { return vis.coorY + (i * 30); })
       .attr('dy', 20)
       .attr('dx', 25)
       .style("font-size", "12px")
