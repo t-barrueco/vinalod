@@ -17,6 +17,7 @@ async function addURLGraph(field) {
     $("#graph-area").removeClass("hidden")
     $("#form-container").addClass("hidden")
   }
+  //return false
 }
 
 function buildTreeData(results, form, node) {
@@ -234,12 +235,12 @@ async function buildFreeGraph(form, origin, node) {
         networkGraph.data=data
         networkGraph.forces=forces
         networkGraph.initVis()
-        console.log(colorScale.domain())
-        console.log(colorScale.range())
+        //console.log(colorScale.domain())
+        //console.log(colorScale.range())
         //legend.addColors(colorScale)
         //colors={"bg-green-300":"#86efac","bg-yellow-300":"#fde047","bg-pink-300":"#f9a8d4","bg-blue-300":"#93c5fd"}
         networkGraph.colorScale.range(["#86efac","#fde047","#f9a8d4","#93c5fd"])
-        //console.log(nodesClassesShow)
+        ////console.log(nodesClassesShow)
         //["bg-green-300","bg-yellow-300","bg-pink-300","bg-blue-300"]
         networkGraph.colorScale.domain(["uri","bnode","literal","menu Option"])
         colorScale=networkGraph.colorScale
@@ -247,7 +248,7 @@ async function buildFreeGraph(form, origin, node) {
       }else{
         networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
         legend=new Legend("legend")
-        console.log(colorScale)
+        //console.log(colorScale)
         legend.addColors(colorScale)
       }     
     } else {

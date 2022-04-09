@@ -569,7 +569,7 @@ navigationPanel.prototype.contentTable = function (){
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
-      console.log(navPanel.node.detail)
+      //console.log(navPanel.node.detail)
       navPanel.showDetails()
     }else{
       $("#dvDetails").empty()
@@ -640,7 +640,7 @@ navigationPanel.prototype.showDetails = function (){
 
             navDetailHeader=header.replace("Title",navPanel.node["value"]).toUpperCase()
             $("#dvDetails").append($(navDetailHeader))
-            console.log(navPanel.node)
+            //console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
                 if((key % 2 == 0)|| (key == 0)){  

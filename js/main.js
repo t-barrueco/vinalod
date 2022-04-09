@@ -179,34 +179,35 @@ async function buildBasicGraph(rowDataConfig,node){
           collapse(networkGraph.treeData[0])
         }else{
           //build data for the graph
-          
+          networkGraph.addingGraph=true
+          networkGraph.dblClickId=node.id.replace("_image","")+"_g"
           data=buildDataBasic(results,configRow,configClasses,node)
 
           
           networkGraph.data=flatten(networkGraph.treeData).flatData
-          networkGraph.initializeSimulation();
+          //networkGraph.initializeSimulation();
           networkGraph.dataJoinGraph()
           networkGraph.enterGraph()
           networkGraph.initializeSimulation();
           networkGraph.dataJoinGraph()
-          networkGraph.exitGraph()
+          //networkGraph.exitGraph()
 
           legend.addColors(colorScale)
           handleNavigation(node)
 
-          var circle = document.getElementById(node.id),
+          /* var circle = document.getElementById(node.id),
           cx = +circle.getAttribute('cx'),
           cy = +circle.getAttribute('cy'),
           ctm = circle.getCTM(),
           coords = getScreenCoords(cx, cy, ctm);
-          console.log(coords.x, coords.y); // shows coords relative to my svg container
-          console.log(document.getElementById(node.id).getBoundingClientRect())
+          //console.log(coords.x, coords.y); // shows coords relative to my svg container
+          //console.log(document.getElementById(node.id).getBoundingClientRect())
           var dcx = (window.innerWidth/2-coords.x*networkGraph.zoomScale);
           var dcy = (window.innerHeight/2-coords.y*networkGraph.zoomScale);
-          console.log(dcx)
-          console.log(dcy)
+          //console.log(dcx)
+          //console.log(dcy)
 
-          networkGraph.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + networkGraph.zoomScale + ")");
+          networkGraph.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + networkGraph.zoomScale + ")"); */
            
           if(configRow.hierarchy.length>1){
 
@@ -214,20 +215,62 @@ async function buildBasicGraph(rowDataConfig,node){
           }
         }
 
-    
+        //console.log("then")
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
         document.getElementById("sparql-timeout").style.display="inline-block"
       })
     
       .always(function(jqXHR, textStatus, errorThrown) {
-          d3.select("#spin").style("display","none")
-    
+        d3.select("#spin").style("display","none")
+        //console.log("always")
       })
       .done(function (data, textStatus, jqXHR) {
         clearInterval(interval)
         d3.select("#spin").style("display","none")
         document.getElementById("sparql-timeout").style.display="none"
+        //console.log("done")
+        //d3.event.stopPropagation();
+        ////console.log(d.x)
+        //var dcx = (window.innerWidth/2-d.x*zoom.scale());
+        //var dcy = (window.innerHeight/2-d.y*zoom.scale());
+        console.log(networkGraph.coorX)
+        if(networkGraph.coorX){
+          var dcx = (window.innerWidth/2-networkGraph.coorX);
+          var dcy = (window.innerHeight/2-networkGraph.coorY);
+          console.log(dcx)
+          console.log(dcy)
+  
+          if(networkGraph.dblClickId){
+            console.log(networkGraph.dblClickId)
+            console.log(document.getElementById(networkGraph.dblClickId))
+            console.log(document.getElementById(networkGraph.dblClickId).getAttribute('cx'))
+            console.log(d3.select("#"+networkGraph.dblClickId).attr("cx"))
+          }
+          //element.getBoundingClientRect()
+  
+  
+  
+  
+          //vis.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+          //networkGraph.g.attr("transform", "translate("+ dcx + "," + dcy  + ")");
+          //networkGraph.g.attr("transform", "translate(0,0)");
+          console.log(d3.selectAll(".nodeCircleBasic"))
+          //console.log(networkGraph.g)
+          //d3.selectAll(".nodeCircleBasic").attr("transform", "translate(0,0)");
+          //networkGraph.svg.attr("transform", "translate(0,0)")
+          //networkGraph.g.attr("transform", "translate(0,0)") 
+          //networkGraph.svg.append("text")
+          //.attr("x", networkGraph.coorX + dcx)
+          //.attr("y", networkGraph.coorY + dcy)
+          //.attr("dy", ".35em")
+          //.text("prueba");
+  
+          networkGraph.coorX=((networkGraph.coorX - dcx) /networkGraph.zoomScale )
+          networkGraph.coorY=((networkGraph.coorY - dcy) /networkGraph.zoomScale )
+        }
+
+        //networkGraph.zoomScale=d3.event.transform.k
       })
       await $objectAjax
     }else{
@@ -236,7 +279,7 @@ async function buildBasicGraph(rowDataConfig,node){
         showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
       }else if (configRow.graphType=="WIKIPEDIA"){
-        //////////////////////////////////console.log("WIKIPEDIA")
+        ////////////////////////////////////console.log("WIKIPEDIA")
         modal2=getModal2()
         showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
@@ -440,14 +483,14 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  console.log("collapse")
+  //console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  console.log("collapse")
+  //console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
@@ -482,7 +525,7 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  ////////////////////////////////////////console.log($("#myModal2"))
+  //////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
