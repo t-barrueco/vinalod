@@ -538,6 +538,7 @@ async function checkAskResultsFreeGraph(node, so) {
 
   return new Promise((resolve, reject) => {
     d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
+        console.log(urls)
         if (so == undefined) {
           subjectObject = ['s', 'o']
         } else {
