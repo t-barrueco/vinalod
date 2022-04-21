@@ -171,6 +171,7 @@ async function buildFreeGraph(form, origin, node) {
   $objectAjax = $.ajax(settings).then(function (_data) {
     var results = _data.results.bindings;
     d3.select("#spin").style("display", "none")
+    console.log(results)
     results = clusterResults(results, subjectObject)
     return results
   })
@@ -246,10 +247,12 @@ async function buildFreeGraph(form, origin, node) {
         colorScale=networkGraph.colorScale
         legend.addColors(colorScale)
       }else{
+        console.log(data)
         networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
         legend=new Legend("legend")
         //console.log(colorScale)
         legend.addColors(colorScale)
+        console.log(networkGraph.treeData[0]["id"])
       }     
     } else {
 
@@ -824,6 +827,7 @@ function clusterResults(results, subjectObject) {
       results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
     }
   })
+  console.log(results_small)
   return results_small
 }
 async function checkBasicGraph(node){
