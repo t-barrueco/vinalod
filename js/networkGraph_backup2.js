@@ -91,7 +91,7 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.g=vis.svg.append("g")
   .attr("class", "gMain")
-  //.attr("transform","translate(0,0)")
+  .attr("transform","translate(0,0)")
 
   vis.svg
   .on("mousemove", function (actual, i) {
@@ -446,19 +446,78 @@ NetworkGraph.prototype.initializeForces = function() {
       var dcy = (window.innerHeight/2-d3.select("#"+vis.dblClickId).data()[0]["y"]); */
       var transform=d3.select("#"+vis.dblClickId).attr("transform")
       translate = transform.substring(transform.indexOf("(")+1, transform.indexOf(")")).split(",");
-      console.log(translate)
-      console.log(d3.select(".gMain"))
+      
+      //console.log(d3.select(".gMain"))
       var transform2=d3.select(".gMain").attr("transform")
+      vis.g.bbox = vis.svg.node().getBBox();
+      console.log(vis.g.bbox)
+      vis.g.vx = vis.g.bbox.x;		// container x co-ordinate
+      vis.g.vy = vis.g.bbox.y;		// container y co-ordinate
+      vis.g.vw = vis.g.bbox.width;	// container width
+      vis.g.vh = vis.g.bbox.height;	// container height
+      //var transform2=d3.transform(d3.select(".gMain").attr("transform"));
+      let transformGet=getTransform()
+
+      
       if(transform2){
+        //console.log(transform2.translate);
+        //console.log(transform2)
         translate2 = transform2.substring(transform2.indexOf("(")+1, transform2.indexOf(")")).split(",");
+        scale2 = transform2.substring(transform2.indexOf("(",transform2.indexOf(")")+1)+1, transform2.indexOf(")",transform2.indexOf(")")+1));
+        //translate2[0]=parseFloat(translate2[0])+50
+        //translate2[1]=parseFloat(translate2[1])+50
+        console.log(translate)
+        console.log(translate2)
+        console.log(scale2)
+        //console.log(window.innerWidth)
+        //console.log(window.innerHeight)
+        //console.log(parseFloat(translate[0])+parseFloat(translate2[0]))
+        //console.log(parseFloat(translate[1])+parseFloat(translate2[1]))
+
       }else{
         translate2=[0,0]
+        scale2=1
       }
-      console.log(translate2)
-      var dcx = ((window.innerWidth/2-translate[0]+translate2[0])/vis.zoomScale);
-      var dcy = ((window.innerHeight/2-translate[1]+translate2[1])/vis.zoomScale);
-      vis.g.transition()
-      .duration(750).attr("transform",  "translate("+ dcx + "," + dcy  + ") scale("+vis.zoomScale+")") 
+      //console.log(translate2)
+      //console.log(scale2)
+      //var dcx = ((window.innerWidth/2-(parseFloat(translate[0])+parseFloat(translate2[0])))/scale2);
+      //var dcy = ((window.innerHeight/2-(parseFloat(translate[1])+parseFloat(translate2[1])))/scale2);
+      
+      //translate[0]=parseFloat(translate[0])+parseFloat(translate2[0])
+      //translate[1]=parseFloat(translate[1])+parseFloat(translate2[1])
+      console.log(translate[0])
+      console.log(translate[1])
+      var dcx = ((window.innerWidth/2/scale2)-(translate[0]/scale2));
+      var dcy = ((window.innerHeight/2/scale2)-(translate[1]/scale2));
+      //scale2=parseFloat(scale2)
+      let ww = ((window.innerWidth/2) - parseFloat(translate2[0]))/scale2;
+      let wh = ((window.innerHeight/2) - parseFloat(translate2[1]))/scale2;
+      let cx = (parseFloat(translate[0]) - parseFloat(translate2[0]))/scale2;
+      let cy = (parseFloat(translate[1]) - parseFloat(translate2[1]))/scale2;
+
+      var dcx = (ww-cx)*scale2;
+      var dcy = (wh-cy)*scale2; 
+           
+      console.log(dcx)
+      console.log(dcy)
+      //dcx=-200
+      //dcy=-200
+      console.log(transformGet)
+      var dcx2 = (window.innerWidth/2-d3.select("#"+vis.dblClickId).data()[0]["x"])/vis.zoomScale;
+      var dcy2 = (window.innerHeight/2-d3.select("#"+vis.dblClickId).data()[0]["y"])/vis.zoomScale;
+      networkGraph.g.transition()
+      .duration(750)
+      .attr(
+        "transform",
+        `translate(${dcx2},${dcy2}) scale(${vis.zoomScale}) translate(${-dcx2},${-dcy2})`
+      ) 
+      //vis.g.transition()
+      //.attr("transform", "translate(" + transformGet.translate + ")scale(" + transformGet.scale + ")");
+      //.duration(750).attr("transform", transformGet) 
+      //.duration(750).attr("transform",  "translate("+ dcx + "," + dcy  + ") scale("+scale2+")") 
+      //vis.g.transition()
+      //.duration(750).attr("transform",  "translate("+ translate2[0] + "," + translate2[1]  + ") scale("+scale2+")") 
+      //.duration(750).attr("transform",  "translate(50,50) scale(1)") 
       //vis.dragX=dcx
       //vis.dragY=dcy
       vis.centerGraphX=dcx
@@ -468,15 +527,42 @@ NetworkGraph.prototype.initializeForces = function() {
       ////console.log(dcx)
       ////console.log(dcy)
       vis.addingGraph=false
-      networkGraph.g.append("text")
+      /* networkGraph.g.append("text")
             .attr("id","mitad pantalla")
             .attr("x", window.innerWidth/2)             
             .attr("y", window.innerHeight/2)
             .attr("text-anchor", "middle")  
             .style("font-size", "16px") 
-            .text("mitad pantalla");
+            .text("mitad pantalla"); */
     }
+    /* networkGraph.g.append("text")
+            .attr("id","mitad pantalla")
+            .attr("x", window.innerWidth/2)             
+            .attr("y", window.innerHeight/2)
+            .attr("text-anchor", "middle")  
+            .style("font-size", "16px") 
+            .text("mitad pantalla"); */
     //////console.log(vis.treeData)
+    function getTransform() {
+      console.log(d3.select("#"+vis.dblClickId))
+      bbox = d3.select("#"+vis.dblClickId).node().getBBox();
+      console.log(bbox)
+      var bx = bbox.x;
+      var by = bbox.y;
+      var bw = bbox.width;
+      var bh = bbox.height;
+      var tx = -bx*vis.zoomScale + vis.g.vx + vis.g.vw/2 - bw*vis.zoomScale/2;
+      var ty = -by*vis.zoomScale + vis.g.vy + vis.g.vh/2 - bh*vis.zoomScale/2;
+      console.log(bx)
+      console.log(by)
+      console.log(bw)
+      console.log(bh)
+      console.log(vis.zoomScale)
+      console.log(vis.g.bbox)
+      //console.log(vis.g.bbox.w)
+
+      return {translate: [tx, ty], scale: vis.zoomScale}
+    }
   });    
 
   vis.updateForces();
@@ -1108,6 +1194,27 @@ NetworkGraph.prototype.enterGraph = function(){
         //vis.coorY=((mouseY - vis.dragY) /vis.zoomScale )
       }
       function handleClickEvent(element){
+          //console.log(d3.select("#"+element.getAttribute("id")+"_g"))
+          var transform=d3.select("#"+element.getAttribute("id")+"_g").attr("transform")
+          translate = transform.substring(transform.indexOf("(")+1, transform.indexOf(")")).split(",");
+          var transform2=d3.select(".gMain").attr("transform")
+          if(transform2){
+            translate2 = transform2.substring(transform2.indexOf("(")+1, transform2.indexOf(")")).split(",");
+            scale = transform2.substring(transform2.indexOf("(",transform2.indexOf(")")+1)+1, transform2.indexOf(")",transform2.indexOf(")")+1));
+
+            /* console.log(translate)
+            console.log(translate2)
+            console.log(scale)
+            console.log((parseFloat(translate[0]))*scale)
+            console.log((parseFloat(translate[1]))*scale)
+            console.log((translate[0] - translate2[0])/scale)
+            console.log((translate[1] - translate2[1])/scale)
+            //console.log((parseFloat(translate[1])+parseFloat(translate2[1]))*scale)
+            console.log((parseFloat(translate[0])+parseFloat(translate2[0]))*scale)
+            console.log((parseFloat(translate[1])+parseFloat(translate2[1]))*scale) */
+          }
+          
+         
           timer = setTimeout(function() {
           if (!prevent) {
               if (element.getAttribute("stroke-width")=="1px"){

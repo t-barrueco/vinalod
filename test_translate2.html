@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <style>
+    body {margin: 0 }
+    svg { background-color: #86B2EB; }
+    svg circle.old { fill: green; }
+    svg circle.new { fill: blue;  }
+  </style>
+</head>
+
+<body>
+  <svg width="960" height="500"></svg>
+  <h4>Zoom with mousewheel and click to add circle</h4>
+
+  <script>
+    let svg = d3.select('svg'),
+      container = svg.append('g'),
+      data = [
+        { x: 50, y: 110, id: 100 },
+        { x: 100, y: 100, id: 101 },
+        { x: 650, y: 410, id: 102 }
+      ];
+
+    function init() {
+
+      let zoom = d3.zoom()
+        .scaleExtent([0.25, 2.25])
+        .on("zoom", () => {
+          container.attr("transform", d3.event.transform);
+        });
+
+      svg.call(zoom)
+        .on("dblclick.zoom", null)
+
+      svg.on('click', d => {
+        let x = d3.event.x;
+        let y = d3.event.y,translate,scale;
+        // TODO - get new x,y coords affected by current zoom ration
+        // x =  zoom ...
+        // y =  zoom ...
+        let transform=container.attr("transform")
+        if(transform){
+          translate = transform.substring(transform.indexOf("(")+1, transform.indexOf(")")).split(",");
+          scale = transform.substring(transform.indexOf("(",transform.indexOf(")")+1)+1, transform.indexOf(")",transform.indexOf(")")+1));
+        }else{
+          translate =[0,0]
+          scale=1
+        }
+        console.log(x)
+        console.log(y)
+        newPoint=d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale).invert([(svg.attr("width") / 2), (svg.attr("height") / 2)])
+        newPoint2=d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale).invert([x,y])
+
+        //newPoint=d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale).invert([50, 50])
+
+        console.log(newPoint)
+        console.log(newPoint2)
+        let tx=(newPoint[0]-newPoint2[0])/scale
+        let ty=(newPoint[1]-newPoint2[1])/scale
+        console.log(tx)
+        console.log(ty)
+        console.log(scale)
+        //container.attr("transform", d3.zoomIdentity.translate(250,250).scale(0.25));
+        //container.attr("transform",d3.zoomIdentity.translate(tx,ty).scale(scale));
+        //container.attr("transform",d3.zoomIdentity.translate("0","0").scale(scale));
+        //container.attr("transform",d3.zoomIdentity.translate("0","0"));
+        data.push({ x, y, id: Math.random() });
+        //x=newPoint[0]
+        //y=newPoint[1]
+        //data.push({ x, y, id: Math.random() });
+
+        redraw();
+      });
+
+    }
+
+    function redraw() {
+
+      let grp = container.selectAll('circle')
+        .data(data, d => d.id)
+        .attr('class', 'old')
+
+      grp.exit().remove(); // exit > remove >  g
+
+      let grpEnter = grp.enter()
+
+
+      let group = grpEnter
+      group.append('circle')
+        .attr('class', 'new')
+        .attr('r', 15)
+        .attr('cx', d => d.x).attr('cy', d => d.y)
+
+      grp = grpEnter.merge(grp);
+    }
+
+    init();
+    redraw();
+  </script>
+
+</body>
+
+</html>
