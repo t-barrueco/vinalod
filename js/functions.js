@@ -811,3 +811,71 @@ function nestedNodes(el){
     networkGraph.exitGraph()
   }  
 }
+function highlightLinkedNodes(node){
+  deselectNodes()
+  console.log(selectTargetNodes(node))
+  console.log(selectSourceNodes(node))
+}
+function highlightTargetNodes(node){
+  let data=selectTargetNodes(node)
+  deselectNodesAndLinks()
+  console.log(data.links)
+  highlightLinks(data.links)
+  highlightNodes(data.nodes)
+}
+function selectTargetNodes(node){
+  console.log(node)
+  var targetNodes=[],targetLinks=[]
+  let targets=networkGraph.data.links.filter(function(item) {
+    return item.source.id == node.id
+  })
+  targetNodes.push(targets[0].source.id)
+  targets.forEach(function (d){
+    targetLinks.push(d.id)
+    targetNodes.push(d.target.id)
+  })
+  return {nodes:targetNodes,links:targetLinks};
+}
+function selectSourceNodes(node){
+  var sourceNodes=[],sourceLinks=[]
+
+  let sources=networkGraph.data.links.filter(function(item) {
+    return item.target.id == node.id
+  })
+  sources.forEach(function (d){
+    sourceLinks.push(d.id)
+    sourceNodes.push(d.target.id)
+  })
+  return {nodes:sourceNodes,links:sourceLinks};
+}
+function highlightLinks(links){
+  console.log(links)
+  const even = d3.selectAll(".link").filter(function(d){
+    return links.includes(d.id)
+    //console.log(d.id)
+    //console.log(links)
+  });
+  console.log(even)
+  even.style("stroke", "black")
+  .style("fill","black")
+  //.style("stroke-width", "2px")
+}
+function highlightNodes(nodes){
+  const even = d3.selectAll(".circleBasic").filter(function(d){
+    return nodes.includes(d.id)
+    //console.log(d.id)
+    //console.log(links)
+  });
+  console.log(even)
+  even.attr("stroke", "black")
+  .attr("stroke-width", "3px")
+}
+function deselectNodesAndLinks(){
+  d3.selectAll(".circleBasic")
+  .attr("stroke", "gray")
+  .attr("stroke-width", "1px")
+
+  d3.selectAll(".link")
+  .style("stroke", "gray")
+  .style("fill","gray")
+}

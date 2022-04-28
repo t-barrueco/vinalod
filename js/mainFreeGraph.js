@@ -171,7 +171,7 @@ async function buildFreeGraph(form, origin, node) {
   $objectAjax = $.ajax(settings).then(function (_data) {
     var results = _data.results.bindings;
     d3.select("#spin").style("display", "none")
-    console.log(results)
+    ////console.log(results)
     results = clusterResults(results, subjectObject)
     return results
   })
@@ -227,7 +227,7 @@ async function buildFreeGraph(form, origin, node) {
         },
         link: {
           enabled: true,
-          distance: 300,
+          distance: 100,
           iterations: 1
         }
       }
@@ -236,26 +236,33 @@ async function buildFreeGraph(form, origin, node) {
         networkGraph.data=data
         networkGraph.forces=forces
         networkGraph.initVis()
-        //console.log(colorScale.domain())
-        //console.log(colorScale.range())
+        //////console.log(colorScale.domain())
+        //////console.log(colorScale.range())
         //legend.addColors(colorScale)
         //colors={"bg-green-300":"#86efac","bg-yellow-300":"#fde047","bg-pink-300":"#f9a8d4","bg-blue-300":"#93c5fd"}
-        networkGraph.colorScale.range(["#86efac","#fde047","#f9a8d4","#93c5fd"])
-        ////console.log(nodesClassesShow)
+        //networkGraph.colorScale.range(["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD"])
+        ////////console.log(nodesClassesShow)
         //["bg-green-300","bg-yellow-300","bg-pink-300","bg-blue-300"]
-        networkGraph.colorScale.domain(["uri","bnode","literal","menu Option"])
-        colorScale=networkGraph.colorScale
-        legend.addColors(colorScale)
+        //networkGraph.colorScale.domain(["uri","bnode","literal","menu Option"])
+        //colorScale=networkGraph.colorScale
+        legend.deleteAllColors()
+        //legend.addColors(colorScale)
       }else{
-        console.log(data)
+        ////console.log(data)
         networkGraph = new NetworkGraph("#networkGraph", data, forces, "freeGraph");
         legend=new Legend("legend")
-        //console.log(colorScale)
-        legend.addColors(colorScale)
-        console.log(networkGraph.treeData[0]["id"])
+        //////console.log(colorScale)
+        //legend.addColors(colorScale)
+        //////console.log(networkGraph.treeData[0]["id"])
       }     
+      networkGraph.colorScale.range(["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444"])
+      networkGraph.colorScale.domain(["uri","bnode","literal","menu option","basic graph"])
+      colorScale=networkGraph.colorScale
+      legend.addColors(colorScale)
     } else {
-
+      ////console.log("addingGraph")
+      networkGraph.addingGraph=true
+      networkGraph.dblClickId=node.id.replace("_image","")+"_g"
       addNodesGraph(results, node, form)
       if(showNavigation){
         if (typeof (navigation) != "object") {
@@ -271,6 +278,7 @@ async function buildFreeGraph(form, origin, node) {
   }
 }
 function addNodesGraph(results, node, form) {
+  ////console.log("addNodesGraph")
   links = addFreeGraphData(results, node, form)
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
@@ -278,7 +286,7 @@ function addNodesGraph(results, node, form) {
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
   networkGraph.exitGraph()
-  networkGraph.zoomOut()
+  //networkGraph.zoomOut()
 
 }
 function dblclickCellContent(cell) {
@@ -538,7 +546,7 @@ async function checkAskResultsFreeGraph(node, so) {
 
   return new Promise((resolve, reject) => {
     d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-        console.log(urls)
+        ////console.log(urls)
         if (so == undefined) {
           subjectObject = ['s', 'o']
         } else {
@@ -698,7 +706,7 @@ function getHtmlOption(r, i) {
 function getMenuItemsFreeGraph(items, element, pageX, pageY, origin) {
   var menuItems = [], elementMenu,form, uri, url, subjectObject, row
   var node = d3.select("#" + element.getAttribute("id")).data()[0]
-
+  ////console.log(node)
   if (node["configRow"]) {
     node["configRow"].forEach(function (r) {
       items.push({ "rowNumber": r, "row": configFile[r], "menuOption": configFile[r]["option"] })
@@ -815,8 +823,8 @@ function clusterResults(results, subjectObject) {
   unique_properties.forEach(function (d) {
     ocurrences.push({ "value": d, "ocurrences": countOccurrences(properties, d) })
   })
-  small = ocurrences.filter(d => d.ocurrences <= 300).map(d => d.value)
-  big = ocurrences.filter(d => d.ocurrences > 300).map(d => d.value)
+  small = ocurrences.filter(d => d.ocurrences <= 20).map(d => d.value)
+  big = ocurrences.filter(d => d.ocurrences > 20).map(d => d.value)
   results_small = results.filter(r => small.includes(r["p"]["value"]))
   results_big = results.filter(r => big.includes(r["p"]["value"]))
   big.forEach(function (b) {
@@ -828,7 +836,7 @@ function clusterResults(results, subjectObject) {
       results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
     }
   })
-  console.log(results_small)
+  ////console.log(results_small)
   return results_small
 }
 async function checkBasicGraph(node){
@@ -847,22 +855,34 @@ async function checkBasicGraph(node){
       }
     }
 
-    results=await checkClassesNode(classesInConfig,node)
-    addColorsBasicGraph(results,classesLinesConfig,node["children"])
+    results=await checkClassesNode(classesInConfig,node,classesLinesConfig)
+    ////console.log(results)
+    ////console.log(classesLinesConfig)
+    //addColorsBasicGraph(results,classesLinesConfig,node["children"])
 }
 function addColorsBasicGraph(results,classesLinesConfig,children){
   var classesFound=[],idNode
   for (var i = 0; i < results.length; i++) {
     if(!classesFound.includes(classesLinesConfig[results[i]["class"]["value"]]["class"])){
-      appendLiFreeGraph("bg-red-500", classesLinesConfig[results[i]["class"]["value"]]["class"]) 
+      //appendLiFreeGraph("bg-red-500", classesLinesConfig[results[i]["class"]["value"]]["class"]) 
       classesFound.push(classesLinesConfig[results[i]["class"]["value"]]["class"])
     }
+    ////console.log(classesFound)
     idNode=children.filter(d=>d.value==results[i]["child"]["value"]).map(v=>v.id)
     d3.select("#"+idNode).style("fill","#EF4444")
+    console.log(d3.select("#"+idNode).data()[0])
+/*     networkGraph.colorScale.range(["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD"])
+    networkGraph.colorScale.domain(["uri","bnode","literal","menu Option"])
+    colorScale=networkGraph.colorScale
+    legend.addColors(colorScale)
+    d3.select("#"+idNode).style("fill","#EF4444") */
   }
 }
-async function checkClassesNode(classesInConfig,node){
-  var filterClasses="",subjectObject=node.children[0]["subject-object"],sparqlQuery,settings,endpoint_url=node.children[0]["url"],results;
+async function checkClassesNode(classesInConfig,node,classesLinesConfig){
+  var filterClasses="",subjectObject=node.children[0]["subject-object"],sparqlQuery,settings,endpoint_url=node.children[0]["url"],results,resultsAsk;
+  //console.log(classesInConfig)
+  //console.log(classesLinesConfig)
+  console.log(node)
   for (var i = 0; i < classesInConfig.length; i++) {
     if(filterClasses==""){
       filterClasses+="(<"+classesInConfig[i]+">"
@@ -882,9 +902,55 @@ async function checkClassesNode(classesInConfig,node){
   queryUrl = endpoint_url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   results = await runSparlqQuery(settings)
-  
+  console.log(results)
+  results=await filterResults(results,classesLinesConfig)
+  console.log(results)
   return results
-
+  async function filterResults(results,classesLinesConfig){
+    var askquery,filteredResults=[];
+    //await results.forEach(async function(r){
+    for (var i = 0; i < results.length; i++) {
+      console.log(i)
+      //console.log(r)
+      //console.log(classesLinesConfig)
+      //r["child"]["value"]
+      for (var j = 0; j < classesLinesConfig[results[i]["class"]["value"]]["lines"].length; j++) {
+      //await classesLinesConfig[results[i]["class"]["value"]]["lines"].forEach(async function(l){
+        //console.log(l)
+        //console.log(configFile[l])
+        askquery=configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
+        if(askquery){
+          //console.log(askquery)
+          if(askquery.indexOf("PARAMETER2") === -1){
+            //console.log(node)
+            askquery=askquery.replaceAll("PARAMETER",results[i]["child"]["value"])
+            //console.log(askquery)
+            //prefixes=""
+            //queryUrl = configFile[l]["endpoint_url"] + "?query=" + prefixes +  encodeURIComponent(  configFile[l]["askquery"] )+ "&format=json";
+            //settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+            //resultsAsk = await runSparlqQuery(settings)
+            resultsAsk= await runAskSparlqQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery)
+            console.log(resultsAsk)
+            if(resultsAsk){
+              console.log(results[i])
+              console.log(results)
+              console.log(i)
+              filteredResults.push(results[i])
+              idNode=node["children"].filter(d=>d.value==results[i]["child"]["value"]).map(v=>v.id)
+              d3.select("#"+idNode).style("fill","#EF4444")
+              if(d3.select("#"+idNode).data()[0]["configRow"]==""){
+                d3.select("#"+idNode).data()[0]["configRow"]=[]
+              }
+              d3.select("#"+idNode).data()[0]["configRow"].push(classesLinesConfig[results[i]["class"]["value"]]["lines"][j])
+              console.log(d3.select("#"+idNode).data()[0])
+            }
+          }
+        }
+      }
+    }
+    console.log(filteredResults)
+    return filteredResults
+  }
 }
 
 async function checkClassesBasicGraph(results, subjectObject, node) {
