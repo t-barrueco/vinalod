@@ -388,7 +388,8 @@ NetworkGraph.prototype.initializeForces = function() {
 
   vis.simulation.on("tick", ticked)
   .on("end",function(){
-
+    console.log(vis.dblClickId)
+    console.log(vis.addingGraph)
     if((vis.dblClickId)&&(vis.addingGraph)){
       console.log("entra")
       vis.g.bbox = vis.g.node().getBBox();
@@ -579,7 +580,7 @@ NetworkGraph.prototype.dataJoinGraph = function(){
 
   vis.link=vis.linkSel
   .data(vis.data.links,function(d){
-    console.log(d.id)
+    //console.log(d.id)
     return d.id;
   })
   vis.edgepaths = vis.gLinks.selectAll(".edgepath")
