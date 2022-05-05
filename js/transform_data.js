@@ -1,240 +1,16 @@
 // Transform data Basic Graph
 /////////////////////////////////
-function buildDataBasic2(results,configRow,configClasses,node){
-  var procNode=[],indexParent,treeData=[],tmpNode;
-  var hierarchy=(configRow["hierarchy"])
-  //if(networkGraph){
-    //////////////////////////////console.log(networkGraph.treeData)
-  //}
-  var properties=get_properties(configRow["properties_full"])
-  ////////////////////////////console.log(properties)
-  if(node==undefined){
-    nodesClasses=hierarchy
-    nodesClassesCorrespondence=getClassesShow(configRow["classes"])
-    nodesClassesShow=Object.values(nodesClassesCorrespondence)
-    classTooltip=hierarchy[0]
-  }else{
-    classTooltip=nodesClassesCorrespondence[node["class"]]
-    if(node.menuOption==undefined){
-      node.menuOption=configRow.options
-    }else{
-      node.menuOption=node.menuOption + ";"+ configRow.options
-    }
-  }   
-  for (let j = 0; j < results.length; ++j) {
-    for (let i = 0; i < hierarchy.length; ++i) {
-      //////////////////////////console.log(results[j][hierarchy[i]])
-      if(results[j][hierarchy[i]]){
-        //////////////////////////console.log(procNode[i])
-        ////////////////console.log(treeData)
-        if(procNode[i]!=results[j][hierarchy[i]].value){
-          if(i>1){
-            indexParent=idFromHierarchy(i,j)
-            //////////////////console.log(treeData)
-            treeData[indexParent]["children"].push(nodeValues(results[j],i))
-          }else if(i==1){
-            treeData[0]["children"].push(nodeValues(results[j],1))        
-          }else{
-            //const listHasCatalogs = this.originalLearningItems.filter(item => item.catalogues.map(catalogs => catalogs.some(catalog => catalog.value == val.catalogSearch)  
-            
-            if(treeData.findIndex(d=>d.value==results[j][hierarchy[0]].value)==-1){
-              if(node){
-                //users = treeData.filter(d => d.children.some(v.id==node.id))
-                ////////////////////////////////////console.log(node.id)
-                ////////////////////////////////////console.log(networkGraph.treeData)
-                //users = networkGraph.treeData.filter(d => d.children.some(v => v.id == node.id))
-                ////////////////////////////////////console.log(users)
-                tmpNode=nodeValues(results[j],0,node.id)
-              }else{
-                tmpNode=nodeValues(results[j],0)
-              }
-              tmpNode["children"]=[]
-              treeData.push(tmpNode)
-            }
-          }
-        } 
-        procNode[i]=results[j][hierarchy[i]]["value"]
-      }else{
-        procNode[i]=""
-      }
-
-/*       if(results[j][hierarchy[i]]){
-        procNode[i]=results[j][hierarchy[i]]["value"]
-      }else{
-        procNode[i]=""
-      } */
-      
-    }
-  }
-  treeData=updateNodeChildren(treeData)
-  //////////////////////////////console.log(treeData)
-  flatData=flatten(treeData)
-  return flatData
-
-  function idFromHierarchy(i,j){
-    var k=1;
-    var indexParent,tmpNode,tmpId,tmpIndex,lastIndex="";
-    while(k<i){
-      if(k==1){
-        lastIndex=0
-      }
-      tmpId=treeData[lastIndex]["children"].filter(d=>d.value==results[j][hierarchy[k]].value)[0]["id"]
-      tmpIndex=treeData.findIndex(d=>d.id==tmpId)
-      if(tmpIndex==-1){
-        tmpNode=nodeValues(results[j],k,tmpId)
-        tmpNode["children"]=[]
-        indexParent=treeData.push(tmpNode)-1
-      }else{
-        lastIndex=tmpIndex
-        indexParent=lastIndex
-      }
-      k+=1
-    }
-    return indexParent
-  }
-
-
-  function nodeValues(r,index,id){
-    var node;
-    if(id==undefined){
-      id=genRandomString()
-    }
-    node={"id":id,"value":r[hierarchy[index]].value,"shape":1,"class":hierarchy[index]}
-    if((index==0)||((hierarchy.length>2)&&(index<(hierarchy.length-1)))){
-      node["menuOption"]=configRow.options
-    }
-    //HACER UN TEST PARA VER SI SE UTILIZA!!!!
-    node["tooltip"]=getTooltipNode(configRow.tooltip,node["class"])
-    //////////////////////////console.log("getDetail")
-    //////////////////////////console.log(configRow)
-    if((configRow.detail!="")&&(configRow.detail!=undefined)){
-      node["detail"]=getDetail(configRow.detail,node["class"])
-    }
-    //////////////////////////console.log(node)
-    //////////////////////////////console.log(hierarchy[index])
-    //////////////////////////////console.log(properties)
-    if(properties[hierarchy[index]]){
-      properties[hierarchy[index]].forEach(function(k){
-        if(r[k]!=undefined){
-          node[k]=r[k].value
-        }
-      })
-    }
-    return node
-  }
-
-  function updateNodeChildren(tD){
-    var indexChild,index;
-    tD=tD.reverse()
-    for (let i = 0; i < tD.length; ++i) {
-      index=tD.findIndex(function(d){
-        if(d.children.filter(v=>v.id==tD[i]["id"]).length>0){
-          return true;
-        }else{
-          return false;
-        }
-      })
-      if(index!=-1){
-        indexChild=tD[index]["children"].findIndex(d=>d.id==tD[i]["id"])
-        tD[i]["menuOption"]=tD[index]["children"][indexChild]["menuOption"]
-        tD[index]["children"][indexChild]=tD[i]
-      }
-    }
-    return tD.reverse()
-  }
-}
-function buildDataBasic(results,configRow,configClasses,node){
-  var procNode=[],indexParent,treeData=[],tmpNode,indexNode;
-  var hierarchy=get_hierarchy(configRow["hierarchy"])
-  var treeResults;
-  ////////////////////////////console.log("buildDataBasic")
-  //hierarchy=hierarchy.reverse()
-  //alert("pasa")
-
-  ////////////////////////////console.log(results)
-  ////////////////////////////console.log(configRow["properties_full"])
-  var properties=get_properties(configRow["properties_full"])
-  ////////////////////////////console.log(properties)
-  if(node==undefined){
-    nodesClasses=hierarchy
-    nodesClassesCorrespondence=getClassesShow(configRow["classes"])
-    nodesClassesShow=Object.values(nodesClassesCorrespondence)
-    classTooltip=hierarchy[0]
-  }else{
-    //////////////console.log(node)
-    //////////////////////////////////console.log(configRow)
-    ////////////////////////////////console.log(node.menuOption)
-    classTooltip=nodesClassesCorrespondence[node["class"]]
-    ////////////////////////////////console.log(node.menuOption)
-    if(node.menuOption==undefined){
-      node.menuOption=configRow.options
-    }else{
-      node.menuOption=node.menuOption + ";"+ configRow.options
-    }
-  }   
-  //////////////console.log(results)
-  //////////////////////////console.log(hierarchy)
-  for (let j = 0; j < results.length; ++j) {
-    ////////////////console.log(Object.keys(results[j]));
-    treeResults=get_hierarchy_from_keys(Object.keys(results[j]))
-    ////////////////console.log(treeResults)
-    for (let i = 0; i < treeResults.length; ++i) {
-      //////////////////////////console.log(results[j][hierarchy[i]])
-      //////////////////console.log(results[j])
-
-      if(results[j][treeResults[i]]){
-        //////////////////////////console.log(procNode[i])
-        ////////////////console.log(i)
-        ////////////////console.log(results[j][treeResults[i]])
-        if(procNode[i]!=results[j][treeResults[i]].value){
-          if(i>1){
-            indexParent=idFromHierarchy(i,j)
-            //////////////////console.log(treeData)
-            treeData[indexParent]["children"].push(nodeValues(results[j],i))
-          }else if(i==1){
-            treeData[0]["children"].push(nodeValues(results[j],1))        
-          }else{
-            //const listHasCatalogs = this.originalLearningItems.filter(item => item.catalogues.map(catalogs => catalogs.some(catalog => catalog.value == val.catalogSearch)  
-            //////////////////console.log(treeData)
-            if(treeData.findIndex(d=>d.value==results[j][treeResults[0]].value)==-1){
-              if(node){
-                //users = treeData.filter(d => d.children.some(v.id==node.id))
-                ////////////////////////////////////console.log(node.id)
-                ////////////////////////////////////console.log(networkGraph.treeData)
-                //users = networkGraph.treeData.filter(d => d.children.some(v => v.id == node.id))
-                ////////////////////////////////////console.log(users)
-                tmpNode=nodeValues(results[j],0,node.id)
-                //////////////////console.log(tmpNode)
-              }else{
-                tmpNode=nodeValues(results[j],0)
-                //////////////////console.log(tmpNode)
-              }
-              tmpNode["children"]=[]
-              treeData.push(tmpNode)
-              //////////////////console.log(treeData[0])
-            }
-          }
-        } 
-        procNode[i]=results[j][treeResults[i]]["value"]
-      }else{
-        procNode[i]=""
-      }
-
-/*       if(results[j][hierarchy[i]]){
-        procNode[i]=results[j][hierarchy[i]]["value"]
-      }else{
-        procNode[i]=""
-      } */
-      
-    }
-  }
-  treeData=updateNodeChildren(treeData)
-  ////////console.log(treeData)
-  flatData=flatten_v2(treeData)
-  ////////console.log(flatData)
-  //return flatData
+function buildData(branchType,results, settingsGraph, node,configClasses){
+  var treeData;
   //if node has no children, concat the new treeData with the
   //data already in the treeData of the Networkgraph
+  if(branchType=="basic"){
+    treeData=buildDataBasic(results,settingsGraph,configClasses,node)
+    console.log(treeData)
+  }else if(branchType=="expert"){
+    treeData=buildDataExpert(results, settingsGraph, node)
+    console.log(treeData)
+  }
   if(node!=undefined){
     if(networkGraph.treeData.filter(d=>d.id==node.id).length==0){
       /* for (let i = 0; i < networkGraph.treeData.length; ++i) {
@@ -244,17 +20,24 @@ function buildDataBasic(results,configRow,configClasses,node){
         }
       }
       networkGraph.treeData[i]["children"][indexNode]["children"]=flatData.treeData[0]["children"] */
-      networkGraph.treeData=networkGraph.treeData.concat(flatData.treeData)
-      //////console.log(networkGraph.treeData)
+      networkGraph.treeData=networkGraph.treeData.concat(treeData)
+      console.log(networkGraph.treeData)
     }else{
     //if we have clicked already an option for the node
     //click on splitInMenuOption
-      splitInMenuOption(flatData.treeData,networkGraph.treeData)
+      splitInMenuOption(treeData,networkGraph.treeData)
     }
   }
-
-  return flatData
-
+  if(branchType=="basic"){
+    console.log(treeData)
+    flattenData=flatten_v2(treeData)
+  }else if(branchType=="expert"){
+    flattenData = flatten_freeGraph(treeData)
+  }
+  
+  data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
+  return data
+  
   function splitInMenuOption(newTreeData){
     var menuOptionNodes=[],newMenuOption;
 
@@ -293,6 +76,199 @@ function buildDataBasic(results,configRow,configClasses,node){
     }
     
     
+  }
+}
+function buildDataBasic(results,configRow,configClasses,node){
+  var procNode=[],indexParent,treeData=[],tmpNode,indexNode,child,classFreeNode;
+  var hierarchy=get_hierarchy(configRow["hierarchy"])
+  var treeResults;
+  ////////////////////////////console.log("buildDataBasic")
+  //hierarchy=hierarchy.reverse()
+  //alert("pasa")
+
+  ////////////////////////////console.log(results)
+  ////////////////////////////console.log(configRow["properties_full"])
+  var properties=get_properties(configRow["properties_full"])
+  ////////////////////////////console.log(properties)
+  if(node==undefined){
+    nodesClasses=hierarchy
+    nodesClassesCorrespondence=getClassesShow(configRow["classes"])
+    console.log(nodesClassesCorrespondence)
+    nodesClassesShow=Object.values(nodesClassesCorrespondence)
+    console.log(nodesClassesShow)
+    classTooltip=hierarchy[0]
+  }else{
+    //////////////console.log(node)
+    //////////////////////////////////console.log(configRow)
+    ////////////////////////////////console.log(node.menuOption)
+    //{det: 'DET', detLevel1: 'DET Level'}
+    //det: "DET"
+    //detLevel1: "DET Level"
+    addClassLinkToBasic()
+    ////////////////////////////////console.log(node.menuOption)
+    if(node.menuOption==undefined){
+      node.menuOption=configRow.options
+    }else{
+      node.menuOption=node.menuOption + ";"+ configRow.options
+    }
+  }   
+  console.log(results)
+  //////////////////////////console.log(hierarchy)
+  for (let j = 0; j < results.length; ++j) {
+    ////////////////console.log(Object.keys(results[j]));
+    treeResults=get_hierarchy_from_keys(Object.keys(results[j]))
+    ////////////////console.log(treeResults)
+    for (let i = 0; i < treeResults.length; ++i) {
+      //////////////////////////console.log(results[j][hierarchy[i]])
+      //////////////////console.log(results[j])
+
+      if(results[j][treeResults[i]]){
+        //////////////////////////console.log(procNode[i])
+        ////////////////console.log(i)
+        ////////////////console.log(results[j][treeResults[i]])
+        if(procNode[i]!=results[j][treeResults[i]].value){
+          if(i>1){
+            indexParent=idFromHierarchy(i,j)
+            //////////////////console.log(treeData)
+            child=nodeValues(results[j],i)
+            child["configRowNumber"]=configRow["rowNumber"]
+            treeData[indexParent]["children"].push(child)
+          }else if(i==1){
+            child=nodeValues(results[j],i)
+            //console.log(child)
+            //console.log(configRow)
+            //child["configRow"]
+            child["configRowNumber"]=configRow["rowNumber"]
+            treeData[0]["children"].push(child)        
+          }else{
+            //const listHasCatalogs = this.originalLearningItems.filter(item => item.catalogues.map(catalogs => catalogs.some(catalog => catalog.value == val.catalogSearch)  
+            //////////////////console.log(treeData)
+            if(treeData.findIndex(d=>d.value==results[j][treeResults[0]].value)==-1){
+              if(node){
+                //users = treeData.filter(d => d.children.some(v.id==node.id))
+                ////////////////////////////////////console.log(node.id)
+                ////////////////////////////////////console.log(networkGraph.treeData)
+                //users = networkGraph.treeData.filter(d => d.children.some(v => v.id == node.id))
+                ////////////////////////////////////console.log(users)
+                tmpNode=nodeValues(results[j],0,node.id)
+                //////////////////console.log(tmpNode)
+              }else{
+                tmpNode=nodeValues(results[j],0)
+                //////////////////console.log(tmpNode)
+              }
+              tmpNode["children"]=[]
+              treeData.push(tmpNode)
+              //////////////////console.log(treeData[0])
+            }
+          }
+        } 
+        procNode[i]=results[j][treeResults[i]]["value"]
+      }else{
+        procNode[i]=""
+      }
+
+/*       if(results[j][hierarchy[i]]){
+        procNode[i]=results[j][hierarchy[i]]["value"]
+      }else{
+        procNode[i]=""
+      } */
+      
+    }
+  }
+  //console.log(networkGraph.treeData)
+  console.log(treeData)
+  treeData=updateNodeChildren(treeData)
+  console.log(treeData)
+  //flatData=flatten_v2(treeData)
+  ////////console.log(flatData)
+  //return flatData
+ /*  //if node has no children, concat the new treeData with the
+  //data already in the treeData of the Networkgraph
+  if(node!=undefined){
+    if(networkGraph.treeData.filter(d=>d.id==node.id).length==0){
+      // for (let i = 0; i < networkGraph.treeData.length; ++i) {
+      //  indexNode=networkGraph.treeData[i].children.findIndex(d=>d.id==node.id)
+      //  if(indexNode!=-1){
+      //    break;
+      //  }
+      //}
+      //networkGraph.treeData[i]["children"][indexNode]["children"]=flatData.treeData[0]["children"] 
+      networkGraph.treeData=networkGraph.treeData.concat(flatData.treeData)
+      //////console.log(networkGraph.treeData)
+    }else{
+    //if we have clicked already an option for the node
+    //click on splitInMenuOption
+      splitInMenuOption(flatData.treeData,networkGraph.treeData)
+    }
+  } */
+
+  return treeData
+
+  /* function splitInMenuOption(newTreeData){
+    var menuOptionNodes=[],newMenuOption;
+
+    let obj = networkGraph.treeData.find(n => n.id == newTreeData[0]["id"]);
+    ////////console.log(obj)
+    ////////console.log(newTreeData[0])
+    ////////console.log(networkGraph.treeData)
+    ////////////console.log(obj.menuOption)
+    ////////////console.log(obj.children)
+    ////////////console.log(newTreeData[0].menuOption)
+    ////////console.log(nodesClassesCorrespondence)
+    ////////console.log(colorCorrespondence)
+    ////////console.log(colorScale.range())
+    //////console.log(nodesClassesShow)
+    //////console.log(nodesClassesCorrespondence)
+    if(!nodesClassesShow.includes("menuOption")){
+      nodesClassesShow.push("menuOption")
+      nodesClassesCorrespondence["menuOption"]="menuOption"
+    }
+    if(obj.children){
+      newMenuOption={ "id": genRandomString(), "value": newTreeData[0].menuOption, "type": "menuOption", "children": newTreeData[0].children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" }
+      if(obj.children[0]["class"]!="menuOption"){
+        menuOptionNodes.push({ "id": genRandomString(), "value": obj.menuOption, "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+        menuOptionNodes.push(newMenuOption)
+        obj.children = menuOptionNodes;
+      }else{
+        obj.children.push(newMenuOption)
+      }
+    }else{
+      //newMenuOption={ "id": genRandomString(), "value": newTreeData[0].menuOption, "type": "menuOption", "children": newTreeData[0].children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" }
+      if(obj._children){
+        //menuOptionNodes.push({ "id": genRandomString(), "value": obj.menuOption, "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+        //menuOptionNodes.push(newMenuOption)
+        obj.children = newTreeData[0].children;
+      }
+    }
+    
+    
+  } */
+  function addClassLinkToBasic(){
+    if(node["class"]=="free"){
+      console.log(networkGraph.classesLinesConfig)
+      classFreeNode=networkGraph.classesLinesConfig[networkGraph.nodesLinkBasicGraph.filter(d=>d.child.value==node["value"])[0]["class"]["value"]]
+      //node["class"]=classFreeNode["class_orig"]
+      let tmp={}
+      tmp[classFreeNode["class_orig"]]=classFreeNode["class"]
+/*       if(!nodesClassesCorrespondence){
+        nodesClassesCorrespondence=[tmp]
+        //nodesClassesShow=[classFreeNode["class"]]
+      }else{
+        nodesClassesCorrespondence[classFreeNode["class_orig"]]=classFreeNode["class"]
+        //nodesClassesShow.push(classFreeNode["class"])
+      }
+      if(!nodesClassesShow){
+        nodesClassesShow=[classFreeNode["class"]]
+      }else{
+        nodesClassesShow.push(classFreeNode["class"])
+      } */
+      //console.log(networkGraph.treeData)
+      //nodesClassesCorrespondence=getClassesShow(configRow["classes"])
+      nodesClassesCorrespondence={ ...nodesClassesCorrespondence, ...getClassesShow(configRow["classes"])}
+      console.log(nodesClassesCorrespondence)
+      nodesClassesShow=Object.values(nodesClassesCorrespondence)
+      console.log(nodesClassesShow)
+    }
   }
   function get_hierarchy_from_keys(keys){
     var keysH=[],result,index_;
@@ -336,6 +312,107 @@ function buildDataBasic(results,configRow,configClasses,node){
     return indexParent
   }
 
+  /* function buildDataExpert(results, form, node) {
+    var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
+  
+    results.forEach(r => {
+      if (form["subject-object"] == "s") {
+        if (r["o"]["more_results"]) {
+          more_results = r["o"]["more_results"]
+        } else {
+          more_results = ""
+        }
+        if (r["o"]["configRow"]) {
+          configRow = r["o"]["configRow"]
+        } else {
+          configRow = ""
+        }
+        children.push({ "id": genRandomString(), "value": r["o"]["value"], "type": r["o"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
+      } else if (form["subject-object"] == "o") {
+        if (r["s"]["more_results"]) {
+          more_results = r["s"]["more_results"]
+        } else {
+          more_results = ""
+        }
+        if (r["s"]["configRow"]) {
+          configRow = r["s"]["configRow"]
+        } else {
+          configRow = ""
+        }
+        children.push({ "id": genRandomString(), "value": r["s"]["value"], "type": r["s"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
+      }
+  
+  
+    })
+    if (node != undefined) {
+      if (node["menuOption"]) {
+        menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
+        networkGraph.treeData.filter(d => d.id == node["id"])
+        let obj = networkGraph.treeData.find(n => n.id == node["id"]);
+        if (obj["children"])
+          if (obj.children[0].type != "menuOption") {
+            menuOptionNodes.push({ "id": genRandomString(), "value": node["menuOption"], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+            menuOptionNodes.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+            obj.children = menuOptionNodes;
+          } else {
+            obj.children.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+          }
+  
+        obj["menuOption"] = menuOption
+      } else {
+        menuOption = node["url"] + "," + node["subject-object"]
+        treeData = [{ "id": node["id"], "value": node["value"], "type": node["type"], "children": children, "hidden": false, "more_results": more_results, "menuOption": menuOption, "configRow": configRow, "class": "free" }]
+      }
+  
+    } else {
+      menuOption = form["url"] + "," + form["subject-object"]
+      treeData = [{ "id": genRandomString(), "value": results[0][form["subject-object"]]["value"], "type": results[0][form["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
+    }
+    flattenData = flatten_freeGraph(treeData)
+    data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
+    return data
+    //return treeData
+  } */
+
+  function flatten_freeGraph(root) {
+    var nodes = [], links = [];
+    function recurse(node) {
+      if (!node["hidden"]) {
+        position = nodes.indexOf(nodes.filter(function (item) {
+          return item.id == node.id
+        })[0])
+        if (position == -1) {
+          nodes.push(node)
+          position = (nodes.length) - 1
+        } else {
+          nodes[position]["menuOption"] = node["menuOption"]
+        }
+        if (node.children) {
+          nodes[position]["number"] = node.children.length
+          node.children.forEach(function (c) {
+            if (!c["hidden"]) {
+              position = links.indexOf(links.filter(function (item) {
+                return ((item.source == node.id) && (item.target == c.id))
+              })[0])
+              if (position == -1) {
+                links.push({ "source": node.id, "target": c.id, "id": (node.id + "_" + c.id), "value": c.property })
+              }
+              recurse(c)
+            }
+          });
+        } else {
+          nodes[position]["number"] = 0;
+        }
+      }
+  
+    }
+  
+    root.forEach(function (r) {
+      recurse(r);
+    })
+  
+    return { "flatData": { "nodes": nodes, "links": links }, "treeData": root };
+  }
 
   function nodeValues(r,index,id){
     var node;
@@ -844,3 +921,73 @@ function create_menuNode(index,treeData){
     newNode["menuOption"]="no options"
   }
 } */
+function buildDataExpert(results, form, node) {
+  var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
+  console.log(results)
+  console.log(form)
+  results.forEach(r => {
+    if (form["subject-object"] == "s") {
+      if (r["o"]["more_results"]) {
+        more_results = r["o"]["more_results"]
+      } else {
+        more_results = ""
+      }
+      if (r["o"]["configRow"]) {
+        configRow = r["o"]["configRow"]
+      } else {
+        configRow = ""
+      }
+      children.push({ "id": genRandomString(), "value": r["o"]["value"], "type": r["o"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
+    } else if (form["subject-object"] == "o") {
+      if (r["s"]["more_results"]) {
+        more_results = r["s"]["more_results"]
+      } else {
+        more_results = ""
+      }
+      if (r["s"]["configRow"]) {
+        configRow = r["s"]["configRow"]
+      } else {
+        configRow = ""
+      }
+      children.push({ "id": genRandomString(), "value": r["s"]["value"], "type": r["s"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
+    }
+  })
+  console.log(children)
+  if (node != undefined) {
+    if (node["menuOption"]) {
+      menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
+      networkGraph.treeData.filter(d => d.id == node["id"])
+      let obj = networkGraph.treeData.find(n => n.id == node["id"]);
+      if (obj["children"])
+        if (obj.children[0].type != "menuOption") {
+          menuOptionNodes.push({ "id": genRandomString(), "value": node["menuOption"], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+          menuOptionNodes.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+          obj.children = menuOptionNodes;
+        } else {
+          obj.children.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+        }
+
+      obj["menuOption"] = menuOption
+    } else {
+      menuOption = node["url"] + "," + node["subject-object"]
+      treeData = [{ "id": node["id"], "value": node["value"], "type": node["type"], "children": children, "hidden": false, "more_results": more_results, "menuOption": menuOption, "configRow": configRow, "class": "free" }]
+    }
+
+  } else {
+    menuOption = form["url"] + "," + form["subject-object"]
+    treeData = [{ "id": genRandomString(), "value": results[0][form["subject-object"]]["value"], "type": results[0][form["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
+  }
+  return treeData
+/*   function getFreeGraphData(results, form) {
+    var nodes = [], links = [], data, treeData, flattenData;
+  
+    treeData = buildTreeData(results, form)
+    flattenData = flatten_freeGraph(treeData)
+    data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
+    return data
+  }
+  return treeData */
+  /* flattenData = flatten_freeGraph(treeData)
+  data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
+  return data */
+}

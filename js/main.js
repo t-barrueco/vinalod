@@ -1,4 +1,3 @@
-
 var nodes=[],links=[],data={},networkGraph,legend,configFile=null,configFileExp=null,dataInstances,allDataModel,
 dataInstancesRessourceLegal,allData_at,allData_classSumLeg,nodesClasses,colorScale,
 nodesSelSources=[],nodesSelTarget=[],execQueries=[],nodesClassesShow=[],nodesClassesCorrespondence,
@@ -109,8 +108,8 @@ function forceLinksIterations(value){
 
   
 async function buildBasicGraph(rowDataConfig,node){
-    var configRow,sparqlQuery,queryUrl, parameters,modal2,prefixes,configClasses;
-    
+    var configRow,sparqlQuery,parameters,modal2,prefixes,configClasses;
+    ////////console.log("buildBasicGraph")
     //get all fields from config file and save them in configRow.
     //configRow is an object with all fields from Config File Row.
     configRow=getFieldsConfigFile(configFile,rowDataConfig)
@@ -133,203 +132,29 @@ async function buildBasicGraph(rowDataConfig,node){
     if(node!=undefined){
       //if we come from a bubble clicked or a row in a table
       //we have to replace the PARAMETERS in the original query with the values
-      replaceParmtrsQuery()
+      //replaceParmtrsQuery()
       if(nodesClassesCorrespondence==null){
         nodesClassesCorrespondence=getClassesShow(configRow["classes"])
       } 
       nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(configRow.classes));
       nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(configRow.classes)))))
-    }else{
-      sparqlQuery=configRow.sparqlQuery
     }
+
     //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
     if(configRow.graphType=="TREE"){
-      //message shown when executing query
-      var fn = function(){
-          d3.select("#spin").style("display","none")
-          document.getElementById("sparql-timeout").style.display="inline-block"
-      };
-      d3.select("#spin-message")
-      .text("Waiting for Sparql query")
-      d3.select("#spin").style("display","inline-flex")
-
-      interval = setInterval(fn, 8000);
-
-      queryUrl = configRow.url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-      settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-
-      $objectAjax=$.ajax(settings).then  (function( _data ) {
-        var results = _data.results.bindings;
-
-        //stop displaing message when executing query
-        d3.select("#spin").style("display","none")
-
-        //if no bubble is clicked or row in the table
-        if(node==undefined){
-          //remove a graph if in there is one
-          d3.selectAll(".graph").remove()
-          //get data from results in query
-          data=buildDataBasic(results,configRow,configClasses,node)
-          //add forces to graph
-          setForcesGraph()
-
-          networkGraph = new NetworkGraph("#networkGraph", data,forces,"fromConfig");
-          legend=new Legend("legend")
-
-          collapse(networkGraph.treeData[0])
-        }else{
-          //build data for the graph
-          networkGraph.addingGraph=true
-          networkGraph.dblClickId=node.id.replace("_image","")+"_g"
-          buildDataBasic(results,configRow,configClasses,node)
-
-          //////console.log(networkGraph.treeData)
-          networkGraph.data=flatten(networkGraph.treeData).flatData
-          //////console.log(networkGraph.data)
-          //////console.log(node)
-          //networkGraph.initializeSimulation();
-          networkGraph.dataJoinGraph()
-          networkGraph.enterGraph()
-          networkGraph.initializeSimulation();
-          networkGraph.dataJoinGraph()
-          networkGraph.exitGraph()
-
-          legend.addColors(colorScale)
-          handleNavigation(node)
-
-          /* var circle = document.getElementById(node.id),
-          cx = +circle.getAttribute('cx'),
-          cy = +circle.getAttribute('cy'),
-          ctm = circle.getCTM(),
-          coords = getScreenCoords(cx, cy, ctm);
-          //////////console.log(coords.x, coords.y); // shows coords relative to my svg container
-          //////////console.log(document.getElementById(node.id).getBoundingClientRect())
-          var dcx = (window.innerWidth/2-coords.x*networkGraph.zoomScale);
-          var dcy = (window.innerHeight/2-coords.y*networkGraph.zoomScale);
-          //////////console.log(dcx)
-          //////////console.log(dcy)
-
-          networkGraph.g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + networkGraph.zoomScale + ")"); */
-           
-          if(configRow.hierarchy.length>1){
-
-            collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
-          }
-        }
-
-        //////////console.log("then")
-      })
-      .fail(function (jqXHR, textStatus, errorThrown) {
-        document.getElementById("sparql-timeout").style.display="inline-block"
-      })
-    
-      .always(function(jqXHR, textStatus, errorThrown) {
-        d3.select("#spin").style("display","none")
-        //////////console.log("always")
-        ////console.log(dcy)
-      })
-      .done(function (data, textStatus, jqXHR) {
-        clearInterval(interval)
-        d3.select("#spin").style("display","none")
-        document.getElementById("sparql-timeout").style.display="none"
-        ////////console.log(node)
-        ////////console.log(document.getElementById(node.id).parentElement)
-        if(node){
-          var transform=document.getElementsByClassName("gMain")[0].getAttribute("transform")
-          //console.log(transform)
-          if(transform){
-            translate = transform.substring(transform.indexOf("(")+1, transform.indexOf(")")).split(",");
-          }
-          //translate = transform.substring(transform.indexOf("(")+1, transform.indexOf(")")).split(",");
-          var dcx = (window.innerWidth/2+d3.select("#"+node.id+"_g").data()[0]["x"]);
-          var dcy = (window.innerHeight/2+d3.select("#"+node.id+"_g").data()[0]["y"]);
-          //var dcx = (window.innerWidth/2-d3.select("#"+networkGraph.dblClickId).data()[0]["x"]);
-          //var dcy = (window.innerHeight/2-d3.select("#"+networkGraph.dblClickId).data()[0]["y"]);
-          //console.log(window.innerWidth/2)
-          //console.log(window.innerHeight/2)
-          //console.log()
-          //console.log(d3.select("#"+node.id).data()[0]["x"])
-          //console.log(d3.select("#"+node.id).data()[0]["y"])
-          //console.log(d3.select("#"+node.id+"_g").data()[0]["x"])
-          //console.log(d3.select("#"+node.id+"_g").data()[0]["y"])
-          //console.log(d3.select("#"+networkGraph.dblClickId).data()[0]["x"])
-          //console.log(d3.select("#"+networkGraph.dblClickId).data()[0]["y"])
-          var p = $( "#"+node.id );
-          var position = p.position();
-
-          //networkGraph.g.transition()
-          //  .duration(750).attr("transform",  "translate("+ dcx + "," + dcy  + ") scale("+networkGraph.zoomScale+")") 
-            //.duration(750).attr("transform",  "translate(-200,-200) scale("+networkGraph.zoomScale+")")
-          //networkGraph.dragX=0
-          //networkGraph.dragY=0
-          //networkGraph.centerGraphX=dcx
-          //networkGraph.centerGraphY=dcy
-          //networkGraph.dragX=200
-          //networkGraph.dragY=200
-          networkGraph.graphAdded=true
-          //console.log(networkGraph.g.attr("x"))
-          //console.log(position.left)
-          //console.log(position.top)
-
-          //console.log(dcy)
-/*           networkGraph.g.append("text")
-          .attr("x", position.left)             
-          .attr("y", position.top)
-          .attr("text-anchor", "middle")  
-          .style("font-size", "16px") 
-          .text("node"); */
-          ////console.log(d3.event.transform.x)
-          ////console.log(d3.event.transform.y)
-          //console.log("done----dragX and dragY")
-          //console.log(networkGraph.dragX)
-          //console.log(networkGraph.dragY)
-        }
-
-/*         networkGraph.g.append("text")
-          .attr("x", node["x"])             
-          .attr("y", node["y"])
-          .attr("text-anchor", "middle")  
-          .style("font-size", "16px") 
-          .text("node"); */
-        /* if(networkGraph.dblClickId){
-          //////console.log(d3.select("#"+networkGraph.dblClickId))
-          var dcx = (window.innerWidth/2-d3.select("#"+networkGraph.dblClickId).data()[0]["x"]);
-          var dcy = (window.innerHeight/2-d3.select("#"+networkGraph.dblClickId).data()[0]["y"]);
-          //var transform=d3.select("#"+vis.dblClickId).attr("transform")
-          //d3.select("#"+networkGraph.dblClickId).data()[0]["x"]
-          //d3.select("#"+networkGraph.dblClickId).data()[0]["y"]
-          networkGraph.g.append("text")
-          .attr("x", d3.select("#"+networkGraph.dblClickId).data()[0]["x"])             
-          .attr("y", d3.select("#"+networkGraph.dblClickId).data()[0]["y"])
-          .attr("text-anchor", "middle")  
-          .style("font-size", "16px") 
-          .text("g circle coords");
-          //translate = transform.substring(transform.indexOf("(")+1, transform.indexOf(")")).split(",");
-          networkGraph.g.transition()
-          .duration(750).attr("transform",  "translate("+ dcx + "," + dcy  + ") scale("+networkGraph.zoomScale+")") 
-          //networkGraph.zoomed.call(networkGraph);
-          //networkGraph.zoomScale=d3.event.transform.k
-          //vis.dragX=dcx
-          //vis.dragY=dcy
-        } */
-
-/*         //////console.log(networkGraph.coorX)
-        if(networkGraph.coorX){
-          //////console.log("pasa por coor")
-          var dcx = (window.innerWidth/2-networkGraph.coorX);
-          var dcy = (window.innerHeight/2-networkGraph.coorY);
-          networkGraph.coorX=((networkGraph.coorX - dcx) /networkGraph.zoomScale )
-          networkGraph.coorY=((networkGraph.coorY - dcy) /networkGraph.zoomScale )
-        } */
-      })
-      await $objectAjax
+      buildNetworkGraph(configRow,"basic",node,configClasses)
     }else{
+      ////console.log("other type config row")
+      ////console.log(configRow)
+      //sparqlQuery=configRow.sparqlQuery
+      sparqlQuery=replaceParmtrsQuery(configRow,node)
+      ////console.log(sparqlQuery)
       if (configRow.graphType=="TREEGRAPH"){
         modal2=getModal2()
         showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
       }else if (configRow.graphType=="WIKIPEDIA"){
-        ////////////////////////////////////////////console.log("WIKIPEDIA")
+        ////////////////////////////////////////////////////console.log("WIKIPEDIA")
         modal2=getModal2()
         showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
@@ -357,86 +182,24 @@ async function buildBasicGraph(rowDataConfig,node){
         showModal("#myModal2")
       }
     }
-    function getScreenCoords(x, y, ctm) {
-      var xn = ctm.e + x*ctm.a + y*ctm.c;
-      var yn = ctm.f + x*ctm.b + y*ctm.d;
-      return { x: xn, y: yn };
-    }
-    function replaceParmtrsQuery(){
-      if(configRow.parameters!=""){
-        parameters=get_parameters(configRow.parameters)
-        for (let i = 0; i < parameters.length; ++i) { 
-          sparqlQuery=configRow.sparqlQuery.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]]);
-        }  
-        //The value for the PARAMETER in the Sparql query is the "[class]_uri" or the
-        //name of the class with no "_uri"
-
-        if((node[node["class"]+"_uri"]!=undefined)&&(node[node["class"]+"_uri"]!="")){
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER", node[node["class"]+"_uri"]);
-        }else{
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER", node["value"]);
-        }
-      }else{
-        if(node["configRow"]){
-          sparqlQuery=configRow.sparqlQuery.replaceAll("PARAMETER", node["value"]);
-        }else{
-          sparqlQuery=configRow.sparqlQuery.replaceAll("PARAMETER", node[node["class"]+"_uri"]);
-        }        
-      }
-    }
-    function setForcesGraph(){
-      forces = {
-        center: {
-            x: 0.5,
-            y: 0.5
-        },
-        charge: {
-            enabled: true,
-            strength: -800,
-            distanceMin: 100,
-            distanceMax: 2000
-        },
-        collide: {
-            enabled: false,
-            strength: .2,
-            iterations: 1,
-            radius: 5
-        },
-        forceX: {
-            enabled:true,
-            strength: .1,
-            x: .2
-        },
-        forceY: {
-            enabled: true,
-            strength: .1,
-            y: .2
-        },
-        link: {
-            enabled: true,
-            distance: 100,
-            iterations: 1
-        }
-      }
-    }
 
   }
 
 //get all fields from config file. if the field does not exists it will be empty
 function getFieldsConfigFile(configFile,rowDataConfig){
-  var url, sparqlQuery,hierarchy,properties_full,options,option_text
+  var url, query,hierarchy,properties_full,options,option_text
   var graphType,classes,parameters,filters,tooltip,columns,property_names,detail
 
   if(configFile[rowDataConfig]["endpoint_url"]){
-    url=configFile[rowDataConfig]["endpoint_url"]
+    endpoint_url=configFile[rowDataConfig]["endpoint_url"]
   }else{
-    url=""
+    endpoint_url=""
   }
 
   if(configFile[rowDataConfig]["query"]){
-    sparqlQuery=configFile[rowDataConfig]["query"]
+    query=configFile[rowDataConfig]["query"]
   }else{
-    sparqlQuery=""
+    query=""
   }
 
   if(configFile[rowDataConfig]["hierarchy"]){
@@ -511,9 +274,9 @@ function getFieldsConfigFile(configFile,rowDataConfig){
     detail=""
   }
 
-  return {"url":url,"sparqlQuery":sparqlQuery,"hierarchy":hierarchy,"properties_full":properties_full,
+  return {"endpoint_url":endpoint_url,"query":query,"hierarchy":hierarchy,"properties_full":properties_full,
   "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
-  "filters":filters,"tooltip":tooltip,"columns":columns,"property_names":property_names,"detail":detail}
+  "filters":filters,"tooltip":tooltip,"columns":columns,"property_names":property_names,"detail":detail,"rowNumber":rowDataConfig}
 }
 
 function collapse(root){
@@ -533,14 +296,14 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  //////////console.log("collapse")
+  //////////////////console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  //////////console.log("collapse")
+  //////////////////console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
@@ -556,12 +319,12 @@ span.onclick = function() {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+/* window.onclick = function(event) {
   if (event.target == modal) {
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
   }
-}
+} */
 d3.select('body')
 .on('click', () => {
     d3.select(".contextMenu").remove();
@@ -575,7 +338,7 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  //////////////////////////////////////////////////console.log($("#myModal2"))
+  //////////////////////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
@@ -690,6 +453,15 @@ function expertMode(){
   $("#form-container").removeClass("hidden")
   $("#landing-img").addClass("hidden")
   $("#landing-text").addClass("hidden")
+  if(legend){
+    legend.deleteAllColors()
+  }
+
+  if(networkGraph){
+    networkGraph = undefined;
+    legend=undefined
+    //legend.deleteAllColors()
+  }
 }
 function basicMode(){
   if($("#flyoutMenu").hasClass("opacity-0")){
@@ -743,3 +515,12 @@ function handleNavigation(node){
     }
   }
 }
+/* window.onclick = function(event) {
+
+  ////console.log(document.getElementById("myModal").contains(event.target))
+  ////console.log(event.target)
+  if (document.getElementById("myModal").contains(event.target)) {
+    ////console.log("hide")
+    hideModal("#myModal");
+  }
+  } */
