@@ -22,22 +22,30 @@ Legend.prototype.addColors=function(){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }
 }
+//Legend.prototype.deleteAllColors=function(){
+//  var le=this;
+  //console.log(d3.selectAll("#legend li").remove())
+  //console.log(networkGraph.colorScale.domain)
+  //console.log(colorScale.domain())
+  /* if(colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
+      le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
+  } */
+//}
 Legend.prototype.deleteAllColors=function(){
   var le=this;
   console.log(d3.selectAll("#legend li").remove())
-  console.log(networkGraph.colorScale.domain)
-  console.log(colorScale.domain())
+  //console.log(networkGraph.colorScale.domain)
+  //console.log(colorScale.domain())
   /* if(colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
       le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
   } */
 }
-
 Legend.prototype.addOne=function (index,textLi){
   var le=this;
   var li,classLi;
-  console.log(colorCorrespondence)
-  console.log(colorScale.range()[index])
-  console.log(colorCorrespondence[colorScale.range()[index]])
+  //console.log(colorCorrespondence)
+  //console.log(colorScale.range()[index])
+  //console.log(colorCorrespondence[colorScale.range()[index]])
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
   li=le.parentEl.append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")

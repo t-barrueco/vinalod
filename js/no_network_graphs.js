@@ -20,6 +20,12 @@ function getModal2(){
     $(id).addClass("translate-x-0")
     ////console.log($(id))
   }
+  function hideModal(id){
+  
+    $(id).removeClass("translate-x-0")
+    $(id).addClass("translate-x-full")
+    ////console.log($(id))
+  }
   async function showTimeLine(data,modalHeader,modalContent){
     var rowDataConfig,results,node,dataTimeline=[];
   
@@ -240,7 +246,7 @@ function getModal2(){
   
   async function showWordcloud(node,sparqlQuery,configRow,modalHeader,modalContent){
     var rowDataConfig,results,dataTreegraph=[],title;
-  
+    console.log(sparqlQuery)
     if(node!=undefined){
       for (let i = 0; i < configFile.length; ++i) { 
         if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="WORDCLOUD")){
@@ -258,9 +264,10 @@ function getModal2(){
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  
+    console.log("antes de results")
+    console.log(settings)
     results = await runSparlqQuery(settings)
-    
+    console.log(results)
     dataWordCloud=transformDataWordCloud(results)
     wordCloudGraph(dataWordCloud,title,modalHeader,modalContent)
   

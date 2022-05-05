@@ -1,10 +1,11 @@
 ID	FILE
+#always put a <tab> between code/uri and the url of the image!
 Directory Organization	images/organization_icon.svg
 Membership Type	images/briefcase.svg
 Person	images/person_icon.svg
 OP Theme	images/publication.svg
 corporateBody	images/organization_icon.svg
-Catalog of open datasets	https://static.thenounproject.com/png/3972987-200.png
+#Catalog of open datasets	https://static.thenounproject.com/png/3972987-200.png
 data service	https://static.thenounproject.com/png/3422130-200.png
 Continents	https://static.thenounproject.com/png/22641-200.png
 NUTS Level 0	https://static.thenounproject.com/png/2010364-84.png
@@ -28,6 +29,38 @@ http://publications.europa.eu/resource/authority/continent/ANTARCTICA	images/ant
 http://publications.europa.eu/resource/authority/continent/ASIA	images/asia.svg
 http://publications.europa.eu/resource/authority/continent/EUROPE	images/europe.svg
 http://publications.europa.eu/resource/authority/continent/OCEANIA	images/oceania.svg
+http://publications.europa.eu/resource/authority/continent/OCEANIA	images/oceania.svg
+http://publications.europa.eu/resource/authority/country/DEU	https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg
+http://publications.europa.eu/resource/authority/country/FRA	https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg
+http://publications.europa.eu/resource/authority/country/ITA	https://upload.wikimedia.org/wikipedia/commons/a/ac/Printable_Flag_of_Italy.svg
+http://publications.europa.eu/resource/authority/country/LUX	https://upload.wikimedia.org/wikipedia/commons/f/f6/Luxembourg_Flag.svg
+http://publications.europa.eu/resource/authority/country/BEL	https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Belgium.svg/1038px-Flag_of_Belgium.svg.png
+http://publications.europa.eu/resource/authority/country/EST	https://upload.wikimedia.org/wikipedia/commons/8/8f/Flag_of_Estonia.svg
+http://publications.europa.eu/resource/authority/country/CZE	https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg
+http://publications.europa.eu/resource/authority/country/HRV	https://upload.wikimedia.org/wikipedia/commons/5/58/Flag_of_Croatia_at_the_UN.svg
+http://publications.europa.eu/resource/authority/country/DNK	https://upload.wikimedia.org/wikipedia/commons/9/9c/Flag_of_Denmark.svg
+http://publications.europa.eu/resource/authority/country/IRL	https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Ireland.svg
+http://publications.europa.eu/resource/authority/country/NLD	https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg
+http://publications.europa.eu/resource/authority/country/IOR	ggg
+http://publications.europa.eu/resource/authority/country/POL	https://upload.wikimedia.org/wikipedia/commons/1/12/Flag_of_Poland.svg
+http://publications.europa.eu/resource/authority/country/HUN	https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg
+http://publications.europa.eu/resource/authority/country/SWE	https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg
+http://publications.europa.eu/resource/authority/country/LTU	https://upload.wikimedia.org/wikipedia/commons/1/11/Flag_of_Lithuania.svg
+http://publications.europa.eu/resource/authority/country/ROU	https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg
+http://publications.europa.eu/resource/authority/country/MDA	https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Moldova.svg
+http://publications.europa.eu/resource/authority/country/ESP	https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Spain_%28Civil%29.svg
+http://publications.europa.eu/resource/authority/country/SVK	https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Slovakia.svg
+http://publications.europa.eu/resource/authority/place/GBR_LON	https://upload.wikimedia.org/wikipedia/commons/d/d3/GLA_Flag.svg
+http://publications.europa.eu/resource/authority/country/MLT	https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Malta.svg
+http://publications.europa.eu/resource/authority/country/CYP	https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Cyprus.svg
+http://publications.europa.eu/resource/authority/country/SVN	https://upload.wikimedia.org/wikipedia/commons/f/f0/Flag_of_Slovenia.svg
+http://publications.europa.eu/resource/authority/country/SRB	https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg
+http://publications.europa.eu/resource/authority/country/MNE	https://upload.wikimedia.org/wikipedia/commons/6/64/Flag_of_Montenegro.svg
+http://publications.europa.eu/resource/authority/country/PTR	https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg
+http://publications.europa.eu/resource/authority/country/UKR	https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg
+http://publications.europa.eu/resource/authority/country/NOR	https://upload.wikimedia.org/wikipedia/commons/1/1e/Flag_of_Norway_%28c81329_for_red_%26_14275b_for_blue%29.svg
+http://publications.europa.eu/resource/authority/country/CHE	https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg
+http://publications.europa.eu/resource/authority/country/AUT	https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_Austria.svg
 Country	images/country.svg
 Case-law concept	images/classification.svg
 Case-law	images/legislation.svg
@@ -45,3 +78,7 @@ DET Level	images/classification.svg
 Eurovoc Concept	images/concept.svg
 Aligment	images/link.svg
 menuOption	images/options.svg
+http://data.europa.eu	http://publications.europa.eu/code/images/scan/5000200-flag-cl.jpg
+http://data.europa.eu/88u/catalogue/european-union-open-data-portal	http://publications.europa.eu/code/images/scan/5000200-flag-cl.jpg
+http://publications.europa.eu/resource/authority/pub-theme/A	http://publications.europa.eu/code/images/scan/5000200-flag-cl.jpg
+"http://publications.europa.eu/resource/authority/pub-theme/E	data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8Zz4KICA8cGF0aCBkPSJtNDkzLjU5IDIyNy4xNiAyMS44NzkgMjEuODc5LTExOC4zOSAxMTguMzktNDEuMTUyLTQxLjE1Mi02OS4yODUgNjEuNTY2di0wLjAwMzkwNmMxNS43NDYgMTEuMDc0IDI4LjA4MiAyNi4zMzIgMzUuNjEzIDQ0LjA0M2wzMS40OTItMjcuOTQxIDQzLjQyNiA0My40MjYgMTU4LjMyLTE1OC4zMiAyMS44NzkgMjEuODc5IDMwLjY4OC0xMTQuNDZ6Ii8+CiAgPHBhdGggZD0ibTIyNy43NyAzODcuOTRjLTIyLjIzIDAtNDMuNTUxIDguODI4MS01OS4yNyAyNC41NTEtMTUuNzIzIDE1LjcxOS0yNC41NTUgMzcuMDM5LTI0LjU1NSA1OS4yNyAwIDIyLjIzNCA4LjgzMiA0My41NTUgMjQuNTU1IDU5LjI3MyAxNS43MTkgMTUuNzE5IDM3LjAzOSAyNC41NTEgNTkuMjcgMjQuNTUxIDIyLjIzNCAwIDQzLjU1NS04LjgzMiA1OS4yNzMtMjQuNTUxczI0LjU1MS0zNy4wMzkgMjQuNTUxLTU5LjI3M2MwLTIyLjIzLTguODMyLTQzLjU1MS0yNC41NTEtNTkuMjctMTUuNzE5LTE1LjcyMy0zNy4wMzktMjQuNTUxLTU5LjI3My0yNC41NTF6bTI4LjAzNSA2MS4xNDF2LTAuMDAzOTA2Yy0xLjc5NjktMS4yODUyLTMuNzUzOS0yLjMzNTktNS44MjQyLTMuMTI1bC0yLjk4NDQtMS4xMzY3Yy01LjI0MjItMS44OTg0LTEwLjg5MS0yLjM4NjctMTYuMzgzLTEuNDIxOS00LjI4NTIgMC41MjczNC04LjMzNTkgMi4yNS0xMS42ODggNC45NzI3LTMuMzQ3NyAyLjcyMjctNS44NjMzIDYuMzMyLTcuMjU3OCAxMC40MjJoNDEuMjAzbC0yLjQxNDEgOS40NzI3LTQwLjYzNy0wLjAwMzkwNmMtMC4wNjI1IDAuODgyODEtMC4wNjI1IDEuNzY5NSAwIDIuNjUyMyAwLjAxNTYyNiAxLjcxNDggMC4xNTYyNSAzLjQyMTkgMC40Mjk2OSA1LjExNzJoMzguNjQ1bC0zLjAzMTIgOS40NzI3LTMzLjAxMi0wLjAwMzkwNmMxLjkzMzYgNC42MjUgNS4yNDIyIDguNTQzIDkuNDc2NiAxMS4yMjMgNC4yMzgzIDIuNjc1OCA5LjE5OTIgMy45ODQ0IDE0LjIwMyAzLjc0MjIgMy4wNjI1IDAuMDAzOTA3IDYuMTEzMy0wLjQ0NTMxIDkuMDQ2OS0xLjMyNDIgMy4xNjAyLTAuODc4OTEgNi4xOTkyLTIuMTUyMyA5LjA0My0zLjc4OTF2MjMuNjhjLTUuODkwNiAyLjMxNjQtMTIuMTg4IDMuNDI1OC0xOC41MTYgMy4yNjU2LTExLjM4NyAwLjM0Mzc1LTIyLjU0Ny0zLjIxNDgtMzEuNjM3LTEwLjA4Ni04LjM0MzgtNi42MTMzLTE0LjEzNy0xNS45MjItMTYuMzgzLTI2LjMzMmgtMTMuMTY4bDMuMDMxMi05LjQ3MjcgOC42MjExIDAuMDAzOTA2di01LjY4MzYtMi4zNjcyaC0xMS42NTJsMy4wMzEyLTkuNDcyN2g5LjgwNDdjMS45ODA1LTEwLjY4OCA3Ljc1LTIwLjMwNSAxNi4yNDItMjcuMDkgOC45Mzc1LTYuOTYwOSAyMC4wMzEtMTAuNTY2IDMxLjM1Mi0xMC4xODQgMi44NjMzIDAuMDExNzE5IDUuNzI2NiAwLjE4NzUgOC41NzAzIDAuNTIzNDQgMS43MDMxIDAgMy40MTAyIDAuNDI1NzggNS4xMTMzIDAuNzU3ODFoMC4wMDM5MDZjNC40OTYxIDAuNDEwMTYgOC44MjQyIDEuOTIxOSAxMi41OTggNC40MDIzeiIvPgogPC9nPgo8L3N2Zz4K"

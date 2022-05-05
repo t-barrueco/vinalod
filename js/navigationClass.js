@@ -55,8 +55,12 @@ navigationPanel.prototype.getNodes = function (){
       })
     }
   }
-  navPanel.sources.push(networkGraph.data.nodes[0])
+  console.log(networkGraph.treeData)
+  console.log(networkGraph.data)
+  navPanel.sources.push(networkGraph.treeData[0])
   
+  console.log(navPanel.sources)
+
   navPanel.sources=navPanel.sources.reverse();
 }
 
@@ -401,8 +405,8 @@ navigationPanel.prototype.addElementNavProp = function (source,i,property){
   span4=document.createElement("span")
   span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
   if(property){
-    span4.innerHTML= source["value"]
-    
+    span4.innerHTML= source["target"]["property"]
+    console.log(source["target"]["property"])
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
@@ -469,18 +473,22 @@ navigationPanel.prototype.contentTable = function (){
       th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
-      if(menuOption.split(";").length>1){
-        th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
-      }else{
-        menuOption=menuOption.split(",")
-        if(navPanel.node.class=="free"){
-          labelFreeGraph()
+      ////console.log(node)
+      if(menuOption){
+        if(menuOption.split(";").length>1){
+          th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
         }else{
-          labelBasicGraph()
+          menuOption=menuOption.split(",")
+          if(navPanel.node.class=="free"){
+            labelFreeGraph()
+          }else{
+            labelBasicGraph()
+          }
+  
+          th.innerHTML=searchHtml()
         }
-
-        th.innerHTML=searchHtml()
       }
+
      
     }
     
@@ -569,7 +577,7 @@ navigationPanel.prototype.contentTable = function (){
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
-      //console.log(navPanel.node.detail)
+      ////console.log(navPanel.node.detail)
       navPanel.showDetails()
     }else{
       $("#dvDetails").empty()
@@ -640,7 +648,7 @@ navigationPanel.prototype.showDetails = function (){
 
             navDetailHeader=header.replace("Title",navPanel.node["value"]).toUpperCase()
             $("#dvDetails").append($(navDetailHeader))
-            //console.log(navPanel.node)
+            ////console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
                 if((key % 2 == 0)|| (key == 0)){  
@@ -1376,8 +1384,8 @@ navigationPanel.prototype.clickMenuTable = async function (form,node){
   var navPanel=this;
   var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
 
-  await buildFreeGraph(newForm,"table",node)
-
+  //await buildFreeGraph(newForm,"table",node)
+  await buildNetworkGraph(newForm,"table",node)
   if(node["menuOption"].split(";").length>1){
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
   }else{

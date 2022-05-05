@@ -81,15 +81,24 @@ function changeBasicGraph(option){
 
   //remove filter, legend and graph
   d3.selectAll(".classFilter").remove()
-  d3.select("#legend").selectAll("li").remove()
+  //d3.select("#legend").selectAll("li").remove()
   d3.selectAll(".graph").remove()                                                                      
 
+  
   //reset global variables
   propertiesFilterHist=[]
   execQueries=[]
   filtersInGraph=[]
   classesFilterList=[]
   filtersList=[]
+
+  if(networkGraph){
+    networkGraph = undefined;
+    colorScale=[]
+    legend.deleteAllColors()
+    legend=undefined
+    //console.log(legend)
+  }
   //graphHistory=[]
 
   //hide flyout menu
@@ -106,7 +115,10 @@ function changeBasicGraph(option){
   showBasicGraph()
 
   //build and show graph
+  ////console.log("antes de build")
+  ////console.log(pos)
   buildBasicGraph(pos)
+  ////console.log("despues de ...")
 }
 //Remove all elements from screen and show graph area
 function showBasicGraph(){
@@ -120,7 +132,7 @@ function showBasicGraph(){
 }
 
 //Show options from the Config File in menu
-function getMenuItems(items,node,pageX,pageY,origin){
+/* function getMenuItems(items,node,pageX,pageY,origin){
   var menuItems=[],element,position
   
   //if click on Navigation panel then origin=table
@@ -131,7 +143,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
     //function that add menu items to table
-    ////console.log("antes de add...")
+    //////////console.log("antes de add...")
     addMenuToTable(node,menuItems)
   }else{
     //if click on bubble in graph, fill menu to show on screen next to bubble
@@ -171,7 +183,7 @@ function getMenuItems(items,node,pageX,pageY,origin){
     //Send menuItems to menuFactory which will draw the menu in the graph
     networkGraph.menuFactory(100,0, menuItems, node,"dblClick",250)
   }
-}
+} */
 /* var dcx = (window.innerWidth/2-d.x*zoom.scale());
 	var dcy = (window.innerHeight/2-d.y*zoom.scale());
 	zoom.translate([dcx,dcy]);
@@ -236,28 +248,28 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
 
-      console.log("-------------------------")
-      console.log("pageX: "+pageX)
-      console.log("pageY: "+pageY)
-      console.log(pageX-200)
-      console.log(pageY-200)
-      console.log("zoomScale: "+networkGraph.zoomScale)
+      //////console.log("-------------------------")
+      //////console.log("pageX: "+pageX)
+      //////console.log("pageY: "+pageY)
+      //////console.log(pageX-200)
+      //////console.log(pageY-200)
+      //////console.log("zoomScale: "+networkGraph.zoomScale)
       if(pageY-200<0){
-        console.log("pageY menos")
+        //////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        console.log("pageX menos")
+        //////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
       }
-      console.log("pageX after: "+pageX)
-      console.log("pageY after: "+ pageY)
-      console.log(d3.select("#networkGraph").node())
-      console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
+      //////console.log("pageX after: "+pageX)
+      //////console.log("pageY after: "+ pageY)
+      //////console.log(d3.select("#networkGraph").node())
+      //////console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
       //pageX - width / 2, pageY - height / 1.5
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
@@ -289,59 +301,7 @@ function runAskSparlqQuery(url,sparqlQuery){
   })
 }
 
-//check how many queries return results for the specific node. 
-//run ask sparql queries
-async function checkAskResults(indexRows,node){
-  var sparqlQuery,resultIndexRows=[],parameters,arrayMenuOptions
 
-  if(node.menuOption){
-    arrayMenuOptions=node.menuOption.split(";")
-    indexRows=indexRows.filter(d=>!arrayMenuOptions.includes(d.option))
-  }
-
-  for (var i = 0; i < indexRows.length; i++) {
-    //first we transform the select to ask query
-    if(configFile[indexRows[i]["position"]]["askquery"]){
-      sparqlQuery=configFile[indexRows[i]["position"]]["askquery"]
-    }else{
-      sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
-    }
-    
-    //get parameters from config file
-    parameters=configFile[indexRows[i]["position"]]["parameters"]
-    if(node["class"]!=undefined){
-      if((parameters!="")&&(parameters!=undefined)){
-        //if there are parameters we have to replace everything form the node with the
-        //parameters in the config file
-        parameters=get_parameters(parameters)
-        for (let j = 0; j < parameters.length; ++j) { 
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER"+(j+2).toString(), node[parameters[j]]);
-        }  
-          if((node[node["class"]+"_uri"]!=undefined)&&(node[node["class"]+"_uri"]!="")){
-            sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
-
-          } else{
-            sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node["value"]);
-          }
-      }else{
-        if(node[node["class"]+"_uri"]!=undefined){
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
-        } else{
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["value"]+"_code"]);
-        }
-      }
-    }else{
-      sparqlQuery=sparqlQuery.replaceAll(node,"PARAMETER"); 
-    }
-    results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery)
-    
-    //add row to the results if there are results returned
-    if(results==true){
-      resultIndexRows.push(indexRows[i])
-    }
-  }
-  return resultIndexRows
-}
 function replaceParametersQuery(node,sparqlQuery){
 var j=2,result;
 while(sparqlQuery.indexOf("PARAMETER"+(j).toString())!=-1){
@@ -471,13 +431,17 @@ function getTooltipText(d){
             ` + nodesClassesCorrespondence[d.class] + `
             </dd>
           </div>`
-          Object.keys(d["tooltip"]).forEach(function(k){
-            text=text + `
-            <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">` + d["tooltip"][k] + `</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">`+ d[k] + `</dd>
-            </div>`
-          })      
+          //console.log(d)
+          if(d["tooltip"]){
+            Object.keys(d["tooltip"]).forEach(function(k){
+              text=text + `
+              <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">` + d["tooltip"][k] + `</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">`+ d[k] + `</dd>
+              </div>`
+            })      
+          }
+
           text=text + `<div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">
               Degree
@@ -503,32 +467,6 @@ function getTooltipMenu(d){
 }
 // Add to legend
 
-function fillLegend(dif,addOne){
-  if ((addOne)&&(dif.length>0)){
-    appendLi(colorScale.domain().length-1,dif[0])
-  }else if(!addOne){
-    for (var i = 0; i < colorScale.domain().length; i++) {
-      appendLi(i,colorScale.domain()[i])
-    } 
-  }
-
-}
-function appendLi(i,textLi){
-  var li,classLi;
-  classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
-  li=d3.select("#legend").append("li")
-  .attr("class", "flex col-span-1 rounded-md shadow-sm")
-  li.append("div")
-  .attr("class", classLi+"bg-"+colorCorrespondence[colorScale.range()[i]])
-  li.append("div")
-  .attr("class","flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-gray-200 rounded-r-md")
-  .append("div")
-  .attr("class","flex-1 px-4 py-2 text-sm truncate")
-  .append("a")
-  .attr("class","font-medium text-gray-900 hover:text-gray-600")
-  .append("text")
-  .text(textLi);
-}
 function differenceArrays(a1, a2) {
   var result = [];
   for (var i = 0; i < a1.length; i++) {
@@ -684,20 +622,35 @@ function get_configRows_class(classNode){
 
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
-  var icon=[];
+  var icon=[],propertyUri;
+  ////console.log(node)
+  
   if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
-    if(node[node["class"]+"_uri"]){
+    propertyUri=propertyUriImage(node)
+    ////console.log(propertyUri)
+    if(propertyUri){
+      ////console.log(node)
+      ////console.log(node[propertyUri])
+      ////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
-        return d.ID==node[node["class"]+"_uri"];
+        return d.ID==node[propertyUri];
       })
+      //////console.log(icon)
+    }else{
+      if(node[node["class"]+"_uri"]){
+        icon=filesIcons.filter(function(d){
+          return d.ID==node[node["class"]+"_uri"];
+        })
+      }
+      if(icon.length==0){
+        icon=filesIcons.filter(function(d){
+          return d.ID==nodesClassesCorrespondence[node["class"]];
+        })
+      }
     }
-    if(icon.length==0){
-      icon=filesIcons.filter(function(d){
-        return d.ID==nodesClassesCorrespondence[node["class"]];
-      })
-    }
+    
     if(icon.length>0){
       return icon[0]["FILE"]
     }else{
@@ -706,7 +659,25 @@ function bubbleImage(node){
   }
   
 }
-
+function propertyUriImage(node){
+  var propertyUri=false;
+  if(configFile[node["configRowNumber"]]){
+    ////console.log(configFile[node["configRowNumber"]]["properties"])
+    configFile[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
+      if(p.property.endsWith("_uri")){
+        property=p.property.replace("_uri","")
+        ////console.log(property)
+        //if(configFile[node["configRowNumber"]]["properties"].filter(d=>(d.class==node["class"])&&(d.property==property))){
+        if(node["class"]!=property){
+          ////console.log(property)
+          ////console.log(p.property)
+          propertyUri= p.property
+        }
+      }
+    })
+  }
+  return propertyUri
+}
 
 //function for transition from bubble image to text in bubbles when zoom in and zoom out
 function textImageZoom(zoomScale){
@@ -813,22 +784,24 @@ function nestedNodes(el){
 }
 function highlightLinkedNodes(node){
   deselectNodes()
-  console.log(selectTargetNodes(node))
-  console.log(selectSourceNodes(node))
+  //////console.log(selectTargetNodes(node))
+  //////console.log(selectSourceNodes(node))
 }
 function highlightTargetNodes(node){
   let data=selectTargetNodes(node)
   deselectNodesAndLinks()
-  console.log(data.links)
+  //////console.log(data.links)
   highlightLinks(data.links)
   highlightNodes(data.nodes)
 }
 function selectTargetNodes(node){
-  console.log(node)
+  //////console.log(node)
   var targetNodes=[],targetLinks=[]
+  //////console.log(networkGraph.data.links)
   let targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == node.id
   })
+  //////console.log(targets[0])
   targetNodes.push(targets[0].source.id)
   targets.forEach(function (d){
     targetLinks.push(d.id)
@@ -849,13 +822,13 @@ function selectSourceNodes(node){
   return {nodes:sourceNodes,links:sourceLinks};
 }
 function highlightLinks(links){
-  console.log(links)
+  //////console.log(links)
   const even = d3.selectAll(".link").filter(function(d){
     return links.includes(d.id)
-    //console.log(d.id)
-    //console.log(links)
+    ////////console.log(d.id)
+    ////////console.log(links)
   });
-  console.log(even)
+  //////console.log(even)
   even.style("stroke", "black")
   .style("fill","black")
   //.style("stroke-width", "2px")
@@ -863,10 +836,10 @@ function highlightLinks(links){
 function highlightNodes(nodes){
   const even = d3.selectAll(".circleBasic").filter(function(d){
     return nodes.includes(d.id)
-    //console.log(d.id)
-    //console.log(links)
+    ////////console.log(d.id)
+    ////////console.log(links)
   });
-  console.log(even)
+  //////console.log(even)
   even.attr("stroke", "black")
   .attr("stroke-width", "3px")
 }
@@ -878,4 +851,19 @@ function deselectNodesAndLinks(){
   d3.selectAll(".link")
   .style("stroke", "gray")
   .style("fill","gray")
+}
+function showSpinMessage(message){
+  var fn = function(){
+    d3.select("#spin").style("display","none")
+    document.getElementById("sparql-timeout").style.display="inline-block"
+  };
+  d3.select("#spin-message")
+  .text(message)
+  d3.select("#spin").style("display","inline-flex")
+  interval = setInterval(fn, 8000);
+  return interval
+}
+function hideSpinMessage(interval){
+  d3.select("#spin").style("display","none")
+  clearInterval(interval)
 }
