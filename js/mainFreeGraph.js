@@ -644,7 +644,7 @@ function appendLiFreeGraph(color, textLi) {
     .append("text")
     .text(textLi.toUpperCase());
 }
-function clusterResults(results, subjectObject) {
+/* function clusterResults(results, subjectObject) {
   var ocurrences = [], small, big, results_small, results_big, num_occ, results_big_filtered;
   var properties = results.map(function (r) {
     return r["p"]["value"]
@@ -669,7 +669,7 @@ function clusterResults(results, subjectObject) {
   })
   //////////console.log(results_small)
   return results_small
-}
+} */
 async function checkBasicGraph(node){
     var classesLinesConfig={},results;
     console.log(node)

@@ -137,8 +137,10 @@ function getModal2(){
     results = await runSparlqQuery(settings)
     table(results,columns,column_names,modalContent)
   
-    modalHeader.innerHTML = node["value"]
-  
+
+    modalHeader.innerHTML = configFile[rowDataConfig]["option_text"] + " - " + node["value"]
+    //modalHeader.innerHTML = node["value"]
+
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
       //minHeight: 150
