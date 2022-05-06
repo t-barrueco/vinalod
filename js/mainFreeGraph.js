@@ -1,7 +1,7 @@
 var navigation, navigationBasic, navigationFree, sparqlQueryWindow, interval;
-//$(document).ajaxSend(function (event, request, settings) {
-//  sparqlQueryWindow = request
-//});
+$(document).ajaxSend(function (event, request, settings) {
+  sparqlQueryWindow = request
+});
 
 async function addURLGraph(field) {
   var indexRows
