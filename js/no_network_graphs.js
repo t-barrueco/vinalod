@@ -121,15 +121,11 @@ function getModal2(){
 
     window.open(page, '_blank').focus();
   }
-  async function showTable(node,sparqlQuery,columns,column_names,modalHeader,modalContent){
-    var rowDataConfig,results,data=[];
-    for (let i = 0; i < configFile.length; ++i) { 
-      if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TABLE")){
-        rowDataConfig=i
-        break;
-      }
-    }
-    url=configFile[rowDataConfig]["endpoint_url"]
+  async function showTable(node,sparqlQuery,configRow,modalHeader,modalContent){
+    var columns=configRow.columns,column_names=configRow.property_names
+    var results,data=[];
+
+    url=configRow["endpoint_url"]
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
@@ -137,8 +133,9 @@ function getModal2(){
     results = await runSparlqQuery(settings)
     table(results,columns,column_names,modalContent)
   
+    console.log(configRow)
 
-    modalHeader.innerHTML = configFile[rowDataConfig]["option_text"] + " - " + node["value"]
+    modalHeader.innerHTML = configRow["option_text"] + " - " + node["value"]
     //modalHeader.innerHTML = node["value"]
 
     $('#myModal2').resizable({
