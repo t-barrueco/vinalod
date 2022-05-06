@@ -17,6 +17,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node,configClasses){
     $objectAjax=$.ajax(settings).then  (function( _data ) {
         var results = _data.results.bindings;
         console.log(results)
+        results = clusterResults(results, settingsGraph)
         //stop displaing message when executing query
         hideSpinMessage(interval)
         console.log(branchType)
@@ -227,6 +228,38 @@ async function buildNetworkGraph(settingsGraph,branchType,node,configClasses){
       }
     }
 }
+function clusterResults(results, settings) {
+  var ocurrences = [], small, big, results_small, results_big, num_occ, results_big_filtered;
+  if(settings["subject-object"]){
+    var properties = results.map(function (r) {
+      return r["p"]["value"]
+    })
+    var subjectObject=settings["subject-object"]
+    var unique_properties = [...new Set(properties)]
+    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+    unique_properties.forEach(function (d) {
+      ocurrences.push({ "value": d, "ocurrences": countOccurrences(properties, d) })
+    })
+    small = ocurrences.filter(d => d.ocurrences <= 20).map(d => d.value)
+    big = ocurrences.filter(d => d.ocurrences > 20).map(d => d.value)
+    results_small = results.filter(r => small.includes(r["p"]["value"]))
+    results_big = results.filter(r => big.includes(r["p"]["value"]))
+    big.forEach(function (b) {
+      results_big_filtered = results_big.filter(r => r["p"]["value"] == b)
+      num_occ = ocurrences.filter(o => o.value == results_big[0]["p"]["value"])[0]["ocurrences"]
+      if (subjectObject == "s") {
+        results_small.push({ "o": { "type": results_big_filtered[0]["o"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "s": results_big_filtered[0]["s"], "class": "Cluster" })
+      } else {
+        results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
+      }
+    })
+    return results_small;
+  }else{
+    return results;
+  }
+  //////////console.log(results_small)
+  
+}
 function replaceParmtrsQuery(settingsGraph,node){
   var sparqlQuery;
   console.log(settingsGraph)
@@ -303,7 +336,7 @@ function getMenuItems(items,node,origin,graphType){
     if(node["class"]=="free"){
       width=500
     }else{
-      width=250
+      width=350
     }
     //Send menuItems to menuFactory which will draw the menu in the graph
     networkGraph.menuFactory(100,0, menuItems, node,"dblClick",width)

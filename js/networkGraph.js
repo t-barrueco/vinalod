@@ -790,11 +790,11 @@ NetworkGraph.prototype.enterGraph = function(){
         })
         .on('mouseover', function(d){
           //vis.tip.show(d,this);
-          handleMouseover(d,this.getAttribute("id"))
+          //handleMouseover(d,this.getAttribute("id"))
         })
         .on('mouseout', function(d){
           //vis.tip.hide(d,this);
-          handleMouseout(d,this.getAttribute("id"))
+          //handleMouseout(d,this.getAttribute("id"))
         })
         .on('clickout', function(d){
         })
