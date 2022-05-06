@@ -1639,7 +1639,7 @@
   }, 
   { "class":"Directory Organization",
     "endpoint_url":"https://publications.europa.eu/webapi/rdf/sparql",
-    "query":"#Directory Organization_10 SELECT distinct ?role ?startDate ?person ?membership ?mnem ?orgPrefLabel where { filter( ?nb > 1) {  SELECT distinct count(distinct ?startDate2) as ?nb where {<PARAMETER> <http://www.w3.org/ns/org#hasSubOrganization>+ ?org2. ?memberShip_uri2 <http://www.w3.org/ns/org#organization> ?org2.  ?memberShip_uri2 <http://publications.europa.eu/ontology/euvoc#startDate> ?startDate2}} ?org <http://www.w3.org/2004/02/skos/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http://www.w3.org/ns/org#hasSubOrganization>+ ?org.} union {?org <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization>. filter (?org=<PARAMETER>) }} optional{?org <http://www.w3.org/ns/org#identifier>?mnem FILTER(datatype(?mnem)=<http://publications.europa.eu/resource/authority/use-context/MNEMONIC>)} ?memberShip_uri <http://www.w3.org/ns/org#organization> ?org. ?memberShip_uri <http://publications.europa.eu/ontology/euvoc#roleQualification> ?roleQualification. filter (?roleQualification=<http://publications.europa.eu/resource/authority/role-qualifier/STAFF_LEAD_ORG> || ?roleQualification=<http://publications.europa.eu/resource/authority/role-qualifier/STAFF_LEAD_ORGNO>) ?memberShip_uri <http://publications.europa.eu/ontology/euvoc#startDate> ?startDate. optional {?memberShip_uri <http://publications.europa.eu/ontology/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http://publications.europa.eu/ontology/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http://www.w3.org/ns/org#role> ?role} ?person_uri <http://www.w3.org/ns/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person.    } order by desc(?startDate) limit 100",
+    "query":"#Directory Organization_10\n  SELECT distinct ?role ?startDate ?person ?membership ?orgPrefLabel where {?org <http://www.w3.org/2004/02/skos/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http://www.w3.org/ns/org#hasSubOrganization>+ ?org.} union {?org <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization>. filter (?org=<PARAMETER>) }} ?memberShip_uri <http://www.w3.org/ns/org#organization> ?org. ?memberShip_uri <http://publications.europa.eu/ontology/euvoc#roleQualification> ?roleQualification.\n filter (?roleQualification=<http://publications.europa.eu/resource/authority/role-qualifier/STAFF_LEAD_ORG> || ?roleQualification=<http://publications.europa.eu/resource/authority/role-qualifier/STAFF_LEAD_ORGNO>) ?memberShip_uri <http://publications.europa.eu/ontology/euvoc#startDate> ?startDate. optional {?memberShip_uri <http://publications.europa.eu/ontology/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http://publications.europa.eu/ontology/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http://www.w3.org/ns/org#role> ?role} ?person_uri <http://www.w3.org/ns/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person. } order by desc(?startDate) limit 100",
     "hierarchy":[
       {
         "parent":"membership",
@@ -1695,8 +1695,8 @@
       "orgPrefLabel"
     ],
     "type":"TABLE",
-    "option":"Table: changed in management jobs",
-    "option_text":"Table: changed in management jobs",
+    "option":"Table changed in management jobs",
+    "option_text":"Table changed in management jobs",
     "collection":null,
     "modelClass":null,
     "details":null,

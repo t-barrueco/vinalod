@@ -293,12 +293,17 @@ function runAskSparlqQuery(url,sparqlQuery){
   }else{
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   }
+
   return new Promise((resolve, reject) => {
   $.ajax(settings).then  (function( _data ) {
     results = _data.boolean;
     resolve(results)
   })
+  .fail(function(jqXHR, textStatus, errorThrown){
+    reject(errorThrown)
+    });
   })
+
 }
 
 
