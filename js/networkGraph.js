@@ -1052,10 +1052,10 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("xlink:href", function(d){
           return "images/bubbles.svg";
         })
-        .attr("x","-5px")
-        .attr("y","-5px")
-        .attr("width","10px")
-        .attr("height","10px")
+        .attr("x","-50px")
+        .attr("y","-50px")
+        .attr("width","100px")
+        .attr("height","100px")
         .on('mouseover', function(d){
           vis.tip.show(d,this);
         })
