@@ -174,7 +174,7 @@ async function buildBasicGraph(rowDataConfig,node){
         showModal("#myModal2")
       }else if (configRow.graphType=="TABLE"){
         modal2=getModal2()
-        showTable(node,sparqlQuery,configRow.columns,configRow.property_names,modal2.modalHeader,modal2.modalContent)
+        showTable(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
       }else if (configRow.graphType=="WORDCLOUD"){
         modal2=getModal2()

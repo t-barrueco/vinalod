@@ -768,8 +768,10 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("r", function(d){
           if(!d.number){
             if((d.more_results!="")&&(d.more_results!=undefined)){
+              //return vis.sizeNode(d.more_results)
               return 50;
             }else{
+              //return vis.sizeNode(d.number)
               return 17;
             }
           }else{
@@ -967,8 +969,11 @@ NetworkGraph.prototype.enterGraph = function(){
             }) 
             .attr("r", function(d){
               if((d.more_results!="")&&(d.more_results!=undefined)){
+                //console.log(vis.sizeNode(d.more_results))
+                //return vis.sizeNode(d.more_results)
                 return 50;
               }else{
+                //return vis.sizeNode(d.number)
                 return 17;
               }
             })
@@ -1047,10 +1052,10 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("xlink:href", function(d){
           return "images/bubbles.svg";
         })
-        .attr("x","-50px")
-        .attr("y","-50px")
-        .attr("width","100px")
-        .attr("height","100px")
+        .attr("x","-5px")
+        .attr("y","-5px")
+        .attr("width","10px")
+        .attr("height","10px")
         .on('mouseover', function(d){
           vis.tip.show(d,this);
         })
