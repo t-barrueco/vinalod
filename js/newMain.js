@@ -231,6 +231,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node,configClasses){
 function clusterResults(results, settings) {
   var ocurrences = [], small, big, results_small, results_big, num_occ, results_big_filtered;
   if(settings["subject-object"]){
+    console.log(results)
     var properties = results.map(function (r) {
       return r["p"]["value"]
     })
@@ -253,6 +254,8 @@ function clusterResults(results, settings) {
         results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
       }
     })
+    console.log(results_small)
+    //if(results_small)
     return results_small;
   }else{
     return results;
@@ -486,8 +489,15 @@ async function checkAskResults(indexRows,node){
     }else{
       sparqlQuery=sparqlQuery.replaceAll(node,"PARAMETER"); 
     }
-    results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery)
-    
+    try {
+      results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery);
+    } catch (e) {
+      results = false
+    } /* finally {
+        console.log('We do cleanup here');
+    } */
+    //results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery)
+    console.log(results)
     //add row to the results if there are results returned
     if(results==true){
       resultIndexRows.push(indexRows[i])
