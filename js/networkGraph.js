@@ -1354,9 +1354,11 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
         return !arrayMenuOptions.includes(obj.option);
       });
     }
-
+    hideSpinMessage(interval)
+    var interval=showSpinMessage("Checking if there are results for this node...")
     //filter rows that have results
     indexRows=await checkAskResults(configRows,node)
+    hideSpinMessage(interval)
 
     if (origin=="table"){
       pageX=d3.select("#"+element.getAttribute("id").replace("_image","")).data()[0]["x"]
@@ -1376,8 +1378,10 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
       pageX=d3.event.pageX
       pageY=d3.event.pageY
     }
-
+    hideSpinMessage(interval)
+    var interval=showSpinMessage("Checking if there are results for this node...")
     indexRows =await checkAskResultsFreeGraph(element, subjectObject)
+    hideSpinMessage(interval)
 
     if (node.menuOption != undefined) {
       filterResultRows()
@@ -1398,6 +1402,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
 
   }
   function checkQueriesBasic(){
+
     if(founded.length==0){
       addGraph(d3.select("#"+(element.getAttribute("id").replace("_image",""))).data()[0],pageX,pageY,indexRows)
       vis.data=flatten(vis.treeData).flatData
