@@ -5,21 +5,21 @@ $(document).ajaxSend(function (event, request, settings) {
 
 async function addURLGraph(field) {
   var indexRows
-  //////console.log("addURLGraph")
+  ////////////console.log("addURLGraph")
   //d3.selectAll(".classFilter").remove()
   if (document.getElementById("navTable").querySelector('ol')) {
     document.getElementById("navTable").querySelector('ol').remove()
   }
 
   //filtersList = []
-  //////console.log(field.querySelector('#free-uri').value)
+  ////////////console.log(field.querySelector('#free-uri').value)
 
-  //////console.log(field.querySelector('#subject-object').value)
+  ////////////console.log(field.querySelector('#subject-object').value)
 
   //indexRows = await checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
 
   var resultRows =await checkAskResultsFreeGraph(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value)
-  console.log(resultRows)
+  //////console.log(resultRows)
   if (resultRows.length > 1) {
     removeMsgNoResults()
     getOptionsWindow(resultRows)
@@ -138,7 +138,7 @@ function flatten_freeGraph(root) {
 }
 
 function addNodesGraph(results, node, form) {
-  //////////console.log("addNodesGraph")
+  ////////////////console.log("addNodesGraph")
   links = addFreeGraphData(results, node, form)
   networkGraph.initializeSimulation();
   networkGraph.dataJoinGraph()
@@ -194,6 +194,7 @@ function addFreeGraphData(results, node, form) {
 
 function getTooltipTextFreeGraph(d) {
   var menuOptions, sparqlEndpoint = "", position = "",text;
+  //////console.log(d)
   if (d.type == "menuOption") {
     menuOptions = d.value.split(",")
     text = `
@@ -251,6 +252,7 @@ function getTooltipTextFreeGraph(d) {
       }
     }
     if (d.property) {
+      //////console.log(d.property)
       text = `
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="px-4 py-2 sm:px-6">
@@ -279,8 +281,31 @@ function getTooltipTextFreeGraph(d) {
             </dl>
           </div>
         </div>`;
-      getOptionChosen()
-    } else {
+      //getOptionChosen()
+    }else if (d.target.property) {
+      //////console.log(d.target.property)
+      text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-2 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Node values
+            </h3>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Property
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.target.property + `
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>`;
+      //getOptionChosen()
+    }else {
       text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-2 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -365,14 +390,14 @@ function addMsgNoResults(){
 
   return new Promise((resolve, reject) => {
     d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-        //////////console.log(urls)
+        ////////////////console.log(urls)
         if (so == undefined) {
           subjectObject = ['s', 'o']
         } else {
           subjectObject = [so]
         }
-        //////console.log(subjectObject)
-        //////console.log(urls)
+        ////////////console.log(subjectObject)
+        ////////////console.log(urls)
         if (typeof node === 'object') {
           uri = d3.select("#" + node.id).data()[0].value
         } else {
@@ -386,7 +411,7 @@ function addMsgNoResults(){
             }
           }
         }
-      //////console.log(resultRows)
+      ////////////console.log(resultRows)
       resolve(resultRows)
     })
   })
@@ -399,7 +424,7 @@ async function runAskSparlqQueryFreeGraph(url, uri, subjectObject) {
   } else {
     sparqlQuery = "ASK where {?s ?p <" + uri + ">}"
   }
-  //////console.log(sparqlQuery)
+  ////////////console.log(sparqlQuery)
   var queryUrl = url + "?query=" + prefixes + encodeURIComponent(sparqlQuery) + "&format=json";
   if (url == "https://query.wikidata.org/sparql") {
     settings = { url: queryUrl, async: true };
@@ -438,9 +463,9 @@ function getOptionsWindow(results) {
 }
 
 function transformFormData(form){
-  //////console.log(form)
+  ////////////console.log(form)
   let newForm={"url":form.querySelector("#url").innerText,"uri":form.querySelector("#uri").innerText,"subject-object":form.querySelector("#subject-object").innerText}
-  //////console.log(newForm)
+  ////////////console.log(newForm)
   //buildFreeGraph(newForm)
   $("#myModal3").hide();
   buildNetworkGraph(newForm,"expert")
@@ -537,7 +562,7 @@ function getHtmlOption(r, i) {
 /* function getMenuItemsFreeGraph(items, element, pageX, pageY, origin) {
   var menuItems = [], elementMenu,form, uri, url, subjectObject, row
   var node = d3.select("#" + element.getAttribute("id")).data()[0]
-  //////////console.log(node)
+  ////////////////console.log(node)
   if (node["configRow"]) {
     node["configRow"].forEach(function (r) {
       items.push({ "rowNumber": r, "row": configFile[r], "menuOption": configFile[r]["option"] })
@@ -667,12 +692,12 @@ function appendLiFreeGraph(color, textLi) {
       results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
     }
   })
-  //////////console.log(results_small)
+  ////////////////console.log(results_small)
   return results_small
 } */
 async function checkBasicGraph(node){
     var classesLinesConfig={},results;
-    console.log(node)
+    //////console.log(node)
     if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
       node["children"]=networkGraph.treeData.filter(d=>d.id==node.id)[0]["children"]
     }
@@ -687,7 +712,7 @@ async function checkBasicGraph(node){
     }
     networkGraph.classesLinesConfig=classesLinesConfig
     results=await checkClassesNode(node,classesLinesConfig)
-    //console.log(results)
+    ////////console.log(results)
     networkGraph.nodesLinkBasicGraph=results
     addColorsBasicGraph(results,node["children"])
 }
@@ -699,12 +724,12 @@ function addColorsBasicGraph(results,children){
   }
 }
 async function checkClassesNode(node,classesLinesConfig){
-  console.log(node)
+  //////console.log(node)
   var filterClasses="",subjectObject=node.children[0]["subject-object"],sparqlQuery,settings,endpoint_url=node.children[0]["url"],results,resultsAsk;
   var classesInConfig=Object.keys(classesLinesConfig)
-  ////////console.log(classesInConfig)
-  ////////console.log(classesLinesConfig)
-  //////console.log(node)
+  //////////////console.log(classesInConfig)
+  //////////////console.log(classesLinesConfig)
+  ////////////console.log(node)
   for (var i = 0; i < classesInConfig.length; i++) {
     if(filterClasses==""){
       filterClasses+="(<"+classesInConfig[i]+">"
@@ -719,50 +744,50 @@ async function checkClassesNode(node,classesLinesConfig){
   }else{
     sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?child ?p ?o. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?o=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
   }
-  ////console.log(sparqlQuery)
+  //////////console.log(sparqlQuery)
   prefixes=""
   queryUrl = endpoint_url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   results = await runSparlqQuery(settings)
-  //console.log(results)
+  ////////console.log(results)
   results=await filterResults(results,classesLinesConfig)
-  //console.log(results)
+  ////////console.log(results)
   return results
   async function filterResults(results,classesLinesConfig){
     var askquery,filteredResults=[];
     //await results.forEach(async function(r){
     for (var i = 0; i < results.length; i++) {
-      //////console.log(i)
-      //console.log(results[i])
-      //console.log(classesLinesConfig)
+      ////////////console.log(i)
+      ////////console.log(results[i])
+      ////////console.log(classesLinesConfig)
       //r["child"]["value"]
       for (var j = 0; j < classesLinesConfig[results[i]["class"]["value"]]["lines"].length; j++) {
       //await classesLinesConfig[results[i]["class"]["value"]]["lines"].forEach(async function(l){
-        ////////console.log(l)
-        ////////console.log(configFile[l])
+        //////////////console.log(l)
+        //////////////console.log(configFile[l])
         if(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]){
           askquery=configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
         }else{
           askquery=fromSelectToAskQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["query"])
         }
-        ////console.log(askquery)
+        //////////console.log(askquery)
         if(askquery){
-          ////////console.log(askquery)
+          //////////////console.log(askquery)
           if(askquery.indexOf("PARAMETER2") === -1){
-            ////////console.log(node)
+            //////////////console.log(node)
             askquery=askquery.replaceAll("PARAMETER",results[i]["child"]["value"])
-            ////////console.log(askquery)
+            //////////////console.log(askquery)
             //prefixes=""
             //queryUrl = configFile[l]["endpoint_url"] + "?query=" + prefixes +  encodeURIComponent(  configFile[l]["askquery"] )+ "&format=json";
             //settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
             //resultsAsk = await runSparlqQuery(settings)
             resultsAsk= await runAskSparlqQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery)
-            //////console.log(resultsAsk)
+            ////////////console.log(resultsAsk)
             if(resultsAsk){
-              console.log("entra en resultAsk")
-              //////console.log(results[i])
-              //////console.log(results)
-              //////console.log(i)
+              //////console.log("entra en resultAsk")
+              ////////////console.log(results[i])
+              ////////////console.log(results)
+              ////////////console.log(i)
               filteredResults.push(results[i])
               idNode=node["children"].filter(d=>d.value==results[i]["child"]["value"]).map(v=>v.id)
               //d3.select("#"+idNode).style("fill","#EF4444")
@@ -770,13 +795,13 @@ async function checkClassesNode(node,classesLinesConfig){
                 d3.select("#"+idNode).data()[0]["configRow"]=[]
               }
               d3.select("#"+idNode).data()[0]["configRow"].push(classesLinesConfig[results[i]["class"]["value"]]["lines"][j])
-              //////console.log(d3.select("#"+idNode).data()[0])
+              ////////////console.log(d3.select("#"+idNode).data()[0])
             }
           }
         }
       }
     }
-    //////console.log(filteredResults)
+    ////////////console.log(filteredResults)
     return filteredResults
   }
 }

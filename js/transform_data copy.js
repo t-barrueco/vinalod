@@ -117,6 +117,9 @@ function buildDataBasic(results,configRow,node){
             child=nodeValues(results[j],i)
             child["configRowNumber"]=configRow["rowNumber"]
             treeData[0]["children"].push(child)   
+            if(treeResults.length>1){
+              treeData.push(child)
+            }
           }else{
             if(treeData.findIndex(d=>d.value==results[j][treeResults[0]].value)==-1){
               if(node){
@@ -169,9 +172,11 @@ function buildDataBasic(results,configRow,node){
     return keysH
   }
   function idFromHierarchy2(){
-    var k=0;
+    var k=1,index;
     var indexParent;
     console.log(treeData)
+    console.log(procNode)
+    index=treeData.findIndex(p=>p.value==procNode[0])
     while(k<procNode.length){
       console.log(procNode[k])
       console.log(treeData.findIndex(p=>p.value==procNode[k]))
