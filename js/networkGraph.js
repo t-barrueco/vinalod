@@ -980,7 +980,7 @@ NetworkGraph.prototype.enterGraph = function(){
               if((d.more_results!="")&&(d.more_results!=undefined)){
                 ////////////console.log(vis.sizeNode(d.more_results))
                 //return vis.sizeNode(d.more_results)
-                return 50;
+                return 25;
               }else{
                 //return vis.sizeNode(d.number)
                 return 17;
@@ -1061,10 +1061,10 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("xlink:href", function(d){
           return "images/bubbles.svg";
         })
-        .attr("x","-50px")
-        .attr("y","-50px")
-        .attr("width","100px")
-        .attr("height","100px")
+        .attr("x","-25px")
+        .attr("y","-25px")
+        .attr("width","50px")
+        .attr("height","50px")
         .on('mouseover', function(d){
           vis.tip.show(d,this);
         })
