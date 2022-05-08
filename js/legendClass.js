@@ -11,46 +11,46 @@ Legend.prototype.init = function () {
 }
 Legend.prototype.initColors=function(i){
     var le=this;
-    for (i; i < colorScale.domain().length; i++) {
-        console.log(colorScale.domain()[i])
-        le.addOne(i,colorScale.domain()[i])
+    for (i; i < networkGraph.colorScale.domain().length; i++) {
+        //console.log(networkGraph.colorScale.domain()[i])
+        le.addOne(i,networkGraph.colorScale.domain()[i])
       } 
 }
 Legend.prototype.addColors=function(){
     var le=this;
-    if(colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
+    if(networkGraph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }
 }
 //Legend.prototype.deleteAllColors=function(){
 //  var le=this;
-  //console.log(d3.selectAll("#legend li").remove())
-  //console.log(networkGraph.colorScale.domain)
-  //console.log(colorScale.domain())
-  /* if(colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
+  ////console.log(d3.selectAll("#legend li").remove())
+  ////console.log(networkGraph.networkGraph.colorScale.domain)
+  ////console.log(networkGraph.colorScale.domain())
+  /* if(networkGraph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
       le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
   } */
 //}
 Legend.prototype.deleteAllColors=function(){
   var le=this;
-  console.log(d3.selectAll("#legend li").remove())
-  //console.log(networkGraph.colorScale.domain)
-  //console.log(colorScale.domain())
-  /* if(colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
+  d3.selectAll("#legend li").remove()
+  ////console.log(networkGraph.networkGraph.colorScale.domain)
+  ////console.log(networkGraph.colorScale.domain())
+  /* if(networkGraph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
       le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
   } */
 }
 Legend.prototype.addOne=function (index,textLi){
   var le=this;
   var li,classLi;
-  //console.log(colorCorrespondence)
-  //console.log(colorScale.range()[index])
-  //console.log(colorCorrespondence[colorScale.range()[index]])
+  ////console.log(colorCorrespondence)
+  ////console.log(networkGraph.colorScale.range()[index])
+  ////console.log(colorCorrespondence[networkGraph.colorScale.range()[index]])
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
   li=le.parentEl.append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
   li.append("div")
-  .attr("class", classLi+"bg-"+colorCorrespondence[colorScale.range()[index]])
+  .attr("class", classLi+"bg-"+colorCorrespondence[networkGraph.colorScale.range()[index]])
   .append("img")
   .attr("src",getImage(textLi))
   .attr("width","30px")
