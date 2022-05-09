@@ -2347,7 +2347,7 @@
   {
     "class":"Catalog of open datasets",
     "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"#Catalog of open datasets_2\n PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nSELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ?viz_theme ?viz_distribution ?viz_dataset ?viz ?viz_accessURL\n WHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?title;\n dcat:dataset ?viz_dataset.\n ?viz_dataset dcat:distribution ?viz_distribution;\n dcat:theme ?viz_theme;\n dcterms:publisher ?viz_publisher.\n ?viz_distribution dcterms:title ?viz;\n dcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\n dcat:accessURL ?viz_accessURL\n OPTIONAL\n { ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/description>  ?description\n } ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/modified> ?DEUCatalog_Modified. ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri \n WHERE\n { ?DEUCatalog_uri a <http:\/\/www.w3.org\/ns\/dcat#Catalog>}\n }}\n filter(?DEUCatalog_uri=<PARAMETER>).\n }\n",
+    "query":"#Catalog of open datasets_2\nPREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nSELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ?viz_theme ?viz_distribution ?viz_dataset ?viz ?viz_accessURL\nWHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?title;\ndcat:dataset ?viz_dataset.\n ?viz_dataset dcat:distribution ?viz_distribution;\ndcat:theme ?viz_theme;\ndcterms:publisher ?viz_publisher.\n?viz_distribution dcterms:title ?viz;\ndcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\ndcat:accessURL ?viz_accessURL\n OPTIONAL\n{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/description>  ?description\n} ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/modified> ?DEUCatalog_Modified. ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri\nWHERE\n{ ?DEUCatalog_uri a <http:\/\/www.w3.org\/ns\/dcat#Catalog>}\n}}\nfilter(?DEUCatalog_uri=<PARAMETER>).\n}",
     "hierarchy":[
       {
         "parent":"DEUCatalog",
@@ -2414,7 +2414,23 @@
     "option_text":"Data visualizations in the Data Catalog",
     "collection":null,
     "modelClass":null,
-    "details":null,
+    "details":[
+      {
+        "class":"viz",
+        "details":[
+          {
+            "property":"viz_theme",
+            "text":"Data theme",
+            "type":"text"
+          },
+          {
+            "property":"viz_accessURL",
+            "text":"Link",
+            "type":"link"
+          }
+        ]
+      }
+    ],
     "askquery":null
   },
   {
@@ -4056,7 +4072,7 @@
   {
     "class":"dataeuropa",
     "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n SELECT DISTINCT ('data.europa.eu' as ?dataeuropa) ('http:\/\/data.europa.eu' as ?dataeuropa_uri) ?DEUCatalog ?DEUCatalog_uri ?datatheme ?datatheme_uri ?dataset ?dataset_uri ?dataset_description (?dataset_uri AS ?dataset_link) ?viz ?viz_uri ?viz_accessURL\n WHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?DEUCatalog;\n dcat:dataset ?dataset_uri.\n ?dataset_uri dcat:distribution ?viz_uri;\n dcterms:description ?dataset_description;\n dcterms:title ?dataset;\n dcat:theme ?datatheme_uri.\n ?datatheme_uri skos:prefLabel ?datatheme.\n ?viz_uri dcterms:title ?viz;\n dcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\n dcat:accessURL ?viz_accessURL\n }\n FILTER(langMatches(lang(?viz), \"en\")).\n FILTER(langMatches(lang(?datatheme), \"en\")).\n FILTER(langMatches(lang(?dataset_description), \"en\")).\n FILTER(langMatches(lang(?dataset), \"en\")).\n }",
+    "query":"#dataeuropa_3\n PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n SELECT DISTINCT ('data.europa.eu' as ?dataeuropa) ('http:\/\/data.europa.eu' as ?dataeuropa_uri) ?DEUCatalog ?DEUCatalog_uri ?datatheme ?datatheme_uri (?DEUCatalog_uri AS ?datatheme_deucatalog)\n WHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?DEUCatalog;\n dcat:dataset ?dataset_uri.\n ?dataset_uri dcat:distribution ?viz_uri;\n dcat:theme ?datatheme_uri.\n ?datatheme_uri skos:prefLabel ?datatheme.\n ?viz_uri dcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\n dcat:accessURL ?viz_accessURL\n }\n FILTER(langMatches(lang(?datatheme), \"en\")).\n }\n",
     "hierarchy":[
       {
         "parent":"dataeuropa",
@@ -4065,14 +4081,6 @@
       {
         "parent":"DEUCatalog",
         "child":"datatheme"
-      },
-      {
-        "parent":"datatheme",
-        "child":"dataset"
-      },
-      {
-        "parent":"dataset",
-        "child":"viz"
       }
     ],
     "properties":[
@@ -4092,29 +4100,9 @@
         "property_name":"URI"
       },
       {
-        "class":"dataset",
-        "property":"dataset_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"dataset",
-        "property":"dataset_description",
-        "property_name":"Description"
-      },
-      {
-        "class":"dataset",
-        "property":"dataset_link",
-        "property_name":"Link"
-      },
-      {
-        "class":"viz",
-        "property":"viz_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"viz",
-        "property":"viz_accessURL",
-        "property_name":"Link"
+        "class":"datatheme",
+        "property":"datatheme_deucatalog",
+        "property_name":"DEUCatalog"
       }
     ],
     "classes_text":[
@@ -4129,116 +4117,6 @@
       {
         "class":"datatheme",
         "text":"Data theme"
-      },
-      {
-        "class":"dataset",
-        "text":"Dataset"
-      },
-      {
-        "class":"viz",
-        "text":"Visualization"
-      }
-    ],
-    "parameters":null,
-    "filters":null,
-    "tooltip":null,
-    "function":null,
-    "columns":null,
-    "type":"TREE",
-    "option":"Data visualizations by Catalogue and Dataset",
-    "option_text":"Data visualizations categorized by Catalogue, Data Theme and Dataset",
-    "collection":"eu_data",
-    "modelClass":null,
-    "details":[
-      {
-        "class":"dataset",
-        "details":[
-          {
-            "property":"dataset_description",
-            "text":"Description",
-            "type":"text"
-          },
-          {
-            "property":"dataset_link",
-            "text":"Website link",
-            "type":"link"
-          }
-        ]
-      },
-      {
-        "class":"viz",
-        "details":[
-          {
-            "property":"viz_accessURL",
-            "text":"Visualization link",
-            "type":"link"
-          }
-        ]
-      }
-    ],
-    "askquery":null
-  },
-  {
-    "class":"dataeuropa",
-    "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"#dataeuropa_3\n PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n SELECT DISTINCT ('data.europa.eu' as ?dataeuropa) ('http:\/\/data.europa.eu' as ?dataeuropa_uri) ?DEUCatalog ?DEUCatalog_uri ?datatheme ?datatheme_uri ?viz ?viz_uri ?viz_accessURL\n WHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?DEUCatalog;\n dcat:dataset ?dataset_uri.\n ?dataset_uri dcat:distribution ?viz_uri;\n dcat:theme ?datatheme_uri.\n ?datatheme_uri skos:prefLabel ?datatheme.\n ?viz_uri dcterms:title ?viz;\n dcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\n dcat:accessURL ?viz_accessURL\n }\n FILTER(langMatches(lang(?viz), \"en\")).\n FILTER(langMatches(lang(?datatheme), \"en\")).\n }\n",
-    "hierarchy":[
-      {
-        "parent":"dataeuropa",
-        "child":"DEUCatalog"
-      },
-      {
-        "parent":"DEUCatalog",
-        "child":"datatheme"
-      },
-      {
-        "parent":"datatheme",
-        "child":"viz"
-      }
-    ],
-    "properties":[
-      {
-        "class":"dataeuropa",
-        "property":"dataeuropa_uri",
-        "property_name":"web site of data europa"
-      },
-      {
-        "class":"DEUCatalog",
-        "property":"DEUCatalog_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"datatheme",
-        "property":"datatheme_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"viz",
-        "property":"viz_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"viz",
-        "property":"viz_accessURL",
-        "property_name":"Link"
-      }
-    ],
-    "classes_text":[
-      {
-        "class":"dataeuropa",
-        "text":"data service"
-      },
-      {
-        "class":"DEUCatalog",
-        "text":"Catalog of open datasets"
-      },
-      {
-        "class":"datatheme",
-        "text":"Data theme"
-      },
-      {
-        "class":"viz",
-        "text":"Visualization"
       }
     ],
     "parameters":null,
@@ -4250,6 +4128,60 @@
     "option":"Data visualizations by Catalogue",
     "option_text":"Data visualizations categorized by Catalogue and Data Theme",
     "collection":"eu_data",
+    "modelClass":null,
+    "details":null,
+    "askquery":null
+  },
+  {
+    "class":"Data theme",
+    "endpoint_url":"https:\/\/data.europa.eu\/sparql",
+    "query":"#Data theme\n PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n SELECT DISTINCT ?datatheme ?datatheme_uri ?viz ?viz_uri ?viz_accessURL\n WHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?DEUCatalog;\n dcat:dataset ?dataset_uri.\n ?dataset_uri dcat:distribution ?viz_uri;\n dcat:theme ?datatheme_uri.\n ?datatheme_uri skos:prefLabel ?datatheme.\n ?viz_uri dcterms:title ?viz;\n dcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\n dcat:accessURL ?viz_accessURL\n }\n FILTER(langMatches(lang(?viz), \"en\")).\n FILTER(langMatches(lang(?datatheme), \"en\")).\n filter(?DEUCatalog_uri=<PARAMETER2>).\n filter(?datatheme_uri=<PARAMETER>).\n }\n",
+    "hierarchy":[
+      {
+        "parent":"datatheme",
+        "child":"viz"
+      }
+    ],
+    "properties":[
+      {
+        "class":"datatheme",
+        "property":"datatheme_uri",
+        "property_name":"URI"
+      },
+      {
+        "class":"viz",
+        "property":"viz_uri",
+        "property_name":"URI"
+      },
+      {
+        "class":"viz",
+        "property":"viz_accessURL",
+        "property_name":"Link"
+      }
+    ],
+    "classes_text":[
+      {
+        "class":"datatheme",
+        "text":"Data theme"
+      },
+      {
+        "class":"viz",
+        "text":"Visualization"
+      }
+    ],
+    "parameters":[
+      {
+        "property":"datatheme_deucatalog"
+      }
+    ],
+    "filters":null,
+    "tooltip":null,
+    "function":null,
+    "columns":null,
+    "type":"TREE",
+    "option":"Data visualizations",
+    "option_text":"Data visualizations",
+    "collection":null,
     "modelClass":null,
     "details":[
       {

@@ -1355,7 +1355,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
     founded=findNodeTreemap(element,vis.treeData)
     node=element
   }
-  //////////console.log(node)
+  console.log(node)
   //bubble clicked is from basic graph
   if(node.class!="free"){
     ////////////console.log(nodesClassesCorrespondence)

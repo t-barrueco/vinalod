@@ -288,6 +288,7 @@ function runSparlqQuery(settings){
       resolve(results)
     })
   }) */
+  //console.log(settings)
   return new Promise((resolve, reject) => {
     $.ajax(settings).then  (function( _data ) {
       //////console.log(_data.results)
