@@ -11,7 +11,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
     //////////////console.log(node)
     var interval=showSpinMessage("Waiting for Sparql query")
     let prefixes=""
-    ////////////console.log(sparqlQuery)
+    console.log(sparqlQuery)
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
     //////////console.log(settings)
@@ -79,7 +79,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
         }
         ////console.log(networkGraph.treeData)
         //networkGraph.collapse
-        //networkGraph.collapseAll()
+        networkGraph.collapseAll()
         //collapse(networkGraph.treeData[0])
         //collapse()
       }else{
@@ -110,7 +110,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
         if(branchType=="basic"){
           ////console.log(settingsGraph)
           if(settingsGraph.hierarchy.length>1){
-            networkGraph.collapseTest(node)
+            //networkGraph.collapseNodeBranch(node)
             //collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
           }
         }
@@ -339,8 +339,11 @@ function clusterResults(results, settings) {
 function replaceParmtrsQuery(settingsGraph,node){
   var sparqlQuery;
   //////////console.log(settingsGraph)
+  
   if((settingsGraph.parameters!="")&&(settingsGraph.parameters!=null)){
     let parameters=get_parameters(settingsGraph.parameters)
+    console.log(node)
+    console.log(parameters)
     for (let i = 0; i < parameters.length; ++i) { 
       sparqlQuery=settingsGraph.query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]]);
     }  
@@ -527,7 +530,7 @@ async function checkAskResults(indexRows,node){
     arrayMenuOptions=node.menuOption.split(";")
     indexRows=indexRows.filter(d=>!arrayMenuOptions.includes(d.option))
   }
-
+  console.log(indexRows)
   for (var i = 0; i < indexRows.length; i++) {
     //first we transform the select to ask query
     if(configFile[indexRows[i]["position"]]["askquery"]){
