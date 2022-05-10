@@ -131,6 +131,18 @@ NetworkGraph.prototype.initVis = function () {
         vis.coorX=((d3.mouse(this)[0]-vis.dragX) /vis.zoomScale )
         vis.coorY=((d3.mouse(this)[1]-vis.dragY) /vis.zoomScale )
       }
+/*       d3.select("#coor").remove()
+      networkGraph.g.append("text")
+          .attr("id","coor")
+          .attr("x", vis.coorX-50)             
+          .attr("y", vis.coorY-50)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "16px") 
+          .text("coor"); */
+      /* var tip2=document.getElementsByClassName("d3-tip2")[0]
+      console.log(tip2)
+      tip2.style.top=vis.coorY+50
+      tip2.style.left=vis.coorX+50 */
       /* d3.select("#coor").remove()
       networkGraph.g.append("text")
           .attr("id","coor")
@@ -551,9 +563,32 @@ NetworkGraph.prototype.initializeDisplay = function() {
   //if class=free call the function that gets tooltip for free graph
   //if class!=free then is basic graph and call tooltip for basic graph
   //if no class then is a tooltip for a menu in the graph
+  console.log("create tip")
   vis.tip = d3.tip()
   .attr('class', 'd3-tip z-50')
-  .offset([200,200])
+  //.offset([200,200])
+  .offset(function() {
+    //console.log(document.getElementsByClassName("d3-tip")[0].style.top)
+    //console.log(document.getElementsByClassName("d3-tip")[0].style.left)
+    //document.getElementsByClassName("d3-tip")[0].style.top=vis.coorY
+    //document.getElementsByClassName("d3-tip")[0].style.left=vis.coorX
+    //console.log(vis.coorX)
+    //console.log(vis.coorY)
+    //if(parseInt(document.getElementsByClassName("d3-tip")[0].style.top.replace("px",""))<0){
+    //  return [300,300]
+    //}
+    //let tipTop=parseInt(document.getElementsByClassName("d3-tip")[0].style.top.replace("px",""))
+    //let tipLeft=parseInt(document.getElementsByClassName("d3-tip")[0].style.left.replace("px",""))
+
+    //let tipTop=parseInt(document.getElementsByClassName("d3-tip")[0].style.top.replace("px",""))
+    //let tipLeft=parseInt(vis.coorX-document.getElementsByClassName("d3-tip")[0].style.left.replace("px",""))
+    //console.log(vis.coorX-tipLeft)
+    //return [-30,-50]
+    //return [this.getBBox().height / 2, 0]
+    //console.log(vis.coorX-tipLeft-50)
+    //return [vis.coorX-tipLeft-50,vis.coorY-tipTop-50]
+    return [-50,-50]
+  })
   .html(function (d) {
     //////////console.log(d)
     if(d){
@@ -799,14 +834,14 @@ NetworkGraph.prototype.enterGraph = function(){
            return vis.colorScale(nodesClassesCorrespondence[d.class]);
 
         })
-        .on('mouseover', function(d){
+        //.on('mouseover', function(d){
           //vis.tip.show(d,this);
           //handleMouseover(d,this.getAttribute("id"))
-        })
-        .on('mouseout', function(d){
+        //})
+        //.on('mouseout', function(d){
           //vis.tip.hide(d,this);
           //handleMouseout(d,this.getAttribute("id"))
-        })
+        //})
         .on('clickout', function(d){
         })
         .on("click",function(){
@@ -1142,7 +1177,13 @@ NetworkGraph.prototype.enterGraph = function(){
       }
 
       function handleMouseover(data,circleId){
+        //vis.tip.offset([-20,20]); 
         vis.tip.show(data,this);
+        
+        //console.log(vis.tip)
+        //document.getElementsByClassName("d3-tip")[0].style.top=vis.coorY+50
+        //document.getElementsByClassName("d3-tip")[0].style.left=vis.coorX+50
+
         d3.select("#"+circleId)
         .transition()
         .attr("r", function(d) { 
