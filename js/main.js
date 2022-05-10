@@ -151,6 +151,7 @@ async function buildBasicGraph(rowDataConfig,node){
       ////////////console.log("other type config row")
       ////////////console.log(configRow)
       //sparqlQuery=configRow.sparqlQuery
+      deleteTooltip()
       sparqlQuery=replaceParmtrsQuery(configRow,node)
       ////////////console.log(sparqlQuery)
       if (configRow.graphType=="TREEGRAPH"){

@@ -111,9 +111,14 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
         if(branchType=="basic"){
           ////console.log(settingsGraph)
           if(settingsGraph.hierarchy.length>1){
-            //networkGraph.collapseNodeBranch(node)
+            networkGraph.collapseNodeBranch(node)
             //collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
           }
+        }
+        if(document.getElementsByClassName("d3-tip")[0]){
+          document.getElementsByClassName("d3-tip")[0].remove()
+          console.log("pasa por aquí")
+          networkGraph.g.call(networkGraph.tip);
         }
       }
     } catch (e) {
@@ -381,7 +386,7 @@ function replaceParmtrsQuery(settingsGraph,node){
 }
 function getMenuItems(items,node,origin,graphType){
   var menuItems=[],elementMenu,position,width
-  ////////////console.log(items)
+  console.log(items)
   ////////////console.log(node)
   ////////////console.log(origin)
   ////////////console.log(graphType)
@@ -395,10 +400,12 @@ function getMenuItems(items,node,origin,graphType){
     if(graphType=="basic"){
       tableBasic()
     }else if(graphType=="expert"){
+      console.log("tableExpert")
       tableExpert()
     }
     //function that add menu items to table
     ////////////////////console.log("antes de add...")
+    console.log(menuItems)
     addMenuToTable(node,menuItems)
   }else{
     //if click on bubble in graph, fill menu to show on screen next to bubble
@@ -485,11 +492,21 @@ function getMenuItems(items,node,origin,graphType){
     }
   }
   function tableExpert(){
-    if (items[i]["subject-object"]) {
-      menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"] })
-    }
-    else {
-      menuItems.push({ "rowDataConfig": items[i]["rowNumber"], "node": node, "menuOption": items[i]["menuOption"] })
+    /* console.log(items)
+    console.log(i) */
+    for (var i = 0; i < items.length; i++) {
+      console.log(items[i])
+      console.log(items[i]["subject-object"])
+      if (items[i]["subject-object"]) {
+        console.log("entra")
+        if(items[i]["subject-object"][0]){
+          menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"][0] })
+        }else{
+          menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"]})
+        }
+      }else {
+        menuItems.push({ "rowDataConfig": items[i]["rowNumber"], "node": node, "menuOption": items[i]["menuOption"] })
+      }
     }
   }
   function tableBasic(){

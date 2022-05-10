@@ -282,9 +282,10 @@ function getTooltipTextFreeGraph(d) {
           </div>
         </div>`;
       //getOptionChosen()
-    }else if (d.target.property) {
+    }else if (d.target) {
       //////console.log(d.target.property)
-      text = `
+      if(d.target.property){
+        text = `
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="px-4 py-2 sm:px-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -304,6 +305,8 @@ function getTooltipTextFreeGraph(d) {
             </dl>
           </div>
         </div>`;
+      }
+      
       //getOptionChosen()
     }else {
       text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
