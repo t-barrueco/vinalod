@@ -31,6 +31,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
       results = clusterResults(results, settingsGraph)
       //stop displaing message when executing query
       hideSpinMessage(interval)
+      console.log("hideSpinMessage")
       ////////////console.log(branchType)
       ////////////console.log(settingsGraph)
       ////////////console.log(node)
