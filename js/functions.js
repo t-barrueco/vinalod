@@ -890,6 +890,7 @@ function showSpinMessage(message){
   return interval
 }
 function hideSpinMessage(interval){
+  d3.select("#sparql-timeout").style("display","none")
   d3.select("#spin").style("display","none")
   clearInterval(interval)
 }

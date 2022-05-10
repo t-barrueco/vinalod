@@ -844,7 +844,7 @@
     ],
     "type":"TREE",
     "option":"European Union Institutions and bodies",
-    "option_text":"(update 20220506-1149)This will list the European Union Institutions and bodies",
+    "option_text":"(update 20220509-2044)This will list the European Union Institutions and bodies",
     "collection":"eu_whoiswho",
     "modelClass":null,
     "details":null,
@@ -1665,7 +1665,7 @@
   {
     "class":"Directory Organization",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#Directory Organization_10 SELECT distinct ?role ?startDate ?person ?membership ?mnem ?orgPrefLabel where { filter( ?nb > 1) {  SELECT distinct count(distinct ?startDate2) as ?nb where {<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org2. ?memberShip_uri2 <http:\/\/www.w3.org\/ns\/org#organization> ?org2.  ?memberShip_uri2 <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate2}} ?org <http:\/\/www.w3.org\/2004\/02\/skos\/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org.} union {?org <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type> <http:\/\/www.w3.org\/ns\/org#Organization>. filter (?org=<PARAMETER>) }} optional{?org <http:\/\/www.w3.org\/ns\/org#identifier>?mnem FILTER(datatype(?mnem)=<http:\/\/publications.europa.eu\/resource\/authority\/use-context\/MNEMONIC>)} ?memberShip_uri <http:\/\/www.w3.org\/ns\/org#organization> ?org. ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#roleQualification> ?roleQualification. filter (?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORG> || ?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORGNO>) ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate. optional {?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http:\/\/www.w3.org\/ns\/org#role> ?role} ?person_uri <http:\/\/www.w3.org\/ns\/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person.    } order by desc(?startDate) limit 100",
+    "query":"#Directory Organization_10\n SELECT distinct ?role ?startDate ?person ?membership ?mnem ?orgPrefLabel where { filter( ?nb > 1) {  SELECT distinct count(distinct ?startDate2) as ?nb where {<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org2. ?memberShip_uri2 <http:\/\/www.w3.org\/ns\/org#organization> ?org2.  ?memberShip_uri2 <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate2}} ?org <http:\/\/www.w3.org\/2004\/02\/skos\/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org.} union {?org <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type> <http:\/\/www.w3.org\/ns\/org#Organization>. filter (?org=<PARAMETER>) }} optional{?org <http:\/\/www.w3.org\/ns\/org#identifier>?mnem FILTER(datatype(?mnem)=<http:\/\/publications.europa.eu\/resource\/authority\/use-context\/MNEMONIC>)} ?memberShip_uri <http:\/\/www.w3.org\/ns\/org#organization> ?org. ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#roleQualification> ?roleQualification. filter (?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORG> || ?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORGNO>) ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate. optional {?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http:\/\/www.w3.org\/ns\/org#role> ?role} ?person_uri <http:\/\/www.w3.org\/ns\/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person.} order by desc(?startDate) limit 100",
     "hierarchy":[
       {
         "parent":"membership",
@@ -1726,7 +1726,7 @@
     "collection":null,
     "modelClass":null,
     "details":null,
-    "askquery":null
+    "askquery":"#Directory Organization_10\n ask where { filter( ?nb > 1) {  SELECT distinct count(distinct ?startDate2) as ?nb where {<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org2. ?memberShip_uri2 <http:\/\/www.w3.org\/ns\/org#organization> ?org2.  ?memberShip_uri2 <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate2}} ?org <http:\/\/www.w3.org\/2004\/02\/skos\/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org.} union {?org <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type> <http:\/\/www.w3.org\/ns\/org#Organization>. filter (?org=<PARAMETER>) }} optional{?org <http:\/\/www.w3.org\/ns\/org#identifier>?mnem FILTER(datatype(?mnem)=<http:\/\/publications.europa.eu\/resource\/authority\/use-context\/MNEMONIC>)} ?memberShip_uri <http:\/\/www.w3.org\/ns\/org#organization> ?org. ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#roleQualification> ?roleQualification. filter (?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORG> || ?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORGNO>) ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate. optional {?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http:\/\/www.w3.org\/ns\/org#role> ?role} ?person_uri <http:\/\/www.w3.org\/ns\/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person.}"
   },
   {
     "class":"Eurovoc Domain",
@@ -2345,95 +2345,6 @@
     "askquery":null
   },
   {
-    "class":"Catalog of open datasets",
-    "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"#Catalog of open datasets_2\nPREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nSELECT DISTINCT \"Data catalog\" as ?DEUCatalogRoot ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog  ?viz_theme ?viz_distribution ?viz_dataset ?viz ?viz_accessURL\nWHERE{{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?title;\ndcat:dataset ?viz_dataset.\n ?viz_dataset dcat:distribution ?viz_distribution;\ndcat:theme ?viz_theme;\ndcterms:publisher ?viz_publisher.\n?viz_distribution dcterms:title ?viz;\ndcterms:type <http:\/\/publications.europa.eu\/resource\/authority\/distribution-type\/VISUALIZATION>;\ndcat:accessURL ?viz_accessURL\n OPTIONAL\n{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/description>  ?description\n} ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/modified> ?DEUCatalog_Modified. ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri\nWHERE\n{ ?DEUCatalog_uri a <http:\/\/www.w3.org\/ns\/dcat#Catalog>}\n}}\nfilter(?DEUCatalog_uri=<PARAMETER>).\n}",
-    "hierarchy":[
-      {
-        "parent":"DEUCatalog",
-        "child":"viz"
-      }
-    ],
-    "properties":[
-      {
-        "class":"DEUCatalog",
-        "property":"DEUCatalog_uri",
-        "property_name":"DEU Catalog URI"
-      },
-      {
-        "class":"DEUTheme",
-        "property":"DEUTheme_uri",
-        "property_name":"DEU Theme URI"
-      },
-      {
-        "class":"DEUCatalog",
-        "property":"DEUCatalog_Modified",
-        "property_name":"DEU Catalog modification date"
-      },
-      {
-        "class":"viz",
-        "property":"viz_theme",
-        "property_name":"Dataviz Theme"
-      },
-      {
-        "class":"viz",
-        "property":"viz_distribution",
-        "property_name":"Dataviz Distribution"
-      },
-      {
-        "class":"viz",
-        "property":"viz_accessURL",
-        "property_name":"Dataviz URL"
-      }
-    ],
-    "classes_text":[
-      {
-        "class":"DEUCatalog",
-        "text":"Catalog of open datasets"
-      },
-      {
-        "class":"viz",
-        "text":"Dataviz"
-      }
-    ],
-    "parameters":[
-
-    ],
-    "filters":[
-
-    ],
-    "tooltip":[
-
-    ],
-    "function":"",
-    "columns":[
-
-    ],
-    "type":"TREE",
-    "option":"Dataviz per Datacalog",
-    "option_text":"Data visualizations in the Data Catalog",
-    "collection":null,
-    "modelClass":null,
-    "details":[
-      {
-        "class":"viz",
-        "details":[
-          {
-            "property":"viz_theme",
-            "text":"Data theme",
-            "type":"text"
-          },
-          {
-            "property":"viz_accessURL",
-            "text":"Link",
-            "type":"link"
-          }
-        ]
-      }
-    ],
-    "askquery":null
-  },
-  {
     "class":"Dataset",
     "endpoint_url":"https:\/\/data.europa.eu\/sparql",
     "query":"#Dataset\n PREFIX dcat:<http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms:<http:\/\/purl.org\/dc\/terms\/>\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n\nSELECT distinct ?dataset ?dataset_uri ?distributionType ?distribution ?distribution_format ?distribution_uri ?distribution_description ?distribution_rights ?distribution_license ?distribution_licenseDefinition ?distribution_accessURL ?distribution_downloadURL\nWHERE{{\n ?dataset_uri dcat:distribution ?distribution_uri;\n dcterms:title ?dataset.\n ?distribution_uri dcterms:description ?distribution_description;\n dcterms:title ?distribution;\n dcterms:format ?format;\n dcterms:type ?distributionType_uri;\n dcterms:rights ?rights;\n dcterms:license ?license;\n dcat:accessURL ?distribution_accessURL;\n dcat:downloadURL ?distribution_downloadURL.\n ?rights skos:prefLabel ?distribution_rights.\n ?distributionType_uri skos:prefLabel ?distributionType.\n ?format skos:prefLabel ?distribution_format.\n ?license skos:prefLabel ?distribution_license.\n ?license skos:definition ?distribution_licenseDefinition.\n } FILTER (?dataset_uri=<PARAMETER>).\n FILTER(langMatches(lang(?distribution_description), \"en\")).\n FILTER(langMatches(lang(?distribution), \"en\")).\n FILTER(langMatches(lang(?distributionType), \"en\")).\n FILTER(langMatches(lang(?distribution_format), \"en\")).\n FILTER(langMatches(lang(?distribution_rights), \"en\")).\n FILTER(langMatches(lang(?distribution_license), \"en\")).\n FILTER(langMatches(lang(?dataset), \"en\")).\n } ORDER BY ?dataset ?distributionType ?distribution\n",
@@ -2573,37 +2484,6 @@
         ]
       }
     ],
-    "askquery":null
-  },
-  {
-    "class":"Dataviz",
-    "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":null,
-    "hierarchy":null,
-    "properties":[
-      {
-        "class":"viz",
-        "property":"viz_accessURL",
-        "property_name":"Dataviz URL"
-      }
-    ],
-    "classes_text":[
-      {
-        "class":"viz",
-        "text":"Dataviz"
-      }
-    ],
-    "parameters":null,
-    "filters":null,
-    "tooltip":null,
-    "function":null,
-    "columns":null,
-    "type":"WEBPAGE",
-    "option":"Dataviz on webpage",
-    "option_text":"Show the Data visualizations in a webpage",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
     "askquery":null
   },
   {

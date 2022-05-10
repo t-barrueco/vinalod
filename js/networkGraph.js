@@ -553,7 +553,7 @@ NetworkGraph.prototype.initializeDisplay = function() {
   //if no class then is a tooltip for a menu in the graph
   vis.tip = d3.tip()
   .attr('class', 'd3-tip z-50')
-  //.offset([-vis.centerGraphX,-vis.centerGraphY])
+  .offset([200,200])
   .html(function (d) {
     //////////console.log(d)
     if(d){
@@ -572,7 +572,7 @@ NetworkGraph.prototype.initializeDisplay = function() {
     }
   });
   
-  vis.svg.call(vis.tip);
+  vis.g.call(vis.tip);
   vis.dataJoinGraph()
   vis.exitGraph()
   vis.enterGraph()
