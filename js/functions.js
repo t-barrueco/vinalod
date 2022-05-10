@@ -894,3 +894,21 @@ function hideSpinMessage(interval){
   d3.select("#spin").style("display","none")
   clearInterval(interval)
 }
+function deleteTooltip(){
+  $('.tooltip').empty();
+  d3.select(".tooltip").transition()		
+  .duration(200)		
+  .style("opacity", 0)
+}
+function addTooltip(htmlData){
+  var x = d3.event.pageX
+  var y = d3.event.pageY 
+
+  document.getElementsByClassName("tooltip")[0].insertAdjacentHTML('afterbegin', htmlData);
+  //document.getElementsByClassName("tooltip")[0].innerHtml =  getTooltipText(data)
+  d3.select(".tooltip").transition()		
+  .duration(200)		
+  .style("opacity", 1)
+  .style("top",y+50)
+  .style("left",x+50)
+}

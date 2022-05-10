@@ -131,6 +131,19 @@ NetworkGraph.prototype.initVis = function () {
         vis.coorX=((d3.mouse(this)[0]-vis.dragX) /vis.zoomScale )
         vis.coorY=((d3.mouse(this)[1]-vis.dragY) /vis.zoomScale )
       }
+
+/*       d3.select("#coor").remove()
+      networkGraph.g.append("text")
+          .attr("id","coor")
+          .attr("x", vis.coorX-50)             
+          .attr("y", vis.coorY-50)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "16px") 
+          .text("coor"); */
+      /* var tip2=document.getElementsByClassName("d3-tip2")[0]
+      console.log(tip2)
+      tip2.style.top=vis.coorY+50
+      tip2.style.left=vis.coorX+50 */
       /* d3.select("#coor").remove()
       networkGraph.g.append("text")
           .attr("id","coor")
@@ -441,6 +454,7 @@ NetworkGraph.prototype.initializeForces = function() {
       highlightTargetNodes(d3.select("#"+vis.dblClickId.replace("_g","")).data()[0])
 
       vis.addingGraph=false
+     
     }
 
     function getTransform() {
@@ -551,9 +565,36 @@ NetworkGraph.prototype.initializeDisplay = function() {
   //if class=free call the function that gets tooltip for free graph
   //if class!=free then is basic graph and call tooltip for basic graph
   //if no class then is a tooltip for a menu in the graph
+  /* console.log("create tip")
   vis.tip = d3.tip()
   .attr('class', 'd3-tip z-50')
-  .offset([200,200])
+  //.offset([200,200])
+  .offset(function() {
+    //console.log(document.getElementsByClassName("d3-tip")[0].style.top)
+    //console.log(document.getElementsByClassName("d3-tip")[0].style.left)
+    //document.getElementsByClassName("d3-tip")[0].style.top=vis.coorY
+    //document.getElementsByClassName("d3-tip")[0].style.left=vis.coorX
+    //console.log(vis.coorX)
+    //console.log(vis.coorY)
+    //if(parseInt(document.getElementsByClassName("d3-tip")[0].style.top.replace("px",""))<0){
+    //  return [300,300]
+    //}
+    //let tipTop=parseInt(document.getElementsByClassName("d3-tip")[0].style.top.replace("px",""))
+    //let tipLeft=parseInt(document.getElementsByClassName("d3-tip")[0].style.left.replace("px",""))
+
+    //let tipTop=parseInt(document.getElementsByClassName("d3-tip")[0].style.top.replace("px",""))
+    //let tipLeft=parseInt(vis.coorX-document.getElementsByClassName("d3-tip")[0].style.left.replace("px",""))
+    //console.log(vis.coorX-tipLeft)
+    //return [-30,-50]
+    //return [this.getBBox().height / 2, 0]
+    //console.log(vis.coorX-tipLeft-50)
+    //return [vis.coorX-tipLeft-50,vis.coorY-tipTop-50]
+    console.log(document.getElementsByClassName("gMain")[0])
+    console.log(vis.centerGraphX)
+    console.log(vis.centerGraphY)
+    return [-50,-50]
+    return [2*vis.centerGraphX,2*vis.centerGraphY]
+  })
   .html(function (d) {
     //////////console.log(d)
     if(d){
@@ -571,8 +612,18 @@ NetworkGraph.prototype.initializeDisplay = function() {
     return text;
     }
   });
+  console.log(d3.select(".d3-tip")[0])
+  if(!d3.select(".d3-tip")[0]){
+    vis.g.call(vis.tip);
+  } */
+  if(!document.getElementsByClassName("tooltip")[0]){
+    vis.tooltip = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0)
+  }
   
-  vis.g.call(vis.tip);
+
+
   vis.dataJoinGraph()
   vis.exitGraph()
   vis.enterGraph()
@@ -690,7 +741,9 @@ NetworkGraph.prototype.enterGraph = function(){
           .on('mouseover', function(d){
             //////////console.log(d)
             if(d["target"]["class"]=="free"){
-              vis.tip.show(d,this);
+              //vis.tip.show(d,this);
+              console.log(d)
+              addTooltip(getTooltipTextFreeGraph(d))
             }
           })
           .attr("id",function(d){
@@ -698,7 +751,8 @@ NetworkGraph.prototype.enterGraph = function(){
           })
           .on('mouseout', function(d){
             if(d["target"]["class"]=="free"){
-              vis.tip.hide(d,this);
+              //vis.tip.hide(d,this);
+              deleteTooltip()
             }
           });    
       }
@@ -799,14 +853,14 @@ NetworkGraph.prototype.enterGraph = function(){
            return vis.colorScale(nodesClassesCorrespondence[d.class]);
 
         })
-        .on('mouseover', function(d){
+        //.on('mouseover', function(d){
           //vis.tip.show(d,this);
           //handleMouseover(d,this.getAttribute("id"))
-        })
-        .on('mouseout', function(d){
+        //})
+        //.on('mouseout', function(d){
           //vis.tip.hide(d,this);
           //handleMouseout(d,this.getAttribute("id"))
-        })
+        //})
         .on('clickout', function(d){
         })
         .on("click",function(){
@@ -1012,10 +1066,13 @@ NetworkGraph.prototype.enterGraph = function(){
               } */
             })
             .on('mouseover', function(d){
-              vis.tip.show(d,this);
+              //vis.tip.show(d,this);
+              //addTooltip(d)
+              addTooltip(getTooltipTextFreeGraph(d))
             })
             .on('mouseout', function(d){
-              vis.tip.hide(d,this);
+              //vis.tip.hide(d,this);
+              deleteTooltip()
             })
             .on('clickout', function(d){
             })
@@ -1066,10 +1123,12 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("width","50px")
         .attr("height","50px")
         .on('mouseover', function(d){
-          vis.tip.show(d,this);
+          //vis.tip.show(d,this);
+          addTooltip(getTooltipTextFreeGraph(d))
         })
         .on('mouseout', function(d){
-          vis.tip.hide(d,this);
+          //vis.tip.hide(d,this);
+          deleteTooltip()
         })
         .on('clickout', function(d){
         })
@@ -1142,7 +1201,16 @@ NetworkGraph.prototype.enterGraph = function(){
       }
 
       function handleMouseover(data,circleId){
-        vis.tip.show(data,this);
+        //vis.tip.offset([-20,20]); 
+        //vis.tip.show(data,this);
+
+        addTooltip(getTooltipText(data))
+
+	
+        //console.log(vis.tip)
+        //document.getElementsByClassName("d3-tip")[0].style.top=vis.coorY+50
+        //document.getElementsByClassName("d3-tip")[0].style.left=vis.coorX+50
+
         d3.select("#"+circleId)
         .transition()
         .attr("r", function(d) { 
@@ -1162,7 +1230,8 @@ NetworkGraph.prototype.enterGraph = function(){
         })
       }
       function handleMouseout(data,circleId){
-        vis.tip.hide(data,this);
+        //vis.tip.hide(data,this);
+        deleteTooltip()
         d3.select("#"+circleId)
         .transition()
         .attr("r", function(d) { 
@@ -1277,14 +1346,19 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       })
       .on('mouseover', function(d){
         if(configFile.filter(v=>v.option==d.title).length>0){
-          vis.tip.show(getCommentOption(d.title),this);
+          //vis.tip.show(getCommentOption(d.title),this);
+          console.log(getTooltipMenu(getCommentOption(d.title)))
+          addTooltip(getTooltipMenu(getCommentOption(d.title)));
+
         }else{
-          vis.tip.show(getTooltip(d.title,uri),this);
+          //vis.tip.show(getTooltip(d.title,uri),this);
+          addTooltip(getTooltip(d.title,uri));
         }
         d3.select(this).style("fill","#DCDDF5")
       })
       .on('mouseout', function(d){
-        vis.tip.hide(d,this);
+        //vis.tip.hide(d,this);
+        deleteTooltip()
         d3.select(this).style("fill","white")
       });
 
@@ -1306,14 +1380,20 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         d.action(data,d) })
       .on('mouseover', function(d){
         if(configFile.filter(v=>v.option==d.title).length>0){
-          vis.tip.show(getCommentOption(d.title),this);
+          //vis.tip.show(getCommentOption(d.title),this);
+          //addTooltip(getCommentOption(d.title))
+          addTooltip(getTooltipMenu(getCommentOption(d.title)));
         }else{
-          vis.tip.show(getTooltip(d.title,uri),this);
+          //vis.tip.show(getTooltip(d.title,uri),this);
+          //addTooltip(getTooltip(d.title,uri))
+          addTooltip(getTooltip(d.title,uri));
+
         }
         d3.select(this).style("fill","#DCDDF5")
       })
       .on('mouseout', function(d){
-        vis.tip.hide(d,this);
+        //vis.tip.hide(d,this);
+        deleteTooltip()
       });
 
   function getTooltip(title,uri){
@@ -1326,7 +1406,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       }else{
         textTooltip="Find all subjects for the URI :" + uri + " in the SPARQL EndPoint: "+url
       }
-      return textTooltip
+      return getTooltipMenu(textTooltip)
+      //sreturn textTooltip
     }
 
   }
@@ -1440,10 +1521,10 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
          if (element.getAttribute("root")=="1"){
             children=founded[0]["children"]
             children.forEach(function(d){
-              vis.collapseBranch(d)
+              vis.collapseNodeBranch(d)
             })
           }else{
-            vis.collapseBranch(founded[0])
+            vis.collapseNodeBranch(founded[0])
           }
           vis.data=flatten(vis.treeData).flatData
           vis.initializeSimulation();
@@ -1454,10 +1535,10 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
           if (element.getAttribute("root")=="1"){
             //children=founded[0]["children"]
             founded[0]["children"].forEach(function(d){
-              vis.expandBranch(d)
+              vis.expandNodeBranch(d)
             })
           }else{
-            vis.expandBranch(founded[0])
+            vis.expandNodeBranch(founded[0])
           }
           
         vis.data=flatten(vis.treeData).flatData
@@ -1591,7 +1672,7 @@ NetworkGraph.prototype.collapseAll = function () {
 
 }
 NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
-  var vis = this,treeDataEl,nodeTreeData;
+  var vis = this,treeDataEl;
   function recurse(node) {
     var el;
     ////////////console.log(node)
@@ -1608,20 +1689,75 @@ NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
     
   }
   //root["children"].forEach(function(r){
-  ////console.log(nodeTreeData.id)
-  nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)
-  ////console.log(nodeTreeData)
-  nodeTreeData[0]["children"].forEach(function(r){
+  nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)[0]
+  nodeTreeData["children"].forEach(function(r){
+    console.log(r)
     treeDataEl=vis.treeData.filter(d=>d.id==r.id)
-    ////console.log(treeDataEl)
     if(treeDataEl.length>0){
-      //recurse(treeDataEl);
-      vis.collapseBranch(treeDataEl)
+      //if(treeDataEl[0].children){
+      //////////console.log(treeDataEl[0])
+      recurse(treeDataEl[0]);
+      //vis.collapseBranch(treeDataEl[0])
+      treeDataEl[0]._children = treeDataEl[0].children;
+      delete treeDataEl[0].children;
+      //}
     }
+    
   })
-  ////console.log(vis.treeData)
+
   vis.data=flatten(vis.treeData).flatData
-  vis.refresh()
+  vis.initializeSimulation();
+  vis.dataJoinGraph()
+  vis.exitGraph()
+
+}
+NetworkGraph.prototype.expandNodeBranch = function (nodeTreeData) {
+  var vis = this/* ,treeDataEl;
+  function recurse(node) {
+    var el;
+    ////////////console.log(node)
+    if(node.children){
+      node.children.forEach(function(d){
+        ////////////console.log(d)
+        el=vis.treeData.filter(l=>l.id==d.id)
+        if(el.length>0){
+          recurse(el[0])
+          vis.expandBranch(el[0])
+        }
+      })
+    }
+    
+  } */
+  //root["children"].forEach(function(r){
+  nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)[0]
+  /* if(nodeTreeData.children){
+    nodeTreeData._children = nodeTreeData.children;
+    delete nodeTreeData.children;
+  }else{ */
+    nodeTreeData.children = nodeTreeData._children;
+    delete nodeTreeData._children;
+  //}
+  
+  //delete vis.treeData[index]["hidden"]
+  /* nodeTreeData["_children"].forEach(function(r){
+    console.log(r)
+    treeDataEl=vis.treeData.filter(d=>d.id==r.id)
+    if(treeDataEl.length>0){
+      //if(treeDataEl[0].children){
+      //////////console.log(treeDataEl[0])
+      recurse(treeDataEl[0]);
+      //vis.collapseBranch(treeDataEl[0])
+      treeDataEl[0].children = treeDataEl[0]._children;
+      delete treeDataEl[0]._children;
+      //}
+    }
+    
+  }) */
+
+  vis.data=flatten(vis.treeData).flatData
+  vis.initializeSimulation();
+  vis.dataJoinGraph()
+  vis.exitGraph()
 
 }
 /* NetworkGraph.prototype.expandAll = function () {
@@ -1687,51 +1823,7 @@ NetworkGraph.prototype.collapseBranch = function (node){
   vis.treeData[index]["hidden"]=true
   ////console.log(vis.treeData)
 }
-NetworkGraph.prototype.collapseTest = function (nodeTree) {
-  var vis = this,treeDataEl;
-  function recurse(node) {
-    var el;
-    ////////////console.log(node)
-    if(node.children){
-      node.children.forEach(function(d){
-        ////////////console.log(d)
-        el=vis.treeData.filter(l=>l.id==d.id)
-        if(el.length>0){
-          recurse(el[0])
-          vis.collapseBranch(el[0])
-        }
-      })
-    }
-    
-  }
-  //root["children"].forEach(function(r){
-  ////console.log(nodeTree)
-  nodeTree=vis.treeData.filter(d=>d.id==nodeTree.id)
-  if(nodeTree.length>0){
-    nodeTree[0]["children"].forEach(function(r){
-      treeDataEl=vis.treeData.filter(d=>d.id==r.id)
-      if(treeDataEl.length>0){
-        //if(treeDataEl[0].children){
-        //////////console.log(treeDataEl[0])
-        recurse(treeDataEl[0]);
-        vis.collapseBranch(treeDataEl[0])
-        
-        //}
-      }
-      
-    })
-    //////console.log(vis.treeData)
-    if(nodeTree[0]["children"][0]["hidden"]){
-      nodeTree[0]["children"].forEach(function (c){
-        delete c["hidden"]
-      })
-    }
-    vis.data=flatten(vis.treeData).flatData
-    vis.refresh()
-  }
 
-
-}
 NetworkGraph.prototype.collapseFullBranch = function (node){
   var vis = this;
   var nodes=[]
@@ -1773,35 +1865,7 @@ NetworkGraph.prototype.expandBranch = function (node){
   delete vis.treeData[index]._children;
   delete vis.treeData[index]["hidden"]
 }
-/* NetworkGraph.prototype.expandBranch = function (node){
-  var vis = this;
-  var nodes=[]
-  nodes.push(node.id)
-  expand(node)
-  for (let i = 0; i < vis.treeData.length; i++) {
-    if (nodes.includes(vis.treeData[i]["id"])){
-      vis.treeData[i].children = vis.treeData[i]._children;
-      delete vis.treeData[i]._children;
-      if(vis.treeData[i]["hidden"]){
-        delete vis.treeData[i].hidden;
-      }
-    }
-  }
-  function expand(node) {
-    var position;
-    if(node["_children"]){
-      node["_children"].forEach(function(d){
-        position=nodes.indexOf(nodes.filter(function(item) {
-          return (item.id == d.id)
-        })[0])
-        if(position==-1){
-          nodes.push(d.id)
-        }  
-        expand(d)
-      })
-    }
-  }
-} */
+
 NetworkGraph.prototype.expandLevelBranch = function (node){
   var vis = this;
   var nodes=[]
@@ -1832,36 +1896,7 @@ NetworkGraph.prototype.expandLevelBranch = function (node){
     }
   }
 }
-/* NetworkGraph.prototype.expandLevelBranch = function (node){
-  var vis = this;
-  var nodes=[]
-  nodes.push(node.id)
-  expand(node)
-  for (let i = 0; i < vis.treeData.length; i++) {
-    if(node.id==vis.treeData[i]["id"]){
-      vis.treeData[i].children = vis.treeData[i]._children;
-      delete vis.treeData[i]._children;
-    }
-    if (nodes.includes(vis.treeData[i]["id"])){
-      if(vis.treeData[i]["hidden"]){
-        delete vis.treeData[i].hidden;
-      }
-    }
-  }
-  function expand(node) {
-    var position;
-    if(node["_children"]){
-      node["_children"].forEach(function(d){
-        position=nodes.indexOf(nodes.filter(function(item) {
-          return (item.id == d.id)
-        })[0])
-        if(position==-1){
-          nodes.push(d.id)
-        }  
-      })
-    }
-  }
-} */
+
 NetworkGraph.prototype.refresh = function (node){
   var vis = this;
   vis.dataJoinGraph()

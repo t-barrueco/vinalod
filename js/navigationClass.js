@@ -1315,11 +1315,16 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
       }else if (indexRows.length==1){
         unclickBubbleFreeGraph()
         node=d3.select("#"+cell.getAttribute("id")).data()[0]
-        if(node["menuOption"].split(";").length>1){
-          bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
+        if(node["menuOption"]){
+          if(node["menuOption"].split(";").length>1){
+            bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
+          }else{
+            bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
+          }
         }else{
           bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","")))
         }
+        
         clickBubbleFreeGraph(bubble,networkGraph.data)
         d3.select("#"+row.getAttribute("id"))
         .attr("stroke", "yellow")
@@ -1364,7 +1369,6 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
 
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-
   for (var i = 0; i < menuItems.length; i++) {
       newRow = tbodyRef.insertRow(rowIndex+i);
       newRow.id="menu-table-"+ node.id + "-" + [i]
@@ -1519,6 +1523,7 @@ function addMenuToTable(node,menuItems){
   d3.selectAll(".menu-table").remove()
   var rowIndex=$('#myModal #'+ node["id"]).parent()[0].rowIndex
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
+  console.log(menuItems)
   for (var i = 0; i < menuItems.length; i++) {
       newRow = tbodyRef.insertRow(rowIndex+i);
       newRow.id="menu-table-"+menuItems[i]["position"]
