@@ -324,12 +324,13 @@ span.onclick = function() {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-/* window.onclick = function(event) {
-  if (event.target == modal) {
+window.onclick = function(event) {
+  console.log(event.target)
+  /* if (event.target == modal) {
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
-  }
-} */
+  } */
+}
 d3.select('body')
 .on('click', () => {
     d3.select(".contextMenu").remove();
