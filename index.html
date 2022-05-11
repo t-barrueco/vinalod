@@ -546,103 +546,77 @@
               <div class="relative z-0 w-full h-auto" id="networkGraph">
           </div>
           <!-- This example requires Tailwind CSS v2.0+ -->
+          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700" id="myModal">
+            <!--
+            Slide-over panel, show/hide based on slide-over state.
 
-          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal">
-            <div class="absolute inset-0 overflow-hidden">
-              <!-- Background overlay, show/hide based on slide-over state. -->
-              <div class="absolute inset-0" aria-hidden="true">
-                <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
-                  <!--
-                    Slide-over panel, show/hide based on slide-over state.
-        
-                    Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                      From: "translate-x-full"
-                      To: "translate-x-0"
-                    Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                      From: "translate-x-0"
-                      To: "translate-x-full"
-                  -->
-        
-<!--                   <div class="w-screen max-w-5xl">
- -->                  <div class="w-screen max-w-xl">
-                    <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
-                      <div class="px-4 sm:px-6">
-                        <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
-                          <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
-                            Navigation panel
-                          </h2>
-                          <div class="flex items-center ml-3 h-7">
-                            <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
-                              <span class="sr-only">Close panel</span>
-                              <!-- Heroicon name: outline/x -->
-                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
-                        <div id="navTable" style="overflow: auto" class="mt-6"></div>
-                        <!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
-                        <div id="tabsNav" class="hidden">
-                            <div class="sm:hidden">
-                              <label for="tabs" class="sr-only">Select a tab</label>
-                              <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
-                              <select id="tabs" name="tabs" class="block w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                                <option selected>Children nodes</option>
-
-                                <option>Details</option>
-
-                              </select>
-                            </div>
-                            <div class="hidden sm:block">
-                              <nav class="relative z-0 flex divide-x divide-gray-200 rounded-lg shadow-md" aria-label="Tabs">
-                                <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
-                                <a id="childNodesLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-900 bg-white rounded-l-lg group hover:bg-gray-50 focus:z-10" aria-current="page" onclick="selectTab(this,'detailsLink');">
-                                  <span>Children nodes</span>
-                                  <span aria-hidden="true" class="bg-blue-500 absolute inset-x-0 bottom-0 h-0.5"></span>
-                                </a>
-
-                                <a id="detailsLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" onclick="selectTab(this,'childNodesLink');">
-                                  <span>Details</span>
-                                  <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
-                                </a>
-                              </nav>
-                            </div>
-                        </div>
-
-                        <div id="dvTable" style="overflow: auto">
-                          <div class="absolute inset-0 px-4 sm:px-6">
-                          </div>
-                        <!-- /End replace -->
-                        </div>
-                        <div id="dvDetails" class="overflow-auto bg-white shadow sm:rounded-lg">
-                        </div>
-                        <div id="map"></div>
-                      </div>
+            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+                From: "translate-x-full"
+                To: "translate-x-0"
+            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+                From: "translate-x-0"
+                To: "translate-x-full"
+            -->
+            <div class="w-screen max-w-md pointer-events-auto">
+              <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
+                <div class="px-4 sm:px-6">
+                  <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
+                    <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
+                      Navigation panel
+                    </h2>
+                    <div class="flex items-center ml-3 h-7">
+                      <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
+                        <span class="sr-only">Close panel</span>
+                        <!-- Heroicon name: outline/x -->
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
-        
+                <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
+                  <div id="navTable" style="overflow: auto" class="mt-6"></div>
+                  <div id="tabsNav" class="hidden">
+                      <div class="sm:hidden">
+                        <label for="tabs" class="sr-only">Select a tab</label>
+                        <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
+                        <select id="tabs" name="tabs" class="block w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                          <option selected>Children nodes</option>
+
+                          <option>Details</option>
+
+                        </select>
+                      </div>
+                      <div class="hidden sm:block">
+                        <nav class="relative z-0 flex divide-x divide-gray-200 rounded-lg shadow-md" aria-label="Tabs">
+                          <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+                          <a id="childNodesLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-900 bg-white rounded-l-lg group hover:bg-gray-50 focus:z-10" aria-current="page" onclick="selectTab(this,'detailsLink');">
+                            <span>Children nodes</span>
+                            <span aria-hidden="true" class="bg-blue-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+                          </a>
+
+                          <a id="detailsLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" onclick="selectTab(this,'childNodesLink');">
+                            <span>Details</span>
+                            <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                          </a>
+                        </nav>
+                      </div>
+                  </div>
+
+                  <div id="dvTable" style="overflow: auto">
+                    <div class="absolute inset-0 px-4 sm:px-6">
+                    </div>
+                  <!-- /End replace -->
+                  </div>
+                  <div id="dvDetails" class="overflow-auto bg-white shadow sm:rounded-lg">
+                  </div>
+                  <div id="map"></div>
+                </div>
               </div>
             </div>
-          </div>
+        </div>
+
           
 
 <!--             <div class="absolute inset-0 overflow-hidden">
