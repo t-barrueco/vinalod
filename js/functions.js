@@ -82,9 +82,10 @@ function changeBasicGraph(option){
   //remove filter, legend and graph
   d3.selectAll(".classFilter").remove()
   //d3.select("#legend").selectAll("li").remove()
-  d3.selectAll(".graph").remove()                                                                      
-
-  
+  d3.selectAll(".graph").remove()   
+                                                                     
+  hideModal("#myModal")
+  deleteTooltip()
   //reset global variables
   propertiesFilterHist=[]
   execQueries=[]
@@ -95,12 +96,12 @@ function changeBasicGraph(option){
   if(networkGraph){
     networkGraph = undefined;
     //colorScale=[]
-    //console.log("pasa por aquí")
+    ////console.log("pasa por aquí")
     legend.deleteAllColors()
     legend=undefined
-    ////////console.log(legend)
-    //console.log(nodesClassesCorrespondence)
-    //console.log(nodesClassesShow)
+    //////////console.log(legend)
+    ////console.log(nodesClassesCorrespondence)
+    ////console.log(nodesClassesShow)
     nodesClassesCorrespondence={}
     nodesClassesShow=[]
 
@@ -121,10 +122,10 @@ function changeBasicGraph(option){
   showBasicGraph()
 
   //build and show graph
-  //////////console.log("antes de build")
-  //////////console.log(pos)
+  ////////////console.log("antes de build")
+  ////////////console.log(pos)
   buildBasicGraph(pos)
-  //////////console.log("despues de ...")
+  ////////////console.log("despues de ...")
 }
 //Remove all elements from screen and show graph area
 function showBasicGraph(){
@@ -149,7 +150,7 @@ function showBasicGraph(){
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
     //function that add menu items to table
-    ////////////////console.log("antes de add...")
+    //////////////////console.log("antes de add...")
     addMenuToTable(node,menuItems)
   }else{
     //if click on bubble in graph, fill menu to show on screen next to bubble
@@ -254,28 +255,28 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
 
-      ////////////console.log("-------------------------")
-      ////////////console.log("pageX: "+pageX)
-      ////////////console.log("pageY: "+pageY)
-      ////////////console.log(pageX-200)
-      ////////////console.log(pageY-200)
-      ////////////console.log("zoomScale: "+networkGraph.zoomScale)
+      //////////////console.log("-------------------------")
+      //////////////console.log("pageX: "+pageX)
+      //////////////console.log("pageY: "+pageY)
+      //////////////console.log(pageX-200)
+      //////////////console.log(pageY-200)
+      //////////////console.log("zoomScale: "+networkGraph.zoomScale)
       if(pageY-200<0){
-        ////////////console.log("pageY menos")
+        //////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        ////////////console.log("pageX menos")
+        //////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
       }
-      ////////////console.log("pageX after: "+pageX)
-      ////////////console.log("pageY after: "+ pageY)
-      ////////////console.log(d3.select("#networkGraph").node())
-      ////////////console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
+      //////////////console.log("pageX after: "+pageX)
+      //////////////console.log("pageY after: "+ pageY)
+      //////////////console.log(d3.select("#networkGraph").node())
+      //////////////console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
       //pageX - width / 2, pageY - height / 1.5
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
@@ -288,15 +289,15 @@ function runSparlqQuery(settings){
       resolve(results)
     })
   }) */
-  //console.log(settings)
+  ////console.log(settings)
   return new Promise((resolve, reject) => {
     $.ajax(settings).then  (function( _data ) {
-      //////console.log(_data.results)
+      ////////console.log(_data.results)
       //results = _data;
       resolve(_data.results.bindings)
     })
     .fail(function(jqXHR, textStatus, errorThrown){
-      console.log(jqXHR.status)
+      //console.log(jqXHR.status)
       reject(jqXHR.status)
       });
     })
@@ -399,7 +400,7 @@ function fromSelectToAskQuery(query){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  //////console.log(d)
+  ////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -430,7 +431,7 @@ function getTooltipText(d){
     </div>`;
     return text;
   }else{
-    //////console.log("no menu option")
+    ////////console.log("no menu option")
     var text = `
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -456,7 +457,7 @@ function getTooltipText(d){
             ` + nodesClassesCorrespondence[d.class] + `
             </dd>
           </div>`
-          ////////console.log(d)
+          //////////console.log(d)
           if(d["tooltip"]){
             Object.keys(d["tooltip"]).forEach(function(k){
               text=text + `
@@ -478,7 +479,7 @@ function getTooltipText(d){
         </dl>
       </div>
     </div>`;
-    //////console.log(text)
+    ////////console.log(text)
     return text;
   } 
 }
@@ -649,21 +650,21 @@ function get_configRows_class(classNode){
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[],propertyUri;
-  //////////console.log(node)
+  ////////////console.log(node)
   
   if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
     propertyUri=propertyUriImage(node)
-    //////////console.log(propertyUri)
+    ////////////console.log(propertyUri)
     if(propertyUri){
-      //////////console.log(node)
-      //////////console.log(node[propertyUri])
-      //////////console.log(filesIcons)
+      ////////////console.log(node)
+      ////////////console.log(node[propertyUri])
+      ////////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==node[propertyUri];
       })
-      ////////////console.log(icon)
+      //////////////console.log(icon)
     }else{
       if(node[node["class"]+"_uri"]){
         icon=filesIcons.filter(function(d){
@@ -688,15 +689,15 @@ function bubbleImage(node){
 function propertyUriImage(node){
   var propertyUri=false;
   if(configFile[node["configRowNumber"]]){
-    //////////console.log(configFile[node["configRowNumber"]]["properties"])
+    ////////////console.log(configFile[node["configRowNumber"]]["properties"])
     configFile[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
       if(p.property.endsWith("_uri")){
         property=p.property.replace("_uri","")
-        //////////console.log(property)
+        ////////////console.log(property)
         //if(configFile[node["configRowNumber"]]["properties"].filter(d=>(d.class==node["class"])&&(d.property==property))){
         if(node["class"]!=property){
-          //////////console.log(property)
-          //////////console.log(p.property)
+          ////////////console.log(property)
+          ////////////console.log(p.property)
           propertyUri= p.property
         }
       }
@@ -810,24 +811,24 @@ function nestedNodes(el){
 }
 function highlightLinkedNodes(node){
   deselectNodes()
-  ////////////console.log(selectTargetNodes(node))
-  ////////////console.log(selectSourceNodes(node))
+  //////////////console.log(selectTargetNodes(node))
+  //////////////console.log(selectSourceNodes(node))
 }
 function highlightTargetNodes(node){
   let data=selectTargetNodes(node)
   deselectNodesAndLinks()
-  ////////////console.log(data.links)
+  //////////////console.log(data.links)
   highlightLinks(data.links)
   highlightNodes(data.nodes)
 }
 function selectTargetNodes(node){
-  ////////////console.log(node)
+  //////////////console.log(node)
   var targetNodes=[],targetLinks=[]
-  ////////////console.log(networkGraph.data.links)
+  //////////////console.log(networkGraph.data.links)
   let targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == node.id
   })
-  ////////////console.log(targets[0])
+  //////////////console.log(targets[0])
   targetNodes.push(targets[0].source.id)
   targets.forEach(function (d){
     targetLinks.push(d.id)
@@ -848,13 +849,13 @@ function selectSourceNodes(node){
   return {nodes:sourceNodes,links:sourceLinks};
 }
 function highlightLinks(links){
-  ////////////console.log(links)
+  //////////////console.log(links)
   const even = d3.selectAll(".link").filter(function(d){
     return links.includes(d.id)
-    //////////////console.log(d.id)
-    //////////////console.log(links)
+    ////////////////console.log(d.id)
+    ////////////////console.log(links)
   });
-  ////////////console.log(even)
+  //////////////console.log(even)
   even.style("stroke", "black")
   .style("fill","black")
   //.style("stroke-width", "2px")
@@ -862,10 +863,10 @@ function highlightLinks(links){
 function highlightNodes(nodes){
   const even = d3.selectAll(".circleBasic").filter(function(d){
     return nodes.includes(d.id)
-    //////////////console.log(d.id)
-    //////////////console.log(links)
+    ////////////////console.log(d.id)
+    ////////////////console.log(links)
   });
-  ////////////console.log(even)
+  //////////////console.log(even)
   even.attr("stroke", "black")
   .attr("stroke-width", "3px")
 }

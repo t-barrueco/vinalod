@@ -1,20 +1,20 @@
 
 //if basic graph settings==configRow and if free graph settings==form
 async function buildNetworkGraph(settingsGraph,branchType,node){
-    //////////console.log("buildNetworkGraph")
+    ////////////console.log("buildNetworkGraph")
     let sparqlQuery=getQuery()
     let url=getEndpointUrl()
     hideSpinMessage(interval)
-    //////////console.log(url)
-    ////console.log(settingsGraph)
-    ////////////console.log(branchType)
-    //////////////console.log(node)
+    ////////////console.log(url)
+    //////console.log(settingsGraph)
+    //////////////console.log(branchType)
+    ////////////////console.log(node)
     var interval=showSpinMessage("Waiting for Sparql query")
     let prefixes=""
-    console.log(sparqlQuery)
+    //console.log(sparqlQuery)
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    //////////console.log(settings)
+    ////////////console.log(settings)
 
     /* var configClasses = settingsGraph.map(function(d) {
       return {
@@ -27,15 +27,15 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
     try {
       var results = await runSparlqQuery(settings);
       //var results = results.bindings;
-      //////////console.log(results)
+      ////////////console.log(results)
       results = clusterResults(results, settingsGraph)
       //stop displaing message when executing query
       hideSpinMessage(interval)
-      console.log("hideSpinMessage")
-      ////////////console.log(branchType)
-      ////////////console.log(settingsGraph)
-      ////////////console.log(node)
-      //////////////console.log(configClasses)
+      //console.log("hideSpinMessage")
+      //////////////console.log(branchType)
+      //////////////console.log(settingsGraph)
+      //////////////console.log(node)
+      ////////////////console.log(configClasses)
       buildData(branchType,results, settingsGraph, node)
       
       //if no bubble is clicked or row in the table
@@ -55,9 +55,9 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
           data=buildDataBasic(results,configRow,configClasses,node)
         }else if(branchType=="expert"){
           $("#myModal3").hide();
-          //////////////console.log(results)
+          ////////////////console.log(results)
           data=buildDataExpert(results, settingsGraph, node)
-          //////////////console.log(data) */
+          ////////////////console.log(data) */
 /*             if(settings.origin=="bubble"){
             addNodesGraph(results, node, form)
           }else{
@@ -70,21 +70,21 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
 
         //check if there is an object networkGraph already
         if(networkGraph){
-          ////////////console.log("networkGraph")
+          //////////////console.log("networkGraph")
           legend.deleteAllColors()
         }else{
-          ////////////console.log("no networkGraph")
+          //////////////console.log("no networkGraph")
           d3.selectAll(".graph").remove()
           networkGraph = new NetworkGraph("#networkGraph", data,forces,branchType);
           legend=new Legend("legend")
         }
-        ////console.log(networkGraph.treeData)
+        //////console.log(networkGraph.treeData)
         //networkGraph.collapse
         networkGraph.collapseAll()
         //collapse(networkGraph.treeData[0])
         //collapse()
       }else{
-        ////////////console.log("node not undefined")
+        //////////////console.log("node not undefined")
         //add information for centering the graph
         networkGraph.addingGraph=true
         networkGraph.dblClickId=node.id.replace("_image","")+"_g"
@@ -109,7 +109,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
 
         //collapse graph if is basic type and hierarchy has more than two levels
         if(branchType=="basic"){
-          ////console.log(settingsGraph)
+          console.log(settingsGraph)
           if(settingsGraph.hierarchy.length>1){
             networkGraph.collapseNodeBranch(node)
             //collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
@@ -117,25 +117,25 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
         }
         if(document.getElementsByClassName("d3-tip")[0]){
           document.getElementsByClassName("d3-tip")[0].remove()
-          console.log("pasa por aquí")
+          //console.log("pasa por aquí")
           networkGraph.g.call(networkGraph.tip);
         }
       }
     } catch (e) {
-      console.log(e)
+      //console.log(e)
       results = false
     }
     hideSpinMessage(interval)
 /*     $objectAjax=$.ajax(settings).then  (function( _data ) {
         var results = _data.results.bindings;
-        ////////////console.log(results)
+        //////////////console.log(results)
         results = clusterResults(results, settingsGraph)
         //stop displaing message when executing query
         hideSpinMessage(interval)
-        ////////////console.log(branchType)
-        ////////////console.log(settingsGraph)
-        ////////////console.log(node)
-        //////////////console.log(configClasses)
+        //////////////console.log(branchType)
+        //////////////console.log(settingsGraph)
+        //////////////console.log(node)
+        ////////////////console.log(configClasses)
         buildData(branchType,results, settingsGraph, node,configClasses)
         
         //if no bubble is clicked or row in the table
@@ -151,10 +151,10 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
 
           //check if there is an object networkGraph already
           if(networkGraph){
-            ////////////console.log("networkGraph")
+            //////////////console.log("networkGraph")
             legend.deleteAllColors()
           }else{
-            ////////////console.log("no networkGraph")
+            //////////////console.log("no networkGraph")
             d3.selectAll(".graph").remove()
             networkGraph = new NetworkGraph("#networkGraph", data,forces,branchType);
             legend=new Legend("legend")
@@ -162,7 +162,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
 
           collapse(networkGraph.treeData[0])
         }else{
-          ////////////console.log("node not undefined")
+          //////////////console.log("node not undefined")
           //add information for centering the graph
           networkGraph.addingGraph=true
           networkGraph.dblClickId=node.id.replace("_image","")+"_g"
@@ -203,7 +203,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
       await $objectAjax */
 
     function getEndpointUrl(){
-        //////////console.log(settingsGraph)
+        ////////////console.log(settingsGraph)
         var url;
         if(settingsGraph.url){
           url=settingsGraph.url
@@ -213,10 +213,10 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
         return url
     }
     function getQuery(){
-      ////////////console.log(settingsGraph)
+      //////////////console.log(settingsGraph)
       var sparqlQuery;
-      //////////console.log("getQuery")
-      //////////console.log(branchType)
+      ////////////console.log("getQuery")
+      ////////////console.log(branchType)
       if(branchType=="basic"){
           if (node){
               sparqlQuery=replaceParmtrsQuery(settingsGraph,node)
@@ -304,7 +304,7 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
 function clusterResults(results, settings) {
   var ocurrences = [], small, big, results_small, results_big, num_occ, results_big_filtered;
   if(settings["subject-object"]){
-    ////////////console.log(results)
+    //////////////console.log(results)
     var properties = results.map(function (r) {
       return r["p"]["value"]
     })
@@ -327,7 +327,7 @@ function clusterResults(results, settings) {
         results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
       }
     })
-    ////////////console.log(results_small)
+    //////////////console.log(results_small)
     /* if(results_small.length>20){
       if (subjectObject == "s") {
         results_small=[{ "o": { "type": "several types", "value": results_small.length + " results", "more_results": results_small }, "p": "several properties", "s": results_big_filtered[0]["s"], "class": "Cluster" }]
@@ -339,17 +339,17 @@ function clusterResults(results, settings) {
   }else{
     return results;
   }
-  //////////////////////console.log(results_small)
+  ////////////////////////console.log(results_small)
   
 }
 function replaceParmtrsQuery(settingsGraph,node){
   var sparqlQuery;
-  //////////console.log(settingsGraph)
+  ////////////console.log(settingsGraph)
   
   if((settingsGraph.parameters!="")&&(settingsGraph.parameters!=null)){
     let parameters=get_parameters(settingsGraph.parameters)
-    console.log(node)
-    console.log(parameters)
+    //console.log(node)
+    //console.log(parameters)
     for (let i = 0; i < parameters.length; ++i) { 
       sparqlQuery=settingsGraph.query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]]);
     }  
@@ -365,10 +365,10 @@ function replaceParmtrsQuery(settingsGraph,node){
     //if(node["configRow"]){
     //  sparqlQuery=settingsGraph.sparqlQuery.replaceAll("PARAMETER", node["value"]);
     //}else{
+    ////////////////console.log(node)
+    ////////////////console.log([node["class"]+"_uri"])
+    ////////////////console.log(settingsGraph.query)
     //////////////console.log(node)
-    //////////////console.log([node["class"]+"_uri"])
-    //////////////console.log(settingsGraph.query)
-    ////////////console.log(node)
     if(node["class"]=="free"){
       sparqlQuery=settingsGraph.query.replaceAll("PARAMETER", node["value"]);
     }else{
@@ -386,10 +386,10 @@ function replaceParmtrsQuery(settingsGraph,node){
 }
 function getMenuItems(items,node,origin,graphType){
   var menuItems=[],elementMenu,position,width
-  console.log(items)
-  ////////////console.log(node)
-  ////////////console.log(origin)
-  ////////////console.log(graphType)
+  //console.log(items)
+  //////////////console.log(node)
+  //////////////console.log(origin)
+  //////////////console.log(graphType)
   if (node["configRow"]) {
     node["configRow"].forEach(function (r) {
       items.push({ "rowNumber": r, "row": configFile[r], "menuOption": configFile[r]["option"] })
@@ -400,12 +400,12 @@ function getMenuItems(items,node,origin,graphType){
     if(graphType=="basic"){
       tableBasic()
     }else if(graphType=="expert"){
-      console.log("tableExpert")
+      //console.log("tableExpert")
       tableExpert()
     }
     //function that add menu items to table
-    ////////////////////console.log("antes de add...")
-    console.log(menuItems)
+    //////////////////////console.log("antes de add...")
+    //console.log(menuItems)
     addMenuToTable(node,menuItems)
   }else{
     //if click on bubble in graph, fill menu to show on screen next to bubble
@@ -418,8 +418,8 @@ function getMenuItems(items,node,origin,graphType){
       }
       menuItems.push(elementMenu)
     }
-    ////////////console.log(menuItems)
-    ////////////console.log(node)
+    //////////////console.log(menuItems)
+    //////////////console.log(node)
     if(node["class"]=="free"){
       width=500
     }else{
@@ -429,7 +429,7 @@ function getMenuItems(items,node,origin,graphType){
     networkGraph.menuFactory(100,0, menuItems, node,"dblClick",width)
   }
   function noTableBasic(){
-    ////////////console.log(items)
+    //////////////console.log(items)
     position=items[i]["position"]
     elementMenu={
       title: items[i]["option"],
@@ -481,9 +481,9 @@ function getMenuItems(items,node,origin,graphType){
         title: items[i]["menuOption"],
         action: (data, d) => {
           row = configFile.findIndex(v => v.option == d.title)
-          ////////////console.log(data)
-          ////////////console.log(row)
-          ////////////console.log(configFile[row])
+          //////////////console.log(data)
+          //////////////console.log(row)
+          //////////////console.log(configFile[row])
 
           buildNetworkGraph(getFieldsConfigFile(configFile,row), "basic",data)
           //buildBasicGraph(row, d3.select("#" + data.getAttribute("id")).data()[0], d.title)
@@ -492,13 +492,13 @@ function getMenuItems(items,node,origin,graphType){
     }
   }
   function tableExpert(){
-    /* console.log(items)
-    console.log(i) */
+    /* //console.log(items)
+    //console.log(i) */
     for (var i = 0; i < items.length; i++) {
-      console.log(items[i])
-      console.log(items[i]["subject-object"])
+      //console.log(items[i])
+      //console.log(items[i]["subject-object"])
       if (items[i]["subject-object"]) {
-        console.log("entra")
+        //console.log("entra")
         if(items[i]["subject-object"][0]){
           menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"][0] })
         }else{
@@ -519,9 +519,9 @@ function getMenuItems(items,node,origin,graphType){
 }
 /* async function checkQueries(element, subjectObject, origin, pageX, pageY) {
   var node;
-  //////////////console.log("checkQueries")
+  ////////////////console.log("checkQueries")
   var resultRows =await checkAskResultsFreeGraph(element, subjectObject)
-  //////////////console.log(resultRows)
+  ////////////////console.log(resultRows)
   if (typeof (element) != "string") {
     node = d3.select("#" + element.getAttribute("id")).data()[0]
   }
@@ -537,7 +537,7 @@ function getMenuItems(items,node,origin,graphType){
     //await buildFreeGraph(form, origin, node)
     await buildNetworkGraph(form, origin, node)
   } 
-  ////////////console.log(resultRows)
+  //////////////console.log(resultRows)
   return resultRows
 
 } */
@@ -548,7 +548,7 @@ async function checkAskResults(indexRows,node){
     arrayMenuOptions=node.menuOption.split(";")
     indexRows=indexRows.filter(d=>!arrayMenuOptions.includes(d.option))
   }
-  console.log(indexRows)
+  ////console.log(indexRows)
   for (var i = 0; i < indexRows.length; i++) {
     //first we transform the select to ask query
     if(configFile[indexRows[i]["position"]]["askquery"]){
@@ -556,7 +556,7 @@ async function checkAskResults(indexRows,node){
     }else{
       sparqlQuery=fromSelectToAskQuery(configFile[indexRows[i]["position"]]["query"])
     }
-    
+    //console.log(sparqlQuery)
     //get parameters from config file
     parameters=configFile[indexRows[i]["position"]]["parameters"]
     if(node["class"]!=undefined){
@@ -583,23 +583,23 @@ async function checkAskResults(indexRows,node){
     }else{
       sparqlQuery=sparqlQuery.replaceAll(node,"PARAMETER"); 
     }
-    console.log(sparqlQuery)
+    //console.log(sparqlQuery)
     try {
       results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery);
     } catch (e) {
       console.log(e)
       results = false
     } /* finally {
-        ////////////console.log('We do cleanup here');
+        //////////////console.log('We do cleanup here');
     } */
     //results = await runAskSparlqQuery(configFile[indexRows[i]["position"]]["endpoint_url"],sparqlQuery)
-    ////////////console.log(results)
+    //////////////console.log(results)
     //add row to the results if there are results returned
     if(results==true){
       resultIndexRows.push(indexRows[i])
     }
   }
-  //////////////console.log(resultIndexRows)
+  ////////////////console.log(resultIndexRows)
   return resultIndexRows
 }
 async function checkAskResultsFreeGraph(node, so) {
@@ -607,14 +607,14 @@ async function checkAskResultsFreeGraph(node, so) {
 
   return new Promise((resolve, reject) => {
     d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-        //////////////////console.log(urls)
+        ////////////////////console.log(urls)
         if (so == undefined) {
           subjectObject = ['s', 'o']
         } else {
           subjectObject = [so]
         }
-        //////////////console.log(subjectObject)
-        //////////////console.log(urls)
+        ////////////////console.log(subjectObject)
+        ////////////////console.log(urls)
         if (typeof node === 'object') {
           uri = d3.select("#" + node.id).data()[0].value
         } else {
@@ -628,7 +628,7 @@ async function checkAskResultsFreeGraph(node, so) {
             }
           }
         }
-      //////////////console.log(resultRows)
+      ////////////////console.log(resultRows)
       resolve(resultRows)
     })
   })
@@ -644,7 +644,7 @@ async function checkAskResultsFreeGraph(node, so) {
       menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
     }
     //function that add menu items to table
-    ////////////////////console.log("antes de add...")
+    //////////////////////console.log("antes de add...")
     addMenuToTable(node,menuItems)
   }else{
     //if click on bubble in graph, fill menu to show on screen next to bubble
@@ -687,7 +687,7 @@ async function checkAskResultsFreeGraph(node, so) {
 }
 function getMenuItemsFreeGraph(items, node, pageX, pageY, origin) {
   var menuItems = [], elementMenu,form, uri, url, subjectObject, row
-  //////////////////console.log(node)
+  ////////////////////console.log(node)
   if (node["configRow"]) {
     node["configRow"].forEach(function (r) {
       items.push({ "rowNumber": r, "row": configFile[r], "menuOption": configFile[r]["option"] })
