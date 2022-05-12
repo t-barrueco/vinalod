@@ -770,6 +770,7 @@ NetworkGraph.prototype.enterGraph = function(){
         })
         .style("pointer-events", "none");
 
+        console.log(vis.edgelabels)
         vis.edgelabels = vis.edgelabels
             .enter()
             .append('text')
@@ -1508,6 +1509,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
       vis.initializeSimulation();
       vis.dataJoinGraph()
       vis.exitGraph()
+      //console.log(indexRows)
     }else if(indexRows.length>0){
       if(founded[0]["_children"]){
         option=node.menuOption.split(";")[0]
@@ -1694,9 +1696,11 @@ NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
   }
   //root["children"].forEach(function(r){
   nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)[0]
+  console.log(nodeTreeData)
   nodeTreeData["children"].forEach(function(r){
     ////console.log(r)
     treeDataEl=vis.treeData.filter(d=>d.id==r.id)
+    console.log(treeDataEl)
     if(treeDataEl.length>0){
       //if(treeDataEl[0].children){
       //////////////console.log(treeDataEl[0])

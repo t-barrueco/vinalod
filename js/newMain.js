@@ -110,10 +110,14 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
         //collapse graph if is basic type and hierarchy has more than two levels
         if(branchType=="basic"){
           console.log(settingsGraph)
-          if(settingsGraph.hierarchy.length>1){
-            networkGraph.collapseNodeBranch(node)
+          console.log(settingsGraph.hierarchy.length)
+
+          //if(settingsGraph.hierarchy.length>1){
+          //  console.log(node)
+          //  networkGraph.collapseNodeBranch(node)
             //collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
-          }
+          //}
+          console.log(networkGraph.treeData)
         }
         if(document.getElementsByClassName("d3-tip")[0]){
           document.getElementsByClassName("d3-tip")[0].remove()
@@ -399,14 +403,17 @@ function getMenuItems(items,node,origin,graphType){
   if (origin=="table"){
     if(graphType=="basic"){
       tableBasic()
+      console.log(menuItems)
+      console.log(node)
+      addMenuToTable(node,menuItems)
     }else if(graphType=="expert"){
-      //console.log("tableExpert")
+      console.log("tableExpert")
       tableExpert()
+      navigation.addMenuToTable(node, menuItems)
     }
     //function that add menu items to table
     //////////////////////console.log("antes de add...")
-    //console.log(menuItems)
-    addMenuToTable(node,menuItems)
+
   }else{
     //if click on bubble in graph, fill menu to show on screen next to bubble
     //and add action to build basic graph in case the option in the menu is clicked
@@ -496,7 +503,7 @@ function getMenuItems(items,node,origin,graphType){
     //console.log(i) */
     for (var i = 0; i < items.length; i++) {
       //console.log(items[i])
-      //console.log(items[i]["subject-object"])
+      console.log(items[i]["subject-object"])
       if (items[i]["subject-object"]) {
         //console.log("entra")
         if(items[i]["subject-object"][0]){
@@ -507,6 +514,7 @@ function getMenuItems(items,node,origin,graphType){
       }else {
         menuItems.push({ "rowDataConfig": items[i]["rowNumber"], "node": node, "menuOption": items[i]["menuOption"] })
       }
+      console.log(menuItems)
     }
   }
   function tableBasic(){
