@@ -109,7 +109,7 @@ function forceLinksIterations(value){
   
 async function buildBasicGraph(rowDataConfig,node){
     var configRow,sparqlQuery,parameters,modal2,prefixes,configClasses;
-    //console.log("buildBasicGraph")
+    ////console.log("buildBasicGraph")
     //get all fields from config file and save them in configRow.
     //configRow is an object with all fields from Config File Row.
     configRow=getFieldsConfigFile(configFile,rowDataConfig)
@@ -139,27 +139,27 @@ async function buildBasicGraph(rowDataConfig,node){
       nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(configRow.classes));
       nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(configRow.classes)))))
     }
-    //console.log(nodesClassesCorrespondence)
-    //console.log(nodesClassesShow)
+    ////console.log(nodesClassesCorrespondence)
+    ////console.log(nodesClassesShow)
     //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
     if(configRow.graphType=="TREE"){
-      //console.log(configRow)
-      //console.log(node)
-      ////console.log(configClasses)
+      ////console.log(configRow)
+      ////console.log(node)
+      //////console.log(configClasses)
       buildNetworkGraph(configRow,"basic",node)
     }else{
-      ////////////console.log("other type config row")
-      ////////////console.log(configRow)
+      //////////////console.log("other type config row")
+      //////////////console.log(configRow)
       //sparqlQuery=configRow.sparqlQuery
       deleteTooltip()
       sparqlQuery=replaceParmtrsQuery(configRow,node)
-      ////////////console.log(sparqlQuery)
+      //////////////console.log(sparqlQuery)
       if (configRow.graphType=="TREEGRAPH"){
         modal2=getModal2()
         showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
       }else if (configRow.graphType=="WIKIPEDIA"){
-        ////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
+        //////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
         modal2=getModal2()
         showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
@@ -301,14 +301,14 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  //////////////////////////console.log("collapse")
+  ////////////////////////////console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  //////////////////////////console.log("collapse")
+  ////////////////////////////console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
@@ -325,7 +325,7 @@ span.onclick = function() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  console.log(event.target)
+  //console.log(event.target)
   /* if (event.target == modal) {
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
@@ -344,7 +344,7 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  //////////////////////////////////////////////////////////////////console.log($("#myModal2"))
+  ////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
@@ -523,10 +523,10 @@ function handleNavigation(node){
 }
 /* window.onclick = function(event) {
 
-  ////////////console.log(document.getElementById("myModal").contains(event.target))
-  ////////////console.log(event.target)
+  //////////////console.log(document.getElementById("myModal").contains(event.target))
+  //////////////console.log(event.target)
   if (document.getElementById("myModal").contains(event.target)) {
-    ////////////console.log("hide")
+    //////////////console.log("hide")
     hideModal("#myModal");
   }
   } */
