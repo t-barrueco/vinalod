@@ -1269,6 +1269,7 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
   }else{
     bubble=cell
   }
+  console.log(bubble)
   if(bubble){
     if(bubble.class=="free"){
       freeGraph()
@@ -1293,6 +1294,7 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
       }
     }else{
       indexRows=await networkGraph.wrangleData(element,"table");
+      console.log(indexRows)
       /* if(d3.select("#"+element.getAttribute("id")).data()[0]["children"]){
       } */
     }
@@ -1301,7 +1303,10 @@ navigationPanel.prototype.dblclickCellContent = async function (cell) {
       if(d3.select("#"+element.getAttribute("id")).data()[0].detail!=undefined){
         clickBubbleFreeGraph(element,networkGraph.data)
       }
+    }else if(d3.select("#"+element.getAttribute("id")).data()[0]["class"]=="menuOption"){
+      clickBubbleFreeGraph(element,networkGraph.data)
     }
+    //else if()
   }
   async function freeGraph(){
       indexRows=await networkGraph.wrangleData(cell,"table");
@@ -1419,12 +1424,18 @@ navigationPanel.prototype.clickMenuTable = async function (form,node){
   var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
 
   //await buildFreeGraph(newForm,"table",node)
-  await buildNetworkGraph(newForm,"table",node)
-  if(node["menuOption"].split(";").length>1){
-    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
+  console.log(newForm)
+  await buildNetworkGraph(newForm,"expert",node)
+  if(node["menuOption"]){
+    if(node["menuOption"].split(";").length>1){
+      bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
+    }else{
+      bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+node.id)
+    }
   }else{
     bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+node.id)
   }
+
   clickBubbleFreeGraph(bubble,networkGraph.data)
 
 function searchMenuOptionChild(){
@@ -1523,7 +1534,7 @@ function addMenuToTable(node,menuItems){
   d3.selectAll(".menu-table").remove()
   var rowIndex=$('#myModal #'+ node["id"]).parent()[0].rowIndex
   var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-  //console.log(menuItems)
+  console.log(menuItems)
   for (var i = 0; i < menuItems.length; i++) {
       newRow = tbodyRef.insertRow(rowIndex+i);
       newRow.id="menu-table-"+menuItems[i]["position"]
@@ -1541,8 +1552,11 @@ function addMenuToTable(node,menuItems){
       div=document.createElement("div")
       div.setAttribute("x-show","tooltip")
       div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
-              
-      textNode = document.createTextNode (getCommentOption(menuItems[i]["option"]));
+      
+      if(node["class"]!="free"){
+        textNode = document.createTextNode (getCommentOption(menuItems[i]["option"]));
+      }
+      
       
       span=document.createElement("span")
       span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
