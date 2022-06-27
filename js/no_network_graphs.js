@@ -18,26 +18,20 @@ function getModal2(){
   
     $(id).removeClass("translate-x-full")
     $(id).addClass("translate-x-0")
-    ////////////console.log($(id))
+    ////////////////console.log($(id))
   }
   function hideModal(id){
   
     $(id).removeClass("translate-x-0")
     $(id).addClass("translate-x-full")
-    ////////////console.log($(id))
+    ////////////////console.log($(id))
   }
-  async function showTimeLine(data,modalHeader,modalContent){
-    var rowDataConfig,results,node,dataTimeline=[];
-  
-    for (let i = 0; i < configFile.length; ++i) { 
-      if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="TIMELINE")){
-        rowDataConfig=i
-        break;
-      }
-    }
+  async function showTimeLine(data,modalHeader,modalContent,configRow){
+    var results,node,dataTimeline=[];
+
     node=data
-    url=configFile[rowDataConfig]["endpoint_url"]
-    sparqlQuery=configFile[rowDataConfig]["query"]
+    url=configRow["endpoint_url"]
+    sparqlQuery=configRow["query"]
     prefixes=""
     do{
       if(node["class"]!=undefined){
@@ -78,17 +72,17 @@ function getModal2(){
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    //////////console.log(sparqlQuery)
+    //////////////console.log(sparqlQuery)
     results = await runSparlqQuery(settings)
-    //////////console.log(node)
+    //////////////console.log(node)
 
     
     if(results[0]["item"]){
       var pdf=results[0]["item"]["value"]
     }
 
-    ////////////console.log(checkUrl(pdf))
-    //////////console.log(pdf)
+    ////////////////console.log(checkUrl(pdf))
+    //////////////console.log(pdf)
     modalHeader.innerHTML = "PDF"
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
@@ -109,10 +103,10 @@ function getModal2(){
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    //////////console.log(sparqlQuery)
+    //////////////console.log(sparqlQuery)
     results = await runSparlqQuery(settings)
-    //////////console.log(node)
-    //////////console.log(results)
+    //////////////console.log(node)
+    //////////////console.log(results)
     if(results[0]["item"]){
       page=results[0]["item"]["value"]
     }else{
@@ -133,7 +127,7 @@ function getModal2(){
     results = await runSparlqQuery(settings)
     table(results,columns,column_names,modalContent)
   
-    ////////console.log(configRow)
+    ////////////console.log(configRow)
 
     modalHeader.innerHTML = configRow["option_text"] + " - " + node["value"]
     //modalHeader.innerHTML = node["value"]
@@ -217,15 +211,10 @@ function getModal2(){
     mainEl.appendChild(div).appendChild(div2).appendChild(div3).appendChild(div4).appendChild(table);
   
   }
-  async function showTreegraph(node,sparqlQuery,modalHeader,modalContent){
-    var rowDataConfig,results,dataTreegraph=[];
-    for (let i = 0; i < configFile.length; ++i) { 
-      if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="TREEGRAPH")){
-        rowDataConfig=i
-        break;
-      }
-    }
-    url=configFile[rowDataConfig]["endpoint_url"]
+  async function showTreegraph(node,sparqlQuery,modalHeader,modalContent,rowDataConfig){
+    var results,dataTreegraph=[];
+
+    url=rowDataConfig["endpoint_url"]
     prefixes=""
   
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
@@ -245,15 +234,9 @@ function getModal2(){
   
   async function showWordcloud(node,sparqlQuery,configRow,modalHeader,modalContent){
     var rowDataConfig,results,dataTreegraph=[],title;
-    ////////console.log(sparqlQuery)
+    ////////////console.log(sparqlQuery)
     if(node!=undefined){
-      for (let i = 0; i < configFile.length; ++i) { 
-        if((configFile[i]["class"]==nodesClassesCorrespondence[node["class"]])&&(configFile[i]["type"]=="WORDCLOUD")){
-          rowDataConfig=i
-          break;
-        }
-      }
-      url=configFile[rowDataConfig]["endpoint_url"]
+      url=configRow["endpoint_url"]
       title=node["value"]
     }else{
       url=configRow["url"]
@@ -263,10 +246,10 @@ function getModal2(){
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    ////////console.log("antes de results")
-    ////////console.log(settings)
+    ////////////console.log("antes de results")
+    ////////////console.log(settings)
     results = await runSparlqQuery(settings)
-    ////////console.log(results)
+    ////////////console.log(results)
     dataWordCloud=transformDataWordCloud(results)
     wordCloudGraph(dataWordCloud,title,modalHeader,modalContent)
   
@@ -310,20 +293,14 @@ function getModal2(){
       return treeData
   }
   
-  async function showWikipediaPage(data,modalHeader,modalContent){
-    var rowDataConfig,results,node,page,parameters,parameterTemp="";
+  async function showWikipediaPage(data,modalHeader,modalContent,rowDataConfig){
+    var results,node,page,parameters,parameterTemp="";
   
-    for (let i = 0; i < configFile.length; ++i) { 
-      if((configFile[i]["class"]==nodesClassesCorrespondence[data["class"]])&&(configFile[i]["type"]=="WIKIPEDIA")){
-        rowDataConfig=i
-        break;
-      }
-    }
     node=data
-    url=configFile[rowDataConfig]["endpoint_url"]
-    sparqlQuery=configFile[rowDataConfig]["query"]
+    url=rowDataConfig["endpoint_url"]
+    sparqlQuery=rowDataConfig["query"]
     prefixes=""
-    parameters=configFile[rowDataConfig]["parameters"]
+    parameters=rowDataConfig["parameters"]
   
     if(parameters.length>0){
       parameters=get_parameters(parameters)
@@ -337,7 +314,7 @@ function getModal2(){
     try {
       results = await runSparlqQuery(settings);
       //results = results.bindings;
-      ////////////console.log(results)
+      ////////////////console.log(results)
       page=results[0]["article"]["value"]
   
       var div=document.createElement("div")
@@ -358,14 +335,14 @@ function getModal2(){
       });
       $("#myModal2").draggable()
     } catch (e) {
-      ////////console.log(e)
+      ////////////console.log(e)
       results = false
     }
 
 
 /*     $.ajax(settings).then  (function( _data ) {
       results = _data.results.bindings;
-      ////////////console.log(results)
+      ////////////////console.log(results)
       page=results[0]["article"]["value"]
   
       var div=document.createElement("div")
@@ -388,7 +365,7 @@ function getModal2(){
     }) */
   }
   function showWebPage(page,title,modalHeader,modalContent){
-      ////////////////console.log(page)
+      ////////////////////console.log(page)
   
       $("#webpage").remove()
       var iframe=document.createElement("iframe")

@@ -13,11 +13,13 @@ function dataViz(){
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
           d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
               d3.tsv("../config_vinalod/graph_icons.txt",function(dataIcons){
-                configFile=dataConfig;
+                //-----------configFile=dataConfig;
+                configFile = new ConfigFile(dataConfig);
                 filesIcons=dataIcons;
                 //the collection chosen per default in the flyout menu is 
                 //eu_vocabularies
-                optionsMenu=dataConfig.filter(d=>d.collection=="eu_vocabularies")
+                //--------------optionsMenu=dataConfig.filter(d=>d.collection=="eu_vocabularies")
+                optionsMenu=configFile.filterByValueField("eu_vocabularies","collection")
                 //get html shown for every option in flyout menu chosen
                 $.get("optionMainMenu.html", function (data) {
                     optionsMenuHtml=data
@@ -107,15 +109,16 @@ function forceLinksIterations(value){
 }
 
   
-async function buildBasicGraph(rowDataConfig,node){
-    var configRow,sparqlQuery,parameters,modal2,prefixes,configClasses;
-    ////console.log("buildBasicGraph")
+async function buildBasicGraph(configRow,node){
+    var sparqlQuery,parameters,modal2,prefixes,configClasses;
+    ////////console.log("buildBasicGraph")
     //get all fields from config file and save them in configRow.
     //configRow is an object with all fields from Config File Row.
-    configRow=getFieldsConfigFile(configFile,rowDataConfig)
+    //configRow=configFile.getFieldsConfigFile(rowDataConfig)
 
     //add a query to array. This will be used in download query menu option from right menu
-    execQueries.push(configRow.sparqlQuery)
+    //console.log(configRow)
+    execQueries.push(configRow.query)
     
     //add all classes in the Config File line to configClasses
     /* configClasses = configFile.map(function(d) {
@@ -129,7 +132,7 @@ async function buildBasicGraph(rowDataConfig,node){
     prefixes=""
 
     //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
-    if(node!=undefined){
+    /* if(node!=undefined){
       //if we come from a bubble clicked or a row in a table
       //we have to replace the PARAMETERS in the original query with the values
       //replaceParmtrsQuery()
@@ -138,50 +141,50 @@ async function buildBasicGraph(rowDataConfig,node){
       } 
       nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(configRow.classes));
       nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(configRow.classes)))))
-    }
-    ////console.log(nodesClassesCorrespondence)
-    ////console.log(nodesClassesShow)
+    } */
+    ////////console.log(nodesClassesCorrespondence)
+    ////////console.log(nodesClassesShow)
     //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
-    if(configRow.graphType=="TREE"){
-      ////console.log(configRow)
-      ////console.log(node)
-      //////console.log(configClasses)
+    if(configRow.type=="TREE"){
+      //console.log(configRow)
+      ////////console.log(node)
+      //////////console.log(configClasses)
       buildNetworkGraph(configRow,"basic",node)
     }else{
-      //////////////console.log("other type config row")
-      //////////////console.log(configRow)
+      //////////////////console.log("other type config row")
+      //////////////////console.log(configRow)
       //sparqlQuery=configRow.sparqlQuery
       deleteTooltip()
       sparqlQuery=replaceParmtrsQuery(configRow,node)
-      //////////////console.log(sparqlQuery)
-      if (configRow.graphType=="TREEGRAPH"){
+      //////////////////console.log(sparqlQuery)
+      if (configRow.type=="TREEGRAPH"){
         modal2=getModal2()
-        showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent)
+        showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent,configRow)
         showModal("#myModal2")
-      }else if (configRow.graphType=="WIKIPEDIA"){
-        //////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
+      }else if (configRow.type=="WIKIPEDIA"){
+        //////////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
         modal2=getModal2()
-        showWikipediaPage(node,modal2.modalHeader,modal2.modalContent)
+        showWikipediaPage(node,modal2.modalHeader,modal2.modalContent,configRow)
         showModal("#myModal2")
-      }else if (configRow.graphType=="WEBPAGE"){
+      }else if (configRow.type=="WEBPAGE"){
         modal2=getModal2()
         showWebPage(page,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
-      }else if (configRow.graphType=="WEBPAGE_QUERY"){
+      }else if (configRow.type=="WEBPAGE_QUERY"){
         showWebPageQuery(node,sparqlQuery,configRow.url)
-      }else if (configRow.graphType=="TIMELINE"){
+      }else if (configRow.type=="TIMELINE"){
         modal2=getModal2()
-        showTimeLine(node,modal2.modalHeader,modal2.modalContent)
+        showTimeLine(node,modal2.modalHeader,modal2.modalContent,configRow)
         showModal("#myModal2")
-      }else if (configRow.graphType=="PDF"){
+      }else if (configRow.type=="PDF"){
         modal2=getModal2()
         showPdf(node,sparqlQuery,configRow.url,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
-      }else if (configRow.graphType=="TABLE"){
+      }else if (configRow.type=="TABLE"){
         modal2=getModal2()
         showTable(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
-      }else if (configRow.graphType=="WORDCLOUD"){
+      }else if (configRow.type=="WORDCLOUD"){
         modal2=getModal2()
         showWordcloud(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
         showModal("#myModal2")
@@ -189,100 +192,6 @@ async function buildBasicGraph(rowDataConfig,node){
     }
 
   }
-
-//get all fields from config file. if the field does not exists it will be empty
-function getFieldsConfigFile(configFile,rowDataConfig){
-  var url, query,hierarchy,properties_full,options,option_text
-  var graphType,classes,parameters,filters,tooltip,columns,property_names,detail
-
-  if(configFile[rowDataConfig]["endpoint_url"]){
-    endpoint_url=configFile[rowDataConfig]["endpoint_url"]
-  }else{
-    endpoint_url=""
-  }
-
-  if(configFile[rowDataConfig]["query"]){
-    query=configFile[rowDataConfig]["query"]
-  }else{
-    query=""
-  }
-
-  if(configFile[rowDataConfig]["hierarchy"]){
-    hierarchy=configFile[rowDataConfig]["hierarchy"]
-  }else{
-    hierarchy=""
-  }
-  
-  if(configFile[rowDataConfig]["properties"]){
-    properties_full=configFile[rowDataConfig]["properties"]
-  }else{
-    properties_full=""
-  }
-  
-  if(configFile[rowDataConfig]["option"]){
-    options=configFile[rowDataConfig]["option"]
-  }else{
-    options=""
-  }
-
-  if(configFile[rowDataConfig]["option_text"]){
-    option_text=configFile[rowDataConfig]["option_text"]
-  }else{
-    option_text=""
-  }
-
-  if(configFile[rowDataConfig]["type"]){
-    graphType=configFile[rowDataConfig]["type"]
-  }else{
-    graphType=""
-  }
-
-  if(configFile[rowDataConfig]["classes_text"]){
-    classes=configFile[rowDataConfig]["classes_text"]
-  }else{
-    classes=""
-  }
-  
-  if(configFile[rowDataConfig]["parameters"]){
-    parameters=configFile[rowDataConfig]["parameters"]
-  }else{
-    parameters=""
-  }
-
-  if(configFile[rowDataConfig]["filters"]){
-    filters=configFile[rowDataConfig]["filters"]
-  }else{
-    filters=""
-  }
-
-  if(configFile[rowDataConfig]["tooltip"]){
-    tooltip=configFile[rowDataConfig]["tooltip"]
-  }else{
-    tooltip=""
-  }
-
-  if(configFile[rowDataConfig]["columns"]){
-    columns=configFile[rowDataConfig]["columns"]
-  }else{
-    columns=""
-  }
-
-  if(get_property_names(properties_full)){
-    property_names=get_property_names(properties_full)
-  }else{
-    property_names=""
-  }
-
-  if(configFile[rowDataConfig]["details"]){
-    detail=configFile[rowDataConfig]["details"]
-  }else{
-    detail=""
-  }
-
-  return {"endpoint_url":endpoint_url,"query":query,"hierarchy":hierarchy,"properties_full":properties_full,
-  "options":options,"option_text":option_text,"graphType":graphType,"classes":classes,"parameters":parameters,
-  "filters":filters,"tooltip":tooltip,"columns":columns,"property_names":property_names,"detail":detail,"rowNumber":rowDataConfig}
-}
 
 function collapse(){
 
@@ -301,14 +210,14 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  ////////////////////////////console.log("collapse")
+  ////////////////////////////////console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  ////////////////////////////console.log("collapse")
+  ////////////////////////////////console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
@@ -325,7 +234,7 @@ span.onclick = function() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  //console.log(event.target)
+  //////console.log(event.target)
   /* if (event.target == modal) {
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
@@ -344,7 +253,7 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  ////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
+  ////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
@@ -523,10 +432,10 @@ function handleNavigation(node){
 }
 /* window.onclick = function(event) {
 
-  //////////////console.log(document.getElementById("myModal").contains(event.target))
-  //////////////console.log(event.target)
+  //////////////////console.log(document.getElementById("myModal").contains(event.target))
+  //////////////////console.log(event.target)
   if (document.getElementById("myModal").contains(event.target)) {
-    //////////////console.log("hide")
+    //////////////////console.log("hide")
     hideModal("#myModal");
   }
   } */
