@@ -61,19 +61,6 @@ function genRandomString(){
   return s; 
 }
 
-//Get tooltip from Config File
-// format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
-function getTooltip(option_text){
-  var selClass=configFile.filter(function(d){
-    return d.option_text==option_text
-  })
-  if(selClass[0]!=undefined){
-    return selClass[0]["tooltip"]
-  }else{
-    return ""
-  } 
-}
-
 // changeBasicGraph is the function called when changing option in flyout menu
 // of basic mode menu
   
@@ -88,23 +75,14 @@ function changeBasicGraph(option){
   deleteTooltip()
   //reset global variables
   propertiesFilterHist=[]
-  execQueries=[]
   filtersInGraph=[]
   classesFilterList=[]
   filtersList=[]
 
   if(networkGraph){
     networkGraph = undefined;
-    //colorScale=[]
-    //////////console.log("pasa por aquí")
     legend.deleteAllColors()
     legend=undefined
-    ////////////////console.log(legend)
-    //////////console.log(nodesClassesCorrespondence)
-    //////////console.log(nodesClassesShow)
-    //nodesClassesCorrespondence={}
-    //nodesClassesShow=[]
-
   }
   //graphHistory=[]
 
@@ -112,20 +90,14 @@ function changeBasicGraph(option){
   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
   $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   
-  //get option selected for searching in Config File
-  option=$(option).find( "#optionMain" ).text().trim()
-
-  let pos = configFile.getRowNumber(option);
-  //////console.log(pos)
-
+  
+  //build and show graph
   showBasicGraph()
 
-  //build and show graph
-  //////////////////console.log("antes de build")
-  ////console.log(pos)
-  //buildBasicGraph(pos)
-  buildBasicGraph(configFile.getFieldsConfigFile(pos))
-  //////////////////console.log("despues de ...")
+  //get option selected for searching in Config File
+  option=$(option).find( "#optionMain" ).text().trim()
+  
+  buildBasicGraph(option)
 }
 //Remove all elements from screen and show graph area
 function showBasicGraph(){
@@ -196,13 +168,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
     if(origin=="table"){
       addContextMenuToTable(node,Items)
     }else{
-
-      ////////////////////console.log("-------------------------")
-      ////////////////////console.log("pageX: "+pageX)
-      ////////////////////console.log("pageY: "+pageY)
-      ////////////////////console.log(pageX-200)
-      ////////////////////console.log(pageY-200)
-      ////////////////////console.log("zoomScale: "+networkGraph.zoomScale)
       if(pageY-200<0){
         ////////////////////console.log("pageY menos")
         pageY=pageY+100
@@ -215,11 +180,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       }else{
         //pageX=pageX-200
       }
-      ////////////////////console.log("pageX after: "+pageX)
-      ////////////////////console.log("pageY after: "+ pageY)
-      ////////////////////console.log(d3.select("#networkGraph").node())
-      ////////////////////console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
-      //pageX - width / 2, pageY - height / 1.5
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
 }
@@ -579,16 +539,6 @@ function get_node_from_element(id){
   return d3.select("#"+id).data()[0]
 }
 
-/* function get_configRows_class(classNode){
-  var configRows=[]
-  for(var i = 0; i < configFile.length; i++) {
-    if(configFile[i]["class"]==classNode){
-      configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
-    }
-  }
-  return configRows
-} */
-
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[],propertyUri;
@@ -630,9 +580,9 @@ function bubbleImage(node){
 }
 function propertyUriImage(node){
   var propertyUri=false;
-  if(configFile[node["configRowNumber"]]){
+  if(configFile.file[node["configRowNumber"]]){
     //////////////////console.log(configFile[node["configRowNumber"]]["properties"])
-    configFile[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
+    configFile.file[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
       if(p.property.endsWith("_uri")){
         property=p.property.replace("_uri","")
         //////////////////console.log(property)

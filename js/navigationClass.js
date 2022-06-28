@@ -1572,6 +1572,7 @@ function addMenuToTable(node,menuItems){
 }
 async function clickMenuTable(position,node){
   var element=document.getElementById(node["id"])
+  //CAMBIAR LA POSICIÓN POR LA OPTION SI SE PUEDE...
   await buildBasicGraph(configFile.getFieldsConfigFile(position),node)
   unclickBubbleFreeGraph()
   clickBubbleFreeGraph(element,networkGraph.data)

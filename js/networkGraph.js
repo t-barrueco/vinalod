@@ -1378,8 +1378,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
           addTooltip(getTooltipMenu(getCommentOption(d.title)));
 
         }else{
-          //vis.tip.show(getTooltip(d.title,uri),this);
-          addTooltip(getTooltip(d.title,uri));
+          addTooltip(getTooltipInside(d.title,uri));
         }
         d3.select(this).style("fill","#DCDDF5")
       })
@@ -1415,7 +1414,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         }else{
           //vis.tip.show(getTooltip(d.title,uri),this);
           //addTooltip(getTooltip(d.title,uri))
-          addTooltip(getTooltip(d.title,uri));
+          addTooltip(getTooltipInside(d.title,uri));
 
         }
         d3.select(this).style("fill","#DCDDF5")
@@ -1425,7 +1424,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         deleteTooltip()
       });
 
-  function getTooltip(title,uri){
+  function getTooltipInside(title,uri){
     //////////////////console.log(title)
     if(title.match("Sparql Endpoint: (.*) and Position:")){
       url = title.match("Sparql Endpoint: (.*) and Position:")[1]; 

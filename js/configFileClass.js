@@ -178,3 +178,16 @@ ConfigFile.prototype.getClassesShow=function(rowDataConfig){
     ////console.log(tmp)
     return tmp
   }
+  //Get tooltip from Config File
+// format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
+ConfigFile.prototype.getTooltip= function(option_text){
+  var cf=this;
+  var selClass=cf.file.filter(function(d){
+    return d.option_text==option_text
+  })
+  if(selClass[0]!=undefined){
+    return selClass[0]["tooltip"]
+  }else{
+    return ""
+  } 
+}

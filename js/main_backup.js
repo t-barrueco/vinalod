@@ -31,22 +31,47 @@ function updateAll(){
     networkGraph.updateAll();
   }
   
-async function buildBasicGraph(option,node){
-    var sparqlQuery,modal2,prefixes;
+async function buildBasicGraph(configRow,node){
+    var sparqlQuery,parameters,modal2,prefixes,configClasses;
 
-    configRow = new ConfigRow(option,node);
+    //configRowsList.push(configRow)
+    
+    //add all classes in the Config File line to configClasses
+    /* configClasses = configFile.map(function(d) {
+      return {
+        class:d.class,
+        option:d.option,
+        option_text:d.option_text
+      };
+      }) */
 
     prefixes=""
 
+    //When node is not undefined is because we call the function from a bubble as root and the Sparql Query has a PARAMETER
+    /* if(node!=undefined){
+      //if we come from a bubble clicked or a row in a table
+      //we have to replace the PARAMETERS in the original query with the values
+      //replaceParmtrsQuery()
+      if(nodesClassesCorrespondence==null){
+        nodesClassesCorrespondence=getClassesShow(configRow["classes"])
+      } 
+      nodesClassesCorrespondence=Object.assign(nodesClassesCorrespondence, getClassesShow(configRow.classes));
+      nodesClassesShow=Array.from(new Set(nodesClassesShow.concat(Object.values(getClassesShow(configRow.classes)))))
+    } */
+    ////////console.log(nodesClassesCorrespondence)
+    ////////console.log(nodesClassesShow)
     //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
-    if(configRow.rowFields.type=="TREE"){
+    if(configRow.type=="TREE"){
+      //console.log(configRow)
+      ////////console.log(node)
+      //////////console.log(configClasses)
       buildNetworkGraph(configRow,"basic",node)
     }else{
       //////////////////console.log("other type config row")
       //////////////////console.log(configRow)
       //sparqlQuery=configRow.sparqlQuery
       deleteTooltip()
-      sparqlQuery=configRow.rowFields.paramQuery
+      sparqlQuery=replaceParmtrsQuery(configRow,node)
       //////////////////console.log(sparqlQuery)
       if (configRow.type=="TREEGRAPH"){
         modal2=getModal2()

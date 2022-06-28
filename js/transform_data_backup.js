@@ -16,6 +16,10 @@ function buildData(branchType,results, settingsGraph, node){
   if(node!=undefined){
     if(networkGraph.treeData.filter(d=>d.id==node.id).length==0){
       networkGraph.treeData=networkGraph.treeData.concat(treeData)
+    }else{
+    //if we have clicked already an option for the node
+    //click on splitInMenuOption
+      splitInMenuOption(treeData,networkGraph.treeData)
     }
   }
   if(branchType=="basic"){
@@ -28,13 +32,60 @@ function buildData(branchType,results, settingsGraph, node){
   data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
   return data
   
+  function splitInMenuOption(newTreeData){
+    var menuOptionNodes=[],newMenuOption;
+
+    let obj = networkGraph.treeData.find(n => n.id == newTreeData[0]["id"]);
+    if(!networkGraph.nodesClassesShow.includes("menuOption")){
+      networkGraph.nodesClassesShow.push("menuOption")
+      nodesClassesCorrespondence["menuOption"]="menuOption"
+    }
+    if(obj.children){
+      newMenuOption={ "id": genRandomString(), "value": newTreeData[0].menuOption, "type": "menuOption", "children": newTreeData[0].children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" }
+      if(obj.children[0]["class"]!="menuOption"){
+        menuOptionNodes.push({ "id": genRandomString(), "value": obj.menuOption, "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+        menuOptionNodes.push(newMenuOption)
+        obj.children = menuOptionNodes;
+      }else{
+        obj.children.push(newMenuOption)
+      }
+    }else{
+      //newMenuOption={ "id": genRandomString(), "value": newTreeData[0].menuOption, "type": "menuOption", "children": newTreeData[0].children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" }
+      if(obj._children){
+        //menuOptionNodes.push({ "id": genRandomString(), "value": obj.menuOption, "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+        //menuOptionNodes.push(newMenuOption)
+        obj.children = newTreeData[0].children;
+      }
+    }
+    
+    
+  }
 }
 function buildDataBasic(results,configRow,node){
-  var procNode=[],indexParent,treeData=[],tmpNode,child,classFreeNode;
+  var procNode=[],indexParent,treeData=[],tmpNode,indexNode,child,classFreeNode;
+  var hierarchy=get_hierarchy(configRow["hierarchy"])
   var treeResults;
   ////console.log(configRow)
   var properties=configFile.getProperties(configRow)
-  
+  //////console.log(properties)
+  //////console.log(configRow)
+  if(node==undefined){
+    //nodesClasses=hierarchy
+    //nodesClassesCorrespondence=getClassesShow(configRow["classes"])
+    //console.log(configRow)
+    //console.log(networkGraph)
+    //networkGraph.nodesClassesShow=configFile.getClassesShow(configRow["rowNumber"])
+    ////console.log(networkGraph.nodesClassesShow)
+    //classTooltip=hierarchy[0]
+  }else{
+    addClassLinkToBasic()
+    if(node.menuOption==undefined){
+      node.menuOption=configRow.options
+    }else{
+      node.menuOption=node.menuOption + ";"+ configRow.options
+    }
+  }   
+  //console.log(results.length)
   for (let j = 0; j < results.length; ++j) {
     treeResults=get_hierarchy_from_keys(Object.keys(results[j]))
     for (let i = 0; i < treeResults.length; ++i) {
@@ -555,9 +606,52 @@ function flatten_v3(root) {
     return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
   }
 
+// Transform data Free Graph
+//////////////////////////////
+/* function addMenuOption(menuOption,node){
+  ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(menuOption)
+  ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
+  if(node["menuOption"]==undefined){
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(menuOption)
+    return menuOption
+  }else{
+    ////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node["menuOption"] + ";" + menuOption)
+    return node["menuOption"] + ";" + menuOption
+  } 
+} */
+/* function splitInMenuOption(node,menuOptions){
+  var menuOptionNodes=[]
+  //////////////////////////////////////////////////////////////////////console.log(node)
+  //////////////////////////////////////////////////////////////////////console.log(menuOptions.split(";"))
+  let obj = networkGraph.treeData.find(n => n.id == node["id"]);
+  //////////////////////////////////////////////////////////////////////console.log(obj.children)
+  menuOptionNodes.push({ "id": genRandomString(), "value": menuOptions.split(";")[0], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+  menuOptionNodes.push({ "id": genRandomString(), "value": menuOptions.split(";")[1], "type": "menuOption", "children": [], "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+  obj.children = menuOptionNodes;
+  //} else {
+  //obj.children.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+  //}
+} */
+/* function addNewMenuOption(node){
+  let obj = networkGraph.treeData.find(n => n.id == node["id"]);
+  obj.children.push({ "id": genRandomString(), "value": node["menuOption"].split(";")[node["menuOption"].split(";").length-1], "type": "menuOption", "children": [], "hidden": false, "more_results": "", "menuOption": "", "class": "menuOption" })
+} */
+/* function addMenuOptionNode(){
+  var childrenMenuOption;
+  node["children"]=[{"value":arrayMenuOptions[0],"id":genRandomString(),"class":"menuOption","shape":1,"number":0,"children":node["children"]}]
+  node["children"].push({"value":arrayMenuOptions[1],"id":genRandomString(),"class":"menuOption","shape":1,"number":0,"children":[]})
+  if(!("menuOption" in nodesClassesCorrespondence)){
+    nodesClassesCorrespondence["menuOption"]="Menu option"
+  }
+  if(!nodesClassesShow.includes("Menu option")){
+    nodesClassesShow.push("Menu option")
+  }
+
+} */
 function buildDataExpert(results, form, node) {
   var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
-
+  ////////////////////////////console.log(results)
+  ////////////////////////////console.log(form)
   results.forEach(r => {
     if (form["subject-object"] == "s") {
       if (r["o"]["more_results"]) {
@@ -585,6 +679,7 @@ function buildDataExpert(results, form, node) {
       children.push({ "id": genRandomString(), "value": r["s"]["value"], "type": r["s"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
     }
   })
+  ////////////////////////////console.log(children)
   if (node != undefined) {
     if (node["menuOption"]) {
       menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
@@ -610,5 +705,16 @@ function buildDataExpert(results, form, node) {
     treeData = [{ "id": genRandomString(), "value": results[0][form["subject-object"]]["value"], "type": results[0][form["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
   }
   return treeData
-
+/*   function getFreeGraphData(results, form) {
+    var nodes = [], links = [], data, treeData, flattenData;
+  
+    treeData = buildTreeData(results, form)
+    flattenData = flatten_freeGraph(treeData)
+    data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
+    return data
+  }
+  return treeData */
+  /* flattenData = flatten_freeGraph(treeData)
+  data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
+  return data */
 }

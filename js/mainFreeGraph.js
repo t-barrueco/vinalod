@@ -653,12 +653,12 @@ async function checkBasicGraph(node){
     if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
       node["children"]=networkGraph.treeData.filter(d=>d.id==node.id)[0]["children"]
     }
-    for (var i = 0; i < configFile.length; i++) {
-      if(configFile[i].modelClass!=undefined){
-        if(Object.keys(classesLinesConfig).includes(configFile[i].modelClass)){
-          classesLinesConfig[configFile[i].modelClass]["lines"].push(i)
+    for (var i = 0; i < configFile.file.length; i++) {
+      if(configFile.file[i].modelClass!=undefined){
+        if(Object.keys(classesLinesConfig).includes(configFile.file[i].modelClass)){
+          classesLinesConfig[configFile.file[i].modelClass]["lines"].push(i)
         }else{
-          classesLinesConfig[configFile[i].modelClass]={"class":configFile[i]["class"],"lines":[i],"class_orig":configFile[i]["classes_text"].filter(o => o.text === configFile[i].class)[0]["class"]}
+          classesLinesConfig[configFile.file[i].modelClass]={"class":configFile.file[i]["class"],"lines":[i],"class_orig":configFile.file[i]["classes_text"].filter(o => o.text === configFile[i].class)[0]["class"]}
         }
       }
     }
@@ -717,10 +717,10 @@ async function checkClassesNode(node,classesLinesConfig){
       //await classesLinesConfig[results[i]["class"]["value"]]["lines"].forEach(async function(l){
         //////////////////console.log(l)
         //////////////////console.log(configFile[l])
-        if(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]){
-          askquery=configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
+        if(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]){
+          askquery=configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
         }else{
-          askquery=fromSelectToAskQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["query"])
+          askquery=fromSelectToAskQuery(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["query"])
         }
         //////////////console.log(askquery)
         if(askquery){
@@ -733,7 +733,7 @@ async function checkClassesNode(node,classesLinesConfig){
             //queryUrl = configFile[l]["endpoint_url"] + "?query=" + prefixes +  encodeURIComponent(  configFile[l]["askquery"] )+ "&format=json";
             //settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
             //resultsAsk = await runSparlqQuery(settings)
-            resultsAsk= await runAskSparlqQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery)
+            resultsAsk= await runAskSparlqQuery(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery)
             ////////////////console.log(resultsAsk)
             if(resultsAsk){
               //////////console.log("entra en resultAsk")
