@@ -12,43 +12,27 @@ Legend.prototype.init = function () {
 Legend.prototype.initColors=function(i){
     var le=this;
     for (i; i < networkGraph.colorScale.domain().length; i++) {
-        ////console.log(networkGraph.colorScale.domain()[i])
+        ////////console.log(networkGraph.colorScale.domain()[i])
         le.addOne(i,networkGraph.colorScale.domain()[i])
       } 
 }
 Legend.prototype.addColors=function(){
     var le=this;
-    console.log("add colors")
-    console.log(networkGraph.colorScale.domain())
+    ////console.log("add colors")
+    ////console.log(networkGraph.colorScale.domain())
     if(networkGraph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }
 }
-//Legend.prototype.deleteAllColors=function(){
-//  var le=this;
-  //////console.log(d3.selectAll("#legend li").remove())
-  //////console.log(networkGraph.networkGraph.colorScale.domain)
-  //////console.log(networkGraph.colorScale.domain())
-  /* if(networkGraph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
-      le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
-  } */
-//}
+
 Legend.prototype.deleteAllColors=function(){
   var le=this;
   d3.selectAll("#legend li").remove()
-  //////console.log(networkGraph.networkGraph.colorScale.domain)
-  //////console.log(networkGraph.colorScale.domain())
-  /* if(networkGraph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
-      le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
-  } */
 }
 Legend.prototype.addOne=function (index,textLi){
   var le=this;
   var li,classLi;
-  //////console.log(colorCorrespondence)
-  console.log(networkGraph.colorScale.range())
-  console.log(networkGraph.colorScale.range()[index])
-  //////console.log(colorCorrespondence[networkGraph.colorScale.range()[index]])
+
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
   li=le.parentEl.append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")

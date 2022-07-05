@@ -1,447 +1,33 @@
 // Transform data Basic Graph
 /////////////////////////////////
-function buildData(branchType,results, settingsGraph, node){
-  var treeData;
-  //if node has no children, concat the new treeData with the
-  //data already in the treeData of the Networkgraph
-  if(branchType=="basic"){
-    //////console.log(settingsGraph)
-    treeData=buildDataBasic(results,settingsGraph,node)
-    ////////////////////////////console.log(treeData)
-  }else if(branchType=="expert"){
-    treeData=buildDataExpert(results, settingsGraph, node)
-    ////////////////////////////console.log(treeData)
-  }
 
-  if(node!=undefined){
-    if(networkGraph.treeData.filter(d=>d.id==node.id).length==0){
-      networkGraph.treeData=networkGraph.treeData.concat(treeData)
-    }
-  }
-  if(branchType=="basic"){
-    ////////////////////////////console.log(treeData)
-    flattenData=flatten_v2(treeData)
-  }else if(branchType=="expert"){
-    flattenData = flatten_freeGraph(treeData)
-  }
-  
-  data = { "flatData": flattenData.flatData, "allData": flattenData.flatData, "treeData": treeData }
-  return data
-  
-}
-function buildDataBasic(results,configRow,node){
-  var procNode=[],indexParent,treeData=[],tmpNode,child,classFreeNode;
-  var treeResults;
-  ////console.log(configRow)
-  var properties=configFile.getProperties(configRow)
-  
-  for (let j = 0; j < results.length; ++j) {
-    treeResults=get_hierarchy_from_keys(Object.keys(results[j]))
-    for (let i = 0; i < treeResults.length; ++i) {
-      if(results[j][treeResults[i]]){
-        ////console.log(configRow)
-        if(i>0){
-          indexParent=checkNodeInTreeData()
-          if(treeData[indexParent]["children"].filter(d=>d.value==results[j][treeResults[i]]["value"]).length==0){
-            child=nodeValues(results[j],i)
-            child["configRowNumber"]=configRow["rowNumber"]
-            treeData[indexParent]["children"].push(child)
-            if(i<(treeResults.length-1)){
-              child["children"]=[]
-              treeData.push(child)
-            }
-          }
-        }else{
-          if(treeData.length==0){
-            if(node){
-              tmpNode=nodeValues(results[j],0,node.id)
-            }else{
-              tmpNode=nodeValues(results[j],0)
-            }
-            tmpNode["children"]=[]
-            treeData.push(tmpNode)
-          }
-        } 
-        } 
-      procNode[i]=results[j][treeResults[i]]["value"]
-    }
-    procNode=[]
-  }
-
-  //////////console.log(treeData)
-  //treeData=updateNodeChildren(treeData)
-
-  return treeData
-  function checkNodeInTreeData(){
-    ////////////console.log(procNode)
-    var pathSearch=JSON.parse(JSON.stringify(procNode));
-    var prevNodeIndex=-1,prevNodeId;
-    
-    while(pathSearch.length>0){
-      ////////////console.log(treeData.filter(d=>d.value==pathSearch[0]))
-      if(prevNodeIndex!=-1){
-        prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==pathSearch[0])[0]["id"]
-        prevNodeIndex=treeData.findIndex(d=>d.id==prevNodeId)
-      }else{
-        prevNodeIndex=treeData.findIndex(d=>d.value==pathSearch[0])
-      }
-      pathSearch.shift()
-      ////////////console.log(pathSearch)
-      ////////////console.log(procNode)
-    }
-    return prevNodeIndex
-  }
-  function addClassLinkToBasic(){
-    if(node["class"]=="free"){
-      classFreeNode=networkGraph.classesLinesConfig[networkGraph.nodesLinkBasicGraph.filter(d=>d.child.value==node["value"])[0]["class"]["value"]]
-      let tmp={}
-      tmp[classFreeNode["class_orig"]]=classFreeNode["class"]
-      nodesClassesCorrespondence={ ...nodesClassesCorrespondence, ...getClassesShow(configRow["classes"])}
-      nodesClassesShow=Object.values(nodesClassesCorrespondence)
-    }
-  }
-  function get_hierarchy_from_keys(keys){
-    var keysH=[],result,index_;
-    keys.forEach(function(k){
-      index_=k.indexOf("_")
-      if(index_!=-1){
-        result = k.substring(0,index_);
-        if(!keysH.includes(result)){
-          keysH.push(result)
-        }
-      }else{
-        if(!keysH.includes(k)){
-          keysH.push(k)
-        }
-      }
-    })
-    return keysH
-  }
-
-
-  function nodeValues(r,index,id){
-    var node,className;
-    if(id==undefined){
-      id=genRandomString()
-    }
-    ////console.log(configRow)
-    ////console.log(treeResults[index])
-    className=configRow["classes"].filter(d=>d.class==treeResults[index])[0]["text"]
-    node={"id":id,"value":r[treeResults[index]].value,"shape":1,"class":treeResults[index],"className":className}
-    if((index==0)||((treeResults.length>2)&&(index<(treeResults.length-1)))){
-      node["menuOption"]=configRow.options
-    }
-
-    node["tooltip"]=getTooltipNode(configRow.tooltip,node["class"])
-
-    if((configRow.detail!="")&&(configRow.detail!=undefined)){
-      node["detail"]=getDetail(configRow.detail,node["class"])
-    }
-
-    if(properties[treeResults[index]]){
-      properties[treeResults[index]].forEach(function(k){
-        if(r[k]!=undefined){
-          node[k]=r[k].value
-        }
-      })
-    }
-    return node
-  }
-
-  function updateNodeChildren(tD){
-    var indexChild,index;
-    tD=tD.reverse()
-    for (let i = 0; i < tD.length; ++i) {
-      index=tD.findIndex(function(d){
-        if(d.children.filter(v=>v.id==tD[i]["id"]).length>0){
-          return true;
-        }else{
-          return false;
-        }
-      })
-      if(index!=-1){
-        indexChild=tD[index]["children"].findIndex(d=>d.id==tD[i]["id"])
-        tD[i]["menuOption"]=tD[index]["children"][indexChild]["menuOption"]
-        tD[index]["children"][indexChild]=tD[i]
-      }
-    }
-    return tD.reverse()
-  }
-}
-function showTreeData(node,treeData){
-    var children
-    
-    var indexNode=treeData.findIndex(d=>d.id==node.id)
-    children=treeData[indexNode]["_children"]
-    delete treeData[indexNode]._children;
-    treeData[indexNode]["children"]=children
-    for (let i = 0; i < treeData[indexNode]["children"].length; i++) {
-      treeData[indexNode]["children"][i]["hidden"]=false
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(treeData)
-    return treeData
-  }
-function flatten(root) {
-    var nodes = [], links=[],number,children=0;
-    //////////////////////////////////console.log("ENTRA EN FLATTEN----------------------------")
-    function recurse(node) {
-      var i=0
-      ////////////////////////////////////console.log(node)
-      if(!node["hidden"]){
-        if (node.children){
-          node.children.forEach(function(c){
-            if(!c["hidden"]){
-              position=links.indexOf(links.filter(function(item) {
-                return ((item.source == node.id)&&(item.target == c.id))
-              })[0])
-              if(position==-1){
-                links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
-                i+=1;
-              }
-              ////////////////////////////////////console.log(c)
-              recurse(c)
-              addNode(c)
-            }
-          });
-        } 
-        //addNode(node)
-        /* position=nodes.indexOf(nodes.filter(function(item) {
-          return item.id == node.id
-        })[0])
-        if(position==-1){
-          if(node["number"]==undefined){
-            node["number"]=0
-          }
-          nodes.push(node);
-        } */
-      }
-      //if(!node["hidden"]){
-        /* position=nodes.indexOf(nodes.filter(function(item) {
-          return item.id == node.id
-        })[0])
-        if(position==-1){
-          if(node["number"]==undefined){
-            node["number"]=0
-          }
-          nodes.push(node);
-        } */
-      //}
-    }
-    /* root.forEach(function(r){
-      position=nodes.indexOf(nodes.filter(function(item) {
-        return item.id == r.id
-      })[0])
-      if(position==-1){
-        if (r.children){
-          number=r.children.length
-        }else{
-          if (r["number"]){
-            number=r["number"]
-          }else{
-            number=0
-          }
-        }
-        r["number"]=number
-        if(!r["hidden"]){
-          nodes.push(r);
-        }
-      }
-    }) */
-    function addNode(rNode){
-      ////////////////////////////////////console.log(rNode)
-      position=nodes.indexOf(nodes.filter(function(item) {
-        return item.id == rNode.id
-      })[0])
-      if(position==-1){
-        if (rNode.children){
-          number=rNode.children.length
-        }else{
-          if (rNode["number"]){
-            number=rNode["number"]
-          }else{
-            number=0
-          }
-        }
-        rNode["number"]=number
-        if(!rNode["hidden"]){
-          nodes.push(rNode);
-        }
-      }
-    }
-    root.forEach(function(r){
-      //////////////////////////////////console.log(r)
-      recurse(r);
-      addNode(r)
-    })
-  
-    return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
-  }
-function flatten_v2(root) {
-    var nodes = [], links=[];
-    //////////////////////////////////////////////////////////////////////////////////////////////////console.log(root)
-    function recurse(node) {
-      //////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
-      if(!node["hidden"]){
-        position=nodes.indexOf(nodes.filter(function(item) {
-          return item.id == node.id
-        })[0])
-        if(position==-1){
-          nodes.push(node)
-          position=(nodes.length)-1
-        }
-        if (node.children){
-          nodes[position]["number"]=node.children.length
-          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node.children.length)
-          node.children.forEach(function(c){
-            if(!c["hidden"]){
-              position=links.indexOf(links.filter(function(item) {
-                return ((item.source == node.id)&&(item.target == c.id))
-              })[0])
-              if(position==-1){
-                links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
-              }
-              recurse(c)
-            }
-          });
-        }else{
-          nodes[position]["number"]=0;
-        } 
-      }
-
-    }
-
-    root.forEach(function(r){
-      //////////////////////////////////////////////////////////////////////////////////////////////////console.log(r)
-      recurse(r);
-    })
-    
-    //nodes=nodes.splice.apply(nodes, [2, 0].concat(nodes.slice(-6)));
-    return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
-  }
-/* function flatten_nestedNodes() {
-    var nodes = [], links=[], addedNodes=[];
-    //////////////////////////////////////////////////////////////////////////////////////////////////console.log(root)
-    //////////////////////////////////////////////////////console.log(networkGraph.treeData)
-    function recurse(node) {
-      var positionParent,positionChild;
-      //////////////////////////////////////////////////////console.log(node)
-      //////////////////////////////////////////////////////console.log(node[node.class+"_uri"])
-      if(!node["hidden"]){
-        positionParent=nodes.indexOf(nodes.filter(function(item) {
-          return item[item.class+"_uri"] == node[node.class+"_uri"]
-        })[0])
-        if(positionParent==-1){
-          nodes.push(node)
-          positionParent=(nodes.length)-1
-        }
-
-        if (node.children){
-          //nodes[position]["number"]=node.children.length
-          node.children.forEach(function(c){
-            if(!c["hidden"]){
-              position=links.indexOf(links.filter(function(item) {
-                return ((item.source == node.id)&&(item.target == c.id))
-              })[0])
-              if(position==-1){
-                links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
-              }
-              recurse(c)
-            }
-          });
-        }else{
-          nodes[position]["number"]=0;
-        } 
-      }
-
-    }
-
-    networkGraph.treeData.forEach(function(r){
-      //////////////////////////////////////////////////////////////////////////////////////////////////console.log(r)
-      recurse(r);
-    })
-  
-    return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
-} */
 function treeDataNestedNodes(){
   var changedNodes=[]
-  //////////////////////////////////////////////////////console.log(networkGraph.treeData)
-  //var treeDataCopy
-  //const treeData = [ ...networkGraph.treeData ];
-  //let treeData=new Array()
-  //treeData=networkGraph.treeData.concat()
-  //treeData = networkGraph.treeData.map((d) => d);
-  //var tempArray = JSON.parse(JSON.stringify(mainArray));
-  //networkGraph.treeDataNested = networkGraph.treeData.map(object => ({ ...object }))
-  networkGraph.treeDataNested = JSON.parse(JSON.stringify(networkGraph.treeData));
-  ////////////////////////////////////////////////////console.log(networkGraph.treeData[0]["id"])
-  //networkGraph.treeDataNested[0]["id"]="test"
-  ////////////////////////////////////////////////////console.log(networkGraph.treeDataNested)
-  ////////////////////////////////////////////////////console.log(networkGraph.treeData)
 
-  //const treeData=networkGraph.treeData
-  /* function recurse(node,index) {
-    ////////////////////////////////////////////////////////console.log(node)
-    //////////////////////////////////////////////////////console.log(treeData[index]["children"].length)
-    //////////////////////////////////////////////////////console.log(treeData.length)
-    copyDuplicates(index,-1,treeData,node)
-    if (node.children){
-      node.children.forEach(function(c,i){
-        //////////////////////////////////////////////////////console.log(c)
-        //////////////////////////////////////////////////////console.log(i)
-      })
-    }
-  } */
+  networkGraph.treeDataNested = JSON.parse(JSON.stringify(networkGraph.treeData));
+
   networkGraph.treeDataNested.forEach(function(r,index){
-    //////////////////////////////////////////////////////console.log(r)
-    //recurse(r,index);
-    /* if(r["children"]){
-      networkGraph.treeDataNested=copyDuplicates(index,-1,networkGraph.treeData,r)
-      r["children"].forEach(function(c,indexC){
-        networkGraph.treeDataNested=copyDuplicates(index,indexC,networkGraph.treeData,c)
-      })
-    } */
+
     if(index<(networkGraph.treeDataNested.length-1)){
       if(!changedNodes.includes(r[r["class"]+"_uri"])){
-        //networkGraph.treeDataNested=copyDuplicates(index+1,-1,networkGraph.treeData,r)
         copyDuplicates(index+1,-1,r)
-        //////////////////////////////////////////////////////console.log(index)
-        //////////////////////////////////////////////////console.log("FOR EACH PARENT")
-        //////////////////////////////////////////////////console.log(r)
         changedNodes.push(r[r["class"]+"_uri"])
       }
       r["children"].forEach(function(c,indexC){
         if(!changedNodes.includes(c[c["class"]+"_uri"])){
           copyDuplicates(index,indexC,c)
-          //////////////////////////////////////////////////////console.log(index)
-          //////////////////////////////////////////////////console.log("FOR EACH CHILD")
-          //////////////////////////////////////////////////console.log(c)
-          //////////////////////////////////////////////////////console.log(indexC)
           changedNodes.push(c[c["class"]+"_uri"])
         }
       })
     }
   })
-  ////////////////////////////////////////////////console.log(networkGraph.treeData)
-  ////////////////////////////////////////////////console.log(networkGraph.treeDataNested)
-  ////////////////////////////////////////////////console.log(networkGraph.treeData==networkGraph.treeDataNested)
   return flatten_v2(networkGraph.treeDataNested)
 }
 function copyDuplicates(index,i,node){
-//function copyDuplicates(index,i,treeData,node){
-  //////////////////////////////////////////////////console.log(node)
   if(i!=-1){
-    /* for (j = i; j < treeData[index]["children"].length; ++j) {
-      if(node[node["class"]+"_uri"]==treeData[index]["children"][j][treeData[index]["children"][j]["class"]+"_uri"]){
-        treeData[index]["children"][j]=node
-      }
-    } */
-    //treeData=copyInChildren(index,i,treeData,node)
     copyInChildren(index,i,node)
   }
-  //////////////////////////////////////////////////console.log(index+1)
-  //////////////////////////////////////////////////console.log(networkGraph.treeDataNested.length)
   for (let j = index+1; j < networkGraph.treeDataNested.length; j++) {
-    //////////////////////////////////////////////////console.log(j)
     copyInParent(j,node)
     copyInChildren(j,0,node)
   }
@@ -449,166 +35,30 @@ function copyDuplicates(index,i,node){
   
   function copyInChildren(index,i,node){
     var childLength=networkGraph.treeDataNested[index]["children"].length
-    //////////////////////////////////////////////////console.log(node)
-/*     ////////////////////////////////////////////////////console.log(networkGraph.treeDataNested[index]["children"].length)
-    ////////////////////////////////////////////////////console.log(typeof(i))
-    j=parseInt(i)
-    ////////////////////////////////////////////////////console.log(++j)
-    ////////////////////////////////////////////////////console.log(j) */
     for (let k = i; k < childLength; k++) {
-      /* //////////////////////////////////////////////////console.log(index)
-      //////////////////////////////////////////////////console.log(networkGraph.treeDataNested)
-      //////////////////////////////////////////////////console.log(k)
-      //////////////////////////////////////////////////console.log(networkGraph.treeDataNested[index]["children"][k])
-      //////////////////////////////////////////////////console.log(node[node["class"]+"_uri"])
-      //////////////////////////////////////////////////console.log(networkGraph.treeDataNested[index]["children"][k]["class"]) */
-      ////////////////////////////////////////////////////console.log(j)
-      ////////////////////////////////////////////////////console.log(node[node["class"]+"_uri"])
-      //////////////////////////////////////////////////console.log(networkGraph.treeDataNested[index]["children"][k][networkGraph.treeDataNested[index]["children"][k]["class"]+"_uri"])
       if((node[node["class"]+"_uri"]==networkGraph.treeDataNested[index]["children"][k][networkGraph.treeDataNested[index]["children"][k]["class"]+"_uri"])&&(node.id!=networkGraph.treeDataNested[index]["children"][k]["id"])){
-        ////////////////////////////////////////////////console.log(node)
-        ////////////////////////////////////////////////console.log(networkGraph.treeDataNested)
-        ////////////////////////////////////////////////console.log(index)
         networkGraph.treeDataNested[index]["children"][k]=node
-        //////////////////////////////////////////////////console.log(networkGraph.treeDataNested[index]["children"][k])
-        //////////////////////////////////////////////////console.log("igual")
       }
     }
   }
   function copyInParent(j,node){
-    //////////////////////////////////////////////////console.log(networkGraph.treeDataNested[j][networkGraph.treeDataNested[j]["class"]+"_uri"])
-    //////////////////////////////////////////////////console.log(node[node["class"]+"_uri"])
     if(node[node["class"]+"_uri"]==networkGraph.treeDataNested[j][networkGraph.treeDataNested[j]["class"]+"_uri"]){
       if(networkGraph.treeDataNested[j]["children"]){
         if(node["children"]){
           addChildren(node,j)
-          //node["children"]=node["children"].concat(networkGraph.treeDataNested[j]["children"])
         }else{
           node["children"]=networkGraph.treeDataNested[j]["children"]
         }
       }
-      ////////////////////////////////////////////////////console.log(node)
-      ////////////////////////////////////////////////////console.log(networkGraph.treeDataNested[j])
       networkGraph.treeDataNested[j]=node
     }
-    //return treeData
   }
   function addChildren(node,indexP){
-    ////////////////////////////////////////////////console.log(node["children"])
-    ////////////////////////////////////////////////console.log(networkGraph.treeDataNested[indexP]["children"])
-    ////////////////////////////////////////////////console.log(node["children"]==networkGraph.treeDataNested[indexP]["children"])
-    ////////////////////////////////////////////////console.log(node["children"].length)
     for (let l = 0; l < node["children"].length; l++) {
       if((networkGraph.treeDataNested[indexP]["children"].findIndex(d=>d.id==node["children"][l]["id"]))!=-1){
         node["children"].splice(l,1); 
-        ////////////////////////////////////////////////console.log(node["children"][l])
       }
     }
-    //////////////////////////////////////////////////console.log(node["children"][0]["id"])
     node["children"]=node["children"].concat(networkGraph.treeDataNested[j]["children"])
-    ////////////////////////////////////////////////console.log(node["children"])
   }
-}
-function flatten_v3(root) {
-    var nodes = [], links=[];
-    function recurse(node) {
-      if(!node["hidden"]){
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node)
-        position=nodes.indexOf(nodes.filter(function(item) {
-          return item.id == node.id
-        })[0])
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(position)
-        if(position==-1){
-          nodes.push(node)
-          position=(nodes.length)-1
-        }
-        if (node.children){
-          nodes[position]["number"]=node.children.length
-          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodes[position]["number"])
-          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node.children.length)
-          node.children.forEach(function(c){
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(c)
-            if(!c["hidden"]){
-              position=links.indexOf(links.filter(function(item) {
-                return ((item.source == node.id)&&(item.target == c.id))
-              })[0])
-              //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(position)
-              if(position==-1){
-                links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
-              }
-              recurse(c)
-            }
-          });
-        }else{
-          nodes[position]["number"]=0;
-        } 
-      }
-
-    }
-
-    root.forEach(function(r){
-      recurse(r);
-    })
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(nodes)
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(links)
-    return {"flatData":{"nodes":nodes,"links":links},"treeData":root};
-  }
-
-function buildDataExpert(results, form, node) {
-  var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
-
-  results.forEach(r => {
-    if (form["subject-object"] == "s") {
-      if (r["o"]["more_results"]) {
-        more_results = r["o"]["more_results"]
-      } else {
-        more_results = ""
-      }
-      if (r["o"]["configRow"]) {
-        configRow = r["o"]["configRow"]
-      } else {
-        configRow = ""
-      }
-      children.push({ "id": genRandomString(), "value": r["o"]["value"], "type": r["o"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
-    } else if (form["subject-object"] == "o") {
-      if (r["s"]["more_results"]) {
-        more_results = r["s"]["more_results"]
-      } else {
-        more_results = ""
-      }
-      if (r["s"]["configRow"]) {
-        configRow = r["s"]["configRow"]
-      } else {
-        configRow = ""
-      }
-      children.push({ "id": genRandomString(), "value": r["s"]["value"], "type": r["s"]["type"], "uri": form["uri"], "url": form["url"], "subject-object": form["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
-    }
-  })
-  if (node != undefined) {
-    if (node["menuOption"]) {
-      menuOption = node["menuOption"] + ";" + form["url"] + "," + form["subject-object"]
-      networkGraph.treeData.filter(d => d.id == node["id"])
-      let obj = networkGraph.treeData.find(n => n.id == node["id"]);
-      if (obj["children"])
-        if (obj.children[0].type != "menuOption") {
-          menuOptionNodes.push({ "id": genRandomString(), "value": node["menuOption"], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
-          menuOptionNodes.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
-          obj.children = menuOptionNodes;
-        } else {
-          obj.children.push({ "id": genRandomString(), "value": form["url"] + "," + form["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
-        }
-
-      obj["menuOption"] = menuOption
-    } else {
-      menuOption = node["url"] + "," + node["subject-object"]
-      treeData = [{ "id": node["id"], "value": node["value"], "type": node["type"], "children": children, "hidden": false, "more_results": more_results, "menuOption": menuOption, "configRow": configRow, "class": "free" }]
-    }
-
-  } else {
-    menuOption = form["url"] + "," + form["subject-object"]
-    treeData = [{ "id": genRandomString(), "value": results[0][form["subject-object"]]["value"], "type": results[0][form["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
-  }
-  return treeData
-
 }

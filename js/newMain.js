@@ -1,6 +1,8 @@
+//const { data } = require("autoprefixer")
 
 //if basic graph settings==configRow and if free graph settings==form
 async function buildNetworkGraph(settingsGraph,branchType,node){
+    //console.log(settingsGraph)
 
     let sparqlQuery=getQuery()
     let url=getEndpointUrl()
@@ -13,21 +15,24 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
+    //console.log(sparqlQuery)
+    //console.log(settings) 
+    if(data){
+      //console.log(data.treeData)
+    }
     try {
       var results = await runSparlqQuery(settings);
       //var results = results.bindings;
-      console.log(results)
+      //console.log(results)
 
       //VER SI HAY MUCHOS RESULTADOS
       ////-------------------results = clusterResults(results, settingsGraph)
       //stop displaing message when executing query
       hideSpinMessage(interval)
 
-      data=new Data(results,branchType)
-      console.log(data)
       //if no bubble is clicked or row in the table
-      if(node==undefined){
-
+      if(configRow.node==undefined){
+        data=new Data(results,branchType)
         //add forces to graph
         setForcesGraph()
 
@@ -36,20 +41,25 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
           legend.deleteAllColors()
         }else{
           d3.selectAll(".graph").remove()
-          networkGraph = new NetworkGraph("#networkGraph", data,forces,branchType,settingsGraph["rowNumber"]);
+          ////////console.log("antes networkgraph")
+          networkGraph = new NetworkGraph("#networkGraph",forces,branchType,settingsGraph["rowNumber"]);
+          ////////console.log("despues networkgraph")
           legend=new Legend("legend")
         }
 
         networkGraph.collapseAll()
       }else{
+        ////console.log(configRow.node)
+        //data.update(results,branchType)
         networkGraph.addingGraph=true
-        networkGraph.dblClickId=node.id.replace("_image","")+"_g"
-
-        networkGraph.data=flatten(networkGraph.treeData).flatData
+        networkGraph.dblClickId=configRow.node.id.replace("_image","")+"_g"
+        networkGraph.mergeData(results,"basic")
         networkGraph.refresh()
 
         legend.addColors(networkGraph.colorScale)
-        handleNavigation(node)
+
+        
+        handleNavigation(configRow.node)
 
         //collapse graph if is basic type and hierarchy has more than two levels
         if(branchType=="basic"){
@@ -64,18 +74,19 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
     } catch (e) {
       results = false
     }
+    //console.log(data.treeData)
     hideSpinMessage(interval)
 
     function getEndpointUrl(){
         var url;
-        console.log(configRow)
+        ////////console.log(configRow)
         url=configRow.rowFields.endpoint_url
         return url
     }
     function getQuery(){
       var sparqlQuery;
       if(branchType=="basic"){
-          sparqlQuery=configRow.rowFields.paramQuery
+          sparqlQuery=configRow.rowFields.query
       }else if(branchType=="expert"){
           sparqlQuery=buildExpertQuery()
       }
@@ -159,194 +170,17 @@ function clusterResults(results, settings) {
   }  
 }
 
-function getMenuItems(items,node,origin,graphType){
-  var menuItems=[],elementMenu,position,width
-
-  if (node["configRow"]) {
-    node["configRow"].forEach(function (r) {
-      items.push({ "rowNumber": r, "row": configFile[r], "menuOption": configFile[r]["option"] })
-    })
-  }
-  //if click on Navigation panel then origin=table
-  if (origin=="table"){
-    if(graphType=="basic"){
-      tableBasic()
-      addMenuToTable(node,menuItems)
-    }else if(graphType=="expert"){
-      tableExpert()
-      navigation.addMenuToTable(node, menuItems)
-    }
-  }else{
-    //if click on bubble in graph, fill menu to show on screen next to bubble
-    //and add action to build basic graph in case the option in the menu is clicked
-    for (var i = 0; i < items.length; i++) {
-      if(graphType=="basic"){
-        noTableBasic()
-      }else if(graphType=="expert"){
-        noTableExpert()
-      }
-      menuItems.push(elementMenu)
-    }
-    if(node["class"]=="free"){
-      width=500
-    }else{
-      width=350
-    }
-    //Send menuItems to menuFactory which will draw the menu in the graph
-    networkGraph.menuFactory(100,0, menuItems, node,"dblClick",width)
-  }
-  function noTableBasic(){
-    position=items[i]["position"]
-    elementMenu={
-      title: items[i]["option"],
-      action: (data,d) => {
-        for (var i = 0; i < configFile.file.length; i++) {
-              if(configFile.file[i]["option"] == d.title){
-                position=i
-              }
-            }
-        if(node.menuOption!=undefined){
-          if(node.menuOption.split(";")[0]==d.title){
-            networkGraph.expandBranch(node)          
-            networkGraph.data=flatten(networkGraph.treeData).flatData
-            networkGraph.initializeSimulation();
-            networkGraph.dataJoinGraph()
-            networkGraph.enterGraph()
-            
-            networkGraph.initializeSimulation();
-            networkGraph.dataJoinGraph()
-            networkGraph.exitGraph()
-          }else{
-            buildBasicGraph(configFile.getFieldsConfigFile(position),node)
-          }
-        }else{
-          buildBasicGraph(configFile.getFieldsConfigFile(position),node)
-        }
-      }
-    }
-  }
-  function noTableExpert(){
-    if (items[i]["subject-object"]) {
-      uri = items[i]["uri"]
-      url = items[i]["url"]
-      subjectObject = items[i]["subject-object"]
-      itemsDetails = { "uri": uri, "url": url, "subject-object": subjectObject }
-      elementMenu = {
-        title: "Sparql Endpoint: " + url + " and Position: " + subjectObject,
-        action: (data, d) => {
-          url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
-          subjectObject = d.title.match("and Position: (.*)")[1];
-          form = { "url": url, "uri": uri, "subject-object": subjectObject }
-          buildNetworkGraph(form,"expert",node)
-        }
-      }
-    } else {
-      elementMenu = {
-        title: items[i]["menuOption"],
-        action: (data, d) => {
-          row = configFile.file.findIndex(v => v.option == d.title)
-          buildNetworkGraph(configFile.getFieldsConfigFile(row), "basic",data)
-        }
-      }
-    }
-  }
-  function tableExpert(){
-    for (var i = 0; i < items.length; i++) {
-      if (items[i]["subject-object"]) {
-        if(items[i]["subject-object"][0]){
-          menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"][0] })
-        }else{
-          menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"]})
-        }
-      }else {
-        menuItems.push({ "rowDataConfig": items[i]["rowNumber"], "node": node, "menuOption": items[i]["menuOption"] })
-      }
-    }
-  }
-  function tableBasic(){
-    for (var i = 0; i < items.length; i++) {
-      //add all items to menu in table. Get options text and line in config file
-      //and add it to the table
-      menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
-    }
-  }
-}
-
-async function checkAskResults(indexRows,node){
-  var sparqlQuery,resultIndexRows=[],parameters,arrayMenuOptions
-
-  ////////console.log(indexRows)
-
-  ////FALTA COMPROBAR LA MENU OPTION!!!!
-  /* if(node.menuOption){
-    arrayMenuOptions=node.menuOption.split(";")
-    indexRows=indexRows.filter(d=>!arrayMenuOptions.includes(d.option))
-  } */
-  ////////////console.log(indexRows)
-  for (var i = 0; i < indexRows.length; i++) {
-    //first we transform the select to ask query
-    if(indexRows[i]["askquery"]){
-      sparqlQuery=indexRows[i]["askquery"]
-    }else{
-      sparqlQuery=fromSelectToAskQuery(indexRows[i]["query"])
-    }
-    //////////console.log(sparqlQuery)
-    //get parameters from config file
-    parameters=indexRows[i]["parameters"]
-    if(node["class"]!=undefined){
-      if((parameters!="")&&(parameters!=undefined)){
-        //if there are parameters we have to replace everything form the node with the
-        //parameters in the config file
-        parameters=get_parameters(parameters)
-        for (let j = 0; j < parameters.length; ++j) { 
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER"+(j+2).toString(), node[parameters[j]]);
-        }  
-          if((node[node["class"]+"_uri"]!=undefined)&&(node[node["class"]+"_uri"]!="")){
-            sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
-
-          } else{
-            sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node["value"]);
-          }
-      }else{
-        if(node[node["class"]+"_uri"]!=undefined){
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["class"]+"_uri"]);
-        } else{
-          sparqlQuery=sparqlQuery.replaceAll("PARAMETER",node[node["value"]+"_code"]);
-        }
-      }
-    }else{
-      sparqlQuery=sparqlQuery.replaceAll(node,"PARAMETER"); 
-    }
-    //////////console.log(sparqlQuery)
-    try {
-      results = await runAskSparlqQuery(indexRows[i]["endpoint_url"],sparqlQuery);
-    } catch (e) {
-      ////////console.log(e)
-      results = false
-    } /* finally {
-        //////////////////////console.log('We do cleanup here');
-    } */
-    //add row to the results if there are results returned
-    if(results==true){
-      resultIndexRows.push(indexRows[i])
-    }
-  }
-  ////////console.log(resultIndexRows)
-  return resultIndexRows
-}
 async function checkAskResultsFreeGraph(node, so) {
   var resultRows = []
 
   return new Promise((resolve, reject) => {
     d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-        ////////////////////////////console.log(urls)
+        ////////////////////////////////////console.log(urls)
         if (so == undefined) {
           subjectObject = ['s', 'o']
         } else {
           subjectObject = [so]
         }
-        ////////////////////////console.log(subjectObject)
-        ////////////////////////console.log(urls)
         if (typeof node === 'object') {
           uri = d3.select("#" + node.id).data()[0].value
         } else {
@@ -360,7 +194,6 @@ async function checkAskResultsFreeGraph(node, so) {
             }
           }
         }
-      ////////////////////////console.log(resultRows)
       resolve(resultRows)
     })
   })

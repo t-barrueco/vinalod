@@ -1,7 +1,7 @@
 
 //if basic graph settings==configRow and if free graph settings==form
 async function buildNetworkGraph(settingsGraph,branchType,node){
-
+    console.log(settingsGraph)
     let sparqlQuery=getQuery()
     let url=getEndpointUrl()
 

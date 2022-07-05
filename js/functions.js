@@ -17,7 +17,10 @@ function get_hierarchy(hierarchy){
 
   return hierarchy_arr
 }
-
+function get_unique_values_arrays(arr1,arr2){
+  arr1=arr1.concat(arr2)
+  return [...new Set(arr1)];
+}
 //Get classes and text from Config File to show for every class
 // format: {"className":textClass,"className2":textClass2}
 /* function getClassesShow(classes){
@@ -169,13 +172,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        ////////////////////console.log("pageY menos")
+        //////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        ////////////////////console.log("pageX menos")
+        //////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -185,39 +188,28 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 }
 //execute sparql query
 function runSparlqQuery(settings){
-  /* return new Promise((resolve, reject) => {
-    $.ajax(settings).then  (function( _data ) {
-      results = _data.results.bindings;
-      resolve(results)
-    })
-  }) */
-  //////////console.log(settings)
   return new Promise((resolve, reject) => {
     $.ajax(settings).then  (function( _data ) {
-      ////console.log(_data.results)
-      //results = _data;
       resolve(_data.results.bindings)
     })
     .fail(function(jqXHR, textStatus, errorThrown){
-      ////////console.log(jqXHR.status)
       reject(jqXHR.status)
       });
     })
 }
 //run Ask Sparql Query
-function runAskSparlqQuery(url,sparqlQuery){
+async function runAskSparlqQuery(url,sparqlQuery){
   var prefixes="",settings
   var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-  
+
   if (url=="https://query.wikidata.org/sparql"){
     settings = { url: queryUrl, async: true       }; 
   }else{
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   }
-
   return new Promise((resolve, reject) => {
-  $.ajax(settings).then  (function( _data ) {
-    results = _data.boolean;
+  $.ajax(settings).then  (function( _dataQuery ) {
+    results = _dataQuery.boolean;
     resolve(results)
   })
   .fail(function(jqXHR, textStatus, errorThrown){
@@ -241,56 +233,6 @@ function escapeRegExp(text) {
 }
 }
 
-function fromSelectToAskQuery(query){
-  var mySubString;
-  if(query.toLowerCase().indexOf("where")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().indexOf("where") - 1 
-    );
-    query=query.replace(mySubString,"ASK")
-    if(query.toLowerCase().indexOf("select")!=-1){
-      mySubString = query.substring(
-        query.toLowerCase().indexOf("select"), 
-        query.toLowerCase().lastIndexOf("where") + 5 
-      );
-      query=query.replace(mySubString,"")
-    }
-  }else{
-    mySubString = query.substring(
-      query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().indexOf("{") - 1 
-    );
-    query=query.replace(mySubString,"ASK")
-  }
-  
-  if(query.toLowerCase().lastIndexOf("group by")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("group by"), 
-      query.length - 1 
-    );
-    query=query.replace(mySubString,"")
-  }
-
-  if(query.toLowerCase().lastIndexOf("order by")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("order by"), 
-      query.length 
-    );
-    query=query.replace(mySubString,"")
-  }
-
-  if(query.toLowerCase().lastIndexOf("limit")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("limit"), 
-      query.length 
-    );
-    query=query.replace(mySubString,"")
-  }
-  query=query.replaceAll("parameter","PARAMETER")
-  return query
-}
-
  //function that return node in the treeMap if founded
  function findNodeTreemap(nodeId,treeData){
    var founded=treeData.filter(function(item) {
@@ -302,7 +244,7 @@ function fromSelectToAskQuery(query){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  //////////////console.log(d)
+  ////////////////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -333,7 +275,6 @@ function getTooltipText(d){
     </div>`;
     return text;
   }else{
-    //////////////console.log("no menu option")
     var text = `
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -359,7 +300,6 @@ function getTooltipText(d){
             ` + d.className + `
             </dd>
           </div>`
-          ////////////////console.log(d)
           if(d["tooltip"]){
             Object.keys(d["tooltip"]).forEach(function(k){
               text=text + `
@@ -381,7 +321,6 @@ function getTooltipText(d){
         </dl>
       </div>
     </div>`;
-    //////////////console.log(text)
     return text;
   } 
 }
@@ -542,21 +481,15 @@ function get_node_from_element(id){
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[],propertyUri;
-  //////////////////console.log(node)
   
   if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
     propertyUri=propertyUriImage(node)
-    //////////////////console.log(propertyUri)
     if(propertyUri){
-      //////////////////console.log(node)
-      //////////////////console.log(node[propertyUri])
-      //////////////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==node[propertyUri];
       })
-      ////////////////////console.log(icon)
     }else{
       if(node[node["class"]+"_uri"]){
         icon=filesIcons.filter(function(d){
@@ -581,15 +514,10 @@ function bubbleImage(node){
 function propertyUriImage(node){
   var propertyUri=false;
   if(configFile.file[node["configRowNumber"]]){
-    //////////////////console.log(configFile[node["configRowNumber"]]["properties"])
     configFile.file[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
       if(p.property.endsWith("_uri")){
         property=p.property.replace("_uri","")
-        //////////////////console.log(property)
-        //if(configFile[node["configRowNumber"]]["properties"].filter(d=>(d.class==node["class"])&&(d.property==property))){
         if(node["class"]!=property){
-          //////////////////console.log(property)
-          //////////////////console.log(p.property)
           propertyUri= p.property
         }
       }
@@ -703,24 +631,18 @@ function nestedNodes(el){
 }
 function highlightLinkedNodes(node){
   deselectNodes()
-  ////////////////////console.log(selectTargetNodes(node))
-  ////////////////////console.log(selectSourceNodes(node))
 }
 function highlightTargetNodes(node){
-  let data=selectTargetNodes(node)
+  let dataHighlight=selectTargetNodes(node)
   deselectNodesAndLinks()
-  ////////////////////console.log(data.links)
-  highlightLinks(data.links)
-  highlightNodes(data.nodes)
+  highlightLinks(dataHighlight.links)
+  highlightNodes(dataHighlight.nodes)
 }
 function selectTargetNodes(node){
-  ////////////////////console.log(node)
   var targetNodes=[],targetLinks=[]
-  ////////////////////console.log(networkGraph.data.links)
   let targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == node.id
   })
-  ////////////////////console.log(targets[0])
   targetNodes.push(targets[0].source.id)
   targets.forEach(function (d){
     targetLinks.push(d.id)
@@ -741,13 +663,9 @@ function selectSourceNodes(node){
   return {nodes:sourceNodes,links:sourceLinks};
 }
 function highlightLinks(links){
-  ////////////////////console.log(links)
   const even = d3.selectAll(".link").filter(function(d){
     return links.includes(d.id)
-    //////////////////////console.log(d.id)
-    //////////////////////console.log(links)
   });
-  ////////////////////console.log(even)
   even.style("stroke", "black")
   .style("fill","black")
   //.style("stroke-width", "2px")
@@ -755,10 +673,7 @@ function highlightLinks(links){
 function highlightNodes(nodes){
   const even = d3.selectAll(".circleBasic").filter(function(d){
     return nodes.includes(d.id)
-    //////////////////////console.log(d.id)
-    //////////////////////console.log(links)
   });
-  ////////////////////console.log(even)
   even.attr("stroke", "black")
   .attr("stroke-width", "3px")
 }
@@ -798,7 +713,6 @@ function addTooltip(htmlData){
   var y = d3.event.pageY 
 
   document.getElementsByClassName("tooltip")[0].insertAdjacentHTML('afterbegin', htmlData);
-  //document.getElementsByClassName("tooltip")[0].innerHtml =  getTooltipText(data)
   d3.select(".tooltip").transition()		
   .duration(200)		
   .style("opacity", 1)
