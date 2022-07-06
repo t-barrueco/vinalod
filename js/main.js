@@ -1,4 +1,4 @@
-var nodes=[],links=[],data={},networkGraph,legend,menuItems,configFileExp=null,dataInstances,allDataModel,
+var nodes=[],links=[],data={},networkGraph,legend,navigationPanel,menuItems,configFileExp=null,dataInstances,allDataModel,
 allData_at,allData_classSumLeg,nodesClasses,
 nodesSelSources=[],nodesSelTarget=[],configRowsList=[],nodesClassesShow=[],nodesClassesCorrespondence,
 filesIcons,colorCorrespondence={},classFilterHist=[],propertiesFilterHist=[],
@@ -6,7 +6,7 @@ graphHistory=[],filtersInGraph=[],filtersList=[],classesFilterList=[],optionsMen
 var timer = 0;
 var delay = 200;
 var prevent = false;
-
+//console.log(navigationPanel)
 function dataViz(){
     var optionsMenu;
     //get configuration from config_basicMode.json where all options for basic mode
@@ -33,37 +33,37 @@ function updateAll(){
   
 async function buildBasicGraph(option,node){
     var sparqlQuery,modal2,prefixes;
-    ////console.log("buildBasicGraph")
-    ////console.log(arguments)
-    console.log(option)
-    console.log(node)
+    //////console.log("buildBasicGraph")
+    //////console.log(arguments)
+    //console.log(option)
+    //console.log(node)
     if(typeof configRow !== 'undefined'){
-      //console.log(option)
+      ////console.log(option)
       configRow.update(option,node)
     }else{
       configRow = new ConfigRow(option,node);
     }
     
-    ////console.log(configRow)
+    //console.log(configRow)
     prefixes=""
 
     //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
     if(configRow.rowFields.type=="TREE"){
-      ////console.log("TREE")
-      buildNetworkGraph(configRow,"basic",node)
+      //////console.log("TREE")
+      await buildNetworkGraph(configRow,"basic",node)
     }else{
-      //////////////////////console.log("other type config row")
-      //////////////////////console.log(configRow)
+      ////////////////////////console.log("other type config row")
+      ////////////////////////console.log(configRow)
       //sparqlQuery=configRow.sparqlQuery
       deleteTooltip()
       sparqlQuery=configRow.rowFields.query
-      //////////////////////console.log(sparqlQuery)
+      ////////////////////////console.log(sparqlQuery)
       if (configRow.type=="TREEGRAPH"){
         modal2=getModal2()
         showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent,configRow)
         showModal("#myModal2")
       }else if (configRow.type=="WIKIPEDIA"){
-        //////////////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
+        ////////////////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
         modal2=getModal2()
         showWikipediaPage(node,modal2.modalHeader,modal2.modalContent,configRow)
         showModal("#myModal2")
@@ -91,7 +91,7 @@ async function buildBasicGraph(option,node){
         showModal("#myModal2")
       }
     }
-
+  console.log("fin build")
   }
 
 function collapse(){
@@ -111,14 +111,14 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  ////////////////////////////////////console.log("collapse")
+  //////////////////////////////////////console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  ////////////////////////////////////console.log("collapse")
+  //////////////////////////////////////console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
@@ -135,7 +135,7 @@ span.onclick = function() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  //////////console.log(event.target)
+  ////////////console.log(event.target)
   /* if (event.target == modal) {
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
@@ -154,7 +154,7 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 // When the user clicks on <span> (x), close the modal
 span2.onclick = function() {
-  ////////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
+  //////////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
 }
@@ -319,12 +319,15 @@ function appendHtmlOptions(optionsMenu){
       $("#options-menu").append($(html))
   });
 }
-function handleNavigation(node){
+function handleNavigation(){
+  //console.log("handleNavigation")
+  //console.log(showNavigation)
   if(showNavigation){
+    //console.log(navigation)
     if (typeof (navigation) != "object") {
-      navigation = new navigationPanel("freeGraph", node);
+      navigation = new navigationPanel("freeGraph");
     } else if (navigation.type != "freeGraph") {
-      navigation = new navigationPanel("freeGraph", node);
+      navigation = new navigationPanel("freeGraph");
     } else {
       navigation.node=node
       navigation.init()

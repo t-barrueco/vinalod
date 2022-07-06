@@ -12,7 +12,7 @@ Legend.prototype.init = function () {
 Legend.prototype.initColors=function(i){
     var le=this;
     for (i; i < networkGraph.colorScale.domain().length; i++) {
-        ////////console.log(networkGraph.colorScale.domain()[i])
+        ////console.log(networkGraph.colorScale.domain()[i])
         le.addOne(i,networkGraph.colorScale.domain()[i])
       } 
 }
@@ -32,7 +32,8 @@ Legend.prototype.deleteAllColors=function(){
 Legend.prototype.addOne=function (index,textLi){
   var le=this;
   var li,classLi;
-
+  ////console.log(networkGraph.colorCorrespondence)
+  ////console.log(networkGraph.colorScale.range())
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
   li=le.parentEl.append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")

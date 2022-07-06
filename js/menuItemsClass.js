@@ -149,15 +149,16 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
 
 MenuItems.prototype.getMenuItemsInTable = async function (){
     var menuItems=[],elementMenu,position,width
+    navigationPanel.addMenuToTable()
 
     //if click on Navigation panel then origin=table
-    if(graphType=="basic"){
-    tableBasic()
-    addMenuToTable(node,menuItems)
+    /* if(graphType=="basic"){
+    //tableBasic()
+        console.log("addMenuToTable")
+        navigationPanel.addMenuToTable()
     }else if(graphType=="expert"){
-    tableExpert()
-    navigation.addMenuToTable(node, menuItems)
-    }
+    //tableExpert()
+    } */
     function tableExpert(){
         for (var i = 0; i < items.length; i++) {
         if (items[i]["subject-object"]) {

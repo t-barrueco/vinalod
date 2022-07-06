@@ -1,13 +1,11 @@
-NavigationPanel = function ( _type) {
+navigationPanel = function ( _type,_node) {
     this.type = _type;
-    //this.node = _node
+    this.node = _node
     this.init();
-    //console.log("navigation")
   };
    
-NavigationPanel.prototype.init = function () {
+navigationPanel.prototype.init = function () {
   var navPanel=this;
-  navPanel.node=configRow.node
   navPanel.clusterElSelected=[]
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
@@ -23,7 +21,7 @@ NavigationPanel.prototype.init = function () {
   navPanel.contentTable()
   navPanel.showChildrenDetails()
 }
-NavigationPanel.prototype.showChildrenDetails = function (){
+navigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
 
   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
@@ -33,15 +31,13 @@ NavigationPanel.prototype.showChildrenDetails = function (){
     $("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav");
   }
 }
-NavigationPanel.prototype.getNodes = function (){
+navigationPanel.prototype.getNodes = function (){
   var navPanel=this;
   var sources2
-  console.log(networkGraph.data)
-  //console.log(navPanel.node)
   navPanel.targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == navPanel.node.id
   })
-  //console.log(navPanel.targets)
+  
   navPanel.sources=networkGraph.data.links.filter(function(item) {
     return item.target.id == navPanel.node.id
   })
@@ -59,17 +55,16 @@ NavigationPanel.prototype.getNodes = function (){
       })
     }
   }
-  //////////////console.log(networkGraph.treeData)
-  //////////////console.log(networkGraph.data)
+  ////////////console.log(networkGraph.treeData)
+  ////////////console.log(networkGraph.data)
   navPanel.sources.push(networkGraph.treeData[0])
   
-  //console.log(navPanel.sources)
-  //console.log(navPanel.targets)
+  ////////////console.log(navPanel.sources)
 
   navPanel.sources=navPanel.sources.reverse();
 }
 
-NavigationPanel.prototype.selectBubbles = function (){
+navigationPanel.prototype.selectBubbles = function (){
 
   var navPanel=this;
 
@@ -130,7 +125,7 @@ NavigationPanel.prototype.selectBubbles = function (){
   .style("opacity", 1)
   
 }
-NavigationPanel.prototype.initModal = function (){
+navigationPanel.prototype.initModal = function (){
   var navPanel=this;
   showModal("#myModal")
   $('#myModal').resizable({
@@ -140,7 +135,7 @@ NavigationPanel.prototype.initModal = function (){
   d3.selectAll("#modal-content table").remove()
 }
 
-NavigationPanel.prototype.navTableTable = function ()
+navigationPanel.prototype.navTableTable = function ()
   {
     var last=false,property=false,first=true,ol=null  
     var navPanel=this,nodeClass;
@@ -189,7 +184,7 @@ NavigationPanel.prototype.navTableTable = function ()
 
 }
 
-NavigationPanel.prototype.addElementNav = function (source,i){
+navigationPanel.prototype.addElementNav = function (source,i){
   var navPanel=this, last=false, imageSource="images/check.svg",imageSourceLast="images/location.svg",nodeClass
   if(source.source){
     nodeClass=source.source.class
@@ -199,7 +194,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   if(nodeClass=="free"){
     addFreeGraph()
   }else{
-    ////console.log("entra")
     if(i+1==navPanel.sources.length){
       last=true
       addBasicGraph(last,imageSourceLast)
@@ -211,8 +205,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   function addBasicGraph(last,navImage){
     li=document.createElement("li")
     li.setAttribute("class", "relative pb-10");
-    //console.log(last)
-    //console.log(navImage)
+
     if(!last){
         div=document.createElement("div")
         div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
@@ -227,23 +220,19 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }else{
       a.id=navPanel.sources[i]["id"]+"_a"
     }
-    //console.log(a)
+    console.log(a)
     span=document.createElement("span")
     span.setAttribute("class","h-9 flex items-center")
     
     span2=document.createElement("span")
-    //console.log(networkGraph.colorCorrespondence)
-    ////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]]))
-
-    ////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]]))
     if(navPanel.sources[i]["target"]){
-      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
+      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[navPanel.sources[i]["target"]["class"]])]
     }else{
-      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
+      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[navPanel.sources[i]["class"]])]
     }    
 
     span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-    //console.log(span2)
+    console.log(span2)
     img=document.createElement("img")
     img.setAttribute("src",navImage)
     img.setAttribute('width','40px')
@@ -254,9 +243,10 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     if(!last){
         el1.appendChild(div)
     }
-    //console.log(el1)
+    
     el2=el1.appendChild(a)
     el2.appendChild(span).appendChild(span2).appendChild(img)
+    console.log(el2)
     span3=document.createElement("span")
     span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
     span4=document.createElement("span")
@@ -279,7 +269,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
     el3.appendChild(img)
-    //console.log(el3)
+    console.log(el3)
   }
 
   function addFreeGraph(){
@@ -309,8 +299,8 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }else{
       colorCircle=colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[navPanel.sources[i]["class"]])]
     }   */ 
-    //////////////console.log(source)
-    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["type"]])]
+    ////////////console.log(source)
+    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[source["type"]])]
     /* if(source["type"]=="uri"){
       colorCircle="green-300"
     }else if(source["type"]=="bnode"){
@@ -353,7 +343,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
 
 }
 
-NavigationPanel.prototype.addElementNavProp = function (source,i,property){
+navigationPanel.prototype.addElementNavProp = function (source,i,property){
   var li=document.createElement("li")
   var div,a,li,span,span2,el1
   var navPanel=this;
@@ -381,7 +371,7 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   if(property){
     colorCircle="gray-300"
   }else{
-    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["target"]["type"]])]
+    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[source["target"]["type"]])]
 
     /* if(source["target"]["type"]=="uri"){
       colorCircle="green-300"
@@ -428,7 +418,7 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
   if(property){
     span4.innerHTML= source["target"]["property"]
-    //////////////console.log(source["target"]["property"])
+    ////////////console.log(source["target"]["property"])
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
@@ -443,7 +433,7 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   }
 }
 
-NavigationPanel.prototype.addEventsNav = function (){
+navigationPanel.prototype.addEventsNav = function (){
   var navPanel=this;
   d3.selectAll("#navTable a").on("dblclick",function(){ 
     d3.event.preventDefault();
@@ -459,7 +449,7 @@ NavigationPanel.prototype.addEventsNav = function (){
     //var node=d3.select("#"+this.getAttribute("id")).data()[0]
   });
 }
-NavigationPanel.prototype.contentTable = function (){
+navigationPanel.prototype.contentTable = function (){
   var navPanel=this,label;
   var menuOption;
   navPanel.numStart=1
@@ -470,7 +460,7 @@ NavigationPanel.prototype.contentTable = function (){
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
   
-  //console.log(navPanel.targets)
+
   if (navPanel.targets.length>0){
     $("#dvTable").show()
     $("#dvDetails").empty()
@@ -484,7 +474,6 @@ NavigationPanel.prototype.contentTable = function (){
     th.setAttribute("colspan","3")
     th.setAttribute("scope","colgroup")
     th.setAttribute("class","px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
-    //console.log(th)
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       if(navPanel.node.class=="free"){
@@ -496,7 +485,7 @@ NavigationPanel.prototype.contentTable = function (){
       th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
-      //////////////////console.log(node)
+      ////////////////console.log(node)
       if(menuOption){
         if(menuOption.split(";").length>1){
           th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
@@ -514,14 +503,13 @@ NavigationPanel.prototype.contentTable = function (){
 
      
     }
-    //console.log(th)
-
+    
     navPanel.thead.appendChild(tr).appendChild(th)
     navPanel.tbody=document.createElement("tbody")
     navPanel.tbody.className="bg-white divide-y divide-gray-200"
-    //console.log("before showLines")
+
     navPanel.showLines(navPanel.numCurrent,true)
-    //console.log("after showLines")
+
     var dvTable = document.getElementById("dvTable");
     dvTable.innerHTML = "";
   
@@ -601,7 +589,7 @@ NavigationPanel.prototype.contentTable = function (){
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
-      //////////////////console.log(navPanel.node.detail)
+      ////////////////console.log(navPanel.node.detail)
       navPanel.showDetails()
     }else{
       $("#dvDetails").empty()
@@ -658,7 +646,7 @@ NavigationPanel.prototype.contentTable = function (){
   }
 }
 
-NavigationPanel.prototype.showDetails = function (){
+navigationPanel.prototype.showDetails = function (){
   var navPanel=this;
   $("#dvTable").hide()
   itemDetails()
@@ -672,7 +660,7 @@ NavigationPanel.prototype.showDetails = function (){
 
             navDetailHeader=header.replace("Title",navPanel.node["value"]).toUpperCase()
             $("#dvDetails").append($(navDetailHeader))
-            //////////////////console.log(navPanel.node)
+            ////////////////console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
                 if((key % 2 == 0)|| (key == 0)){  
@@ -713,7 +701,7 @@ NavigationPanel.prototype.showDetails = function (){
 
 }
 
-NavigationPanel.prototype.contentTableSearch = function (){
+navigationPanel.prototype.contentTableSearch = function (){
   var navPanel=this;
   navPanel.numStart=1
 
@@ -728,7 +716,7 @@ NavigationPanel.prototype.contentTableSearch = function (){
     navPanel.divPag=document.createElement("div")
   } 
 }
-NavigationPanel.prototype.paginationNumbers = function (){
+navigationPanel.prototype.paginationNumbers = function (){
   var navPanel=this
  {
     if (navPanel.numCurrent < 1) {
@@ -783,7 +771,7 @@ NavigationPanel.prototype.paginationNumbers = function (){
     };
 }
 }
-NavigationPanel.prototype.showNumberPages = function (){
+navigationPanel.prototype.showNumberPages = function (){
   var navPanel=this,textHtml=""
 
   navPanel.firstPage=1
@@ -836,7 +824,7 @@ function removeLinesNavContent(){
     )
   }
 }
-NavigationPanel.prototype.prevNextVisibility = function (){
+navigationPanel.prototype.prevNextVisibility = function (){
   var navPanel=this
   if(navPanel.pages.pages.includes(navPanel.firstPage)&(navPanel.pages.pages.includes(navPanel.pages.totalPages))){
     document.getElementById("page-first").classList.add("hidden");
@@ -860,9 +848,8 @@ NavigationPanel.prototype.prevNextVisibility = function (){
     document.getElementById("page-last").classList.remove("hidden");
   }
 }
-NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
+navigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   var navPanel=this,linesShown,numPagesElements;
-
   if(numCurrent=='page-first'){
     numCurrent=navPanel.firstPage
   }else if (numCurrent=='page-prev'){
@@ -873,7 +860,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     numCurrent=navPanel.numCurrent+1
   }
   navPanel.numCurrent=parseInt(numCurrent)
-  //console.log("showLines 873")
+  
   removeLinesNavContent()
 
   if(!first){
@@ -890,8 +877,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 
 
   }
-  //console.log("showLines 890")
-
+  
   if(first){
     linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
   }else{
@@ -901,15 +887,10 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   if(cluster){
     $("#add-sel-graph").show()
   }
-
-  //console.log("showLines 902")
-
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
     navPanel.contentRows.push(row)
-    //console.log("showLines 908")
-
     if(linesShown[i]["target"]["class"]=="free"){
       if(cluster){
         navPanel.addElementContentTableProp(linesShown[i],i,cluster)
@@ -923,7 +904,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   }
 }
 
-NavigationPanel.prototype.addEventsContentNav = function (){
+navigationPanel.prototype.addEventsContentNav = function (){
   var navPanel=this,nodeSearchField,node;
   navPanel.isDblclick = false;
 
@@ -954,7 +935,6 @@ NavigationPanel.prototype.addEventsContentNav = function (){
 
   navPanel.timeoutTiming = 500;
   d3.selectAll("#modal-content td").on("dblclick",function(){ 
-    console.log("dblcikc 957")
     $("#dvDetails").empty()
     node=d3.select("#"+this.getAttribute("id")).data()[0]
     d3.event.preventDefault();
@@ -990,7 +970,7 @@ NavigationPanel.prototype.addEventsContentNav = function (){
   })
   
 }
-NavigationPanel.prototype.valueSelected=function(){
+navigationPanel.prototype.valueSelected=function(){
   var navPanel=this;
   nodeSearchField=document.getElementById("node-search")
   removeLinesNavContent()
@@ -1007,7 +987,7 @@ NavigationPanel.prototype.valueSelected=function(){
   $("#nav-delete").removeClass("hidden")
   navPanel.addEventsContentNav()
 }
-NavigationPanel.prototype.addElementContentTable = function (target,i){
+navigationPanel.prototype.addElementContentTable = function (target,i){
   var navPanel=this;
   if(target["class"]=="free"){
     addFreeGraph()
@@ -1027,7 +1007,7 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
     div2=document.createElement("div")
     div2.className="flex-shrink-0 w-10 h-10"
     img=document.createElement("img")
-    img.className="w-10 h-10 rounded-full bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])]
+    img.className="w-10 h-10 rounded-full bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["class"]])]
     img.setAttribute("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))
     div3=document.createElement("div")
     div3.className="relative ml-4"
@@ -1067,7 +1047,7 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
   img=document.createElement("img")
   
   if(!property){
-    img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[nodesTable[i]["target"]["type"]])] + " rounded-full"
+    img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[nodesTable[i]["target"]["type"]])] + " rounded-full"
 /* 
       if(nodesTable[i]["target"]["type"]=="uri"){
           //img.className="w-5 h-5 bg-green-300 rounded-full"
@@ -1110,7 +1090,7 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
 function addElChecked(el){
   navigation.addElChecked(el)
 }
-NavigationPanel.prototype.addElChecked = function (el){
+navigationPanel.prototype.addElChecked = function (el){
   var navPanel=this;
   if(el.checked){
     navPanel.clusterElSelected.push(el.getAttribute("id"))
@@ -1118,7 +1098,7 @@ NavigationPanel.prototype.addElChecked = function (el){
     navPanel.clusterElSelected.splice(navPanel.clusterElSelected.indexOf(el.getAttribute("id")), 1);
   }
 }
-NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluster){
+navigationPanel.prototype.addElementContentTableProp = function (target,i,cluster){
   var navPanel=this;
   insertCheckBox()
   insertContent(true)
@@ -1145,13 +1125,13 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   
   function insertContent(property){
     var menuOption;
-    //////////////console.log(target["target"]["type"])
-    //////////////console.log(nodesClassesCorrespondence)
-    //////////////console.log(colorCorrespondence)
-    //////////////console.log(networkGraph.colorScale.domain())
-    //////////////console.log(networkGraph.colorScale.range())
-    //////////////console.log(nodesClassesCorrespondence[target["target"]["type"]])
-    //////////////console.log(networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["type"]]))
+    ////////////console.log(target["target"]["type"])
+    ////////////console.log(nodesClassesCorrespondence)
+    ////////////console.log(colorCorrespondence)
+    ////////////console.log(networkGraph.colorScale.domain())
+    ////////////console.log(networkGraph.colorScale.range())
+    ////////////console.log(nodesClassesCorrespondence[target["target"]["type"]])
+    ////////////console.log(networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["type"]]))
 
     cell = row.insertCell(-1);
     cell.className="px-2 py-4 whitespace-nowrap"
@@ -1178,11 +1158,11 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     img=document.createElement("img")
     
     if(!property){
-/*       //////////////console.log(colorCorrespondence)
-      //////////////console.log(networkGraph.colorScale)
-      //////////////console.log(target["target"]["type"])
-      //////////////console.log(nodesClassesCorrespondence) */
-      img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["type"]])] + " rounded-full"
+/*       ////////////console.log(colorCorrespondence)
+      ////////////console.log(networkGraph.colorScale)
+      ////////////console.log(target["target"]["type"])
+      ////////////console.log(nodesClassesCorrespondence) */
+      img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["type"]])] + " rounded-full"
 /* 
         if(target["target"]["type"]=="uri"){
             img.className="w-5 h-5 bg-green-300 rounded-full"
@@ -1222,7 +1202,7 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         div4.appendChild(a).appendChild(span).appendChild(newText);
     }else{
         span=document.createElement("span")
-        //////////////console.log(target)
+        ////////////console.log(target)
         if(target["value"]!=undefined){
           newText = document.createTextNode(target["value"]);
         }else if(target["target"]["property"]!=undefined){
@@ -1242,7 +1222,7 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   function dblclickCellCluster(el){
     navigation.dblclickCellCluster(el)
   }
-  NavigationPanel.prototype.dblclickCellCluster = async function (cell) {
+  navigationPanel.prototype.dblclickCellCluster = async function (cell) {
     var navPanel=this,results;
     results=cell.more_results
     
@@ -1283,7 +1263,7 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     navPanel.showLines(1,false,cell["id"])
     navPanel.addEventsContentNav()
   }
-NavigationPanel.prototype.dblclickCellContent = async function (cell) {
+navigationPanel.prototype.dblclickCellContent = async function (cell) {
   var navPanel=this,indexRows=1,bubble,node;
 
   if(cell instanceof Element){
@@ -1291,7 +1271,7 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
   }else{
     bubble=cell
   }
-  //////console.log(bubble)
+  ////console.log(bubble)
   if(bubble){
     if(bubble.class=="free"){
       freeGraph()
@@ -1306,7 +1286,7 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
   }
   async function basicGraph(){
     var element=document.getElementById(cell.getAttribute("id"));
-    /* if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]){
+    if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]){
       if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]["type"]=="WEBPAGE"){
         modal2=getModal2()
         showWebPage(get_node_from_element(element.getAttribute("id"))[Object.keys(get_property_names(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]["properties"]))[0]],get_node_from_element(element.getAttribute("id"))["value"],modal2.modalHeader,modal2.modalContent)
@@ -1316,17 +1296,18 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
       }
     }else{
       indexRows=await networkGraph.wrangleData(element,"table");
-    } */
-    await networkGraph.wrangleData(element,"table");
-    //clickBubbleFreeGraph(element)
-/*     //console.log("1318")
+      ////console.log(indexRows)
+      /* if(d3.select("#"+element.getAttribute("id")).data()[0]["children"]){
+      } */
+    }
+
     if((indexRows.length==0)&&(d3.select("#"+element.getAttribute("id")).data()[0]["children"]==undefined)){
       if(d3.select("#"+element.getAttribute("id")).data()[0].detail!=undefined){
         clickBubbleFreeGraph(element,networkGraph.data)
       }
     }else if(d3.select("#"+element.getAttribute("id")).data()[0]["class"]=="menuOption"){
       clickBubbleFreeGraph(element,networkGraph.data)
-    } */
+    }
     //else if()
   }
   async function freeGraph(){
@@ -1359,7 +1340,7 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
   }
 }
 
-NavigationPanel.prototype.clickCellContent = async function (cell){
+navigationPanel.prototype.clickCellContent = async function (cell){
   d3.selectAll(".nodeCircleCircle")
   .style("opacity", 1)
   .attr("stroke", "grey")
@@ -1369,7 +1350,7 @@ NavigationPanel.prototype.clickCellContent = async function (cell){
   .attr("stroke-width", "6px");
 }
 
-NavigationPanel.prototype.dblclickNav = async function (cell) {
+navigationPanel.prototype.dblclickNav = async function (cell) {
   var navPanel=this,bubble;
   bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","").replace("_li","")))
   $("#dvDetails").empty()
@@ -1379,7 +1360,7 @@ NavigationPanel.prototype.dblclickNav = async function (cell) {
   .attr("stroke-width", "6px");
 }
 
-NavigationPanel.prototype.clickNav = async function (cell){
+navigationPanel.prototype.clickNav = async function (cell){
   d3.selectAll(".nodeCircleCircle")
   .style("opacity", 1)
   .attr("stroke", "grey")
@@ -1388,135 +1369,76 @@ NavigationPanel.prototype.clickNav = async function (cell){
   .attr("stroke", "yellow")
   .attr("stroke-width", "6px");
 }
-NavigationPanel.prototype.addMenuToTable = function (){
+navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   var navPanel=this;
-  menuTableBasic()
-  function menuTableBasic(){
-    var newText,newCell,newRow,span,div,textNode
-    //console.log(menuItems)
-    d3.selectAll(".menu-table").remove()
-    var rowIndex=$('#myModal #'+ menuItems.node["id"]).parent()[0].rowIndex
-    var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-    //////console.log(menuItems)
-    for (var i = 0; i < menuItems.selectedRows.length; i++) {
-        newRow = tbodyRef.insertRow(rowIndex+i);
-        newRow.id="menu-table-"+menuItems.selectedRows[i]["position"]
-        newRow.className = 'menu-table';
-        newCell = newRow.insertCell();
-        newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
-        newCell.setAttribute("x-data","{ tooltip: false }")
-        // Append a text node to the cell
-        a=document.createElement("a")
-        a.setAttribute("href", "#");
-        a.setAttribute("class", "relative flex items-start group");
-        a.setAttribute("x-on:mouseenter","tooltip = true")
-        a.setAttribute("x-on:mouseleave","tooltip = false")
-  
-        div=document.createElement("div")
-        div.setAttribute("x-show","tooltip")
-        div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
-        
-        if(menuItems.node["class"]!="free"){
-          textNode = document.createTextNode (getCommentOption(menuItems.selectedRows[i]["option"]));
-        }
-        
-        
-        span=document.createElement("span")
-        span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
-        newText = document.createTextNode(menuItems.selectedRows[i]["option"]);
-        newCell.appendChild(a).appendChild(span).appendChild(newText);
-        newCell.appendChild(div).appendChild(textNode)
-        
-        d3.selectAll("#menu-table-"+menuItems.selectedRows[i]["position"]).on("dblclick",function(){  
-          console.log(menuItems.node)
-          navPanel.clickMenuTable(menuItems.selectedRows[0]["option"],menuItems.node)
-        })
-    }
+  var textTooltip,div,textNode,newText,newCell,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
+  d3.selectAll(".menu-table").remove()
+  var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
+
+  var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
+  for (var i = 0; i < menuItems.length; i++) {
+      newRow = tbodyRef.insertRow(rowIndex+i);
+      newRow.id="menu-table-"+ node.id + "-" + [i]
+      newRow.className = 'menu-table';
+      newCell = newRow.insertCell();
+      newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
+      newCell.setAttribute("colspan","3")
+      newCell.setAttribute("x-data","{ tooltip: false }")
+
+      a=document.createElement("a")
+      a.setAttribute("href", "#");
+      a.setAttribute("class", "relative flex items-start group");
+      a.setAttribute("x-on:mouseenter","tooltip = true")
+      a.setAttribute("x-on:mouseleave","tooltip = false")
+
+      div=document.createElement("div")
+      div.setAttribute("x-show","tooltip")
+      div.setAttribute("class","z-50 absolute text-xs bg-blue-300 border-graphite border-2 rounded p-4 mt-1")
+      if(menuItems[i]["subject-object"]=="s"){
+        textTooltip="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
+      }else{
+        textTooltip="Find all subjects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
+      }
+      textNode = document.createTextNode (textTooltip);
+
+      span=document.createElement("span")
+      span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
+      newText = document.createTextNode("Sparql Endpoint: "+ menuItems[i]["url"]+" Position: " +menuItems[i]["subject-object"]);
+      newCell.appendChild(a).appendChild(span).appendChild(newText);
+      newCell.appendChild(div).appendChild(textNode)      
   }
-  function menuTableExpert(){
-    var textTooltip,div,textNode,newText,newCell,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
-    d3.selectAll(".menu-table").remove()
-    var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
-  
-    var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-    //console.log(menuItems)
-    for (var i = 0; i < menuItems.selectedRows.length; i++) {
-        newRow = tbodyRef.insertRow(rowIndex+i);
-        newRow.id="menu-table-"+ node.id + "-" + [i]
-        newRow.className = 'menu-table';
-        newCell = newRow.insertCell();
-        newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
-        newCell.setAttribute("colspan","3")
-        newCell.setAttribute("x-data","{ tooltip: false }")
-  
-        a=document.createElement("a")
-        a.setAttribute("href", "#");
-        a.setAttribute("class", "relative flex items-start group");
-        a.setAttribute("x-on:mouseenter","tooltip = true")
-        a.setAttribute("x-on:mouseleave","tooltip = false")
-  
-        div=document.createElement("div")
-        div.setAttribute("x-show","tooltip")
-        div.setAttribute("class","z-50 absolute text-xs bg-blue-300 border-graphite border-2 rounded p-4 mt-1")
-        if(menuItems[i]["subject-object"]=="s"){
-          textTooltip="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
-        }else{
-          textTooltip="Find all subjects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
-        }
-        textNode = document.createTextNode (textTooltip);
-  
-        span=document.createElement("span")
-        span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
-        newText = document.createTextNode("Sparql Endpoint: "+ menuItems[i]["url"]+" Position: " +menuItems[i]["subject-object"]);
-        newCell.appendChild(a).appendChild(span).appendChild(newText);
-        newCell.appendChild(div).appendChild(textNode)      
-    }
-  
-    d3.selectAll(".menu-table" ).on("dblclick",function(){ 
-      textMenu=this.querySelector("span").innerHTML
-      new_url = textMenu.match("Sparql Endpoint: (.*) Position:")[1]; 
-      new_subjectObject=textMenu.match("Position: (.*)")[1];
-      propertyNode=document.getElementById(node.id+"_row").querySelector(".property")
-      url=propertyNode.getAttribute("url")
-      subjectObject=propertyNode.getAttribute("subject-object")
-      property=document.getElementById(node.id+"_row").querySelector(".property").querySelector("span").innerHTML
-      form={"url":url,"uri":d3.select("#"+node.id).data()[0].value,"subjectObject":subjectObject,"property":property,"new_url":new_url,"new_subjectObject":new_subjectObject}
-      navPanel.clickMenuTable(form,node)
-    })
-  }
+
+  d3.selectAll(".menu-table" ).on("dblclick",function(){ 
+    textMenu=this.querySelector("span").innerHTML
+    new_url = textMenu.match("Sparql Endpoint: (.*) Position:")[1]; 
+    new_subjectObject=textMenu.match("Position: (.*)")[1];
+    propertyNode=document.getElementById(node.id+"_row").querySelector(".property")
+    url=propertyNode.getAttribute("url")
+    subjectObject=propertyNode.getAttribute("subject-object")
+    property=document.getElementById(node.id+"_row").querySelector(".property").querySelector("span").innerHTML
+    form={"url":url,"uri":d3.select("#"+node.id).data()[0].value,"subjectObject":subjectObject,"property":property,"new_url":new_url,"new_subjectObject":new_subjectObject}
+    navPanel.clickMenuTable(form,node)
+  })
 }
-NavigationPanel.prototype.clickMenuTable = async function (option,node){
+navigationPanel.prototype.clickMenuTable = async function (form,node){
   var bubble;
   var navPanel=this;
-  console.log(node)
-  clickMenuBasic(option,node)
-  async function clickMenuBasic(option,node){
-    var element=document.getElementById(node["id"])
-    //CAMBIAR LA POSICIÓN POR LA OPTION SI SE PUEDE...
-    await buildBasicGraph(option,node)
-    //unclickBubbleFreeGraph()
-    console.log("clickBubbleFreeGraph")
-    clickBubbleFreeGraph(element,networkGraph.data)
-  }
-  async function clickMenuExpert(form){
-    var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
+  var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
 
-    //await buildFreeGraph(newForm,"table",node)
-    //////console.log(newForm)
-    await buildNetworkGraph(newForm,"expert",node)
-    if(node["menuOption"]){
-      if(node["menuOption"].split(";").length>1){
-        bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
-      }else{
-        bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+node.id)
-      }
+  //await buildFreeGraph(newForm,"table",node)
+  ////console.log(newForm)
+  await buildNetworkGraph(newForm,"expert",node)
+  if(node["menuOption"]){
+    if(node["menuOption"].split(";").length>1){
+      bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+searchMenuOptionChild()["id"])
     }else{
       bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+node.id)
     }
-  
-    clickBubbleFreeGraph(bubble,networkGraph.data)
+  }else{
+    bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+node.id)
   }
-  
+
+  clickBubbleFreeGraph(bubble,networkGraph.data)
 
 function searchMenuOptionChild(){
   return (networkGraph.treeData.filter(d=>d.id==node["id"])[0]["children"].filter(v=>v.value==newForm.url+","+newForm["subject-object"])[0])
@@ -1526,7 +1448,7 @@ function searchMenuOptionChild(){
 function removeSelection(){
   navigation.removeSelection()
 }
-NavigationPanel.prototype.removeSelection = function (){
+navigationPanel.prototype.removeSelection = function (){
   var navPanel=this;
 
   navPanel.targets=navPanel.targetsBackup
@@ -1538,7 +1460,7 @@ NavigationPanel.prototype.removeSelection = function (){
 function addSelToGraph(element){
   navigation.addSelToGraph()
 }
-NavigationPanel.prototype.addSelToGraph = function (){
+navigationPanel.prototype.addSelToGraph = function (){
   var navPanel=this,selected=[],results,form,parent,configRow,children=[],clusterNode;
   var node=d3.select("#"+document.getElementById(navPanel.clusterElSelected[0].replace("_check","")).getAttribute("cluster")).data()[0]
   for (var i = 0; i < navPanel.clusterElSelected.length; i++) {
@@ -1610,7 +1532,54 @@ NavigationPanel.prototype.addSelToGraph = function (){
 
 }
 
+function addMenuToTable(node,menuItems){
+  var newText,newCell,newRow,span,div,textNode
+  d3.selectAll(".menu-table").remove()
+  var rowIndex=$('#myModal #'+ node["id"]).parent()[0].rowIndex
+  var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
+  console.log(menuItems)
+  for (var i = 0; i < menuItems.selectedRows.length; i++) {
+      newRow = tbodyRef.insertRow(rowIndex+i);
+      newRow.id="menu-table-"+menuItems[i]["position"]
+      newRow.className = 'menu-table';
+      newCell = newRow.insertCell();
+      newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
+      newCell.setAttribute("x-data","{ tooltip: false }")
+      // Append a text node to the cell
+      a=document.createElement("a")
+      a.setAttribute("href", "#");
+      a.setAttribute("class", "relative flex items-start group");
+      a.setAttribute("x-on:mouseenter","tooltip = true")
+      a.setAttribute("x-on:mouseleave","tooltip = false")
 
+      div=document.createElement("div")
+      div.setAttribute("x-show","tooltip")
+      div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
+      
+      if(node["class"]!="free"){
+        textNode = document.createTextNode (getCommentOption(menuItems[i]["option"]));
+      }
+      
+      
+      span=document.createElement("span")
+      span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
+      newText = document.createTextNode(menuItems[i]["option"]);
+      newCell.appendChild(a).appendChild(span).appendChild(newText);
+      newCell.appendChild(div).appendChild(textNode)
+      
+      d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("dblclick",function(){  
+
+        clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
+      })
+  }
+}
+async function clickMenuTable(position,node){
+  var element=document.getElementById(node["id"])
+  //CAMBIAR LA POSICIÓN POR LA OPTION SI SE PUEDE...
+  await buildBasicGraph(configFile.getFieldsConfigFile(position),node)
+  unclickBubbleFreeGraph()
+  clickBubbleFreeGraph(element,networkGraph.data)
+}
 function showHideNavigation(){
   if(document.getElementById("show-nav").checked){
     showNavigation=true

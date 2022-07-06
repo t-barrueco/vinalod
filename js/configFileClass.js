@@ -48,13 +48,13 @@ ConfigFile.prototype.getProperties= function(configRow){
     return temp
   }
 
-ConfigFile.prototype.getClassesShow=function(rowDataConfig){
+/* ConfigFile.prototype.getClassesShow=function(rowDataConfig){
     var cf=this,tmp={}
     cf.file[rowDataConfig]["classes_text"].forEach(function(c){
       tmp[c["class"]]=c["text"]
     })
     return tmp
-  }
+  } */
   //Get tooltip from Config File
 // format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
 ConfigFile.prototype.getTooltip= function(option_text){

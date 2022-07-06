@@ -2,7 +2,7 @@
 
 //if basic graph settings==configRow and if free graph settings==form
 async function buildNetworkGraph(settingsGraph,branchType,node){
-    //console.log(settingsGraph)
+    //////console.log(settingsGraph)
 
     let sparqlQuery=getQuery()
     let url=getEndpointUrl()
@@ -15,15 +15,15 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
-    //console.log(sparqlQuery)
-    //console.log(settings) 
+    //////console.log(sparqlQuery)
+    //////console.log(settings) 
     if(data){
-      //console.log(data.treeData)
+      //////console.log(data.treeData)
     }
     try {
       var results = await runSparlqQuery(settings);
       //var results = results.bindings;
-      //console.log(results)
+      console.log(results)
 
       //VER SI HAY MUCHOS RESULTADOS
       ////-------------------results = clusterResults(results, settingsGraph)
@@ -41,25 +41,26 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
           legend.deleteAllColors()
         }else{
           d3.selectAll(".graph").remove()
-          ////////console.log("antes networkgraph")
+          ////console.log("antes networkgraph")
           networkGraph = new NetworkGraph("#networkGraph",forces,branchType,settingsGraph["rowNumber"]);
-          ////////console.log("despues networkgraph")
+          ////console.log("despues networkgraph")
           legend=new Legend("legend")
         }
 
         networkGraph.collapseAll()
       }else{
-        ////console.log(configRow.node)
+        ////////console.log(configRow.node)
         //data.update(results,branchType)
         networkGraph.addingGraph=true
         networkGraph.dblClickId=configRow.node.id.replace("_image","")+"_g"
         networkGraph.mergeData(results,"basic")
+        console.log(networkGraph.data)
         networkGraph.refresh()
 
         legend.addColors(networkGraph.colorScale)
 
         
-        handleNavigation(configRow.node)
+        //handleNavigation()
 
         //collapse graph if is basic type and hierarchy has more than two levels
         if(branchType=="basic"){
@@ -74,12 +75,12 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
     } catch (e) {
       results = false
     }
-    //console.log(data.treeData)
+    //////console.log(data.treeData)
     hideSpinMessage(interval)
 
     function getEndpointUrl(){
         var url;
-        ////////console.log(configRow)
+        ////////////console.log(configRow)
         url=configRow.rowFields.endpoint_url
         return url
     }
@@ -175,7 +176,7 @@ async function checkAskResultsFreeGraph(node, so) {
 
   return new Promise((resolve, reject) => {
     d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-        ////////////////////////////////////console.log(urls)
+        ////////////////////////////////////////console.log(urls)
         if (so == undefined) {
           subjectObject = ['s', 'o']
         } else {

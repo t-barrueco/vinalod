@@ -9,6 +9,7 @@ ConfigRow.prototype.init = function () {
     cr.rowNumber=configFile.getRowNumber(cr.option)
     cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
     cr.replaceParmtrsQuery("query")
+    cr.getNameClasses()
   }
 ConfigRow.prototype.update = function(option,node){
   var cr=this;
@@ -90,4 +91,18 @@ ConfigRow.prototype.fromSelectToAskQuery = function(){
     query=query.replaceAll("parameter","PARAMETER")
     cr.rowFields.askquery=query
   }
+}
+ConfigRow.prototype.getNameClasses = function () {
+  var cr=this;
+  /* cr.rowFields.classes_text.forEach(function(classText){
+
+  }) */
+  cr.nameClasses=cr.rowFields.classes_text.map(d=>d.text)
+}
+ConfigRow.prototype.getClassesCorrespondence=function(){
+  var cr=this,tmp={}
+  cr.rowFields["classes_text"].forEach(function(c){
+    tmp[c["class"]]=c["text"]
+  })
+  return tmp
 }

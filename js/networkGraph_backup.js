@@ -167,7 +167,7 @@ NetworkGraph.prototype.initVis = function () {
     if(vis.graphType=="basic"){
       //vis.colorScaleDomain=nodesClassesShow
       //////console.log(vis.nodesClassesShow)
-      vis.nodesClassesShow=configFile.getClassesShow(vis.configRow)
+      vis.nodesClassesShow=vis.configRow.getClassesCorrespondence()
       ////console.log(vis.nodesClassesShow)
       vis.colorScaleRange=vis.colors.slice(0,Object.values(vis.nodesClassesShow).length)
     }else{
@@ -466,6 +466,9 @@ NetworkGraph.prototype.enterGraph = function(){
     //vis.nodesClassesShow=configFile.getClassesShow(vis.configRow)
     //console.log(Object.values(vis.nodesClassesShow))
     //console.log(vis.colors)
+    vis.nodesClassesShow = [{...configRow.getClassesCorrespondence()}]
+    console.log(vis.nodesClassesShow)
+    console.log(Object.values(Object.values(configRow.rowFields["classes_text"])))
     vis.colorScale.domain(Object.values(vis.nodesClassesShow))
     vis.colorScale.range(vis.colors.slice(0,Object.values(vis.nodesClassesShow).length))
     ////console.log(vis.colorScale.range())
@@ -1336,7 +1339,7 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
         vis.initializeSimulation();
         vis.dataJoinGraph()
         vis.exitGraph()
-        handleNavigation(founded[0])
+        //handleNavigation(founded[0])
 
       }
     }
