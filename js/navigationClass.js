@@ -2,7 +2,7 @@ NavigationPanel = function ( _type) {
     this.type = _type;
     //this.node = _node
     this.init();
-    //console.log("navigation")
+    ////console.log("navigation")
   };
    
 NavigationPanel.prototype.init = function () {
@@ -25,8 +25,8 @@ NavigationPanel.prototype.init = function () {
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
-  console.log("show children details")
-  console.log(navPanel.node)
+  //console.log("show children details")
+  //console.log(navPanel.node)
   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
     $("#tabsNav").addClass("hidden")
   }else{
@@ -37,12 +37,12 @@ NavigationPanel.prototype.showChildrenDetails = function (){
 NavigationPanel.prototype.getNodes = function (){
   var navPanel=this;
   var sources2
-  console.log(networkGraph.data)
-  //console.log(navPanel.node)
+  //console.log(networkGraph.data)
+  ////console.log(navPanel.node)
   navPanel.targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == navPanel.node.id
   })
-  //console.log(navPanel.targets)
+  ////console.log(navPanel.targets)
   navPanel.sources=networkGraph.data.links.filter(function(item) {
     return item.target.id == navPanel.node.id
   })
@@ -60,12 +60,12 @@ NavigationPanel.prototype.getNodes = function (){
       })
     }
   }
-  //////////////console.log(networkGraph.treeData)
-  //////////////console.log(networkGraph.data)
+  ////////////////console.log(networkGraph.treeData)
+  ////////////////console.log(networkGraph.data)
   navPanel.sources.push(networkGraph.treeData[0])
   
-  //console.log(navPanel.sources)
-  //console.log(navPanel.targets)
+  ////console.log(navPanel.sources)
+  ////console.log(navPanel.targets)
 
   navPanel.sources=navPanel.sources.reverse();
 }
@@ -200,7 +200,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   if(nodeClass=="free"){
     addFreeGraph()
   }else{
-    ////console.log("entra")
+    //////console.log("entra")
     if(i+1==navPanel.sources.length){
       last=true
       addBasicGraph(last,imageSourceLast)
@@ -212,8 +212,8 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   function addBasicGraph(last,navImage){
     li=document.createElement("li")
     li.setAttribute("class", "relative pb-10");
-    //console.log(last)
-    //console.log(navImage)
+    ////console.log(last)
+    ////console.log(navImage)
     if(!last){
         div=document.createElement("div")
         div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
@@ -228,15 +228,15 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }else{
       a.id=navPanel.sources[i]["id"]+"_a"
     }
-    //console.log(a)
+    ////console.log(a)
     span=document.createElement("span")
     span.setAttribute("class","h-9 flex items-center")
     
     span2=document.createElement("span")
-    //console.log(networkGraph.colorCorrespondence)
-    ////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]]))
+    ////console.log(networkGraph.colorCorrespondence)
+    //////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]]))
 
-    ////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]]))
+    //////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]]))
     if(navPanel.sources[i]["target"]){
       colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
     }else{
@@ -244,7 +244,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }    
 
     span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-    //console.log(span2)
+    ////console.log(span2)
     img=document.createElement("img")
     img.setAttribute("src",navImage)
     img.setAttribute('width','40px')
@@ -255,7 +255,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     if(!last){
         el1.appendChild(div)
     }
-    //console.log(el1)
+    ////console.log(el1)
     el2=el1.appendChild(a)
     el2.appendChild(span).appendChild(span2).appendChild(img)
     span3=document.createElement("span")
@@ -280,7 +280,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
     el3.appendChild(img)
-    //console.log(el3)
+    ////console.log(el3)
   }
 
   function addFreeGraph(){
@@ -310,7 +310,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }else{
       colorCircle=colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[navPanel.sources[i]["class"]])]
     }   */ 
-    //////////////console.log(source)
+    ////////////////console.log(source)
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["type"]])]
     /* if(source["type"]=="uri"){
       colorCircle="green-300"
@@ -429,7 +429,7 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
   if(property){
     span4.innerHTML= source["target"]["property"]
-    //////////////console.log(source["target"]["property"])
+    ////////////////console.log(source["target"]["property"])
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
@@ -471,7 +471,7 @@ NavigationPanel.prototype.contentTable = function (){
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
   
-  //console.log(navPanel.targets)
+  ////console.log(navPanel.targets)
   if (navPanel.targets.length>0){
     $("#dvTable").show()
     $("#dvDetails").empty()
@@ -485,7 +485,7 @@ NavigationPanel.prototype.contentTable = function (){
     th.setAttribute("colspan","3")
     th.setAttribute("scope","colgroup")
     th.setAttribute("class","px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
-    //console.log(th)
+    ////console.log(th)
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       if(navPanel.node.class=="free"){
@@ -497,7 +497,7 @@ NavigationPanel.prototype.contentTable = function (){
       th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
-      //////////////////console.log(node)
+      ////////////////////console.log(node)
       if(menuOption){
         if(menuOption.split(";").length>1){
           th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
@@ -515,14 +515,14 @@ NavigationPanel.prototype.contentTable = function (){
 
      
     }
-    //console.log(th)
+    ////console.log(th)
 
     navPanel.thead.appendChild(tr).appendChild(th)
     navPanel.tbody=document.createElement("tbody")
     navPanel.tbody.className="bg-white divide-y divide-gray-200"
-    //console.log("before showLines")
+    ////console.log("before showLines")
     navPanel.showLines(navPanel.numCurrent,true)
-    //console.log("after showLines")
+    ////console.log("after showLines")
     var dvTable = document.getElementById("dvTable");
     dvTable.innerHTML = "";
   
@@ -602,7 +602,7 @@ NavigationPanel.prototype.contentTable = function (){
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
-      //////////////////console.log(navPanel.node.detail)
+      ////////////////////console.log(navPanel.node.detail)
       navPanel.showDetails()
     }else{
       $("#dvDetails").empty()
@@ -673,7 +673,7 @@ NavigationPanel.prototype.showDetails = function (){
 
             navDetailHeader=header.replace("Title",navPanel.node["value"]).toUpperCase()
             $("#dvDetails").append($(navDetailHeader))
-            //////////////////console.log(navPanel.node)
+            ////////////////////console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
                 if((key % 2 == 0)|| (key == 0)){  
@@ -874,7 +874,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     numCurrent=navPanel.numCurrent+1
   }
   navPanel.numCurrent=parseInt(numCurrent)
-  //console.log("showLines 873")
+  ////console.log("showLines 873")
   removeLinesNavContent()
 
   if(!first){
@@ -891,7 +891,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 
 
   }
-  //console.log("showLines 890")
+  ////console.log("showLines 890")
 
   if(first){
     linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
@@ -903,13 +903,13 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     $("#add-sel-graph").show()
   }
 
-  //console.log("showLines 902")
+  ////console.log("showLines 902")
 
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
     navPanel.contentRows.push(row)
-    //console.log("showLines 908")
+    ////console.log("showLines 908")
 
     if(linesShown[i]["target"]["class"]=="free"){
       if(cluster){
@@ -955,7 +955,7 @@ NavigationPanel.prototype.addEventsContentNav = function (){
 
   navPanel.timeoutTiming = 500;
   d3.selectAll("#modal-content td").on("dblclick",function(){ 
-    console.log("dblcikc 957")
+    //console.log("dblcikc 957")
     $("#dvDetails").empty()
     node=d3.select("#"+this.getAttribute("id")).data()[0]
     d3.event.preventDefault();
@@ -1146,13 +1146,13 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   
   function insertContent(property){
     var menuOption;
-    //////////////console.log(target["target"]["type"])
-    //////////////console.log(nodesClassesCorrespondence)
-    //////////////console.log(colorCorrespondence)
-    //////////////console.log(networkGraph.colorScale.domain())
-    //////////////console.log(networkGraph.colorScale.range())
-    //////////////console.log(nodesClassesCorrespondence[target["target"]["type"]])
-    //////////////console.log(networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["type"]]))
+    ////////////////console.log(target["target"]["type"])
+    ////////////////console.log(nodesClassesCorrespondence)
+    ////////////////console.log(colorCorrespondence)
+    ////////////////console.log(networkGraph.colorScale.domain())
+    ////////////////console.log(networkGraph.colorScale.range())
+    ////////////////console.log(nodesClassesCorrespondence[target["target"]["type"]])
+    ////////////////console.log(networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["type"]]))
 
     cell = row.insertCell(-1);
     cell.className="px-2 py-4 whitespace-nowrap"
@@ -1179,10 +1179,10 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     img=document.createElement("img")
     
     if(!property){
-/*       //////////////console.log(colorCorrespondence)
-      //////////////console.log(networkGraph.colorScale)
-      //////////////console.log(target["target"]["type"])
-      //////////////console.log(nodesClassesCorrespondence) */
+/*       ////////////////console.log(colorCorrespondence)
+      ////////////////console.log(networkGraph.colorScale)
+      ////////////////console.log(target["target"]["type"])
+      ////////////////console.log(nodesClassesCorrespondence) */
       img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["type"]])] + " rounded-full"
 /* 
         if(target["target"]["type"]=="uri"){
@@ -1223,7 +1223,7 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         div4.appendChild(a).appendChild(span).appendChild(newText);
     }else{
         span=document.createElement("span")
-        //////////////console.log(target)
+        ////////////////console.log(target)
         if(target["value"]!=undefined){
           newText = document.createTextNode(target["value"]);
         }else if(target["target"]["property"]!=undefined){
@@ -1292,7 +1292,7 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
   }else{
     bubble=cell
   }
-  //////console.log(bubble)
+  ////////console.log(bubble)
   if(bubble){
     if(bubble.class=="free"){
       freeGraph()
@@ -1373,11 +1373,11 @@ NavigationPanel.prototype.addMenuToTable = function (){
   menuTableBasic()
   function menuTableBasic(){
     var newText,newCell,newRow,span,div,textNode
-    //console.log(menuItems)
+    ////console.log(menuItems)
     d3.selectAll(".menu-table").remove()
     var rowIndex=$('#myModal #'+ menuItems.node["id"]).parent()[0].rowIndex
     var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-    //////console.log(menuItems)
+    ////////console.log(menuItems)
     for (var i = 0; i < menuItems.selectedRows.length; i++) {
         newRow = tbodyRef.insertRow(rowIndex+i);
         newRow.id="menu-table-"+menuItems.selectedRows[i]["position"]
@@ -1408,7 +1408,7 @@ NavigationPanel.prototype.addMenuToTable = function (){
         newCell.appendChild(div).appendChild(textNode)
         
         d3.selectAll("#menu-table-"+menuItems.selectedRows[i]["position"]).on("dblclick",function(){  
-          console.log(menuItems.node)
+          //console.log(menuItems.node)
           navPanel.clickMenuTable(menuItems.selectedRows[0]["option"],menuItems.node)
         })
     }
@@ -1419,7 +1419,7 @@ NavigationPanel.prototype.addMenuToTable = function (){
     var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
   
     var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-    //console.log(menuItems)
+    ////console.log(menuItems)
     for (var i = 0; i < menuItems.selectedRows.length; i++) {
         newRow = tbodyRef.insertRow(rowIndex+i);
         newRow.id="menu-table-"+ node.id + "-" + [i]
@@ -1468,21 +1468,21 @@ NavigationPanel.prototype.addMenuToTable = function (){
 NavigationPanel.prototype.clickMenuTable = async function (option,node){
   var bubble;
   var navPanel=this;
-  console.log(node)
+  //console.log(node)
   clickMenuBasic(option,node)
   async function clickMenuBasic(option,node){
     var element=document.getElementById(node["id"])
     //CAMBIAR LA POSICIÓN POR LA OPTION SI SE PUEDE...
     await buildBasicGraph(option,node)
     //unclickBubbleFreeGraph()
-    console.log("clickBubbleFreeGraph")
+    //console.log("clickBubbleFreeGraph")
     clickBubbleFreeGraph(element,networkGraph.data)
   }
   async function clickMenuExpert(form){
     var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
 
     //await buildFreeGraph(newForm,"table",node)
-    //////console.log(newForm)
+    ////////console.log(newForm)
     await buildNetworkGraph(newForm,"expert",node)
     if(node["menuOption"]){
       if(node["menuOption"].split(";").length>1){

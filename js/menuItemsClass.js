@@ -42,7 +42,7 @@ MenuItems.prototype.filterByAskResult = async function () {
         parameters=mi.indexRows[i].rowFields["parameters"]
         try {
             results = await runAskSparlqQuery(mi.indexRows[i].rowFields["endpoint_url"],mi.indexRows[i].rowFields["askquery"]);
-            console.log(results)
+            //console.log(results)
         } catch (e) {
         results = false
         } 
@@ -52,7 +52,7 @@ MenuItems.prototype.filterByAskResult = async function () {
     }
 
     mi.selectedRows=resultIndexRows
-    console.log(mi.selectedRows)
+    //console.log(mi.selectedRows)
   }
 
 /* MenuItems.prototype.checkQueriesBasic = async function () {
@@ -67,9 +67,9 @@ MenuItems.prototype.filterByAskResult = async function () {
         vis.initializeSimulation();
         vis.dataJoinGraph()
         vis.exitGraph()
-        //////////////////////////////////////////////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////////////////console.log(node)
     }else{
-        ////////////////////////////////////////////////////////////////////console.log("else")
+        //////////////////////////////////////////////////////////////////////console.log("else")
         if (founded[0]["children"]){
             //SE CONTRAE LOS CHILDREN
 
@@ -83,7 +83,7 @@ MenuItems.prototype.filterByAskResult = async function () {
 MenuItems.prototype.getSelectedRowByOption = async function (option){
     var mi=this;
     let row=mi.selectedRows.filter(d=>d.option==option)[0]
-    //////console.log(row)
+    ////////console.log(row)
     return row
 }
 MenuItems.prototype.getMenuItemsInGraph = async function (){
@@ -154,7 +154,7 @@ MenuItems.prototype.getMenuItemsInTable = async function (){
     //if click on Navigation panel then origin=table
     /* if(graphType=="basic"){
     //tableBasic()
-        console.log("addMenuToTable")
+        //console.log("addMenuToTable")
         navigationPanel.addMenuToTable()
     }else if(graphType=="expert"){
     //tableExpert()

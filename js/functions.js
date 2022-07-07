@@ -113,13 +113,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        //////////////////////////console.log("pageY menos")
+        //////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        //////////////////////////console.log("pageX menos")
+        //////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -171,7 +171,7 @@ async function runAskSparlqQuery(url,sparqlQuery){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  ////////////////////console.log(d)
+  ////////////////////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -393,7 +393,7 @@ function get_node_from_element(id){
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[],propertyUri;
-  
+  ////console.log(node)
   if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
@@ -423,7 +423,20 @@ function bubbleImage(node){
   }
   
 }
-
+function propertyUriImage(node){
+  var propertyUri=false;
+  if(configFile.file[node["configRowNumber"]]){
+    configFile.file[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
+      if(p.property.endsWith("_uri")){
+        property=p.property.replace("_uri","")
+        if(node["class"]!=property){
+          propertyUri= p.property
+        }
+      }
+    })
+  }
+  return propertyUri
+}
 //function for transition from bubble image to text in bubbles when zoom in and zoom out
 function textImageZoom(zoomScale){
   if(zoomScale>1.5){
@@ -616,4 +629,13 @@ function addTooltip(htmlData){
   .style("opacity", 1)
   .style("top",y+50)
   .style("left",x+50)
+}
+function showBasicGraph(){
+  //landing-text
+  //landing-img
+  //networkGraph
+  $("#graph-area").removeClass("hidden")
+  $("#form-container").addClass("hidden")
+  $("#landing-img").addClass("hidden")
+  $("#landing-text").addClass("hidden")
 }

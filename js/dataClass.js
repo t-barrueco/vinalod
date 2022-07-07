@@ -100,7 +100,6 @@ Data.prototype.buildTreeData = function () {
         if(configRow.rowFields.tooltip){
           node["tooltip"]=getTooltipNode(configRow.rowFields.tooltip,node["class"])
         }
-        console.log(configRow)
         if((configRow.rowFields.detail!="")&&(configRow.rowFields.details!=undefined)){
         node["detail"]=getDetail(configRow.rowFields.details,node["class"])
         }
