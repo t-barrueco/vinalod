@@ -137,18 +137,6 @@ function flatten_freeGraph(root) {
   return { "flatData": { "nodes": nodes, "links": links }, "treeData": root };
 }
 
-function addNodesGraph(results, node, form) {
-  //////////////////////console.log("addNodesGraph")
-  links = addFreeGraphData(results, node, form)
-  networkGraph.initializeSimulation();
-  networkGraph.dataJoinGraph()
-  networkGraph.enterGraph()
-  networkGraph.initializeSimulation();
-  networkGraph.dataJoinGraph()
-  networkGraph.exitGraph()
-  //networkGraph.zoomOut()
-
-}
 function dblclickCellContent(cell) {
   navigationPanel.dblclickCellContent(cell)
 }
@@ -388,37 +376,6 @@ function addMsgNoResults(){
     msgNoResults.classList.remove("hidden");
     msgNoResults.classList.add("inline-block");
 }
-/* async function checkAskResultsFreeGraph(node, so) {
-  var resultRows = []
-
-  return new Promise((resolve, reject) => {
-    d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-        //////////////////////console.log(urls)
-        if (so == undefined) {
-          subjectObject = ['s', 'o']
-        } else {
-          subjectObject = [so]
-        }
-        //////////////////console.log(subjectObject)
-        //////////////////console.log(urls)
-        if (typeof node === 'object') {
-          uri = d3.select("#" + node.id).data()[0].value
-        } else {
-          uri = node
-        }
-        for (var j = 0; j < subjectObject.length; j++) {
-          for (var i = 0; i < urls.length; i++) {
-            results = await runAskSparlqQueryFreeGraph(urls[i].sparqlEndpoint, uri, subjectObject[j])
-            if (results == true) {
-              resultRows.push({ "url": urls[i].sparqlEndpoint, "subject-object": subjectObject[j], "uri": uri })
-            }
-          }
-        }
-      //////////////////console.log(resultRows)
-      resolve(resultRows)
-    })
-  })
-} */
 
 async function runAskSparlqQueryFreeGraph(url, uri, subjectObject) {
   var prefixes = "", settings
@@ -572,6 +529,9 @@ function clickBubbleFreeGraph(element) {
   node = d3.select("#" + element.getAttribute("id")).data()[0]
   //console.log(node)
   console.log(navigationPanel)
+  //configRow.update(option,node)
+  //CAMBIAR LOS CAMPOS DEL CONFIGROW
+  configRow.node=node
   //throw new Error("Something went badly wrong!");
   if (navigationPanel == undefined) {
     navigationPanel = new NavigationPanel("freeGraph", node);
@@ -600,32 +560,7 @@ function unclickBubbleFreeGraph() {
     .style("fill", "grey")
     .style("stroke-width", "1px");
 }
-function fillLegendFreeGraph() {
-  var colorsFreeGraph = [{ "name": "uri", "color": "bg-green-300" }, { "name": "bnode", "color": "bg-yellow-300" }, { "name": "literal", "color": "bg-pink-300" }, { "name": "menu Option", "color": "bg-blue-300" }]
 
-  $("#legend li").remove()
-  colorsFreeGraph.forEach(function (c) {
-    appendLiFreeGraph(c.color, c.name)
-  })
-
-
-}
-function appendLiFreeGraph(color, textLi) {
-  var li, classLi;
-  classLi = "flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md "
-  li = d3.select("#legend").append("li")
-    .attr("class", "flex col-span-1 rounded-md shadow-sm")
-  li.append("div")
-    .attr("class", classLi + color)
-  li.append("div")
-    .attr("class", "flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-gray-200 rounded-r-md")
-    .append("div")
-    .attr("class", "flex-1 px-4 py-2 text-sm truncate")
-    .append("a")
-    .attr("class", "font-medium text-gray-900 hover:text-gray-600")
-    .append("text")
-    .text(textLi.toUpperCase());
-}
 /* function clusterResults(results, subjectObject) {
   var ocurrences = [], small, big, results_small, results_big, num_occ, results_big_filtered;
   var properties = results.map(function (r) {
@@ -773,11 +708,4 @@ function stopSparql(element) {
   sparqlQueryWindow.abort()
   clearInterval(interval);
   document.getElementById("sparql-timeout").style.display = "none"
-}
-function getAllIndexes(arr, value, field) {
-  var indexes = [], i;
-  for (i = 0; i < arr.length; i++)
-    if (arr[i][field] === value)
-      indexes.push(i);
-  return indexes;
 }

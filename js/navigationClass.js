@@ -25,7 +25,8 @@ NavigationPanel.prototype.init = function () {
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
-
+  console.log("show children details")
+  console.log(navPanel.node)
   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
     $("#tabsNav").addClass("hidden")
   }else{
@@ -1306,28 +1307,7 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
   }
   async function basicGraph(){
     var element=document.getElementById(cell.getAttribute("id"));
-    /* if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]){
-      if(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]["type"]=="WEBPAGE"){
-        modal2=getModal2()
-        showWebPage(get_node_from_element(element.getAttribute("id"))[Object.keys(get_property_names(configFile.filter(v=>v.class==nodesClassesCorrespondence[get_node_from_element(element.getAttribute("id"))["class"]])[0]["properties"]))[0]],get_node_from_element(element.getAttribute("id"))["value"],modal2.modalHeader,modal2.modalContent)
-      }else{
-        indexRows=await networkGraph.wrangleData(element,"table");
-
-      }
-    }else{
-      indexRows=await networkGraph.wrangleData(element,"table");
-    } */
     await networkGraph.wrangleData(element,"table");
-    //clickBubbleFreeGraph(element)
-/*     //console.log("1318")
-    if((indexRows.length==0)&&(d3.select("#"+element.getAttribute("id")).data()[0]["children"]==undefined)){
-      if(d3.select("#"+element.getAttribute("id")).data()[0].detail!=undefined){
-        clickBubbleFreeGraph(element,networkGraph.data)
-      }
-    }else if(d3.select("#"+element.getAttribute("id")).data()[0]["class"]=="menuOption"){
-      clickBubbleFreeGraph(element,networkGraph.data)
-    } */
-    //else if()
   }
   async function freeGraph(){
       indexRows=await networkGraph.wrangleData(cell,"table");

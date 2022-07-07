@@ -1409,6 +1409,7 @@ navigationPanel.prototype.addMenuToTable = function (node,menuItems){
   }
 
   d3.selectAll(".menu-table" ).on("dblclick",function(){ 
+    console.log("1412")
     textMenu=this.querySelector("span").innerHTML
     new_url = textMenu.match("Sparql Endpoint: (.*) Position:")[1]; 
     new_subjectObject=textMenu.match("Position: (.*)")[1];
@@ -1568,7 +1569,7 @@ function addMenuToTable(node,menuItems){
       newCell.appendChild(div).appendChild(textNode)
       
       d3.selectAll("#menu-table-"+menuItems[i]["position"]).on("dblclick",function(){  
-
+        console.log(this)
         clickMenuTable(this.getAttribute("id").replace("menu-table-",""),node)
       })
   }

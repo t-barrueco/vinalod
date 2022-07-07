@@ -406,12 +406,12 @@ NetworkGraph.prototype.updateDisplay = function () {
       .style("opacity", vis.forceProperties.link.enabled ? 1 : 0);
 }
 
-NetworkGraph.prototype.updateAll = function (){
+/* NetworkGraph.prototype.updateAll = function (){
   var vis = this;
 
   vis.initializeSimulation();
   vis.updateDisplay();
-}
+} */
 
 
 NetworkGraph.prototype.dataJoinGraph = function(){
@@ -1615,19 +1615,7 @@ NetworkGraph.prototype.refresh = function (node){
 }
 NetworkGraph.prototype.mergeData = function (results,branchType){
   var vis = this;
-  //////////console.log(data.results)
-  //data.add()
-  ////////console.log(data.treeData)
   data.update(results,branchType)
-  ////////console.log(data.treeData)
-  //////////console.log(data.results)
-  //////////////console.log(data)
-  //////////////console.log(data.flatData.flatData.nodes)
-  //////////////console.log(data.flatData.flatData.links)
-  //vis.data.nodes=get_unique_values_arrays(data.flatData.flatData.nodes,vis.data.nodes)
-  //vis.data.links=get_unique_values_arrays(data.flatData.flatData.links,vis.data.links)
-  //vis.treeData=vis.treeData.concat(data.treeData)
-  //vis.data=flatten(vis.treeData).flatData
   vis.data=data.flatData.flatData
   vis.treeData=data.treeData
 }

@@ -100,9 +100,9 @@ Data.prototype.buildTreeData = function () {
         if(configRow.rowFields.tooltip){
           node["tooltip"]=getTooltipNode(configRow.rowFields.tooltip,node["class"])
         }
-
-        if((configRow.detail!="")&&(configRow.detail!=undefined)){
-        node["detail"]=getDetail(configRow.detail,node["class"])
+        console.log(configRow)
+        if((configRow.rowFields.detail!="")&&(configRow.rowFields.details!=undefined)){
+        node["detail"]=getDetail(configRow.rowFields.details,node["class"])
         }
 
         prop=properties.filter(d=>d.class==treeResults[index])

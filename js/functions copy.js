@@ -5,11 +5,56 @@
 *    created by Teresa Barrueco
 */
 
+//Transform data from hierarchy in Config File to an array
+// format : [parent,child,grandchild...]
+
+function get_hierarchy(hierarchy){
+  var hierarchy_arr=[]
+  hierarchy_arr=[hierarchy[0]["parent"]]
+  hierarchy.forEach(function(d){
+    hierarchy_arr.push(d["child"])
+  })
+
+  return hierarchy_arr
+}
 function get_unique_values_arrays(arr1,arr2){
   arr1=arr1.concat(arr2)
   return [...new Set(arr1)];
 }
+//Get classes and text from Config File to show for every class
+// format: {"className":textClass,"className2":textClass2}
+/* function getClassesShow(classes){
+  var tmp={}
+  classes.forEach(function(c){
+    tmp[c["class"]]=c["text"]
+  })
+  return tmp
+} */
 
+//Get properties for classes in the Config File
+// format: {"className":[property1,property2...],"className2":[property1,property2...]}
+/* function get_properties(properties){
+  var temp={}
+  properties.forEach(function(d){
+    if(temp[d["class"]]){
+      temp[d["class"]].push(d["property"])
+    }else{
+      temp[d["class"]]=[d["property"]]
+    }
+  })
+  return temp
+} */
+
+//Get full names for properties
+// format: {"property":property_name,"property2":property_name...}
+function get_property_names(properties){
+  var temp={}
+  properties.forEach(function(d){
+        temp[d["property"]]=d["property_name"]
+      })
+      return temp
+
+}
 // Generate random string for ids
 function genRandomString(){
   var s=Math.random().toString(36).substr(2, 11);
@@ -26,12 +71,16 @@ function changeBasicGraph(option){
 
   //remove filter, legend and graph
   d3.selectAll(".classFilter").remove()
+  //d3.select("#legend").selectAll("li").remove()
   d3.selectAll(".graph").remove()   
                                                                      
   hideModal("#myModal")
   deleteTooltip()
   //reset global variables
   propertiesFilterHist=[]
+  filtersInGraph=[]
+  classesFilterList=[]
+  filtersList=[]
 
   if(networkGraph){
     networkGraph = undefined;
@@ -52,6 +101,16 @@ function changeBasicGraph(option){
   option=$(option).find( "#optionMain" ).text().trim()
   
   buildBasicGraph(option)
+}
+//Remove all elements from screen and show graph area
+function showBasicGraph(){
+  //landing-text
+  //landing-img
+  //networkGraph
+  $("#graph-area").removeClass("hidden")
+  $("#form-container").addClass("hidden")
+  $("#landing-img").addClass("hidden")
+  $("#landing-text").addClass("hidden")
 }
 
 //Show options when right clicking
@@ -160,6 +219,20 @@ async function runAskSparlqQuery(url,sparqlQuery){
 
 }
 
+
+function replaceParametersQuery(node,sparqlQuery){
+var j=2,result;
+while(sparqlQuery.indexOf("PARAMETER"+(j).toString())!=-1){
+  var regex = new RegExp('(?<='+escapeRegExp("FILTER(?")+').*(?='+"=<PARAMETER2"+')')
+  result=regex.exec(sparqlQuery)[0]
+
+  j+=1
+}
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+}
+
  //function that return node in the treeMap if founded
  function findNodeTreemap(nodeId,treeData){
    var founded=treeData.filter(function(item) {
@@ -262,7 +335,15 @@ function getTooltipMenu(d){
 }
 // Add to legend
 
-
+function differenceArrays(a1, a2) {
+  var result = [];
+  for (var i = 0; i < a1.length; i++) {
+    if (a2.indexOf(a1[i]) === -1) {
+      result.push(a1[i]);
+    }
+  }
+  return result;
+}
 //function to autocomplete in search field
 function autocomplete(inp, arr) {
   var currentFocus;
@@ -383,6 +464,13 @@ function autocompleteValSelected(el){
     navigation.valueSelected()
   }
 }
+//function that get a key of an object from value
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+function insertAfter(newNode, existingNode) {
+  existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+}
 function getCommentOption(option){
   return configFile.file.filter(d=>d.option==option)[0]["option_text"]
 }
@@ -422,6 +510,20 @@ function bubbleImage(node){
     }
   }
   
+}
+function propertyUriImage(node){
+  var propertyUri=false;
+  if(configFile.file[node["configRowNumber"]]){
+    configFile.file[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
+      if(p.property.endsWith("_uri")){
+        property=p.property.replace("_uri","")
+        if(node["class"]!=property){
+          propertyUri= p.property
+        }
+      }
+    })
+  }
+  return propertyUri
 }
 
 //function for transition from bubble image to text in bubbles when zoom in and zoom out
