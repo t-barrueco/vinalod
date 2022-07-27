@@ -1,96 +1,121 @@
-var data={},networkGraph,legend,navigationPanel,menuItems,
+var data={},networkGraph,legend,navigationPanel,menuItems,configFile,configRow,filesIcons,
 nodesClasses,nodesSelSources=[],nodesSelTarget=[],configRowsList=[],
 nodesClassesShow=[],nodesClassesCorrespondence,filesIcons,colorCorrespondence={},
 optionsMenuHtml,showNavigation=true;
 var timer = 0;
 var delay = 200;
 var prevent = false;
-////console.log(navigationPanel)
+//////console.log(navigationPanel)
 function dataViz(){
     var optionsMenu;
+    
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
           d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
               d3.tsv("../config_vinalod/graph_icons.txt",function(dataIcons){
                 //-----------configFile=dataConfig;
+                $("#expand-settings-legend").css("background-color", "#064494");
+                $("#collapse-settings-legend").css("background-color", "#064494");
+
                 configFile = new ConfigFile(dataConfig);
+                //console.log(configFile)
                 filesIcons=dataIcons;
                 //the collection chosen per default in the flyout menu is 
                 //eu_vocabularies
-                optionsMenu=configFile.filterByValueField("eu_vocabularies","collection")
+                /* optionsMenu=configFile.filterByValueField("eu_vocabularies","collection")
                 //get html shown for every option in flyout menu chosen
-                $.get("optionMainMenu.html", function (data) {
+                $.get("dataviz_collection.html", function (data) {
+                //$.get("optionMainMenu.html", function (data) {
                     optionsMenuHtml=data
                     appendHtmlOptions(optionsMenu)
-                });
+                }); */
               })
           })
   }
 /* function updateAll(){
     networkGraph.updateAll();
   } */
-  
+function getOptionsCollection(collection){
+  $('#landing-page'). hide();
+  $('#dataviz-collection'). show();
+  $('#graph-area'). hide();
+  $('#dataviz-collection article').remove()
+  //$('#basic-mode').attr("area-expanded","false");
+  changeCollectionOptions(collection.id.trim())
+}
 async function buildBasicGraph(option,node){
     var sparqlQuery,modal2,prefixes;
-    ////////console.log("buildBasicGraph")
-    ////////console.log(arguments)
-    ////console.log(option)
-    ////console.log(node)
-    if(typeof configRow !== 'undefined'){
-      //////console.log(option)
-      configRow.update(option,node)
-    }else{
-      configRow = new ConfigRow(option,node);
-    }
-    
-    ////console.log(configRow)
-    prefixes=""
-
-    //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
-    if(configRow.rowFields.type=="TREE"){
-      ////////console.log("TREE")
-      await buildNetworkGraph(configRow,"basic",node)
-    }else{
-      //////////////////////////console.log("other type config row")
-      //////////////////////////console.log(configRow)
-      //sparqlQuery=configRow.sparqlQuery
-      deleteTooltip()
-      sparqlQuery=configRow.rowFields.query
-      //////////////////////////console.log(sparqlQuery)
-      if (configRow.type=="TREEGRAPH"){
-        modal2=getModal2()
-        showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent,configRow)
-        showModal("#myModal2")
-      }else if (configRow.type=="WIKIPEDIA"){
-        //////////////////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
-        modal2=getModal2()
-        showWikipediaPage(node,modal2.modalHeader,modal2.modalContent,configRow)
-        showModal("#myModal2")
-      }else if (configRow.type=="WEBPAGE"){
-        modal2=getModal2()
-        showWebPage(page,modal2.modalHeader,modal2.modalContent)
-        showModal("#myModal2")
-      }else if (configRow.type=="WEBPAGE_QUERY"){
-        showWebPageQuery(node,sparqlQuery,configRow.url)
-      }else if (configRow.type=="TIMELINE"){
-        modal2=getModal2()
-        showTimeLine(node,modal2.modalHeader,modal2.modalContent,configRow)
-        showModal("#myModal2")
-      }else if (configRow.type=="PDF"){
-        modal2=getModal2()
-        showPdf(node,sparqlQuery,configRow.url,modal2.modalHeader,modal2.modalContent)
-        showModal("#myModal2")
-      }else if (configRow.type=="TABLE"){
-        modal2=getModal2()
-        showTable(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
-        showModal("#myModal2")
-      }else if (configRow.type=="WORDCLOUD"){
-        modal2=getModal2()
-        showWordcloud(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
-        showModal("#myModal2")
+    //////////console.log("buildBasicGraph")
+    //////////console.log(arguments)
+    //console.log(option)
+    //console.log(node)
+    $('#landing-page'). hide();
+    $('#dataviz-collection'). hide();
+    $('#graph-area'). show();
+    console.log(option)
+    console.log(node)
+    if((node==undefined)||(!node["subject-object"])){
+      if(typeof configRow !== 'undefined'){
+        ////////console.log(option)
+        configRow.update(option,node)
+      }else{
+        configRow = new ConfigRow(option,node);
       }
+          //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
+      if(configRow.rowFields.type=="TREE"){
+        //////////console.log("TREE")
+        await buildNetworkGraph(configRow,"basic",node)
+      }else{
+        ////////////////////////////console.log("other type config row")
+        ////////////////////////////console.log(configRow)
+        //sparqlQuery=configRow.sparqlQuery
+        deleteTooltip()
+        sparqlQuery=configRow.rowFields.query
+        ////////////////////////////console.log(sparqlQuery)
+        if (configRow.type=="TREEGRAPH"){
+          modal2=getModal2()
+          showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent,configRow)
+          showModal("#myModal2")
+        }else if (configRow.type=="WIKIPEDIA"){
+          ////////////////////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
+          modal2=getModal2()
+          showWikipediaPage(node,modal2.modalHeader,modal2.modalContent,configRow)
+          showModal("#myModal2")
+        }else if (configRow.type=="WEBPAGE"){
+          modal2=getModal2()
+          showWebPage(page,modal2.modalHeader,modal2.modalContent)
+          showModal("#myModal2")
+        }else if (configRow.type=="WEBPAGE_QUERY"){
+          showWebPageQuery(node,sparqlQuery,configRow.url)
+        }else if (configRow.type=="TIMELINE"){
+          modal2=getModal2()
+          showTimeLine(node,modal2.modalHeader,modal2.modalContent,configRow)
+          showModal("#myModal2")
+        }else if (configRow.type=="PDF"){
+          modal2=getModal2()
+          showPdf(node,sparqlQuery,configRow.url,modal2.modalHeader,modal2.modalContent)
+          showModal("#myModal2")
+        }else if (configRow.type=="TABLE"){
+          modal2=getModal2()
+          showTable(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
+          showModal("#myModal2")
+        }else if (configRow.type=="WORDCLOUD"){
+          modal2=getModal2()
+          showWordcloud(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
+          showModal("#myModal2")
+        }
+      }
+    }else{
+      console.log(option)
+      await buildNetworkGraph(option,"expert",node)
     }
-  //console.log("fin build")
+
+    
+    //////console.log(configRow)
+    //prefixes=""
+
+
+  ////console.log("fin build")
   }
 
 function collapse(){
@@ -110,22 +135,22 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  ////////////////////////////////////////console.log("collapse")
+  //////////////////////////////////////////console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  ////////////////////////////////////////console.log("collapse")
+  //////////////////////////////////////////console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
 }
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-  if(navigation){
-    navigation.clusterElSelected=[]
+  if(navigationPanel){
+    navigationPanel.clusterElSelected=[]
   }
   
   $("#myModal").removeClass("translate-x-0")
@@ -134,7 +159,7 @@ span.onclick = function() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  //////////////console.log(event.target)
+  ////////////////console.log(event.target)
   /* if (event.target == modal) {
     $("#myModal").removeClass("translate-x-0")
     $("#myModal").addClass("translate-x-full")
@@ -152,11 +177,11 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 
 // When the user clicks on <span> (x), close the modal
-span2.onclick = function() {
-  ////////////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
+/* span2.onclick = function() {
+  //////////////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
-}
+} */
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -264,9 +289,11 @@ function expertMode(){
       $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
       $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   }
+  //console.log("entra")
   $("#graph-area").addClass("hidden")
-  $("#form-container").removeClass("hidden")
-  $("#landing-img").addClass("hidden")
+  $("#form-container form").show()
+  $("#landing-page").hide()
+  $("#dataviz-collection").hide()
   $("#landing-text").addClass("hidden")
   if(legend){
     legend.deleteAllColors()
@@ -292,8 +319,10 @@ function basicMode(){
 }
 function changeCollectionOptions(collection){
   var newCollection,oldCollection;
-
-  oldCollection=$("#tabs-sections").find(".bg-blue-500")
+  //console.log(collection)
+  //let value="eu_whoiswho"
+  //window.location.href = "collection.html?collection="+value;
+/*   oldCollection=$("#tabs-sections").find(".bg-blue-500")
   
   oldCollection.removeClass("bg-blue-500")
   oldCollection.addClass("bg-transparent")
@@ -306,23 +335,59 @@ function changeCollectionOptions(collection){
       newCollection.addClass("bg-blue-500")
       newCollection.parent().addClass("text-gray-900")
       newCollection.parent().removeClass("text-gray-500")
-  }
-  optionsMenu=configFile.file.filter(d=>d.collection==collection)
+  } */
+  let optionsMenu=configFile.file.filter(d=>d.collection==collection)
+  //console.log(optionsMenu)
   appendHtmlOptions(optionsMenu)
 }
+function test(){
+  d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
+      //-----------configFile=dataConfig;
+      configFile = new ConfigFile(dataConfig);
+      //console.log(configFile)
+      //the collection chosen per default in the flyout menu is 
+      //eu_vocabularies
+      /* optionsMenu=configFile.filterByValueField("eu_vocabularies","collection")
+      //get html shown for every option in flyout menu chosen
+      $.get("dataviz_collection.html", function (data) {
+      //$.get("optionMainMenu.html", function (data) {
+          optionsMenuHtml=data
+          appendHtmlOptions(optionsMenu)
+      }); */
+      //console.log("test")
+      //console.log(configFile)
+      const queryString = window.location.search;
+      //console.log(queryString);
+      const collection = new URLSearchParams(queryString).get('collection');
+      //console.log(collection)
+      changeCollectionOptions(collection)
+})
+
+}
 //add html in flyout menu for every option
-function appendHtmlOptions(optionsMenu){
+/* function appendHtmlOptions(optionsMenu){
   $("#options-menu").find("a").remove()
   optionsMenu.forEach(element => {
       html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       $("#options-menu").append($(html))
   });
+} */
+function appendHtmlOptions(optionsMenu){
+  //$("#dataviz-collection").find("a").remove()
+  $.get("dataviz_collection.html", function (data) {
+    optionsMenuHtml=data
+    //appendHtmlOptions(optionsMenu)
+    optionsMenu.forEach(element => {
+      html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
+      $("#dataviz-collection").append($(html))
+  });
+  });
 }
 function handleNavigation(){
-  ////console.log("handleNavigation")
-  ////console.log(showNavigation)
+  //////console.log("handleNavigation")
+  //////console.log(showNavigation)
   if(showNavigation){
-    ////console.log(navigation)
+    //////console.log(navigation)
     if (typeof (navigation) != "object") {
       navigation = new navigationPanel("freeGraph");
     } else if (navigation.type != "freeGraph") {
@@ -336,7 +401,7 @@ function handleNavigation(){
 async function buildNetworkGraph(settingsGraph,branchType,node){
   let sparqlQuery=getQuery()
   let url=getEndpointUrl()
-
+  console.log(settingsGraph)
   hideSpinMessage(interval)
 
   var interval=showSpinMessage("Waiting for Sparql query")
@@ -346,18 +411,21 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
   let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
 
   if(data){
-    ////////console.log(data.treeData)
+    //////////console.log(data.treeData)
   }
   try {
     var results = await runSparlqQuery(settings);
-
+    console.log(results)
+    console.log("despues")
     //VER SI HAY MUCHOS RESULTADOS
     ////-------------------results = clusterResults(results, settingsGraph)
     //stop displaing message when executing query
-    hideSpinMessage(interval)
-
+    console.log(configRow)
+    //hideSpinMessage(interval)
+    console.log(configRow)
     //if no bubble is clicked or row in the table
-    if(configRow.node==undefined){
+    if((configRow==undefined)||(configRow.node==undefined)){
+      console.log("entra en if")
       data=new Data(results,branchType)
       //add forces to graph
       setForcesGraph()
@@ -373,10 +441,11 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
 
       networkGraph.collapseAll()
     }else{
+      console.log("entra en else")
       networkGraph.addingGraph=true
       networkGraph.dblClickId=configRow.node.id.replace("_image","")+"_g"
       networkGraph.mergeData(results,"basic")
-      //console.log(networkGraph.data)
+      ////console.log(networkGraph.data)
       networkGraph.refresh()
 
       legend.addColors(networkGraph.colorScale)
@@ -394,13 +463,19 @@ async function buildNetworkGraph(settingsGraph,branchType,node){
       }
     }
   } catch (e) {
+    console.log(e)
     results = false
   }
   hideSpinMessage(interval)
 
   function getEndpointUrl(){
       var url;
-      url=configRow.rowFields.endpoint_url
+      if(branchType=="basic"){
+        url=configRow.rowFields.endpoint_url
+      }else if(branchType=="expert"){
+        //url=configRow.option.url
+        url=settingsGraph.url
+      }
       return url
   }
   function getQuery(){
@@ -490,12 +565,12 @@ if(settings["subject-object"]){
 }  
 }
 
-async function checkAskResultsFreeGraph(node, so) {
+/* async function checkAskResultsFreeGraph(node, so) {
 var resultRows = []
 
 return new Promise((resolve, reject) => {
   d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-      //////////////////////////////////////////console.log(urls)
+      ////////////////////////////////////////////console.log(urls)
       if (so == undefined) {
         subjectObject = ['s', 'o']
       } else {
@@ -517,7 +592,7 @@ return new Promise((resolve, reject) => {
     resolve(resultRows)
   })
 })
-}
+} */
 function treeDataNestedNodes(){
   var changedNodes=[]
 
@@ -579,3 +654,147 @@ function copyDuplicates(index,i,node){
     node["children"]=node["children"].concat(networkGraph.treeDataNested[j]["children"])
   }
 }
+// changeBasicGraph is the function called when changing option in flyout menu
+// of basic mode menu
+  
+function changeBasicGraph(option){
+  //console.log(option)
+
+  //console.log(option.textContent);
+  //console.log(option.innerText);
+  //remove filter, legend and graph
+  d3.selectAll(".classFilter").remove()
+  d3.selectAll(".graph").remove()   
+                                                                     
+  hideModal("#myModal")
+  deleteTooltip()
+  //reset global variables
+  propertiesFilterHist=[]
+
+  if(networkGraph){
+    networkGraph = undefined;
+    legend.deleteAllColors()
+    legend=undefined
+  }
+  //graphHistory=[]
+
+  //hide flyout menu
+  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+  
+  
+  //build and show graph
+  showBasicGraph()
+
+  //get option selected for searching in Config File
+  option=option.innerText.trim()
+  
+  buildBasicGraph(option)
+}
+
+/* async function addURLGraph(field) {
+  var indexRows
+  //MIRAR POR QUÉ SE PONE ESTO!!!!
+  if (document.getElementById("navTable").querySelector('ol')) {
+    document.getElementById("navTable").querySelector('ol').remove()
+  }
+
+  var resultRows =await checkAskResultsFreeGraph(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value)
+  //console.log(resultRows)
+  if (resultRows.length > 1) {
+    removeMsgNoResults()
+    getOptionsWindow(resultRows)
+  }else if (resultRows.length == 1) {
+    removeMsgNoResults()
+    origin = "first"
+    //await buildFreeGraph(form, origin, node)
+    await buildNetworkGraph(resultRows[0], "expert")
+  } else if (resultRows.length == 0) {
+    d3.selectAll(".graph").remove()
+    addMsgNoResults()
+  }
+  if(resultRows.length!=0){
+    $("#graph-area").removeClass("hidden")
+    $("#form-container").addClass("hidden")
+  }
+  //return false
+} */
+async function checkMenuItems(origin,element) {
+  //console.log(element)
+  if(origin=="form"){
+    node={"uri":element.querySelector('#free-uri').value, "subject-object":element.querySelector('#subject-object').value}
+  }else if(origin=="graph"){
+    if(element instanceof Element){
+      //founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
+      node=get_node_from_element(element.getAttribute("id").replace("_image",""))
+    }else{
+      //founded=findNodeTreemap(element,vis.treeData)
+      node=element
+    }
+  }
+  console.log(menuItems)
+  if(menuItems){
+    await menuItems.update(node)
+  }else{
+    console.log("crea uno nuevo")
+    console.log(node)
+    menuItems= new MenuItems(node)
+    await menuItems.init()
+  }
+  //console.log(menuItems)
+  hideSpinMessage(interval)
+  console.log(menuItems.selectedRows)
+  if(menuItems.selectedRows.length==0){
+    console.log("entra")
+    // if (founded[0]["children"]){
+      //SE CONTRAE LOS CHILDREN
+    //}else{
+      //SE EXPANDEN LOS CHILDREN
+    //} 
+  }else if(menuItems.selectedRows.length==1){
+    console.log(menuItems.selectedRows)
+    if(menuItems.selectedRows[0]["subject-object"]){
+      console.log(menuItems.selectedRows)
+      await buildBasicGraph(menuItems.selectedRows[0],node)
+    }else{
+      await buildBasicGraph(menuItems.selectedRows[0].option,node)
+      clickBubbleFreeGraph(element)
+    }
+  }else if(menuItems.selectedRows.length>1){
+    ////////////////////console.log("mayor de 1")
+    //getMenuItems(indexRows,node,origin,"basic")
+    if(origin=="table"){
+      menuItems.getMenuItemsInTable()
+    }else{
+      menuItems.getMenuItemsInGraph()
+    }
+  }
+}
+async function checkAskResultsFreeGraph(node, so) {
+  var resultRows = []
+  
+  return new Promise((resolve, reject) => {
+    d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
+        ////////////////////////////////////////////console.log(urls)
+        if (so == undefined) {
+          subjectObject = ['s', 'o']
+        } else {
+          subjectObject = [so]
+        }
+        if (typeof node === 'object') {
+          uri = d3.select("#" + node.id).data()[0].value
+        } else {
+          uri = node
+        }
+        for (var j = 0; j < subjectObject.length; j++) {
+          for (var i = 0; i < urls.length; i++) {
+            results = await runAskSparlqQueryFreeGraph(urls[i].sparqlEndpoint, uri, subjectObject[j])
+            if (results == true) {
+              resultRows.push({ "url": urls[i].sparqlEndpoint, "subject-object": subjectObject[j], "uri": uri })
+            }
+          }
+        }
+      resolve(resultRows)
+    })
+  })
+  }

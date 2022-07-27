@@ -1,16 +1,41 @@
 ConfigRow = function (_option,_node) {
     this.option=_option
     this.node=_node
+    //console.log(this.node)
     this.init();
   };
 
 ConfigRow.prototype.init = function () {
     var cr=this;
-    cr.rowNumber=configFile.getRowNumber(cr.option)
-    cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
-    cr.replaceParmtrsQuery("query")
-    cr.getNameClasses()
-  }
+    //console.log(cr.option)
+    if((cr.node==undefined)&&(cr.option["subject-object"])){
+      //console.log("expert")
+      buildExpertQuery()
+      //cr.endpoint_url=cr.option["url"]
+    }else{
+      cr.rowNumber=configFile.getRowNumber(cr.option)
+      cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
+      //let line=configFile.getFieldsConfigFile(cr.rowNumber)
+      ////console.log(line)
+      //Object.assign(cr, line);
+/*       cr=Object.assign(cr, configFile.getFieldsConfigFile(cr.rowNumber));
+      obj = {...obj, ...configFile.getFieldsConfigFile(cr.rowNumber)}; */
+      //console.log(cr)
+      cr.replaceParmtrsQuery("query")
+      cr.getNameClasses()
+    }
+    console.log("fin init CR")
+    function buildExpertQuery(){
+      var sparqlQuery;
+      if (node["subject-object"] == "s") {
+          sparqlQuery = "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?s=<" + node["uri"]+ ">).}"
+      } else {
+          sparqlQuery = "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?o=<" + node["uri"] + ">).}"
+      }
+      cr.query=sparqlQuery
+      //return sparqlQuery
+    }
+}
 ConfigRow.prototype.update = function(option,node){
   var cr=this;
   cr.option=option
@@ -36,14 +61,23 @@ ConfigRow.prototype.replaceParmtrsQuery = function(queryName){
 ConfigRow.prototype.fromSelectToAskQuery = function(){
   //first we transform the select to ask query
   var cr=this;
-  if(!cr.rowFields["askquery"]){
+
+  if(cr.option["subject-object"]){
+    cr.askquery=fromSelectToAskQuery(cr.query)
+  }else{
+    if(!cr.rowFields["askquery"]){
+      cr.rowFields.askquery=fromSelectToAskQuery(cr.rowFields.query)
+    }
+    cr.replaceParmtrsQuery("askquery")
+  } 
+  /* if(!cr.rowFields["askquery"]){
     fromSelectToAskQuery()
-  }
-  cr.replaceParmtrsQuery("askquery")
-  function fromSelectToAskQuery(){
-    var mySubString,query;
-    query=cr.rowFields.query
-    ////////console.log(cr)
+  } */
+ 
+  function fromSelectToAskQuery(query){
+    var mySubString;
+    
+    //////////console.log(cr)
     if(query.toLowerCase().indexOf("where")!=-1){
       mySubString = query.substring(
         query.toLowerCase().indexOf("select"), 
@@ -89,7 +123,7 @@ ConfigRow.prototype.fromSelectToAskQuery = function(){
       query=query.replace(mySubString,"")
     }
     query=query.replaceAll("parameter","PARAMETER")
-    cr.rowFields.askquery=query
+    return query
   }
 }
 ConfigRow.prototype.getNameClasses = function () {

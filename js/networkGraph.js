@@ -1213,41 +1213,55 @@ NetworkGraph.prototype.exitGraph = function(){
 NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY) {
   var vis = this;
   var children;
-  //,pageX,pageY,
-  ////console.log(element)
-  ////console.log(origin)
-  //////////console.log("entra en wrangle data")
+
   var founded,indexRows=1,node,option
-  //////////////////////////////////////////////////////////////////////////console.log("wrangleData")
-  if(element instanceof Element){
+  /* if(element instanceof Element){
     //founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
     node=get_node_from_element(element.getAttribute("id").replace("_image",""))
   }else{
     //founded=findNodeTreemap(element,vis.treeData)
     node=element
   }
-  //////console.log(node)
-  //bubble clicked is from basic graph
-  if(node.class!="free"){
-    ////////console.log(menuItems)
+  if(menuItems){
+    await menuItems.update(node)
+  }else{
+    menuItems=new MenuItems(node)
+  }
+  
+  hideSpinMessage(interval)
+  if(menuItems.selectedRows.length==0){
+    // if (founded[0]["children"]){
+      //SE CONTRAE LOS CHILDREN
+    //}else{
+      //SE EXPANDEN LOS CHILDREN
+    //} 
+  }else if(menuItems.selectedRows.length==1){
+    await buildBasicGraph(menuItems.selectedRows[0].option,node)
+    clickBubbleFreeGraph(element)
+  }else if(menuItems.selectedRows.length>1){
+    //////////////////console.log("mayor de 1")
+    //getMenuItems(indexRows,node,origin,"basic")
+    if(origin=="table"){
+      menuItems.getMenuItemsInTable()
+    }else{
+      menuItems.getMenuItemsInGraph()
+    }
+  }
+ */
+/*   if(node.class!="free"){
     if(menuItems){
-      ////////console.log("update")
       await menuItems.update(node)
     }else{
       menuItems=new MenuItems(node)
     }
     
-    //////console.log(menuItems)
     hideSpinMessage(interval)
-    ////////console.log(menuItems)
-    ////console.log(menuItems.selectedRows)
-    ////////console.log(menuItems.selectedRows.length)
     if(menuItems.selectedRows.length==0){
-      /* if (founded[0]["children"]){
+      // if (founded[0]["children"]){
         //SE CONTRAE LOS CHILDREN
-      }else{
+      //}else{
         //SE EXPANDEN LOS CHILDREN
-      } */
+      //} 
     }else if(menuItems.selectedRows.length==1){
       await buildBasicGraph(menuItems.selectedRows[0].option,node)
       clickBubbleFreeGraph(element)
@@ -1264,9 +1278,10 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
 
   }else{
     
-  }
-
-  return indexRows
+  } */
+  console.log(origin)
+  checkMenuItems("graph",element)
+  //return indexRows
 
   function checkQueriesBasic(){
     if(indexRows.length>0){

@@ -34,11 +34,13 @@ Legend.prototype.addOne=function (index,textLi){
   var li,classLi;
   ////console.log(networkGraph.colorCorrespondence)
   ////console.log(networkGraph.colorScale.range())
-  classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
+  //classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
+  classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white legend-color "
+
   li=le.parentEl.append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")
   li.append("div")
-  .attr("class", classLi+"bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale.range()[index]])
+  .attr("class", classLi+"bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale.range()[index]]+ " border-black")
   .append("img")
   .attr("src",getImage(textLi))
   .attr("width","30px")
@@ -46,7 +48,9 @@ Legend.prototype.addOne=function (index,textLi){
 
   
   li.append("div")
-  .attr("class","flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-gray-200 rounded-r-md")
+  //.attr("class","flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-gray-200 rounded-r-md")
+  .attr("class","flex items-center justify-between flex-1 truncate bg-white border-t border-b border-r border-black")
+
   .append("div")
   .attr("class","flex-1 px-4 py-2 text-sm truncate")
   .append("a")

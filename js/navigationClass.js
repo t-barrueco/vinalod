@@ -211,13 +211,16 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   }
   function addBasicGraph(last,navImage){
     li=document.createElement("li")
-    li.setAttribute("class", "relative pb-10");
+    
     ////console.log(last)
     ////console.log(navImage)
     if(!last){
+        li.setAttribute("class", "relative pb-2");
         div=document.createElement("div")
-        div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+        div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
         div.setAttribute("aria-hidden", "true");
+    }else{
+      li.setAttribute("class", "relative pb-5");
     }
 
     a=document.createElement("a")
@@ -260,8 +263,12 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     el2.appendChild(span).appendChild(span2).appendChild(img)
     span3=document.createElement("span")
     span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
+    //span4=document.createElement("span")
+    //span4.setAttribute("class","text-sm font-semibold tracking-wide uppercase")
     span4=document.createElement("span")
-    span4.setAttribute("class","text-sm font-semibold tracking-wide uppercase")
+
+    span4.setAttribute("class","ecl-timeline__content ecl-link")
+
     if(navPanel.sources[i]["target"]){
       span4.innerHTML = navPanel.sources[i]["target"]["value"]
     }else{
@@ -275,8 +282,8 @@ NavigationPanel.prototype.addElementNav = function (source,i){
       img.setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
     }  
     
-    img.setAttribute('width','40px')
-    img.setAttribute('height','40px')
+    img.setAttribute('width','20px')
+    img.setAttribute('height','20px')
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
     el3.appendChild(img)
@@ -285,14 +292,18 @@ NavigationPanel.prototype.addElementNav = function (source,i){
 
   function addFreeGraph(){
     var li=document.createElement("li")
-    li.setAttribute("class", "relative pb-10");
-    li.id=source["id"]+"_li"
+    
   
     if(i<navPanel.sources.length-1){
-        div=document.createElement("div")
-        div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
-        div.setAttribute("aria-hidden", "true");
-        li.appendChild(div)
+      li.setAttribute("class", "relative pb-2");
+      li.id=source["id"]+"_li"
+      div=document.createElement("div")
+      div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
+      div.setAttribute("aria-hidden", "true");
+      li.appendChild(div)
+    }else{
+      li.setAttribute("class", "relative pb-5");
+      li.id=source["id"]+"_li"
     }
   
     a=document.createElement("a")
@@ -358,11 +369,11 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   var li=document.createElement("li")
   var div,a,li,span,span2,el1
   var navPanel=this;
-  li.setAttribute("class", "relative pb-10");
+  li.setAttribute("class", "relative pb-2");
   li.id=source["target"]["id"]+"_li"
   if((property)||((i<navPanel.sources.length-1)&&(navPanel.node.type!="menuOption"))){
     div=document.createElement("div")
-    div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-gray-400");
+    div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
     div.setAttribute("aria-hidden", "true");
     li.appendChild(div)
   }
@@ -425,8 +436,11 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   
   span3=document.createElement("span")
   span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
-  span4=document.createElement("span")
-  span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase")
+/*   span4=document.createElement("span")
+  span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase") */
+  span4=document.createElement("h5")
+
+  span4.setAttribute("class","ecl-u-type-heading-5")
   if(property){
     span4.innerHTML= source["target"]["property"]
     ////////////////console.log(source["target"]["property"])
@@ -476,15 +490,22 @@ NavigationPanel.prototype.contentTable = function (){
     $("#dvTable").show()
     $("#dvDetails").empty()
     navPanel.table = document.createElement("table");
-    navPanel.table.className="w-full divide-y divide-gray-200 table-auto"
-  
+    //navPanel.table.className="w-full divide-y divide-gray-200 table-auto"
+    navPanel.table.className="ecl-table ecl-table--zebra"
+    
     navPanel.thead=document.createElement("thead")
-    navPanel.thead.className="bg-gray-50"
+    //navPanel.thead.className="bg-gray-50"
+    navPanel.thead.className="ecl-table__head"
+    
     var tr=document.createElement("tr")
+    tr.className="ecl-table__row"
+    
     var th=document.createElement("th")
     th.setAttribute("colspan","3")
     th.setAttribute("scope","colgroup")
-    th.setAttribute("class","px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
+    //th.setAttribute("class","px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
+    th.setAttribute("class","ecl-table__header")
+
     ////console.log(th)
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
@@ -519,7 +540,9 @@ NavigationPanel.prototype.contentTable = function (){
 
     navPanel.thead.appendChild(tr).appendChild(th)
     navPanel.tbody=document.createElement("tbody")
-    navPanel.tbody.className="bg-white divide-y divide-gray-200"
+    //navPanel.tbody.className="bg-white divide-y divide-gray-200"
+    navPanel.tbody.className="ecl-table__body"
+    
     ////console.log("before showLines")
     navPanel.showLines(navPanel.numCurrent,true)
     ////console.log("after showLines")
@@ -531,7 +554,9 @@ NavigationPanel.prototype.contentTable = function (){
     div2=document.createElement("div")    
     div2.className="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2"
     div3=document.createElement("div")    
-    div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll sm:rounded-lg"
+    //div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll sm:rounded-lg"
+    div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll"
+
 
     navPanel.divPag=document.createElement("div")
     navPanel.divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-2"
@@ -631,7 +656,7 @@ NavigationPanel.prototype.contentTable = function (){
     }else{
       label=configFile.filter(d=>d.option==label)[0]["option_text"]
     }
-    
+    console.log(label)
   }
   function searchHtml(){
   var text=`<div>
@@ -670,23 +695,24 @@ NavigationPanel.prototype.showDetails = function (){
       $.get("nav_detail_row_0.html", function (row0) {
         $.get("nav_detail_row_1.html", function (row1) {
           $.get("nav_detail_row_attach.html", function (rowAttach) {
-
-            navDetailHeader=header.replace("Title",navPanel.node["value"]).toUpperCase()
+            console.log(navPanel.node["value"])
+            navDetailHeader=header.replace("Title",navPanel.node["value"])
+            console.log(navDetailHeader)
             $("#dvDetails").append($(navDetailHeader))
             ////////////////////console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
                 if((key % 2 == 0)|| (key == 0)){  
                   if(navPanel.node[navPanel.node.detail[key]["property"]]!=undefined){
-                    navDetailRow0=row0.replace("Title",navPanel.node.detail[key]["text"].toUpperCase())
+                    navDetailRow0=row0.replace("Title",navPanel.node.detail[key]["text"])+":"
                     navDetailRow0=fieldItemDetails(navDetailRow0,navPanel.node[navPanel.node.detail[key]["property"]],navPanel.node.detail[key]["type"])
-                    $("#dvDetails").append($(navDetailRow0))
+                    $("#dvDetails tbody").append($(navDetailRow0))
                   }  
                 }else{
                   if(navPanel.node[navPanel.node.detail[key]["property"]]!=undefined){
-                    navDetailRow1=row1.replace("Title",navPanel.node.detail[key]["text"].toUpperCase())
+                    navDetailRow1=row1.replace("Title",navPanel.node.detail[key]["text"])
                     navDetailRow1=fieldItemDetails(navDetailRow1,navPanel.node[navPanel.node.detail[key]["property"]],navPanel.node.detail[key]["type"])
-                    $("#dvDetails").append($(navDetailRow1))
+                    $("#dvDetails tbody").append($(navDetailRow1))
                   }
                 }
               })
@@ -1021,7 +1047,9 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
     row = navPanel.tbody.insertRow(-1);
     
     cell = row.insertCell(-1);
-    cell.className="px-2 py-4 whitespace-nowrap"
+    //cell.className="px-2 py-4 whitespace-nowrap"
+    cell.className="ecl-table__row"
+    
     cell.id=target["target"]["id"]
     div=document.createElement("div")
     div.className="flex items-center w-full"

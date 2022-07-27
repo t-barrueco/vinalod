@@ -1,0 +1,982 @@
+backend:
+  name: git-gateway
+  repo: ec-europa/europa-component-library
+  branch: v3-dev
+  base_url: https://v3--europa-component-library.netlify.app/
+  extension: md
+  squash_merges: true
+  commit_messages:
+    create: 'feat({{collection}}): create {{collection}} “{{slug}}”'
+    update: 'feat({{collection}}): update {{collection}} “{{slug}}”'
+    delete: 'feat({{collection}}): delete {{collection}} “{{slug}}”'
+    uploadMedia: 'Upload “{{path}}”'
+    deleteMedia: 'Delete “{{path}}”'
+
+#local_backend: true
+media_folder: cms-images
+publish_mode: editorial_workflow
+
+collections:
+  - label: 'Docs'
+    name: 'docs'
+    files:
+      - label: 'Landing page'
+        name: 'index'
+        file: 'src/website/src/pages/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'EC Landing page'
+        name: 'ec_index'
+        file: 'src/website/src/pages/ec/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'EU Landing page'
+        name: 'eu_index'
+        file: 'src/website/src/pages/eu/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Getting started EC'
+        name: 'ec_getting_started'
+        file: 'src/website/src/pages/ec/getting-started/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Getting started EU'
+        name: 'eu_getting_started'
+        file: 'src/website/src/pages/eu/getting-started/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: "What's new EC"
+        name: 'ec_whats_new'
+        file: 'src/website/src/pages/ec/whats-new/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: "What's new EU"
+        name: 'eu_whats_new'
+        file: 'src/website/src/pages/eu/whats-new/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EC Usage pages for components'
+    name: 'ec_usage_pages'
+    files:
+      - label: 'Accordion'
+        name: 'ec_accordion'
+        file: 'src/website/src/pages/ec/components/accordion/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Breadcrumbs'
+        name: 'ec_breadcrumbs'
+        file: 'src/website/src/pages/ec/components/navigation/breadcrumb/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Breadcrumbs (site-wide)'
+        name: 'ec_breadcrumbs_site_wide'
+        file: 'src/website/src/pages/ec/components/site-wide/navigation/breadcrumb/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Blockquote'
+        name: 'ec_blockquote'
+        file: 'src/website/src/pages/ec/components/blockquote/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Button'
+        name: 'ec_button'
+        file: 'src/website/src/pages/ec/components/button/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Card'
+        name: 'ec_card'
+        file: 'src/website/src/pages/ec/components/card/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Carousel'
+        name: 'ec_carousel'
+        file: 'src/website/src/pages/ec/components/carousel/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Category filter'
+        name: 'ec_category-filter'
+        file: 'src/website/src/pages/ec/components/category-filter/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Checkbox'
+        name: 'ec_checkbox'
+        file: 'src/website/src/pages/ec/components/forms/checkbox/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Content item'
+        name: 'ec_content-item'
+        file: 'src/website/src/pages/ec/components/content-item/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Date block'
+        name: 'ec_date_block'
+        file: 'src/website/src/pages/ec/components/date-block/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Datepicker'
+        name: 'ec_datepicker'
+        file: 'src/website/src/pages/ec/components/forms/datepicker/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'File upload'
+        name: 'ec_file_upload'
+        file: 'src/website/src/pages/ec/components/forms/file-upload/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'List illustration'
+        name: 'ec_list_illustration'
+        file: 'src/website/src/pages/ec/components/list-illustration/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Expandable'
+        name: 'ec_expandable'
+        file: 'src/website/src/pages/ec/components/expandable/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Fact & figures'
+        name: 'ec_fact_figures'
+        file: 'src/website/src/pages/ec/components/fact-figures/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Featured item'
+        name: 'ec_featured_item'
+        file: 'src/website/src/pages/ec/components/media/featured-item/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'File'
+        name: 'ec_file'
+        file: 'src/website/src/pages/ec/components/file/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Core'
+        name: 'ec_footer_core'
+        file: 'src/website/src/pages/ec/core-template/footer/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Harmonised Group1'
+        name: 'ec_footer_harmonised_g1'
+        file: 'src/website/src/pages/ec/harmonised-templates/footer/docs/group1.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Harmonised Group2'
+        name: 'ec_footer_harmonised_g2'
+        file: 'src/website/src/pages/ec/harmonised-templates/footer/docs/group2.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Harmonised Group3'
+        name: 'ec_footer_harmonised_g3'
+        file: 'src/website/src/pages/ec/harmonised-templates/footer/docs/group3.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Standardised'
+        name: 'ec_footer_standardised'
+        file: 'src/website/src/pages/ec/standardised-template/footer/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Gallery'
+        name: 'ec_gallery'
+        file: 'src/website/src/pages/ec/components/media/gallery/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Hero Banner'
+        name: 'ec_hero_banner'
+        file: 'src/website/src/pages/ec/components/banners/hero-banner/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Icon'
+        name: 'ec_icon'
+        file: 'src/website/src/pages/ec/components/icon/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Inpage navigation'
+        name: 'ec_inpage_navigation'
+        file: 'src/website/src/pages/ec/components/navigation/inpage-navigation/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Label'
+        name: 'ec_label'
+        file: 'src/website/src/pages/ec/components/label/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Language list'
+        name: 'ec_language_list'
+        file: 'src/website/src/pages/ec/components/language-list/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Link'
+        name: 'ec_link'
+        file: 'src/website/src/pages/ec/components/navigation/link/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'List'
+        name: 'ec_list'
+        file: 'src/website/src/pages/ec/components/list/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Media container'
+        name: 'ec_media_container'
+        file: 'src/website/src/pages/ec/components/media/media-container/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Menu'
+        name: 'ec_menu'
+        file: 'src/website/src/pages/ec/components/navigation/menu/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Message'
+        name: 'ec_message'
+        file: 'src/website/src/pages/ec/components/message/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Navigation list'
+        name: 'ec_navigation-list'
+        file: 'src/website/src/pages/ec/components/navigation/navigation-list/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'News ticker'
+        name: 'ec_news_ticker'
+        file: 'src/website/src/pages/ec/components/news-ticker/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Banner'
+        name: 'ec_page_banner'
+        file: 'src/website/src/pages/ec/components/banners/page-banner/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header'
+        name: 'ec_page_header'
+        file: 'src/website/src/pages/ec/components/site-wide/page-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header Core'
+        name: 'ec_page_header_core'
+        file: 'src/website/src/pages/ec/core-template/page-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header Harmonised Group 1'
+        name: 'ec_page_header_harmonised_g1'
+        file: 'src/website/src/pages/ec/harmonised-templates/page-header/docs/group1.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header Harmonised Group 2'
+        name: 'ec_page_header_harmonised_g2'
+        file: 'src/website/src/pages/ec/harmonised-templates/page-header/docs/group2.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header Standardised'
+        name: 'ec_page_header_standardised'
+        file: 'src/website/src/pages/ec/standardised-template/page-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Pagination'
+        name: 'ec_pagination'
+        file: 'src/website/src/pages/ec/components/navigation/pagination/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Radio'
+        name: 'ec_radio'
+        file: 'src/website/src/pages/ec/components/forms/radio/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Search form'
+        name: 'ec_search_form'
+        file: 'src/website/src/pages/ec/components/forms/search-form/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Select'
+        name: 'ec_select'
+        file: 'src/website/src/pages/ec/components/forms/select/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header'
+        name: 'ec_site_header'
+        file: 'src/website/src/pages/ec/components/site-wide/site-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Footer'
+        name: 'ec_site_footer'
+        file: 'src/website/src/pages/ec/components/site-wide/site-footer/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Core'
+        name: 'ec_site_header_core'
+        file: 'src/website/src/pages/ec/core-template/site-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Harmonised Group1'
+        name: 'ec_site_header_harmonised_g1'
+        file: 'src/website/src/pages/ec/harmonised-templates/site-header/docs/group1.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Harmonised Group2'
+        name: 'ec_site_header_harmonised_g2'
+        file: 'src/website/src/pages/ec/harmonised-templates/site-header/docs/group2.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Harmonised Group3'
+        name: 'ec_site_header_harmonised_g3'
+        file: 'src/website/src/pages/ec/harmonised-templates/site-header/docs/group3.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Standardised'
+        name: 'ec_site_header_standardised'
+        file: 'src/website/src/pages/ec/standardised-template/site-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Skip link'
+        name: 'ec_skip_link'
+        file: 'src/website/src/pages/ec/components/navigation/skip-link/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Social media follow'
+        name: 'ec_social_media_follow'
+        file: 'src/website/src/pages/ec/components/social-media-follow/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Social media share'
+        name: 'ec_social_media_share'
+        file: 'src/website/src/pages/ec/components/social-media-share/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Spinner'
+        name: 'ec_spinner'
+        file: 'src/website/src/pages/ec/components/spinner/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Table'
+        name: 'ec_table'
+        file: 'src/website/src/pages/ec/components/table/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Tabs'
+        name: 'ec_tabs'
+        file: 'src/website/src/pages/ec/components/navigation/tabs/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Tags'
+        name: 'ec_tag'
+        file: 'src/website/src/pages/ec/components/tag/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Textarea'
+        name: 'ec_textarea'
+        file: 'src/website/src/pages/ec/components/forms/text-area/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Text field'
+        name: 'ec_text-field'
+        file: 'src/website/src/pages/ec/components/forms/text-field/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Timeline'
+        name: 'ec_timeline'
+        file: 'src/website/src/pages/ec/components/timeline/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'Europa family for EC'
+    name: 'ec_usage_pages_templates'
+    files:
+      - label: 'EC Core template'
+        name: 'ec_core_template'
+        file: 'src/website/src/pages/ec/core-template/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Harmonised template Group 1'
+        name: 'ec_harmonised_template_g1'
+        file: 'src/website/src/pages/ec/harmonised-templates/docs/group1.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Harmonised template Group 2'
+        name: 'ec_harmonised_template_g2'
+        file: 'src/website/src/pages/ec/harmonised-templates/docs/group2.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Harmonised template Group 3'
+        name: 'ec_harmonised_template_g3'
+        file: 'src/website/src/pages/ec/harmonised-templates/docs/group3.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Standardised template'
+        name: 'ec_standardised_template'
+        file: 'src/website/src/pages/ec/standardised-template/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EC Utilities'
+    name: 'ec_utilities'
+    files:
+      - label: 'Index'
+        name: 'ec_utilities_index'
+        file: 'src/website/src/pages/ec/utilities/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Background'
+        name: 'ec_utilities_background'
+        file: 'src/website/src/pages/ec/utilities/background/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Border'
+        name: 'ec_utilities_border'
+        file: 'src/website/src/pages/ec/utilities/border/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Clearfix'
+        name: 'ec_utilities_clearfix'
+        file: 'src/website/src/pages/ec/utilities/clearfix/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Dimension'
+        name: 'ec_utilities_dimension'
+        file: 'src/website/src/pages/ec/utilities/dimension/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Dimension'
+        name: 'ec_utilities_disable_scroll'
+        file: 'src/website/src/pages/ec/utilities/disablescroll/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Display'
+        name: 'ec_utilities_display'
+        file: 'src/website/src/pages/ec/utilities/display/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Float'
+        name: 'ec_utilities_float'
+        file: 'src/website/src/pages/ec/utilities/float/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'HTML tag styling'
+        name: 'ec_utilities_html-tag'
+        file: 'src/website/src/pages/ec/utilities/html-tag/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Grid'
+        name: 'ec_utilities_grid'
+        file: 'src/website/src/pages/ec/utilities/layout/grid/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Stacks'
+        name: 'ec_utilities_stacks'
+        file: 'src/website/src/pages/ec/utilities/layout/stack/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Media'
+        name: 'ec_utilities_media'
+        file: 'src/website/src/pages/ec/utilities/media/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Print'
+        name: 'ec_utilities_print'
+        file: 'src/website/src/pages/ec/utilities/print/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Screen reader'
+        name: 'ec_utilities_screen_reader'
+        file: 'src/website/src/pages/ec/utilities/screen-reader/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Spacing'
+        name: 'ec_utilities_spacing'
+        file: 'src/website/src/pages/ec/utilities/spacing/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Typography'
+        name: 'ec_utilities_typography'
+        file: 'src/website/src/pages/ec/utilities/typography/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Z-index'
+        name: 'ec_utilities_z_index'
+        file: 'src/website/src/pages/ec/utilities/z-index/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EC Guidelines'
+    name: 'ec_guidelines'
+    files:
+      - label: 'Index'
+        name: 'ec_guidelines_index'
+        file: 'src/website/src/pages/ec/guidelines/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Colours'
+        name: 'ec_guidelines_colours'
+        file: 'src/website/src/pages/ec/guidelines/colours/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Iconography'
+        name: 'ec_guidelines_iconography'
+        file: 'src/website/src/pages/ec/guidelines/iconography/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Images'
+        name: 'ec_guidelines_images'
+        file: 'src/website/src/pages/ec/guidelines/images/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Spacing'
+        name: 'ec_guidelines_spacing'
+        file: 'src/website/src/pages/ec/guidelines/spacing/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Typography'
+        name: 'ec_guidelines_typography'
+        file: 'src/website/src/pages/ec/guidelines/typography/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EC Reources'
+    name: 'ec_resources'
+    files:
+      - label: 'Index'
+        name: 'ec_resources_index'
+        file: 'src/website/src/pages/ec/resources/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'eUI'
+        name: 'ec_resources_eui'
+        file: 'src/website/src/pages/ec/resources/eui/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Glossary'
+        name: 'ec_resources_glossary'
+        file: 'src/website/src/pages/ec/resources/glossary/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Webtools'
+        name: 'ec_resources_webtools'
+        file: 'src/website/src/pages/ec/resources/webtools/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EU Usage pages for components'
+    name: 'eu_usage_pages'
+    files:
+      - label: 'Accordion'
+        name: 'eu_accordion'
+        file: 'src/website/src/pages/eu/components/accordion/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Breadcrumbs'
+        name: 'eu_breadcrumbs'
+        file: 'src/website/src/pages/eu/components/navigation/breadcrumb/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Breadcrumbs (site-wide)'
+        name: 'eu_breadcrumbs_site_wide'
+        file: 'src/website/src/pages/eu/components/site-wide/navigation/breadcrumb/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Blockquote'
+        name: 'eu_blockquote'
+        file: 'src/website/src/pages/eu/components/blockquote/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Button'
+        name: 'eu_button'
+        file: 'src/website/src/pages/eu/components/button/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Card'
+        name: 'eu_card'
+        file: 'src/website/src/pages/eu/components/card/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Carousel'
+        name: 'eu_carousel'
+        file: 'src/website/src/pages/eu/components/carousel/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Category filter'
+        name: 'eu_category-filter'
+        file: 'src/website/src/pages/eu/components/category-filter/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Checkbox'
+        name: 'eu_checkbox'
+        file: 'src/website/src/pages/eu/components/forms/checkbox/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Content item'
+        name: 'eu_content-item'
+        file: 'src/website/src/pages/eu/components/content-item/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Date block'
+        name: 'eu_date_block'
+        file: 'src/website/src/pages/eu/components/date-block/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Datepicker'
+        name: 'eu_datepicker'
+        file: 'src/website/src/pages/eu/components/forms/datepicker/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'File upload'
+        name: 'eu_file_upload'
+        file: 'src/website/src/pages/eu/components/forms/file-upload/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'List illustration'
+        name: 'eu_list_illustration'
+        file: 'src/website/src/pages/eu/components/list-illustration/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Expandable'
+        name: 'eu_expandable'
+        file: 'src/website/src/pages/eu/components/expandable/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Fact & figures'
+        name: 'eu_fact_figures'
+        file: 'src/website/src/pages/eu/components/fact-figures/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Featured item'
+        name: 'eu_featured_item'
+        file: 'src/website/src/pages/eu/components/media/featured-item/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'File'
+        name: 'eu_file'
+        file: 'src/website/src/pages/eu/components/file/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Core'
+        name: 'eu_footer_core'
+        file: 'src/website/src/pages/eu/core-template/footer/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Footer Harmonised'
+        name: 'eu_footer_harmonised'
+        file: 'src/website/src/pages/eu/harmonised-template/footer/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Gallery'
+        name: 'eu_gallery'
+        file: 'src/website/src/pages/eu/components/media/gallery/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Hero Banner'
+        name: 'eu_hero_banner'
+        file: 'src/website/src/pages/eu/components/banners/hero-banner/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Icon'
+        name: 'eu_icon'
+        file: 'src/website/src/pages/eu/components/icon/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Inpage navigation'
+        name: 'eu_inpage_navigation'
+        file: 'src/website/src/pages/eu/components/navigation/inpage-navigation/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Label'
+        name: 'eu_label'
+        file: 'src/website/src/pages/eu/components/label/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Language list'
+        name: 'eu_language_list'
+        file: 'src/website/src/pages/eu/components/language-list/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Link'
+        name: 'eu_link'
+        file: 'src/website/src/pages/eu/components/navigation/link/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'List'
+        name: 'eu_list'
+        file: 'src/website/src/pages/eu/components/list/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Media container'
+        name: 'eu_media_container'
+        file: 'src/website/src/pages/eu/components/media/media-container/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Menu'
+        name: 'eu_menu'
+        file: 'src/website/src/pages/eu/components/navigation/menu/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Message'
+        name: 'eu_message'
+        file: 'src/website/src/pages/eu/components/message/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Navigation list'
+        name: 'eu_navigation-list'
+        file: 'src/website/src/pages/eu/components/navigation/navigation-list/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'News ticker'
+        name: 'eu_news_ticker'
+        file: 'src/website/src/pages/eu/components/news-ticker/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Banner'
+        name: 'eu_page_banner'
+        file: 'src/website/src/pages/eu/components/banners/page-banner/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header'
+        name: 'eu_page_header'
+        file: 'src/website/src/pages/eu/components/site-wide/page-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header Core'
+        name: 'eu_page_header_core'
+        file: 'src/website/src/pages/eu/core-template/page-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Page Header Harmonised'
+        name: 'eu_page_header_harmonised'
+        file: 'src/website/src/pages/eu/harmonised-template/page-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Pagination'
+        name: 'eu_pagination'
+        file: 'src/website/src/pages/eu/components/navigation/pagination/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Radio'
+        name: 'eu_radio'
+        file: 'src/website/src/pages/eu/components/forms/radio/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Search form'
+        name: 'eu_search_form'
+        file: 'src/website/src/pages/eu/components/forms/search-form/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Select'
+        name: 'eu_select'
+        file: 'src/website/src/pages/eu/components/forms/select/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header'
+        name: 'eu_site_header'
+        file: 'src/website/src/pages/eu/components/site-wide/site-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Footer'
+        name: 'eu_site_footer'
+        file: 'src/website/src/pages/eu/components/site-wide/site-footer/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Core'
+        name: 'eu_site_header_core'
+        file: 'src/website/src/pages/eu/core-template/site-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Site Header Harmonised'
+        name: 'eu_site_header_harmonised'
+        file: 'src/website/src/pages/eu/harmonised-template/site-header/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Skip link'
+        name: 'eu_skip_link'
+        file: 'src/website/src/pages/eu/components/navigation/skip-link/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Social media follow'
+        name: 'eu_social_media_follow'
+        file: 'src/website/src/pages/eu/components/social-media-follow/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Social media share'
+        name: 'eu_social_media_share'
+        file: 'src/website/src/pages/eu/components/social-media-share/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Spinner'
+        name: 'eu_spinner'
+        file: 'src/website/src/pages/eu/components/spinner/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Table'
+        name: 'eu_table'
+        file: 'src/website/src/pages/eu/components/table/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Tabs'
+        name: 'eu_tabs'
+        file: 'src/website/src/pages/eu/components/navigation/tabs/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Tags'
+        name: 'eu_tag'
+        file: 'src/website/src/pages/eu/components/tag/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Textarea'
+        name: 'eu_textarea'
+        file: 'src/website/src/pages/eu/components/forms/text-area/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Text field'
+        name: 'eu_text-field'
+        file: 'src/website/src/pages/eu/components/forms/text-field/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Timeline'
+        name: 'eu_timeline'
+        file: 'src/website/src/pages/eu/components/timeline/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'Europa family for EU'
+    name: 'eu_usage_pages_templates'
+    files:
+      - label: 'EU Core template'
+        name: 'eu_core_template'
+        file: 'src/website/src/pages/eu/core-template/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'EU Harmonised template'
+        name: 'eu_harmonised_template'
+        file: 'src/website/src/pages/eu/harmonised-template/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EU Utilities'
+    name: 'eu_utilities'
+    files:
+      - label: 'Index'
+        name: 'eu_utilities_index'
+        file: 'src/website/src/pages/eu/utilities/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Background'
+        name: 'eu_utilities_background'
+        file: 'src/website/src/pages/eu/utilities/background/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Border'
+        name: 'eu_utilities_border'
+        file: 'src/website/src/pages/eu/utilities/border/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Clearfix'
+        name: 'eu_utilities_clearfix'
+        file: 'src/website/src/pages/eu/utilities/clearfix/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Dimension'
+        name: 'eu_utilities_dimension'
+        file: 'src/website/src/pages/eu/utilities/dimension/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Dimension'
+        name: 'eu_utilities_disable_scroll'
+        file: 'src/website/src/pages/eu/utilities/disablescroll/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Display'
+        name: 'eu_utilities_display'
+        file: 'src/website/src/pages/eu/utilities/display/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Float'
+        name: 'eu_utilities_float'
+        file: 'src/website/src/pages/eu/utilities/float/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'HTML tag styling'
+        name: 'eu_utilities_html-tag'
+        file: 'src/website/src/pages/eu/utilities/html-tag/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Grid'
+        name: 'eu_utilities_grid'
+        file: 'src/website/src/pages/eu/utilities/layout/grid/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Stacks'
+        name: 'eu_utilities_stacks'
+        file: 'src/website/src/pages/eu/utilities/layout/stack/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Media'
+        name: 'eu_utilities_media'
+        file: 'src/website/src/pages/eu/utilities/media/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Print'
+        name: 'eu_utilities_print'
+        file: 'src/website/src/pages/eu/utilities/print/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Screen reader'
+        name: 'eu_utilities_screen_reader'
+        file: 'src/website/src/pages/eu/utilities/screen-reader/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Spacing'
+        name: 'eu_utilities_spacing'
+        file: 'src/website/src/pages/eu/utilities/spacing/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Typography'
+        name: 'eu_utilities_typography'
+        file: 'src/website/src/pages/eu/utilities/typography/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Z-index'
+        name: 'eu_utilities_z_index'
+        file: 'src/website/src/pages/eu/utilities/z-index/docs/usage.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EU Guidelines'
+    name: 'eu_guidelines'
+    files:
+      - label: 'Index'
+        name: 'eu_guidelines_index'
+        file: 'src/website/src/pages/eu/guidelines/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Colours'
+        name: 'eu_guidelines_colours'
+        file: 'src/website/src/pages/eu/guidelines/colours/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Iconography'
+        name: 'eu_guidelines_iconography'
+        file: 'src/website/src/pages/eu/guidelines/iconography/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Images'
+        name: 'eu_guidelines_images'
+        file: 'src/website/src/pages/eu/guidelines/images/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Spacing'
+        name: 'eu_guidelines_spacing'
+        file: 'src/website/src/pages/eu/guidelines/spacing/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Typography'
+        name: 'eu_guidelines_typography'
+        file: 'src/website/src/pages/eu/guidelines/typography/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+  - label: 'EU Reources'
+    name: 'eu_resources'
+    files:
+      - label: 'Index'
+        name: 'eu_resources_index'
+        file: 'src/website/src/pages/eu/resources/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'eUI'
+        name: 'eu_resources_eui'
+        file: 'src/website/src/pages/eu/resources/eui/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Glossary'
+        name: 'eu_resources_glossary'
+        file: 'src/website/src/pages/eu/resources/glossary/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }
+      - label: 'Webtools'
+        name: 'eu_resources_webtools'
+        file: 'src/website/src/pages/eu/resources/webtools/index.md'
+        fields:
+          - { label: Body, name: body, widget: markdown }

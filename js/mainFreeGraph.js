@@ -3,42 +3,6 @@ $(document).ajaxSend(function (event, request, settings) {
   sparqlQueryWindow = request
 });
 
-async function addURLGraph(field) {
-  var indexRows
-  ////////////////////console.log("addURLGraph")
-  //d3.selectAll(".classFilter").remove()
-  if (document.getElementById("navTable").querySelector('ol')) {
-    document.getElementById("navTable").querySelector('ol').remove()
-  }
-
-  //filtersList = []
-  ////////////////////console.log(field.querySelector('#free-uri').value)
-
-  ////////////////////console.log(field.querySelector('#subject-object').value)
-
-  //indexRows = await checkQueries(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value, "form")
-
-  var resultRows =await checkAskResultsFreeGraph(field.querySelector('#free-uri').value, field.querySelector('#subject-object').value)
-  //////////////console.log(resultRows)
-  if (resultRows.length > 1) {
-    removeMsgNoResults()
-    getOptionsWindow(resultRows)
-  }else if (resultRows.length == 1) {
-    removeMsgNoResults()
-    origin = "first"
-    //await buildFreeGraph(form, origin, node)
-    await buildNetworkGraph(resultRows[0], "expert")
-  } else if (resultRows.length == 0) {
-    d3.selectAll(".graph").remove()
-    addMsgNoResults()
-  }
-  if(resultRows.length!=0){
-    $("#graph-area").removeClass("hidden")
-    $("#form-container").addClass("hidden")
-  }
-  //return false
-}
-
 function buildTreeData(results, form, node) {
   var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
 
@@ -527,7 +491,7 @@ function clickBubbleFreeGraph(element) {
   //console.log(element)
   ////console.log(configRow)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
-  ////console.log(node)
+  console.log(node)
   //console.log(navigationPanel)
   //configRow.update(option,node)
   //CAMBIAR LOS CAMPOS DEL CONFIGROW

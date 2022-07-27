@@ -19,41 +19,6 @@ function genRandomString(){
   return s; 
 }
 
-// changeBasicGraph is the function called when changing option in flyout menu
-// of basic mode menu
-  
-function changeBasicGraph(option){
-
-  //remove filter, legend and graph
-  d3.selectAll(".classFilter").remove()
-  d3.selectAll(".graph").remove()   
-                                                                     
-  hideModal("#myModal")
-  deleteTooltip()
-  //reset global variables
-  propertiesFilterHist=[]
-
-  if(networkGraph){
-    networkGraph = undefined;
-    legend.deleteAllColors()
-    legend=undefined
-  }
-  //graphHistory=[]
-
-  //hide flyout menu
-  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  
-  
-  //build and show graph
-  showBasicGraph()
-
-  //get option selected for searching in Config File
-  option=$(option).find( "#optionMain" ).text().trim()
-  
-  buildBasicGraph(option)
-}
-
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
@@ -468,8 +433,11 @@ function textImageZoom(zoomScale){
 //select tab from navigation panel. Show children or show detail for node
 function selectTab(element,otherText){
   var otherEl;
-  var elements = element.querySelectorAll('span');
-  elements[1].classList.remove("bg-transparent")
+  console.log(element)
+  console.log(element.getAttribute("id"))
+  //var elements = element.querySelectorAll('span');
+  //console.log(elements)
+/*   elements[1].classList.remove("bg-transparent")
   elements[1].classList.add("bg-blue-500")
   otherEl=document.getElementById(otherText)
   otherEl.classList.remove("text-gray-900")
@@ -478,12 +446,15 @@ function selectTab(element,otherText){
   elements[1].classList.add("bg-transparent")
   elements[1].classList.remove("bg-blue-500")
   element.classList.remove("text-gray-500")
-  element.classList.add("text-gray-900")
+  element.classList.add("text-gray-900") */
+  element.classList.add("ecl-tabs__link--active")
 
-  if(otherText=="detailsLink"){
-    navigationPanel.contentTable()
-  }else{
+  if(element.getAttribute("id")=="detailsLink"){
+    document.getElementById("childNodesLink").classList.remove("ecl-tabs__link--active")
     navigationPanel.showDetails()
+  }else{
+    document.getElementById("detailsLink").classList.remove("ecl-tabs__link--active")
+    navigationPanel.contentTable()
   }
   
 }

@@ -1,0 +1,1095 @@
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+        <style>
+          .kge-search-picker {
+            width: 500;
+          }
+        input[type=range]::-webkit-slider-thumb {
+          pointer-events: all;
+          width: 24px;
+          height: 24px;
+          -webkit-appearance: none;
+        /* @apply w-6 h-6 appearance-none pointer-events-auto; */
+        }
+        </style>
+        <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+        <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+      
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="dist/styles.css">
+       <!-- D3 Tooltip CSS -->
+      <link rel="stylesheet" href="css/d3-tip.css">
+      <link
+      rel="stylesheet"
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.3.3/ec/styles/ecl-ec.css"
+      integrity="n/a"
+      crossorigin="anonymous"
+      media="screen"
+      />
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+      <script src="https://d3js.org/d3-color.v2.min.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script type="text/javascript" src="jslib/d3-tip.js"></script>
+      
+      <script src="https://gisco-services.ec.europa.eu/distribution/v2/nuts/distribution/BE-region-03m-4326-2016.geojson"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      
+      </head>
+    <body onload="dataViz()">
+      <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header"><div class="ecl-site-header__container ecl-container"><div class="ecl-site-header__top"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-site-header__logo-link"
+         aria-label="European&#x20;Union"
+      ><img
+                alt="European Union flag"
+                title="European Union"
+                class="ecl-site-header__logo-image ecl-site-header__logo-image-mobile"
+                src="static/media/logo-eu--en.8d1587c6.svg"
+              /><img
+                alt="European Union flag"
+                title="European Union"
+                class="ecl-site-header__logo-image ecl-site-header__logo-image-desktop"
+                src="static/media/logo-eu--en.e7dcfe79.svg"
+              /></a><div class="ecl-site-header__action"><div class="ecl-site-header__login-container"><a
+                    class="ecl-button ecl-button--ghost ecl-site-header__login-toggle"
+                    href="/component-library/example"
+                  ><svg
+        class="ecl-icon ecl-icon--s ecl-site-header__icon"
+        focusable="false"
+        aria-hidden="true"
+        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#log-in"></use></svg>Log in</a></div><a
+                  class="ecl-button ecl-button--ghost ecl-site-header__language-selector"
+                  href="/component-library/example"
+                  data-ecl-language-selector
+                  aria-label="English"
+                            aria-controls="language-list-overlay"
+                          ><span class="ecl-site-header__language-icon"><svg
+        class="ecl-icon ecl-icon--s ecl-site-header__icon"
+        focusable="false"
+        aria-hidden="true"
+        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#language"></use></svg><span class="ecl-site-header__language-code">en</span></span>English</a><div class="ecl-site-header__search-container"><a
+                    class="ecl-button ecl-button--ghost ecl-site-header__search-toggle"
+                    href="/component-library/example"
+                    data-ecl-search-toggle="true"
+                    aria-controls="search-form-id"
+                    aria-expanded="false"
+                  ><svg
+        class="ecl-icon ecl-icon--s"
+        focusable="false"
+        aria-hidden="true"
+        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#search"></use></svg>Search</a><form class="ecl-search-form ecl-site-header__search" role="search" data-ecl-search-form id="search-form-id"><div class="ecl-form-group"><label
+                for="search-input-id"
+                class="ecl-form-label ecl-search-form__label"
+          >Search</label><input
+            id="search-input-id"
+            class="ecl-text-input ecl-text-input--m ecl-search-form__text-input"
+              type="search"
+              placeholder="Placeholder text"
+                
+        /></div><button class="ecl-button ecl-button--search ecl-search-form__button" type="submit"  aria-label="Search"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Search</span><svg
+        class="ecl-icon ecl-icon--xs ecl-button__icon ecl-button__icon--after"
+        focusable="false"
+        aria-hidden="true"
+         data-ecl-icon><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#search"></use></svg></span></button></form></div></div></div></div></div><div class="ecl-site-header__banner"><div class="ecl-container"><div class="ecl-site-header__site-name">Site name</div></div></div>
+
+<div class="ecl-language-list ecl-language-list--overlay" data-ecl-language-list-overlay aria-labelledby="ecl-language-list__title" role="dialog" hidden id="language-list-overlay" ><div class="ecl-language-list__container ecl-container"><div class="ecl-row"><div class="ecl-language-list__close ecl-col-12 ecl-col-l-8 ecl-offset-l-2"><button class="ecl-button ecl-button--ghost ecl-language-list__close-button" type="submit"  data-ecl-language-list-close><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Close</span><svg
+        class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--after"
+        focusable="false"
+        aria-hidden="true"
+         data-ecl-icon><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#close"></use></svg></span></button></div><div
+              class="ecl-language-list__title ecl-col-12 ecl-col-l-8 ecl-offset-l-2"
+              id="ecl-language-list__title"
+            ><svg
+        class="ecl-icon ecl-icon--m ecl-language-list__title-icon"
+        focusable="false"
+        aria-hidden="true"
+        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#generic-lang"></use></svg>Select your language</div></div><div class="ecl-row ecl-language-list__eu"><div class="ecl-language-list__category ecl-col-12 ecl-col-l-8 ecl-offset-l-2">EU official languages</div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4 ecl-offset-l-2"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="bg" hreflang="bg" rel="alternate"
+      >български</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="es" hreflang="es" rel="alternate"
+      >español</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="cs" hreflang="cs" rel="alternate"
+      >čeština</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="da" hreflang="da" rel="alternate"
+      >dansk</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="de" hreflang="de" rel="alternate"
+      >Deutsch</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="et" hreflang="et" rel="alternate"
+      >eesti</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="el" hreflang="el" rel="alternate"
+      >ελληνικά</a></li><li class="ecl-language-list__item ecl-language-list__item--is-active"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-language-list__link"
+         lang="en" hreflang="en" rel="alternate"
+      ><span class="ecl-link__label">English</span><svg
+        class="ecl-icon ecl-icon--xs ecl-link__icon"
+        focusable="false"
+        aria-hidden="true"
+        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#check"></use></svg></a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="fr" hreflang="fr" rel="alternate"
+      >français</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="ga" hreflang="ga" rel="alternate"
+      >Gaeilge</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="hr" hreflang="hr" rel="alternate"
+      >hrvatski</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="it" hreflang="it" rel="alternate"
+      >italiano</a></li></ul></div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="lv" hreflang="lv" rel="alternate"
+      >latviešu</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="lt" hreflang="lt" rel="alternate"
+      >lietuvių</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="hu" hreflang="hu" rel="alternate"
+      >magyar</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="mt" hreflang="mt" rel="alternate"
+      >Malti</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="nl" hreflang="nl" rel="alternate"
+      >Nederlands</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="pl" hreflang="pl" rel="alternate"
+      >polski</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="pt" hreflang="pt" rel="alternate"
+      >português</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="ro" hreflang="ro" rel="alternate"
+      >română</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="sk" hreflang="sk" rel="alternate"
+      >slovenčina</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="sl" hreflang="sl" rel="alternate"
+      >slovenščina</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="fi" hreflang="fi" rel="alternate"
+      >suomi</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="sv" hreflang="sv" rel="alternate"
+      >svenska</a></li></ul></div></div><div class="ecl-row ecl-language-list__non-eu"><div class="ecl-language-list__category ecl-col-12 ecl-col-l-8 ecl-offset-l-2">Non-EU languages</div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4 ecl-offset-l-2"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="zh" hreflang="zh" rel="alternate"
+      >中文</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="tr" hreflang="tr" rel="alternate"
+      >Türk</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="ru" hreflang="ru" rel="alternate"
+      >pусский</a></li></ul></div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="ca" hreflang="ca" rel="alternate"
+      >Català</a></li><li class="ecl-language-list__item"><a
+        href="/component-library/example"
+        class="ecl-link ecl-link--standalone ecl-language-list__link"
+         lang="ar" hreflang="ar" rel="alternate"
+      >عَرَبِيّ</a></li></ul></div></div></div></div></header>
+<nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
+  <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
+  <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
+      href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
+        aria-hidden="true">
+        <use xlink:href="/component-library/dist/media/icons.cec58484.svg#hamburger"></use>
+      </svg>Menu</a>
+    <section class="ecl-menu__inner" data-ecl-menu-inner="">
+      <header class="ecl-menu__inner-header"><button class="ecl-menu__close ecl-button ecl-button--text" type="submit"
+          data-ecl-menu-close=""><span class="ecl-menu__close-container ecl-button__container"><svg
+              class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--before" focusable="false"
+              aria-hidden="true" data-ecl-icon="">
+              <use xlink:href="/component-library/dist/media/icons.cec58484.svg#close-filled"></use>
+            </svg><span class="ecl-button__label" data-ecl-label="true">Close</span></span></button>
+        <div class="ecl-menu__title">Menu</div><button data-ecl-menu-back="" type="submit"
+          class="ecl-menu__back ecl-button ecl-button--text"><span class="ecl-button__container"><svg
+              class="ecl-icon ecl-icon--s ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
+              focusable="false" aria-hidden="true" data-ecl-icon="">
+              <use xlink:href="/component-library/dist/media/icons.cec58484.svg#corner-arrow"></use>
+            </svg><span class="ecl-button__label" data-ecl-label="">Back</span></span></button>
+      </header>
+      <ul class="ecl-menu__list">
+        <li class="ecl-menu__item" data-ecl-menu-item=""><a href="/component-library/example" class="ecl-menu__link"
+            data-ecl-menu-link="">Home </a></li>
+        <li class="ecl-menu__item ecl-menu__item--current ecl-menu__item--has-children" data-ecl-menu-item=""
+          data-ecl-has-children="" aria-haspopup="" aria-expanded="false"><a href="/component-library/example"
+            class="ecl-menu__link ecl-menu__link--current" data-ecl-menu-link="">Basic mode<svg
+              class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
+              aria-hidden="true">
+              <use xlink:href="/component-library/dist/media/icons.cec58484.svg#corner-arrow"></use>
+            </svg></a>
+          <div class="ecl-menu__mega" data-ecl-menu-mega="">
+            <ul class="ecl-menu__sublist">
+              <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="/component-library/example"
+                  class="ecl-menu__sublink">EU Vocabularies</a></li>
+              <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="/component-library/example"
+                  class="ecl-menu__sublink">EU Whoiswho</a></li>
+              <li class="ecl-menu__subitem ecl-menu__subitem--current" data-ecl-menu-subitem=""><a
+                  href="/component-library/example" class="ecl-menu__sublink ecl-menu__sublink--current">EU Data</a>
+              </li>
+              <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="/component-library/example"
+                  class="ecl-menu__sublink ecl-link--icon-after">EU Publications<svg
+                    class="ecl-icon ecl-icon--2xs ecl-menu__sublink-icon ecl-link__icon" focusable="false"
+                    aria-hidden="true">
+                    <use xlink:href="/component-library/dist/media/icons.cec58484.svg#external"></use>
+                  </svg></a></li>
+              <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="/component-library/example"
+                  class="ecl-menu__sublink">EU Law</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children=""
+          aria-haspopup="" aria-expanded="false"><a href="expert.html" class="ecl-menu__link"
+            data-ecl-menu-link="">Expert mode<svg
+              class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
+              aria-hidden="true">
+              <use xlink:href="/component-library/dist/media/icons.cec58484.svg#corner-arrow"></use>
+            </svg></a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</nav>
+  <div class="relative overflow-y-scroll bg-gray-50">
+    <div class="relative bg-blue-800 shadow-lg">
+      <div class="max-w-4xl px-4 ml-60 sm:px-6 lg:px-10 xl:ml-48 2xl:px-10 xl:px-10">
+        <div class="flex items-center justify-between py-2 xl:justify-start md:justify-start md:space-x-10 2xl:space-x-10">
+          <div class="flex justify-start lg:w-0 lg:flex-1">
+<!--             <h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+ -->            <h1 class="font-semibold tracking-tight text-white text-lh sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                <a class="text-white"id="logo" href="#">Vinalod</a>
+              </h1>
+          </div>
+          <div class="-my-2 -mr-2 md:hidden">
+            <button type="button" class="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-expanded="false">
+              <span class="sr-only">Open menu</span>
+              <!-- Heroicon name: outline/menu -->
+              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+          <nav class="hidden space-x-20 md:flex 2xl:space-x-10 xl:space-x-10">
+            <div class="relative">
+              <!-- Item active: "text-gray-900", Item inactive: "text-gray-500" -->
+              <button type="button" class="inline-flex items-center text-sm font-medium text-white bg-blue-800 rounded-sm group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="basicMode()">
+                <span>Basic mode</span>
+                <!--
+                  Heroicon name: solid/chevron-down
+  
+                  Item active: "text-gray-600", Item inactive: "text-gray-400"
+                -->
+                <svg class="w-5 h-5 ml-2 text-white group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </button>
+  
+              <!--
+                'Solutions' flyout menu, show/hide based on flyout menu state.
+  
+                Entering: "transition ease-out duration-200"
+                  From: "opacity-0 translate-y-1"
+                  To: "opacity-100 translate-y-0"
+                Leaving: "transition ease-in duration-150"
+                  From: "opacity-100 translate-y-0"
+                  To: "opacity-0 translate-y-1"
+              -->
+              
+              <div class="absolute z-10 hidden w-screen max-w-4xl px-2 mt-3 -ml-4 transform translate-y-1 opacity-0 sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2" id="flyoutMenu">
+                <div class="absolute inset-x-0 z-10 transform shadow-lg">
+                    <div class="bg-white">
+                      <div>
+                        <div class="sm:hidden">
+                          <label for="tabs" class="sr-only">Select a tab</label>
+                          <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
+                          <select id="tabs" name="tabs" class="block w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <option selected>EU Vocabularies</option>
+
+                            <option>EU Whoiswho</option>
+
+                            <option>EU Data</option>
+
+                            <option>EU Publications</option>
+                            <option>EU Law</option>
+                          </select>
+                        </div>
+                        <div class="hidden sm:block" id="tabs-sections">
+                          <nav class="relative z-0 flex divide-x divide-gray-200 rounded-lg shadow" aria-label="Tabs">
+                            <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+                            <a href="#" class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-900 bg-white rounded-l-lg group hover:bg-gray-50 focus:z-10" aria-current="page" id="eu_vocabularies" onclick="changeCollectionOptions(this.getAttribute('id'))">
+                              <span>EU Vocabularies</span>
+                              <span aria-hidden="true" class="bg-blue-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </a>
+                        
+                            <a href="#" class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-l-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10" id="eu_whoiswho" onclick="changeCollectionOptions(this.getAttribute('id'))">
+                              <span>EU Whoiswho</span>
+                              <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </a>
+                        
+                            <a href="#" class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" id="eu_data" onclick="changeCollectionOptions(this.getAttribute('id'))">
+                              <span>EU Data</span>
+                              <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </a>
+                            <a href="#" class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" id="eu_publications" onclick="changeCollectionOptions(this.getAttribute('id'))">
+                              <span>EU Publications</span>
+                              <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </a>
+                            <a href="#" class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" id="eu_law" onclick="changeCollectionOptions(this.getAttribute('id'))">
+                              <span>EU Law</span>
+                              <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </a>
+                          </nav>
+                        </div>
+                      </div>
+
+                  <div class="grid max-w-4xl px-4 py-6 mx-auto gap-y-6 sm:grid-cols-2 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-4 lg:px-8 lg:py-12 xl:py-16" id="options-menu">
+
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+  <!-- This example requires Tailwind CSS v2.0+ -->
+            <div class="relative">
+            <button type="button" class="inline-flex items-center font-medium text-white bg-blue-800 rounded-md text-md group hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 xl:text-xl 2xl:text-xl" aria-expanded="false" onclick="expertMode()">
+                <span>Expert mode</span>
+                <!--
+                Heroicon name: solid/chevron-down
+
+                Item active: "text-gray-600", Item inactive: "text-gray-400"
+                -->
+            </button>
+            </div>
+          </nav>
+        </div>
+      </div>
+  
+      <!-- This example requires Tailwind CSS v2.0+ -->
+  
+      <!--
+        Mobile menu, show/hide based on mobile menu state.
+  
+        Entering: "duration-200 ease-out"
+          From: "opacity-0 scale-95"
+          To: "opacity-100 scale-100"
+        Leaving: "duration-100 ease-in"
+          From: "opacity-100 scale-100"
+          To: "opacity-0 scale-95"
+      -->
+      <div class="absolute inset-x-0 top-0 z-10 p-2 transition origin-top-right transform md:hidden">
+        <div class="bg-white divide-y-2 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 divide-gray-50">
+          <div class="px-5 pt-2 pb-3">
+            <div class="flex items-center justify-between">
+              <div class="hidden transition duration-200 ease-in-out transform translate-x-full">
+                <h1 class="text-lg font-extrabold tracking-tight text-blue-600 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                  <a href="#">Vinalod</a>
+                </h1>
+              </div>
+              <div class="-mr-2">
+                <button type="button" class="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                  <span class="sr-only">Close menu</span>
+                  <!-- Heroicon name: outline/x -->
+                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 py-6 space-y-6">
+            <div class="grid grid-cols-2 gap-y-4 gap-x-8">
+              <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
+                Basic Mode
+              </a>
+  
+              <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
+                Expert Mode
+              </a>
+
+            </div>
+            <div>
+              <a href="#" class="flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700">
+                Start
+              </a>
+<!--               <p class="mt-6 text-base font-medium text-center text-gray-500">
+                Existing customer?
+                <a href="#" class="text-blue-600 hover:text-blue-500">
+                  Sign in
+                </a>
+              </p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+<!--       <div class="transition duration-200 ease-in-out transform translate-y-1 bg-white">
+        <div class="col-span-5 border-t">
+        </div>
+        <div class="col-span-1 p-2 bg-white border-b border-l border-r rounded-lg shadow-2xl">
+          <h1 class="text-lg font-extrabold tracking-tight text-blue-600 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+            <a href="#">Vinalod</a>
+          </h1>
+        </div>
+        <div class="col-span-5 bg-white border-t">
+        </div>
+      </div>
+      <div class="grid w-full grid-cols-11 bg-white border-t shadow-2xl grid-child place-items-center">
+        <div class="col-span-5 border-t">
+        </div>
+        <div class="col-span-1 p-2 bg-white border-b border-l border-r rounded-lg shadow-2xl" id="collapse-legend">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+          </svg>
+        </div>
+        <div class="col-span-5 bg-white border-t">
+        </div>
+      </div> -->
+    </div>
+  
+    <main class="lg:relative">
+      <div class="pt-16 pb-20 mx-6 lg:h-full xl:h-full lg:mx-60 max-w-7xl lg:py-96 lg:text-left 2xl:py-48 xl:py-48 xl:mx-20" id="landing-text">
+
+       <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
+          <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+            <span class="block xl:inline">Visualisation and navigation of</span>
+            <span class="block text-blue-600 xl:inline">LOD graphs</span>
+          </h1>
+          <p class="max-w-md mx-auto mt-3 text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
+            Start navigating on basic or expert mode by selecting an option from the menu above. If you want to know more on how to navigate read the manual or see the live demo below.
+          </p>
+          <div class="mt-10 sm:flex sm:-center lg:justify-start">
+           <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+            <button class="ecl-button ecl-button--call" type="submit"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Show manual</span><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
+              <use xlink:href="static/media/icons.cec58484.svg#corner-arrow"></use>
+            </svg></span></button>
+<!--               <a href="D3.1_-_Manual_for_end-user.pdf" class="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 md:py-4 md:text-lg md:px-10" target="_blank">
+                Show manual
+              </a> -->
+            </div>
+            <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+<!--               <a href="#" class="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-blue-600 bg-white border border-transparent rounded-md hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                Live demo
+              </a> -->
+              <button class="ecl-button ecl-button--call" type="submit"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Live demo</span><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
+                <use xlink:href="static/media/icons.cec58484.svg#corner-arrow"></use>
+              </svg></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full" id="landing-img">
+        <img class="absolute inset-0 object-cover w-full h-full" src="images/network_graph3.jpg" alt="">
+      </div>
+
+      <!--
+  This example requires Tailwind CSS v2.0+ 
+  
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+
+<!-- <div class="flex flex-col justify-center hidden min-h-full py-12 sm:px-6 lg:px-8" id="form-container">
+  
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="hidden p-4 border-l-4 border-yellow-400 bg-yellow-50" id="msg-no-results">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-yellow-700">
+            The URL is not valid or does not return any results.
+            <a href="#" class="font-medium text-yellow-700 underline hover:text-yellow-600">
+              Enter a valid URL.
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">
+      Start navigation from URI
+    </h2>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+      <form class="space-y-6" name="free-graph" onsubmit="checkMenuItems('form',this);return false">
+        <div>
+          <label for="free-uri" class="block text-sm font-medium text-gray-700">
+            Enter URI:
+          </label>
+          <div class="mt-1">         
+            <input id="free-uri" name="uri" type="text" autocomplete="text" required class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label for="subject-object" class="block text-sm font-medium text-gray-700">
+            Select subject/object position:
+          </label>
+          <div class="mt-1">
+            <select class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Regular input" name="subject-object" id="subject-object">
+              <option class="block px-4 py-2 text-sm text-gray-700" selected="selected" value="s">Subject</option>
+              <option class="block px-4 py-2 text-sm text-gray-700" value="o">Object</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Search
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div> -->
+
+      <div class="grid hidden grid-cols-14" id="graph-area">
+        <div class="hidden col-span-2 bg-white border-r-2">
+<!--           <div class="px-2 py-2 bg-gray-100 border-b border-gray-200 sm:px-6">
+            <div class="flex flex-wrap items-center justify-between ml-2 -mt-2 sm:flex-nowrap">
+              <div class="flex-shrink-0 mt-2 ml-4">
+
+                <span class="relative z-0 inline-flex w-1/2 my-2 rounded-md md:justify-center">
+                  <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                    Collapse all
+                  </button>
+                  <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                    Expand all
+                  </button>
+          
+                </span>
+                
+
+                <div class="relative flex items-start pt-2" onclick="showHideNavigation()">
+                  <div class="flex items-center h-5">
+                    <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="show-nav" class="font-medium text-gray-700">Show Navigation</label>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="annual-billing-label" onclick="nestedNodes(this)">
+                    <span aria-hidden="true" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                  </button>
+                  <span class="ml-3" id="annual-billing-label">
+                    <span class="text-sm font-medium text-gray-900">Nested nodes </span>
+                </span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="object-contain filter justify-items-center">
+            
+            <!-- <div class="flex object-contain border-b-2">
+              <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
+                <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  <span>Zoom In</span>
+                </button>
+                <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  <span>Zoom Out</span>
+                </button>
+              </span>
+  
+  
+              <span class="relative z-0 inline-flex w-1/2 my-10 rounded-md md:justify-center">
+                <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                  Collapse all
+                </button>
+                <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                  Expand all
+                </button>
+        
+              </span>
+          </div> -->
+             <div class="border-b border-gray-200 divide-y divide-gray-200 justify-items-center controls">
+                  <div class="items-center block p-6 mt-3 font-semibold text-center text-gray-700 bg-blue-100 border-2">
+                    <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
+                      Filters
+                    </h2>
+                  </div>
+      
+                </div>
+                  
+          </div>
+        </div>
+        <div class="object-contain col-span-12 bg-white">
+          
+          <div class="object-contain w-full h-full">
+      
+            <div class="bg-white">
+<!--               <div class="transition duration-700 ease-in-out transform -translate-y-px bg-white rounded-md">
+ -->              <!-- <div class="transition-all duration-700 transform -translate-y-1 bg-white rounded-md"> -->
+              <div class="hidden bg-white rounded-md" id="settings-legend">
+
+<!--               <div class="overflow-hidden bg-white rounded-md">
+ -->                <ul role="list" class="">
+                  <li class="px-6 pt-4">
+                    SETTINGS BUTTONS
+                    <div>
+                      <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+                          <!-- <dt class="text-sm font-medium text-gray-500 truncate">Total Subscribers</dt> -->
+                          <dd class="mt-1 text-sm font-semibold text-gray-900">
+                            <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                              Collapse all
+                            </button>
+                            <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                              Expand all
+                            </button>
+                          </dd>
+                        </div>
+                    
+                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+                          <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                              <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+<!--                               <input id="comments" name="comments" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+ -->                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="comments" class="font-medium text-gray-700">Show navigation</label>
+                              <p class="text-gray-500">Show navigation panel after clicking on panel.</p>
+                            </div>
+                          </div>
+<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
+                          <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
+                        </div>
+                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+                          <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                              <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="nested-nodes-label" onclick="nestedNodes(this)">
+                                <span aria-hidden="true" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                              </button>
+<!--                               <input id="show-nav" name="show-nav" type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" checked>
+ --><!--                               <input id="comments" name="comments" type="checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+ -->                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="comments" class="font-medium text-gray-700">Nested nodes</label>
+                              <p class="text-gray-500">Show duplicates nodes.</p>
+                            </div>
+                          </div>
+<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
+                          <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
+                        </div>
+<!--                         <div class="px-4 py-2 overflow-hidden bg-white border-2 rounded-lg shadow-sm sm:p-6">
+                          <button type="button" class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false" aria-labelledby="nested-nodes-label" onclick="nestedNodes(this)">
+                            <span aria-hidden="true" class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+                          </button>
+                          <div class="ml-3 text-sm">
+                            <label for="comments" class="font-medium text-gray-700">Show navigation</label>
+                            <p class="text-gray-500">Show navigation panel after clicking on panel.</p>
+                          </div>
+                        </div> -->
+                      </dl>
+                    </div>
+                    
+                  </li>
+                  <li class="px-6 pb-4">
+                    LEGEND
+                    <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
+                  
+                    </ul>
+                  </li>
+                  <!-- More items... -->
+                </ul>
+                  </div>
+<!--               <div id="tab-legend" class="z-40 translate-x-0 modal">
+                legend
+              </div> -->
+              <!-- <div class="z-10 p-10 mx-10 bg-gray-100">
+                <h2 class="text-xs font-medium tracking-wide text-gray-500 uppercase">legend</h2>
+                <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
+                  
+                </ul>
+              </div> -->
+<!--               <div class="flex object-contain border-b-2">
+                  <span class="relative z-0 inline-flex w-1/2 col-start-2 col-end-3 my-10 rounded-md md:flex md:justify-center">
+                    <button name="in" type="button" onclick='zoomIn()' class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                      <span>Zoom In</span>
+                    </button>
+                    <button name="out" type="button" onclick='zoomOut()' class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                      <span>Zoom Out</span>
+                    </button>
+                  </span>
+      
+      
+                  <span class="relative z-0 inline-flex w-1/2 my-10 rounded-md md:justify-center">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='collapse()' id="collapse">
+                      Collapse all
+                    </button>
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" onclick='expand()'>
+                      Expand all
+                    </button>
+            
+                  </span>
+              </div> -->
+              <div class="grid w-full grid-cols-11 bg-white shadow-2xl grid-child place-items-center">
+                <div class="col-span-5 border-t">
+                </div>
+                <div class="col-span-1 p-2 bg-blue-800 border-b border-l border-r rounded-md shadow-2xl" id="expand-settings-legend">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div class="col-span-5 bg-white border-t">
+                </div>
+              </div>
+              <div class="grid w-full grid-cols-11 bg-white shadow-2xl grid-child place-items-center">
+                <div class="col-span-5 border-t">
+                </div>
+                <div class="hidden col-span-1 p-2 bg-blue-800 border-b border-l border-r rounded-lg shadow-2xl" id="collapse-settings-legend">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+                  </svg>
+                </div>
+                <div class="col-span-5 bg-white border-t">
+                </div>
+              </div>
+              </div>
+              <div class="relative z-0 w-full h-auto" id="networkGraph">
+          </div>
+          <!-- This example requires Tailwind CSS v2.0+ -->
+          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700" id="myModal">
+            <!--
+            Slide-over panel, show/hide based on slide-over state.
+
+            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+                From: "translate-x-full"
+                To: "translate-x-0"
+            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+                From: "translate-x-0"
+                To: "translate-x-full"
+            -->
+            <div class="w-screen max-w-md pointer-events-auto">
+              <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
+                <div class="px-4 sm:px-6">
+                  <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
+                    <h2 class="text-lg font-medium text-gray-500 uppercase id="slide-over-title">
+                      Navigation panel
+                    </h2>
+                    <div class="flex items-center ml-3 h-7">
+                      <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
+                        <span class="sr-only">Close panel</span>
+                        <!-- Heroicon name: outline/x -->
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
+                  <div id="navTable" style="overflow: auto" class="mt-6"></div>
+                  <div id="tabsNav" class="hidden">
+                      <div class="sm:hidden">
+                        <label for="tabs" class="sr-only">Select a tab</label>
+                        <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
+                        <select id="tabs" name="tabs" class="block w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                          <option selected>Children nodes</option>
+
+                          <option>Details</option>
+
+                        </select>
+                      </div>
+                      <div class="hidden sm:block">
+                        <nav class="relative z-0 flex divide-x divide-gray-200 rounded-lg shadow-md" aria-label="Tabs">
+                          <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+                          <a id="childNodesLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-900 bg-white rounded-l-lg group hover:bg-gray-50 focus:z-10" aria-current="page" onclick="selectTab(this,'detailsLink');">
+                            <span>Children nodes</span>
+                            <span aria-hidden="true" class="bg-blue-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+                          </a>
+
+                          <a id="detailsLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" onclick="selectTab(this,'childNodesLink');">
+                            <span>Details</span>
+                            <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                          </a>
+                        </nav>
+                      </div>
+                  </div>
+
+                  <div id="dvTable" style="overflow: auto">
+                    <div class="absolute inset-0 px-4 sm:px-6">
+                    </div>
+                  <!-- /End replace -->
+                  </div>
+                  <div id="dvDetails" class="overflow-auto bg-white shadow sm:rounded-lg">
+                  </div>
+                  <div id="map"></div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+          
+
+<!--             <div class="absolute inset-0 overflow-hidden">
+              <div class="absolute inset-0" aria-hidden="true">
+                <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+                  <div class="w-screen max-w-5xl">
+                    <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
+                      <div class="px-4 sm:px-6">
+                        <div class="flex items-start justify-between p-6 bg-blue-100 border-2">
+                          <h2 class="text-lg font-medium text-gray-500 uppercase" id="modalHeader2">
+                          </h2>
+                          <div class="flex items-center ml-3 h-7">
+                            <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close2">
+                              <span class="sr-only">Close panel</span>
+                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div> -->
+          <!-- </div> --> 
+          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal2">
+            <div class="absolute inset-0 overflow-hidden">
+              <div class="absolute inset-0" aria-hidden="true">
+                <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
+
+                  <div class="w-screen max-w-5xl">
+<!--                   <div class="w-screen max-w-xl">
+ -->
+                    <div class="flex flex-col h-full pb-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
+                    <!-- <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2"> -->
+                      <div>
+                      <!-- <div class="px-4 sm:px-6"> -->
+                        <div class="flex items-start justify-between p-6 mb-2 bg-blue-100 border-2">
+                          <h2 class="text-lg font-medium text-gray-500 uppercase" id="modalHeader2">
+                          </h2>
+                          <div class="flex items-center ml-3 h-7">
+                            <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close2">
+                              <span class="sr-only">Close panel</span>
+                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          
+          <div id="myModal3" class="z-40 modal">
+            <div>
+            <!-- This example requires Tailwind CSS v2.0+ -->
+              <div class="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                      <!--
+                        Background overlay, show/hide based on modal state.
+              
+                        Entering: "ease-out duration-300"
+                          From: "opacity-0"
+                          To: "opacity-100"
+                        Leaving: "ease-in duration-200"
+                          From: "opacity-100"
+                          To: "opacity-0"
+                      -->
+                      <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+              
+                      <!-- This element is to trick the browser into centering the modal contents. -->
+                      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+              
+                      <!--
+                        Modal panel, show/hide based on modal state.
+              
+                        Entering: "ease-out duration-300"
+                          From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                          To: "opacity-100 translate-y-0 sm:scale-100"
+                        Leaving: "ease-in duration-200"
+                          From: "opacity-100 translate-y-0 sm:scale-100"
+                          To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      -->
+                      
+                  <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-blue-100 border-2 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+              
+                    <!-- This example requires Tailwind CSS v2.0+ -->
+              
+              
+                    <div id="modal3-content"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="sparql-timeout" class="z-50" style="display:none;">
+            <div class="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+              <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      
+                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+      
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      
+      
+                <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                      <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                        Stop Sparql Query
+                      </h3>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          The Sparql Query is taking more time than expected. The reason might be that it is retrieving hundreds of thousands results. Do you want to stop the query. This action cannot be undone.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="stopSparql(this)">
+                      Stop
+                    </button>
+                    <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm" onclick="continueSparql(this)">
+                      Continue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+          <div wire:loading class="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen overflow-hidden bg-gray-700 opacity-30" id="spin" style="display:none;">  
+            <div class="fixed top-0 right-0 z-50 flex items-center justify-center w-screen h-screen">
+              <div class="w-32 h-32 border-t-2 border-b-2 border-gray-900 rounded-full animate-spin"></div>
+            </div>
+            <h2 class="text-xl font-semibold text-center text-white" id="spin-message"></h2>
+                <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+          </div>
+          </div>
+        </div>
+    </main>
+  </div>
+<!--   <div class="z-50 d3-tip2 n" style="position: absolute; top: 149.272px; pointer-events: none; box-sizing: border-box; left: 437.643px;">
+    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-2 sm:px-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">
+          Node values
+        </h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Name
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            Geoportal of Lithuania - Geo Data Portal Lithuania
+            </dd>
+          </div>
+          <div class="px-4 py-2 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Class
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            Catalog of open datasets
+            </dd>
+          </div>
+              <div class="px-4 py-2 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">Date of last modification</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">2021-10-15T11:05:02Z</dd>
+              </div><div class="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Degree
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            0
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div> -->
+    <script src="js/main.js"></script>
+    <script src="js/no_network_graphs.js"></script>
+    <script src="js/navigationClass.js"></script>
+    <script src="js/legendClass.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/mainFreeGraph.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/treeGraph.js"></script>
+    <script src="js/wordCloud.js"></script>
+    <script src="js/download.js"></script>
+    <script src="js/networkGraph.js"></script>
+    <script src="js/configFileClass.js"></script>
+    <script src="js/dataClass.js"></script>
+    <script src="js/configRowClass.js"></script>
+    <script src="js/menuItemsClass.js"></script>
+
+    </body>
+</html>
+
