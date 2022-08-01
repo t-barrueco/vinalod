@@ -6,12 +6,12 @@ ConfigFile = function (_file) {
 
 ConfigFile.prototype.init = function () {
     var cf=this;
-    //////////////////console.log(cf.file)
+    ////////////////////console.log(cf.file)
   }
 
 ConfigFile.prototype.filterByValueField = function (value,field) {
     var cf=this;
-    //////////////////console.log(cf.file)
+    ////////////////////console.log(cf.file)
     return cf.file.filter(d=>d[field]==value)
   }
 
@@ -26,11 +26,12 @@ ConfigFile.prototype.getRowNumber = function (option) {
 /* ConfigFile.prototype.addFieldsConfigFile= function(rowDataConfig){
     var cf=this;
     let line=JSON.parse(JSON.stringify(cf.file[rowDataConfig]));
-    //console.log(line)
+    ////console.log(line)
   } */
 
 ConfigFile.prototype.getFieldsConfigFile= function(rowDataConfig){
     var cf=this;
+    //console.log(rowDataConfig)
     return JSON.parse(JSON.stringify(cf.file[rowDataConfig]));
   }
 

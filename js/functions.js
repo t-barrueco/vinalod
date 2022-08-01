@@ -92,16 +92,34 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
 }
+
 //execute sparql query
-function runSparlqQuery(settings){
-  return new Promise((resolve, reject) => {
+async function runSparlqQuery(settings){
+
+  var p = new Promise(function(resolve, reject){
+    settings["success"] =function (_data) {
+      console.log("entra promise")
+      resolve(_data.results.bindings)
+    }
+    $.ajax(settings)
+    //console.log(settings)
+    // resolve()
+  })
+  return await p.then(async function(_data){
+    console.log(_data)
+    return _data
+  })
+  //console.log(_data)
+  //console.log("entra en la primera instruccion runSparqlQuery")
+/*   return new Promise((resolve, reject) => {
     $.ajax(settings).then  (function( _data ) {
+      //console.log("entra en then runSparqlQuery")
       resolve(_data.results.bindings)
     })
     .fail(function(jqXHR, textStatus, errorThrown){
       reject(jqXHR.status)
       });
-    })
+    }) */
 }
 //run Ask Sparql Query
 async function runAskSparlqQuery(url,sparqlQuery){

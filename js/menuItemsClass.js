@@ -5,23 +5,23 @@ MenuItems = function (_node) {
 
 MenuItems.prototype.init = async function () {
     var mi=this,cr;
-    console.log(mi.node)
+    //console.log(mi.node)
     mi.indexRows=[]
-    ////console.log(mi.node)
+    //////console.log(mi.node)
     if(mi.node["subject-object"]){
         mi.selectedRows=[]
-        console.log(mi.node)
+        //console.log(mi.node)
         const p = new Promise((resolve, reject) => {   d3.csv('../config_vinalod/sparqlEndpoints.csv', (err, data1) => {     if (err) {       reject(err);     } else {       resolve(data1);     }   }); }); 
-        //p.then(data => console.log(data)) .catch(err => console.error(err));
+        //p.then(data => //console.log(data)) .catch(err => //console.error(err));
         await p.then(async function (urls) {
-          console.log(urls);
-          console.log(mi)
+          //console.log(urls);
+          //console.log(mi)
           if (mi.node["subject-object"] == undefined) {
             subjectObject = ['s', 'o']
           } else {
             subjectObject = [mi.node["subject-object"]]
           }
-          console.log(mi.node.id)
+          //console.log(mi.node.id)
           if (mi.node.id) {
             uri = d3.select("#" + mi.node.id).data()[0].value
           } else {
@@ -30,42 +30,42 @@ MenuItems.prototype.init = async function () {
           for (var j = 0; j < subjectObject.length; j++) {
             for (var i = 0; i < urls.length; i++) {
               results = await runAskSparlqQueryFreeGraph(urls[i].sparqlEndpoint, mi.node["uri"], subjectObject[j])
-              console.log(results)
+              //console.log(results)
               if (results == true) {
                 mi.selectedRows.push({ "url": urls[i].sparqlEndpoint, "subject-object": subjectObject[j], "uri": mi.node["uri"] })
-                console.log(mi.selectedRows)
+                //console.log(mi.selectedRows)
               }
-              //console.log(resultRows)
+              ////console.log(resultRows)
             }
           }
-          console.log(mi.selectedRows)
+          //console.log(mi.selectedRows)
           //mi.selectedRows=resultRows
           // expected output: "Success!"
         })
-        //.catch(err => console.error(err));
+        //.catch(err => //console.error(err));
         
         /* d3.csv("../config_vinalod/sparqlEndpoints.csv", function(error, csvData) {
           if (error) throw error;
-          console.log(csvData)
+          //console.log(csvData)
           // Process the CSV data
         }); */
-        //console.log(await checkAskResultsFreeGraph(mi.node))
+        ////console.log(await checkAskResultsFreeGraph(mi.node))
         //const data = await d3.csv("../config_vinalod/sparqlEndpoints.csv");
-        //console.log(data);
-        //console.log(await checkAskResultsFreeGraph(mi.node,mi.option))
+        ////console.log(data);
+        ////console.log(await checkAskResultsFreeGraph(mi.node,mi.option))
 /*         let test2=await new Promise((resolve, reject) => {
           d3.csv("../config_vinalod/sparqlEndpoints.csv",function(urls){
-            console.log(urls)
+            //console.log(urls)
             resolve(urls)
           })
         }); */
         //const data = await d3.csv("../config_vinalod/sparqlEndpoints.csv");
-        //console.log(data);
+        ////console.log(data);
         
 /*         d3.csv("../config_vinalod/sparqlEndpoints.csv", function(data) {
-          console.log(data);
+          //console.log(data);
         }); */
-        //console.log(test2)
+        ////console.log(test2)
     }else{
         mi.selectedRows=configFile.getRowsNodeClass(mi.node["className"])
         mi.selectedRows.forEach(element => {
@@ -75,18 +75,18 @@ MenuItems.prototype.init = async function () {
         await mi.filterByAskResult()
     }
     
-    //console.log(mi.indexRows)
+    ////console.log(mi.indexRows)
     //throw new Error("Something went badly wrong!");
 
-    //console.log(mi)
+    ////console.log(mi)
     
     function checkAskResultsFreeGraph(node, so) {
         var resultRows = []
         
         return new Promise((resolve, reject) => {
           d3.csv("../config_vinalod/sparqlEndpoints.csv",function(urls){
-              ////////////////////////////////////////////console.log(urls)
-              console.log(node)
+              //////////////////////////////////////////////console.log(urls)
+              //console.log(node)
 /*               if (so == undefined) {
                 subjectObject = ['s', 'o']
               } else {
@@ -108,19 +108,19 @@ MenuItems.prototype.init = async function () {
             resolve(urls)
           })
         }).then((v) => {
-          console.log(v); // 1
+          //console.log(v); // 1
         });
     } 
   }
 //MenuItems.prototype.test=
 /* MenuItems.prototype.init = async function () {
     var mi=this,cr,resultRows=[];
-    console.log(mi.node)
+    //console.log(mi.node)
     mi.indexRows=[]
-    ////console.log(mi.node)
+    //////console.log(mi.node)
     if(mi.node["subject-object"]){
-        console.log(mi.node)
-        console.log(await checkAskResultsFreeGraph(mi.node,mi.option))
+        //console.log(mi.node)
+        //console.log(await checkAskResultsFreeGraph(mi.node,mi.option))
     }else{
         mi.selectedRows=configFile.getRowsNodeClass(mi.node["className"])
         mi.selectedRows.forEach(element => {
@@ -128,24 +128,24 @@ MenuItems.prototype.init = async function () {
         });
     }
     
-    //console.log(mi.indexRows)
+    ////console.log(mi.indexRows)
     //throw new Error("Something went badly wrong!");
     mi.filterByMenuOption()
     await mi.filterByAskResult()
-    //console.log(mi)
+    ////console.log(mi)
     
     async function checkAskResultsFreeGraph(node, so) {
         var resultRows = []
         
         return new Promise((resolve, reject) => {
           d3.csv("../config_vinalod/sparqlEndpoints.csv",async function(urls){
-              ////////////////////////////////////////////console.log(urls)
-              console.log(node)
+              //////////////////////////////////////////////console.log(urls)
+              //console.log(node)
             resolve(resultRows)
           })
         })
         .then(results => {
-            console.log(results);
+            //console.log(results);
         })
     } 
   } */
@@ -173,7 +173,7 @@ MenuItems.prototype.filterByAskResult = async function () {
     for (var i = 0; i < mi.indexRows.length; i++) {
         mi.indexRows[i].fromSelectToAskQuery()
         //get parameters from config file
-        //console.log(mi.indexRows[i])
+        ////console.log(mi.indexRows[i])
         //parameters=mi.indexRows[i].rowFields["parameters"]
         try {
             if(mi.indexRows[i]["option"]["subject-object"]){
@@ -181,14 +181,14 @@ MenuItems.prototype.filterByAskResult = async function () {
             }else{
                 results = await runAskSparlqQuery(mi.indexRows[i].rowFields["endpoint_url"],mi.indexRows[i].rowFields["askquery"]);
             }
-            ////console.log(results)
+            //////console.log(results)
         } catch (e) {
         results = false
         } 
-        //console.log(results)
+        ////console.log(results)
         if(results==true){
             if(mi.indexRows[i]["option"]["subject-object"]){
-                //console.log("expert")
+                ////console.log("expert")
                 resultIndexRows.push(mi.indexRows[i])
             }else{
                 resultIndexRows.push(mi.indexRows[i].rowFields)
@@ -197,7 +197,7 @@ MenuItems.prototype.filterByAskResult = async function () {
     }
 
     mi.selectedRows=resultIndexRows
-    //console.log(mi.selectedRows)
+    ////console.log(mi.selectedRows)
   }
 
 /* MenuItems.prototype.checkQueriesBasic = async function () {
@@ -212,9 +212,9 @@ MenuItems.prototype.filterByAskResult = async function () {
         vis.initializeSimulation();
         vis.dataJoinGraph()
         vis.exitGraph()
-        //////////////////////////////////////////////////////////////////////console.log(node)
+        ////////////////////////////////////////////////////////////////////////console.log(node)
     }else{
-        ////////////////////////////////////////////////////////////////////////console.log("else")
+        //////////////////////////////////////////////////////////////////////////console.log("else")
         if (founded[0]["children"]){
             //SE CONTRAE LOS CHILDREN
 
@@ -228,7 +228,7 @@ MenuItems.prototype.filterByAskResult = async function () {
 MenuItems.prototype.getSelectedRowByOption = async function (option){
     var mi=this;
     let row=mi.selectedRows.filter(d=>d.option==option)[0]
-    //////////console.log(row)
+    ////////////console.log(row)
     return row
 }
 MenuItems.prototype.getMenuItemsInGraph = async function (){
@@ -259,8 +259,14 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
         
         elementMenu={
         title: mi.selectedRows[i]["option"],
-        action: (data,d) => {
-            buildBasicGraph(d.title,mi.node)  
+        action: async (data,d) => {
+            ////console.log(linkedDataGraph)
+            ////console.log(data)
+            console.log(d)
+            await linkedDataGraph.update(d.title,data)
+            console.log("antes refresh")
+            networkGraph.refresh()
+            //buildBasicGraph(d.title,mi.node)  
         }
         }
     }
@@ -299,7 +305,7 @@ MenuItems.prototype.getMenuItemsInTable = async function (){
     //if click on Navigation panel then origin=table
     /* if(graphType=="basic"){
     //tableBasic()
-        ////console.log("addMenuToTable")
+        //////console.log("addMenuToTable")
         navigationPanel.addMenuToTable()
     }else if(graphType=="expert"){
     //tableExpert()

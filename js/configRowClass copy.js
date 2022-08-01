@@ -1,27 +1,30 @@
 ConfigRow = function (_option,_node) {
     this.option=_option
     this.node=_node
-    //////console.log(this.node)
+    //console.log(this.node)
     this.init();
   };
 
 ConfigRow.prototype.init = function () {
     var cr=this;
-    //console.log("configRow init")
-    ////console.log(cr.option)
-    cr.rowNumber=configFile.getRowNumber(cr.option)
-    cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
-    //let line=configFile.getFieldsConfigFile(cr.rowNumber)
-    ////////console.log(line)
-    //Object.assign(cr, line);
+    //console.log(cr.option)
+    if((cr.node==undefined)&&(cr.option["subject-object"])){
+      //console.log("expert")
+      buildExpertQuery()
+      //cr.endpoint_url=cr.option["url"]
+    }else{
+      cr.rowNumber=configFile.getRowNumber(cr.option)
+      cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
+      //let line=configFile.getFieldsConfigFile(cr.rowNumber)
+      ////console.log(line)
+      //Object.assign(cr, line);
 /*       cr=Object.assign(cr, configFile.getFieldsConfigFile(cr.rowNumber));
-    obj = {...obj, ...configFile.getFieldsConfigFile(cr.rowNumber)}; */
-    //////console.log(cr)
-    cr.replaceParmtrsQuery("query")
-    //console.log("despues de replacePArms")
-    cr.getNameClasses()
-    //console.log("despues getclasses")
-    ////console.log("fin init CR")
+      obj = {...obj, ...configFile.getFieldsConfigFile(cr.rowNumber)}; */
+      //console.log(cr)
+      cr.replaceParmtrsQuery("query")
+      cr.getNameClasses()
+    }
+    console.log("fin init CR")
     function buildExpertQuery(){
       var sparqlQuery;
       if (node["subject-object"] == "s") {
@@ -32,15 +35,12 @@ ConfigRow.prototype.init = function () {
       cr.query=sparqlQuery
       //return sparqlQuery
     }
-    //console.log("final de init configRow")
 }
 ConfigRow.prototype.update = function(option,node){
   var cr=this;
   cr.option=option
   cr.node=node
-  //console.log("configRow update")
   cr.init()
-  //console.log("configRow update despues del init")
 }
 ConfigRow.prototype.filterByValueField = function (value,field) {
     var cr=this;
@@ -77,7 +77,7 @@ ConfigRow.prototype.fromSelectToAskQuery = function(){
   function fromSelectToAskQuery(query){
     var mySubString;
     
-    //////////////console.log(cr)
+    //////////console.log(cr)
     if(query.toLowerCase().indexOf("where")!=-1){
       mySubString = query.substring(
         query.toLowerCase().indexOf("select"), 
