@@ -1,28 +1,27 @@
 ConfigRow = function (_option,_node) {
     this.option=_option
     this.node=_node
-    //console.log(this.node)
+    //////console.log(this.node)
     this.init();
   };
 
 ConfigRow.prototype.init = function () {
     var cr=this;
-    ////console.log("configRow init")
-    //////console.log(cr.option)
+    //console.log("configRow init")
+    ////console.log(cr.option)
     cr.rowNumber=configFile.getRowNumber(cr.option)
     cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
     //let line=configFile.getFieldsConfigFile(cr.rowNumber)
-    //console.log("en init")
+    ////////console.log(line)
     //Object.assign(cr, line);
 /*       cr=Object.assign(cr, configFile.getFieldsConfigFile(cr.rowNumber));
     obj = {...obj, ...configFile.getFieldsConfigFile(cr.rowNumber)}; */
-    ////////console.log(cr)
+    //////console.log(cr)
     cr.replaceParmtrsQuery("query")
-    ////console.log("despues de replacePArms")
+    //console.log("despues de replacePArms")
     cr.getNameClasses()
-    //console.log(cr.rowFields.query)
-    ////console.log("despues getclasses")
-    //console.log("fin init CR")
+    //console.log("despues getclasses")
+    ////console.log("fin init CR")
     function buildExpertQuery(){
       var sparqlQuery;
       if (node["subject-object"] == "s") {
@@ -33,15 +32,15 @@ ConfigRow.prototype.init = function () {
       cr.query=sparqlQuery
       //return sparqlQuery
     }
-    ////console.log("final de init configRow")
+    //console.log("final de init configRow")
 }
 ConfigRow.prototype.update = function(option,node){
   var cr=this;
   cr.option=option
   cr.node=node
-  ////console.log("configRow update")
+  //console.log("configRow update")
   cr.init()
-  ////console.log("configRow update despues del init")
+  //console.log("configRow update despues del init")
 }
 ConfigRow.prototype.filterByValueField = function (value,field) {
     var cr=this;
@@ -50,33 +49,27 @@ ConfigRow.prototype.filterByValueField = function (value,field) {
 
 ConfigRow.prototype.replaceParmtrsQuery = function(queryName){
     var cr=this;
-    //console.log(cr.rowFields[queryName])
     if(cr.node!=undefined){
         if((cr.rowFields.parameters!="")&&(cr.rowFields.parameters!=null)){
             for (let i = 0; i < cr.rowFields.parameters.length; ++i) { 
                 cr.rowFields[queryName]=cr.rowFields[queryName].replaceAll("PARAMETER"+(i+2).toString(), cr.node[cr.rowFields.parameters[i]]);
             }  
         }
-        //console.log(cr.node)
         cr.rowFields[queryName]=cr.rowFields[queryName].replaceAll("PARAMETER", cr.node[cr.node["class"]+"_uri"]);    
     }
   }
 ConfigRow.prototype.fromSelectToAskQuery = function(){
   //first we transform the select to ask query
   var cr=this;
-  if(!cr.rowFields["askquery"]){
-    cr.rowFields.askquery=fromSelectToAskQuery(cr.rowFields.query)
-  }
-  cr.replaceParmtrsQuery("askquery")
-  //console.log(cr.rowFields.askquery)
-/*   if(cr.option["subject-object"]){
+
+  if(cr.option["subject-object"]){
     cr.askquery=fromSelectToAskQuery(cr.query)
   }else{
     if(!cr.rowFields["askquery"]){
       cr.rowFields.askquery=fromSelectToAskQuery(cr.rowFields.query)
     }
     cr.replaceParmtrsQuery("askquery")
-  }  */
+  } 
   /* if(!cr.rowFields["askquery"]){
     fromSelectToAskQuery()
   } */
@@ -84,7 +77,7 @@ ConfigRow.prototype.fromSelectToAskQuery = function(){
 /*   function fromSelectToAskQuery(query){
     var mySubString;
     
-    ////////////////console.log(cr)
+    //////////////console.log(cr)
     if(query.toLowerCase().indexOf("where")!=-1){
       mySubString = query.substring(
         query.toLowerCase().indexOf("select"), 

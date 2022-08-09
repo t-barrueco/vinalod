@@ -606,7 +606,7 @@ async function changeBasicGraph(option){
     d3.selectAll(".graph").remove()
     //console.log(linkedDataGraph.data)
     networkGraph = new NetworkGraphBasic("#networkGraph",forces,linkedDataGraph.data);
-    //console.log(networkGraph)
+    console.log(networkGraph)
     legend=new Legend("legend",networkGraph)
   }
 
@@ -697,4 +697,153 @@ function setForcesGraph(){
     }
   }
   return forces
+}
+function clickBubbleFreeGraph(element) {
+  var node
+  nodesSelSources = []
+  nodesSelTarget = []
+  //console.log(element)
+  ////console.log(configRow)
+  node = d3.select("#" + element.getAttribute("id")).data()[0]
+  //console.log(node)
+  //console.log(navigationPanel)
+  //configRow.update(option,node)
+  //CAMBIAR LOS CAMPOS DEL CONFIGROW
+  if(configRow){
+    configRow.node=node
+  }
+  networkGraph.node=node
+  //throw new Error("Something went badly wrong!");
+  if (navigationPanel == undefined) {
+    navigationPanel = new NavigationPanel("freeGraph", node);
+  } else {
+    navigationPanel.element = element
+    navigationPanel.node = node
+    //console.log(node)
+    navigationPanel.init()
+  }
+  $("#myModal").removeClass("translate-x-full")
+  $("#myModal").addClass("translate-x-0")
+}
+async function checkMenuItems(origin,element) {
+  //console.log(element)
+  if(origin=="form"){
+    node={"uri":element.querySelector('#free-uri').value, "subject-object":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
+  }else if(origin=="graph"){
+    if(element instanceof Element){
+      //founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
+      node=get_node_from_element(element.getAttribute("id").replace("_image",""))
+    }else{
+      //founded=findNodeTreemap(element,vis.treeData)
+      node=element
+    }
+  }
+  //console.log("pasa")
+  //console.log(node)
+  ////console.log(menuItems)
+  if(menuItems){
+    console.log(node)
+    await menuItems.update(node)
+  }else{
+    ////console.log("crea uno nuevo")
+    //console.log(node)
+    if(node.class!="free"){
+      menuItems= new MenuItemsBasic(node)
+    }else{
+      menuItems= new MenuItemsExpert(node)
+    }
+    await menuItems.init()
+    
+    //await menuItems.init()
+  }
+  //////console.log(menuItems)
+  //hideSpinMessage(interval)
+  console.log(menuItems.selectedRows)
+  if(menuItems.selectedRows.length==0){
+    ////console.log("entra")
+    // if (founded[0]["children"]){
+      //SE CONTRAE LOS CHILDREN
+    //}else{
+      //SE EXPANDEN LOS CHILDREN
+    //} 
+  }else if(menuItems.selectedRows.length==1){
+    //console.log("length 1")
+    ////console.log(menuItems.selectedRows)
+    /* if(menuItems.selectedRows[0]["subject-object"]){
+      ////console.log(menuItems.selectedRows)
+      await buildBasicGraph(menuItems.selectedRows[0],node)
+    }else{
+      await buildBasicGraph(menuItems.selectedRows[0].option,node)
+      clickBubbleFreeGraph(element)
+    } */
+    if(node.class!="free"){
+      await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
+      networkGraph.refresh()
+    }else{
+      if(linkedDataGraph){
+        await linkedDataGraph.update(menuItems.selectedRows[0],node)
+        networkGraph.refresh()
+      }else{
+        showGraphExpert(menuItems.selectedRows[0])
+/*         linkedDataGraph = new LinkedDataGraphExpert("",menuItems.selectedRows[0]);
+        await linkedDataGraph.settingsFromOption()
+
+        console.log("antes de networkgraph")
+        let forces=setForcesGraph()
+        console.log(networkGraph)
+        console.log(linkedDataGraph.data)
+        $("#graph-area").removeClass("hidden")
+        $("#form-container form").hide()
+        $("#landing-page").hide()
+        $("#dataviz-collection").hide()
+        $("#landing-text").addClass("hidden")
+        networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
+        legend=new Legend("legend",networkGraph) */
+      }
+    }
+
+    
+    //console.log("antes refresh")
+    
+  }else if(menuItems.selectedRows.length>1){
+    ////////////////////////console.log("mayor de 1")
+    //getMenuItems(indexRows,node,origin,"basic")
+    if(origin=="table"){
+      menuItems.getMenuItemsInTable()
+    }else{
+      console.log(menuItems.node)
+      if(menuItems.node.id){
+        menuItems.getMenuItemsInGraph()
+      }else{
+        menuItems.getMenuItemsInPopup()
+      }
+      
+    }
+  }
+}
+
+async function showGraphExpert(selectedRow){
+  linkedDataGraph = new LinkedDataGraphExpert("",selectedRow);
+  await linkedDataGraph.settingsFromOption()
+  
+  console.log("antes de networkgraph")
+  let forces=setForcesGraph()
+  console.log(networkGraph)
+  console.log(linkedDataGraph.data)
+  $("#graph-area").removeClass("hidden")
+  $("#form-container form").hide()
+  $("#landing-page").hide()
+  $("#dataviz-collection").hide()
+  $("#landing-text").addClass("hidden")
+  networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
+  legend=new Legend("legend",networkGraph)
+}
+function showGraphExpertFromPopup(form){
+  console.log(form)
+  let newForm={"url":form.querySelector("#url").value,"uri":form.querySelector("#uri").value,"subject-object":form.querySelector("#subject-object").value}
+  let selectedRow=menuItems.selectedRows.filter(d=>((d.url==newForm.url)&&(d.uri==newForm.uri)&&(d["subject-object"]==newForm["subject-object"])))[0]
+  $("#form-container form").hide()
+  let modal = document.getElementById("myModal3")
+  modal.style.display = "none";
+  showGraphExpert(selectedRow)
 }

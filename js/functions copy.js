@@ -188,6 +188,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 }
 //execute sparql query
 function runSparlqQuery(settings){
+  console.log(settings)
   return new Promise((resolve, reject) => {
     $.ajax(settings).then  (function( _data ) {
       resolve(_data.results.bindings)

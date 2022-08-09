@@ -78,13 +78,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        //////////////////////////////console.log("pageY menos")
+        ////////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        //////////////////////////////console.log("pageX menos")
+        ////////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -94,26 +94,37 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 }
 
 //execute sparql query
-async function runSparlqQuery(settings){
-
+async function runSparlqQuery(url,query,type){
+  //console.log(query)
   var p = new Promise(function(resolve, reject){
+    let prefixes="";
+    ////console.log(configRow)
+    //console.log(url)
+    let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
+    ////console.log(queryUrl)
+    let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
     settings["success"] =function (_data) {
-      console.log("entra promise")
-      resolve(_data.results.bindings)
+      //console.log("entra promise")
+      //console.log(_data.boolean)
+      if(type=="query"){
+        resolve(_data.results.bindings)
+      }else if(type=="askquery"){
+        resolve(_data.boolean)
+      }
     }
     $.ajax(settings)
-    //console.log(settings)
+    ////console.log(settings)
     // resolve()
   })
   return await p.then(async function(_data){
-    console.log(_data)
+    //console.log(_data)
     return _data
   })
-  //console.log(_data)
-  //console.log("entra en la primera instruccion runSparqlQuery")
+  ////console.log(_data)
+  ////console.log("entra en la primera instruccion runSparqlQuery")
 /*   return new Promise((resolve, reject) => {
     $.ajax(settings).then  (function( _data ) {
-      //console.log("entra en then runSparqlQuery")
+      ////console.log("entra en then runSparqlQuery")
       resolve(_data.results.bindings)
     })
     .fail(function(jqXHR, textStatus, errorThrown){
@@ -125,7 +136,7 @@ async function runSparlqQuery(settings){
 async function runAskSparlqQuery(url,sparqlQuery){
   var prefixes="",settings
   var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-
+  //console.log(sparqlQuery)
   if (url=="https://query.wikidata.org/sparql"){
     settings = { url: queryUrl, async: true       }; 
   }else{
@@ -154,7 +165,7 @@ async function runAskSparlqQuery(url,sparqlQuery){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  ////////////////////////console.log(d)
+  //////////////////////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -233,6 +244,192 @@ function getTooltipText(d){
     </div>`;
     return text;
   } 
+}
+
+function getTooltipTextFreeGraph(d) {
+  var menuOptions, sparqlEndpoint = "", position = "",text;
+  //////////////console.log(d)
+  if (d.type == "menuOption") {
+    menuOptions = d.value.split(",")
+    text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-2 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Option values
+          </h3>
+        </div>
+        <div class="border-t border-gray-200">
+          <dl>
+            <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              URI
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + d.uri + `
+              </dd>
+            </div>
+            <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              Sparql Endpoint
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + menuOptions[0] + `
+              </dd>
+            </div>
+            <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              Position
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + menuOptions[1] + `
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>`;
+  } else if (typeof (d) == "string") {
+    text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          ` + d + `
+          </h3>
+        </div>
+        </div>`;
+  } else {
+    if (d.menuOption != undefined) {
+      if (d.menuOption.split(";").length == 1) {
+        sparqlEndpoint = d.menuOption.split(",")[0]
+        position = d.menuOption.split(",")[1]
+      } else {
+        sparqlEndpoint = "several"
+      }
+    }
+    if (d.property) {
+      //////////////console.log(d.property)
+      text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-2 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Node values
+            </h3>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Property
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.property + `
+                </dd>
+              </div>
+              <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Name
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.value + `
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>`;
+      //getOptionChosen()
+    }else if (d.target) {
+      //////////////console.log(d.target.property)
+      if(d.target.property){
+        text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-2 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Node values
+            </h3>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Property
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.target.property + `
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>`;
+      }
+      
+      //getOptionChosen()
+    }else {
+      text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-2 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Node values
+              </h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Name
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + d.value + `
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>`;
+      getOptionChosen()
+    }
+    function getOptionChosen() {
+      if (d.menuOption != undefined) {
+        if (sparqlEndpoint != "several") {
+          text = text + `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-2 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Option chosen
+              </h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Sparlq Endpoint
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + sparqlEndpoint + `
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Position
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + position + `
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>`
+        } else {
+          text = text + `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Several options displayed in graph. Click on each option to see results values
+              </h3>
+            </div>
+            </div>`
+        }
+      }
+    }
+  }
+
+  return text;
 }
 //This is the tooltip for the menu options
 function getTooltipMenu(d){
@@ -376,7 +573,7 @@ function get_node_from_element(id){
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[],propertyUri;
-  ////console.log(node)
+  //////console.log(node)
   if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
@@ -451,10 +648,10 @@ function textImageZoom(zoomScale){
 //select tab from navigation panel. Show children or show detail for node
 function selectTab(element,otherText){
   var otherEl;
-  console.log(element)
-  console.log(element.getAttribute("id"))
+  //console.log(element)
+  //console.log(element.getAttribute("id"))
   //var elements = element.querySelectorAll('span');
-  //console.log(elements)
+  ////console.log(elements)
 /*   elements[1].classList.remove("bg-transparent")
   elements[1].classList.add("bg-blue-500")
   otherEl=document.getElementById(otherText)
@@ -627,4 +824,55 @@ function showBasicGraph(){
   $("#form-container").addClass("hidden")
   $("#landing-img").addClass("hidden")
   $("#landing-text").addClass("hidden")
+}
+function fromSelectToAskQuery(query){
+  var mySubString;
+  
+  ////////////////console.log(cr)
+  if(query.toLowerCase().indexOf("where")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("where") - 1 
+    );
+    query=query.replace(mySubString,"ASK")
+    if(query.toLowerCase().indexOf("select")!=-1){
+      mySubString = query.substring(
+        query.toLowerCase().indexOf("select"), 
+        query.toLowerCase().lastIndexOf("where") + 5 
+      );
+      query=query.replace(mySubString,"")
+    }
+  }else{
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("{") - 1 
+    );
+    query=query.replace(mySubString,"ASK")
+  }
+  
+  if(query.toLowerCase().lastIndexOf("group by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("group by"), 
+      query.length - 1 
+    );
+    query=query.replace(mySubString,"")
+  }
+
+  if(query.toLowerCase().lastIndexOf("order by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("order by"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
+
+  if(query.toLowerCase().lastIndexOf("limit")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("limit"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
+  query=query.replaceAll("parameter","PARAMETER")
+  return query
 }

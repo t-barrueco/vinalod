@@ -37,6 +37,10 @@ Legend.prototype.addOne=function (index,textLi){
   ////console.log(le.graph.colorScale.range())
   //classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white rounded-l-md legend-color "
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white legend-color "
+  console.log(le.graph.colorScale.range())
+  console.log(index)
+  console.log(le.graph.colorCorrespondence)
+  console.log(le.graph.colorCorrespondence[le.graph.colorScale.range()[index]])
 
   li=le.parentEl.append("li")
   .attr("class", "flex col-span-1 rounded-md shadow-sm")

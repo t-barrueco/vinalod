@@ -1,32 +1,25 @@
 LinkedDataGraph = function (_option,_settings,_node) {
-    this.node=_node;
     this.option=_option;
     this.settings=_settings
-    if(this.settings!=undefined){
-      this.init();
-    }
+    this.node=_node;
+    //this.settingsFromOption()
+    //if(this.settings!=undefined){
+    //  this.init();
+    //}
   };
 
 LinkedDataGraph.prototype.init = async function () {
     var ldg=this;
-    console.log("antes de get results")
     await ldg.getResults()
-    console.log("despues de get results")
-    //console.log(ldg)
-    console.log("init")
     ldg.buildData()
+    console.log(ldg.data.treeData)
   }
 
 LinkedDataGraph.prototype.getResults = async function () {
     var ldg=this;
-    let prefixes="";
-    //console.log(configRow)
-    let queryUrl = ldg.settings.url + "?query=" + prefixes +  encodeURIComponent(  ldg.settings.query  )+ "&format=json";
-    console.log(queryUrl)
-    let settingsQuery = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    ldg.results = await runSparlqQuery(settingsQuery);
+    ldg.results = await runSparlqQuery(ldg.settings.url,ldg.settings.query,"query");
     console.log(ldg.results)
-    console.log("fin de getResults en linkedDataGraph")
+    ////console.log("fin de getResults en linkedDataGraph")
   }
 
 LinkedDataGraph.prototype.buildData = function () {
@@ -34,15 +27,16 @@ LinkedDataGraph.prototype.buildData = function () {
   //if node has no children, concat the new treeData with the
   //data already in the treeData of the Networkgraph
   ldg.buildTreeData()
-
+  //console.log(ldg.treeData)
   ldg.flatten()
 }
+
 LinkedDataGraph.prototype.flatten = function(){
     var nodes = [], links=[];
     var ldg=this;
 
     function recurse(node) {
-      //////////////console.log(node)
+      //////////////////console.log(node)
       if(!node["hidden"]){
         position=nodes.indexOf(nodes.filter(function(item) {
           return item.id == node.id
@@ -53,14 +47,16 @@ LinkedDataGraph.prototype.flatten = function(){
         }
         if (node.children){
           nodes[position]["number"]=node.children.length
-          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node.children.length)
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////console.log(node.children.length)
           node.children.forEach(function(c){
+            //console.log(c)
             if(!c["hidden"]){
               position=links.indexOf(links.filter(function(item) {
                 return ((item.source == node.id)&&(item.target == c.id))
               })[0])
               if(position==-1){
-                links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
+                ldg.addLink(node,c,links)
+                //links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
               }
               recurse(c)
             }
@@ -73,20 +69,21 @@ LinkedDataGraph.prototype.flatten = function(){
     }
 
     ldg.treeData.forEach(function(r){
-      //////////////console.log(r)
+      //console.log(r)
       recurse(r);
     })
-    //console.log(nodes)
+    //////console.log(nodes)
     ldg.data={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeData};
+    //console.log(ldg.data)
     //ldg.allData=ldg.flatData
 }
 LinkedDataGraph.prototype.add = function(){
   var ldg=this;
-  //console.log(networkGraph)
-  //console.log(networkGraph.treeData)
-  //console.log(ldg.data.treeData)
+  //////console.log(networkGraph)
+  //////console.log(networkGraph.treeData)
+  //////console.log(ldg.data.treeData)
   //ldg.treeData=networkGraph.treeData.concat(ldg.data.treeData)
-  console.log(ldg)
+  ////console.log(ldg)
   ldg.data.treeData=ldg.treeData
   //ldg.allData.treeData=ldg.treeData
   ldg.flatten()
@@ -111,10 +108,9 @@ LinkedDataGraphBasic.prototype.settingsFromOption = async function(){
   ldg.settings={}
   ldg.settings["query"]=configRow.rowFields.query
   ldg.settings["url"]=configRow.rowFields.endpoint_url
-  //console.log(ldg.settings.url)
-  //console.log(ldg)
   await ldg.init()
 };
+
 LinkedDataGraphBasic.prototype.update = async function(option,node){
   var ldg=this;
   ldg.option=option
@@ -132,8 +128,8 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   var treeResults;
   var properties=configRow.rowFields.properties
   var treeData=[]
-  console.log("principio treeData")
-  //console.log(ldg.treeData)
+  ////console.log("principio treeData")
+  //////console.log(ldg.treeData)
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
@@ -141,13 +137,13 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   for (let j = 0; j < ldg.results.length; ++j) {
       treeResults=get_hierarchy_from_keys(Object.keys(ldg.results[j]))
       for (let i = 0; i < treeResults.length; ++i) {
-          //console.log(i)
-          //console.log(ldg.results[j][treeResults[i]])
+          //////console.log(i)
+          //////console.log(ldg.results[j][treeResults[i]])
           if(ldg.results[j][treeResults[i]]){
               if(i>0){
               indexParent=checkNodeInTreeData()
-              //console.log(indexParent)
-              //console.log(treeData)
+              //////console.log(indexParent)
+              //////console.log(treeData)
               if(treeData[indexParent]["children"].filter(d=>d.value==ldg.results[j][treeResults[i]]["value"]).length==0){
                   child=nodeValues(ldg.results[j],i)
                   
@@ -166,7 +162,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
                   tmpNode=nodeValues(ldg.results[j],0)
                   }
                   tmpNode["children"]=[]
-                  //console.log(tmpNode)
+                  //////console.log(tmpNode)
                   treeData.push(tmpNode)
               }
               } 
@@ -177,18 +173,18 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   }
 
   ldg.treeData=ldg.treeData.concat(treeData)
-  console.log(ldg.treeData)
+  ////console.log(ldg.treeData)
   function checkNodeInTreeData(){
       var pathSearch=JSON.parse(JSON.stringify(procNode));
       var prevNodeIndex=-1,prevNodeId;
-      //console.log(pathSearch)
+      //////console.log(pathSearch)
       while(pathSearch.length>0){
       if(prevNodeIndex!=-1){
           prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==pathSearch[0])[0]["id"]
           prevNodeIndex=treeData.findIndex(d=>d.id==prevNodeId)
       }else{
-          //console.log(ldg.treeData)
-          //console.log(pathSearch[0])
+          //////console.log(ldg.treeData)
+          //////console.log(pathSearch[0])
           prevNodeIndex=treeData.findIndex(d=>d.value==pathSearch[0])
       }
       pathSearch.shift()
@@ -246,3 +242,107 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   }
     
 }
+
+LinkedDataGraphBasic.prototype.addLink = function (node,c,links) {
+  links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
+}
+
+function LinkedDataGraphExpert(...args){
+  LinkedDataGraph.apply(this, args);
+}
+
+LinkedDataGraphExpert.prototype = Object.create(LinkedDataGraph.prototype);
+
+LinkedDataGraphExpert.prototype.buildTreeData = function () {
+  var ldg=this;
+  //console.log("build tree data expert")
+/*   configRow = new ConfigRow(ldg.option);
+  ldg.settings={}
+  ldg.settings["query"]=configRow.rowFields.query
+  ldg.settings["url"]=configRow.rowFields.endpoint_url */
+  //await ldg.init()
+  var children = [], treeData = [], more_results, menuOption, menuOptionNodes = [], configRow;
+
+  if (ldg.treeData==undefined){
+    ldg.treeData=[]
+  }
+  console.log(ldg.settings["subject-object"])
+  ldg.results.forEach(r => {
+    //console.log(r)
+    //console.log(ldg.settings)
+    if (ldg.settings["subject-object"] == "s") {
+      if (r["o"]["more_results"]) {
+        more_results = r["o"]["more_results"]
+      } else {
+        more_results = ""
+      }
+      if (r["o"]["configRow"]) {
+        configRow = r["o"]["configRow"]
+      } else {
+        configRow = ""
+      }
+      //console.log(ldg.settings["uri"])
+      children.push({ "id": genRandomString(), "value": r["o"]["value"], "type": r["o"]["type"], "uri": r["o"]["value"], "url": ldg.settings["url"], "subject-object": ldg.settings["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
+    } else if (ldg.settings["subject-object"] == "o") {
+      if (r["s"]["more_results"]) {
+        more_results = r["s"]["more_results"]
+      } else {
+        more_results = ""
+      }
+      if (r["s"]["configRow"]) {
+        configRow = r["s"]["configRow"]
+      } else {
+        configRow = ""
+      }
+      children.push({ "id": genRandomString(), "value": r["o"]["value"], "type": r["o"]["type"], "uri": r["o"]["value"], "url": ldg.settings["url"], "subject-object": ldg.settings["subject-object"], "hidden": false, "property": r["p"]["value"], "more_results": more_results, "configRow": configRow, "class": "free" })
+    }
+
+
+  })
+  //console.log(ldg.node)
+  if (ldg.node != undefined) {
+    if (ldg.node["menuOption"]) {
+      menuOption = ldg.node["menuOption"] + ";" + ldg.settings["url"] + "," + ldg.settings["subject-object"]
+      networkGraph.treeData.filter(d => d.id == ldg.node["id"])
+      let obj = networkGraph.treeData.find(n => n.id == ldg.node["id"]);
+      if (obj["children"])
+        if (obj.children[0].type != "menuOption") {
+          menuOptionNodes.push({ "id": genRandomString(), "value": ldg.node["menuOption"], "type": "menuOption", "children": obj.children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+          menuOptionNodes.push({ "id": genRandomString(), "value": ldg.settings["url"] + "," + ldg.settings["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+          obj.children = menuOptionNodes;
+        } else {
+          obj.children.push({ "id": genRandomString(), "value": ldg.settings["url"] + "," + ldg.settings["subject-object"], "type": "menuOption", "children": children, "hidden": false, "more_results": "", "menuOption": "", "uri": obj.value, "class": "free" })
+        }
+
+      obj["menuOption"] = menuOption
+    } else {
+      menuOption = ldg.node["url"] + "," + ldg.node["subject-object"]
+      treeData = [{ "id": ldg.node["id"], "value": ldg.node["value"], "type": ldg.node["type"], "children": children, "hidden": false, "more_results": more_results, "menuOption": menuOption, "configRow": configRow, "class": "free" }]
+    }
+
+  } else {
+    //console.log(ldg.settings)
+    menuOption = ldg.settings["url"] + "," + ldg.settings["subject-object"]
+    //console.log(children)
+    treeData = [{ "id": genRandomString(), "value": ldg.results[0][ldg.settings["subject-object"]]["value"], "type": ldg.results[0][ldg.settings["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
+  }
+
+  ldg.treeData=ldg.treeData.concat(treeData)
+};
+
+LinkedDataGraphExpert.prototype.update = async function(option,node){
+  var ldg=this;
+  ldg.settings=option
+  ldg.node=node
+
+  await ldg.init()
+}
+
+LinkedDataGraphExpert.prototype.addLink = function (node,c,links) {
+  links.push({ "source": node.id, "target": c.id, "id": (node.id + "_" + c.id), "value": c.property })
+}
+
+LinkedDataGraphExpert.prototype.settingsFromOption = async function(){
+  var ldg=this;
+  await ldg.init()
+};

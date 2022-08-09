@@ -7,7 +7,8 @@ NavigationPanel = function ( _type) {
    
 NavigationPanel.prototype.init = function () {
   var navPanel=this;
-  navPanel.node=configRow.node
+  console.log(networkGraph.node)
+  navPanel.node=networkGraph.node
   navPanel.clusterElSelected=[]
   navPanel.imageArrowUp="images/arrow-up.svg"
   navPanel.imageArrowDown="images/arrow-down.svg"
@@ -61,7 +62,7 @@ NavigationPanel.prototype.getNodes = function (){
     }
   }
   ////////////////console.log(networkGraph.treeData)
-  ////////////////console.log(networkGraph.data)
+  console.log(networkGraph)
   navPanel.sources.push(networkGraph.treeData[0])
   
   ////console.log(navPanel.sources)
