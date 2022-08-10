@@ -13,7 +13,6 @@ function dataViz(){
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
           d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
               d3.tsv("../config_vinalod/graph_icons.txt",function(dataIcons){
-                //-----------configFile=dataConfig;
                 $("#expand-settings-legend").css("background-color", "#064494");
                 $("#collapse-settings-legend").css("background-color", "#064494");
 
@@ -27,44 +26,31 @@ function getOptionsCollection(collection){
   $('#dataviz-collection'). show();
   $('#graph-area'). hide();
   $('#dataviz-collection article').remove()
-  //$('#basic-mode').attr("area-expanded","false");
   changeCollectionOptions(collection.id.trim())
 }
 async function buildBasicGraph(option,node){
-    var sparqlQuery,modal2,prefixes;
-    ////////////console.log("buildBasicGraph")
-    ////////////console.log(arguments)
-    ////console.log(option)
-    ////console.log(node)
+    var sparqlQuery,modal2;
     $('#landing-page'). hide();
     $('#dataviz-collection'). hide();
     $('#graph-area'). show();
-    //console.log(option)
-    //console.log(node)
+
     if((node==undefined)||(!node["subject-object"])){
       if(typeof configRow !== 'undefined'){
-        //////////console.log(option)
         configRow.update(option,node)
       }else{
         configRow = new ConfigRow(option,node);
       }
           //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
       if(configRow.rowFields.type=="TREE"){
-        ////////////console.log("TREE")
         await buildNetworkGraph(configRow,"basic",node)
       }else{
-        //////////////////////////////console.log("other type config row")
-        //////////////////////////////console.log(configRow)
-        //sparqlQuery=configRow.sparqlQuery
         deleteTooltip()
         sparqlQuery=configRow.rowFields.query
-        //////////////////////////////console.log(sparqlQuery)
         if (configRow.type=="TREEGRAPH"){
           modal2=getModal2()
           showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent,configRow)
           showModal("#myModal2")
         }else if (configRow.type=="WIKIPEDIA"){
-          //////////////////////////////////////////////////////////////////////////////console.log("WIKIPEDIA")
           modal2=getModal2()
           showWikipediaPage(node,modal2.modalHeader,modal2.modalContent,configRow)
           showModal("#myModal2")
@@ -93,153 +79,9 @@ async function buildBasicGraph(option,node){
         }
       }
     }else{
-      //console.log(option)
       await buildNetworkGraph(option,"expert",node)
     }
-
-    
-    ////////console.log(configRow)
-    //prefixes=""
-
-
-  //////console.log("fin build")
   }
-/* async function buildNetworkGraph(settingsGraph,branchType,node){
-  let sparqlQuery=getQuery()
-  let url=getEndpointUrl()
-  //console.log(settingsGraph)
-  hideSpinMessage(interval)
-
-  var interval=showSpinMessage("Waiting for Sparql query")
-  let prefixes=""
-
-  let queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-  let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-
-  if(data){
-    ////////////console.log(data.treeData)
-  }
-  try {
-    var results = await runSparlqQuery(settings);
-    //console.log(results)
-    //console.log("despues")
-    //VER SI HAY MUCHOS RESULTADOS
-    ////-------------------results = clusterResults(results, settingsGraph)
-    //stop displaing message when executing query
-    //console.log(configRow)
-    //hideSpinMessage(interval)
-    //console.log(configRow)
-    //if no bubble is clicked or row in the table
-    if((configRow==undefined)||(configRow.node==undefined)){
-      //console.log("entra en if")
-      data=new Data(results,branchType)
-      //add forces to graph
-      setForcesGraph()
-
-      //check if there is an object networkGraph already
-      if(networkGraph){
-        legend.deleteAllColors()
-      }else{
-        d3.selectAll(".graph").remove()
-        networkGraph = new NetworkGraph("#networkGraph",forces,branchType,settingsGraph["rowNumber"]);
-        legend=new Legend("legend")
-      }
-
-      networkGraph.collapseAll()
-    }else{
-      //console.log("entra en else")
-      networkGraph.addingGraph=true
-      networkGraph.dblClickId=configRow.node.id.replace("_image","")+"_g"
-      networkGraph.mergeData(results,"basic")
-      //////console.log(networkGraph.data)
-      networkGraph.refresh()
-
-      legend.addColors(networkGraph.colorScale)
-
-      
-      //handleNavigation()
-
-      //collapse graph if is basic type and hierarchy has more than two levels
-      if(branchType=="basic"){
-        //collapse(networkGraph.treeData.filter(d=>d.id==node.id)[0])
-      }
-      if(document.getElementsByClassName("d3-tip")[0]){
-        document.getElementsByClassName("d3-tip")[0].remove()
-        networkGraph.g.call(networkGraph.tip);
-      }
-    }
-  } catch (e) {
-    //console.log(e)
-    results = false
-  }
-  hideSpinMessage(interval)
-
-  function getEndpointUrl(){
-      var url;
-      if(branchType=="basic"){
-        url=configRow.rowFields.endpoint_url
-      }else if(branchType=="expert"){
-        //url=configRow.option.url
-        url=settingsGraph.url
-      }
-      return url
-  }
-  function getQuery(){
-    var sparqlQuery;
-    if(branchType=="basic"){
-        sparqlQuery=configRow.rowFields.query
-    }else if(branchType=="expert"){
-        sparqlQuery=buildExpertQuery()
-    }
-    return sparqlQuery
-  }
-
-  function buildExpertQuery(){
-      var sparqlQuery;
-      if (settingsGraph["subject-object"] == "s") {
-          sparqlQuery = "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?s=<" + settingsGraph["uri"]+ ">).}"
-      } else {
-          sparqlQuery = "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?o=<" + settingsGraph["uri"] + ">).}"
-      }
-      return sparqlQuery
-  }
-
-  function setForcesGraph(){
-    forces = {
-      center: {
-          x: 0.5,
-          y: 0.5
-      },
-      charge: {
-          enabled: true,
-          strength: -800,
-          distanceMin: 100,
-          distanceMax: 2000
-      },
-      collide: {
-          enabled: false,
-          strength: .2,
-          iterations: 1,
-          radius: 5
-      },
-      forceX: {
-          enabled:true,
-          strength: .1,
-          x: .2
-      },
-      forceY: {
-          enabled: true,
-          strength: .1,
-          y: .2
-      },
-      link: {
-          enabled: true,
-          distance: 100,
-          iterations: 1
-      }
-    }
-  }
-} */
 function collapse(){
 
   networkGraph.collapseAll()
@@ -257,14 +99,12 @@ var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
 expand_settings_legend.onclick = function() {
-  ////////////////////////////////////////////console.log("collapse")
   $("#settings-legend").removeClass("hidden")
   $("#expand-settings-legend").addClass("hidden")
   $("#collapse-settings-legend").removeClass("hidden")
 }
 
 collapse_settings_legend.onclick = function() {
-  ////////////////////////////////////////////console.log("collapse")
   $("#settings-legend").addClass("hidden")
   $("#expand-settings-legend").removeClass("hidden")
   $("#collapse-settings-legend").addClass("hidden")
@@ -404,7 +244,6 @@ function expertMode(){
       $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
       $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
   }
-  ////console.log("entra")
   $("#graph-area").addClass("hidden")
   $("#form-container form").show()
   $("#landing-page").hide()
@@ -417,7 +256,6 @@ function expertMode(){
   if(networkGraph){
     networkGraph = undefined;
     legend=undefined
-    //legend.deleteAllColors()
   }
 }
 function basicMode(){
@@ -445,10 +283,7 @@ function appendHtmlOptions(optionsMenu){
   });
 }
 function handleNavigation(){
-  ////////console.log("handleNavigation")
-  ////////console.log(showNavigation)
   if(showNavigation){
-    ////////console.log(navigation)
     if (typeof (navigation) != "object") {
       navigation = new navigationPanel("freeGraph");
     } else if (navigation.type != "freeGraph") {
@@ -556,11 +391,6 @@ function copyDuplicates(index,i,node){
 // of basic mode menu
   
 async function changeBasicGraph(option){
-  ////console.log(option)
-
-  ////console.log(option.textContent);
-  ////console.log(option.innerText);
-  //remove filter, legend and graph
 
   //INCLUIR EN FUNCIÓN
   d3.selectAll(".classFilter").remove()
@@ -604,7 +434,6 @@ async function changeBasicGraph(option){
     legend.deleteAllColors()
   }else{
     d3.selectAll(".graph").remove()
-    //console.log(linkedDataGraph.data)
     networkGraph = new NetworkGraphBasic("#networkGraph",forces,linkedDataGraph.data);
     console.log(networkGraph)
     legend=new Legend("legend",networkGraph)
@@ -702,12 +531,9 @@ function clickBubbleFreeGraph(element) {
   var node
   nodesSelSources = []
   nodesSelTarget = []
-  //console.log(element)
-  ////console.log(configRow)
+
   node = d3.select("#" + element.getAttribute("id")).data()[0]
-  //console.log(node)
-  //console.log(navigationPanel)
-  //configRow.update(option,node)
+
   //CAMBIAR LOS CAMPOS DEL CONFIGROW
   if(configRow){
     configRow.node=node
@@ -719,45 +545,34 @@ function clickBubbleFreeGraph(element) {
   } else {
     navigationPanel.element = element
     navigationPanel.node = node
-    //console.log(node)
     navigationPanel.init()
   }
   $("#myModal").removeClass("translate-x-full")
   $("#myModal").addClass("translate-x-0")
 }
 async function checkMenuItems(origin,element) {
-  //console.log(element)
   if(origin=="form"){
     node={"uri":element.querySelector('#free-uri').value, "subject-object":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
   }else if(origin=="graph"){
     if(element instanceof Element){
-      //founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
       node=get_node_from_element(element.getAttribute("id").replace("_image",""))
     }else{
-      //founded=findNodeTreemap(element,vis.treeData)
       node=element
     }
   }
-  //console.log("pasa")
-  //console.log(node)
-  ////console.log(menuItems)
+
   if(menuItems){
     console.log(node)
     await menuItems.update(node)
   }else{
-    ////console.log("crea uno nuevo")
-    //console.log(node)
     if(node.class!="free"){
       menuItems= new MenuItemsBasic(node)
     }else{
       menuItems= new MenuItemsExpert(node)
     }
     await menuItems.init()
-    
-    //await menuItems.init()
   }
-  //////console.log(menuItems)
-  //hideSpinMessage(interval)
+
   console.log(menuItems.selectedRows)
   if(menuItems.selectedRows.length==0){
     ////console.log("entra")
@@ -767,15 +582,7 @@ async function checkMenuItems(origin,element) {
       //SE EXPANDEN LOS CHILDREN
     //} 
   }else if(menuItems.selectedRows.length==1){
-    //console.log("length 1")
-    ////console.log(menuItems.selectedRows)
-    /* if(menuItems.selectedRows[0]["subject-object"]){
-      ////console.log(menuItems.selectedRows)
-      await buildBasicGraph(menuItems.selectedRows[0],node)
-    }else{
-      await buildBasicGraph(menuItems.selectedRows[0].option,node)
-      clickBubbleFreeGraph(element)
-    } */
+
     if(node.class!="free"){
       await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
       networkGraph.refresh()
@@ -785,29 +592,10 @@ async function checkMenuItems(origin,element) {
         networkGraph.refresh()
       }else{
         showGraphExpert(menuItems.selectedRows[0])
-/*         linkedDataGraph = new LinkedDataGraphExpert("",menuItems.selectedRows[0]);
-        await linkedDataGraph.settingsFromOption()
-
-        console.log("antes de networkgraph")
-        let forces=setForcesGraph()
-        console.log(networkGraph)
-        console.log(linkedDataGraph.data)
-        $("#graph-area").removeClass("hidden")
-        $("#form-container form").hide()
-        $("#landing-page").hide()
-        $("#dataviz-collection").hide()
-        $("#landing-text").addClass("hidden")
-        networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
-        legend=new Legend("legend",networkGraph) */
       }
     }
 
-    
-    //console.log("antes refresh")
-    
   }else if(menuItems.selectedRows.length>1){
-    ////////////////////////console.log("mayor de 1")
-    //getMenuItems(indexRows,node,origin,"basic")
     if(origin=="table"){
       menuItems.getMenuItemsInTable()
     }else{

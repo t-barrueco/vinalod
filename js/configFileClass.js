@@ -1,17 +1,14 @@
 ConfigFile = function (_file) {
     this.file=_file
-    //this.parent=_parent
     this.init();
   };
 
 ConfigFile.prototype.init = function () {
     var cf=this;
-    ////////////////////console.log(cf.file)
   }
 
 ConfigFile.prototype.filterByValueField = function (value,field) {
     var cf=this;
-    ////////////////////console.log(cf.file)
     return cf.file.filter(d=>d[field]==value)
   }
 
@@ -23,20 +20,12 @@ ConfigFile.prototype.getRowNumber = function (option) {
       }).indexOf(option)
   }
 
-/* ConfigFile.prototype.addFieldsConfigFile= function(rowDataConfig){
-    var cf=this;
-    let line=JSON.parse(JSON.stringify(cf.file[rowDataConfig]));
-    ////console.log(line)
-  } */
-
 ConfigFile.prototype.getFieldsConfigFile= function(rowDataConfig){
     var cf=this;
-    //console.log(rowDataConfig)
     return JSON.parse(JSON.stringify(cf.file[rowDataConfig]));
   }
 
 ConfigFile.prototype.getRowsNodeClass= function(classNode){
-    var configRows=[],classesText
     var cf=this;
 
     return cf.file.filter(d=>d.class==classNode)
@@ -55,15 +44,6 @@ ConfigFile.prototype.getProperties= function(configRow){
     return temp
   }
 
-/* ConfigFile.prototype.getClassesShow=function(rowDataConfig){
-    var cf=this,tmp={}
-    cf.file[rowDataConfig]["classes_text"].forEach(function(c){
-      tmp[c["class"]]=c["text"]
-    })
-    return tmp
-  } */
-  //Get tooltip from Config File
-// format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
 ConfigFile.prototype.getTooltip= function(option_text){
   var cf=this;
   var selClass=cf.file.filter(function(d){

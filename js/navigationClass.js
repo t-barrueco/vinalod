@@ -1,8 +1,6 @@
 NavigationPanel = function ( _type) {
     this.type = _type;
-    //this.node = _node
     this.init();
-    ////console.log("navigation")
   };
    
 NavigationPanel.prototype.init = function () {
@@ -26,8 +24,6 @@ NavigationPanel.prototype.init = function () {
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
-  //console.log("show children details")
-  //console.log(navPanel.node)
   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
     $("#tabsNav").addClass("hidden")
   }else{
@@ -38,12 +34,9 @@ NavigationPanel.prototype.showChildrenDetails = function (){
 NavigationPanel.prototype.getNodes = function (){
   var navPanel=this;
   var sources2
-  //console.log(networkGraph.data)
-  ////console.log(navPanel.node)
   navPanel.targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == navPanel.node.id
   })
-  ////console.log(navPanel.targets)
   navPanel.sources=networkGraph.data.links.filter(function(item) {
     return item.target.id == navPanel.node.id
   })
@@ -61,12 +54,8 @@ NavigationPanel.prototype.getNodes = function (){
       })
     }
   }
-  ////////////////console.log(networkGraph.treeData)
   console.log(networkGraph)
   navPanel.sources.push(networkGraph.treeData[0])
-  
-  ////console.log(navPanel.sources)
-  ////console.log(navPanel.targets)
 
   navPanel.sources=navPanel.sources.reverse();
 }
@@ -144,7 +133,6 @@ NavigationPanel.prototype.initModal = function (){
 
 NavigationPanel.prototype.navTableTable = function ()
   {
-    var last=false,property=false,first=true,ol=null  
     var navPanel=this,nodeClass;
     navPanel.navTable = document.getElementById("navTable");
 
@@ -201,7 +189,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   if(nodeClass=="free"){
     addFreeGraph()
   }else{
-    //////console.log("entra")
     if(i+1==navPanel.sources.length){
       last=true
       addBasicGraph(last,imageSourceLast)
@@ -212,9 +199,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
   }
   function addBasicGraph(last,navImage){
     li=document.createElement("li")
-    
-    ////console.log(last)
-    ////console.log(navImage)
+
     if(!last){
         li.setAttribute("class", "relative pb-2");
         div=document.createElement("div")
@@ -232,15 +217,11 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }else{
       a.id=navPanel.sources[i]["id"]+"_a"
     }
-    ////console.log(a)
     span=document.createElement("span")
     span.setAttribute("class","h-9 flex items-center")
     
     span2=document.createElement("span")
-    ////console.log(networkGraph.colorCorrespondence)
-    //////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]]))
 
-    //////console.log(networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]]))
     if(navPanel.sources[i]["target"]){
       colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
     }else{
@@ -248,7 +229,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }    
 
     span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-    ////console.log(span2)
     img=document.createElement("img")
     img.setAttribute("src",navImage)
     img.setAttribute('width','40px')
@@ -259,13 +239,10 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     if(!last){
         el1.appendChild(div)
     }
-    ////console.log(el1)
     el2=el1.appendChild(a)
     el2.appendChild(span).appendChild(span2).appendChild(img)
     span3=document.createElement("span")
     span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
-    //span4=document.createElement("span")
-    //span4.setAttribute("class","text-sm font-semibold tracking-wide uppercase")
     span4=document.createElement("span")
 
     span4.setAttribute("class","ecl-timeline__content ecl-link")
@@ -288,7 +265,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
     el3.appendChild(img)
-    ////console.log(el3)
   }
 
   function addFreeGraph(){
@@ -317,22 +293,7 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     
     span2=document.createElement("span")
 
-    /* if(navPanel.sources[i]["target"]){
-      colorCircle=colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[navPanel.sources[i]["target"]["class"]])]
-    }else{
-      colorCircle=colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[navPanel.sources[i]["class"]])]
-    }   */ 
-    ////////////////console.log(source)
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["type"]])]
-    /* if(source["type"]=="uri"){
-      colorCircle="green-300"
-    }else if(source["type"]=="bnode"){
-      colorCircle="yellow-300"
-    }else if(source["type"]=="menuOption"){
-      colorCircle="blue-300"
-    }else{
-      colorCircle="pink-300"
-    } */
   
     span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
   
@@ -395,16 +356,6 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
     colorCircle="gray-300"
   }else{
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["target"]["type"]])]
-
-    /* if(source["target"]["type"]=="uri"){
-      colorCircle="green-300"
-    }else if(source["target"]["type"]=="bnode"){
-      colorCircle="yellow-300"
-    }else if(source["target"]["type"]=="menuOption"){
-      colorCircle="blue-300"
-    }else{
-      colorCircle="pink-300"
-    } */
   }
 
 
@@ -437,14 +388,11 @@ NavigationPanel.prototype.addElementNavProp = function (source,i,property){
   
   span3=document.createElement("span")
   span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
-/*   span4=document.createElement("span")
-  span4.setAttribute("class","text-xs font-semibold tracking-wide uppercase") */
   span4=document.createElement("h5")
 
   span4.setAttribute("class","ecl-u-type-heading-5")
   if(property){
     span4.innerHTML= source["target"]["property"]
-    ////////////////console.log(source["target"]["property"])
     span5=document.createElement("span")
     span5.setAttribute("class","text-xs tracking-wide")
     span5.setAttribute("style","color:blue;font-weight:bolder")
@@ -472,7 +420,6 @@ NavigationPanel.prototype.addEventsNav = function (){
   .on('contextmenu',function(){  
     var menuItems=[]
     d3.event.preventDefault();
-    //var node=d3.select("#"+this.getAttribute("id")).data()[0]
   });
 }
 NavigationPanel.prototype.contentTable = function (){
@@ -486,16 +433,13 @@ NavigationPanel.prototype.contentTable = function (){
   navPanel.contentRows=[]
   d3.selectAll("#modal-content table").remove()
   
-  ////console.log(navPanel.targets)
   if (navPanel.targets.length>0){
     $("#dvTable").show()
     $("#dvDetails").empty()
     navPanel.table = document.createElement("table");
-    //navPanel.table.className="w-full divide-y divide-gray-200 table-auto"
     navPanel.table.className="ecl-table ecl-table--zebra"
     
     navPanel.thead=document.createElement("thead")
-    //navPanel.thead.className="bg-gray-50"
     navPanel.thead.className="ecl-table__head"
     
     var tr=document.createElement("tr")
@@ -504,10 +448,8 @@ NavigationPanel.prototype.contentTable = function (){
     var th=document.createElement("th")
     th.setAttribute("colspan","3")
     th.setAttribute("scope","colgroup")
-    //th.setAttribute("class","px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider")
     th.setAttribute("class","ecl-table__header")
 
-    ////console.log(th)
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       if(navPanel.node.class=="free"){
@@ -519,7 +461,6 @@ NavigationPanel.prototype.contentTable = function (){
       th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
-      ////////////////////console.log(node)
       if(menuOption){
         if(menuOption.split(";").length>1){
           th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
@@ -537,16 +478,11 @@ NavigationPanel.prototype.contentTable = function (){
 
      
     }
-    ////console.log(th)
-
     navPanel.thead.appendChild(tr).appendChild(th)
     navPanel.tbody=document.createElement("tbody")
-    //navPanel.tbody.className="bg-white divide-y divide-gray-200"
     navPanel.tbody.className="ecl-table__body"
     
-    ////console.log("before showLines")
     navPanel.showLines(navPanel.numCurrent,true)
-    ////console.log("after showLines")
     var dvTable = document.getElementById("dvTable");
     dvTable.innerHTML = "";
   
@@ -555,7 +491,6 @@ NavigationPanel.prototype.contentTable = function (){
     div2=document.createElement("div")    
     div2.className="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2"
     div3=document.createElement("div")    
-    //div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll sm:rounded-lg"
     div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll"
 
 
@@ -628,7 +563,6 @@ NavigationPanel.prototype.contentTable = function (){
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
-      ////////////////////console.log(navPanel.node.detail)
       navPanel.showDetails()
     }else{
       $("#dvDetails").empty()
@@ -657,7 +591,6 @@ NavigationPanel.prototype.contentTable = function (){
     }else{
       label=configFile.filter(d=>d.option==label)[0]["option_text"]
     }
-    console.log(label)
   }
   function searchHtml(){
   var text=`<div>
@@ -700,7 +633,6 @@ NavigationPanel.prototype.showDetails = function (){
             navDetailHeader=header.replace("Title",navPanel.node["value"])
             console.log(navDetailHeader)
             $("#dvDetails").append($(navDetailHeader))
-            ////////////////////console.log(navPanel.node)
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
                 if((key % 2 == 0)|| (key == 0)){  
@@ -918,7 +850,6 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 
 
   }
-  ////console.log("showLines 890")
 
   if(first){
     linesShown=navPanel.targets.slice(navPanel.firstPage - 1, navPanel.numLinesShown);
@@ -930,13 +861,11 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     $("#add-sel-graph").show()
   }
 
-  ////console.log("showLines 902")
 
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
     navPanel.contentRows.push(row)
-    ////console.log("showLines 908")
 
     if(linesShown[i]["target"]["class"]=="free"){
       if(cluster){
@@ -982,7 +911,6 @@ NavigationPanel.prototype.addEventsContentNav = function (){
 
   navPanel.timeoutTiming = 500;
   d3.selectAll("#modal-content td").on("dblclick",function(){ 
-    //console.log("dblcikc 957")
     $("#dvDetails").empty()
     node=d3.select("#"+this.getAttribute("id")).data()[0]
     d3.event.preventDefault();
@@ -1048,7 +976,6 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
     row = navPanel.tbody.insertRow(-1);
     
     cell = row.insertCell(-1);
-    //cell.className="px-2 py-4 whitespace-nowrap"
     cell.className="ecl-table__row"
     
     cell.id=target["target"]["id"]
@@ -1098,19 +1025,7 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
   
   if(!property){
     img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[nodesTable[i]["target"]["type"]])] + " rounded-full"
-/* 
-      if(nodesTable[i]["target"]["type"]=="uri"){
-          //img.className="w-5 h-5 bg-green-300 rounded-full"
-          img.className="w-5 h-5 bg-"+colorCorrespondence[networkGraph.colorScale(nodesClassesCorrespondence[nodesTable[i]["target"]["type"]])] + " rounded-full"
-        }else if(nodesTable[i]["target"]["type"]=="bnode"){
-          img.className="w-5 h-5 bg-yellow-300 rounded-full"
-        }else if(nodesTable[i]["target"]["type"]=="menuOption"){
-          img.className="w-5 h-5 bg-blue-300 rounded-full"
-        }else{
-          img.className="w-5 h-5 bg-pink-300 rounded-full"
-      }
-      
- */  }else{
+  }else{
       img.className="w-5 h-5 bg-gray-300 rounded-full"
   }
 
@@ -1175,13 +1090,6 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   
   function insertContent(property){
     var menuOption;
-    ////////////////console.log(target["target"]["type"])
-    ////////////////console.log(nodesClassesCorrespondence)
-    ////////////////console.log(colorCorrespondence)
-    ////////////////console.log(networkGraph.colorScale.domain())
-    ////////////////console.log(networkGraph.colorScale.range())
-    ////////////////console.log(nodesClassesCorrespondence[target["target"]["type"]])
-    ////////////////console.log(networkGraph.colorScale(nodesClassesCorrespondence[target["target"]["type"]]))
 
     cell = row.insertCell(-1);
     cell.className="px-2 py-4 whitespace-nowrap"
@@ -1208,22 +1116,7 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
     img=document.createElement("img")
     
     if(!property){
-/*       ////////////////console.log(colorCorrespondence)
-      ////////////////console.log(networkGraph.colorScale)
-      ////////////////console.log(target["target"]["type"])
-      ////////////////console.log(nodesClassesCorrespondence) */
       img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["type"]])] + " rounded-full"
-/* 
-        if(target["target"]["type"]=="uri"){
-            img.className="w-5 h-5 bg-green-300 rounded-full"
-          }else if(target["target"]["type"]=="bnode"){
-            img.className="w-5 h-5 bg-yellow-300 rounded-full"
-          }else if(target["target"]["type"]=="menuOption"){
-            img.className="w-5 h-5 bg-blue-300 rounded-full"
-          }else{
-            img.className="w-5 h-5 bg-pink-300 rounded-full"
-        }
-       */  
     }else{
         img.className="w-5 h-5 bg-gray-300 rounded-full"
     }
@@ -1252,7 +1145,6 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
         div4.appendChild(a).appendChild(span).appendChild(newText);
     }else{
         span=document.createElement("span")
-        ////////////////console.log(target)
         if(target["value"]!=undefined){
           newText = document.createTextNode(target["value"]);
         }else if(target["target"]["property"]!=undefined){
@@ -1321,7 +1213,6 @@ NavigationPanel.prototype.dblclickCellContent = async function (cell) {
   }else{
     bubble=cell
   }
-  ////////console.log(bubble)
   if(bubble){
     if(bubble.class=="free"){
       freeGraph()
@@ -1402,11 +1293,9 @@ NavigationPanel.prototype.addMenuToTable = function (){
   menuTableBasic()
   function menuTableBasic(){
     var newText,newCell,newRow,span,div,textNode
-    ////console.log(menuItems)
     d3.selectAll(".menu-table").remove()
     var rowIndex=$('#myModal #'+ menuItems.node["id"]).parent()[0].rowIndex
     var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-    ////////console.log(menuItems)
     for (var i = 0; i < menuItems.selectedRows.length; i++) {
         newRow = tbodyRef.insertRow(rowIndex+i);
         newRow.id="menu-table-"+menuItems.selectedRows[i]["position"]
@@ -1414,7 +1303,6 @@ NavigationPanel.prototype.addMenuToTable = function (){
         newCell = newRow.insertCell();
         newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
         newCell.setAttribute("x-data","{ tooltip: false }")
-        // Append a text node to the cell
         a=document.createElement("a")
         a.setAttribute("href", "#");
         a.setAttribute("class", "relative flex items-start group");
@@ -1437,7 +1325,6 @@ NavigationPanel.prototype.addMenuToTable = function (){
         newCell.appendChild(div).appendChild(textNode)
         
         d3.selectAll("#menu-table-"+menuItems.selectedRows[i]["position"]).on("dblclick",function(){  
-          //console.log(menuItems.node)
           navPanel.clickMenuTable(menuItems.selectedRows[0]["option"],menuItems.node)
         })
     }
@@ -1448,7 +1335,6 @@ NavigationPanel.prototype.addMenuToTable = function (){
     var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
   
     var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-    ////console.log(menuItems)
     for (var i = 0; i < menuItems.selectedRows.length; i++) {
         newRow = tbodyRef.insertRow(rowIndex+i);
         newRow.id="menu-table-"+ node.id + "-" + [i]
@@ -1497,21 +1383,16 @@ NavigationPanel.prototype.addMenuToTable = function (){
 NavigationPanel.prototype.clickMenuTable = async function (option,node){
   var bubble;
   var navPanel=this;
-  //console.log(node)
   clickMenuBasic(option,node)
   async function clickMenuBasic(option,node){
     var element=document.getElementById(node["id"])
     //CAMBIAR LA POSICIÓN POR LA OPTION SI SE PUEDE...
     await buildBasicGraph(option,node)
-    //unclickBubbleFreeGraph()
-    //console.log("clickBubbleFreeGraph")
     clickBubbleFreeGraph(element,networkGraph.data)
   }
   async function clickMenuExpert(form){
     var newForm={"url":form["new_url"],"uri":node["value"],"subject-object":form["new_subjectObject"]}
 
-    //await buildFreeGraph(newForm,"table",node)
-    ////////console.log(newForm)
     await buildNetworkGraph(newForm,"expert",node)
     if(node["menuOption"]){
       if(node["menuOption"].split(";").length>1){
