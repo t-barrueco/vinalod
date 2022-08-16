@@ -1,13 +1,17 @@
-var global=0;
-function addFilters(filters,data){
+//var global=0;
+var classesFilterList=[],filtersList=[]
+function addFilters(){
     var filterObject,classFilterObject,bubbleId;
-    bubbleId=data.treeData.slice(-1)[0]["id"]
+    let filters=configRow.rowFields.filters
+    console.log(filters)
+    console.log(linkedDataGraph)
+    bubbleId=linkedDataGraph.treeData.slice(-1)[0]["id"]
     filters.forEach(function(d){
       property=d["property"]
       filterType=d["filter_type"]
       classFilter=d["property"].split("_")[0]
       parent=d["parent"]
-
+      
       if (classesFilterList.filter(c => c.name==classFilter).length==0){
             classFilterObject= new classFilterClass(classFilter)
             filterObject=new filter(classFilter, property, filterType,parent,bubbleId)

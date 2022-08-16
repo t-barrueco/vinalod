@@ -430,14 +430,15 @@ async function changeBasicGraph(option){
     legend=undefined
   }
 
-  if(networkGraph){
-    legend.deleteAllColors()
-  }else{
-    d3.selectAll(".graph").remove()
-    networkGraph = new NetworkGraphBasic("#networkGraph",forces,linkedDataGraph.data);
-    console.log(networkGraph)
-    legend=new Legend("legend",networkGraph)
-  }
+  //if(networkGraph){
+  //  legend.deleteAllColors()
+  //}else{
+  d3.selectAll(".graph").remove()
+  networkGraph = new NetworkGraphBasic("#networkGraph",forces,linkedDataGraph.data);
+  console.log(networkGraph)
+  legend=new Legend("legend",networkGraph)
+  addFilters()
+  //}
 
 }
 /* async function checkMenuItems(origin,element) {

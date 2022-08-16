@@ -54,7 +54,7 @@ NetworkGraph.prototype.initVis = function () {
             .attr('xoverflow','visible')
         .append('svg:path')
         .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-        .attr('fill', '#999')
+        .attr('fill', 'black')
         .style('stroke','none')
         
   
@@ -393,8 +393,8 @@ NetworkGraph.prototype.enterGraph = function(){
           return d.index;
                 })
         .attr("value",d=>d["type"])
-        .style("stroke", "grey")
-        .style("fill","grey")
+        .style("stroke", "black")
+        .style("fill","black")
         .style("stroke-width", "1px")
         .attr('marker-end','url(#arrowhead)') 
         .on('mouseover', function(d){
@@ -438,7 +438,7 @@ NetworkGraph.prototype.enterGraph = function(){
               return d["value"]
             })
             .attr('font-size', 14)
-            .attr('fill', '#aaa');
+            .attr('fill', 'black');
       
         vis.edgelabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d, i) {return '#edgepath' + i})
@@ -496,7 +496,7 @@ NetworkGraph.prototype.enterGraph = function(){
           }
           })
         .attr("stroke", function(d){
-          return "grey"
+          return "black"
         })
         .attr("stroke-width", "1px")
         .style("fill", function(d){ 
@@ -637,7 +637,7 @@ NetworkGraph.prototype.enterGraph = function(){
             .attr("id",d=>d.id)
             .attr("stroke-width", "1px")
             .style("stroke", function(d){
-              return "gray";
+              return "black";
             })
             .style("stroke-opacity",1)
             .style("stroke-width", function(d){
@@ -849,6 +849,9 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       .attr('rx', 2)
       .attr('width', width)
       .attr('height', 30)
+      .attr('stroke', '#042F67')
+      .attr('stroke-width', 3)
+
       .on('click', (d) => { 
         deleteTooltip()
         let p = d3.selectAll(".d3-tip");
@@ -865,7 +868,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         }else{
           addTooltip(getTooltipInside(d.title,uri));
         }
-        d3.select(this).style("fill","#DCDDF5")
+        //d3.select(this).style("fill","#DCDDF5")
       })
       .on('mouseout', function(d){
         deleteTooltip()
@@ -881,7 +884,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       .attr('y', (d, i) => { return vis.coorY + (i * 30); })
       .attr('dy', 20)
       .attr('dx', 25)
-      .style("font-size", "12px")
+      .style('fill', '#042F67')
+      .style("font-size", "14px")
       .on('click', (d) => { 
         deleteTooltip()
 
@@ -891,13 +895,14 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
 
         d.action(data,d) })
       .on('mouseover', function(d){
+        console.log(this.parentElement)
         if(configFile.file.filter(v=>v.option==d.title).length>0){
           addTooltip(getTooltipMenu(getCommentOption(d.title)));
         }else{
           addTooltip(getTooltipInside(d.title,uri));
 
         }
-        d3.select(this).style("fill","#DCDDF5")
+        //d3.select(this).style("fill","#DCDDF5")
       })
       .on('mouseout', function(d){
         deleteTooltip()

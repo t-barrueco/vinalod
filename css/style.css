@@ -80,9 +80,12 @@ div.tooltip {
 }
 .contextMenu {
   position: absolute;
-  stroke: grey;
+  stroke: #042F67;
   fill: #ffffff;
   z-index: 1060;
+}
+.contextMenu:hover{
+  stroke: #FBD74A;
 }
 
 .menuEntry {
@@ -92,10 +95,15 @@ div.tooltip {
   -ms-user-select: none;
   user-select: none;
 }
+.menuEntry rect:hover {
+  stroke: #FBD74A;
+}
 
 .menuEntry text {
-  font-size: 12px;
-  stroke: grey;
+  font-size: 14px;
+  font-weight: bold;
+  stroke: #042F67;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .modal2 {
