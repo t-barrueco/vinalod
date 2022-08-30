@@ -8,7 +8,7 @@ var prevent = false;
 
 function dataViz(){
     var optionsMenu;
-    
+
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
           d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
@@ -635,4 +635,18 @@ function showGraphExpertFromPopup(form){
   let modal = document.getElementById("myModal3")
   modal.style.display = "none";
   showGraphExpert(selectedRow)
+}
+function showHideFilter(filter){
+  console.log(filter)
+  //console.log(this)
+  let content=filter.parentNode.parentNode.getElementsByClassName("ecl-accordion__content").item(0)
+  if(content.hasAttribute("hidden")){
+    content.removeAttribute("hidden")
+  }else{
+    content.setAttribute("hidden","")
+  }
+  //console.log(this)
+
+  //console.log(this.getElementsByClassName("ecl-accordion__content"))
+
 }

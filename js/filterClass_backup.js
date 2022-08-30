@@ -1,7 +1,6 @@
-filter = function ( _classFilterName, _property, _filterType,_filterText,_parent,_bubbleId) {
+filter = function ( _classFilterName, _property, _filterType,_parent,_bubbleId) {
     this.property = _property;
     this.filterType = _filterType;
-    this.filterText = _filterText;
     this.classFilterName = _classFilterName
     this.parent=_parent
     this.bubbleId=_bubbleId
@@ -70,18 +69,16 @@ filter.prototype.addHtml = function () {
     div.className="relative"
     div.id=property.replaceAll(" ","_")+"_root"
     fi.id=fi.property.replaceAll(" ","_");
-    fi.propertyFullName=configRow.rowFields.properties.filter(d=>d.property==fi.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.classFilterName],"").trim()
-    console.log(fi.propertyFullName)
+
     
     if(fi.filterType=="dropdown"){
 
-      addDropdown()
+      addDropdown("dropdown",div)
 
     }
     else if (fi.filterType=="date"){
-      //addDropdown("dropdown_date",div)
-      console.log("add date")
-      addDate()
+      addDropdown("dropdown_date",div)
+      addDate(div)
 
         
     }else if (fi.filterType=="date_range"){
@@ -109,104 +106,8 @@ filter.prototype.addHtml = function () {
 
     fi.htmlEl=document.getElementById(fi.id)
     
-    async function addDropdown(){
-      var optionsMenuHtml,html
-
-/*       let use=document.createElement("use")
-      use.setAttribute("xlink:href","/component-library/dist/media/icons.ccfd2174.svg#corner-arrow")
-
-      let svg=document.createElement("svg")
-      svg.setAttribute("class","ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape")
-      svg.setAttribute("focusable","false")
-      svg.setAttribute("aria-hidden","true")
-
-      svg.appendChild(use)
-
-      let div=document.createElement("div")
-      
-      div.setAttribute("class","ecl-select__icon")
-
-      div.appendChild(svg)
-
-      let select = document.createElement("select");
-      select.name = fi.property;
-      select.id = fi.property.replaceAll(" ","_");
-      select.setAttribute("required","");
-      select.className="ecl-select"
-      select.setAttribute("onchange","applyFilter(this)"); 
-
-      //if (fi.filterType=="dropdown_multiple"){
-      //  select.setAttribute('multiple', true);
-      //}  
-      
-      let valuesFilter=fi.values
-      let internalValuesFilter=fi.values
-
-      for (let i = 0; i < valuesFilter.length; i++) {
-        var option = document.createElement("option");
-        option.value = internalValuesFilter[i];
-        option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-        select.appendChild(option);
-      }
-      
-      select.value = internalValuesFilter[0];
-
-      let div2=document.createElement("div")
-      
-      div2.setAttribute("class","ecl-select__container ecl-select__container--m")
-      div2.appendChild(select)
-      div2.appendChild(div)
-
-      let div3
-      if(fi.filterText!=""){
-        console.log("entra")
-        div3=document.createElement("div")
-        div3.setAttribute("class","ecl-help-block")
-        const text = document.createTextNode(fi.filterText);
-        div3.appendChild(text);
-      }
-
-      let label=document.createElement("label")
-      label.setAttribute("class","ecl-form-label")
-      label.setAttribute("for",fi.property.replaceAll(" ","_")+"_label")
-      label.innerHTML = fi.propertyFullName;
-
-      let div4=document.createElement("div")
-      div4.setAttribute("class","ecl-form-group")
-
-      div4.appendChild(label);
-      if(fi.filterText!=""){
-        console.log("entra2")
-        div4.appendChild(div3);
-      }
-      div4.appendChild(div2);
-
-      document.getElementById(fi.classFilterName+"_filters").appendChild(div4) */
-      
-      await $.get("select-filter.html", function (data) {
-        optionsMenuHtml=data
-        console.log(fi.filterText)
-        html=optionsMenuHtml.replace("Label",fi.property.split("_")[1]).replaceAll("HelperText",fi.filterText)
-        $("#"+fi.classFilterName+"_filters").append($(html))
-      });
-
-      var select=document.getElementById("select-default")
-      select.name = fi.property;
-      select.id = fi.property.replaceAll(" ","_");
-      select.setAttribute("onchange","applyFilter(this)"); 
-
-      let valuesFilter=fi.values
-      let internalValuesFilter=fi.values
-
-      for (let i = 0; i < valuesFilter.length; i++) {
-        var option = document.createElement("option");
-        option.value = internalValuesFilter[i];
-        option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-        select.appendChild(option);
-      }
-      select.value = internalValuesFilter[0];
-
-      /* var select = document.createElement("select");
+    function addDropdown(dropdownType,div){
+      var select = document.createElement("select");
       select.name = fi.property;
       select.id = fi.property.replaceAll(" ","_");
       
@@ -251,8 +152,8 @@ filter.prototype.addHtml = function () {
       }
       
       if((dropdownType=="dropdown_date")|(dropdownType=="dropdown_number")){
-        label.innerHTML=fi.propertyFullName + " Selection"
-        label.htmlFor = fi.propertyFullName + " Selection"
+        label.innerHTML=label.innerHTML+ " selection"
+        label.htmlFor = label.htmlFor + " selection"
       }
       
       label.className="block mb-2 text-base font-light text-gray-700"
@@ -260,113 +161,27 @@ filter.prototype.addHtml = function () {
       var root=document.getElementById(fi.classFilterName+"_filters").appendChild(div)
       root.appendChild(label);
       root.appendChild(select);//
-   */
+  
     } 
-    async function addDate(){
-      var optionsMenuHtml,html
-/*       <div class="ecl-form-group"><label class="ecl-form-label" for="example-input-id-1">Label<span
-      class="ecl-form-label__required">*</span></label>
-      <div class="ecl-help-block">This is the input&#x27;s helper text.</div>
-      <div class="ecl-datepicker"><input type="text" autoComplete="off" data-ecl-datepicker-toggle=""
-      data-ecl-auto-init="Datepicker" id="example-input-id-1" name="example-input-id-1"
-      class="ecl-datepicker__field ecl-text-input ecl-text-input--s" required="" placeholder="DD-MM-YYYY"
-      value="dd-mm-yyyy" /><svg class="ecl-icon ecl-icon--s ecl-datepicker__icon" focusable="false" aria-hidden="true">
-      <use xlink:href="/component-library/dist/media/icons.ccfd2174.svg#calendar"></use>
-      </svg></div>
-      </div> */
-      //let div=
-/*       let use=document.createElement("use")
-      use.setAttribute("xlink:href","images/icons.svg#general--calendar")
-      //use.setAttribute("x","20")
-      //use.setAttribute("y","20")
-      console.log(window.location.href)
-
-      console.log(window.location.pathname)
-      //use.setAttribute("xlink:href","../images/icons.svg#calendar")
-
-      let svg=document.createElement("svg")
-      svg.setAttribute("class","ecl-icon ecl-icon--s ecl-datepicker__icon")
-      svg.setAttribute("focusable","false")
-      //svg.setAttribute("viewBox","0 0 30 10")
-      //svg.setAttribute("aria-hidden","true")
-
-      svg.appendChild(use)
-
-      let input=document.createElement("input")
-      input.setAttribute("type","text")
-      input.setAttribute("autoComplete","off")
-      input.setAttribute("data-ecl-datepicker-toggle","")
-      input.setAttribute("ata-ecl-auto-init","Datepicker")
-      input.setAttribute("id",fi.property.replaceAll(" ","_")+"_label")
-      input.setAttribute("name",fi.property.replaceAll(" ","_")+"_label")
-      input.setAttribute("class","ecl-datepicker__field ecl-text-input ecl-text-input--s")
-      input.setAttribute("required","")
-      input.setAttribute("placeholder","DD-MM-YYYY")
-      input.setAttribute("value","dd-mm-yyyy")
-
-      let div=document.createElement("div")
-      div.setAttribute("class","ecl-datepicker")
-
-      div.appendChild(input)
-      div.appendChild(svg)
-
-      let div2
-      if(fi.filterText!=""){
-        console.log("entra")
-        div2=document.createElement("div")
-        div2.setAttribute("class","ecl-help-block")
-        const text = document.createTextNode(fi.filterText);
-        div2.appendChild(text);
-      }
-
-
-      let label=document.createElement("label")
-      label.setAttribute("class","ecl-form-label")
-      label.setAttribute("for",fi.property.replaceAll(" ","_")+"_label")
-      label.innerHTML = fi.propertyFullName;
-
-      let div3=document.createElement("div")
-      div3.setAttribute("class","ecl-form-group")
-
-      div3.appendChild(label);
-      if(fi.filterText!=""){
-        console.log("entra2")
-        div3.appendChild(div2);
-      }
-      div3.appendChild(div); */
-
-      
-
-
-/*       var dateInput = document.createElement("input");
+    function addDate(div){
+  
+      var dateInput = document.createElement("input");
       dateInput.name = fi.property;
       dateInput.id = fi.property.replaceAll(" ","_");
       dateInput.type="date"
       dateInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + fi.classFilter +"_filter"
       //dateInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + getKeyByValue(nodesClassesCorrespondence, fi.classFilter) +"_filter"
       dateInput.setAttribute("onchange","applyFilter(this)"); 
-      console.log(fi)
-      //networkGraph.nodesClassesShow[fi.classFilterName]
-      var label = document.createElement("label");
-      label.innerHTML = fi.propertyFullName;
-      label.htmlFor = fi.propertyFullName;
-      label.id = fi.property.replaceAll(" ","_")+"_label"
-      label.className="block mb-2 text-base font-light text-gray-700" */
-/*       console.log("append filter date")
-      console.log(fi.classFilterName+"_filters")
-      console.log(document)
-      document.getElementById(fi.classFilterName+"_filters").appendChild(div3) */
 
-      await $.get("date-filter.html", function (data) {
-        optionsMenuHtml=data
-        html=optionsMenuHtml.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.filterText)
-        $("#"+fi.classFilterName+"_filters").append($(html))
-      });
-      /* var elt = document.querySelector('[data-ecl-datepicker-toggle]');
-      var datepicker = new ECL.Datepicker(elt);
-      datepicker.init(); */
-      //root.appendChild(label);
-      //root.appendChild(dateInput);  
+      var label = document.createElement("label");
+      label.innerHTML = fi.property.split("_")[1]
+      label.htmlFor = fi.property.split("_")[1];
+      label.id = fi.property.replaceAll(" ","_")+"_label"
+      label.className="block mb-2 text-base font-light text-gray-700"
+
+      var root=document.getElementById(fi.classFilterName+"_filters").appendChild(div)
+      root.appendChild(label);
+      root.appendChild(dateInput);  
     }
     
     function addText(div){
@@ -401,7 +216,7 @@ filter.prototype.addHtml = function () {
     }
 
     function addNumber(div){
-      addDropdown()  
+      addDropdown("dropdown_number",div)  
       
       var label = document.createElement("label");
       label.innerHTML = fi.property.split("_")[1]
@@ -467,7 +282,7 @@ filter.prototype.hideJustField=function(){
 filter.prototype.show=function (){
   var fi=this;
   document.getElementById(fi.id).parentNode.style.display = 'block'
-  //document.getElementById(fi.id+"_label").parentNode.style.display = 'block'
+  document.getElementById(fi.id+"_label").parentNode.style.display = 'block'
   classFilterObject=classesFilterList.filter(c => c.name==fi.classFilterName)[0]
   classFilterObject.checkVisibility()
 }
@@ -769,24 +584,20 @@ filter.prototype.filterDate=function(node){
 
 classFilterClass = function (_name) {
     this.name = _name;
-    //this.init()
-    //await this.init();
+    this.init();
   };
     
-classFilterClass.prototype.init = async function () {
-    var cf=this,optionsMenuHtml,html;
+classFilterClass.prototype.init = function () {
+    var cf=this;
 
-/*     let svg=document.createElement("svg")
+    let svg=document.createElement("svg")
     svg.setAttribute("class","ecl-icon ecl-icon--m ecl-accordion__toggle-icon")
     svg.setAttribute("focusable","false")
     svg.setAttribute("aria-hidden","true")
     svg.setAttribute("data-ecl-accordion-icon","")
 
     let use=document.createElement("use")
-    use.setAttribute("xlink:href","images/icons.svg#ui--plus")
-    //use.setAttribute("href","images/icons.svg#general--calendar")
-
-    
+    use.setAttribute("xlink:href","/icons.svg#plus")
 
     svg.appendChild(use)
 
@@ -839,28 +650,8 @@ classFilterClass.prototype.init = async function () {
     div.appendChild(h3)
     div.appendChild(div2)
 
-    document.getElementById("accordion-filters").appendChild(div) */
+    document.getElementById("accordion-filters").appendChild(div)
 
-/*     $.get("filter-class-item.html", function (data) {
-      optionsMenuHtml=data
-      html=optionsMenuHtml.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
-      $("#accordion-filters").append($(html))
-    }); */
-    //get_item()
-    await $.get("filter-class-item.html", function (data) {
-      optionsMenuHtml=data
-      html=optionsMenuHtml.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
-      $("#accordion-filters").append($(html))
-    });
-    console.log(document.getElementById(cf.name+"_filters"))
-
-/*     async function get_item(){
-      await $.get("filter-class-item.html", function (data) {
-        optionsMenuHtml=data
-        html=optionsMenuHtml.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
-        $("#accordion-filters").append($(html))
-      });
-    } */
   }
 
 classFilterClass.prototype.checkVisibility = function () {  

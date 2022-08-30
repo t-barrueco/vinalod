@@ -41,7 +41,8 @@
     "filters":[
       {
         "property":"opTheme_dateCreated",
-        "filter_type":"date"
+        "filter_type":"date",
+        "filter_text":"Creation date"
       }
     ],
     "tooltip":[
