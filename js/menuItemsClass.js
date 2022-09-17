@@ -33,7 +33,7 @@ MenuItems.prototype.filterByMenuOption = function () {
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
             results = await runSparlqQuery(mi.indexRows[i].url,mi.indexRows[i].askquery,"askquery");
-            console.log(results)
+            //console.log(results)
         } catch (e) {
         results = false
         } 
@@ -167,8 +167,8 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
   elementMenu = {
       title: "Sparql Endpoint: " + url + " and Position: " + subjectObject,
       action: async (data,d) => {
-      console.log(d)
-      console.log(query)
+      //console.log(d)
+      //console.log(query)
       url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
       subjectObject = d.title.match("and Position: (.*)")[1];
       form = { "url": url, "uri": data.uri, "subject-object": subjectObject,"query":query}
@@ -188,7 +188,7 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
 
   var content = document.getElementById("modal3-content");
 
-  console.log(mi)
+  //console.log(mi)
   await addOptions()
 
   modal = document.getElementById("myModal3")
@@ -205,11 +205,11 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
       mi.selectedRows.forEach(function (r) {
         htmlOption=data
         htmlOption=htmlOption.replace("Option *","Option "+ String(i)).replace("Node URI",r.uri).replace("Subject",r["subject-object"]).replace("Value_URL",r.url)
-        console.log(i)
+        //console.log(i)
         if(i!=mi.selectedRows.length){
           htmlOption+="<hr>"
         }
-        console.log(htmlOption)
+        //console.log(htmlOption)
         $("#modal3-content").append($(htmlOption))
         i+=1
       })

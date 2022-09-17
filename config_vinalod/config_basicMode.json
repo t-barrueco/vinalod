@@ -42,6 +42,7 @@
       {
         "property":"opTheme_dateCreated",
         "filter_type":"date",
+        "class":"opTheme",
         "filter_text":"Creation date"
       }
     ],
@@ -58,7 +59,7 @@
     "type":"TREE",
     "option":"PUBLICATIONS - Publications by OP Theme",
     "option_text":"PUBLICATIONS - Publications by OP Theme",
-    "collection":"eu_publications",
+    "collection":"EU Publications",
     "modelClass":null,
     "details":null,
     "askquery":null
@@ -397,7 +398,7 @@
     "type":"TREE",
     "option":"Digital Europa Thesaurus",
     "option_text":"Digital Europa Thesaurus",
-    "collection":"eu_vocabularies",
+    "collection":"EU Vocabularies",
     "modelClass":null,
     "details":null,
     "askquery":"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n PREFIX owl: <http://www.w3.org/2002/07/owl#>\n PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>\nASK\nwhere {{ ?det_uri skos:prefLabel ?det;\nskos:hasTopConcept ?detLevel1_uri.\n?detLevel1_uri skos:prefLabel ?detLevel1.\nFILTER(langMatches(lang(?detLevel1), 'en')).\nFILTER(?det_uri=<http://data.europa.eu/uxp/det>)\n}\n}"
@@ -808,10 +809,12 @@
     "filters":[
       {
         "property":"corporateBody_country",
+        "class":"corporateBody",
         "filter_type":"dropdown"
       },
       {
         "property":"corporateBody_location",
+        "class":"corporateBody",
         "filter_type":"dropdown",
         "parent":"corporateBody_country"
       }
@@ -833,7 +836,7 @@
     "type":"TREE",
     "option":"European Union Institutions and bodies",
     "option_text":"(update 20220510-1504)This will list the European Union Institutions and bodies",
-    "collection":"eu_whoiswho",
+    "collection":"EU Whoiswho",
     "modelClass":null,
     "details":null,
     "askquery":null
@@ -912,6 +915,7 @@
     "filters":[
       {
         "property":"person_name",
+        "class":"person",
         "filter_type":"text"
       }
     ],
@@ -1066,6 +1070,7 @@
     "filters":[
       {
         "property":"manifestation_type",
+        "class":"manifestation",
         "filter_type":"dropdown"
       }
     ],
@@ -1373,6 +1378,7 @@
     "filters":[
       {
         "property":"directoryOrg_locality",
+        "class":"directoryOrg",
         "filter_type":"dropdown"
       }
     ],
@@ -2111,6 +2117,7 @@
     "filters":[
       {
         "property":"DEUCatalog_Modified",
+        "class":"DEUCatalog",
         "filter_type":"date"
       }
     ],
@@ -2127,7 +2134,7 @@
     "type":"TREE",
     "option":"Catalogues of datasets of data.europa.eu",
     "option_text":"Desription - DATASETS - Catalogues of datasets of data.europa.eu",
-    "collection":"eu_data",
+    "collection":"EU Data",
     "modelClass":null,
     "details":null,
     "askquery":null
@@ -2859,7 +2866,7 @@
     "type":"TREE",
     "option":"NUTS Tree",
     "option_text":"NUTS Tree (Nomenclature of Territorial Units for Statistics)",
-    "collection":"eu_vocabularies",
+    "collection":"EU Vocabularies",
     "modelClass":null,
     "details":[
       {
@@ -3595,7 +3602,7 @@
     "type":"TREE",
     "option":"Authority table classification",
     "option_text":"Authority tables that link to other collections",
-    "collection":"eu_vocabularies",
+    "collection":"EU Vocabularies",
     "modelClass":null,
     "details":[
       {
@@ -3963,7 +3970,7 @@
     "type":"TREE",
     "option":"Data visualizations by Catalogue",
     "option_text":"Data visualizations categorized by Catalogue and Data Theme",
-    "collection":"eu_data",
+    "collection":"EU Data",
     "modelClass":null,
     "details":null,
     "askquery":null

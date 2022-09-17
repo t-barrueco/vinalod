@@ -5,10 +5,7 @@ NavigationPanel = function ( _type) {
    
 NavigationPanel.prototype.init = function () {
   var navPanel=this;
-  //////console.log(networkGraph.node)
-  let files=["navTable_element.html","navTable_element_last.html"]
-  //navPanel.filesHtmlCode=getHtmlFromFiles(files)
-  ////console.log(navPanel.filesHtmlCode)
+  console.log(networkGraph.node)
   navPanel.node=networkGraph.node
   navPanel.clusterElSelected=[]
   navPanel.imageArrowUp="images/arrow-up.svg"
@@ -36,60 +33,31 @@ NavigationPanel.prototype.showChildrenDetails = function (){
 }
 NavigationPanel.prototype.getNodes = function (){
   var navPanel=this;
-  var sources
+  var sources2
   navPanel.targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == navPanel.node.id
   })
-  sources=networkGraph.data.links.filter(function(item) {
+  navPanel.sources=networkGraph.data.links.filter(function(item) {
     return item.target.id == navPanel.node.id
   })
-  console.log(navPanel.targets)
-  ////console.log(sources)
-  navPanel.sources=[sources[0].target]
-  
-  function recurse(node) {
-    //var test;
-    navPanel.sources.push(node)
-    let sourcesNode=networkGraph.data.links.filter(function(item) {
-      return item.target.id == node.id
-    })
-    //sources.push(node)
-    sourcesNode.forEach(function(c){
-        //sources.push(c.source)
-        recurse(c.source)
-    });
-  }
 
-  sources.forEach(function(r){
-    recurse(r.source);
-  })
-
-  ////console.log(navPanel.sources)
   if (navPanel.sources.length>0){
-    navPanel.sources=navPanel.sources.reverse();
-    /* navPanel.sources.forEach(function(d){
-      sources2.push()
-    }) */
-    /* sources2=networkGraph.data.links.filter(function(item) {
+    sources2=networkGraph.data.links.filter(function(item) {
       return item.target.id == navPanel.sources[0]["source"]["id"]
     })
-    //console.log(sources2)
     while(sources2.length>0){
       sources2.forEach(function(d){
-        //console.log(d)
         navPanel.sources.push(d)
       })
       sources2=networkGraph.data.links.filter(function(item) {
-        //console.log(item)
         return item.target.id == sources2[0]["source"]["id"]
       })
-    } */
-
+    }
   }
-  //////console.log(networkGraph)
-  //navPanel.sources.push(networkGraph.treeData[0])
-  ////console.log(navPanel.sources)
-  //navPanel.sources=navPanel.sources.reverse();
+  console.log(networkGraph)
+  navPanel.sources.push(networkGraph.treeData[0])
+
+  navPanel.sources=navPanel.sources.reverse();
 }
 
 NavigationPanel.prototype.selectBubbles = function (){
@@ -167,14 +135,8 @@ NavigationPanel.prototype.navTableTable = function ()
   {
     var navPanel=this,nodeClass;
     navPanel.navTable = document.getElementById("navTable");
-    navPanel.nav=navPanel.navTable.querySelector("nav")
-    navPanel.ol=navPanel.navTable.querySelector("ol")
 
-    navPanel.ol.querySelectorAll("li").forEach(function(li){
-      li.remove()
-    })
-
-/*     if((navPanel.navTable.querySelector("nav"))){
+    if((navPanel.navTable.querySelector("nav"))){
       navPanel.nav=navPanel.navTable.querySelector("nav")
       navPanel.ol=navPanel.navTable.querySelector("ol")
 
@@ -192,15 +154,13 @@ NavigationPanel.prototype.navTableTable = function ()
       navPanel.nav.setAttribute("aria-label", "Progress");
       navPanel.ol=document.createElement("ol")
       navPanel.ol.setAttribute("role", "list");
-    } */
+    }
     navPanel.sources.forEach(function (d,i){
-      ////console.log(d)
-/*       if(d.source){
+      if(d.source){
         nodeClass=d.source.class
       }else{
         nodeClass=d.class
-      } */
-      nodeClass=d.class
+      }
       if(nodeClass=="free"){
         if(i==0){
           navPanel.addElementNav(d,i)
@@ -211,7 +171,6 @@ NavigationPanel.prototype.navTableTable = function ()
           }
         }
       }else{
-        ////console.log(d)
         navPanel.addElementNav(d,i)
       }
     })
@@ -222,13 +181,9 @@ NavigationPanel.prototype.navTableTable = function ()
 
 NavigationPanel.prototype.addElementNav = function (source,i){
   var navPanel=this, last=false, imageSource="images/check.svg",imageSourceLast="images/location.svg",nodeClass
-  
-  ////////console.log(source)
   if(source.source){
-    ////////console.log(source.source)
     nodeClass=source.source.class
   }else{
-    ////////console.log(source)
     nodeClass=source.class
   }
   if(nodeClass=="free"){
@@ -242,99 +197,30 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     }
     
   }
-  async function addBasicGraph(last){
-    //li=document.createElement("li")
-    var file;
+  function addBasicGraph(last,navImage){
+    li=document.createElement("li")
+
     if(!last){
-      file="navTable_element.html"
-        //li.setAttribute("class", "relative pb-2");
-        //div=document.createElement("div")
-        //div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
-        //div.setAttribute("aria-hidden", "true");
+        li.setAttribute("class", "relative pb-2");
+        div=document.createElement("div")
+        div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
+        div.setAttribute("aria-hidden", "true");
     }else{
-      file="navTable_element_last.html"
-      //li.setAttribute("class", "relative pb-5");
+      li.setAttribute("class", "relative pb-5");
     }
-    //////console.log(navPanel.ol)
-    ////console.log(navPanel.filesHtmlCode['"'+file+'"'])
-    ////console.log(navPanel.filesHtmlCode)
-    //console.log(file)
-    ////console.log(Object.keys(navPanel.filesHtmlCode))
-    //navPanel.ol.insertAdjacentHTML('beforeend', navPanel.filesHtmlCode[file]);
-    /* let li=navPanel.ol.querySelector("li:last-child") */
-    ////console.log(navPanel.filesHtmlCode)
-    let code = await getHtmlCodeFromFile(file);
-    //////console.log(fi.property.split("_")[1].charAt(0).toUpperCase() + fi.property.split("_")[1].slice(1))
-    //code=code.replace("Label",fi.details.property.split("_")[1].charAt(0).toUpperCase() + fi.details.property.split("_")[1].slice(1))
-    //console.log(code)
-    ////console.log($("#"+fi.details.class+"_filters"))
-    //console.log(navPanel.ol)
-    $("#navTable ol").append(code).ready(function () {
 
-      //console.log(navPanel.ol)
-/*       const box = document.getElementById('box');
-      box.removeAttribute('id'); */
-      //let li=navPanel.ol.querySelector("li:last-child")
-      let li=navPanel.ol.querySelector("#li-empty")
-      li.removeAttribute("id")
-      ////console.log(li)
-      ////console.log(navPanel.ol)
-      //////console.log(li.querySelector("a"))
-      let a=li.querySelector("a")
-      //a=document.createElement("a")
-      //a.setAttribute("href", "#");
-      //a.setAttribute("class", "relative flex items-start group");
-      //console.log(navPanel.sources[i])
-/*       if(navPanel.sources[i]["target"]!=undefined){
-        a.id=navPanel.sources[i]["target"]["id"]+"_a"
-      }else{
-        a.id=navPanel.sources[i]["id"]+"_a"
-      } */
-      a.id=navPanel.sources[i]["id"]+"_a"
-      //////console.log(a)
-/*       if(navPanel.sources[i]["target"]){
-        colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
-      }else{
-        colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-      }  */
-      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-      //console.log(colorCircle)
-      //console.log(li)
-      let navImage=li.querySelector("#nav_image")
-      //console.log(navImage)
-      navImage.classList.add("bg-"+ colorCircle)
-      navImage.classList.add("group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-
-      let navTableElement=li.querySelector("#navTable_element")
-      
-/*       if(navPanel.sources[i]["target"]){
-        navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["target"]["value"]
-        navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["target"]["id"]).data()[0]))
-      }else{
-        navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
-        navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-      } */
-      navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
-      navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-    })
-
-
-
-/*     let li=navPanel.ol.querySelector("li:last-child")
-    //////console.log(li)
-    //////console.log(li.querySelector("a"))
-    //a=document.createElement("a")
-    //a.setAttribute("href", "#");
-    //a.setAttribute("class", "relative flex items-start group");
+    a=document.createElement("a")
+    a.setAttribute("href", "#");
+    a.setAttribute("class", "relative flex items-start group");
     if(navPanel.sources[i]["target"]!=undefined){
       a.id=navPanel.sources[i]["target"]["id"]+"_a"
     }else{
       a.id=navPanel.sources[i]["id"]+"_a"
-    } */
-    //span=document.createElement("span")
-    //span.setAttribute("class","h-9 flex items-center")
+    }
+    span=document.createElement("span")
+    span.setAttribute("class","h-9 flex items-center")
     
-/*     span2=document.createElement("span")
+    span2=document.createElement("span")
 
     if(navPanel.sources[i]["target"]){
       colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
@@ -342,8 +228,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
       colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
     }    
 
-    //bg-green-300
-    //group-hover:bg-green-400
     span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
     img=document.createElement("img")
     img.setAttribute("src",navImage)
@@ -381,8 +265,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
     el3.appendChild(img)
-    //////console.log(el3)
-    //////console.log(li) */
   }
 
   function addFreeGraph(){
@@ -549,13 +431,12 @@ NavigationPanel.prototype.contentTable = function (){
   navPanel.numEnd=(navPanel.numLinesShown>navPanel.numTot) ? navPanel.numTot : navPanel.numLinesShown;
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
-  //d3.selectAll("#modal-content table tbody tr").remove()
-  console.log(d3.selectAll("#modal-content table tbody"))
+  d3.selectAll("#modal-content table").remove()
+  
   if (navPanel.targets.length>0){
     $("#dvTable").show()
-    throw new Error("Something went badly wrong!");
-    //$("#dvDetails").empty()
-    /* navPanel.table = document.createElement("table");
+    $("#dvDetails").empty()
+    navPanel.table = document.createElement("table");
     navPanel.table.className="ecl-table ecl-table--zebra"
     
     navPanel.thead=document.createElement("thead")
@@ -678,7 +559,7 @@ NavigationPanel.prototype.contentTable = function (){
     navPanel.fullTable.appendChild(navPanel.tbody); 
     dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.divPag);
     navPanel.prevNextVisibility()
-    navPanel.addEventsContentNav() */
+    navPanel.addEventsContentNav()
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
@@ -748,9 +629,9 @@ NavigationPanel.prototype.showDetails = function (){
       $.get("nav_detail_row_0.html", function (row0) {
         $.get("nav_detail_row_1.html", function (row1) {
           $.get("nav_detail_row_attach.html", function (rowAttach) {
-            //////console.log(navPanel.node["value"])
+            console.log(navPanel.node["value"])
             navDetailHeader=header.replace("Title",navPanel.node["value"])
-            //////console.log(navDetailHeader)
+            console.log(navDetailHeader)
             $("#dvDetails").append($(navDetailHeader))
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
@@ -952,7 +833,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     numCurrent=navPanel.numCurrent+1
   }
   navPanel.numCurrent=parseInt(numCurrent)
-  //////////console.log("showLines 873")
+  ////console.log("showLines 873")
   removeLinesNavContent()
 
   if(!first){

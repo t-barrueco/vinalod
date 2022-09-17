@@ -1,55 +1,70 @@
 //var global=0;
 var classesFilterList=[],filtersList=[]
-function addFilters(){
-    var filterObject,classFilterObject,bubbleId;
-    let filters=configRow.rowFields.filters
-    console.log(filters)
-    console.log(linkedDataGraph)
-    bubbleId=linkedDataGraph.treeData.slice(-1)[0]["id"]
-    filters.forEach(async function(d){
-      property=d["property"]
-      filterType=d["filter_type"]
-      classFilter=d["property"].split("_")[0]
-      parent=d["parent"]
-      if(d["filter_text"]){
-        filterText=d["filter_text"]
-      }else{
-        filterText=""
+/* function addFilters(){
+  var filterObject,classFilterObject,bubbleId;
+  let filters=configRow.rowFields.filters
+  //console.log(filters)
+  ////console.log(linkedDataGraph)
+  bubbleId=linkedDataGraph.treeData.slice(-1)[0]["id"]
+  ////console.log(filters)
+
+  filters.map(function(d){
+  //  await sleep(10 - i);
+  //  ////console.log(i);
+  //}));
+  //for await (const d of filters){
+  //filters.forEach(async function(d){
+    //console.log(d)
+    property=d["property"]
+    filterType=d["filter_type"]
+    classFilter=d["property"].split("_")[0]
+    parent=d["parent"]
+    if(d["filter_text"]){
+      filterText=d["filter_text"]
+    }else{
+      filterText=""
+    }
+    //console.log(d)
+    ////console.log(classFilter)
+    console.log(document.getElementById(classFilter+"_filters"))
+    if(document.getElementById(classFilter+"_filters")){
+      ////console.log("24")
+      if(!propertiesFilterHist.includes(property)){
+        //console.log(property)
+        filterObject=new filter(classFilter, property, filterType,parent,bubbleId)
+        //console.log(property)
+        propertiesFilterHist.push(property)
+        filtersList.push(filterObject)
+        //filterObject.checkVisibility()
       }
-      
-      if (classesFilterList.filter(c => c.name==classFilter).length==0){
-            classFilterObject= new classFilterClass(classFilter)
-            await classFilterObject.init()
-            console.log("crea la clase del filtro")
-            console.log(classFilter+"_filters")
-            console.log(document.getElementById(classFilter+"_filters"))
-            filterObject=new filter(classFilter, property, filterType,filterText,parent,bubbleId)
-            classesFilterList.push(classFilterObject)
-            filtersList.push(filterObject)
+    }else{
+      ////console.log("crea class filter")
+      //console.log(property)
 
-            propertiesFilterHist.push(property)
-            filterObject.checkVisibility()
-      }else if(!propertiesFilterHist.includes(property)){
+      classFilterObject= new classFilterClass(classFilter)
+      //console.log(property)
 
-            filterObject=new filter(classFilter, property, filterType,parent,bubbleId)
-            propertiesFilterHist.push(property)
-            filtersList.push(filterObject)
-            filterObject.checkVisibility()
-      }else if(filterType=="text"){
-            filterObject=filtersList.filter(function (c){
-                return c.property==property
-            })[0]
-            docs=document.getElementsByClassName(filterObject.classFilterName)
-            var searchValues=[]
-            for (let d of docs) {
-                searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0]["value"])
-            }
-            
-            autocomplete(document.getElementById(filterObject.id), searchValues);
-      }
+      //classFilterObject.init()
+      console.log(cf.code)
+      $("#accordion-filters").append(cf.code)
+      ////console.log(document.getElementById(classFilter+"_filters"))
+      //console.log(property)
+      filterObject=new filter(classFilter, property, filterType,filterText,parent,bubbleId)
+      //console.log(property)
+      //console.log(filterObject)
+      classesFilterList.push(classFilterObject)
+      filtersList.push(filterObject)
 
-    })
-}
+      propertiesFilterHist.push(property)
+      //throw new Error("Something went badly wrong!");
+      //filterObject.checkVisibility()
+    }
+    ////console.log("sigue")
+
+  })
+  //console.log(filters)
+} */
+
 function changeHtmlFilter(element,classFilter){
 
       var filterObject=filtersList.filter(c => c.id==element.id.replace("_selection",""))[0]

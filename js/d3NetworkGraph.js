@@ -735,11 +735,12 @@ NetworkGraph.prototype.enterGraph = function(){
       function handleClickEvent(element){
           timer = setTimeout(function() {
           if (!prevent) {
-              if (element.getAttribute("stroke-width")=="1px"){
+              //if (element.getAttribute("stroke-width")=="1px"){
+                //console.log("clickBubble")
               clickBubbleFreeGraph(element,vis.data)
-              }else{
-              unclickBubbleFreeGraph()
-              };
+              //}else{
+              //unclickBubbleFreeGraph()
+              //};
           }
           prevent = false;
           }, delay);
@@ -895,7 +896,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
 
         d.action(data,d) })
       .on('mouseover', function(d){
-        console.log(this.parentElement)
+        //console.log(this.parentElement)
         if(configFile.file.filter(v=>v.option==d.title).length>0){
           addTooltip(getTooltipMenu(getCommentOption(d.title)));
         }else{

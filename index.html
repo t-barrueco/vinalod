@@ -1,5 +1,10 @@
-<html>
+<html lang="en" class="no-js">
     <head>
+      <meta charset="utf-8" />
+      <title>VINALOD</title>
+
+      <meta content="width=device-width,initial-scale=1" name="viewport" />
+      <meta content="IE=edge" http-equiv="X-UA-Compatible" />
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
         <style>
           .kge-search-picker {
@@ -22,13 +27,33 @@
        <!-- D3 Tooltip CSS -->
       <link rel="stylesheet" href="css/d3-tip.css">
       <link
+        rel="stylesheet"
+        href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/styles/optional/ecl-ec-default.css"
+        integrity="sha256-BM37HVT9HDa+V3JI9AD38G92AOiqbwrmNzxnRtExUqU= sha384-tXCRJt4zNUBu/DU0TqPaE5viHyp1pg0Qso66rcNpGiM6ajte71ur6SUm0CDesouf sha512-i3BuCn2fGIeot8i+C04vFAnZRNq6EO7ICdeTkUoTfWmabRlPotlxpai0++D46KIYNVClc97WhOg9e9yHChZYIg=="
+        crossorigin="anonymous"
+        media="screen"
+      />
+      <link
       rel="stylesheet"
-      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.3.3/ec/styles/ecl-ec.css"
-      integrity="n/a"
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/styles/optional/ecl-reset.css"
+      integrity="sha256-pZaE0XkFCJRwn35n6wGUzhibejdPuiLUb0h6Rkv1hj4= sha384-Hf/oVXQ67uQvL0AN+eXPewLkFTD9xoVHMTfpJZ3BfDGo4BRgemKQRGYOA6t2wccs
+      sha512-0jvn4tBhoaiRw4ZnSwR5fuxV1GAH4cjhzAGo1Lgqso82JgG6g1mHRyZdHjemZKMF2AIX34xnOABHFjLYZj/f3A=="
       crossorigin="anonymous"
       media="screen"
       />
-      
+      <link
+      rel="stylesheet"
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/styles/ecl-ec.css"
+      integrity="sha256-cmhXtlz7ptu4N7c6C8iMkhtHyWRbrOknZB/t6GXBSJg= sha384-XMPIk2KJWVoVMQIat2KJwJUi0oZlBrGgQMz9+aq8iTNpv7/oiDYuOZD5ydfOxH0m
+      sha512-wY2+2mhlcOEFYBdOxF8YvvkDmffFvjJHfmCYluMWaTJ3x0J7o0RwsRZI+xIn3pDeI6nUP5Goe4l2mzwCdoK38g=="
+      crossorigin="anonymous"
+      media="screen"
+      />
+      <script>
+        var cl = document.querySelector('html').classList;
+        cl.remove('no-js');
+        cl.add('has-js');
+      </script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
       <script src="https://d3js.org/d3-color.v2.min.js"></script>
@@ -39,14 +64,11 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-       <script
-       src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/[ECL_VERSION]/ec/scripts/ecl-ec.js"
-       integrity="[sri hash of ecl-ec.js]"
-       crossorigin="anonymous"
-        ></script>
-        <script>
-          ECL.autoInit();
-        </script>
+       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> -->
+       <script src="jslib/moment.min.js"></script>
+
+      <!-- <script src="node_modules/moment/moment.js"></script> -->
+
       </head>
     <body onload="dataViz()">
       <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header"><div class="ecl-site-header__container ecl-container">
@@ -107,67 +129,128 @@
         </div> -->
       </div>
     <div class="ecl-site-header__banner"><div class="ecl-container"><div class="ecl-site-header__site-name">Vinalod</div></div></div>
-         <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
+<!--     <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
+      <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
+      <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
+          href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
+            aria-hidden="true">
+            <use xlink:href="/component-library/dist/media/icons.cec58484.svg#hamburger"></use>
+          </svg>Menu</a>
+        <section class="ecl-menu__inner" data-ecl-menu-inner="">
+          <header class="ecl-menu__inner-header"><button class="ecl-menu__close ecl-button ecl-button--text" type="submit"
+              data-ecl-menu-close=""><span class="ecl-menu__close-container ecl-button__container"><svg
+                  class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--before" focusable="false"
+                  aria-hidden="true" data-ecl-icon="">
+                  <use xlink:href="/component-library/dist/media/icons.cec58484.svg#close-filled"></use>
+                </svg><span class="ecl-button__label" data-ecl-label="true">Close</span></span></button>
+            <div class="ecl-menu__title">Menu</div><button data-ecl-menu-back="" type="submit"
+              class="ecl-menu__back ecl-button ecl-button--text"><span class="ecl-button__container"><svg
+                  class="ecl-icon ecl-icon--s ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
+                  focusable="false" aria-hidden="true" data-ecl-icon="">
+                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                </svg><span class="ecl-button__label" data-ecl-label="">Back</span></span></button>
+          </header>
+          <ul class="ecl-menu__list">
+            <li class="ecl-menu__item" data-ecl-menu-item=""><a href="index.html" class="ecl-menu__link"
+                data-ecl-menu-link="">Home </a></li>
+            <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item=""
+              data-ecl-has-children="" aria-haspopup="" aria-expanded="false" id="basic-mode"><a href="#"
+                class="ecl-menu__link" data-ecl-menu-link="">Basic mode<svg
+                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
+                  aria-hidden="true">
+                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                </svg></a>
+              <div class="ecl-menu__mega" data-ecl-menu-mega="">
+                <ul class="ecl-menu__sublist">
+                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
+                      class="ecl-menu__sublink" id="eu_vocabularies">EU Vocabularies</a></li>
+                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
+                      class="ecl-menu__sublink" id="eu_whoiswho">EU Whoiswho</a></li>
+                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)" 
+                      class="ecl-menu__sublink" id="eu_data">EU Data</a>
+                  </li>
+                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
+                      class="ecl-menu__sublink ecl-link--icon-after" id="eu_publications">EU Publications<svg
+                        class="ecl-icon ecl-icon--2xs ecl-menu__sublink-icon ecl-link__icon" focusable="false"
+                        aria-hidden="true">
+                        <use xlink:href="/component-library/dist/media/icons.cec58484.svg#external"></use>
+                      </svg></a>
+                  </li>
+                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
+                      class="ecl-menu__sublink" id="eu_law">EU Law</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children=""
+              aria-haspopup="" aria-expanded="false"><a href="#" onclick="expertMode()" class="ecl-menu__link"
+                data-ecl-menu-link="">Expert mode<svg
+                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
+                  aria-hidden="true">
+                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                </svg></a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </nav> -->
+        <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
           <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
           <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
               href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
                 aria-hidden="true">
-                <use xlink:href="/component-library/dist/media/icons.cec58484.svg#hamburger"></use>
+                <use xlink:href="/images/icons.svg#general--hamburger"></use>
               </svg>Menu</a>
             <section class="ecl-menu__inner" data-ecl-menu-inner="">
               <header class="ecl-menu__inner-header"><button class="ecl-menu__close ecl-button ecl-button--text" type="submit"
                   data-ecl-menu-close=""><span class="ecl-menu__close-container ecl-button__container"><svg
                       class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--before" focusable="false"
                       aria-hidden="true" data-ecl-icon="">
-                      <use xlink:href="/component-library/dist/media/icons.cec58484.svg#close-filled"></use>
+                      <use xlink:href="/images/icons.svg#ui--close-filled"></use>
                     </svg><span class="ecl-button__label" data-ecl-label="true">Close</span></span></button>
                 <div class="ecl-menu__title">Menu</div><button data-ecl-menu-back="" type="submit"
                   class="ecl-menu__back ecl-button ecl-button--text"><span class="ecl-button__container"><svg
-                      class="ecl-icon ecl-icon--s ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
+                      class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
                       focusable="false" aria-hidden="true" data-ecl-icon="">
-                      <use xlink:href="/component-library/dist/media/icons.cec58484.svg#corner-arrow"></use>
+                      <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
                     </svg><span class="ecl-button__label" data-ecl-label="">Back</span></span></button>
               </header>
               <ul class="ecl-menu__list">
                 <li class="ecl-menu__item" data-ecl-menu-item=""><a href="index.html" class="ecl-menu__link"
-                    data-ecl-menu-link="">Home </a></li>
-                <li class="ecl-menu__item ecl-menu__item--current ecl-menu__item--has-children" data-ecl-menu-item=""
-                  data-ecl-has-children="" aria-haspopup="" aria-expanded="false" id="basic-mode"><a href="#"
-                    class="ecl-menu__link ecl-menu__link--current" data-ecl-menu-link="">Basic mode<svg
-                      class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
-                      aria-hidden="true">
-                      <use xlink:href="/component-library/dist/media/icons.cec58484.svg#corner-arrow"></use>
-                    </svg></a>
+                    data-ecl-menu-link="">Home</a></li>
+                <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item=""
+                  data-ecl-has-children="" aria-haspopup="" aria-expanded="false"
+                  id="basic-mode">
+                  <a href="#"
+                    class="ecl-menu__link" data-ecl-menu-link="">Basic Mode</a><button
+                    class="ecl-button ecl-button--primary ecl-menu__button-caret" type="button" data-ecl-menu-caret=""
+                    aria-label="Access item&#x27;s children"><span class="ecl-button__container"><svg
+                        class="ecl-icon ecl-icon--xs ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after"
+                        focusable="false" aria-hidden="true" data-ecl-icon="">
+                        <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                      </svg></span></button>
                   <div class="ecl-menu__mega" data-ecl-menu-mega="">
                     <ul class="ecl-menu__sublist">
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                          class="ecl-menu__sublink" id="eu_vocabularies">EU Vocabularies</a></li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                          class="ecl-menu__sublink" id="eu_whoiswho">EU Whoiswho</a></li>
-                      <li class="ecl-menu__subitem ecl-menu__subitem--current" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)" 
-                          class="ecl-menu__sublink ecl-menu__sublink--current" id="eu_data">EU Data</a>
-                      </li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                          class="ecl-menu__sublink ecl-link--icon-after" id="eu_publications">EU Publications<svg
-                            class="ecl-icon ecl-icon--2xs ecl-menu__sublink-icon ecl-link__icon" focusable="false"
-                            aria-hidden="true">
-                            <use xlink:href="/component-library/dist/media/icons.cec58484.svg#external"></use>
-                          </svg></a>
-                      </li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                          class="ecl-menu__sublink" id="eu_law">EU Law</a>
-                      </li>
+                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
+                          class="ecl-menu__sublink"
+                          onclick="getOptionsCollection(this)">EU Vocabularies</a></li>
+                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
+                          class="ecl-menu__sublink"
+                          onclick="getOptionsCollection(this)">EU Whoiswho</a></li>
+                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
+                          class="ecl-menu__sublink"
+                          onclick="getOptionsCollection(this)">EU Data</a></li>
+                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
+                          class="ecl-menu__sublink"
+                          onclick="getOptionsCollection(this)">EU Publications</a></li>
+                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
+                          class="ecl-menu__sublink">EU Law</a></li>
                     </ul>
                   </div>
                 </li>
-                <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children=""
-                  aria-haspopup="" aria-expanded="false"><a href="#" onclick="expertMode()" class="ecl-menu__link"
-                    data-ecl-menu-link="">Expert mode<svg
-                      class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
-                      aria-hidden="true">
-                      <use xlink:href="/component-library/dist/media/icons.cec58484.svg#corner-arrow"></use>
-                    </svg></a>
-                </li>
+                <li class="ecl-menu__item" data-ecl-menu-item=""><a href="#" class="ecl-menu__link"
+                  data-ecl-menu-link=""
+                  onclick="expertMode()">Expert mode</a></li>                
               </ul>
             </section>
           </div>
@@ -176,14 +259,14 @@
         class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--after"
         focusable="false"
         aria-hidden="true"
-         data-ecl-icon><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#close"></use></svg></span></button></div><div
+         data-ecl-icon><use xlink:href="/images/icons.svg#close"></use></svg></span></button></div><div
               class="ecl-language-list__title ecl-col-12 ecl-col-l-8 ecl-offset-l-2"
               id="ecl-language-list__title"
             ><svg
         class="ecl-icon ecl-icon--m ecl-language-list__title-icon"
         focusable="false"
         aria-hidden="true"
-        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#generic-lang"></use></svg>Select your language</div></div><div class="ecl-row ecl-language-list__eu"><div class="ecl-language-list__category ecl-col-12 ecl-col-l-8 ecl-offset-l-2">EU official languages</div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4 ecl-offset-l-2"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
+        ><use xlink:href="/images/icons.svg#general--generic-lang"></use></svg>Select your language</div></div><div class="ecl-row ecl-language-list__eu"><div class="ecl-language-list__category ecl-col-12 ecl-col-l-8 ecl-offset-l-2">EU official languages</div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4 ecl-offset-l-2"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
         href="/component-library/example"
         class="ecl-link ecl-link--standalone ecl-language-list__link"
          lang="bg" hreflang="bg" rel="alternate"
@@ -219,7 +302,7 @@
         class="ecl-icon ecl-icon--xs ecl-link__icon"
         focusable="false"
         aria-hidden="true"
-        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/eu/images/icons/sprites/icons.svg#check"></use></svg></a></li><li class="ecl-language-list__item"><a
+        ><use xlink:href="/images/icons.svg#ui--check"></use></svg></a></li><li class="ecl-language-list__item"><a
         href="/component-library/example"
         class="ecl-link ecl-link--standalone ecl-language-list__link"
          lang="fr" hreflang="fr" rel="alternate"
@@ -319,15 +402,15 @@
               <div class="ecl-hero-banner__cta">
                 <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
                   <span class="ecl-link__label">Show manual</span>
-                  <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
-                  <use xlink:href="https://v3--europa-component-library.netlify.app/playground/ec/images/icons/sprites/icons.svg#corner-arrow"></use>
-                  </svg>
+<!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-180 ecl-link__icon" focusable="false" aria-hidden="true">
+                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                  </svg> -->
                 </a>
                 <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
                   <span class="ecl-link__label">Live demo</span>
-                  <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
-                  <use xlink:href="https://v3--europa-component-library.netlify.app/playground/ec/images/icons/sprites/icons.svg#corner-arrow"></use>
-                  </svg>
+<!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
+                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                  </svg> -->
                 </a>
               </div>
             </div>
@@ -352,43 +435,6 @@
       </form> -->
       
       <div class="ecl-container ecl-u-d-flex" id="form-container">
-
-            <form class="ecl-search-form" role="search" style="display:none;margin-top: 100px;" onsubmit="checkMenuItems('form',this);return false">
-              <div class="ecl-form-group">
-                <div class="ecl-container ecl-u-justify-content-center">
-                  <div class="ecl-row ecl-u-justify-content-center">
-                  <h2 class="ecl-u-type-heading-2">Start navigation from URI</h2>
-                  </div>
-                  <div class="ecl-row ecl-u-justify-content-center" style="margin-top:25px;";>
-                  <div class="form-type-text">
-                      <label for="free-uri" class="ecl-form-label">Enter URI<span class="ecl-form-label__required">*</span></label>
-                      <input class="ecl-text-input ecl-text-input--l" type="text" placeholder="Node URI" id="free-uri"/>
-                  </div>                  
-                  </div>
-                  <div class="ecl-row ecl-u-justify-content-center">
-                  <div class="form-type-text form-item-feedback-body form-item europa-text" style="margin-top: 25px;">
-                    <label for="select-default" class="ecl-form-label">Select subject/object position<span class="ecl-form-label__required">*</span></label>                   
-                    <div class="ecl-select__container ecl-select__container--l">
-                      <select class="ecl-select" required id="subject-object">
-                        <option value="s">Subject</option>
-                        <option value="o">Object</option>s
-                      </select>
-                      <div class="ecl-select__icon">
-                        <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape" focusable="false" aria-hidden="true">
-                          <use xlink:href="images/icons.svg#corner-arrow"></use>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                  <div class="ecl-row ecl-u-justify-content-center" style="margin-top: 25px;">
-                    <button class="ecl-button ecl-button--primary" type="submit">Show</button>
-                  </div>
-                </div>  
-              </div>
-              <input type="hidden" id="class-node" name="class-node" value="free">
-            </form>
-      
       </div>
       <div class="grid hidden grid-cols-14" id="graph-area">
         <div class="object-contain col-span-12 bg-white">
@@ -477,49 +523,6 @@
                     <h3 class="ecl-u-type-heading-3">Filter Options</h3>
                   </div>
                   <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters">
-<!--                     <div class="ecl-accordion__item">
-                      <h3 class="ecl-accordion__title"><button type="button" class="ecl-accordion__toggle" data-ecl-accordion-toggle=""
-                          data-ecl-label-expanded="Close" data-ecl-label-collapsed="Open" aria-controls="accordion-example-content"><span
-                            class="ecl-accordion__toggle-flex"><span class="ecl-accordion__toggle-indicator"><span
-                                class="ecl-accordion__toggle-label">Open</span><svg
-                                class="ecl-icon ecl-icon--m ecl-accordion__toggle-icon" focusable="false" aria-hidden="true"
-                                data-ecl-accordion-icon="">
-                                <use xlink:href="images/icons.svg#ui--plus"></use>
-                              </svg></span><span class="ecl-accordion__toggle-title">Publications theme classification</span></span></button></h3>
-                      <div class="ecl-accordion__content" hidden="" id="accordion-example-content" role="region">The College of
-                        Commissioners held today the first weekly meeting of 2019 which was devoted to discussing the challenges of this
-                        new year. Commissioners used the opportunity to take stock and discuss the year ahead, including the European
-                        elections in May and other important milestones ahead.</div>
-                    </div>
-                    <div class="ecl-accordion__item">
-                      <h3 class="ecl-accordion__title"><button type="button" class="ecl-accordion__toggle" data-ecl-accordion-toggle=""
-                          data-ecl-label-expanded="Close" data-ecl-label-collapsed="Open" aria-controls="accordion-example2-content"><span
-                            class="ecl-accordion__toggle-flex"><span class="ecl-accordion__toggle-indicator"><span
-                                class="ecl-accordion__toggle-label">Open</span><svg
-                                class="ecl-icon ecl-icon--m ecl-accordion__toggle-icon" focusable="false" aria-hidden="true"
-                                data-ecl-accordion-icon="">
-                                <use xlink:href="/component-library/dist/media/icons.svg#plus"></use>
-                              </svg></span><span class="ecl-accordion__toggle-title">DET Level</span></span></button></h3>
-                      <div class="ecl-accordion__content" id="accordion-example2-content" role="region">
-                        <label for="free-uri" class="ecl-form-label">Endpoint URL</label>
-                        <input class="ecl-text-input ecl-text-input--l" type="text" id="url" value="Value_URL"/>
-                      </div>
-                    </div>
-                    <div class="ecl-accordion__item">
-                      <h3 class="ecl-accordion__title"><button type="button" class="ecl-accordion__toggle" data-ecl-accordion-toggle=""
-                          data-ecl-label-expanded="Close" data-ecl-label-collapsed="Open" aria-controls="accordion-example3-content"><span
-                            class="ecl-accordion__toggle-flex"><span class="ecl-accordion__toggle-indicator"><span
-                                class="ecl-accordion__toggle-label">Open</span><svg
-                                class="ecl-icon ecl-icon--m ecl-accordion__toggle-icon" focusable="false" aria-hidden="true"
-                                data-ecl-accordion-icon="">
-                                <use xlink:href="/icons.svg#plus"></use>
-                              </svg></span><span class="ecl-accordion__toggle-title">Delivery of last pending proposals, a common Destiny
-                              of unity, the hour of European Democracy</span></span></button></h3>
-                      <div class="ecl-accordion__content" hidden="" id="accordion-example3-content" role="region">In the modern global
-                        economy trade is essential for growth, jobs and competiveness, and the EU is committed to maintaining an open and
-                        rules-based trading system. With the rising threat of protectionism and weakened commitment of large players to
-                        global trade governance, the EU must take the lead.</div>
-                    </div> -->
                   </div>
                 </div>
                 <div class="z-0 h-auto col-span-9" id="networkGraph">
@@ -527,11 +530,6 @@
               </div>
 
           </div>
-          <script>
-          console.log(window.location.pathname)
-          console.log(window.location.href)
-
-          </script>
           <!-- This example requires Tailwind CSS v2.0+ -->
           <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700 ecl-u-z-modal" id="myModal">
             <!--
@@ -564,9 +562,52 @@
                   </div>
                 </div>
                 <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
-                  <div id="navTable" style="overflow: auto" class="mt-6"></div>
+                  <div id="navTable" style="overflow: auto" class="mt-6">
+                    <nav aria-label="Progress">
+                      <ol role="list">
+                      </ol>
+                    </nav>
+                  </div>
                   <div id="tabsNav" class="hidden">
                     <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
+                      <div class="ecl-tabs__container">
+                        <ul class="ecl-tabs__list" role="tablist">
+                          <li class="ecl-tabs__item" role="presentation">
+                            <a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active"
+                            role="tab" aria-selected="false"
+                            onclick="selectTab(this,'detailsLink');" id="childNodesLink">Children</a>
+                          </li>
+                          <li class="ecl-tabs__item" role="presentation">
+                            <a href="#" class="ecl-link ecl-tabs__link"
+                       role="tab" tabindex="-1" aria-selected="false"
+                       onclick="selectTab(this,'childNodesLink');"
+                       id="detailsLink"
+                    >Details</a></li>
+                    <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation">
+                      <button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button"  tabindex="-1">
+                        <span class="ecl-button__container">
+                          <span class="ecl-button__label" data-ecl-label="true">More (%d)</span>
+                          <svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after"
+                            focusable="false"
+                            aria-hidden="true"
+                            data-ecl-icon>
+                            <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                          </svg>
+                        </span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg
+                      class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
+                      focusable="false"
+                      aria-hidden="true"
+                      ><use xlink:href="/images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg
+                      class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block"
+                      focusable="false"
+                      aria-hidden="true"
+                      ><use xlink:href="/images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button></div></nav>
+<!--                <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
                       <div class="ecl-tabs__container">
                         <ul class="ecl-tabs__list">
                             <li class="ecl-tabs__item">
@@ -585,7 +626,7 @@
                             </li>
                         </ul>
                       </div>
-                    <div class="ecl-tabs__controls">
+                      <div class="ecl-tabs__controls">
                         <button class="ecl-tabs__prev" aria-hidden="true">
                             <svg class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
                                 focusable="false"
@@ -602,31 +643,8 @@
                             </svg>
                             <span class="ecl-u-sr-only"></span>
                         </button>
-                    </div></nav>
-<!--                       <div class="sm:hidden">
-                        <label for="tabs" class="sr-only">Select a tab</label> -->
-                        <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
-                        <!-- <select id="tabs" name="tabs" class="block w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                          <option selected>Children nodes</option>
-
-                          <option>Details</option>
-
-                        </select>
-                      </div>
-                      <div class="hidden sm:block">
-                        <nav class="relative z-0 flex divide-x divide-gray-200 rounded-lg shadow-md" aria-label="Tabs"> -->
-                          <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
-<!--                           <a id="childNodesLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-900 bg-white rounded-l-lg group hover:bg-gray-50 focus:z-10" aria-current="page" onclick="selectTab(this,'detailsLink');">
-                            <span>Children nodes</span>
-                            <span aria-hidden="true" class="bg-blue-500 absolute inset-x-0 bottom-0 h-0.5"></span>
-                          </a>
-
-                          <a id="detailsLink" href="#" class="relative flex-1 min-w-0 px-4 py-3 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10" onclick="selectTab(this,'childNodesLink');">
-                            <span>Details</span>
-                            <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
-                          </a>
-                        </nav>
-                      </div> -->
+                     </div>
+                    </nav> -->
                   </div>
 
                   <div id="dvTable" style="overflow: auto">
@@ -771,7 +789,12 @@
       </div>
     </main>
   </div>
-
+  <script
+  src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/scripts/ecl-ec.js"
+  integrity="sha256-rtHPJQFE7B9bNlt8cekMB170aJ3K5Ug9/FDHR8SZ1m8= sha384-gSjxV5m6WfyeLuJvdRK55yZaVWCyRmCmdCz6LpNd1XMpNiCR37LqKfzfWrXqK6Tc
+  sha512-R5fZezLHTj66zK9MGiZUhGABuGzdC1r7KDWPriTpkDWstlyw9PCPdh2rbL9LbO1RQCQ26j7jXGIuvcz/t0v6xQ=="
+  crossorigin="anonymous"
+   ></script>
     <script src="js/main.js"></script>
     <script src="js/no_network_graphs.js"></script>
     <script src="js/navigationClass.js"></script>
@@ -788,7 +811,9 @@
     <script src="js/menuItemsClass.js"></script>
     <script src="js/filtersWithClass.js"></script>
     <script src="js/filterClass.js"></script>
-
+    <script>
+      ECL.autoInit();
+    </script>
     </body>
 </html>
 

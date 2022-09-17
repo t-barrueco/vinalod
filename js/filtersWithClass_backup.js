@@ -6,7 +6,7 @@ function addFilters(){
     console.log(filters)
     console.log(linkedDataGraph)
     bubbleId=linkedDataGraph.treeData.slice(-1)[0]["id"]
-    filters.forEach(function(d){
+    filters.forEach(async function(d){
       property=d["property"]
       filterType=d["filter_type"]
       classFilter=d["property"].split("_")[0]
@@ -16,10 +16,13 @@ function addFilters(){
       }else{
         filterText=""
       }
-      console.log(classesFilterList)
+      
       if (classesFilterList.filter(c => c.name==classFilter).length==0){
             classFilterObject= new classFilterClass(classFilter)
+            await classFilterObject.init()
             console.log("crea la clase del filtro")
+            console.log(classFilter+"_filters")
+            console.log(document.getElementById(classFilter+"_filters"))
             filterObject=new filter(classFilter, property, filterType,filterText,parent,bubbleId)
             classesFilterList.push(classFilterObject)
             filtersList.push(filterObject)
@@ -46,7 +49,6 @@ function addFilters(){
       }
 
     })
-
 }
 function changeHtmlFilter(element,classFilter){
 

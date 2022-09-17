@@ -8,13 +8,13 @@ LinkedDataGraph.prototype.init = async function () {
     var ldg=this;
     await ldg.getResults()
     ldg.buildData()
-    console.log(ldg.data.treeData)
+    //console.log(ldg.data.treeData)
   }
 
 LinkedDataGraph.prototype.getResults = async function () {
     var ldg=this;
     ldg.results = await runSparlqQuery(ldg.settings.url,ldg.settings.query,"query");
-    console.log(ldg.results)
+    //console.log(ldg.results)
   }
 
 LinkedDataGraph.prototype.buildData = function () {
@@ -222,7 +222,7 @@ LinkedDataGraphExpert.prototype.buildTreeData = function () {
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
-  console.log(ldg.settings["subject-object"])
+  //console.log(ldg.settings["subject-object"])
   ldg.results.forEach(r => {
     if (ldg.settings["subject-object"] == "s") {
       if (r["o"]["more_results"]) {
