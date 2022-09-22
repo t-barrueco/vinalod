@@ -1,0 +1,36 @@
+<div class="ecl-container ecl-u-d-flex" id="form-container">
+
+    <form class="ecl-search-form" role="search" style="margin-top: 10px;" onsubmit="showGraphExpertFromPopup(this);return false">
+      <div class="ecl-form-group">
+        <div class="ecl-container ecl-u-justify-content-center">
+          <div class="ecl-row ecl-u-justify-content-center">
+          <h3 class="ecl-u-type-heading-2">Option *</h3>
+          </div>
+          <div class="ecl-row ecl-u-justify-content-center" style="margin-top:25px;";>
+          <div class="form-type-text">
+            <label for="free-uri" class="ecl-form-label">Endpoint URL</label>
+              <input class="ecl-text-input ecl-text-input--l" type="text" id="url" value="Value_URL" disabled/>
+          </div>                  
+          </div>
+          <div class="ecl-row ecl-u-justify-content-center" style="margin-top:25px;";>
+            <div class="form-type-text">
+              <label for="free-uri" class="ecl-form-label">URI</label>
+                <input class="ecl-text-input ecl-text-input--l" type="text" id="uri" value="Node URI" disabled/>
+            </div>                  
+          </div>
+          <div class="ecl-row ecl-u-justify-content-center">
+          <div class="form-type-text form-item-feedback-body form-item europa-text" style="margin-top: 25px;">
+            <label for="free-uri" class="ecl-form-label">Position</label>
+            <div class="ecl-select__container ecl-select__container--l">
+              <input class="ecl-text-input ecl-text-input--l" type="text" id="subject-object" value="Subject" disabled/>
+            </div>
+          </div>
+          </div>
+          <div class="ecl-row ecl-u-justify-content-center" style="margin-top: 25px;margin-bottom: 25px;">
+            <button class="ecl-button ecl-button--primary" type="submit">Show</button>
+          </div>
+        </div>  
+      </div>
+      <input type="hidden" id="class-node" name="class-node" value="free">
+    </form>
+</div>

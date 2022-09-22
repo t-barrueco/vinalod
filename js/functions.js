@@ -5,53 +5,11 @@
 *    created by Teresa Barrueco
 */
 
-//Transform data from hierarchy in Config File to an array
-// format : [parent,child,grandchild...]
-
-function get_hierarchy(hierarchy){
-  var hierarchy_arr=[]
-  hierarchy_arr=[hierarchy[0]["parent"]]
-  hierarchy.forEach(function(d){
-    hierarchy_arr.push(d["child"])
-  })
-
-  return hierarchy_arr
+function get_unique_values_arrays(arr1,arr2){
+  arr1=arr1.concat(arr2)
+  return [...new Set(arr1)];
 }
 
-//Get classes and text from Config File to show for every class
-// format: {"className":textClass,"className2":textClass2}
-function getClassesShow(classes){
-  var tmp={}
-  classes.forEach(function(c){
-    tmp[c["class"]]=c["text"]
-  })
-  return tmp
-}
-
-//Get properties for classes in the Config File
-// format: {"className":[property1,property2...],"className2":[property1,property2...]}
-function get_properties(properties){
-  var temp={}
-  properties.forEach(function(d){
-    if(temp[d["class"]]){
-      temp[d["class"]].push(d["property"])
-    }else{
-      temp[d["class"]]=[d["property"]]
-    }
-  })
-  return temp
-}
-
-//Get full names for properties
-// format: {"property":property_name,"property2":property_name...}
-function get_property_names(properties){
-  var temp={}
-  properties.forEach(function(d){
-        temp[d["property"]]=d["property_name"]
-      })
-      return temp
-
-}
 // Generate random string for ids
 function genRandomString(){
   var s=Math.random().toString(36).substr(2, 11);
@@ -61,141 +19,6 @@ function genRandomString(){
   return s; 
 }
 
-//Get tooltip from Config File
-// format: [{"property":....,"tooltip_text"},{"property2":....,"tooltip_text"}]
-function getTooltip(option_text){
-  var selClass=configFile.filter(function(d){
-    return d.option_text==option_text
-  })
-  if(selClass[0]!=undefined){
-    return selClass[0]["tooltip"]
-  }else{
-    return ""
-  } 
-}
-
-// changeBasicGraph is the function called when changing option in flyout menu
-// of basic mode menu
-  
-function changeBasicGraph(option){
-
-  //remove filter, legend and graph
-  d3.selectAll(".classFilter").remove()
-  //d3.select("#legend").selectAll("li").remove()
-  d3.selectAll(".graph").remove()   
-                                                                     
-  hideModal("#myModal")
-  deleteTooltip()
-  //reset global variables
-  propertiesFilterHist=[]
-  execQueries=[]
-  filtersInGraph=[]
-  classesFilterList=[]
-  filtersList=[]
-
-  if(networkGraph){
-    networkGraph = undefined;
-    //colorScale=[]
-    ////console.log("pasa por aquí")
-    legend.deleteAllColors()
-    legend=undefined
-    //////////console.log(legend)
-    ////console.log(nodesClassesCorrespondence)
-    ////console.log(nodesClassesShow)
-    nodesClassesCorrespondence={}
-    nodesClassesShow=[]
-
-  }
-  //graphHistory=[]
-
-  //hide flyout menu
-  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  
-  //get option selected for searching in Config File
-  option=$(option).find( "#optionMain" ).text().trim()
-
-  let pos = configFile.map(function (e) {
-    return e.option;
-  }).indexOf(option);
-
-  showBasicGraph()
-
-  //build and show graph
-  ////////////console.log("antes de build")
-  ////////////console.log(pos)
-  buildBasicGraph(pos)
-  ////////////console.log("despues de ...")
-}
-//Remove all elements from screen and show graph area
-function showBasicGraph(){
-  //landing-text
-  //landing-img
-  //networkGraph
-  $("#graph-area").removeClass("hidden")
-  $("#form-container").addClass("hidden")
-  $("#landing-img").addClass("hidden")
-  $("#landing-text").addClass("hidden")
-}
-
-//Show options from the Config File in menu
-/* function getMenuItems(items,node,pageX,pageY,origin){
-  var menuItems=[],element,position
-  
-  //if click on Navigation panel then origin=table
-  if (origin=="table"){
-    for (var i = 0; i < items.length; i++) {
-      //add all items to menu in table. Get options text and line in config file
-      //and add it to the table
-      menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
-    }
-    //function that add menu items to table
-    //////////////////console.log("antes de add...")
-    addMenuToTable(node,menuItems)
-  }else{
-    //if click on bubble in graph, fill menu to show on screen next to bubble
-    //and add action to build basic graph in case the option in the menu is clicked
-    for (var i = 0; i < items.length; i++) {
-      position=items[i]["position"]
-      element={
-        title: items[i]["option"],
-        action: (data,d) => {
-          
-          for (var i = 0; i < configFile.length; i++) {
-                if(configFile[i]["option"] == d.title){
-                  position=i
-                }
-              }
-          if(node.menuOption!=undefined){
-            if(node.menuOption.split(";")[0]==d.title){
-              networkGraph.expandLevelBranch(node)          
-              networkGraph.data=flatten(networkGraph.treeData).flatData
-              networkGraph.initializeSimulation();
-              networkGraph.dataJoinGraph()
-              networkGraph.enterGraph()
-              
-              networkGraph.initializeSimulation();
-              networkGraph.dataJoinGraph()
-              networkGraph.exitGraph()
-            }else{
-              buildBasicGraph(position,node,d.title)
-            }
-          }else{
-            buildBasicGraph(position,node,d.title)
-          }
-        }
-      }
-      menuItems.push(element)
-    }
-    //Send menuItems to menuFactory which will draw the menu in the graph
-    networkGraph.menuFactory(100,0, menuItems, node,"dblClick",250)
-  }
-} */
-/* var dcx = (window.innerWidth/2-d.x*zoom.scale());
-	var dcy = (window.innerHeight/2-d.y*zoom.scale());
-	zoom.translate([dcx,dcy]);
-	 g.attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
- */
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
@@ -254,139 +77,40 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
     if(origin=="table"){
       addContextMenuToTable(node,Items)
     }else{
-
-      //////////////console.log("-------------------------")
-      //////////////console.log("pageX: "+pageX)
-      //////////////console.log("pageY: "+pageY)
-      //////////////console.log(pageX-200)
-      //////////////console.log(pageY-200)
-      //////////////console.log("zoomScale: "+networkGraph.zoomScale)
       if(pageY-200<0){
-        //////////////console.log("pageY menos")
+        ////////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        //////////////console.log("pageX menos")
+        ////////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
       }
-      //////////////console.log("pageX after: "+pageX)
-      //////////////console.log("pageY after: "+ pageY)
-      //////////////console.log(d3.select("#networkGraph").node())
-      //////////////console.log(d3.select("#networkGraph").node().getBoundingClientRect().width)
-      //pageX - width / 2, pageY - height / 1.5
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
 }
+
 //execute sparql query
-function runSparlqQuery(settings){
-  /* return new Promise((resolve, reject) => {
-    $.ajax(settings).then  (function( _data ) {
-      results = _data.results.bindings;
-      resolve(results)
-    })
-  }) */
-  ////console.log(settings)
-  return new Promise((resolve, reject) => {
-    $.ajax(settings).then  (function( _data ) {
-      ////////console.log(_data.results)
-      //results = _data;
-      resolve(_data.results.bindings)
-    })
-    .fail(function(jqXHR, textStatus, errorThrown){
-      //console.log(jqXHR.status)
-      reject(jqXHR.status)
-      });
-    })
-}
-//run Ask Sparql Query
-function runAskSparlqQuery(url,sparqlQuery){
-  var prefixes="",settings
-  var queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-  
-  if (url=="https://query.wikidata.org/sparql"){
-    settings = { url: queryUrl, async: true       }; 
-  }else{
-    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  }
-
-  return new Promise((resolve, reject) => {
-  $.ajax(settings).then  (function( _data ) {
-    results = _data.boolean;
-    resolve(results)
-  })
-  .fail(function(jqXHR, textStatus, errorThrown){
-    reject(jqXHR.status)
-    });
-  })
-
-}
-
-
-function replaceParametersQuery(node,sparqlQuery){
-var j=2,result;
-while(sparqlQuery.indexOf("PARAMETER"+(j).toString())!=-1){
-  var regex = new RegExp('(?<='+escapeRegExp("FILTER(?")+').*(?='+"=<PARAMETER2"+')')
-  result=regex.exec(sparqlQuery)[0]
-
-  j+=1
-}
-function escapeRegExp(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
-}
-
-function fromSelectToAskQuery(query){
-  var mySubString;
-  if(query.toLowerCase().indexOf("where")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().indexOf("where") - 1 
-    );
-    query=query.replace(mySubString,"ASK")
-    if(query.toLowerCase().indexOf("select")!=-1){
-      mySubString = query.substring(
-        query.toLowerCase().indexOf("select"), 
-        query.toLowerCase().lastIndexOf("where") + 5 
-      );
-      query=query.replace(mySubString,"")
+async function runSparlqQuery(url,query,type){
+  var p = new Promise(function(resolve, reject){
+    let prefixes="";
+    let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
+    let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    settings["success"] =function (_data) {
+      if(type=="query"){
+        resolve(_data.results.bindings)
+      }else if(type=="askquery"){
+        resolve(_data.boolean)
+      }
     }
-  }else{
-    mySubString = query.substring(
-      query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().indexOf("{") - 1 
-    );
-    query=query.replace(mySubString,"ASK")
-  }
-  
-  if(query.toLowerCase().lastIndexOf("group by")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("group by"), 
-      query.length - 1 
-    );
-    query=query.replace(mySubString,"")
-  }
-
-  if(query.toLowerCase().lastIndexOf("order by")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("order by"), 
-      query.length 
-    );
-    query=query.replace(mySubString,"")
-  }
-
-  if(query.toLowerCase().lastIndexOf("limit")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("limit"), 
-      query.length 
-    );
-    query=query.replace(mySubString,"")
-  }
-  query=query.replaceAll("parameter","PARAMETER")
-  return query
+    $.ajax(settings)
+  })
+  return await p.then(async function(_data){
+    return _data
+  })
 }
 
  //function that return node in the treeMap if founded
@@ -400,7 +124,6 @@ function fromSelectToAskQuery(query){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  ////////console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -431,7 +154,6 @@ function getTooltipText(d){
     </div>`;
     return text;
   }else{
-    ////////console.log("no menu option")
     var text = `
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -454,10 +176,9 @@ function getTooltipText(d){
               Class
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            ` + nodesClassesCorrespondence[d.class] + `
+            ` + d.className + `
             </dd>
           </div>`
-          //////////console.log(d)
           if(d["tooltip"]){
             Object.keys(d["tooltip"]).forEach(function(k){
               text=text + `
@@ -479,9 +200,188 @@ function getTooltipText(d){
         </dl>
       </div>
     </div>`;
-    ////////console.log(text)
     return text;
   } 
+}
+
+function getTooltipTextFreeGraph(d) {
+  var menuOptions, sparqlEndpoint = "", position = "",text;
+  if (d.type == "menuOption") {
+    menuOptions = d.value.split(",")
+    text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-2 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Option values
+          </h3>
+        </div>
+        <div class="border-t border-gray-200">
+          <dl>
+            <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              URI
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + d.uri + `
+              </dd>
+            </div>
+            <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              Sparql Endpoint
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + menuOptions[0] + `
+              </dd>
+            </div>
+            <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+              Position
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              ` + menuOptions[1] + `
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>`;
+  } else if (typeof (d) == "string") {
+    text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          ` + d + `
+          </h3>
+        </div>
+        </div>`;
+  } else {
+    if (d.menuOption != undefined) {
+      if (d.menuOption.split(";").length == 1) {
+        sparqlEndpoint = d.menuOption.split(",")[0]
+        position = d.menuOption.split(",")[1]
+      } else {
+        sparqlEndpoint = "several"
+      }
+    }
+    if (d.property) {
+      text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-2 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Node values
+            </h3>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Property
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.property + `
+                </dd>
+              </div>
+              <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Name
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.value + `
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>`;
+    }else if (d.target) {
+      if(d.target.property){
+        text = `
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-2 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Node values
+            </h3>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Property
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                ` + d.target.property + `
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>`;
+      }
+  }else {
+      text = `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-2 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Node values
+              </h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Name
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + d.value + `
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>`;
+      getOptionChosen()
+    }
+    function getOptionChosen() {
+      if (d.menuOption != undefined) {
+        if (sparqlEndpoint != "several") {
+          text = text + `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-2 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Option chosen
+              </h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Sparlq Endpoint
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + sparqlEndpoint + `
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                  Position
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  ` + position + `
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>`
+        } else {
+          text = text + `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Several options displayed in graph. Click on each option to see results values
+              </h3>
+            </div>
+            </div>`
+        }
+      }
+    }
+  }
+
+  return text;
 }
 //This is the tooltip for the menu options
 function getTooltipMenu(d){
@@ -494,15 +394,7 @@ function getTooltipMenu(d){
 }
 // Add to legend
 
-function differenceArrays(a1, a2) {
-  var result = [];
-  for (var i = 0; i < a1.length; i++) {
-    if (a2.indexOf(a1[i]) === -1) {
-      result.push(a1[i]);
-    }
-  }
-  return result;
-}
+
 //function to autocomplete in search field
 function autocomplete(inp, arr) {
   var currentFocus;
@@ -623,48 +515,24 @@ function autocompleteValSelected(el){
     navigation.valueSelected()
   }
 }
-//function that get a key of an object from value
-function getKeyByValue(object, value) {
-  return Object.keys(object).find(key => object[key] === value);
-}
-function insertAfter(newNode, existingNode) {
-  existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
-}
 function getCommentOption(option){
-  return configFile.filter(d=>d.option==option)[0]["option_text"]
+  return configFile.file.filter(d=>d.option==option)[0]["option_text"]
 }
 function get_node_from_element(id){
   return d3.select("#"+id).data()[0]
 }
 
-function get_configRows_class(classNode){
-  var configRows=[]
-  for(var i = 0; i < configFile.length; i++) {
-    if(configFile[i]["class"]==classNode){
-      configRows.push({"position":i,"option":configFile[i]["option"],"optionText":configFile[i]["option_text"]})
-    }
-  }
-  return configRows
-}
-
 //get image for bubble. If no image in images file, get question mark.
 function bubbleImage(node){
   var icon=[],propertyUri;
-  ////////////console.log(node)
-  
   if((node[node["class"]+"_image"]!=undefined)&&(node[node["class"]+"_image"]!="")){
     return node[node["class"]+"_image"];
   }else{
     propertyUri=propertyUriImage(node)
-    ////////////console.log(propertyUri)
     if(propertyUri){
-      ////////////console.log(node)
-      ////////////console.log(node[propertyUri])
-      ////////////console.log(filesIcons)
       icon=filesIcons.filter(function(d){
         return d.ID==node[propertyUri];
       })
-      //////////////console.log(icon)
     }else{
       if(node[node["class"]+"_uri"]){
         icon=filesIcons.filter(function(d){
@@ -673,7 +541,7 @@ function bubbleImage(node){
       }
       if(icon.length==0){
         icon=filesIcons.filter(function(d){
-          return d.ID==nodesClassesCorrespondence[node["class"]];
+          return d.ID==node["className"];
         })
       }
     }
@@ -688,16 +556,11 @@ function bubbleImage(node){
 }
 function propertyUriImage(node){
   var propertyUri=false;
-  if(configFile[node["configRowNumber"]]){
-    ////////////console.log(configFile[node["configRowNumber"]]["properties"])
-    configFile[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
+  if(configFile.file[node["configRowNumber"]]){
+    configFile.file[node["configRowNumber"]]["properties"].filter(d=>d.class==node["class"]).forEach(function(p){
       if(p.property.endsWith("_uri")){
         property=p.property.replace("_uri","")
-        ////////////console.log(property)
-        //if(configFile[node["configRowNumber"]]["properties"].filter(d=>(d.class==node["class"])&&(d.property==property))){
         if(node["class"]!=property){
-          ////////////console.log(property)
-          ////////////console.log(p.property)
           propertyUri= p.property
         }
       }
@@ -705,7 +568,6 @@ function propertyUriImage(node){
   }
   return propertyUri
 }
-
 //function for transition from bubble image to text in bubbles when zoom in and zoom out
 function textImageZoom(zoomScale){
   if(zoomScale>1.5){
@@ -737,22 +599,14 @@ function textImageZoom(zoomScale){
 //select tab from navigation panel. Show children or show detail for node
 function selectTab(element,otherText){
   var otherEl;
-  var elements = element.querySelectorAll('span');
-  elements[1].classList.remove("bg-transparent")
-  elements[1].classList.add("bg-blue-500")
-  otherEl=document.getElementById(otherText)
-  otherEl.classList.remove("text-gray-900")
-  otherEl.classList.add("text-gray-500")
-  elements = otherEl.querySelectorAll('span');
-  elements[1].classList.add("bg-transparent")
-  elements[1].classList.remove("bg-blue-500")
-  element.classList.remove("text-gray-500")
-  element.classList.add("text-gray-900")
+  element.classList.add("ecl-tabs__link--active")
 
-  if(otherText=="detailsLink"){
-    navigation.contentTable()
+  if(element.getAttribute("id")=="detailsLink"){
+    document.getElementById("childNodesLink").classList.remove("ecl-tabs__link--active")
+    navigationPanel.showDetails()
   }else{
-    navigation.showDetails()
+    document.getElementById("detailsLink").classList.remove("ecl-tabs__link--active")
+    navigationPanel.contentTable()
   }
   
 }
@@ -811,24 +665,18 @@ function nestedNodes(el){
 }
 function highlightLinkedNodes(node){
   deselectNodes()
-  //////////////console.log(selectTargetNodes(node))
-  //////////////console.log(selectSourceNodes(node))
 }
 function highlightTargetNodes(node){
-  let data=selectTargetNodes(node)
+  let dataHighlight=selectTargetNodes(node)
   deselectNodesAndLinks()
-  //////////////console.log(data.links)
-  highlightLinks(data.links)
-  highlightNodes(data.nodes)
+  highlightLinks(dataHighlight.links)
+  highlightNodes(dataHighlight.nodes)
 }
 function selectTargetNodes(node){
-  //////////////console.log(node)
   var targetNodes=[],targetLinks=[]
-  //////////////console.log(networkGraph.data.links)
   let targets=networkGraph.data.links.filter(function(item) {
     return item.source.id == node.id
   })
-  //////////////console.log(targets[0])
   targetNodes.push(targets[0].source.id)
   targets.forEach(function (d){
     targetLinks.push(d.id)
@@ -849,24 +697,16 @@ function selectSourceNodes(node){
   return {nodes:sourceNodes,links:sourceLinks};
 }
 function highlightLinks(links){
-  //////////////console.log(links)
   const even = d3.selectAll(".link").filter(function(d){
     return links.includes(d.id)
-    ////////////////console.log(d.id)
-    ////////////////console.log(links)
   });
-  //////////////console.log(even)
   even.style("stroke", "black")
   .style("fill","black")
-  //.style("stroke-width", "2px")
 }
 function highlightNodes(nodes){
   const even = d3.selectAll(".circleBasic").filter(function(d){
     return nodes.includes(d.id)
-    ////////////////console.log(d.id)
-    ////////////////console.log(links)
   });
-  //////////////console.log(even)
   even.attr("stroke", "black")
   .attr("stroke-width", "3px")
 }
@@ -906,10 +746,65 @@ function addTooltip(htmlData){
   var y = d3.event.pageY 
 
   document.getElementsByClassName("tooltip")[0].insertAdjacentHTML('afterbegin', htmlData);
-  //document.getElementsByClassName("tooltip")[0].innerHtml =  getTooltipText(data)
   d3.select(".tooltip").transition()		
   .duration(200)		
   .style("opacity", 1)
   .style("top",y+50)
   .style("left",x+50)
+}
+function showBasicGraph(){
+  $("#graph-area").removeClass("hidden")
+  $("#form-container").addClass("hidden")
+  $("#landing-img").addClass("hidden")
+  $("#landing-text").addClass("hidden")
+}
+function fromSelectToAskQuery(query){
+  var mySubString;
+  
+  if(query.toLowerCase().indexOf("where")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("where") - 1 
+    );
+    query=query.replace(mySubString,"ASK")
+    if(query.toLowerCase().indexOf("select")!=-1){
+      mySubString = query.substring(
+        query.toLowerCase().indexOf("select"), 
+        query.toLowerCase().lastIndexOf("where") + 5 
+      );
+      query=query.replace(mySubString,"")
+    }
+  }else{
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("{") - 1 
+    );
+    query=query.replace(mySubString,"ASK")
+  }
+  
+  if(query.toLowerCase().lastIndexOf("group by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("group by"), 
+      query.length - 1 
+    );
+    query=query.replace(mySubString,"")
+  }
+
+  if(query.toLowerCase().lastIndexOf("order by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("order by"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
+
+  if(query.toLowerCase().lastIndexOf("limit")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("limit"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
+  query=query.replaceAll("parameter","PARAMETER")
+  return query
 }
