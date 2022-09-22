@@ -5,10 +5,9 @@ NavigationPanel = function ( _type) {
    
 NavigationPanel.prototype.init = function () {
   var navPanel=this;
-  //////console.log(networkGraph.node)
+
   let files=["navTable_element.html","navTable_element_last.html"]
-  //navPanel.filesHtmlCode=getHtmlFromFiles(files)
-  ////console.log(navPanel.filesHtmlCode)
+
   navPanel.node=networkGraph.node
   navPanel.clusterElSelected=[]
   navPanel.imageArrowUp="images/arrow-up.svg"
@@ -22,7 +21,11 @@ NavigationPanel.prototype.init = function () {
 
   navPanel.initModal()
   navPanel.navTableTable()
+  //console.log(document.getElementsByTagName("table"))
+
   navPanel.contentTable()
+  //console.log(document.getElementsByTagName("table"))
+
   navPanel.showChildrenDetails()
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
@@ -44,8 +47,8 @@ NavigationPanel.prototype.getNodes = function (){
     return item.target.id == navPanel.node.id
   })
   console.log(navPanel.targets)
-  ////console.log(sources)
-  navPanel.sources=[sources[0].target]
+  console.log(sources)
+  navPanel.sources=[navPanel.node]
   
   function recurse(node) {
     //var test;
@@ -53,9 +56,7 @@ NavigationPanel.prototype.getNodes = function (){
     let sourcesNode=networkGraph.data.links.filter(function(item) {
       return item.target.id == node.id
     })
-    //sources.push(node)
     sourcesNode.forEach(function(c){
-        //sources.push(c.source)
         recurse(c.source)
     });
   }
@@ -64,32 +65,9 @@ NavigationPanel.prototype.getNodes = function (){
     recurse(r.source);
   })
 
-  ////console.log(navPanel.sources)
   if (navPanel.sources.length>0){
     navPanel.sources=navPanel.sources.reverse();
-    /* navPanel.sources.forEach(function(d){
-      sources2.push()
-    }) */
-    /* sources2=networkGraph.data.links.filter(function(item) {
-      return item.target.id == navPanel.sources[0]["source"]["id"]
-    })
-    //console.log(sources2)
-    while(sources2.length>0){
-      sources2.forEach(function(d){
-        //console.log(d)
-        navPanel.sources.push(d)
-      })
-      sources2=networkGraph.data.links.filter(function(item) {
-        //console.log(item)
-        return item.target.id == sources2[0]["source"]["id"]
-      })
-    } */
-
   }
-  //////console.log(networkGraph)
-  //navPanel.sources.push(networkGraph.treeData[0])
-  ////console.log(navPanel.sources)
-  //navPanel.sources=navPanel.sources.reverse();
 }
 
 NavigationPanel.prototype.selectBubbles = function (){
@@ -174,32 +152,7 @@ NavigationPanel.prototype.navTableTable = function ()
       li.remove()
     })
 
-/*     if((navPanel.navTable.querySelector("nav"))){
-      navPanel.nav=navPanel.navTable.querySelector("nav")
-      navPanel.ol=navPanel.navTable.querySelector("ol")
-
-      if(navPanel.ol!=null){
-        navPanel.ol.querySelectorAll("li").forEach(function(li){
-          li.remove()
-        })
-      }else{
-        navPanel.ol=document.createElement("ol")
-        navPanel.ol.setAttribute("role", "list");
-      }
-      
-    }else{
-      navPanel.nav=navPanel.navTable.appendChild(document.createElement("nav"))
-      navPanel.nav.setAttribute("aria-label", "Progress");
-      navPanel.ol=document.createElement("ol")
-      navPanel.ol.setAttribute("role", "list");
-    } */
     navPanel.sources.forEach(function (d,i){
-      ////console.log(d)
-/*       if(d.source){
-        nodeClass=d.source.class
-      }else{
-        nodeClass=d.class
-      } */
       nodeClass=d.class
       if(nodeClass=="free"){
         if(i==0){
@@ -211,7 +164,6 @@ NavigationPanel.prototype.navTableTable = function ()
           }
         }
       }else{
-        ////console.log(d)
         navPanel.addElementNav(d,i)
       }
     })
@@ -223,12 +175,9 @@ NavigationPanel.prototype.navTableTable = function ()
 NavigationPanel.prototype.addElementNav = function (source,i){
   var navPanel=this, last=false, imageSource="images/check.svg",imageSourceLast="images/location.svg",nodeClass
   
-  ////////console.log(source)
   if(source.source){
-    ////////console.log(source.source)
     nodeClass=source.source.class
   }else{
-    ////////console.log(source)
     nodeClass=source.class
   }
   if(nodeClass=="free"){
@@ -247,142 +196,24 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     var file;
     if(!last){
       file="navTable_element.html"
-        //li.setAttribute("class", "relative pb-2");
-        //div=document.createElement("div")
-        //div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
-        //div.setAttribute("aria-hidden", "true");
     }else{
       file="navTable_element_last.html"
-      //li.setAttribute("class", "relative pb-5");
     }
-    //////console.log(navPanel.ol)
-    ////console.log(navPanel.filesHtmlCode['"'+file+'"'])
-    ////console.log(navPanel.filesHtmlCode)
-    //console.log(file)
-    ////console.log(Object.keys(navPanel.filesHtmlCode))
-    //navPanel.ol.insertAdjacentHTML('beforeend', navPanel.filesHtmlCode[file]);
-    /* let li=navPanel.ol.querySelector("li:last-child") */
-    ////console.log(navPanel.filesHtmlCode)
     let code = await getHtmlCodeFromFile(file);
-    //////console.log(fi.property.split("_")[1].charAt(0).toUpperCase() + fi.property.split("_")[1].slice(1))
-    //code=code.replace("Label",fi.details.property.split("_")[1].charAt(0).toUpperCase() + fi.details.property.split("_")[1].slice(1))
-    //console.log(code)
-    ////console.log($("#"+fi.details.class+"_filters"))
-    //console.log(navPanel.ol)
     $("#navTable ol").append(code).ready(function () {
-
-      //console.log(navPanel.ol)
-/*       const box = document.getElementById('box');
-      box.removeAttribute('id'); */
-      //let li=navPanel.ol.querySelector("li:last-child")
       let li=navPanel.ol.querySelector("#li-empty")
       li.removeAttribute("id")
-      ////console.log(li)
-      ////console.log(navPanel.ol)
-      //////console.log(li.querySelector("a"))
       let a=li.querySelector("a")
-      //a=document.createElement("a")
-      //a.setAttribute("href", "#");
-      //a.setAttribute("class", "relative flex items-start group");
-      //console.log(navPanel.sources[i])
-/*       if(navPanel.sources[i]["target"]!=undefined){
-        a.id=navPanel.sources[i]["target"]["id"]+"_a"
-      }else{
-        a.id=navPanel.sources[i]["id"]+"_a"
-      } */
       a.id=navPanel.sources[i]["id"]+"_a"
-      //////console.log(a)
-/*       if(navPanel.sources[i]["target"]){
-        colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
-      }else{
-        colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-      }  */
       colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-      //console.log(colorCircle)
-      //console.log(li)
       let navImage=li.querySelector("#nav_image")
-      //console.log(navImage)
       navImage.classList.add("bg-"+ colorCircle)
       navImage.classList.add("group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
 
       let navTableElement=li.querySelector("#navTable_element")
-      
-/*       if(navPanel.sources[i]["target"]){
-        navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["target"]["value"]
-        navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["target"]["id"]).data()[0]))
-      }else{
-        navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
-        navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-      } */
       navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
       navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
     })
-
-
-
-/*     let li=navPanel.ol.querySelector("li:last-child")
-    //////console.log(li)
-    //////console.log(li.querySelector("a"))
-    //a=document.createElement("a")
-    //a.setAttribute("href", "#");
-    //a.setAttribute("class", "relative flex items-start group");
-    if(navPanel.sources[i]["target"]!=undefined){
-      a.id=navPanel.sources[i]["target"]["id"]+"_a"
-    }else{
-      a.id=navPanel.sources[i]["id"]+"_a"
-    } */
-    //span=document.createElement("span")
-    //span.setAttribute("class","h-9 flex items-center")
-    
-/*     span2=document.createElement("span")
-
-    if(navPanel.sources[i]["target"]){
-      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["target"]["class"]])]
-    }else{
-      colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-    }    
-
-    //bg-green-300
-    //group-hover:bg-green-400
-    span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-    img=document.createElement("img")
-    img.setAttribute("src",navImage)
-    img.setAttribute('width','40px')
-    img.setAttribute('height','40px')
-
-    el1=navTable.appendChild(navPanel.nav).appendChild(navPanel.ol).appendChild(li)
-
-    if(!last){
-        el1.appendChild(div)
-    }
-    el2=el1.appendChild(a)
-    el2.appendChild(span).appendChild(span2).appendChild(img)
-    span3=document.createElement("span")
-    span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
-    span4=document.createElement("span")
-
-    span4.setAttribute("class","ecl-timeline__content ecl-link")
-
-    if(navPanel.sources[i]["target"]){
-      span4.innerHTML = navPanel.sources[i]["target"]["value"]
-    }else{
-      span4.innerHTML = navPanel.sources[i]["value"]
-    }
-
-    img=document.createElement("img")
-    if(navPanel.sources[i]["target"]){
-      img.setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["target"]["id"]).data()[0]))
-    }else{
-      img.setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-    }  
-    
-    img.setAttribute('width','20px')
-    img.setAttribute('height','20px')
-    el3=el2.appendChild(span3)
-    el3.appendChild(span4)
-    el3.appendChild(img)
-    //////console.log(el3)
-    //////console.log(li) */
   }
 
   function addFreeGraph(){
@@ -441,8 +272,6 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     el3=el2.appendChild(span3)
     el3.appendChild(span4)
   }
-  
-
 }
 
 NavigationPanel.prototype.addElementNavProp = function (source,i,property){
@@ -540,7 +369,7 @@ NavigationPanel.prototype.addEventsNav = function (){
     d3.event.preventDefault();
   });
 }
-NavigationPanel.prototype.contentTable = function (){
+NavigationPanel.prototype.contentTable = async function (){
   var navPanel=this,label;
   var menuOption;
   navPanel.numStart=1
@@ -549,25 +378,11 @@ NavigationPanel.prototype.contentTable = function (){
   navPanel.numEnd=(navPanel.numLinesShown>navPanel.numTot) ? navPanel.numTot : navPanel.numLinesShown;
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
-  //d3.selectAll("#modal-content table tbody tr").remove()
-  console.log(d3.selectAll("#modal-content table tbody"))
+
   if (navPanel.targets.length>0){
     $("#dvTable").show()
-    throw new Error("Something went badly wrong!");
     //$("#dvDetails").empty()
-    /* navPanel.table = document.createElement("table");
-    navPanel.table.className="ecl-table ecl-table--zebra"
-    
-    navPanel.thead=document.createElement("thead")
-    navPanel.thead.className="ecl-table__head"
-    
-    var tr=document.createElement("tr")
-    tr.className="ecl-table__row"
-    
-    var th=document.createElement("th")
-    th.setAttribute("colspan","3")
-    th.setAttribute("scope","colgroup")
-    th.setAttribute("class","ecl-table__header")
+
 
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
@@ -597,88 +412,20 @@ NavigationPanel.prototype.contentTable = function (){
 
      
     }
-    navPanel.thead.appendChild(tr).appendChild(th)
-    navPanel.tbody=document.createElement("tbody")
-    navPanel.tbody.className="ecl-table__body"
-    
+    navPanel.tbody=document.getElementById("nav-children-tbody")
     navPanel.showLines(navPanel.numCurrent,true)
-    var dvTable = document.getElementById("dvTable");
-    dvTable.innerHTML = "";
+    
+    let code = await getHtmlCodeFromFile("navPagination2.html");
+    $("#dvTable").append(code).ready(function () {
+      //navPanel.showNumberPages()
+      console.log(code)
+      $("#numStart").text(navPanel.numStart)
+      $("#numEnd").text(navPanel.numEnd)
+      $("#numTot").text(navPanel.numTot)
   
-    div=document.createElement("div")    
-    div.className="flex flex-col"
-    div2=document.createElement("div")    
-    div2.className="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2"
-    div3=document.createElement("div")    
-    div3.className="overflow-auto border-b border-gray-200 shadow md:overflow-scroll"
-
-
-    navPanel.divPag=document.createElement("div")
-    navPanel.divPag.className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-2"
-    navPanel.divPag.id="div-pagination"
-    navPanel.divPag.innerHTML=`<div class="flex-1 flex justify-between sm:hidden">
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-          Previous
-        </a>
-        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-          Next
-        </a>
-      </div>
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-        <div>
-          <p class="text-sm text-gray-700">
-            Showing
-            <span class="font-medium" id="numStart">`+ navPanel.numStart +`</span>
-            to
-            <span class="font-medium" id="numEnd">` + navPanel.numEnd + `</span>
-            of
-            <span class="font-medium" id="numTot">` + navPanel.numTot + `</span>
-            results
-          </p>
-        </div>
-        <div>
-          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hidden" id="page-first" onClick="showLines('page-first','`+navPanel.type+`')">
-              <span class="sr-only">Previous</span>
-              <!-- Heroicon name: solid/chevron-double-left -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-              </svg>
-            </a>
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hidden" id="page-prev" onClick="showLines('page-prev','`+navPanel.type+`')">
-              <span class="sr-only">Previous</span>
-              <!-- Heroicon name: solid/chevron-left -->
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-            </a>
-            <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->`
-    navPanel.showNumberPages()
-    navPanel.divPag.innerHTML +=`<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-next" onClick="showLines('page-next','`+navPanel.type+`')">
-              <span class="sr-only">Next</span>
-              <!-- Heroicon name: solid/chevron-right -->
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-              </svg>
-            </a>
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="page-last" onClick="showLines('page-last','`+navPanel.type+`')">
-            <span class="sr-only">Previous</span>
-            <!-- Heroicon name: solid/chevron-double-right -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-              <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-          </a>
-          </nav>
-        </div>
-      </div>`
-
-    navPanel.fullTable=dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.table)
-    navPanel.fullTable.appendChild(navPanel.thead)
-    navPanel.fullTable.appendChild(navPanel.tbody); 
-    dvTable.appendChild(div).appendChild(div2).appendChild(div3).appendChild(navPanel.divPag);
-    navPanel.prevNextVisibility()
-    navPanel.addEventsContentNav() */
+      navPanel.prevNextVisibility()
+      navPanel.addEventsContentNav()
+    })
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
@@ -748,9 +495,9 @@ NavigationPanel.prototype.showDetails = function (){
       $.get("nav_detail_row_0.html", function (row0) {
         $.get("nav_detail_row_1.html", function (row1) {
           $.get("nav_detail_row_attach.html", function (rowAttach) {
-            //////console.log(navPanel.node["value"])
+            ////////console.log(navPanel.node["value"])
             navDetailHeader=header.replace("Title",navPanel.node["value"])
-            //////console.log(navDetailHeader)
+            ////////console.log(navDetailHeader)
             $("#dvDetails").append($(navDetailHeader))
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
@@ -809,7 +556,7 @@ NavigationPanel.prototype.contentTableSearch = function (){
 }
 NavigationPanel.prototype.paginationNumbers = function (){
   var navPanel=this
- {
+ {  console.log(navPanel.numCurrent)
     if (navPanel.numCurrent < 1) {
       navPanel.numCurrent = 1;
     } else if (navPanel.numCurrent > navPanel.numPages) {
@@ -862,9 +609,8 @@ NavigationPanel.prototype.paginationNumbers = function (){
     };
 }
 }
-NavigationPanel.prototype.showNumberPages = function (){
-  var navPanel=this,textHtml=""
-
+NavigationPanel.prototype.showNumberPages = async function (){
+  var navPanel=this,textHtml="",afterElement="#item-previous"
   navPanel.firstPage=1
   navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
   navPanel.arrNumberPages=[]
@@ -874,36 +620,54 @@ NavigationPanel.prototype.showNumberPages = function (){
 
   pagePrev = document.getElementById('page-prev');
 
-  for (let i=0;i<=navPanel.pages.pages.length-1;i++) {
-    if(navPanel.pages.pages[i]==navPanel.numCurrent){
-      if(pagePrev==null){
-        navPanel.divPag.innerHTML +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
-      }else{
-        textHtml +=`<a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page">`+ navPanel.pages.pages[i] + `</a>`
-      } 
-    }else{
-      if(pagePrev==null){
-        navPanel.divPag.innerHTML +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent,'`+navPanel.type+`')">`
-        + navPanel.pages.pages[i] + `</a>`
-      }else{
-        textHtml +=`<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium num-page" onClick="showLines(this.textContent,'`+navPanel.type+`')">`
-        + navPanel.pages.pages[i] + `</a>`
-      }
-    }
+  let element = await getHtmlCodeFromFile("navPagination_page.html");
+  let currentElement = await getHtmlCodeFromFile("navPagination_page_current.html");
+  
+  insertElementAfter((navPanel.pages.pages[0]))
+  console.log(navPanel.pages.pages.length)
+  afterElement="#page-1"
+  for (let i=1;i<=navPanel.pages.pages.length-1;i++) {
+    console.log(navPanel.pages.pages[i])
+    insertElementAfter(navPanel.pages.pages[i],Object.assign("",element))
+    afterElement="#page-"+navPanel.pages.pages[i]
+    console.log(afterElement)
   }
+  //throw new Error("Something went badly wrong!");
   if(pagePrev!=null){
     pagePrev.insertAdjacentHTML('afterend', textHtml);
+  }
+  function insertElement(numElement){
+    if(numElement==navPanel.numCurrent){
+      currentElement.replace("page-number",navPanel.pages.pages[i])
+      $(currentElement.replace("page-number",numElement)).insertBefore($(afterElement))
+    }else{
+      $(element.replace("page-number",numElement)).insertBefore($(afterElement))
+    }
+  }
+  function insertElementAfter(numElement,newElement){
+
+    if(numElement==navPanel.numCurrent){
+      currentElement=currentElement.replace("page-number",numElement).replace("id-item","page-"+numElement)
+      console.log(currentElement)
+      $(currentElement).insertAfter($(afterElement))
+    }else{
+     console.log(numElement)
+     console.log(element)
+     element=element.replace("page-number",numElement).replace("id-item","page-"+numElement)
+     console.log(element)
+     $(element).insertAfter($(afterElement))
+    }
   }
 }
 
 function showLines(numCurrent,type){
   var div=$("#modal-content tbody td div")[0]
   if(div.classList.contains("hidden")){
-    navigation.showLines(numCurrent,false,false)
+    navigationPanel.showLines(numCurrent,false,false)
   }else{
-    navigation.showLines(numCurrent,false,true)
+    navigationPanel.showLines(numCurrent,false,true)
   }
-  navigation.addEventsContentNav()
+  navigationPanel.addEventsContentNav()
 }
 function removeLinesNavContent(){
   var sel=document.querySelectorAll("#dvTable tbody tr")
@@ -917,6 +681,7 @@ function removeLinesNavContent(){
 }
 NavigationPanel.prototype.prevNextVisibility = function (){
   var navPanel=this
+  console.log(navPanel.pages)
   if(navPanel.pages.pages.includes(navPanel.firstPage)&(navPanel.pages.pages.includes(navPanel.pages.totalPages))){
     document.getElementById("page-first").classList.add("hidden");
     document.getElementById("page-prev").classList.add("hidden");
@@ -952,7 +717,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     numCurrent=navPanel.numCurrent+1
   }
   navPanel.numCurrent=parseInt(numCurrent)
-  //////////console.log("showLines 873")
+  ////////////console.log("showLines 873")
   removeLinesNavContent()
 
   if(!first){
@@ -960,7 +725,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     numPagesElements.forEach(function(el){
       el.remove()
     })
-    navPanel.showNumberPages()
+    //navPanel.showNumberPages()
     document.getElementById("numStart").textContent=navPanel.pages.startIndex
     document.getElementById("numEnd").textContent=navPanel.pages.endIndex
     document.getElementById("numTot").textContent=navPanel.numTot
@@ -980,8 +745,10 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     $("#add-sel-graph").show()
   }
 
+  //console.log(linesShown)
 
   for (var i = 0; i < linesShown.length; i++) {
+    //console.log(navPanel.tbody)
     row = navPanel.tbody.insertRow(-1);
     row.id=linesShown[i]["target"]["id"]+"_row"
     navPanel.contentRows.push(row)
@@ -1091,33 +858,13 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
   }
 
   
-  function addBasicGraph(){
-    row = navPanel.tbody.insertRow(-1);
-    
-    cell = row.insertCell(-1);
-    cell.className="ecl-table__row"
-    
-    cell.id=target["target"]["id"]
-    div=document.createElement("div")
-    div.className="flex items-center w-full"
-    div2=document.createElement("div")
-    div2.className="flex-shrink-0 w-10 h-10"
-    img=document.createElement("img")
-    img.className="w-10 h-10 rounded-full bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])]
-    img.setAttribute("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))
-    div3=document.createElement("div")
-    div3.className="relative ml-4"
-    div4=document.createElement("div")
-    div4.className="relative text-sm font-medium text-gray-900"
-    a=document.createElement("a")
-    a.setAttribute("href", "#");
-    a.setAttribute("class", "relative flex items-start group");
-    span=document.createElement("span")
-    newText = document.createTextNode(target["target"]["value"]);
-    div4.appendChild(a).appendChild(span).appendChild(newText);
-    el1=cell.appendChild(div)
-    el1.appendChild(div2).appendChild(img)
-    el1.appendChild(div3).appendChild(div4)
+  async function addBasicGraph(){
+    let code = await getHtmlCodeFromFile("elementContentTable.html");
+    $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
+      $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
+      $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))
+      $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]);
+    })
   }
   function addFreeGraph(){
     cell = row.insertCell(-1);

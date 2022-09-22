@@ -32,6 +32,7 @@ NetworkGraph.prototype.initVis = function () {
   vis.width=1400
   vis.height=800
   vis.svg = d3.select(this.parentElement).append("svg")
+  .attr("id", "networkGraph-svg")
   .attr("class", "graph z-0")
   .attr("preserveAspectRatio","xMidYMid meet")
   .attr("viewBox", `0 0 ${vis.width} ${vis.height}`)

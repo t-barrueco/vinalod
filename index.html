@@ -244,7 +244,11 @@
                           class="ecl-menu__sublink"
                           onclick="getOptionsCollection(this)">EU Publications</a></li>
                       <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
-                          class="ecl-menu__sublink">EU Law</a></li>
+                          class="ecl-menu__sublink"
+                          onclick="getOptionsCollection(this)">EU Law</a></li>
+                        </a>
+                        </li>
+                          
                     </ul>
                   </div>
                 </li>
@@ -518,7 +522,7 @@
               </div>
               <div class="grid w-full grid-cols-11">
                 <!-- <div class="relative z-0 w-full h-auto" id="networkGraph"> -->
-                <div class="z-0 h-full col-span-2 bg-white shadow-2xl" id="filters">
+                <div class="z-0 h-full col-span-2 bg-white shadow-2xl hidden" id="filters">
                   <div class="ecl-container left-aligned ecl-u-mv-s">
                     <h3 class="ecl-u-type-heading-3">Filter Options</h3>
                   </div>
@@ -648,7 +652,49 @@
                   </div>
 
                   <div id="dvTable" style="overflow: auto">
-                    <div class="absolute inset-0 px-4 sm:px-6">
+                    <div class="inset-0 px-4 sm:px-6">
+                      <div class="flex flex-col">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2">
+                          <div class="overflow-auto border-b border-gray-200 md:overflow-scroll">
+                            <table class="ecl-table ecl-table--zebra">
+                              <thead class="ecl-table__head">
+                                  <tr class="ecl-table__row">
+                                      <th colspan="3" scope="colgroup" class="ecl-table__header" id="nav-children-header"></th>
+                                  </tr>
+                              </thead>
+                              <tbody class="ecl-table__body" id="nav-children-tbody">
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+<!--                         <nav class="ecl-pagination" aria-label="Pagination">
+                          <ul class="ecl-pagination__list">
+                            <li class="ecl-pagination__item ecl-pagination__item--previous"><a href="/component-library/example"
+                                class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-before ecl-pagination__link"
+                                aria-label="Go to previous page"><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-link__icon"
+                                  focusable="false" aria-hidden="true">
+                                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                                </svg><span class="ecl-link__label">Previous</span></a></li>
+                            <li class="ecl-pagination__item"><a href="/component-library/example"
+                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 24">24</a></li>
+                            <li class="ecl-pagination__item"><a href="/component-library/example"
+                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 25">25</a></li>
+                            <li class="ecl-pagination__item ecl-pagination__item--current"><span
+                                class="ecl-pagination__text ecl-pagination__text--summary" aria-current="true">26</span><span
+                                class="ecl-pagination__text ecl-pagination__text--full" aria-current="true">Page 26</span></li>
+                            <li class="ecl-pagination__item"><a href="/component-library/example"
+                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 27">27</a></li>
+                            <li class="ecl-pagination__item"><a href="/component-library/example"
+                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 28">28</a></li>
+                            <li class="ecl-pagination__item ecl-pagination__item--next"><a href="/component-library/example"
+                                class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-pagination__link"
+                                aria-label="Go to next page"><span class="ecl-link__label">Next</span><svg
+                                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
+                                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                                </svg></a></li>
+                          </ul>
+                        </nav> -->
+                    </div>
                     </div>
                   <!-- /End replace -->
                   </div>

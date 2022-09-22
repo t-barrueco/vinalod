@@ -4,6 +4,8 @@ MenuItems = function (_node) {
 
 MenuItems.prototype.init = async function () {
   var mi=this;
+  console.log(document.getElementsByTagName("table"))
+
   await mi.buildOptions()
   mi.filterByMenuOption()
   await mi.filterByAskResult()
@@ -174,6 +176,8 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
       form = { "url": url, "uri": data.uri, "subject-object": subjectObject,"query":query}
       await linkedDataGraph.update(form,data)
       networkGraph.refresh()
+      console.log(document.getElementsByTagName("table"))
+
       }
   }
   return elementMenu
@@ -181,6 +185,7 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
 MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
   var mi=this;
   var modal;
+  //$(".graph").remove()
 
   $("#modal3-content form").remove()
 
@@ -247,6 +252,8 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
     action: async (data,d) => {
         await linkedDataGraph.update(d.title,data)
         networkGraph.refresh()
+        console.log(document.getElementsByTagName("table"))
+
     }
     }
   return elementMenu

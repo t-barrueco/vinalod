@@ -431,7 +431,7 @@ NavigationPanel.prototype.contentTable = function (){
   navPanel.numEnd=(navPanel.numLinesShown>navPanel.numTot) ? navPanel.numTot : navPanel.numLinesShown;
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
-  d3.selectAll("#modal-content table").remove()
+  //d3.selectAll("#modal-content table").remove()
   
   if (navPanel.targets.length>0){
     $("#dvTable").show()

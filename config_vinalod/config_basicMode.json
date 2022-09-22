@@ -2511,7 +2511,7 @@
     "type":"TREE",
     "option":"EU treaties classification",
     "option_text":"The EU treaties classification shows different types of treaties",
-    "collection":"eu_law",
+    "collection":"EU Law",
     "modelClass":null,
     "details":null,
     "askquery":null

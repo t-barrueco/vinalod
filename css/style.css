@@ -201,3 +201,17 @@ div.tooltip {
 div#networkgraph{
   overflow-y: auto;
   }
+
+
+.page {
+  padding: 4px 2px;
+  margin-right: 20px;
+  display: inline-block;
+}
+.page svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+.page span{
+    display: inline-block;
+  }

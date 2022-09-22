@@ -8,7 +8,7 @@ var prevent = false;
 
 function dataViz(){
     var optionsMenu;
-
+    console.log(document.getElementsByTagName("table"))
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
           d3.json("../config_vinalod/config_basicMode.json",function(dataConfig){
@@ -24,15 +24,18 @@ function dataViz(){
 function getOptionsCollection(collection){
   $('#landing-page').hide();
   $('#dataviz-collection').show();
-  $('#graph-area').hide();
+  $('#graph-area').addClass("hidden")
   $('#dataviz-collection article').remove()
+  console.log(document.getElementsByTagName("table"))
+
   changeCollectionOptions(collection.innerText.trim())
 }
 async function buildBasicGraph(option,node){
     var sparqlQuery,modal2;
     $('#landing-page'). hide();
     $('#dataviz-collection'). hide();
-    $('#graph-area'). show();
+    $('#graph-area').removeClass("hidden")
+    console.log(document.getElementsByTagName("table"))
 
     if((node==undefined)||(!node["subject-object"])){
       if(typeof configRow !== 'undefined'){
@@ -43,6 +46,7 @@ async function buildBasicGraph(option,node){
           //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
       if(configRow.rowFields.type=="TREE"){
         await buildNetworkGraph(configRow,"basic",node)
+
       }else{
         deleteTooltip()
         sparqlQuery=configRow.rowFields.query
@@ -250,6 +254,7 @@ function expertMode(){
   $("#dataviz-collection").hide()
   $("#landing-text").addClass("hidden")
 
+  console.log($("#form-container"))
   getHtmlFromFile("expert.html","form-container")
 
 
@@ -284,6 +289,7 @@ function appendHtmlOptions(optionsMenu){
     //console.log(data)
     optionsMenuHtml=data
     //console.log(document.getElementById("dataviz-collection"))
+    console.log(optionsMenu)
     optionsMenu.forEach(element => {
       html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       $("#dataviz-collection").append($(html))
@@ -402,7 +408,19 @@ async function changeBasicGraph(option){
 
   //INCLUIR EN FUNCIÓN
   d3.selectAll(".classFilter").remove()
-  d3.selectAll(".graph").remove()                                                                   
+  $("#filters .ecl-accordion__item").remove()
+
+  $("#form-container").addClass("hidden")
+  //d3.selectAll(".graph").remove()   
+  console.log($("#networkGraph-svg"))
+  console.log($(".graph"))
+
+  $(".graph").remove() 
+  $("#networkGraph-svg").remove()  
+  $("#networkGraph-svg").remove()  
+
+  console.log($("#networkGraph-svg"))
+
   hideModal("#myModal")
   deleteTooltip()
   //hide flyout menu
@@ -411,9 +429,10 @@ async function changeBasicGraph(option){
 
   $('#landing-page'). hide();
   $('#dataviz-collection'). hide();
-  $('#graph-area'). show();
+  $('#graph-area').removeClass("hidden")
   //build and show graph
   showBasicGraph()
+  console.log($("#networkGraph-svg"))
 
   //reset global variables
   propertiesFilterHist=[]
@@ -423,12 +442,22 @@ async function changeBasicGraph(option){
   option=option.innerText.trim()
   
   //buildBasicGraph(option)
-  if(typeof linkedDataGraph !== 'undefined'){
-    linkedDataGraph.update(option)
+  /* if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+    linkedDataGraph.data.flatData={}
+    linkedDataGraph.data.treeData=[]
+    await linkedDataGraph.update(option)
+    console.log(linkedDataGraph.data)
   }else{
     linkedDataGraph = new LinkedDataGraphBasic(option);
     await linkedDataGraph.settingsFromOption()
+  } */
+
+  if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+    linkedDataGraph = undefined;
   }
+
+  linkedDataGraph = new LinkedDataGraphBasic(option);
+  await linkedDataGraph.settingsFromOption()
 
   let forces=setForcesGraph()
 
@@ -441,14 +470,30 @@ async function changeBasicGraph(option){
   //if(networkGraph){
   //  legend.deleteAllColors()
   //}else{
-  d3.selectAll(".graph").remove()
+  console.log($(".graph"))
+  //$(".graph").remove()
+  console.log(linkedDataGraph.data)
   networkGraph = new NetworkGraphBasic("#networkGraph",forces,linkedDataGraph.data);
   ////////console.log(networkGraph)
+  console.log($(".graph"))
   legend=new Legend("legend",networkGraph)
 
-  //console.log(configRow.rowFields.filters)
-  networkGraph.filters=configRow.rowFields.filters;
-  addFilters()
+  if(configRow.rowFields.filters){
+    if(configRow.rowFields.filters.length!=0){
+      networkGraph.filters=configRow.rowFields.filters;
+      console.log(networkGraph.filters)
+      addFilters()
+      $("#filters").removeClass("hidden")
+    }else{
+      $("#filters").addClass("hidden")
+    }
+  }else{
+    $("#filters").addClass("hidden")
+  }
+
+
+  console.log(document.getElementsByTagName("table"))
+
   //addFilters()
   //}
 
@@ -553,12 +598,15 @@ function clickBubbleFreeGraph(element) {
   }
   networkGraph.node=node
   //throw new Error("Something went badly wrong!");
+  //console.log(navigation)
+  //console.log(navigationPanel)
+
   if (navigationPanel == undefined) {
-    navigationPanel = new NavigationPanel("freeGraph", node);
+    navigationPanel= new NavigationPanel("freeGraph", node);
   } else {
     navigationPanel.element = element
     navigationPanel.node = node
-    navigationPanel.init()
+    //navigation.init()
   }
   $("#myModal").removeClass("translate-x-full")
   $("#myModal").addClass("translate-x-0")
@@ -600,7 +648,7 @@ async function checkMenuItems(origin,element) {
       await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
       networkGraph.refresh()
     }else{
-      if(linkedDataGraph){
+      if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
         await linkedDataGraph.update(menuItems.selectedRows[0],node)
         networkGraph.refresh()
       }else{
@@ -622,8 +670,14 @@ async function checkMenuItems(origin,element) {
     }
   }
 }
-
+function startExpert(origin,element){
+  $("#form-container form").hide()
+  $("#filters").addClass("hidden")
+  checkMenuItems(origin,element)
+}
 async function showGraphExpert(selectedRow){
+  console.log("showGraphExpert")
+  console.log(linkedDataGraph)
   linkedDataGraph = new LinkedDataGraphExpert("",selectedRow);
   await linkedDataGraph.settingsFromOption()
   
@@ -631,6 +685,9 @@ async function showGraphExpert(selectedRow){
   let forces=setForcesGraph()
   ////////console.log(networkGraph)
   ////////console.log(linkedDataGraph.data)
+  console.log($("#graph-area"))
+  console.log($(".graph"))
+  $(".graph").remove()
   $("#graph-area").removeClass("hidden")
   $("#form-container form").hide()
   $("#landing-page").hide()
@@ -643,7 +700,7 @@ function showGraphExpertFromPopup(form){
   ////////console.log(form)
   let newForm={"url":form.querySelector("#url").value,"uri":form.querySelector("#uri").value,"subject-object":form.querySelector("#subject-object").value}
   let selectedRow=menuItems.selectedRows.filter(d=>((d.url==newForm.url)&&(d.uri==newForm.uri)&&(d["subject-object"]==newForm["subject-object"])))[0]
-  $("#form-container form").hide()
+  $("#form-container form").hide
   let modal = document.getElementById("myModal3")
   modal.style.display = "none";
   showGraphExpert(selectedRow)
@@ -714,12 +771,14 @@ $("#"+elementId).append(code)
 } */
 
 function addFilters(){
-  //console.log(networkGraph.filters)
-  networkGraph.filterClasses = [...new Set(networkGraph.filters.map(d=>d.class))]
-  networkGraph.filterClasses.forEach(function(d){
-    classFilterObject= new classFilterClass(d)
-    //console.log(classFilterObject)
-  })
+  console.log(networkGraph.filters)
+  if(networkGraph.filters!=null){
+    networkGraph.filterClasses = [...new Set(networkGraph.filters.map(d=>d.class))]
+    networkGraph.filterClasses.forEach(function(d){
+      classFilterObject= new classFilterClass(d)
+    })
+  }
+
   ////console.log(networkGraph.filters.map(d=>d.class))
   //classFilterObject= new classFilterClass(classFilter)
 }
