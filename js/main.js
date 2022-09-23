@@ -285,7 +285,7 @@ function changeCollectionOptions(collection){
 }
 function appendHtmlOptions(optionsMenu){
   //console.log(optionsMenu)
-  $.get("/dataviz_collection.html", function (data) {
+  $.get("/pages/dataviz_collection.html", function (data) {
     //console.log(data)
     optionsMenuHtml=data
     //console.log(document.getElementById("dataviz-collection"))
