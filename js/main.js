@@ -15,7 +15,7 @@ function dataViz(){
               d3.tsv("/config_vinalod/graph_icons.txt",function(dataIcons){
                 $("#expand-settings-legend").css("background-color", "#064494");
                 $("#collapse-settings-legend").css("background-color", "#064494");
-
+                console.log(dataConfig)
                 configFile = new ConfigFile(dataConfig);
                 filesIcons=dataIcons;
               })
