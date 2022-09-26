@@ -285,7 +285,7 @@ function changeCollectionOptions(collection){
 }
 function appendHtmlOptions(optionsMenu){
   //console.log(optionsMenu)
-  $.get("/pages/dataviz_collection.html", function (data) {
+  $.get("pages/dataviz_collection.html", function (data) {
     //console.log(data)
     optionsMenuHtml=data
     //console.log(document.getElementById("dataviz-collection"))
@@ -781,4 +781,13 @@ function addFilters(){
 
   ////console.log(networkGraph.filters.map(d=>d.class))
   //classFilterObject= new classFilterClass(classFilter)
+}
+function changeTab(tab){ 
+  console.log(tab.id)
+  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
+  $("#content-main-tabs ul").addClass("hidden")
+  //console.log(tab.textContent)
+  tab.classList.add("ecl-tabs__link--active");
+  tab.setAttribute("aria-selected", "true")
+  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
 }

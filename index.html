@@ -28,26 +28,31 @@
       <link rel="stylesheet" href="css/d3-tip.css">
       <link
         rel="stylesheet"
-        href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/styles/optional/ecl-ec-default.css"
-        integrity="sha256-BM37HVT9HDa+V3JI9AD38G92AOiqbwrmNzxnRtExUqU= sha384-tXCRJt4zNUBu/DU0TqPaE5viHyp1pg0Qso66rcNpGiM6ajte71ur6SUm0CDesouf sha512-i3BuCn2fGIeot8i+C04vFAnZRNq6EO7ICdeTkUoTfWmabRlPotlxpai0++D46KIYNVClc97WhOg9e9yHChZYIg=="
+        href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/optional/ecl-ec-default.css"
+        integrity="sha256-WK5hy3Ceb1aNnKy15Bp5KW+CVYBmHb4hmJ1Pdt3TbIM="
         crossorigin="anonymous"
         media="screen"
       />
       <link
       rel="stylesheet"
-      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/styles/optional/ecl-reset.css"
-      integrity="sha256-pZaE0XkFCJRwn35n6wGUzhibejdPuiLUb0h6Rkv1hj4= sha384-Hf/oVXQ67uQvL0AN+eXPewLkFTD9xoVHMTfpJZ3BfDGo4BRgemKQRGYOA6t2wccs
-      sha512-0jvn4tBhoaiRw4ZnSwR5fuxV1GAH4cjhzAGo1Lgqso82JgG6g1mHRyZdHjemZKMF2AIX34xnOABHFjLYZj/f3A=="
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/optional/ecl-reset.css"
+      integrity="sha256-UVESELfX0pvRysLCqyLCIEQDAc65AXBPfES9hWP/fgM="
       crossorigin="anonymous"
       media="screen"
       />
       <link
       rel="stylesheet"
-      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/styles/ecl-ec.css"
-      integrity="sha256-cmhXtlz7ptu4N7c6C8iMkhtHyWRbrOknZB/t6GXBSJg= sha384-XMPIk2KJWVoVMQIat2KJwJUi0oZlBrGgQMz9+aq8iTNpv7/oiDYuOZD5ydfOxH0m
-      sha512-wY2+2mhlcOEFYBdOxF8YvvkDmffFvjJHfmCYluMWaTJ3x0J7o0RwsRZI+xIn3pDeI6nUP5Goe4l2mzwCdoK38g=="
+      href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/ecl-ec.css"
+      integrity="sha256-VLpAKlo85TEtUcWazHxBoDZavge0QuMsrU3jE64Na1k="
       crossorigin="anonymous"
       media="screen"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/ecl-ec-print.css"
+        integrity="sha256-QzATuL8r4ZY0kLFaAkxMmX4VIL2KxvSS0aG74lG5fsQ=""
+        crossorigin="anonymous"
+        media="print"
       />
       <script>
         var cl = document.querySelector('html').classList;
@@ -69,132 +74,226 @@
 
       <!-- <script src="node_modules/moment/moment.js"></script> -->
 
-      </head>
+    </head>
     <body onload="dataViz()">
-      <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header"><div class="ecl-site-header__container ecl-container">
-        <div class="ecl-site-header__top">
-          <a href="https://ec.europa.eu/"
-              class="ecl-link ecl-link--standalone ecl-site-header__logo-link"
-              aria-label="European&#x20;Commission">
-              <img
-                alt="European Commission logo"
-                title="European Commission"
-                class="ecl-site-header__logo-image ecl-site-header__logo-image-desktop"
-                src="images/logo--en.svg"
-              />
-          </a>
-<!--         <div class="ecl-site-header__action">
-          <a
-                  class="ecl-button ecl-button--ghost ecl-site-header__language-selector"
-                  href="/component-library/example"
-                  data-ecl-language-selector
-                  aria-label="English"
-                            aria-controls="language-list-overlay"
-                          ><span class="ecl-site-header__language-icon">
-        <svg
-        class="ecl-icon ecl-icon--s ecl-site-header__icon"
-        focusable="false"
-        aria-hidden="true"
-        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/ec/images/icons/sprites/icons.svg#language"></use></svg><span class="ecl-site-header__language-code">en</span></span>English</a><div class="ecl-site-header__search-container"><a
-                    class="ecl-button ecl-button--ghost ecl-site-header__search-toggle"
-                    href="/component-library/example"
-                    data-ecl-search-toggle="true"
-                    aria-controls="search-form-id"
-                    aria-expanded="false"
-                  ><svg
-        class="ecl-icon ecl-icon--s ecl-u-z-dropdown"
-        focusable="false"
-        aria-hidden="true"
-        ><use xlink:href="https://v3--europa-component-library.netlify.app/playground/ec/images/icons/sprites/icons.svg#search"></use></svg>Search</a><form class="ecl-search-form ecl-site-header__search" role="search" data-ecl-search-form id="search-form-id"><div class="ecl-form-group"><label
-                for="search-input-id"
-                class="ecl-form-label ecl-search-form__label"
-          >Search</label><input
-            id="search-input-id"
-            class="ecl-text-input ecl-text-input--m ecl-search-form__text-input"
-              type="search"
-              placeholder="Placeholder text"
-                
-        /></div><button class="ecl-button ecl-button--search ecl-search-form__button" type="submit"  aria-label="Search"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Search</span>
-          <svg class="ecl-icon ecl-icon--xs ecl-button__icon ecl-button__icon--after"
-        focusable="false"
-        aria-hidden="true"
-         data-ecl-icon>
-         <use xlink:href="https://v3--europa-component-library.netlify.app/playground/ec/images/icons/sprites/icons.svg#search"></use></svg></span></button></form></div>
-        </div> -->
+      <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header">
+        <div class="ecl-site-header__container ecl-container">
+          <div class="ecl-site-header__top">
+            <a href="https://ec.europa.eu/"
+                class="ecl-link ecl-link--standalone ecl-site-header__logo-link"
+                aria-label="European&#x20;Commission">
+                <img
+                  alt="European Commission logo"
+                  title="European Commission"
+                  class="ecl-site-header__logo-image ecl-site-header__logo-image-desktop"
+                  src="images/logo--en.svg"
+                />
+            </a>
+          </div>
         </div>
-      </div></div>
-<!--         <div class="ecl-site-header__banner-top"><div class="ecl-container"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-link--no-visited">Class name</a>
-        </div> -->
+    <div class="ecl-site-header__banner">
+      <div class="ecl-container">
+        <div class="ecl-site-header__site-name">Vinalod</div>
       </div>
-    <div class="ecl-site-header__banner"><div class="ecl-container"><div class="ecl-site-header__site-name">Vinalod</div></div></div>
-<!--     <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
-      <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
-      <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
-          href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
-            aria-hidden="true">
-            <use xlink:href="/component-library/dist/media/icons.cec58484.svg#hamburger"></use>
-          </svg>Menu</a>
-        <section class="ecl-menu__inner" data-ecl-menu-inner="">
-          <header class="ecl-menu__inner-header"><button class="ecl-menu__close ecl-button ecl-button--text" type="submit"
-              data-ecl-menu-close=""><span class="ecl-menu__close-container ecl-button__container"><svg
-                  class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--before" focusable="false"
-                  aria-hidden="true" data-ecl-icon="">
-                  <use xlink:href="/component-library/dist/media/icons.cec58484.svg#close-filled"></use>
-                </svg><span class="ecl-button__label" data-ecl-label="true">Close</span></span></button>
-            <div class="ecl-menu__title">Menu</div><button data-ecl-menu-back="" type="submit"
-              class="ecl-menu__back ecl-button ecl-button--text"><span class="ecl-button__container"><svg
-                  class="ecl-icon ecl-icon--s ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
-                  focusable="false" aria-hidden="true" data-ecl-icon="">
-                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                </svg><span class="ecl-button__label" data-ecl-label="">Back</span></span></button>
-          </header>
-          <ul class="ecl-menu__list">
-            <li class="ecl-menu__item" data-ecl-menu-item=""><a href="index.html" class="ecl-menu__link"
-                data-ecl-menu-link="">Home </a></li>
-            <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item=""
-              data-ecl-has-children="" aria-haspopup="" aria-expanded="false" id="basic-mode"><a href="#"
-                class="ecl-menu__link" data-ecl-menu-link="">Basic mode<svg
-                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
-                  aria-hidden="true">
-                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                </svg></a>
-              <div class="ecl-menu__mega" data-ecl-menu-mega="">
-                <ul class="ecl-menu__sublist">
-                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                      class="ecl-menu__sublink" id="eu_vocabularies">EU Vocabularies</a></li>
-                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                      class="ecl-menu__sublink" id="eu_whoiswho">EU Whoiswho</a></li>
-                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)" 
-                      class="ecl-menu__sublink" id="eu_data">EU Data</a>
-                  </li>
-                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                      class="ecl-menu__sublink ecl-link--icon-after" id="eu_publications">EU Publications<svg
-                        class="ecl-icon ecl-icon--2xs ecl-menu__sublink-icon ecl-link__icon" focusable="false"
-                        aria-hidden="true">
-                        <use xlink:href="/component-library/dist/media/icons.cec58484.svg#external"></use>
-                      </svg></a>
-                  </li>
-                  <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#" onclick="getOptionsCollection(this)"
-                      class="ecl-menu__sublink" id="eu_law">EU Law</a>
-                  </li>
-                </ul>
+    </div>
+    <nav class="ecl-tabs" data-ecl-tabs="true" data-ecl-auto-init="Tabs" id="main-tabs">
+      <div class="ecl-tabs__container">
+        <ul class="ecl-tabs__list" role="tablist">
+          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="changeTab(this)" id="mode-tab">Mode</a></li>
+          <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
+          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="manual-tab">Manual and Live Demo</a></li>
+          <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="legend-tab">Legend</a></li>
+          <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation"><button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button" tabindex="-1"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">More (%d)</span><svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
+                  <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
+                </svg></span></button></li>
+        </ul>
+      </div>
+      <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
+            <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
+          </svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
+            <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
+          </svg><span class="ecl-u-sr-only"></span></button></div>
+    </nav>
+    <div class="ecl-u-border-bottom ecl-u-border-color-grey-20" id="content-main-tabs">
+    <ul role="list" class="" id="mode-content">
+      <li class="px-6">
+        <h4 class="ecl-u-type-heading-4">Mode</h4>
+
+        <div>
+          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">       
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <fieldset class="ecl-form-group" aria-describedby="helper-mode">
+                <legend class="ecl-form-label">Chose mode<span class="ecl-form-label__required">*</span></legend>
+                <div class="ecl-help-block" id="helper-mode">Showing graphs in basic or expert mode</div>
+                <div class="ecl-radio ecl-radio--binary">
+                  <input id="mode-option-basic" name="radio-mode" class="ecl-radio__input" type="radio" value="yes" checked required />
+                  <label class="ecl-radio__label" for="mode-option-basic">
+                    <span class="ecl-radio__box">
+                      <span class="ecl-radio__box-inner"></span>
+                    </span>
+                    <span class="ecl-radio__text">Basic</span>
+                  </label>
+                </div>
+                <div class="ecl-radio ecl-radio--binary">
+                  <input id="mode-option-expert" name="radio-mode" class="ecl-radio__input" type="radio" value="no" required />
+                  <label class="ecl-radio__label" for="mode-option-expert">
+                    <span class="ecl-radio__box">
+                      <span class="ecl-radio__box-inner"></span>
+                    </span>
+                    <span class="ecl-radio__text">Expert</span>
+                  </label>
+                </div>
+              </fieldset>
+<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
+            </div>
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <div class="relative flex items-start">
+                <div class="flex items-center h-5">
+                </div>
+                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                  <legend class="ecl-form-label">Collections
+                    <span class="ecl-form-label__required">*</span>
+               </legend>
+                  <div class="ecl-help-block" id="helper-collections">Chose collection for selecting a graph.</div>
+                  <div class="ecl-radio">
+                    <input type="radio" id="radio_eu_vocabularies" name="radio-collections" class="ecl-radio__input"
+                      value="eu_vocabularies" required="" aria-describedby="helper-collections" />
+                    <label class="ecl-radio__label" for="radio_eu_vocabularies">
+                      <span class="ecl-radio__box">
+                        <span class="ecl-radio__box-inner"></span>
+                      </span>
+                      <span class="ecl-radio__text">EU Vocabularies</span>
+                    </label>
+<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
+ -->                  </div>
+                  <div class="ecl-radio">
+                    <input type="radio" id="radio_eu_whoiswho" name="radio-collections" class="ecl-radio__input"
+                      value="eu_whoiswho" required="" aria-describedby="helper-collections" />
+                    <label class="ecl-radio__label" for="radio_eu_whoiswho">
+                      <span class="ecl-radio__box">
+                        <span class="ecl-radio__box-inner"></span>
+                      </span>
+                      <span class="ecl-radio__text">EU Whoiswho</span>
+                    </label>
+<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
+ -->                  </div>
+                  <div class="ecl-radio">
+                    <input type="radio" id="radio_eu_publications" name="radio-collections" class="ecl-radio__input"
+                      value="eu_publications" required="" aria-describedby="helper-collections" />
+                    <label class="ecl-radio__label" for="radio_eu_publications">
+                      <span class="ecl-radio__box">
+                        <span class="ecl-radio__box-inner"></span>
+                      </span>
+                      <span class="ecl-radio__text">EU Publications</span>
+                    </label>
+<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
+ -->                  </div>
+                  <div class="ecl-radio">
+                    <input type="radio" id="radio_eu_data" name="radio-collections" class="ecl-radio__input"
+                      value="eu_data" required="" aria-describedby="helper-collections" />
+                    <label class="ecl-radio__label" for="radio_eu_data">
+                      <span class="ecl-radio__box">
+                        <span class="ecl-radio__box-inner"></span>
+                      </span>
+                      <span class="ecl-radio__text">EU Data</span>
+                    </label>
+<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
+ -->                  </div>
+                  <div class="ecl-radio">
+                    <input type="radio" id="radio_eu_law" name="radio-collections" class="ecl-radio__input"
+                      value="eu_law" required="" aria-describedby="helper-collections" />
+                    <label class="ecl-radio__label" for="radio_eu_law">
+                      <span class="ecl-radio__box">
+                        <span class="ecl-radio__box-inner"></span>
+                      </span>
+                      <span class="ecl-radio__text">EU Law</span>
+                    </label>
+<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
+ -->                  </div>
+                </fieldset>
               </div>
-            </li>
-            <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item="" data-ecl-has-children=""
-              aria-haspopup="" aria-expanded="false"><a href="#" onclick="expertMode()" class="ecl-menu__link"
-                data-ecl-menu-link="">Expert mode<svg
-                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-menu__link-icon" focusable="false"
-                  aria-hidden="true">
-                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                </svg></a>
-            </li>
-          </ul>
-        </section>
-      </div>
-    </nav> -->
-        <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
+            </div>
+          </dl>
+        </div>
+        
+      </li>
+      <!-- More items... -->
+    </ul>
+    <ul role="list" class="hidden" id="settings-content">
+      <li class="px-6">
+        <h4 class="ecl-u-type-heading-4">Settings buttons</h4>
+
+        <div>
+          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <dd class="mt-1 text-sm font-semibold text-gray-900">
+                <button class="ecl-button ecl-button--secondary" type="button"  onclick='collapse()' id="collapse">Collapse all</button>
+                <button class="ecl-button ecl-button--secondary" type="button"  onclick='expand()' id="expand">Expand all</button>
+
+              </dd>
+            </div>
+        
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                <legend class="ecl-form-label">Show navigation?<span class="ecl-form-label__required">*</span></legend>
+                <div class="ecl-help-block" id="helper-id-1">Show navigation panel after clicking on graph</div>
+                <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-1" name="radio-group-1" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
+                <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2" name="radio-group-1" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
+              </fieldset>
+<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
+            </div>
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <div class="relative flex items-start">
+                <div class="flex items-center h-5">
+                </div>
+                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                  <legend class="ecl-form-label">Show duplicates?<span class="ecl-form-label__required">*</span></legend>
+                  <div class="ecl-help-block" id="helper-id-2">Show duplicates nodes for a more clear graph</div>
+              </svg>
+                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-1" name="radio-group-2" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-2-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
+                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
+                </fieldset>
+              </div>
+            </div>
+          </dl>
+        </div>
+        
+      </li>
+      <!-- More items... -->
+    </ul>
+    <ul role="list" class="hidden" id="manual-content">
+      <li class="px-6 pb-4">
+        <h4 class="ecl-u-type-heading-4">Manual and Live demo</h4>
+
+        <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
+          <span class="ecl-link__label">Show manual</span>
+  <!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-180 ecl-link__icon" focusable="false" aria-hidden="true">
+          <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+          </svg> -->
+        </a>
+        <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
+          <span class="ecl-link__label">Show live demo</span>
+  <!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
+          <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+          </svg> -->
+        </a>
+      </li>
+      <!-- More items... -->
+    </ul>
+    <ul role="list" class="hidden" id="legend-content">
+      <li class="px-6 pb-4">
+        <h4 class="ecl-u-type-heading-4">Legend</h4>
+
+        <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
+      
+        </ul>
+      </li>
+      <!-- More items... -->
+    </ul>
+  </div>
+        <!-- <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
           <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
           <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
               href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
@@ -258,143 +357,13 @@
               </ul>
             </section>
           </div>
-        </nav>
-<div class="ecl-language-list ecl-language-list--overlay" data-ecl-language-list-overlay aria-labelledby="ecl-language-list__title" role="dialog" hidden id="language-list-overlay" ><div class="ecl-language-list__container ecl-container"><div class="ecl-row"><div class="ecl-language-list__close ecl-col-12 ecl-col-l-8 ecl-offset-l-2"><button class="ecl-button ecl-button--ghost ecl-language-list__close-button" type="submit"  data-ecl-language-list-close><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Close</span><svg
-        class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--after"
-        focusable="false"
-        aria-hidden="true"
-         data-ecl-icon><use xlink:href="/images/icons.svg#close"></use></svg></span></button></div><div
-              class="ecl-language-list__title ecl-col-12 ecl-col-l-8 ecl-offset-l-2"
-              id="ecl-language-list__title"
-            ><svg
-        class="ecl-icon ecl-icon--m ecl-language-list__title-icon"
-        focusable="false"
-        aria-hidden="true"
-        ><use xlink:href="/images/icons.svg#general--generic-lang"></use></svg>Select your language</div></div><div class="ecl-row ecl-language-list__eu"><div class="ecl-language-list__category ecl-col-12 ecl-col-l-8 ecl-offset-l-2">EU official languages</div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4 ecl-offset-l-2"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="bg" hreflang="bg" rel="alternate"
-      >български</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="es" hreflang="es" rel="alternate"
-      >español</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="cs" hreflang="cs" rel="alternate"
-      >čeština</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="da" hreflang="da" rel="alternate"
-      >dansk</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="de" hreflang="de" rel="alternate"
-      >Deutsch</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="et" hreflang="et" rel="alternate"
-      >eesti</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="el" hreflang="el" rel="alternate"
-      >ελληνικά</a></li><li class="ecl-language-list__item ecl-language-list__item--is-active"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-language-list__link"
-         lang="en" hreflang="en" rel="alternate"
-      ><span class="ecl-link__label">English</span><svg
-        class="ecl-icon ecl-icon--xs ecl-link__icon"
-        focusable="false"
-        aria-hidden="true"
-        ><use xlink:href="/images/icons.svg#ui--check"></use></svg></a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="fr" hreflang="fr" rel="alternate"
-      >français</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="ga" hreflang="ga" rel="alternate"
-      >Gaeilge</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="hr" hreflang="hr" rel="alternate"
-      >hrvatski</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="it" hreflang="it" rel="alternate"
-      >italiano</a></li></ul></div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="lv" hreflang="lv" rel="alternate"
-      >latviešu</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="lt" hreflang="lt" rel="alternate"
-      >lietuvių</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="hu" hreflang="hu" rel="alternate"
-      >magyar</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="mt" hreflang="mt" rel="alternate"
-      >Malti</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="nl" hreflang="nl" rel="alternate"
-      >Nederlands</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="pl" hreflang="pl" rel="alternate"
-      >polski</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="pt" hreflang="pt" rel="alternate"
-      >português</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="ro" hreflang="ro" rel="alternate"
-      >română</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="sk" hreflang="sk" rel="alternate"
-      >slovenčina</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="sl" hreflang="sl" rel="alternate"
-      >slovenščina</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="fi" hreflang="fi" rel="alternate"
-      >suomi</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="sv" hreflang="sv" rel="alternate"
-      >svenska</a></li></ul></div></div><div class="ecl-row ecl-language-list__non-eu"><div class="ecl-language-list__category ecl-col-12 ecl-col-l-8 ecl-offset-l-2">Non-EU languages</div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4 ecl-offset-l-2"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="zh" hreflang="zh" rel="alternate"
-      >中文</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="tr" hreflang="tr" rel="alternate"
-      >Türk</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="ru" hreflang="ru" rel="alternate"
-      >pусский</a></li></ul></div><div class="ecl-language-list__column ecl-col-12 ecl-col-l-4"><ul class="ecl-language-list__list"><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="ca" hreflang="ca" rel="alternate"
-      >Català</a></li><li class="ecl-language-list__item"><a
-        href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-language-list__link"
-         lang="ar" hreflang="ar" rel="alternate"
-      >عَرَبِيّ</a></li></ul></div></div></div></div></header>
+        </nav> -->
+        
+</header>
 
   <div class="relative overflow-y-scroll">
     <main class="lg:relative">
-      <section class="ecl-hero-banner ecl-hero-banner--white ecl-hero-banner--centered" id="landing-page">
+<!--       <section class="ecl-hero-banner ecl-hero-banner--white ecl-hero-banner--centered" id="landing-page">
         <div class="ecl-container">
           
           <div class="ecl-hero-banner__container">
@@ -405,22 +374,22 @@
               </p>
               <div class="ecl-hero-banner__cta">
                 <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
-                  <span class="ecl-link__label">Show manual</span>
+                  <span class="ecl-link__label">Show manual</span> -->
 <!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-180 ecl-link__icon" focusable="false" aria-hidden="true">
                   <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
                   </svg> -->
-                </a>
+<!--                 </a>
                 <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
-                  <span class="ecl-link__label">Live demo</span>
+                  <span class="ecl-link__label">Live demo</span> -->
 <!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
                   <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
                   </svg> -->
-                </a>
+<!--                 </a>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
 
 
       <div class="ecl-navigation-list ecl-navigation-list--col-2" id="dataviz-collection">
@@ -446,29 +415,7 @@
           <div class="object-contain w-full h-full">
       
             <div class="bg-white">
-              <div class="hidden bg-white rounded-md" id="settings-legend">
-                <nav class="ecl-tabs" data-ecl-tabs="true" data-ecl-auto-init="Tabs">
-                  <div class="ecl-tabs__container">
-                    <ul class="ecl-tabs__list" role="tablist">
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#wqrxa" class="ecl-link ecl-tabs__link" role="tab" aria-selected="false">Item 1 label</a></li>
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#5fx2a" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false">Item 2 label</a></li>
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#vt0hq" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false">Item 3 label</a></li>
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#34er2" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" tabindex="-1" aria-selected="true">Item 4 label</a></li>
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#xznbn" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false">Item 5 label</a></li>
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#urcgh" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false">Item 6 with a very long label</a></li>
-                      <li class="ecl-tabs__item" role="presentation"><a href="/component-library/example#vijgq" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false">Item 7 label</a></li>
-                      <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation"><button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button" tabindex="-1"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">More (%d)</span><svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
-                              <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
-                            </svg></span></button></li>
-                    </ul>
-                  </div>
-                  <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
-                        <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
-                      </svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
-                        <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
-                      </svg><span class="ecl-u-sr-only"></span></button></div>
-                </nav>
-                
+              <div class="hidden bg-white rounded-md" id="settings-legend">                
                 <ul role="list" class="">
                   <li class="px-6 pt-4">
                     <h4 class="ecl-u-type-heading-4">Settings buttons</h4>
@@ -858,9 +805,8 @@
     </main>
   </div>
   <script
-  src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.1/ec/scripts/ecl-ec.js"
-  integrity="sha256-rtHPJQFE7B9bNlt8cekMB170aJ3K5Ug9/FDHR8SZ1m8= sha384-gSjxV5m6WfyeLuJvdRK55yZaVWCyRmCmdCz6LpNd1XMpNiCR37LqKfzfWrXqK6Tc
-  sha512-R5fZezLHTj66zK9MGiZUhGABuGzdC1r7KDWPriTpkDWstlyw9PCPdh2rbL9LbO1RQCQ26j7jXGIuvcz/t0v6xQ=="
+  src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/scripts/ecl-ec.js"
+  integrity="sha256-WWTwQseyv8+i6bgq3MPCim/seztSFPBM/CHAlBz4eVk="
   crossorigin="anonymous"
    ></script>
     <script src="js/main.js"></script>

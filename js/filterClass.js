@@ -158,10 +158,12 @@ filter.prototype.addHtml = function () {
     async function addDate(){
       var optionsMenuHtml,html
 
-      let code = await getHtmlCodeFromFile("date-filter.html");
+      let code = await getHtmlCodeFromFile("pages/date-filter.html");
       //console.log(fi)
       code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text)
-      $("#"+fi.details.class+"_filters").append(code)
+      $("#"+fi.details.class+"_filters").append(code).ready(function () {
+        ECL.autoInit();
+      })
 /*       await $.get("date-filter.html", function (data) {
         optionsMenuHtml=data
         html=optionsMenuHtml.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.filterText)
@@ -610,7 +612,7 @@ classFilterClass.prototype.init = async function () {
   }
 classFilterClass.prototype.getCode= async function(){
   var cf=this;
-  cf.code = await getHtmlCodeFromFile("filter-class-item.html");
+  cf.code = await getHtmlCodeFromFile("pages/filter-class-item.html");
   //console.log(cf.code)
   cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
   //console.log(cf.code)
