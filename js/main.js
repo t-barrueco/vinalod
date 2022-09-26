@@ -11,8 +11,8 @@ function dataViz(){
     console.log(document.getElementsByTagName("table"))
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
-          d3.json("/config_vinalod/config_basicMode.json",function(dataConfig){
-              d3.tsv("/config_vinalod/graph_icons.txt",function(dataIcons){
+          d3.json("config_vinalod/config_basicMode.json",function(dataConfig){
+              d3.tsv("config_vinalod/graph_icons.txt",function(dataIcons){
                 $("#expand-settings-legend").css("background-color", "#064494");
                 $("#collapse-settings-legend").css("background-color", "#064494");
                 console.log(dataConfig)
@@ -291,7 +291,8 @@ function basicMode(){
   } 
 }
 function changeCollectionOptions(collection){
-  //console.log(collection)
+  console.log(collection)
+  console.log(ConfigFile)
   let optionsMenu=configFile.file.filter(d=>d.collection==collection)
   appendHtmlOptions(optionsMenu)
 }
@@ -301,7 +302,7 @@ function appendHtmlOptions(optionsMenu){
     console.log(data)
     //optionsMenuHtml=data
     //console.log(document.getElementById("dataviz-collection"))
-    //console.log(optionsMenu)
+    console.log(optionsMenu)
     optionsMenu.forEach(element => {
       html=data.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       $("#dataviz-collection").append($(html))
