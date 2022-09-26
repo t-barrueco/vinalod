@@ -28,8 +28,20 @@ function getOptionsCollection(collection){
   $('#dataviz-collection article').remove()
   console.log(document.getElementsByTagName("table"))
 
+  console.log(collection)
   changeCollectionOptions(collection.innerText.trim())
 }
+function getOptionsCollectionRadio(collection){
+  $('#landing-page').hide();
+  $('#dataviz-collection').show();
+  $('#graph-area').addClass("hidden")
+  $('#dataviz-collection article').remove()
+  //console.log(document.getElementsByTagName("table"))
+  console.log(collection.getElementsByClassName("ecl-radio__text"))
+  console.log(collection.getElementsByClassName("ecl-radio__text")[0].textContent)
+  changeCollectionOptions(collection.getElementsByClassName("ecl-radio__text")[0].textContent)
+}
+
 async function buildBasicGraph(option,node){
     var sparqlQuery,modal2;
     $('#landing-page'). hide();
@@ -286,12 +298,12 @@ function changeCollectionOptions(collection){
 function appendHtmlOptions(optionsMenu){
   //console.log(optionsMenu)
   $.get("pages/dataviz_collection.html", function (data) {
-    //console.log(data)
-    optionsMenuHtml=data
+    console.log(data)
+    //optionsMenuHtml=data
     //console.log(document.getElementById("dataviz-collection"))
-    console.log(optionsMenu)
+    //console.log(optionsMenu)
     optionsMenu.forEach(element => {
-      html=optionsMenuHtml.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
+      html=data.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       $("#dataviz-collection").append($(html))
   });
   });
