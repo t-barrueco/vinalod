@@ -101,21 +101,21 @@
         <ul class="ecl-tabs__list" role="tablist">
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="changeTab(this)" id="mode-tab">Mode</a></li>
           <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
-          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="manual-tab">Manual and Live Demo</a></li>
           <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="legend-tab">Legend</a></li>
+          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="manual-tab">Manual and Live Demo</a></li>
           <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation"><button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button" tabindex="-1"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">More (%d)</span><svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
-                  <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
+                  <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
                 </svg></span></button></li>
         </ul>
       </div>
       <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
-            <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
+            <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
           </svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
-            <use xlink:href="static/media/icons.ccfd2174.svg#corner-arrow"></use>
+            <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
           </svg><span class="ecl-u-sr-only"></span></button></div>
     </nav>
     <div class="ecl-u-border-bottom ecl-u-border-color-grey-20" id="content-main-tabs">
-    <ul role="list" class="" id="mode-content">
+    <ul role="list" class="content-item" id="mode-content">
       <li class="px-6">
         <h4 class="ecl-u-type-heading-4">Mode</h4>
 
@@ -156,9 +156,9 @@
                     <span class="ecl-form-label__required">*</span>
                </legend>
                   <div class="ecl-help-block" id="helper-collections">Chose collection for selecting a graph.</div>
-                  <div class="ecl-radio" onclick="getOptionsCollectionRadio(this)">
+                  <div class="ecl-radio">
                     <input type="radio" id="radio_eu_vocabularies" name="radio-collections" class="ecl-radio__input"
-                      value="eu_vocabularies" required="" aria-describedby="helper-collections"/>
+                      value="eu_vocabularies" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
                     <label class="ecl-radio__label" for="radio_eu_vocabularies">
                       <span class="ecl-radio__box">
                         <span class="ecl-radio__box-inner"></span>
@@ -169,7 +169,7 @@
  -->              </div>
                   <div class="ecl-radio">
                     <input type="radio" id="radio_eu_whoiswho" name="radio-collections" class="ecl-radio__input"
-                      value="eu_whoiswho" required="" aria-describedby="helper-collections" />
+                      value="eu_whoiswho" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
                     <label class="ecl-radio__label" for="radio_eu_whoiswho">
                       <span class="ecl-radio__box">
                         <span class="ecl-radio__box-inner"></span>
@@ -180,7 +180,7 @@
  -->                  </div>
                   <div class="ecl-radio">
                     <input type="radio" id="radio_eu_publications" name="radio-collections" class="ecl-radio__input"
-                      value="eu_publications" required="" aria-describedby="helper-collections" />
+                      value="eu_publications" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
                     <label class="ecl-radio__label" for="radio_eu_publications">
                       <span class="ecl-radio__box">
                         <span class="ecl-radio__box-inner"></span>
@@ -191,7 +191,7 @@
  -->                  </div>
                   <div class="ecl-radio">
                     <input type="radio" id="radio_eu_data" name="radio-collections" class="ecl-radio__input"
-                      value="eu_data" required="" aria-describedby="helper-collections" />
+                      value="eu_data" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
                     <label class="ecl-radio__label" for="radio_eu_data">
                       <span class="ecl-radio__box">
                         <span class="ecl-radio__box-inner"></span>
@@ -202,7 +202,7 @@
  -->                  </div>
                   <div class="ecl-radio">
                     <input type="radio" id="radio_eu_law" name="radio-collections" class="ecl-radio__input"
-                      value="eu_law" required="" aria-describedby="helper-collections" />
+                      value="eu_law" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
                     <label class="ecl-radio__label" for="radio_eu_law">
                       <span class="ecl-radio__box">
                         <span class="ecl-radio__box-inner"></span>
@@ -220,7 +220,7 @@
       </li>
       <!-- More items... -->
     </ul>
-    <ul role="list" class="hidden" id="settings-content">
+    <ul role="list" class="hidden content-item" id="settings-content">
       <li class="px-6">
         <h4 class="ecl-u-type-heading-4">Settings buttons</h4>
 
@@ -263,7 +263,7 @@
       </li>
       <!-- More items... -->
     </ul>
-    <ul role="list" class="hidden" id="manual-content">
+    <ul role="list" class="hidden content-item" id="manual-content">
       <li class="px-6 pb-4">
         <h4 class="ecl-u-type-heading-4">Manual and Live demo</h4>
 
@@ -282,7 +282,7 @@
       </li>
       <!-- More items... -->
     </ul>
-    <ul role="list" class="hidden" id="legend-content">
+    <ul role="list" class="hidden content-item" id="legend-content">
       <li class="px-6 pb-4">
         <h4 class="ecl-u-type-heading-4">Legend</h4>
 
@@ -293,7 +293,7 @@
       <!-- More items... -->
     </ul>
   </div>
-        <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
+<!--         <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
           <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
           <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
               href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
@@ -357,7 +357,7 @@
               </ul>
             </section>
           </div>
-        </nav>
+        </nav> -->
         
 </header>
 
@@ -414,7 +414,7 @@
           
           <div class="object-contain w-full h-full">
       
-            <div class="bg-white">
+<!--             <div class="bg-white">
               <div class="hidden bg-white rounded-md" id="settings-legend">                
                 <ul role="list" class="">
                   <li class="px-6 pt-4">
@@ -437,8 +437,6 @@
                             <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-1" name="radio-group-1" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
                             <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2" name="radio-group-1" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
                           </fieldset>
-<!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
-                          <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
                         </div>
                         <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
                           <div class="relative flex items-start">
@@ -464,7 +462,6 @@
                   
                     </ul>
                   </li>
-                  <!-- More items... -->
                 </ul>
               </div>
 
@@ -488,9 +485,8 @@
                   </svg>
                 </div>
               </div>
-              </div>
+              </div> -->
               <div class="grid w-full grid-cols-11">
-                <!-- <div class="relative z-0 w-full h-auto" id="networkGraph"> -->
                 <div class="z-0 hidden h-full col-span-2 bg-white shadow-2xl" id="filters">
                   <div class="ecl-container left-aligned ecl-u-mv-s">
                     <h3 class="ecl-u-type-heading-3">Filter Options</h3>
@@ -503,7 +499,6 @@
               </div>
 
           </div>
-          <!-- This example requires Tailwind CSS v2.0+ -->
           <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700 ecl-u-z-modal" id="myModal">
             <!--
             Slide-over panel, show/hide based on slide-over state.
@@ -564,7 +559,7 @@
                             focusable="false"
                             aria-hidden="true"
                             data-ecl-icon>
-                            <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                            <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
                           </svg>
                         </span>
                       </button>
@@ -575,11 +570,11 @@
                       class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
                       focusable="false"
                       aria-hidden="true"
-                      ><use xlink:href="/images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg
+                      ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg
                       class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block"
                       focusable="false"
                       aria-hidden="true"
-                      ><use xlink:href="/images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button></div></nav>
+                      ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button></div></nav>
 <!--                <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
                       <div class="ecl-tabs__container">
                         <ul class="ecl-tabs__list">
