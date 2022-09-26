@@ -36,10 +36,12 @@ function getOptionsCollectionRadio(collection){
   $('#dataviz-collection').show();
   $('#graph-area').addClass("hidden")
   $('#dataviz-collection article').remove()
+  console.log(collection)
+  console.log(collection.parentNode.getElementsByClassName("ecl-radio__text")[0].textContent)
   //console.log(document.getElementsByTagName("table"))
-  console.log(collection.getElementsByClassName("ecl-radio__text"))
-  console.log(collection.getElementsByClassName("ecl-radio__text")[0].textContent)
-  changeCollectionOptions(collection.getElementsByClassName("ecl-radio__text")[0].textContent)
+  //console.log(collection.getElementsByClassName("ecl-radio__text"))
+  //console.log(collection.getElementsByClassName("ecl-radio__text")[0].textContent)
+  changeCollectionOptions(collection.parentNode.getElementsByClassName("ecl-radio__text")[0].textContent)
 }
 
 async function buildBasicGraph(option,node){
@@ -291,8 +293,8 @@ function basicMode(){
   } 
 }
 function changeCollectionOptions(collection){
-  console.log(collection)
-  console.log(ConfigFile)
+  //console.log(collection)
+  //console.log(ConfigFile)
   let optionsMenu=configFile.file.filter(d=>d.collection==collection)
   appendHtmlOptions(optionsMenu)
 }
@@ -443,6 +445,10 @@ async function changeBasicGraph(option){
   $('#landing-page'). hide();
   $('#dataviz-collection'). hide();
   $('#graph-area').removeClass("hidden")
+
+  $('#settings-tab').parent().removeClass("hidden")
+  $('#legend-tab').parent().removeClass("hidden")
+ 
   //build and show graph
   showBasicGraph()
   console.log($("#networkGraph-svg"))
@@ -798,9 +804,12 @@ function addFilters(){
 function changeTab(tab){ 
   console.log(tab.id)
   $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
-  $("#content-main-tabs ul").addClass("hidden")
+  $("#content-main-tabs .content-item").addClass("hidden")
   //console.log(tab.textContent)
   tab.classList.add("ecl-tabs__link--active");
   tab.setAttribute("aria-selected", "true")
+  console.log(tab.id.replace("-tab","-content"))
+  console.log($("#content-main-tabs #"+tab.id.replace("-tab","-content")))
+
   $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
 }
