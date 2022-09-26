@@ -291,7 +291,7 @@ function basicMode(){
   } 
 }
 function changeCollectionOptions(collection){
-  //console.log(collection)
+  console.log(collection)
   let optionsMenu=configFile.file.filter(d=>d.collection==collection)
   appendHtmlOptions(optionsMenu)
 }
@@ -301,7 +301,7 @@ function appendHtmlOptions(optionsMenu){
     console.log(data)
     //optionsMenuHtml=data
     //console.log(document.getElementById("dataviz-collection"))
-    //console.log(optionsMenu)
+    console.log(optionsMenu)
     optionsMenu.forEach(element => {
       html=data.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       $("#dataviz-collection").append($(html))
