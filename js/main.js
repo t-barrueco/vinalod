@@ -292,6 +292,7 @@ function basicMode(){
 }
 function changeCollectionOptions(collection){
   console.log(collection)
+  console.log(ConfigFile)
   let optionsMenu=configFile.file.filter(d=>d.collection==collection)
   appendHtmlOptions(optionsMenu)
 }
