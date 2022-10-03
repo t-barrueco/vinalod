@@ -206,7 +206,7 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
 
   function addOptions(){
     var i=1;
-    $.get("popup_options.html", function (data) {
+    $.get("pages/popup_options.html", function (data) {
       mi.selectedRows.forEach(function (r) {
         htmlOption=data
         htmlOption=htmlOption.replace("Option *","Option "+ String(i)).replace("Node URI",r.uri).replace("Subject",r["subject-object"]).replace("Value_URL",r.url)

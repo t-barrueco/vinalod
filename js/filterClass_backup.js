@@ -1,4 +1,4 @@
-filter = function ( _classFilterName, _property, _filterType,_filterText,_parent,_bubbleId) {
+/* filter = function ( _classFilterName, _property, _filterType,_filterText,_parent,_bubbleId) {
     this.property = _property;
     this.filterType = _filterType;
     this.filterText = _filterText;
@@ -6,12 +6,17 @@ filter = function ( _classFilterName, _property, _filterType,_filterText,_parent
     this.parent=_parent
     this.bubbleId=_bubbleId
     this.init();
-  };
-  
+  }; */
+  filter = function (_details,_bubbleId) {
+    this.details = _details;
+    this.bubbleId=_bubbleId
+    this.init();
+  };  
   /////////////////// initVis Method //////////////////////
   
 filter.prototype.init = function () {
   var fi=this;
+  //console.log(fi)
   fi.getValuesFilterVisibleNodes()
   fi.addHtml()
   //fi.checkVisibility()
@@ -21,18 +26,18 @@ filter.prototype.getValuesFilterVisibleNodes=function (){
   var fi=this,values=[]
   networkGraph.data["nodes"].forEach(function(d){
 
-    if(d["class"]==fi.classFilterName){
+    if(d["class"]==fi.details.class){
       //CAMBIAR PORQUE LO HE PUESTO EVENTUAL
-      if(d[fi.property]!=undefined){
-        values.push(d[fi.property].toLowerCase())
+      if(d[fi.details.property]!=undefined){
+        values.push(d[fi.details.property].toLowerCase())
       }
       
     }
   })
   values=[...new Set(values)].sort()
   fi.values=values
-
-  if ((fi.values.length>1)&(fi.filterType=="dropdown")){
+  //console.log(fi.values)
+  if ((fi.values.length>1)&(fi.details.filter_type=="dropdown")){
     fi.values=["All"].concat(fi.values)
   }
 }
@@ -41,9 +46,9 @@ filter.prototype.getValuesFilterAllNodes=function (){
 
   networkGraph.treeData.forEach(function(item){
     if(!ids.includes(item.id)){
-      if(item[fi.property]){
-        if(!values.includes(item[fi.property])){
-          values.push(item[fi.property])
+      if(item[fi.details.property]){
+        if(!values.includes(item[fi.details.property])){
+          values.push(item[fi.details.property])
         }
       }
       ids.push(item.id)
@@ -51,9 +56,9 @@ filter.prototype.getValuesFilterAllNodes=function (){
     if(item.children){
       item.children.forEach(function (c){
         if(!ids.includes(c.id)){
-          if(c[fi.property]){
-            if(!values.includes(c[fi.property])){
-              values.push(c[fi.property])
+          if(c[fi.details.property]){
+            if(!values.includes(c[fi.details.property])){
+              values.push(c[fi.details.property])
             }
           }
           ids.push(c.id)
@@ -68,33 +73,31 @@ filter.prototype.addHtml = function () {
 
     var div = document.createElement("div");
     div.className="relative"
-    div.id=property.replaceAll(" ","_")+"_root"
-    fi.id=fi.property.replaceAll(" ","_");
-    fi.propertyFullName=configRow.rowFields.properties.filter(d=>d.property==fi.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.classFilterName],"").trim()
-    console.log(fi.propertyFullName)
-    
-    if(fi.filterType=="dropdown"){
-
+    //console.log(fi)
+    div.id=fi.details.property.replaceAll(" ","_")+"_root"
+    fi.id=fi.details.property.replaceAll(" ","_");
+    fi.propertyFullName=configRow.rowFields.properties.filter(d=>d.property==fi.details.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.details.class],"").trim()
+    //////console.log(fi.propertyFullName)
+    //console.log(fi.details.filterType)
+    if(fi.details.filter_type=="dropdown"){
+      //console.log("antes")
       addDropdown()
-
+      ////console.log("despues")
     }
-    else if (fi.filterType=="date"){
+    else if (fi.details.filter_type=="date"){
       //addDropdown("dropdown_date",div)
-      console.log("add date")
-      addDate()
-
-        
-    }else if (fi.filterType=="date_range"){
+      addDate()  
+    }else if (fi.details.filter_type=="date_range"){
   
       addDateRange(div)
  
-    }else if (filterType=="text"){
+    }else if (fi.details.filter_type=="text"){
       addText(div)
     
-    }else if (filterType=="between_numbers"){ 
+    }else if (fi.details.filter_type=="between_numbers"){ 
       addBetweenNumbers()
       
-    }else if (filterType=="number"){
+    }else if (fi.details.filter_type=="number"){
       
       addNumber(div)
     }
@@ -111,262 +114,61 @@ filter.prototype.addHtml = function () {
     
     async function addDropdown(){
       var optionsMenuHtml,html
-
-/*       let use=document.createElement("use")
-      use.setAttribute("xlink:href","/component-library/dist/media/icons.ccfd2174.svg#corner-arrow")
-
-      let svg=document.createElement("svg")
-      svg.setAttribute("class","ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape")
-      svg.setAttribute("focusable","false")
-      svg.setAttribute("aria-hidden","true")
-
-      svg.appendChild(use)
-
-      let div=document.createElement("div")
       
-      div.setAttribute("class","ecl-select__icon")
-
-      div.appendChild(svg)
-
-      let select = document.createElement("select");
-      select.name = fi.property;
-      select.id = fi.property.replaceAll(" ","_");
-      select.setAttribute("required","");
-      select.className="ecl-select"
-      select.setAttribute("onchange","applyFilter(this)"); 
-
-      //if (fi.filterType=="dropdown_multiple"){
-      //  select.setAttribute('multiple', true);
-      //}  
-      
-      let valuesFilter=fi.values
-      let internalValuesFilter=fi.values
-
-      for (let i = 0; i < valuesFilter.length; i++) {
-        var option = document.createElement("option");
-        option.value = internalValuesFilter[i];
-        option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-        select.appendChild(option);
-      }
-      
-      select.value = internalValuesFilter[0];
-
-      let div2=document.createElement("div")
-      
-      div2.setAttribute("class","ecl-select__container ecl-select__container--m")
-      div2.appendChild(select)
-      div2.appendChild(div)
-
-      let div3
-      if(fi.filterText!=""){
-        console.log("entra")
-        div3=document.createElement("div")
-        div3.setAttribute("class","ecl-help-block")
-        const text = document.createTextNode(fi.filterText);
-        div3.appendChild(text);
-      }
-
-      let label=document.createElement("label")
-      label.setAttribute("class","ecl-form-label")
-      label.setAttribute("for",fi.property.replaceAll(" ","_")+"_label")
-      label.innerHTML = fi.propertyFullName;
-
-      let div4=document.createElement("div")
-      div4.setAttribute("class","ecl-form-group")
-
-      div4.appendChild(label);
-      if(fi.filterText!=""){
-        console.log("entra2")
-        div4.appendChild(div3);
-      }
-      div4.appendChild(div2);
-
-      document.getElementById(fi.classFilterName+"_filters").appendChild(div4) */
-      
-      await $.get("select-filter.html", function (data) {
+      /* await $.get("pages/select-filter.html", function (data) {
         optionsMenuHtml=data
-        console.log(fi.filterText)
+        //////console.log(fi.filterText)
         html=optionsMenuHtml.replace("Label",fi.property.split("_")[1]).replaceAll("HelperText",fi.filterText)
         $("#"+fi.classFilterName+"_filters").append($(html))
-      });
-
-      var select=document.getElementById("select-default")
-      select.name = fi.property;
-      select.id = fi.property.replaceAll(" ","_");
-      select.setAttribute("onchange","applyFilter(this)"); 
-
-      let valuesFilter=fi.values
-      let internalValuesFilter=fi.values
-
-      for (let i = 0; i < valuesFilter.length; i++) {
-        var option = document.createElement("option");
-        option.value = internalValuesFilter[i];
-        option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-        select.appendChild(option);
-      }
-      select.value = internalValuesFilter[0];
-
-      /* var select = document.createElement("select");
-      select.name = fi.property;
-      select.id = fi.property.replaceAll(" ","_");
-      
-      if (fi.filterType=="dropdown_multiple"){
-        select.setAttribute('multiple', true);
-      }    
-  
-      if(dropdownType=="dropdown_date"){
-        valuesFilter=["date later than","date earlier than","date range"]
-        internalValuesFilter=["<",">","<>"]
-        select.className="w-full h-10 pl-3 pr-6 text-base bg-gray-200 border rounded-lg appearance-none focus:shadow-outline"
-        select.setAttribute("onchange",'changeHtmlFilter(this,"'+fi.classFilterName+'")');
-        select.id+="_selection"
-        
-      }else if(dropdownType=="dropdown_number"){
-        valuesFilter=["greater than","smaller than","equal to","number range"]
-        internalValuesFilter=["<",">","==","<>"]
-        select.className="w-full h-10 pl-3 pr-6 text-base bg-gray-200 border rounded-lg appearance-none focus:shadow-outline"
-        select.setAttribute("onchange",'changeHtmlFilter(this,"'+fi.classFilterName+'")');
-        select.id+="_selection"  
-      }else{
-        valuesFilter=fi.values
-        internalValuesFilter=fi.values
-        select.className="w-full h-10 pl-3 pr-6 text-base border rounded-lg appearance-none focus:shadow-outline " + fi.classFilterName +"_filter"
+      }); */
+      //const code = await getHtmlCodeFromFile("pages/select-filter.html");
+      //const user = await getUser("tylermcginnis");
+      //const weather = await getWeather(user.location);
+      //insertCodeInElement(fi.classFilterName+"_filters","select-filter.html")
+      ////console.log("antes")
+      let code = await getHtmlCodeFromFile("pages/select-filter.html");
+      ////console.log(fi.property.split("_")[1].charAt(0).toUpperCase() + fi.property.split("_")[1].slice(1))
+      code=code.replace("Label",fi.details.property.split("_")[1].charAt(0).toUpperCase() + fi.details.property.split("_")[1].slice(1))
+      //console.log(code)
+      //console.log($("#"+fi.details.class+"_filters"))
+      $("#"+fi.details.class+"_filters").append(code).ready(function () {
+        // Action after append is completly done
+        ////console.log(document.getElementById(fi.classFilterName+"_filters"))
+        var select=document.getElementById("select-default")
+        select.name = fi.details.property;
+        select.id = fi.details.property.replaceAll(" ","_");
         select.setAttribute("onchange","applyFilter(this)"); 
-      }
+        //console.log(fi.values)
+        let valuesFilter=fi.values
+        let internalValuesFilter=fi.values
+  
+        for (let i = 0; i < valuesFilter.length; i++) {
+          var option = document.createElement("option");
+          option.value = internalValuesFilter[i];
+          option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
+          select.appendChild(option);
+        }
+        select.value = internalValuesFilter[0];
+        ////console.log(document.getElementById(fi.property.replaceAll(" ","_")));
+      });
+      //////console.log($("#"+fi.classFilterName+"_filters"))
       
-      for (let i = 0; i < valuesFilter.length; i++) {
-        var option = document.createElement("option");
-        option.value = internalValuesFilter[i];
-        option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-        select.appendChild(option);
-      }
-      select.value = internalValuesFilter[0];
-      var label = document.createElement("label");
-      label.innerHTML = fi.property.split("_")[1]
-      label.htmlFor = fi.property.split("_")[1];
-      if((dropdownType=="dropdown_date")|(dropdownType=="dropdown_number")){
-        label.id=fi.property.replaceAll(" ","_")+"_selection_label"
-      }else{
-        label.id=fi.property.replaceAll(" ","_")+"_label"
-      }
-      
-      if((dropdownType=="dropdown_date")|(dropdownType=="dropdown_number")){
-        label.innerHTML=fi.propertyFullName + " Selection"
-        label.htmlFor = fi.propertyFullName + " Selection"
-      }
-      
-      label.className="block mb-2 text-base font-light text-gray-700"
 
-      var root=document.getElementById(fi.classFilterName+"_filters").appendChild(div)
-      root.appendChild(label);
-      root.appendChild(select);//
-   */
     } 
     async function addDate(){
       var optionsMenuHtml,html
-/*       <div class="ecl-form-group"><label class="ecl-form-label" for="example-input-id-1">Label<span
-      class="ecl-form-label__required">*</span></label>
-      <div class="ecl-help-block">This is the input&#x27;s helper text.</div>
-      <div class="ecl-datepicker"><input type="text" autoComplete="off" data-ecl-datepicker-toggle=""
-      data-ecl-auto-init="Datepicker" id="example-input-id-1" name="example-input-id-1"
-      class="ecl-datepicker__field ecl-text-input ecl-text-input--s" required="" placeholder="DD-MM-YYYY"
-      value="dd-mm-yyyy" /><svg class="ecl-icon ecl-icon--s ecl-datepicker__icon" focusable="false" aria-hidden="true">
-      <use xlink:href="/component-library/dist/media/icons.ccfd2174.svg#calendar"></use>
-      </svg></div>
-      </div> */
-      //let div=
-/*       let use=document.createElement("use")
-      use.setAttribute("xlink:href","images/icons.svg#general--calendar")
-      //use.setAttribute("x","20")
-      //use.setAttribute("y","20")
-      console.log(window.location.href)
 
-      console.log(window.location.pathname)
-      //use.setAttribute("xlink:href","../images/icons.svg#calendar")
-
-      let svg=document.createElement("svg")
-      svg.setAttribute("class","ecl-icon ecl-icon--s ecl-datepicker__icon")
-      svg.setAttribute("focusable","false")
-      //svg.setAttribute("viewBox","0 0 30 10")
-      //svg.setAttribute("aria-hidden","true")
-
-      svg.appendChild(use)
-
-      let input=document.createElement("input")
-      input.setAttribute("type","text")
-      input.setAttribute("autoComplete","off")
-      input.setAttribute("data-ecl-datepicker-toggle","")
-      input.setAttribute("ata-ecl-auto-init","Datepicker")
-      input.setAttribute("id",fi.property.replaceAll(" ","_")+"_label")
-      input.setAttribute("name",fi.property.replaceAll(" ","_")+"_label")
-      input.setAttribute("class","ecl-datepicker__field ecl-text-input ecl-text-input--s")
-      input.setAttribute("required","")
-      input.setAttribute("placeholder","DD-MM-YYYY")
-      input.setAttribute("value","dd-mm-yyyy")
-
-      let div=document.createElement("div")
-      div.setAttribute("class","ecl-datepicker")
-
-      div.appendChild(input)
-      div.appendChild(svg)
-
-      let div2
-      if(fi.filterText!=""){
-        console.log("entra")
-        div2=document.createElement("div")
-        div2.setAttribute("class","ecl-help-block")
-        const text = document.createTextNode(fi.filterText);
-        div2.appendChild(text);
-      }
-
-
-      let label=document.createElement("label")
-      label.setAttribute("class","ecl-form-label")
-      label.setAttribute("for",fi.property.replaceAll(" ","_")+"_label")
-      label.innerHTML = fi.propertyFullName;
-
-      let div3=document.createElement("div")
-      div3.setAttribute("class","ecl-form-group")
-
-      div3.appendChild(label);
-      if(fi.filterText!=""){
-        console.log("entra2")
-        div3.appendChild(div2);
-      }
-      div3.appendChild(div); */
-
-      
-
-
-/*       var dateInput = document.createElement("input");
-      dateInput.name = fi.property;
-      dateInput.id = fi.property.replaceAll(" ","_");
-      dateInput.type="date"
-      dateInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + fi.classFilter +"_filter"
-      //dateInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + getKeyByValue(nodesClassesCorrespondence, fi.classFilter) +"_filter"
-      dateInput.setAttribute("onchange","applyFilter(this)"); 
-      console.log(fi)
-      //networkGraph.nodesClassesShow[fi.classFilterName]
-      var label = document.createElement("label");
-      label.innerHTML = fi.propertyFullName;
-      label.htmlFor = fi.propertyFullName;
-      label.id = fi.property.replaceAll(" ","_")+"_label"
-      label.className="block mb-2 text-base font-light text-gray-700" */
-/*       console.log("append filter date")
-      console.log(fi.classFilterName+"_filters")
-      console.log(document)
-      document.getElementById(fi.classFilterName+"_filters").appendChild(div3) */
-
-      await $.get("date-filter.html", function (data) {
+      let code = await getHtmlCodeFromFile("pages/date-filter.html");
+      //console.log(fi)
+      code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text)
+      $("#"+fi.details.class+"_filters").append(code).ready(function () {
+        ECL.autoInit();
+      })
+/*       await $.get("pages/date-filter.html", function (data) {
         optionsMenuHtml=data
         html=optionsMenuHtml.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.filterText)
         $("#"+fi.classFilterName+"_filters").append($(html))
-      });
-      /* var elt = document.querySelector('[data-ecl-datepicker-toggle]');
-      var datepicker = new ECL.Datepicker(elt);
-      datepicker.init(); */
-      //root.appendChild(label);
-      //root.appendChild(dateInput);  
+      }); */
     }
     
     function addText(div){
@@ -769,99 +571,52 @@ filter.prototype.filterDate=function(node){
 
 classFilterClass = function (_name) {
     this.name = _name;
-    //this.init()
+    //this.filters=_filters;
+    this.init()
     //await this.init();
   };
     
 classFilterClass.prototype.init = async function () {
-    var cf=this,optionsMenuHtml,html;
-
-/*     let svg=document.createElement("svg")
-    svg.setAttribute("class","ecl-icon ecl-icon--m ecl-accordion__toggle-icon")
-    svg.setAttribute("focusable","false")
-    svg.setAttribute("aria-hidden","true")
-    svg.setAttribute("data-ecl-accordion-icon","")
-
-    let use=document.createElement("use")
-    use.setAttribute("xlink:href","images/icons.svg#ui--plus")
-    //use.setAttribute("href","images/icons.svg#general--calendar")
-
+    var cf=this;
+    cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
+    await cf.getCode()
+    bubbleId=linkedDataGraph.treeData.slice(-1)[0]["id"]
+    $("#accordion-filters").append(cf.code).ready(function (){
+      //console.log("ready")
+      for (let i = 0; i < cf.filters.length; i++) {
+        //console.log(cf.filters[i])
+/*         property=d["property"]
+        filterType=d["filter_type"]
+        classFilter=d["property"].split("_")[0]
+        parent=d["parent"]
+        if(d["filter_text"]){
+          filterText=d["filter_text"]
+        }else{
+          filterText=""
+        } */
+        cf.filters[i].filterObject=new filter(cf.filters[i],bubbleId)
+      }
+      //filterObject=new filter(classFilter, property, filterType,filterText,parent,bubbleId)
+    })
+    ////console.log(cf.code)
+    //$("#accordion-filters").append(code)
+/*     $("#accordion-filters").append(code).ready(function () {
+      
+    }) */
     
-
-    svg.appendChild(use)
-
-    let span2=document.createElement("span")
-    span2.setAttribute("class","ecl-accordion__toggle-indicator")
-
-    let span3=document.createElement("span")
-    span3.setAttribute("class","ecl-accordion__toggle-label")
-    span3.textContent = "Open";
-
-    span2.appendChild(span3)
-    span2.appendChild(svg)
-    
-    let span4=document.createElement("span")
-    span4.setAttribute("class","ecl-accordion__toggle-title") 
-    span4.textContent = networkGraph.nodesClassesShow[cf.name];
-
-    let span=document.createElement("span")
-    span.setAttribute("class","ecl-accordion__toggle-flex")
-
-    span.appendChild(span2)
-    span.appendChild(span4)
-
-    let button=document.createElement("button")
-    button.setAttribute("type","button")
-    button.setAttribute("class","ecl-accordion__toggle")
-    button.setAttribute("data-ecl-accordion-toggle","")
-    button.setAttribute("data-ecl-label-expanded","Close")
-    button.setAttribute("data-ecl-label-collapsed","Open")
-    button.setAttribute("aria-controls",cf.name+"_filters")
-    //button.onclick = showHideFilter(this)
-    //button.addEventListener("click", showHideFilter(this)); 
-    button.onclick=showHideFilter
-    button.appendChild(span)
-
-    let h3=document.createElement("h3")
-    h3.setAttribute("class","ecl-accordion__title")
-
-    h3.appendChild(button)
-    
-    let div2=document.createElement("div")
-    div2.setAttribute("class","ecl-accordion__content") 
-    //div2.setAttribute("hidden","") 
-    div2.setAttribute("id",cf.name+"_filters") 
-    div2.setAttribute("role","region") 
-
-    let div=document.createElement("div")
-    div.setAttribute("class","ecl-accordion__item")
-    
-    div.appendChild(h3)
-    div.appendChild(div2)
-
-    document.getElementById("accordion-filters").appendChild(div) */
-
-/*     $.get("filter-class-item.html", function (data) {
+/*     await $.get("pages/filter-class-item.html", function (data) {
       optionsMenuHtml=data
       html=optionsMenuHtml.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
       $("#accordion-filters").append($(html))
     }); */
-    //get_item()
-    await $.get("filter-class-item.html", function (data) {
-      optionsMenuHtml=data
-      html=optionsMenuHtml.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
-      $("#accordion-filters").append($(html))
-    });
-    console.log(document.getElementById(cf.name+"_filters"))
-
-/*     async function get_item(){
-      await $.get("filter-class-item.html", function (data) {
-        optionsMenuHtml=data
-        html=optionsMenuHtml.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
-        $("#accordion-filters").append($(html))
-      });
-    } */
   }
+classFilterClass.prototype.getCode= async function(){
+  var cf=this;
+  cf.code = await getHtmlCodeFromFile("pages/filter-class-item.html");
+  //console.log(cf.code)
+  cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
+  //console.log(cf.code)
+}
 
 classFilterClass.prototype.checkVisibility = function () {  
   var cf=this;
@@ -1002,7 +757,7 @@ filterFreeGraph.prototype.getValuesFilterVisibleNodes=function (){
 
     fi.backValues=fi.values
 
-    //console.log(networkGraph.data["links"])
+    ////////console.log(networkGraph.data["links"])
     networkGraph.data["links"].forEach(function(d){
 
       if(fi.bubbleId==d.source.id){

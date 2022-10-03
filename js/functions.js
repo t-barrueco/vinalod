@@ -78,13 +78,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        ////////////////////////////////console.log("pageY menos")
+        //////////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        ////////////////////////////////console.log("pageX menos")
+        //////////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -808,3 +808,44 @@ function fromSelectToAskQuery(query){
   query=query.replaceAll("parameter","PARAMETER")
   return query
 }
+function changeDateFormat(date){
+  //console.log(date)
+  let prevFormat=new Date(date)
+  //console.log(prevFormat)
+  //console.log(prevFormat.getMonth())
+  //console.log(prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
+  return (prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
+}
+
+function checkHiddenFilter(filter,node){
+  //console.log(filter)
+  //console.log(node)
+  if(filter.type=="date"){
+    console.log(formatDate(node[filter.property]))
+    console.log(formatDate(filter.values.start))
+    console.log(formatDate(filter.values.end))
+    //console.log(new Date(node[filter.property])>=new Date(formatDate(filter.values.start)))
+    //console.log((new Date(node[filter.property])<=new Date(formatDate(filter.values.end))))
+    if((formatDate(node[filter.property])>=formatDate(filter.values.start))&&(formatDate(node[filter.property])<=formatDate(filter.values.end))){
+      return false
+    }else{
+      return true
+    }
+  }
+}
+function formatDate(str){
+  const [day, month, year] = str.split('-');
+  const date = new Date(+year, +month - 1, +day);
+  //console.log(date); 
+  return new Date(date)
+}
+/* function formatDateTime(str){
+  let date=new Date(str)
+  console.log(date.getDate())
+  console.log(date.getMonth())
+  console.log(date.getFullYear())
+  const [day, month, year] = str.split('-');
+  //const date = new Date(+year, +month - 1, +day);
+  //console.log(date); 
+  return date
+} */
