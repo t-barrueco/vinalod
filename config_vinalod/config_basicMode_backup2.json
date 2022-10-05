@@ -1116,7 +1116,7 @@
     ],
     "askquery":null
   },
-  { "class":"Directory Organization",
+  { "class":"Membership",
     "endpoint_url":"https://publications.europa.eu/webapi/rdf/sparql",
     "query":"#Directory Organization_1\n PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n PREFIX org: <http://www.w3.org/ns/org#>\n PREFIX euvoc: <http://publications.europa.eu/ontology/euvoc#>\n PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n PREFIX resource: <http://publications.europa.eu/resource/>\nSELECT DISTINCT ?membership ?membership_order ?membership_positionStatus ?person ?person_image \n\nwhere {{?membership_uri org:organization ?directoryOrg_uri;\n euvoc:order ?membership_order;\n euvoc:positionComplement ?membership;\n euvoc:positionStatus ?membership_positionStatusUri.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.\n ?person_uri org:hasMembership ?membership_uri;\n foaf:name ?person.\nOPTIONAL{\n ?person_uri foaf:img ?person_image.\n BIND (STRBEFORE(STRAFTER( STR(?person_image), \"https://www.europarl.europa.eu/mepphoto/\" ), \".jpg\" ) AS ?person_id)\n }\n } \nfilter(?directoryOrg_uri=<PARAMETER>).\nFILTER(langMatches(lang(?membership), \"en\")).\nFILTER(langMatches(lang(?membership_positionStatus), \"en\")).\nFILTER(langMatches(lang(?directoryOrg), \"en\")).\n}ORDER BY ?membership_order ?person",
     "hierarchy":[

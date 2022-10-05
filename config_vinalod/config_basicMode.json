@@ -1139,7 +1139,7 @@
     "askquery":null
   },
   {
-    "class":"Directory Organization",
+    "class":"Membership",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
     "query":"#Directory Organization_1\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n PREFIX resource: <http:\/\/publications.europa.eu\/resource\/>\nSELECT DISTINCT ?membership ?membership_order ?membership_positionStatus ?person ?person_image \n\nwhere {{?membership_uri org:organization ?directoryOrg_uri;\n euvoc:order ?membership_order;\n euvoc:positionComplement ?membership;\n euvoc:positionStatus ?membership_positionStatusUri.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.\n ?person_uri org:hasMembership ?membership_uri;\n foaf:name ?person.\nOPTIONAL{\n ?person_uri foaf:img ?person_image.\n BIND (STRBEFORE(STRAFTER( STR(?person_image), 'https:\/\/www.europarl.europa.eu\/mepphoto\/' ), '.jpg' ) AS ?person_id)\n }\n } \nfilter(?directoryOrg_uri=<PARAMETER>).\nFILTER(langMatches(lang(?membership), 'en')).\nFILTER(langMatches(lang(?membership_positionStatus), 'en')).\nFILTER(langMatches(lang(?directoryOrg), 'en')).\n}ORDER BY ?membership_order ?person",
     "hierarchy":[
@@ -1423,7 +1423,7 @@
   {
     "class":"Directory Organization",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#Directory Organization_5\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\nSELECT DISTINCT ?directoryOrg ?membership ?directoryOrg_uri AS ?membership_directoryOrg\nwhere {{?membership_uri org:organization ?directoryOrg_uri;\n euvoc:positionComplement ?membership.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n } \n filter(?directoryOrg_uri=<PARAMETER>)\n FILTER(langMatches(lang(?membership), 'en')).\n FILTER(langMatches(lang(?directoryOrg), 'en')).\n }GROUP BY ?membership\n",
+    "query":"#Directory Organization_5\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\nSELECT DISTINCT ?directoryOrg ?membership ?membership AS ?membership_uri ?directoryOrg_uri AS ?membership_directoryOrg\nwhere {{?membership_uri org:organization ?directoryOrg_uri;\n euvoc:positionComplement ?membership.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n } \n filter(?directoryOrg_uri=<PARAMETER>)\n FILTER(langMatches(lang(?membership), 'en')).\n FILTER(langMatches(lang(?directoryOrg), 'en')).\n }GROUP BY ?membership\n",
     "hierarchy":[
       {
         "parent":"directoryOrg",
@@ -2812,7 +2812,7 @@
   {
     "class":"nutsClassification",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#nutsClassification\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n PREFIX dcelements:<http:\/\/purl.org\/dc\/elements\/1.1\/>\n PREFIX nsloc:<https:\/\/www.w3.org\/ns\/locn#>\n PREFIX dcat:<http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX rdfs:  <http:\/\/www.w3.org\/2000\/01\/rdf-schema#>\nSELECT DISTINCT ?nuts (<http:\/\/data.europa.eu\/nuts> AS ?nuts_uri) ?nutsLevel0 ?nutsLevel0_uri ?nutsLevel0_identifier ?distribution (?distribution AS ?distribution_uri) ?distribution_projection ?distribution_scale ?distribution_license ?distribution_downloadURL ?distribution_format\nwhere {{\n?nutsLevel0_uri skos:prefLabel ?nutsLevel0;\ndcelements:identifier ?nutsLevel0_identifier;\n<http:\/\/data.europa.eu\/nuts\/level> 0;\nskos:inScheme <http:\/\/data.europa.eu\/nuts>.\n<http:\/\/data.europa.eu\/nuts> skos:prefLabel ?nuts.\n?nutsLevel0_uri nsloc:geometry ?geo.\n?geo dcat:distribution ?distribution;\n <http:\/\/data.europa.eu\/nuts\/projection> ?distribution_projection;\n <http:\/\/data.europa.eu\/nuts\/scale> ?distribution_scale.\n?distribution dcterms:license ?distribution_license;\n dcat:downloadURL ?distribution_downloadURL;\n dcterms:format ?distribution_format.\n}\n}ORDER BY ?nuts ?nutsLevel0 ?distribution_scale\n",
+    "query":"#nutsClassification\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n PREFIX dcelements:<http:\/\/purl.org\/dc\/elements\/1.1\/>\n PREFIX nsloc:<https:\/\/www.w3.org\/ns\/locn#>\n PREFIX dcat:<http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX rdfs:  <http:\/\/www.w3.org\/2000\/01\/rdf-schema#>\nSELECT DISTINCT ?nuts (<http:\/\/data.europa.eu\/nuts> AS ?nuts_uri) ?nutsLevel0 (?nutsLevel0 as ?nutsLevel0_name) ?nutsLevel0_uri ?nutsLevel0_identifier ?distribution (?distribution AS ?distribution_uri) ?distribution_projection ?distribution_scale ?distribution_license ?distribution_downloadURL ?distribution_format\nwhere {{\n?nutsLevel0_uri skos:prefLabel ?nutsLevel0;\ndcelements:identifier ?nutsLevel0_identifier;\n<http:\/\/data.europa.eu\/nuts\/level> 0;\nskos:inScheme <http:\/\/data.europa.eu\/nuts>.\n<http:\/\/data.europa.eu\/nuts> skos:prefLabel ?nuts.\n?nutsLevel0_uri nsloc:geometry ?geo.\n?geo dcat:distribution ?distribution;\n <http:\/\/data.europa.eu\/nuts\/projection> ?distribution_projection;\n <http:\/\/data.europa.eu\/nuts\/scale> ?distribution_scale.\n?distribution dcterms:license ?distribution_license;\n dcat:downloadURL ?distribution_downloadURL;\n dcterms:format ?distribution_format.\n}\n}ORDER BY ?nuts ?nutsLevel0 ?distribution_scale\n",
     "hierarchy":[
       {
         "parent":"nuts",
@@ -2828,6 +2828,11 @@
         "class":"nuts",
         "property":"nuts_uri",
         "property_name":"URI"
+      },
+      {
+        "class":"nutsLevel0",
+        "property":"nutsLevel0_name",
+        "property_name":"Name"
       },
       {
         "class":"nutsLevel0",
@@ -2885,7 +2890,12 @@
       }
     ],
     "parameters":null,
-    "filters":null,
+    "filters":     [{
+      "property":"nutsLevel0_name",
+      "class":"nutsLevel0",
+      "filter_type":"dropdown",
+      "filter_text":"Name"
+    }],
     "tooltip":[
       {
         "property":"distribution_projection",

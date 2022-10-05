@@ -4,7 +4,7 @@ MenuItems = function (_node) {
 
 MenuItems.prototype.init = async function () {
   var mi=this;
-  console.log(document.getElementsByTagName("table"))
+  //console.log(document.getElementsByTagName("table"))
 
   await mi.buildOptions()
   mi.filterByMenuOption()
@@ -32,10 +32,11 @@ MenuItems.prototype.filterByMenuOption = function () {
   MenuItems.prototype.filterByAskResult = async function () {
     var mi=this;
     mi.selectedRows=[]
+    console.log(mi.indexRows)
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
             results = await runSparlqQuery(mi.indexRows[i].url,mi.indexRows[i].askquery,"askquery");
-            //console.log(results)
+            console.log(results)
         } catch (e) {
         results = false
         } 
@@ -235,7 +236,7 @@ MenuItemsBasic.prototype.buildOptions=function (){
   mi.selectedRows=configFile.getRowsNodeClass(mi.node["className"])
   mi.selectedRows.forEach(element => {
       mi.indexRows.push(new ConfigRow(element.option,mi.node))
-      mi.indexRows[mi.indexRows.length - 1].fromSelectToAskQuery()
+      //mi.indexRows[mi.indexRows.length - 1].fromSelectToAskQuery()
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["endpoint_url"]
       mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["askquery"]
   });

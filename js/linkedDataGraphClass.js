@@ -8,13 +8,13 @@ LinkedDataGraph.prototype.init = async function () {
     var ldg=this;
     await ldg.getResults()
     ldg.buildData()
-    ////console.log(ldg.data.treeData)
+    ////////console.log(ldg.data.treeData)
   }
 
 LinkedDataGraph.prototype.getResults = async function () {
     var ldg=this;
     ldg.results = await runSparlqQuery(ldg.settings.url,ldg.settings.query,"query");
-    ////console.log(ldg.results)
+    ////////console.log(ldg.results)
   }
 
 LinkedDataGraph.prototype.buildData = function () {
@@ -97,19 +97,20 @@ LinkedDataGraph.prototype.filter = function(){
         nodes[position]["number"]=0;
       } 
     } */
-    ////console.log(node)
+    ////////console.log(node)
     classFound=networkGraph.filterCondition.filter(d=>d.class==node.class)
-
+    
     if(classFound.length>0){
       getHiddenForNode(classFound[0],node)
     }
     hidden=false
-    //console.log(hidden)
+    //////console.log(hidden)
 
     if (node.children){
       node.children.forEach(function(c){
-        ////console.log(networkGraph.filterCondition.filter(d=>d.class==c.class))
+        ////////console.log(networkGraph.filterCondition.filter(d=>d.class==c.class))
         classFound=networkGraph.filterCondition.filter(d=>d.class==c.class)
+        //console.log(classFound)
         if(classFound.length>0){
           getHiddenForNode(classFound[0],c)
         }
@@ -122,30 +123,31 @@ LinkedDataGraph.prototype.filter = function(){
     recurse(r);
   })
   //ldg.data={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeData};
-  console.log(ldg.treeData)
+  ////console.log(ldg.treeData)
   ldg.flatten()
 
   function getHiddenForNode(classNode,node){
     classNode.properties.forEach(function (d){
-      //console.log(d.property)
-      //console.log(c)
+      //console.log(d)
+      //////console.log(d.property)
+      //////console.log(c)
       hidden=checkHiddenFilter(d,node)
       //if(checkHiddenFilter(d,c)){
-      console.log(hidden)
+      ////console.log(hidden)
       if(hidden){
         hidden=true
       }
       //}
     })
-    //console.log(hidden)
+    //////console.log(hidden)
     if (hidden){
       node.hidden=true
     }else{
-      //console.log("delete")
+      //////console.log("delete")
       delete node.hidden
-      //console.log(c)
+      //////console.log(c)
     }
-    //console.log(c)
+    //////console.log(c)
   }
 }
 
@@ -185,12 +187,16 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
     ldg.treeData=[]
   }
 
+  ////console.log(ldg.results)
   for (let j = 0; j < ldg.results.length; ++j) {
+      ////console.log(ldg.results[j])
       treeResults=get_hierarchy_from_keys(Object.keys(ldg.results[j]))
+      ////console.log(treeResults)
       for (let i = 0; i < treeResults.length; ++i) {
           if(ldg.results[j][treeResults[i]]){
               if(i>0){
               indexParent=checkNodeInTreeData()
+              ////console.log(indexParent)
               if(treeData[indexParent]["children"].filter(d=>d.value==ldg.results[j][treeResults[i]]["value"]).length==0){
                   child=nodeValues(ldg.results[j],i)
                   
@@ -222,6 +228,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   function checkNodeInTreeData(){
       var pathSearch=JSON.parse(JSON.stringify(procNode));
       var prevNodeIndex=-1,prevNodeId;
+      ////console.log(treeData)
       while(pathSearch.length>0){
       if(prevNodeIndex!=-1){
           prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==pathSearch[0])[0]["id"]
@@ -303,7 +310,7 @@ LinkedDataGraphExpert.prototype.buildTreeData = function () {
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
-  ////console.log(ldg.settings["subject-object"])
+  ////////console.log(ldg.settings["subject-object"])
   ldg.results.forEach(r => {
     if (ldg.settings["subject-object"] == "s") {
       if (r["o"]["more_results"]) {

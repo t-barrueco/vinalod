@@ -25,7 +25,7 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.data=vis.data.flatData
   vis.treeData=linkedDataGraph.treeData
-  vis.allData=vis.data
+  vis.allData=JSON.parse(JSON.stringify(vis.data));
 
   vis.rootNode=vis.data.nodes[0]
   
@@ -1131,7 +1131,7 @@ NetworkGraph.prototype.refresh = function (node){
 
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
-  vis.allData=vis.data
+  //vis.allData=vis.data
 
 
   vis.dataJoinGraph()
