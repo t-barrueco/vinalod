@@ -503,18 +503,7 @@ async function changeBasicGraph(option){
   ////console.log($(".graph"))
   legend=new Legend("legend",networkGraph)
 
-  if(configRow.rowFields.filters){
-    if(configRow.rowFields.filters.length!=0){
-      networkGraph.filters=configRow.rowFields.filters;
-      //console.log(networkGraph.filters)
-      addFilters()
-      $("#filters").removeClass("hidden")
-    }else{
-      $("#filters").addClass("hidden")
-    }
-  }else{
-    $("#filters").addClass("hidden")
-  }
+  checkFilters()
 
 
   ////console.log(document.getElementsByTagName("table"))
@@ -672,6 +661,7 @@ async function checkMenuItems(origin,element) {
     if(node.class!="free"){
       await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
       networkGraph.refresh()
+      checkFilters()
     }else{
       if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
         await linkedDataGraph.update(menuItems.selectedRows[0],node)
@@ -796,13 +786,16 @@ $("#"+elementId).append(code)
 } */
 
 function addFilters(){
-  //console.log(networkGraph.filters)
-  networkGraph.filterClassesObjects=[]
-  if(networkGraph.filters!=null){
+  var newFilterClasses;
+  console.log(networkGraph.filters)
+  if(configRow.rowFields.filters!=null){
     networkGraph.filterClasses = [...new Set(networkGraph.filters.map(d=>d.class))]
+    newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
+    
     //networkGraph.filterClasses.forEach(function(d){
-    for (let i = 0; i < networkGraph.filterClasses.length; ++i) { 
-      networkGraph.filterClassesObjects.push(new FilterClassBasic(networkGraph.filterClasses[i])) 
+    for (let i = 0; i < newFilterClasses.length; ++i) { 
+      console.log(newFilterClasses[i])
+      networkGraph.filterClassesObjects.push(new FilterClassBasic(newFilterClasses[i])) 
     }
     //})
     ////console.log(networkGraph.filterClassesObjects)
@@ -841,4 +834,37 @@ function changeTab(tab){
   ////console.log($("#content-main-tabs #"+tab.id.replace("-tab","-content")))
 
   $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
+}
+/* async function addGraph(){
+  await linkedDataGraph.update(menuItems.selectedRows[0],node)
+  networkGraph.refresh()
+} */
+function checkFilters(){
+/*   if(configRow.rowFields.filters){
+    console.log(configRow.rowFields.filters)
+    if(configRow.rowFields.filters.length!=0){
+      networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
+      console.log(networkGraph.filters)
+      addFilters()
+      $("#filters").removeClass("hidden")
+    }else{
+      $("#filters").addClass("hidden")
+    }
+  }else{
+    $("#filters").addClass("hidden")
+  } */
+  if(configRow.rowFields.filters){
+    //console.log(configRow.rowFields.filters)
+    if(configRow.rowFields.filters!=0){
+      networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
+      //console.log(networkGraph.filters)
+      addFilters()
+      //$("#filters").removeClass("hidden")
+    }
+  }
+  if(networkGraph.filters.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  }
 }

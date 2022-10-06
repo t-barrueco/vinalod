@@ -932,8 +932,7 @@
         "class":"person",
         "filter_type":"text",
         "filter_text":"First and Last Name"
-      },
-      {
+      },{
         "property":"person_citiz",
         "class":"person",
         "filter_type":"dropdown",
@@ -2107,7 +2106,7 @@
   {
     "class":"dataeuropa",
     "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"\n#dataeuropa \n#SELECT DISTINCT ?o\nSELECT DISTINCT ('data.europa.eu' as ?dataeuropa) ('http:\/\/data.europa.eu' as ?dataeuropa_uri) concat(?title, ' - ', ?description) as ?DEUCatalog ?DEUCatalog_uri concat(DAY(?DEUCatalog_ModifiedFull),'-',MONTH(?DEUCatalog_ModifiedFull),'-',YEAR(?DEUCatalog_ModifiedFull)) as ?DEUCatalog_Modified ?DEUCatalog_spatial_uri ?DEUCatalog_language \nWHERE{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?title\nOPTIONAL{?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/description>  ?description}\noptional { ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/spatial> ?DEUCatalog_spatial_uri }\n?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/modified> ?DEUCatalog_ModifiedFull.\n?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/language> ?DEUCatalog_Language_uri.\n?DEUCatalog_Language_uri <http:\/\/www.w3.org\/2004\/02\/skos\/core#prefLabel> ?DEUCatalog_language.\n{ SELECT  ?DEUCatalog_uri \n WHERE { ?DEUCatalog_uri a <http:\/\/www.w3.org\/ns\/dcat#Catalog>. filter (! EXISTS { ?s <http:\/\/purl.org\/dc\/terms\/hasPart> ?DEUCatalog_uri })}\n}\nFILTER(langMatches(lang(?DEUCatalog_language), \"en\")).\n} ORDER BY ?DEUCatalog_spatial_uri ?DEUCatalog\n",
+    "query":"\n#dataeuropa\n SELECT DISTINCT ('data.europa.eu' as ?dataeuropa) ('http:\/\/data.europa.eu' as ?dataeuropa_uri) concat(?title, ' - ', ?description) as ?DEUCatalog ?DEUCatalog_uri concat(DAY(?DEUCatalog_ModifiedFull),'-',MONTH(?DEUCatalog_ModifiedFull),'-',YEAR(?DEUCatalog_ModifiedFull)) as ?DEUCatalog_Modified ?DEUCatalog_spatial_uri ?DEUCatalog_Language\n WHERE{ ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/title>  ?title\n OPTIONAL{?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/description>  ?description} optional { ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/spatial> ?DEUCatalog_spatial_uri } ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/modified> ?DEUCatalog_ModifiedFull. ?DEUCatalog_uri <http:\/\/purl.org\/dc\/terms\/language> ?DEUCatalog_Language   { SELECT  ?DEUCatalog_uri \n WHERE\n { ?DEUCatalog_uri a <http:\/\/www.w3.org\/ns\/dcat#Catalog>. filter (! EXISTS { ?s <http:\/\/purl.org\/dc\/terms\/hasPart> ?DEUCatalog_uri })}\n }\n } ORDER BY ?DEUCatalog_spatial_uri ?DEUCatalog\n",
     "hierarchy":[
       {
         "parent":"dataeuropa",
@@ -2132,7 +2131,7 @@
       },
       {
         "class":"DEUCatalog",
-        "property":"DEUCatalog_language",
+        "property":"DEUCatalog_Language",
         "property_name":"DEU Catalog Language"
       },
       {
@@ -2159,9 +2158,8 @@
         "property":"DEUCatalog_Modified",
         "class":"DEUCatalog",
         "filter_type":"date"
-      },
-      {
-        "property":"DEUCatalog_language",
+      },{
+        "property":"DEUCatalog_Language",
         "class":"DEUCatalog",
         "filter_type":"dropdown"
       }
@@ -2187,7 +2185,7 @@
   {
     "class":"Catalog of open datasets",
     "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"\n#Catalog of open datasets_1\nPREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog ?datatheme (?datatheme AS ?datatheme_name) ?datatheme_uri ?datatheme_definition ?dataset ?dataset_uri (?dataset_uri AS ?dataset_link) ?dataset_description ?dataset_accessRights ?documentation ?documentation_description ?documentation_uri (?documentation_uri AS ?documentation_link)\n#SELECT distinct ?datatheme\nWHERE{{ \n ?DEUCatalog_uri dcat:dataset ?dataset_uri;\ndcterms:title ?title.\n?dataset_uri dcterms:description ?dataset_description;\ndcterms:title ?dataset.\nOPTIONAL{\n?dataset_uri dcat:theme ?datatheme_uri.\n?datatheme_uri skos:prefLabel ?datatheme_temp.\nFILTER(langMatches(lang(?datatheme_temp), 'en')).\n}\nBIND (IF(bound(?datatheme_uri),?datatheme_temp,\"Miscellaneous\") as ?datatheme).\nOPTIONAL{\n?dataset_uri dcterms:accessRights ?dataset_accessRightsURI.\n?dataset_accessRightsURI skos:prefLabel ?dataset_accessRights.\n}\nOPTIONAL{\n?dataset_uri foaf:page ?documentation_uri.\n?documentation_uri dcterms:title ?documentation;\ndcterms:description ?documentation_description.\n}\nOPTIONAL\n{ ?DEUCatalog_uri dcterms:description ?description\n} \n?DEUCatalog_uri dcterms:modified ?DEUCatalog_Modified.\n?DEUCatalog_uri dcterms:language ?DEUCatalog_Language.\n}\nfilter(?DEUCatalog_uri=<PARAMETER>).\nFILTER(langMatches(lang(?dataset), 'en')).\nFILTER(langMatches(lang(?dataset_description), 'en')).\n}\n",
+    "query":"#Catalog of open datasets_1\n PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog ?datatheme ?datatheme_uri ?datatheme_definition ?dataset ?dataset_uri (?dataset_uri AS ?dataset_link) ?dataset_description ?dataset_accessRights ?documentation ?documentation_description ?documentation_uri (?documentation_uri AS ?documentation_link)\n WHERE{{ \n ?DEUCatalog_uri dcat:dataset ?dataset_uri; \n dcterms:title ?title.\n ?dataset_uri dcterms:description ?dataset_description;\n dcterms:title ?dataset.\n #dcterms:accessRights ?dataset_accessRightsURI.\n #?dataset_accessRightsURI skos:prefLabel ?dataset_accessRights.\n #?dataset_uri dcat:theme ?datatheme_uri.\n #?dataset_uri dcat:distribution ?distribution_uri.\n #?datatheme_uri skos:prefLabel ?datatheme.\n #skos:definition ?datatheme_definition.\n OPTIONAL{\n ?dataset_uri dcat:theme ?datatheme_uri.\n ?datatheme_uri skos:prefLabel ?datatheme.\n #skos:definition ?datatheme_definition.\n FILTER(langMatches(lang(?datatheme), 'en')).\n #FILTER(langMatches(lang(?datatheme_definition), 'en')).\n }\n OPTIONAL{\n ?dataset_uri dcterms:accessRights ?dataset_accessRightsURI.\n ?dataset_accessRightsURI skos:prefLabel ?dataset_accessRights.\n }\n OPTIONAL{\n ?dataset_uri foaf:page ?documentation_uri.\n ?documentation_uri dcterms:title ?documentation;\n dcterms:description ?documentation_description.\n }\n OPTIONAL\n { ?DEUCatalog_uri dcterms:description ?description\n } ?DEUCatalog_uri dcterms:modified ?DEUCatalog_Modified.\n ?DEUCatalog_uri dcterms:language ?DEUCatalog_Language.  \n }\n filter(?DEUCatalog_uri=<PARAMETER>).\n FILTER(langMatches(lang(?dataset), 'en')).\n FILTER(langMatches(lang(?dataset_description), 'en')).\n }",
     "hierarchy":[
       {
         "parent":"DEUCatalog",
@@ -2217,11 +2215,6 @@
         "class":"DEUCatalog",
         "property":"DEUCatalog_Language",
         "property_name":"Catalog language"
-      },
-      {
-        "class":"datatheme",
-        "property":"datatheme_name",
-        "property_name":"Data theme name"
       },
       {
         "class":"datatheme",
@@ -2290,12 +2283,9 @@
     "parameters":[
 
     ],
-    "filters":[{
-      "property":"datatheme_name",
-      "class":"datatheme",
-      "filter_type":"dropdown",
-      "filter_text":"Name"
-    }],
+    "filters":[
+
+    ],
     "tooltip":[
 
     ],
@@ -2910,20 +2900,18 @@
       }
     ],
     "parameters":null,
-    "filters":[
-      {
-        "property":"nutsLevel0_name",
-        "class":"nutsLevel0",
-        "filter_type":"dropdown",
-        "filter_text":"Name"
-      },
-      {
-        "property":"distribution_scale",
-        "class":"distribution",
-        "filter_type":"dropdown",
-        "filter_text":"Distribution"
-      }
-    ],
+    "filters":     [{
+      "property":"nutsLevel0_name",
+      "class":"nutsLevel0",
+      "filter_type":"dropdown",
+      "filter_text":"Name"
+    },
+    {
+      "property":"distribution_scale",
+      "class":"distribution",
+      "filter_type":"dropdown",
+      "filter_text":"Distribution"
+    }],
     "tooltip":[
       {
         "property":"distribution_projection",

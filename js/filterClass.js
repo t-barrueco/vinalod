@@ -17,6 +17,8 @@ FilterClass = function (_name) {
 
 FilterClass.prototype.getCode= async function(){
   var cf=this;
+  console.log(cf)
+  console.log(networkGraph.nodesClassesShow)
   cf.code = await getHtmlCodeFromFile("pages/filter-class-item.html");
   cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
@@ -265,40 +267,33 @@ FilterBasic.prototype.addHtml= function () {
     select.value = valuesFilter[0];
   } 
   async function addDate(){
-    var optionsMenuHtml,html
 
     let code = await getHtmlCodeFromFile("pages/date-filter.html");
-    //console.log(fi.values)
     code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text)
     $("#"+fi.details.class+"_filters").append(code).ready(function () {
       ECL.autoInit();
-      //console.log("265")
     })
-    //console.log(fi.values)
-    //console.log(fi.values[fi.values.length-1])
-    //$("#"+fi.details.class+"_filters #start-date").attr("value",changeDateFormat(fi.values[0]))
+
     $("#"+fi.details.class+"_filters #start-date").attr("value",fi.values[0])
     $("#"+fi.details.class+"_filters #start-date").attr("name",fi.details.property+"_start")
     $("#"+fi.details.class+"_filters #start-date").attr("id",fi.details.property+"_start")
 
-    //$("#"+fi.details.class+"_filters #end-date").attr("value",changeDateFormat(fi.values[fi.values.length-1]))
     $("#"+fi.details.class+"_filters #end-date").attr("value",fi.values[fi.values.length-1])
     $("#"+fi.details.class+"_filters #end-date").attr("name",fi.details.property+"_name")
     $("#"+fi.details.class+"_filters #end-date").attr("id",fi.details.property+"_end")
 
-
-/*       await $.get("pages/date-filter.html", function (data) {
-      optionsMenuHtml=data
-      html=optionsMenuHtml.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.filterText)
-      $("#"+fi.classFilterName+"_filters").append($(html))
-    }); */
   }
   
-  function addText(div){
-    var label = document.createElement("label");
-
-    label.innerHTML = fi.property.split("_")[1]
-    label.htmlFor = fi.property.split("_")[1];
+  async function addText(){
+    let code = await getHtmlCodeFromFile("pages/text-filter.html");
+    code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text).replaceAll("Placeholder text","Enter "+fi.propertyFullName)
+    $("#"+fi.details.class+"_filters").append(code).ready(function () {
+      ECL.autoInit();
+    })
+/*     var label = document.createElement("label");
+    console.log(fi)
+    label.innerHTML = fi.details.property.split("_")[1]
+    label.htmlFor = fi.details.property.split("_")[1];
     label.id= fi.property.replaceAll(" ","_")+"_label";
     label.className="block mb-2 text-base font-light text-gray-700"
     
@@ -322,7 +317,7 @@ FilterBasic.prototype.addHtml= function () {
     for (let d of docs) {
         searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0]["value"])
     }
-    autocomplete(document.getElementById(fi.id), searchValues);
+    autocomplete(document.getElementById(fi.id), searchValues); */
   }
 
   function addNumber(div){
