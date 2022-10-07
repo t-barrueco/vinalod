@@ -255,6 +255,8 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
     action: async (data,d) => {
         await linkedDataGraph.update(d.title,data)
         networkGraph.refresh()
+        checkFilters()
+
         //console.log(document.getElementsByTagName("table"))
 
     }

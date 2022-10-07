@@ -22,6 +22,7 @@ ConfigFile.prototype.getRowNumber = function (option) {
 
 ConfigFile.prototype.getFieldsConfigFile= function(rowDataConfig){
     var cf=this;
+    //console.log(cf.file[rowDataConfig])
     return JSON.parse(JSON.stringify(cf.file[rowDataConfig]));
   }
 

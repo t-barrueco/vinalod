@@ -1033,7 +1033,7 @@
   {
     "class":"Publication Document",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#Publication Document\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\n PREFIX cmr: <http:\/\/publications.europa.eu\/ontology\/cdm\/cmr#>\nSELECT DISTINCT ?expression ?expression_uri ?manifestation ?manifestation_uri ?manifestation_image ?manifestation_number (CONCAT(STR(DAY(?date)),'\/', STR(MONTH(?date)), '\/', STR(YEAR(?date))) as ?manifestation_creationDate) (CONCAT(STR(DAY(?date2)),'\/', STR(MONTH(?date2)), '\/', STR(YEAR(?date2))) as ?manifestation_lastModificationDate) ?manifestation_link\nwhere {\n{\n?manifestation_uri cdm:manifestation_manifests_expression ?expression_uri.\n?manifestation_uri cdm:manifestation_has_thumbnail ?manifestation_image;\ncdm:manifestation_number_catalogue ?manifestation_number;\ncmr:creationDate ?date;\ncmr:lastModificationDate ?date2;\ncdm:manifestation_type ?manifestation.\n?expression_uri cdm:expression_title ?expression.\nOPTIONAL{\n ?manifestation_link cdm:item_belongs_to_manifestation ?manifestation_uri;\n cmr:manifestationMimeType ?mimeType.\n filter((?mimeType='application\/pdf;type=pdfx')||(?mimeType='application\/pdf')).\n}\n}\nfilter(?expression_uri=<PARAMETER>)\n}ORDER BY ?expression DESC(?date)",
+    "query":"#Publication Document\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\n PREFIX cmr: <http:\/\/publications.europa.eu\/ontology\/cdm\/cmr#>\nSELECT DISTINCT ?expression ?expression_uri ?manifestation (?manifestation as ?manifestation_type) ?manifestation_uri ?manifestation_image ?manifestation_number (CONCAT(STR(DAY(?date)),'\/', STR(MONTH(?date)), '\/', STR(YEAR(?date))) as ?manifestation_creationDate) (CONCAT(STR(DAY(?date2)),'\/', STR(MONTH(?date2)), '\/', STR(YEAR(?date2))) as ?manifestation_lastModificationDate) ?manifestation_link\nwhere {\n{\n?manifestation_uri cdm:manifestation_manifests_expression ?expression_uri.\n?manifestation_uri cdm:manifestation_has_thumbnail ?manifestation_image;\ncdm:manifestation_number_catalogue ?manifestation_number;\ncmr:creationDate ?date;\ncmr:lastModificationDate ?date2;\ncdm:manifestation_type ?manifestation.\n?expression_uri cdm:expression_title ?expression.\nOPTIONAL{\n ?manifestation_link cdm:item_belongs_to_manifestation ?manifestation_uri;\n cmr:manifestationMimeType ?mimeType.\n filter((?mimeType='application\/pdf;type=pdfx')||(?mimeType='application\/pdf')).\n}\n}\nfilter(?expression_uri=<PARAMETER>)\n}ORDER BY ?expression DESC(?date)",
     "hierarchy":[
       {
         "parent":"expression",
@@ -1075,6 +1075,11 @@
         "class":"manifestation",
         "property":"manifestation_link",
         "property_name":"Link"
+      },
+      {
+        "class":"manifestation",
+        "property":"manifestation_type",
+        "property_name":"Type"
       }
     ],
     "classes_text":[
@@ -1403,11 +1408,6 @@
 
     ],
     "filters":[
-      {
-        "property":"directoryOrg_locality",
-        "class":"directoryOrg",
-        "filter_type":"dropdown"
-      }
     ],
     "tooltip":[
       {
@@ -1483,7 +1483,7 @@
   {
     "class":"Directory Organization",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#Directory Organization_6\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT DISTINCT ?corporateBody ?corporateBody_uri ?publicationDocument ?publicationDocument_uri ?publicationDocument_abstract ?publicationDocument_language ?publicationDocument_date ?publicationDocument_id\nwhere {{?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?opTheme_uri=<PARAMETER2>)\nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}ORDER BY ?corporateBody DESC(?publicationDocument_date)",
+    "query":"#Directory Organization_6\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT DISTINCT ?corporateBody ?corporateBody_uri ?publicationDocument (?publicationDocument as ?publicationDocument_title) ?publicationDocument_uri ?publicationDocument_abstract ?publicationDocument_language ?publicationDocument_date ?publicationDocument_id\nwhere {{?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?opTheme_uri=<PARAMETER2>)\nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}ORDER BY ?corporateBody DESC(?publicationDocument_date)",
     "hierarchy":[
       {
         "parent":"corporateBody",
@@ -1500,6 +1500,11 @@
         "class":"publicationDocument",
         "property":"publicationDocument_uri",
         "property_name":"Publication Document URI"
+      },
+      {
+        "class":"publicationDocument",
+        "property":"publicationDocument_title",
+        "property_name":"Publication Document title"
       },
       {
         "class":"publicationDocument",
@@ -1533,7 +1538,12 @@
       }
     ],
     "filters":[
-
+      {
+        "property":"publicationDocument_title",
+        "filter_type":"text",
+        "class":"publicationDocument",
+        "filter_text":"Publication document title"
+      }
     ],
     "tooltip":[
       {

@@ -17,8 +17,7 @@ FilterClass = function (_name) {
 
 FilterClass.prototype.getCode= async function(){
   var cf=this;
-  console.log(cf)
-  console.log(networkGraph.nodesClassesShow)
+
   cf.code = await getHtmlCodeFromFile("pages/filter-class-item.html");
   cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
@@ -33,16 +32,22 @@ FilterClassBasic.prototype.init = async function () {
   var cf=this;
   cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
   await cf.getCode()
-  //bubbleId=linkedDataGraph.treeData.slice(-1)[0]["id"]
+
   $("#accordion-filters").append(cf.code).ready(function (){
     for (let i = 0; i < cf.filters.length; i++) {
-      cf.filters[i].filterObject=new FilterBasic(cf.filters[i])
+      console.log(cf.filters)
+      if(cf.filters[i]["filter_type"]=="dropdown"){
+        cf.filters[i].filterObject=new FilterBasicDropdown(cf.filters[i])
+      }else if(cf.filters[i]["filter_type"]=="date"){
+        cf.filters[i].filterObject=new FilterBasicDate(cf.filters[i])
+      }else if(cf.filters[i]["filter_type"]=="text"){
+        cf.filters[i].filterObject=new FilterBasicText(cf.filters[i])
+      }else if(cf.filters[i]["filter_type"]=="number"){
+        cf.filters[i].filterObject=new FilterBasicNumber(cf.filters[i])
+      }
     }
   })
-  //console.log(cf.filters)
 }
-/* FiltersClassBasic.prototype.getCode=function (){
-} */
 
 function FilterClassExpert(...args){
   FilterClass.apply(this, args);
@@ -50,15 +55,10 @@ function FilterClassExpert(...args){
     
 FilterClassExpert.prototype = Object.create(FilterClass.prototype);
 
-/* FiltersClassExpert.prototype.getCode=function (){
-} */
-
 Filter = function (_details) {
     this.details = _details;
-    //this.bubbleId=_bubbleId
     this.init();
   };  
-  /////////////////// initVis Method //////////////////////
   
 Filter.prototype.init = function () {
   var fi=this;
@@ -69,26 +69,12 @@ Filter.prototype.init = function () {
 
 Filter.prototype.getValuesVisibleNodes=function (){
     var fi=this,values=[]
-    //console.log(fi)
     networkGraph.data["nodes"].forEach(function(d){
-      
+
       if(d["class"]==fi.details.class){
-        //CAMBIAR PORQUE LO HE PUESTO EVENTUAL
-        //if(d[fi.details.property]!=undefined){
-        //if(fi.details.filter_type=="date"){
-        //values.push(formatDate(d[fi.details.property]))
-        //}else{
-        //console.log(d)
-        //console.log(fi)
         if(d[fi.details.property]!=undefined){
           values.push(d[fi.details.property].toLowerCase())
         }
-        
-        //}
-        ////console.log(d[fi.details.property])
-        
-        //}
-        
       }
     })
     if(fi.details.filter_type=="date"){
@@ -102,94 +88,9 @@ Filter.prototype.getValuesVisibleNodes=function (){
     }
     
     fi.values=values
-    ////console.log(fi.values)
     if ((fi.values.length>1)&(fi.details.filter_type=="dropdown")){
       fi.values=["All"].concat(fi.values)
     }
-  }
-  Filter.prototype.addValues=function(){
-    var fi=this,values=[];
-    var hiddenNodes=[],parentHidden=false,position,selectedFilter;
-/*     //console.log("applyFilter")
-    //console.log(fi.details)
-    //console.log(networkGraph.data.nodes)
-    //console.log(linkedDataGraph) */
-    //fi.getValuesFilterAllNodes()
-    const index=networkGraph.filterCondition.findIndex(d=>d.class==fi.details.class)
-    if(fi.details.filter_type=="number"){
-/*       if(fi.selection.value=="<>"){
-        values.push(d3.select("#"+fi.id+"_filter #text_min").node().value)
-        values.push(d3.select("#"+fi.id+"_filter #text_max").node().value)
-        fi.valuesField=values
-      }else{
-        fi.valuesField=[document.getElementById(fi.id).value]
-      } */
-    }else if(fi.details.filter_type=="date"){
-      
-      //console.log($("#"+fi.details.property+"_start"))
-      //values={"class":fi.details.class,"properties":[{"property":fi.details.property,"type":"date","values":{"start":$("#"+fi.details.property+"_start").val(),"end":$("#"+fi.details.property+"_end").val()}}]}
-      //values={"class":fi.details.class,"property":fi.details.property,"type":"date","values":{"start":$("#"+fi.details.property+"_start").val(),"end":$("#"+fi.details.property+"_end").val()}}
-      ////console.log(values)
-      if(index==-1){
-        networkGraph.filterCondition.push({"class":fi.details.class,"properties":[{"property":fi.details.property,"type":"date","values":{"start":$("#"+fi.details.property+"_start").val(),"end":$("#"+fi.details.property+"_end").val()}}]})
-      }else{
-        networkGraph.filterCondition[index]["properties"].push({"property":fi.details.property,"type":"date","values":{"start":$("#"+fi.details.property+"_start").val(),"end":$("#"+fi.details.property+"_end").val()}})
-      }
-      //networkGraph.filterCondition.push({"class":fi.details.class,"property":fi.details.property})
-      /* if(fi.selection.value=="<>"){
-        values.push(d3.select("#"+fi.property+"_start").node().value)
-        values.push(d3.select("#"+fi.property+"_end").node().value)
-  
-        fi.valuesField=values
-      }else{
-        fi.valuesField=[document.getElementById(fi.id).value]
-      } */
-      
-    }else if(fi.details.filter_type=="dropdown"){
-      //fi.valuesField=[document.getElementById(fi.id).value.toLowerCase()]
-      //values={"class":fi.details.class,"properties":[{"property":fi.details.property,"type":"date","values":{"start":$("#"+fi.details.property+"_start").val(),"end":$("#"+fi.details.property+"_end").val()}}]}
-      //values={"class":fi.details.class,"property":fi.details.property,"type":"date","values":{"start":$("#"+fi.details.property+"_start").val(),"end":$("#"+fi.details.property+"_end").val()}}
-      ////console.log(values)
-      if(index==-1){
-        networkGraph.filterCondition.push({"class":fi.details.class,"properties":[{"property":fi.details.property,"type":"dropdown","values":[$("#"+fi.details.property).val()]}]})
-      }else{
-        networkGraph.filterCondition[index]["properties"].push({"property":fi.details.property,"type":"dropdown","values":[$("#"+fi.details.property).val()]})
-      }
-    }
-  
-  }
-
-  Filter.prototype.applyFilter=function(){
-    var fi=this,values=[];
-    var hiddenNodes=[],parentHidden=false,position,selectedFilter;
-    //console.log("applyFilter")
-    //console.log(fi.mainHtmlEl)
-    //console.log(networkGraph.data.nodes)
-    //console.log(linkedDataGraph)
-/*     fi.getValuesFilterAllNodes()
-    if(fi.filterType=="number"){
-      if(fi.selection.value=="<>"){
-        values.push(d3.select("#"+fi.id+"_filter #text_min").node().value)
-        values.push(d3.select("#"+fi.id+"_filter #text_max").node().value)
-        fi.valuesField=values
-      }else{
-        fi.valuesField=[document.getElementById(fi.id).value]
-      }
-  
-    }else if(fi.filterType=="date"){
-      if(fi.selection.value=="<>"){
-        values.push(d3.select("#"+fi.property+"_start").node().value)
-        values.push(d3.select("#"+fi.property+"_end").node().value)
-  
-        fi.valuesField=values
-      }else{
-        fi.valuesField=[document.getElementById(fi.id).value]
-      }
-      
-    }else{
-      fi.valuesField=[document.getElementById(fi.id).value.toLowerCase()]
-    } */
-  
   }
 
 function FilterBasic(...args){
@@ -203,35 +104,10 @@ FilterBasic.prototype.addHtml= function () {
 
   var div = document.createElement("div");
   div.className="relative"
-  ////console.log(fi)
   div.id=fi.details.property.replaceAll(" ","_")+"_root"
   fi.id=fi.details.property.replaceAll(" ","_");
+
   fi.propertyFullName=configRow.rowFields.properties.filter(d=>d.property==fi.details.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.details.class],"").trim()
-  ////////console.log(fi.propertyFullName)
-  //console.log(fi.details.filter_type)
-  if(fi.details.filter_type=="dropdown"){
-    ////console.log("antes")
-    addDropdown()
-    //////console.log("despues")
-  }
-  else if (fi.details.filter_type=="date"){
-    //addDropdown("dropdown_date",div)
-    addDate()  
-  }else if (fi.details.filter_type=="date_range"){
-
-    addDateRange(div)
-
-  }else if (fi.details.filter_type=="text"){
-    //console.log(fi)
-    addText(div)
-  
-  }else if (fi.details.filter_type=="between_numbers"){ 
-    addBetweenNumbers()
-    
-  }else if (fi.details.filter_type=="number"){
-    
-    addNumber(div)
-  }
   
   fi.mainHtmlEl=div
 
@@ -242,113 +118,171 @@ FilterBasic.prototype.addHtml= function () {
   }
 
   fi.htmlEl=document.getElementById(fi.id)
-  
-  async function addDropdown(){
-    var optionsMenuHtml,html
-    //console.log("dropdown")
+
+}
+
+/* FilterBasic.prototype.addValuesField =function (){
+  var fi=this;
+  //console.log(fi)
+  $(("#accordion-filters #"+fi.details.property)).empty();
+  var select = document.querySelector("#accordion-filters #"+fi.details.property);
+  //////console.log(select)
+  addOptionsSelect(select,fi.values)
+} */
+
+class FilterBasicDropdown extends FilterBasic {
+  async addHtml() {
+    super.addHtml();
+
     let code = await getHtmlCodeFromFile("pages/select-filter.html");
-    code=code.replace("Label",fi.details.property.split("_")[1].charAt(0).toUpperCase() + fi.details.property.split("_")[1].slice(1))
-    //console.log(code)
-    $("#"+fi.details.class+"_filters").append(code).ready(function () {
+    code=code.replace("Label",this.details.property.split("_")[1].charAt(0).toUpperCase() + this.details.property.split("_")[1].slice(1))
+    $("#"+this.details.class+"_filters").append(code).ready(function () {
       ECL.autoInit();
-      //console.log("239")
     });
     var select=document.getElementById("select-default")
-    select.name = fi.details.property;
-    select.id = fi.details.property.replaceAll(" ","_");
-    //select.id = fi.details.property.replaceAll(" ","_")+"_filter";
-    //select.setAttribute("onchange","applyFilter(this)"); 
-    //console.log(fi.values)
-    let valuesFilter=fi.values
-    //let internalValuesFilter=fi.values
-    //console.log(valuesFilter)
+    select.name = this.details.property;
+    select.id = this.details.property.replaceAll(" ","_");
+
+    let valuesFilter=this.values
     addOptionsSelect(select,valuesFilter)
-    //console.log(select)
     select.value = valuesFilter[0];
-  } 
-  async function addDate(){
-
-    let code = await getHtmlCodeFromFile("pages/date-filter.html");
-    code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text)
-    $("#"+fi.details.class+"_filters").append(code).ready(function () {
-      ECL.autoInit();
-    })
-
-    $("#"+fi.details.class+"_filters #start-date").attr("value",fi.values[0])
-    $("#"+fi.details.class+"_filters #start-date").attr("name",fi.details.property+"_start")
-    $("#"+fi.details.class+"_filters #start-date").attr("id",fi.details.property+"_start")
-
-    $("#"+fi.details.class+"_filters #end-date").attr("value",fi.values[fi.values.length-1])
-    $("#"+fi.details.class+"_filters #end-date").attr("name",fi.details.property+"_name")
-    $("#"+fi.details.class+"_filters #end-date").attr("id",fi.details.property+"_end")
-
   }
-  
-  async function addText(){
-    let code = await getHtmlCodeFromFile("pages/text-filter.html");
-    code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text).replaceAll("Placeholder text","Enter "+fi.propertyFullName)
-    $("#"+fi.details.class+"_filters").append(code).ready(function () {
+  checkConditionNode(node){
+    let filterCondition=$("#"+this.details.property).val()
+    if(filterCondition=="All"){
+      return false
+    }else{
+      if(node[this.details.property]){
+        if(filterCondition==node[this.details.property].toLowerCase()){
+          return false
+        }else{
+          return true
+        }
+      }else{
+        return true
+      }
+    }
+  }
+  addValuesField(){
+    this;
+    $(("#accordion-filters #"+this.details.property)).empty();
+    var select = document.querySelector("#accordion-filters #"+this.details.property);
+    addOptionsSelect(select,this.values)
+  }
+}
+
+class FilterBasicDate extends FilterBasic {
+  async addHtml() {
+    super.addHtml();
+    let code = await getHtmlCodeFromFile("pages/date-filter.html");
+    code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",this.details.filter_text)
+    $("#"+this.details.class+"_filters").append(code).ready(function () {
       ECL.autoInit();
     })
-/*     var label = document.createElement("label");
-    console.log(fi)
-    label.innerHTML = fi.details.property.split("_")[1]
-    label.htmlFor = fi.details.property.split("_")[1];
-    label.id= fi.property.replaceAll(" ","_")+"_label";
-    label.className="block mb-2 text-base font-light text-gray-700"
-    
-    var div = document.createElement("div");
-    div.className="relative"
 
-    var textInput = document.createElement("input");
-    textInput.name = fi.property;
-    textInput.id = fi.property.replaceAll(" ","_");
-    textInput.type="text"
-    textInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date" ' + getKeyByValue(nodesClassesCorrespondence, classFilter) +"_filter"
-    textInput.placeholder='Enter Text'
-    textInput.setAttribute("onKeyDown","textEnter(this,event)"); 
+    $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
+    $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
+    $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_start")
 
-    document.getElementById(fi.classFilterName+"_filters").appendChild(label);
-    document.getElementById(fi.classFilterName+"_filters").appendChild(div).appendChild(textInput);
+    $("#"+this.details.class+"_filters #end-date").attr("value",this.values[this.values.length-1])
+    $("#"+this.details.class+"_filters #end-date").attr("name",this.details.property+"_name")
+    $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_end")
+  }
+  checkConditionNode(node){
+    console.log(this)
+    let startDate=$("#"+this.details.property+"_start").val()
+    let endDate=$("#"+this.details.property+"_end").val()
 
-    docs=document.getElementsByClassName(fi.classFilterName)
-
-    var searchValues=[]
+    if((formatDate(node[this.details.property])>=formatDate(startDate))&&(formatDate(node[this.details.property])<=formatDate(endDate))){
+      return false
+    }else{
+      return true
+    }
+  }
+}
+class FilterBasicText extends FilterBasic {
+  async addHtml() {
+    super.addHtml();
+    console.log("entra en filterbasictext")
+    let code = await getHtmlCodeFromFile("pages/text-filter.html");
+    code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",this.details.filter_text).replaceAll("Placeholder text","Enter "+this.propertyFullName).replaceAll("example-input-id-1",this.details.property+"_filter")
+    $("#"+this.details.class+"_filters").append(code).ready(function () {
+      ECL.autoInit();
+    })
+    let docs=document.getElementsByClassName(this.details.class)
+    let searchValues=[]
     for (let d of docs) {
         searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0]["value"])
     }
-    autocomplete(document.getElementById(fi.id), searchValues); */
+    console.log(this)
+    console.log(searchValues)
+    
+    autocomplete(document.getElementById(this.id+"_filter"), searchValues);
   }
+  checkConditionNode(node){
+    const filterValue=$("#"+this.details.property+"_filter").val()
+    if(filterValue!=""){
+      if(node[this.details.property]!=$("#"+this.details.property+"_filter").val()){
+        return true
+      }else{
+        return false
+      }
+    }else{
+      return false
+    }
 
-  function addNumber(div){
-    addDropdown()  
-    
-    var label = document.createElement("label");
-    label.innerHTML = fi.property.split("_")[1]
-    label.htmlFor = fi.property.split("_")[1];
-    label.id=fi.property.replaceAll(" ","_")+"_label";
-    label.className="block mb-2 text-base font-light text-gray-700"
-    
-    var div = document.createElement("div");
-    div.className="relative" //+ classFilter +"_filter"
-
-    var textInput = document.createElement("input");
-    textInput.name = fi.property;
-    textInput.id = fi.property.replaceAll(" ","_");
-    textInput.type="text"
-    textInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date"' 
-    textInput.placeholder='Enter Number'
-    textInput.setAttribute("onchange","applyFilter(this)"); 
-
-    document.getElementById(fi.classFilterName+"_filters").appendChild(label);
-    document.getElementById(fi.classFilterName+"_filters").appendChild(div).appendChild(textInput);
-    
+/*     if((formatDate(node[this.details.property])>=formatDate(startDate))&&(formatDate(node[this.details.property])<=formatDate(endDate))){
+      return false
+    }else{
+      return true
+    } */
   }
 }
-function FilterExpert(...args){
-  Filter.apply(this, args);
+
+class FilterBasicNumber extends FilterBasic {
+    async addHtml() {
+      super.addHtml();
+
+/*       var label = document.createElement("label");
+      label.innerHTML = fi.property.split("_")[1]
+      label.htmlFor = fi.property.split("_")[1];
+      label.id=fi.property.replaceAll(" ","_")+"_label";
+      label.className="block mb-2 text-base font-light text-gray-700"
+      
+      var div = document.createElement("div");
+      div.className="relative" //+ classFilter +"_filter"
+
+      var textInput = document.createElement("input");
+      textInput.name = fi.property;
+      textInput.id = fi.property.replaceAll(" ","_");
+      textInput.type="text"
+      textInput.className='block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="date"' 
+      textInput.placeholder='Enter Number'
+      textInput.setAttribute("onchange","applyFilter(this)"); 
+
+      document.getElementById(fi.classFilterName+"_filters").appendChild(label);
+      document.getElementById(fi.classFilterName+"_filters").appendChild(div).appendChild(textInput); */
+    }
+    checkConditionNode(node){
+/*       const filterValue=$("#"+this.details.property+"_filter").val()
+      if(filterValue!=""){
+        if(node[this.details.property]!=$("#"+this.details.property+"_filter").val()){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      } */
+
+    }
   }
-    
+
+
+function FilterExpert(...args){
+    Filter.apply(this, args);
+    }
+
 FilterExpert.prototype = Object.create(Filter.prototype);
 
 FilterExpert.prototype.addHtml=function (){

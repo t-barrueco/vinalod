@@ -819,36 +819,6 @@ function changeDateFormat(date){
   return (prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
 }
 
-function checkHiddenFilter(filter,node){
-  //////console.log(filter)
-  ////////console.log(node)
-  if(filter.type=="date"){
-    if((formatDate(node[filter.property])>=formatDate(filter.values.start))&&(formatDate(node[filter.property])<=formatDate(filter.values.end))){
-      return false
-    }else{
-      return true
-    }
-  }else if(filter.type=="dropdown"){
-    //console.log(filter.values[0])
-    //console.log(node.value.toLowerCase())
-    ////console.log(node[filter.property].toLowerCase())
-
-    if(filter.values[0]=="All"){
-      return false
-    }else{
-      if(node[filter.property]){
-        if(filter.values[0]==node[filter.property].toLowerCase()){
-          return false
-        }else{
-          return true
-        }
-      }else{
-        return true
-      }
-    }
-
-  }
-}
 function formatDate(str){
   const [day, month, year] = str.split('-');
   const date = new Date(+year, +month - 1, +day);
@@ -908,6 +878,8 @@ function relatedFilters(filterEl){
   })
 }
 function addOptionsSelect(selectField,valuesFilter){
+  console.log(selectField)
+  console.log(valuesFilter)
   for (let i = 0; i < valuesFilter.length; i++) {
     var option = document.createElement("option");
     option.value = valuesFilter[i];

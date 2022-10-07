@@ -51,9 +51,10 @@ async function buildBasicGraph(option,node){
     $('#dataviz-collection'). hide();
     $('#graph-area').removeClass("hidden")
     ////console.log(document.getElementsByTagName("table"))
-
+    //console.log("buildBasicGraph")
     if((node==undefined)||(!node["subject-object"])){
       if(typeof configRow !== 'undefined'){
+        //console.log("configRow.update")
         configRow.update(option,node)
       }else{
         configRow = new ConfigRow(option,node);
@@ -669,8 +670,9 @@ async function checkMenuItems(origin,element) {
       }else{
         showGraphExpert(menuItems.selectedRows[0])
       }
+      checkFiltersExpert()
     }
-
+    //checkFilters()
   }else if(menuItems.selectedRows.length>1){
     if(origin=="table"){
       menuItems.getMenuItemsInTable()
@@ -787,42 +789,42 @@ $("#"+elementId).append(code)
 
 function addFilters(){
   var newFilterClasses;
-  console.log(networkGraph.filters)
+
   if(configRow.rowFields.filters!=null){
     networkGraph.filterClasses = [...new Set(networkGraph.filters.map(d=>d.class))]
     newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
-    
-    //networkGraph.filterClasses.forEach(function(d){
+
     for (let i = 0; i < newFilterClasses.length; ++i) { 
-      console.log(newFilterClasses[i])
-      networkGraph.filterClassesObjects.push(new FilterClassBasic(newFilterClasses[i])) 
+      let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])
+      console.log(filterClass)
+      if(filterClass.length>0){
+        let filtersInClass=configRow.rowFields.filters.filter(f=>f.class==newFilterClasses[i])
+        for (let j = 0; j < filtersInClass.length; ++j) { 
+          let indexFilter= filterClass[0].filters.findIndex(f=>(f.filter_type==filtersInClass[j].filter_type)&&(f.property==filtersInClass[j].property))
+          if(indexFilter!=-1){
+            console.log(filterClass[0].filters[indexFilter])
+            //filterClass[0].filters[indexFilter].addFilterValues()
+            
+            filterClass[0].filters[indexFilter].filterObject.getValuesVisibleNodes()
+            filterClass[0].filters[indexFilter].filterObject.addValuesField()
+          }else{
+
+          }
+        }
+      }else{
+        networkGraph.filterClassesObjects.push(new FilterClassBasic(newFilterClasses[i])) 
+      }
     }
-    //})
-    ////console.log(networkGraph.filterClassesObjects)
   }
 
   ////////console.log(networkGraph.filters.map(d=>d.class))
   //classFilterObject= new classFilterClass(classFilter)
 }
 function applyFilters(){
-  ////console.log(networkGraph.filterClassesObjects)
-  ////console.log(networkGraph)
-  networkGraph.filterCondition=[]
-  for (let i = 0; i < networkGraph.filterClassesObjects.length; ++i) { 
-    ////console.log(networkGraph.filterClassesObjects[i])
-    //networkGraph.filterClassesObjects[i].filters
-    for (let j = 0; j < networkGraph.filterClassesObjects[i].filters.length; ++j) { 
-      ////console.log(networkGraph.filterClassesObjects[i].filters[j])
-      networkGraph.filterClassesObjects[i].filters[j].filterObject.addValues()
-    }
-  }
-  ////console.log(networkGraph.filterCondition)
-  filterGraph()
-}
-function filterGraph(){
   linkedDataGraph.filter()
   networkGraph.refresh()
 }
+
 function changeTab(tab){ 
   ////console.log(tab.id)
   $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
@@ -840,19 +842,6 @@ function changeTab(tab){
   networkGraph.refresh()
 } */
 function checkFilters(){
-/*   if(configRow.rowFields.filters){
-    console.log(configRow.rowFields.filters)
-    if(configRow.rowFields.filters.length!=0){
-      networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
-      console.log(networkGraph.filters)
-      addFilters()
-      $("#filters").removeClass("hidden")
-    }else{
-      $("#filters").addClass("hidden")
-    }
-  }else{
-    $("#filters").addClass("hidden")
-  } */
   if(configRow.rowFields.filters){
     //console.log(configRow.rowFields.filters)
     if(configRow.rowFields.filters!=0){
@@ -862,6 +851,23 @@ function checkFilters(){
       //$("#filters").removeClass("hidden")
     }
   }
+  if(networkGraph.filters.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  }
+}
+
+function checkFiltersExpert(){
+  /* if(configRow.rowFields.filters){
+    //console.log(configRow.rowFields.filters)
+    if(configRow.rowFields.filters!=0){
+      networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
+      //console.log(networkGraph.filters)
+      addFilters()
+      //$("#filters").removeClass("hidden")
+    }
+  } */
   if(networkGraph.filters.length!=0){
     $("#filters").removeClass("hidden")
   }else{
