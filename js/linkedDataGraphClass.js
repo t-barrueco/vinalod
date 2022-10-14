@@ -6,8 +6,10 @@ LinkedDataGraph = function (_option,_settings,_node) {
 
 LinkedDataGraph.prototype.init = async function () {
     var ldg=this;
+    //ldg.filterClassesObjects=[]
     await ldg.getResults()
     ldg.buildData()
+    //ldg.getFilters()
     ////////////console.log(ldg.data.treeData)
   }
 
@@ -103,7 +105,7 @@ LinkedDataGraph.prototype.filter = function(){
     if(filterClass.length>0){
       filterClass[0].filters.forEach(function (fi){
         ////console.log(fi.filterObject)
-        if(fi.filterObject.checkConditionNode(node)){
+        if(fi.checkConditionNode(node)){
           ////console.log("true")
           hidden=true
         //}else{
@@ -111,6 +113,7 @@ LinkedDataGraph.prototype.filter = function(){
         }
       })
     }
+    console.log(hidden)
     return hidden
   }
 }
@@ -130,12 +133,32 @@ LinkedDataGraphBasic.prototype.settingsFromOption = async function(){
   await ldg.init()
 };
 
+LinkedDataGraphBasic.prototype.importGraph = async function(fileText){
+  var ldg=this;
+
+  console.log(fileText)
+
+  ldg.treeData=fileText.treeData
+  //ldg.classesCorrespondence=fileText.classesCorrespondence
+  ldg.resultsData=fileText.treeData
+  console.log(ldg)
+  ldg.flatten()
+}
+
 LinkedDataGraphBasic.prototype.update = async function(option,node){
   var ldg=this;
   ldg.option=option
   ldg.node=node
-  configRow.update(option,node)
 
+  console.log(option)
+  console.log(node)
+  console.log(configRow)
+  if(configRow) configRow.update(option,node)
+  else{
+    configRow=new ConfigRow(option,node)
+    ldg.settingsFromOption(option)
+  }
+  console.log(configRow)
   ldg.settings["query"]=configRow.rowFields.query
   ldg.settings["url"]=configRow.rowFields.endpoint_url
   await ldg.init()
@@ -190,6 +213,9 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   }
 
   ldg.treeData=ldg.treeData.concat(treeData)
+  ldg.resultsData=treeData
+
+  //console.log(ldg.treeData)
   function checkNodeInTreeData(){
       var pathSearch=JSON.parse(JSON.stringify(procNode));
       var prevNodeIndex=-1,prevNodeId;
@@ -332,7 +358,7 @@ LinkedDataGraphExpert.prototype.buildTreeData = function () {
     menuOption = ldg.settings["url"] + "," + ldg.settings["subject-object"]
     treeData = [{ "id": genRandomString(), "value": ldg.results[0][ldg.settings["subject-object"]]["value"], "type": ldg.results[0][ldg.settings["subject-object"]]["type"], "children": children, "hidden": false, "more_results": "", "menuOption": menuOption, "configRow": configRow, "class": "free" }]
   }
-
+  ldg.resultsData=treeData
   ldg.treeData=ldg.treeData.concat(treeData)
 };
 
@@ -352,3 +378,8 @@ LinkedDataGraphExpert.prototype.settingsFromOption = async function(){
   var ldg=this;
   await ldg.init()
 };
+
+LinkedDataGraphExpert.prototype.getFilters = function () {
+  var ldg=this;
+  console.log(ldg)
+}

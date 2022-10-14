@@ -15,12 +15,6 @@ FilterClass = function (_name) {
   })
 } */
 
-FilterClass.prototype.init= async function(){
-  var cf=this;
-  cf.filters=[]
-  cf.initFilters()
-}
-
 FilterClass.prototype.getCode= async function(){
   var cf=this;
 
@@ -40,30 +34,25 @@ FilterClassBasic.prototype.setTitle = async function () {
   cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
 
-FilterClassBasic.prototype.initFilters = async function () {
+FilterClassBasic.prototype.init = async function () {
   var cf=this;
-  let filters=configRow.rowFields.filters.filter(d=>d.class==cf.name)
-  //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
+  cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
   await cf.getCode()
 
   $("#accordion-filters").append(cf.code).ready(function (){
-    
-    for (let i = 0; i < filters.length; i++) {
-      console.log(filters[i])
-      if(filters[i]["filter_type"]=="dropdown"){
-        cf.filters.push(new FilterBasicDropdown(filters[i]))
-      }else if(filters[i]["filter_type"]=="date"){
-        console.log("date")
-        cf.filters.push(new FilterBasicDate(filters[i]))
-      }else if(filters[i]["filter_type"]=="text"){
-        cf.filters.push(new FilterBasicText(filters[i]))
-      }else if(filters[i]["filter_type"]=="number"){
-        cf.filters.push(new FilterBasicNumber(filters[i]))
+    for (let i = 0; i < cf.filters.length; i++) {
+      console.log(cf.filters)
+      if(cf.filters[i]["filter_type"]=="dropdown"){
+        cf.filters[i].filterObject=new FilterBasicDropdown(cf.filters[i])
+      }else if(cf.filters[i]["filter_type"]=="date"){
+        cf.filters[i].filterObject=new FilterBasicDate(cf.filters[i])
+      }else if(cf.filters[i]["filter_type"]=="text"){
+        cf.filters[i].filterObject=new FilterBasicText(cf.filters[i])
+      }else if(cf.filters[i]["filter_type"]=="number"){
+        cf.filters[i].filterObject=new FilterBasicNumber(cf.filters[i])
       }
     }
-    //console.log(cf.filters)
   })
-  
 }
 
 function FilterClassExpert(...args){
@@ -78,19 +67,14 @@ FilterClassExpert.prototype.setTitle = async function () {
   cf.code=cf.code.replace("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
 
-FilterClassExpert.prototype.initFilters = async function (){
+FilterClassExpert.prototype.init = async function (){
   var cf=this;
-  //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
-  cf.internalClass=linkedDataGraph.settings.uri.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
-  cf.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
-  cf.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"properties","internalClass":cf.internalClass,"id":cf.internalClass+"_properties"})
-  cf.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"values","internalClass":cf.internalClass,"id":cf.internalClass+"_values"})
-  
+  cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
   await cf.getCode()
 
   $("#accordion-filters").append(cf.code).ready(function (){
     for (let i = 0; i < cf.filters.length; i++) {
-      //console.log(cf.filters[i])
+      console.log(cf.filters[i])
       if(cf.filters[i]["filter_type"]=="dropdown"){
         cf.filters[i].filterObject=new FilterExpertDropdown(cf.filters[i])
       }else if(cf.filters[i]["filter_type"]=="text"){

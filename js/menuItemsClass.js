@@ -66,6 +66,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
     }else{
         width=350
     }
+    console.log(networkGraph)
     networkGraph.menuFactory(100,0, mi.menuItems, mi.node,"dblClick",width)
 
 }
@@ -177,7 +178,7 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
       form = { "url": url, "uri": data.uri, "subject-object": subjectObject,"query":query}
       await linkedDataGraph.update(form,data)
       networkGraph.refresh()
-      checkFilters()
+      //checkFilters()
 
       ////console.log(document.getElementsByTagName("table"))
 
@@ -255,6 +256,7 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
     action: async (data,d) => {
         await linkedDataGraph.update(d.title,data)
         networkGraph.refresh()
+        console.log("checkFilters")
         checkFilters()
 
         //console.log(document.getElementsByTagName("table"))

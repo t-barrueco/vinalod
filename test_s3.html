@@ -1,0 +1,102 @@
+<html>
+
+<head>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc10.min.js"></script>
+</head>
+
+<body>
+
+<div id="status"></div>
+<ul id="objects"></ul>
+
+<script>
+
+  var AWSKeyId = "AKIA4DEEOIFYUJZXUSRR";
+  var AWSSecretAccessKey = "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";
+  var AWSBucket = "vinalod";
+  var AWSRegion = "eu-est-1";
+
+  AWS.config.region = AWSRegion;
+  AWS.config.update({accessKeyId: AWSKeyId, secretAccessKey: AWSSecretAccessKey});
+
+</script>
+
+<textarea id="data"></textarea>
+<button id="upload-button">Upload to S3</button>
+<div id="results"></div>
+
+<script type="text/javascript">
+
+  var bucket = new AWS.S3({params: {Bucket: AWSBucket}});
+  console.log(bucket)
+  var textarea = document.getElementById('data');
+  var button = document.getElementById('upload-button');
+  var results = document.getElementById('results');
+
+  button.addEventListener('click', function() {
+    results.innerHTML = '';
+
+    var params = {Key: 'raw/data.txt', Body: textarea.value};
+
+    bucket.putObject(params, function (err, data) {
+      console.log(data)
+      results.innerHTML = err ? 'ERROR!' : 'SAVED.';
+    });
+
+  }, false);
+
+</script>
+
+<script>
+
+  function putJSONFile(text,bucket,key){
+
+    /**
+     * Function to write a text file to S3
+     *
+     * @param text - The string content of the json file
+     * @param key  - The path in the S3 bucket to write to
+     */
+
+    var bucket = new AWS.S3({params: {Bucket: bucket}});
+    var params = {Body: text, Key: key};
+    bucket.putObject(params, function (err, data) {
+      if (err){
+        console.log(err, err.stack);
+      }else{
+        console.log("File written to " + AWSBucket + "/" + key);
+      }
+    });
+    
+  }
+
+  function getJSONFile(bucket,key){
+
+    /**
+     * Function to retrieve a text file from S3
+     *
+     * @param key  - The path of the file in the S3 bucket
+     */
+
+    var bucket = new AWS.S3({params: {Bucket: bucket}});
+    var params = {Bucket: AWSBucket, Key: key};
+    bucket.getObject(params, function(err, data) {
+      if (err){
+        console.log(err, err.stack);
+      }else{  
+        console.log(data.Body.toString());
+      }
+    });    
+
+  }
+
+  // Write a file to S3
+  putJSONFile("This is a test file", AWSBucket, "IMG_3297.jpg");
+
+  // Fetch a file from S3
+  getJSONFile(AWSBucket, "IMG_3297.jpg");
+
+</script>
+
+</body>
+</html>

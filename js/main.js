@@ -8,6 +8,14 @@ var prevent = false;
 
 function dataViz(){
     var optionsMenu;
+
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+
+    const graphName = urlParams.get('graph')
+
+    console.log(graphName);
     ////console.log(document.getElementsByTagName("table"))
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
@@ -18,6 +26,9 @@ function dataViz(){
                 ////console.log(dataConfig)
                 configFile = new ConfigFile(dataConfig);
                 filesIcons=dataIcons;
+                if(graphName){
+                  addSharedGraph(graphName)
+                }
               })
           })
 }
@@ -61,6 +72,7 @@ async function buildBasicGraph(option,node){
       }
           //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
       if(configRow.rowFields.type=="TREE"){
+        console.log("entra por aquí")
         await buildNetworkGraph(configRow,"basic",node)
 
       }else{
@@ -99,7 +111,7 @@ async function buildBasicGraph(option,node){
         }
       }
     }else{
-      await buildNetworkGraph(option,"expert",node)
+      await (option,"expert",node)
     }
   }
 function collapse(){
@@ -426,7 +438,118 @@ function copyDuplicates(index,i,node){
 }
 // changeBasicGraph is the function called when changing option in flyout menu
 // of basic mode menu
-  
+
+async function addSharedGraph(file){
+  var albumBucketName = "vinalod";
+  var bucketRegion = "us-east-1";
+  var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
+
+  //INCLUIR EN FUNCIÓN
+  d3.selectAll(".classFilter").remove()
+  $("#filters .ecl-accordion__item").remove()
+
+  $("#form-container").addClass("hidden")
+
+  $(".graph").remove() 
+  $("#networkGraph-svg").remove()  
+
+  hideModal("#myModal")
+  deleteTooltip()
+  //hide flyout menu
+  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+
+  $('#landing-page'). hide();
+  $('#dataviz-collection'). hide();
+  $('#graph-area').removeClass("hidden")
+
+  $('#settings-tab').parent().removeClass("hidden")
+  $('#legend-tab').parent().removeClass("hidden")
+
+  propertiesFilterHist=[]
+
+  if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+    linkedDataGraph = undefined;
+  }
+
+  //let text= retrieveObjectS3(file)
+  AWS.config.update({
+    region: bucketRegion,
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: IdentityPoolId
+    })
+  });
+
+  console.log("s3")
+  var s3 = new AWS.S3();
+
+  var params = {
+    Bucket: albumBucketName, 
+    Key: file
+  };
+  //processS3File(params)
+  await s3.getObject(params, function(err, data) {
+     if (err) console.log(err, err.stack); // an error occurred
+     else {
+      console.log(data)
+      const fileText = JSON.parse(data.Body.toString());
+      console.log(fileText)
+      linkedDataGraph = new LinkedDataGraphBasic("imported");
+      linkedDataGraph.importGraph(fileText)
+      //console.log(linkedDataGraph)
+      let forces=setForcesGraph()
+      networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
+      console.log(networkGraph)
+      legend=new Legend("legend",networkGraph)
+
+      if(networkGraph.filterClassesObjects.length!=0){
+        $("#filters").removeClass("hidden")
+      }else{
+        $("#filters").addClass("hidden")
+      }
+      //linkedDataGraph.importGraph(text)
+     }              // successful response
+   });
+
+/*   await s3.deleteObject(params, function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else     console.log(data);           // successful response
+
+  }); */
+
+  async function retrieveObjectS3(file){
+    var albumBucketName = "vinalod";
+    var bucketRegion = "us-east-1";
+    var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
+
+    AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: IdentityPoolId
+      })
+    });
+
+    console.log("s3")
+    var s3 = new AWS.S3();
+
+    var params = {
+      Bucket: albumBucketName, 
+      Key: file
+    };
+    //processS3File(params)
+    await s3.getObject(params, function(err, data) {
+       if (err) console.log(err, err.stack); // an error occurred
+       else {
+        console.log(data)
+        const text = data.Body.toString();
+        console.log(text)
+        //linkedDataGraph.importGraph(text)
+       }              // successful response
+     });
+     console.log("final")
+  }
+}
+
 async function changeBasicGraph(option){
 
   //INCLUIR EN FUNCIÓN
@@ -499,12 +622,19 @@ async function changeBasicGraph(option){
   ////console.log($(".graph"))
   //$(".graph").remove()
   ////console.log(linkedDataGraph.data)
-  networkGraph = new NetworkGraphBasic("#networkGraph",forces,linkedDataGraph.data);
-  ////////////console.log(networkGraph)
+  networkGraph = new NetworkGraphBasicNotImported("#networkGraph",forces,linkedDataGraph.data);
+  console.log(networkGraph)
   ////console.log($(".graph"))
   legend=new Legend("legend",networkGraph)
 
-  checkFilters()
+  console.log(linkedDataGraph)
+  //console.log(linkedDataGraph.treeData.filter(f=>f.filterClassesObjects))
+  if(networkGraph.filterClassesObjects.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  }
+  //checkFilters()
 
 
   ////console.log(document.getElementsByTagName("table"))
@@ -662,15 +792,16 @@ async function checkMenuItems(origin,element) {
     if(node.class!="free"){
       await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
       networkGraph.refresh()
-      checkFilters()
+      //checkFilters()
     }else{
       if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
         await linkedDataGraph.update(menuItems.selectedRows[0],node)
         networkGraph.refresh()
       }else{
-        showGraphExpert(menuItems.selectedRows[0])
+        await showGraphExpert(menuItems.selectedRows[0])
       }
-      checkFiltersExpert()
+      console.log(linkedDataGraph)
+      //checkFiltersExpert()
     }
     //checkFilters()
   }else if(menuItems.selectedRows.length>1){
@@ -693,11 +824,13 @@ function startExpert(origin,element){
   checkMenuItems(origin,element)
 }
 async function showGraphExpert(selectedRow){
-  ////console.log("showGraphExpert")
+  console.log("showGraphExpert")
+  $("#accordion-filters").empty()
   ////console.log(linkedDataGraph)
   linkedDataGraph = new LinkedDataGraphExpert("",selectedRow);
   await linkedDataGraph.settingsFromOption()
-  
+  console.log("showGraphExpert2")
+
   ////////////console.log("antes de networkgraph")
   let forces=setForcesGraph()
   ////////////console.log(networkGraph)
@@ -710,8 +843,14 @@ async function showGraphExpert(selectedRow){
   $("#landing-page").hide()
   $("#dataviz-collection").hide()
   $("#landing-text").addClass("hidden")
+  console.log("antes de networkgraph")
   networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
   legend=new Legend("legend",networkGraph)
+  if(networkGraph.filterClassesObjects.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  }
 }
 function showGraphExpertFromPopup(form){
   ////////////console.log(form)
@@ -786,25 +925,22 @@ $("#"+elementId).append(code)
 //element.insertAdjacentHTML('beforeend', code);
 //////////console.log(element)
 } */
-
-function addFilters(){
+function checkFilters(){
   var newFilterClasses;
-
+  console.log(configRow.rowFields)
   if(configRow.rowFields.filters!=null){
-    networkGraph.filterClasses = [...new Set(networkGraph.filters.map(d=>d.class))]
+    console.log(networkGraph.filterClassesObjects)
+    //networkGraph.filterClassesObjects = [...new Set(networkGraph.filters.map(d=>d.class))]
+    //console.log(configRow.rowFields.filters)
     newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
-
+    console.log(newFilterClasses)
     for (let i = 0; i < newFilterClasses.length; ++i) { 
       let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])
-      console.log(filterClass)
       if(filterClass.length>0){
         let filtersInClass=configRow.rowFields.filters.filter(f=>f.class==newFilterClasses[i])
         for (let j = 0; j < filtersInClass.length; ++j) { 
           let indexFilter= filterClass[0].filters.findIndex(f=>(f.filter_type==filtersInClass[j].filter_type)&&(f.property==filtersInClass[j].property))
           if(indexFilter!=-1){
-            console.log(filterClass[0].filters[indexFilter])
-            //filterClass[0].filters[indexFilter].addFilterValues()
-            
             filterClass[0].filters[indexFilter].filterObject.getValuesVisibleNodes()
             filterClass[0].filters[indexFilter].filterObject.addValuesField()
           }else{
@@ -816,10 +952,45 @@ function addFilters(){
       }
     }
   }
-
-  ////////console.log(networkGraph.filters.map(d=>d.class))
-  //classFilterObject= new classFilterClass(classFilter)
 }
+function addFilters(){
+  var newFilterClasses;
+  //console.log(configRow.rowFields.filters)
+  if(configRow.rowFields.filters!=null){
+    networkGraph.filterClassesObjects = [...new Set(networkGraph.filters.map(d=>d.class))]
+    newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
+
+    for (let i = 0; i < newFilterClasses.length; ++i) { 
+      let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])
+      if(filterClass.length>0){
+        let filtersInClass=configRow.rowFields.filters.filter(f=>f.class==newFilterClasses[i])
+        for (let j = 0; j < filtersInClass.length; ++j) { 
+          let indexFilter= filterClass[0].filters.findIndex(f=>(f.filter_type==filtersInClass[j].filter_type)&&(f.property==filtersInClass[j].property))
+          if(indexFilter!=-1){
+            filterClass[0].filters[indexFilter].filterObject.getValuesVisibleNodes()
+            filterClass[0].filters[indexFilter].filterObject.addValuesField()
+          }else{
+
+          }
+        }
+      }else{
+        networkGraph.filterClassesObjects.push(new FilterClassBasic(newFilterClasses[i])) 
+      }
+    }
+  }
+}
+
+function addFiltersExpert(){
+  var newFilterClasses;
+  //console.log(networkGraph.filterClasses)
+  if(networkGraph.filterClasses){
+    networkGraph.filterClasses.push(linkedDataGraph["settings"]["uri"])
+  }else{
+    networkGraph.filterClasses=[linkedDataGraph["settings"]["uri"]]
+  }
+  networkGraph.filterClassesObjects.push(new FilterClassExpert(linkedDataGraph["settings"]["uri"])) 
+}
+
 function applyFilters(){
   linkedDataGraph.filter()
   networkGraph.refresh()
@@ -841,22 +1012,24 @@ function changeTab(tab){
   await linkedDataGraph.update(menuItems.selectedRows[0],node)
   networkGraph.refresh()
 } */
-function checkFilters(){
+/* function checkFilters(){
   if(configRow.rowFields.filters){
     //console.log(configRow.rowFields.filters)
     if(configRow.rowFields.filters!=0){
       networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
-      //console.log(networkGraph.filters)
+      console.log(networkGraph.filters)
       addFilters()
       //$("#filters").removeClass("hidden")
     }
   }
+  console.log(networkGraph.filters)
+  
   if(networkGraph.filters.length!=0){
     $("#filters").removeClass("hidden")
   }else{
     $("#filters").addClass("hidden")
   }
-}
+} */
 
 function checkFiltersExpert(){
   /* if(configRow.rowFields.filters){
@@ -868,9 +1041,92 @@ function checkFiltersExpert(){
       //$("#filters").removeClass("hidden")
     }
   } */
+  //console.log(linkedDataGraph["settings"]["uri"])
+  console.log(linkedDataGraph.results)
+  /* if(linkedDataGraph.settings["subject-object"]=="s"){
+    values=linkedDataGraph.results.map(d=>d.o)
+  }else{
+    values=linkedDataGraph.results.map(d=>d.s)
+  } */
+  //console.log(values)
+  //networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"values":values,"properties":linkedDataGraph.results.map(d=>d.p)})
+  let internalClass=linkedDataGraph.settings.uri.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
+  networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"type","internalClass":internalClass,"id":internalClass+"_type"})
+  networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"properties","internalClass":internalClass,"id":internalClass+"_properties"})
+  networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"values","internalClass":internalClass,"id":internalClass+"_values"})
+
+  //addFiltersExpert()
+/*   if(networkGraph.filterClasses){
+    networkGraph.filterClasses.push(linkedDataGraph["settings"]["uri"])
+  }else{
+    networkGraph.filterClasses=[linkedDataGraph["settings"]["uri"]]
+  } */
+  addFiltersExpert()
+  //linkedDataGraph["settings"]["uri"]
   if(networkGraph.filters.length!=0){
     $("#filters").removeClass("hidden")
   }else{
     $("#filters").addClass("hidden")
+  }
+}
+function shareGraph(){
+  var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
+  
+  addFile()
+  //return parent.location='mailto:?subject=VINALOD graph&body=Follow the link to check the graph shared http://127.0.0.1:5500/index.html?graph='+ fileName
+  return parent.location="mailto:?subject=VINALOD graph&body=Copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent("https://t-barrueco.github.io/vinalod/index.html?graph="+fileName);
+  
+/*   var form = document.createElement('form');
+	
+	//Set the form attributes 
+	form.setAttribute('method', 'post');
+	form.setAttribute('enctype', 'text/plain');
+	form.setAttribute('action', 'mailto:' + '?Subject=VINALOD graph&Body=' + escape(bodyText ? bodyText : ' ') );
+	form.setAttribute('style', 'display:none');
+	
+	//Append the form to the body
+	document.body.appendChild(form);
+
+	//Submit the form
+	form.submit();
+	
+	//Clean up
+	document.body.removeChild(form); */
+  
+  
+  function addFile(){
+
+    var albumBucketName = "vinalod";
+    var bucketRegion = "us-east-1";
+    var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
+
+    AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: IdentityPoolId
+      })
+    });
+
+    file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
+    //var photoKey = albumPhotosKey + fileName;
+    var upload = new AWS.S3.ManagedUpload({
+        params: {
+          Bucket: albumBucketName,
+          Key: fileName,
+          Body: file
+        }
+      });
+    
+      var promise = upload.promise();
+    
+      promise.then(
+        function(data) {
+          //alert("Successfully uploaded photo.");
+        },
+        function(err) {
+          return alert("There was an error creating the graph share: ", err.message);
+        }
+      );
+    //s3.meta.client.upload_file('/Users/teresab/Documents/VINALOD/config_vinalod_30_12_2021/config_basicMode.json', 'vinalod', 'config_basicMode.json')
   }
 }

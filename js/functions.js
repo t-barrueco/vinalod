@@ -842,7 +842,8 @@ function relatedFilters(filterEl){
       if (selectobject.options[i].value == 'A')
           selectobject.remove(i);
   } */
-  ////console.log(filterEl)
+  console.log(filterEl.name.split("_")[0])
+  console.log(networkGraph.filterClassesObjects.filter(d=>d.name==filterEl.name.split("_")[0]))
   const filter=networkGraph.filters.filter(d=>d.property==filterEl.id)[0]
   const relFilters=networkGraph.filters.filter(d=>d.parent==filterEl.id)
   ////console.log(filter)
@@ -863,7 +864,7 @@ function relatedFilters(filterEl){
     $(("#accordion-filters #"+fi.property)).empty();
     var select = document.querySelector("#accordion-filters #"+fi.property);
     ////console.log(select)
-    addOptionsSelect(select,values)
+    addOptionsSelect(select,values,false)
 
     //////console.log(selectobject.options.remove)
 
@@ -877,14 +878,47 @@ function relatedFilters(filterEl){
     } */
   })
 }
-function addOptionsSelect(selectField,valuesFilter){
+function checkRelatedFilters(filterEl){
+  let classNode=filterEl.parentNode.parentNode.parentNode
+
+  let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
+  let selectedValues = Array.from(filterEl.selectedOptions)
+        .map(option => option.value) 
+  
+  let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
+  //console.log(relatedFilters)
+  relatedFilters.forEach(function(r){
+    console.log(r)
+  })
+}
+function checkRelatedFilters(filterEl){
+  let classNode=filterEl.parentNode.parentNode.parentNode
+
+  let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
+  let selectedValues = Array.from(filterEl.selectedOptions)
+        .map(option => option.value) 
+  
+  let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
+  //console.log(relatedFilters)
+  relatedFilters.forEach(function(r){
+    console.log(r)
+    console.log($("#"+r.id))
+  })
+}
+
+function addOptionsSelect(selectField,valuesFilter,multiple){
   console.log(selectField)
   console.log(valuesFilter)
+  console.log(multiple)
   for (let i = 0; i < valuesFilter.length; i++) {
     var option = document.createElement("option");
     option.value = valuesFilter[i];
     option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
     //////console.log(option)
     selectField.appendChild(option);
+    console.log(multiple)
+    if(multiple){
+      option.selected = true; 
+    }
   }
 }

@@ -71,7 +71,8 @@
        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> -->
        <script src="jslib/moment.min.js"></script>
-
+       <script src="https://sdk.amazonaws.com/js/aws-sdk-2.752.0.min.js">
+      </script>
       <!-- <script src="node_modules/moment/moment.js"></script> -->
 
     </head>
@@ -213,6 +214,43 @@
                 </fieldset>
               </div>
             </div>
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <div class="relative flex items-start">
+                <div class="flex items-center h-5">
+                </div>
+                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                  <legend class="ecl-form-label">Share graph?</legend>
+                  <div class="ecl-help-block" id="helper-id-2">Send a link to the graph by email</div>
+                  </svg>
+                  <button class="ecl-button ecl-button--primary" onclick="shareGraph()">Share</button>
+                </fieldset>
+              </div>
+            </div>
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <div class="relative flex items-start">
+                <div class="flex items-center h-5">
+                </div>
+                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                  <legend class="ecl-form-label">Save graph for later?</legend>
+                  <div class="ecl-help-block" id="helper-id-2">Share a local copy of the graph</div>
+                  </svg>
+                  <button class="ecl-button ecl-button--primary" onclick="saveGraph()">Save graph</button>
+                </fieldset>
+              </div>
+            </div>
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <div class="relative flex items-start">
+                <div class="flex items-center h-5">
+                </div>
+                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                  <legend class="ecl-form-label">Import file?</legend>
+                  <div class="ecl-help-block" id="helper-id-2">Import local copy of the graph</div>
+                  </svg>
+                  <button class="ecl-button ecl-button--primary" onclick="saveGraph()">Import graph</button>
+                </fieldset>
+              </div>
+            </div>
+            
           </dl>
         </div>
         
