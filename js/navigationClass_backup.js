@@ -625,10 +625,10 @@ NavigationPanel.prototype.showDetails = function (){
   function itemDetails(){
     let navDetailHeader,navDetailRow0,navDetailRow1;
     $("#dvDetails").empty()
-    $.get("nav_detail.html", function (header) {
-      $.get("nav_detail_row_0.html", function (row0) {
-        $.get("nav_detail_row_1.html", function (row1) {
-          $.get("nav_detail_row_attach.html", function (rowAttach) {
+    $.get("pages/nav_detail.html", function (header) {
+      $.get("pages/nav_detail_row_0.html", function (row0) {
+        $.get("pages/nav_detail_row_1.html", function (row1) {
+          $.get("pages/nav_detail_row_attach.html", function (rowAttach) {
             console.log(navPanel.node["value"])
             navDetailHeader=header.replace("Title",navPanel.node["value"])
             console.log(navDetailHeader)

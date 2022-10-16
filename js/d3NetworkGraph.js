@@ -25,10 +25,14 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.data=vis.data.flatData
   vis.treeData=linkedDataGraph.treeData
-  vis.allData=vis.data
+  vis.allData=JSON.parse(JSON.stringify(vis.data));
 
   vis.rootNode=vis.data.nodes[0]
-  
+
+  vis.filterClassesObjects=[]
+
+  vis.filters=[]
+
   vis.width=1400
   vis.height=800
   vis.svg = d3.select(this.parentElement).append("svg")
@@ -1127,20 +1131,26 @@ NetworkGraph.prototype.expandLevelBranch = function (node){
 
 NetworkGraph.prototype.refresh = function (node){
   var vis = this;
-  networkGraph.addingGraph=true
+  vis.addingGraph=true
 
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
-  vis.allData=vis.data
+  //vis.allData=vis.data
 
+  
+
+  vis.addClassesShow()
 
   vis.dataJoinGraph()
 
   vis.enterGraph()
 
+
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.exitGraph()
+
+  legend.addColors()
 }
 NetworkGraph.prototype.mergeData = function (results,branchType){
   var vis = this;

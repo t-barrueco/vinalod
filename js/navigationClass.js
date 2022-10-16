@@ -6,7 +6,7 @@ NavigationPanel = function ( _type) {
 NavigationPanel.prototype.init = function () {
   var navPanel=this;
 
-  let files=["navTable_element.html","navTable_element_last.html"]
+  let files=["pages/navTable_element.html","pages/navTable_element_last.html"]
 
   navPanel.node=networkGraph.node
   navPanel.clusterElSelected=[]
@@ -195,9 +195,9 @@ NavigationPanel.prototype.addElementNav = function (source,i){
     //li=document.createElement("li")
     var file;
     if(!last){
-      file="navTable_element.html"
+      file="pages/navTable_element.html"
     }else{
-      file="navTable_element_last.html"
+      file="pages/navTable_element_last.html"
     }
     let code = await getHtmlCodeFromFile(file);
     $("#navTable ol").append(code).ready(function () {
@@ -415,7 +415,7 @@ NavigationPanel.prototype.contentTable = async function (){
     navPanel.tbody=document.getElementById("nav-children-tbody")
     navPanel.showLines(navPanel.numCurrent,true)
     
-    let code = await getHtmlCodeFromFile("navPagination2.html");
+    let code = await getHtmlCodeFromFile("pages/navPagination2.html");
     $("#dvTable").append(code).ready(function () {
       //navPanel.showNumberPages()
       console.log(code)
@@ -491,10 +491,10 @@ NavigationPanel.prototype.showDetails = function (){
   function itemDetails(){
     let navDetailHeader,navDetailRow0,navDetailRow1;
     $("#dvDetails").empty()
-    $.get("nav_detail.html", function (header) {
-      $.get("nav_detail_row_0.html", function (row0) {
-        $.get("nav_detail_row_1.html", function (row1) {
-          $.get("nav_detail_row_attach.html", function (rowAttach) {
+    $.get("pages/nav_detail.html", function (header) {
+      $.get("pages/nav_detail_row_0.html", function (row0) {
+        $.get("pages/nav_detail_row_1.html", function (row1) {
+          $.get("pages/nav_detail_row_attach.html", function (rowAttach) {
             ////////console.log(navPanel.node["value"])
             navDetailHeader=header.replace("Title",navPanel.node["value"])
             ////////console.log(navDetailHeader)
@@ -620,8 +620,8 @@ NavigationPanel.prototype.showNumberPages = async function (){
 
   pagePrev = document.getElementById('page-prev');
 
-  let element = await getHtmlCodeFromFile("navPagination_page.html");
-  let currentElement = await getHtmlCodeFromFile("navPagination_page_current.html");
+  let element = await getHtmlCodeFromFile("pages/navPagination_page.html");
+  let currentElement = await getHtmlCodeFromFile("pages/navPagination_page_current.html");
   
   insertElementAfter((navPanel.pages.pages[0]))
   console.log(navPanel.pages.pages.length)
@@ -859,7 +859,7 @@ NavigationPanel.prototype.addElementContentTable = function (target,i){
 
   
   async function addBasicGraph(){
-    let code = await getHtmlCodeFromFile("elementContentTable.html");
+    let code = await getHtmlCodeFromFile("pages/elementContentTable.html");
     $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
       $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
       $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))

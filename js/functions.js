@@ -78,13 +78,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        ////////////////////////////////console.log("pageY menos")
+        ////////////////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        ////////////////////////////////console.log("pageX menos")
+        ////////////////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -95,6 +95,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 
 //execute sparql query
 async function runSparlqQuery(url,query,type){
+  //////console.log(query)
   var p = new Promise(function(resolve, reject){
     let prefixes="";
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
@@ -805,6 +806,85 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  query=query.replaceAll("parameter","PARAMETER")
+  //query=query.replaceAll("parameter","PARAMETER")
+  //////console.log(query)
   return query
+}
+function changeDateFormat(date){
+  ////////console.log(date)
+  let prevFormat=new Date(date)
+  ////////console.log(prevFormat)
+  ////////console.log(prevFormat.getMonth())
+  ////////console.log(prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
+  return (prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
+}
+
+function formatDate(str){
+  const [day, month, year] = str.split('-');
+  const date = new Date(+year, +month - 1, +day);
+  ////////console.log(date); 
+  return new Date(date)
+}
+/* function formatDateTime(str){
+  let date=new Date(str)
+  //////console.log(date.getDate())
+  //////console.log(date.getMonth())
+  //////console.log(date.getFullYear())
+  const [day, month, year] = str.split('-');
+  //const date = new Date(+year, +month - 1, +day);
+  ////////console.log(date); 
+  return date
+} */
+function relatedFilters(filterEl){
+  var values,relNodes;
+/*   var selectobject = document.getElementById("mySelect");
+  for (var i=0; i<selectobject.length; i++) {
+      if (selectobject.options[i].value == 'A')
+          selectobject.remove(i);
+  } */
+  ////console.log(filterEl)
+  const filter=networkGraph.filters.filter(d=>d.property==filterEl.id)[0]
+  const relFilters=networkGraph.filters.filter(d=>d.parent==filterEl.id)
+  ////console.log(filter)
+  ////console.log(filterEl.options[filterEl.selectedIndex].text)
+  //console.log(networkGraph.allData)
+  //console.log(networkGraph.data)
+
+  relNodes=networkGraph.allData["nodes"].filter(d=>d.class==filter.class).filter(v=>v[filter.property]==filterEl.options[filterEl.selectedIndex].text)
+  relFilters.forEach(function(fi){
+    ////console.log(fi)
+    if(filterEl.options[filterEl.selectedIndex].text!="All"){
+      values=[...new Set(relNodes.map(d=>d[fi.property].toLowerCase()))]
+    }else{
+      ////console.log(fi)
+      values=fi.filterObject.values
+      ////console.log(values)
+    }
+    $(("#accordion-filters #"+fi.property)).empty();
+    var select = document.querySelector("#accordion-filters #"+fi.property);
+    ////console.log(select)
+    addOptionsSelect(select,values)
+
+    //////console.log(selectobject.options.remove)
+
+    /* for (var i=0; i<selectobject.options.length; i++) {
+        ////console.log(values)
+        ////console.log(selectobject.options[i].value)
+        if (!values.includes(selectobject.options[i].value)){
+          selectobject.remove(i);
+          i--;
+        }     
+    } */
+  })
+}
+function addOptionsSelect(selectField,valuesFilter){
+  console.log(selectField)
+  console.log(valuesFilter)
+  for (let i = 0; i < valuesFilter.length; i++) {
+    var option = document.createElement("option");
+    option.value = valuesFilter[i];
+    option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
+    //////console.log(option)
+    selectField.appendChild(option);
+  }
 }

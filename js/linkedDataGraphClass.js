@@ -8,13 +8,13 @@ LinkedDataGraph.prototype.init = async function () {
     var ldg=this;
     await ldg.getResults()
     ldg.buildData()
-    //console.log(ldg.data.treeData)
+    ////////////console.log(ldg.data.treeData)
   }
 
 LinkedDataGraph.prototype.getResults = async function () {
     var ldg=this;
     ldg.results = await runSparlqQuery(ldg.settings.url,ldg.settings.query,"query");
-    //console.log(ldg.results)
+    ////////////console.log(ldg.results)
   }
 
 LinkedDataGraph.prototype.buildData = function () {
@@ -66,7 +66,54 @@ LinkedDataGraph.prototype.add = function(){
   ldg.data.treeData=ldg.treeData
   ldg.flatten()
 }
+LinkedDataGraph.prototype.filter = function(){
+  var ldg=this;
 
+  function recurse(node) {
+    var hidden=false;
+
+    checkHidden(node)
+
+    if (node.children){
+      node.children.forEach(function(c){
+        checkHidden(c)
+      })
+    }
+  }
+
+  ldg.treeData.forEach(function(r){
+    recurse(r);
+  })
+
+  ldg.flatten()
+
+  function checkHidden(node){
+    if (checkFilter(node)){
+      node.hidden=true
+    }else{
+      delete node.hidden
+    }
+    hidden=false
+  }
+  function checkFilter(node){
+    var hidden=false
+    let filterClass=networkGraph.filterClassesObjects.filter(function(f){
+      return f.name==node.class
+    })
+    if(filterClass.length>0){
+      filterClass[0].filters.forEach(function (fi){
+        ////console.log(fi.filterObject)
+        if(fi.filterObject.checkConditionNode(node)){
+          ////console.log("true")
+          hidden=true
+        //}else{
+          ////console.log("false")
+        }
+      })
+    }
+    return hidden
+  }
+}
 
 function LinkedDataGraphBasic(...args){
   LinkedDataGraph.apply(this, args);
@@ -98,18 +145,23 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   var ldg=this;
   var procNode=[],indexParent,tmpNode,child,classFreeNode;
   var treeResults;
+  //console.log(configRow.rowFields.properties)
   var properties=configRow.rowFields.properties
   var treeData=[]
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
 
+  ////////console.log(ldg.results)
   for (let j = 0; j < ldg.results.length; ++j) {
+      ////////console.log(ldg.results[j])
       treeResults=get_hierarchy_from_keys(Object.keys(ldg.results[j]))
+      ////////console.log(treeResults)
       for (let i = 0; i < treeResults.length; ++i) {
           if(ldg.results[j][treeResults[i]]){
               if(i>0){
               indexParent=checkNodeInTreeData()
+              ////////console.log(indexParent)
               if(treeData[indexParent]["children"].filter(d=>d.value==ldg.results[j][treeResults[i]]["value"]).length==0){
                   child=nodeValues(ldg.results[j],i)
                   
@@ -141,6 +193,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   function checkNodeInTreeData(){
       var pathSearch=JSON.parse(JSON.stringify(procNode));
       var prevNodeIndex=-1,prevNodeId;
+      ////////console.log(treeData)
       while(pathSearch.length>0){
       if(prevNodeIndex!=-1){
           prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==pathSearch[0])[0]["id"]
@@ -190,15 +243,18 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
       if((configRow.rowFields.detail!="")&&(configRow.rowFields.details!=undefined)){
       node["detail"]=getDetail(configRow.rowFields.details,node["class"])
       }
-
+      //console.log(properties)
       prop=properties.filter(d=>d.class==treeResults[index])
+      //console.log(prop)
       if(prop.length>0){
       prop.forEach(function(k){
-          if(r[k["property"]]!=undefined){
-          node[k["property"]]=r[k["property"]].value
-          }
+        //console.log(r)
+        if(r[k["property"]]!=undefined){
+        node[k["property"]]=r[k["property"]].value
+        }
       })
       }
+      //console.log(node)
       return node
   }
     
@@ -222,7 +278,7 @@ LinkedDataGraphExpert.prototype.buildTreeData = function () {
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
-  //console.log(ldg.settings["subject-object"])
+  ////////////console.log(ldg.settings["subject-object"])
   ldg.results.forEach(r => {
     if (ldg.settings["subject-object"] == "s") {
       if (r["o"]["more_results"]) {

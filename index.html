@@ -126,7 +126,7 @@
                 <legend class="ecl-form-label">Chose mode<span class="ecl-form-label__required">*</span></legend>
                 <div class="ecl-help-block" id="helper-mode">Showing graphs in basic or expert mode</div>
                 <div class="ecl-radio ecl-radio--binary">
-                  <input id="mode-option-basic" name="radio-mode" class="ecl-radio__input" type="radio" value="yes" checked required />
+                  <input id="mode-option-basic" name="radio-mode" class="ecl-radio__input" type="radio" value="yes" checked required onclick="showCollections()"/>
                   <label class="ecl-radio__label" for="mode-option-basic">
                     <span class="ecl-radio__box">
                       <span class="ecl-radio__box-inner"></span>
@@ -135,7 +135,7 @@
                   </label>
                 </div>
                 <div class="ecl-radio ecl-radio--binary">
-                  <input id="mode-option-expert" name="radio-mode" class="ecl-radio__input" type="radio" value="no" required />
+                  <input id="mode-option-expert" name="radio-mode" class="ecl-radio__input" type="radio" value="no" required onclick="expertMode()"/>
                   <label class="ecl-radio__label" for="mode-option-expert">
                     <span class="ecl-radio__box">
                       <span class="ecl-radio__box-inner"></span>
@@ -147,71 +147,27 @@
 <!--                           <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
               <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd> -->
             </div>
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="collections-div">
               <div class="relative flex items-start">
-                <div class="flex items-center h-5">
+                  <div class="ecl-form-group"><label for="select-collections" class="ecl-form-label">Select a collection<span
+                    class="ecl-form-label__required">*</span></label>
+                  <div class="helper-collections">Chose collection for selecting a graph.</div>
+                  <div class="ecl-select__container ecl-select__container--m">
+                    <select class="ecl-select" id="select-collections"
+                      required="" onchange="getOptionsCollectionSelect(this)">
+                    <option value="default">------------</option>  
+                    <option value="EU Vocabularies">EU Vocabularies</option>
+                    <option value="EU Whoiswho">EU Whoiswho</option>
+                    <option value="EU Publications">EU Publications</option>
+                    <option value="EU Data">EU Data</option>
+                    <option value="EU Law">EU Law</option>
+                  </select>
+                  <div class="ecl-select__icon"><svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape"
+                      focusable="false" aria-hidden="true">
+                      <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
+                    </svg></div>
                 </div>
-                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
-                  <legend class="ecl-form-label">Collections
-                    <span class="ecl-form-label__required">*</span>
-               </legend>
-                  <div class="ecl-help-block" id="helper-collections">Chose collection for selecting a graph.</div>
-                  <div class="ecl-radio">
-                    <input type="radio" id="radio_eu_vocabularies" name="radio-collections" class="ecl-radio__input"
-                      value="eu_vocabularies" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
-                    <label class="ecl-radio__label" for="radio_eu_vocabularies">
-                      <span class="ecl-radio__box">
-                        <span class="ecl-radio__box-inner"></span>
-                      </span>
-                      <span class="ecl-radio__text">EU Vocabularies</span>
-                    </label>
-<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
- -->              </div>
-                  <div class="ecl-radio">
-                    <input type="radio" id="radio_eu_whoiswho" name="radio-collections" class="ecl-radio__input"
-                      value="eu_whoiswho" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
-                    <label class="ecl-radio__label" for="radio_eu_whoiswho">
-                      <span class="ecl-radio__box">
-                        <span class="ecl-radio__box-inner"></span>
-                      </span>
-                      <span class="ecl-radio__text">EU Whoiswho</span>
-                    </label>
-<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
- -->                  </div>
-                  <div class="ecl-radio">
-                    <input type="radio" id="radio_eu_publications" name="radio-collections" class="ecl-radio__input"
-                      value="eu_publications" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
-                    <label class="ecl-radio__label" for="radio_eu_publications">
-                      <span class="ecl-radio__box">
-                        <span class="ecl-radio__box-inner"></span>
-                      </span>
-                      <span class="ecl-radio__text">EU Publications</span>
-                    </label>
-<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
- -->                  </div>
-                  <div class="ecl-radio">
-                    <input type="radio" id="radio_eu_data" name="radio-collections" class="ecl-radio__input"
-                      value="eu_data" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
-                    <label class="ecl-radio__label" for="radio_eu_data">
-                      <span class="ecl-radio__box">
-                        <span class="ecl-radio__box-inner"></span>
-                      </span>
-                      <span class="ecl-radio__text">EU Data</span>
-                    </label>
-<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
- -->                  </div>
-                  <div class="ecl-radio">
-                    <input type="radio" id="radio_eu_law" name="radio-collections" class="ecl-radio__input"
-                      value="eu_law" required="" aria-describedby="helper-collections" onclick="getOptionsCollectionRadio(this)"/>
-                    <label class="ecl-radio__label" for="radio_eu_law">
-                      <span class="ecl-radio__box">
-                        <span class="ecl-radio__box-inner"></span>
-                      </span>
-                      <span class="ecl-radio__text">EU Law</span>
-                    </label>
-<!--                     <div class="ecl-radio__help" id="helper-1">Help text for an option</div>
- -->                  </div>
-                </fieldset>
+              </div>
               </div>
             </div>
           </dl>
@@ -489,13 +445,23 @@
               <div class="grid w-full grid-cols-11">
                 <div class="z-0 hidden h-full col-span-2 bg-white shadow-2xl" id="filters">
                   <div class="ecl-container left-aligned ecl-u-mv-s">
-                    <h3 class="ecl-u-type-heading-3">Filter Options</h3>
+                    <h3 class="ecl-u-type-heading-3">Filter by</h3>
                   </div>
-                  <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters">
+<!--                   <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters"></div>
+ -->                  <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters"></div>
+<!--                   <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters">
+                  </div> -->
+                  <div class="ecl-container ecl-u-d-flex ecl-u-justify-content-center ecl-u-mt-xl" id="apply-filter">
+                    <button class="ecl-button ecl-button--primary" type="submit" onclick="applyFilters()">Apply</button>
+                  </div>
+                  <div class="ecl-container ecl-u-d-flex ecl-u-justify-content-center ecl-u-mt-s" id="clear-filter">
+                    <button type="submit" class="ecl-button ecl-button--secondary"><span class="ecl-button__container"><span
+                      class="ecl-button__label" data-ecl-label="true" onclick="clearFilters()"">Clear</span></span></button>
                   </div>
                 </div>
                 <div class="z-0 h-auto col-span-9" id="networkGraph">
                 </div>
+                
               </div>
 
           </div>
@@ -818,8 +784,8 @@
     <script src="js/configFileClass.js"></script>
     <script src="js/configRowClass.js"></script>
     <script src="js/menuItemsClass.js"></script>
-    <script src="js/filtersWithClass.js"></script>
-    <script src="js/filterClass.js"></script>
+<!--     <script src="js/filtersWithClass.js"></script>
+ -->    <script src="js/filterClass.js"></script>
     <script>
       ECL.autoInit();
     </script>

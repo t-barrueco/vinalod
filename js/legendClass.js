@@ -18,6 +18,7 @@ Legend.prototype.initColors=function(i){
 }
 Legend.prototype.addColors=function(){
     var le=this;
+
     if(le.graph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }
