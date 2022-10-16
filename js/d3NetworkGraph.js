@@ -39,6 +39,10 @@ NetworkGraph.prototype.initVis = function () {
   if(!vis.filterClassesObjects){
     vis.filterClassesObjects=[]
   }
+  if(configRow){
+    vis.queriesArray=[]
+  }
+  
 
   vis.filters=[]
 
@@ -1137,6 +1141,7 @@ NetworkGraph.prototype.refresh = function (node){
 
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
+  vis.queriesArray.push(configRow.rowFields.query)
   //vis.allData=vis.data
 
   

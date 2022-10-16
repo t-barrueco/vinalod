@@ -13,35 +13,39 @@
 
 function download(data, fileName, mimeType) {
   var str = '';
-  var csvContent = '';
+  var content = '';
   var outerArr = [];
+  //console.log(mimeType.split(";")[0].split("/")[1])
+  var type=mimeType.split(";")[0].split("/")[1]
+  if(type=="csv"){
+    outerArr.push(Object.keys(data[0]));  // column headers 
 
-  outerArr.push(Object.keys(data[0]));  // column headers 
+    data.forEach(d => {
+      var dataString = "";
+      var toStr = "";
+      for (let x in d) {
+        toStr = String(d[x]);
+        toStr = toStr.replace(/["',]/g, " ").trim();   // to replace all commas with a space 
+        toStr = toStr.replace(/(\r\n|\n|\r)/gm, "");  // to remove all line brakes
+        dataString += toStr + ", ";
+      }
+      dataString = dataString.slice(0, -2);
+      outerArr.push(dataString);
+    });
 
-  data.forEach(d => {
-    var dataString = "";
-    var toStr = "";
-    for (let x in d) {
-      toStr = String(d[x]);
-      toStr = toStr.replace(/["',]/g, " ").trim();   // to replace all commas with a space 
-      toStr = toStr.replace(/(\r\n|\n|\r)/gm, "");  // to remove all line brakes
-      dataString += toStr + ", ";
-    }
-    dataString = dataString.slice(0, -2);
-    outerArr.push(dataString);
-  });
-
-  /// the data is then wrote as a csv string, every row on a new line
-  outerArr.forEach(function (d, index) {
-  
-    if (index == 0) {
-      str = d + '\n';
-      csvContent = str;
-    } else {
-      csvContent += (index < data.length) ? d + '\n' : d;
-    }
-  });
-
+    /// the data is then wrote as a csv string, every row on a new line
+    outerArr.forEach(function (d, index) {
+    
+      if (index == 0) {
+        str = d + '\n';
+        content = str;
+      } else {
+        content += (index < data.length) ? d + '\n' : d;
+      }
+    });
+  }else if(type=="json"){
+    content=data
+  }
    
   var a = document.createElement('a');
   mimeType = mimeType || 'application/octet-stream';
@@ -51,7 +55,7 @@ function download(data, fileName, mimeType) {
       type: mimeType
     }), fileName);
   } else if (URL && 'download' in a) { //html5 A[download]
-    a.href = URL.createObjectURL(new Blob([csvContent], {
+    a.href = URL.createObjectURL(new Blob([content], {
       type: mimeType
     }));
     a.setAttribute('download', fileName);
@@ -59,7 +63,7 @@ function download(data, fileName, mimeType) {
     a.click();
     document.body.removeChild(a);
   } else {
-    location.href = 'data:application/octet-stream,' + encodeURIComponent(csvContent); // only this mime type is supported
+    location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
   }
 };
 

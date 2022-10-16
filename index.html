@@ -102,6 +102,7 @@
         <ul class="ecl-tabs__list" role="tablist">
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="changeTab(this)" id="mode-tab">Mode</a></li>
           <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
+          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="import-tab">Import/Export</a></li>
           <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="legend-tab">Legend</a></li>
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="manual-tab">Manual and Live Demo</a></li>
           <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation"><button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button" tabindex="-1"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">More (%d)</span><svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
@@ -213,7 +214,16 @@
                   <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
                 </fieldset>
               </div>
-            </div>
+            </div> 
+          </dl>
+        </div>
+        
+      </li>
+      <!-- More items... -->
+    </ul>
+    <ul role="list" class="hidden content-item" id="import-content">
+      <li class="px-6">
+          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
             <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
@@ -234,7 +244,7 @@
                   <legend class="ecl-form-label">Save graph for later?</legend>
                   <div class="ecl-help-block" id="helper-id-2">Share a local copy of the graph</div>
                   </svg>
-                  <button class="ecl-button ecl-button--primary" onclick="saveGraph()">Save graph</button>
+                  <button class="ecl-button ecl-button--primary" onclick="downloadGraph()">Save graph</button>
                 </fieldset>
               </div>
             </div>
@@ -246,10 +256,26 @@
                   <legend class="ecl-form-label">Import file?</legend>
                   <div class="ecl-help-block" id="helper-id-2">Import local copy of the graph</div>
                   </svg>
-                  <button class="ecl-button ecl-button--primary" onclick="saveGraph()">Import graph</button>
+                  <input type="file" class="ecl-file-upload" data-ecl-file-upload-input="" data-ecl-auto-init="FileUpload" id="example-input-id-1" name="file-upload-name" required="" onchange="importGraph(this)"/>
+                  <label class="ecl-file-upload__button-container" for="example-input-id-1">
+                    <span class="ecl-file-upload__button ecl-button ecl-button--primary" data-ecl-file-upload-button="" data-ecl-file-upload-label-choose="Choose file" data-ecl-file-upload-label-replace="Replace file">Choose file</span>
+                  </label>
+                  <ul class="ecl-file-upload__list" data-ecl-file-upload-list=""></ul>
                 </fieldset>
               </div>
             </div>
+<!--             <div class="ecl-form-group" data-ecl-file-upload-group=""><label class="ecl-form-label"
+              for="example-input-id-1">Label<span class="ecl-form-label__required">*</span></label>
+            <div class="ecl-help-block">This is the input&#x27;s helper text.<div class="ecl-u-mt-xs ecl-u-type-color-grey-75">
+                Only <strong>txt doc docx pdf odt rtf</strong> files. Maximum size is <strong>5 MB</strong>.<br />Encrypted
+                documents and those containing macros are not accepted.</div>
+            </div><input type="file" class="ecl-file-upload" data-ecl-file-upload-input="" data-ecl-auto-init="FileUpload"
+              id="example-input-id-1" name="file-upload-name" required="" /><label class="ecl-file-upload__button-container"
+              for="example-input-id-1"><span class="ecl-file-upload__button ecl-button ecl-button--primary"
+                data-ecl-file-upload-button="" data-ecl-file-upload-label-choose="Choose file"
+                data-ecl-file-upload-label-replace="Replace file">Choose file</span></label>
+            <ul class="ecl-file-upload__list" data-ecl-file-upload-list=""></ul>
+            </div> -->
             
           </dl>
         </div>
@@ -287,72 +313,7 @@
       <!-- More items... -->
     </ul>
   </div>
-<!--         <nav class="ecl-menu ecl-menu--group1" data-ecl-menu="" data-ecl-auto-init="Menu" aria-expanded="false">
-          <div class="ecl-menu__overlay" data-ecl-menu-overlay=""></div>
-          <div class="ecl-container ecl-menu__container"><a class="ecl-link ecl-link--standalone ecl-menu__open"
-              href="/component-library/example" data-ecl-menu-open=""><svg class="ecl-icon ecl-icon--s" focusable="false"
-                aria-hidden="true">
-                <use xlink:href="/images/icons.svg#general--hamburger"></use>
-              </svg>Menu</a>
-            <section class="ecl-menu__inner" data-ecl-menu-inner="">
-              <header class="ecl-menu__inner-header"><button class="ecl-menu__close ecl-button ecl-button--text" type="submit"
-                  data-ecl-menu-close=""><span class="ecl-menu__close-container ecl-button__container"><svg
-                      class="ecl-icon ecl-icon--s ecl-button__icon ecl-button__icon--before" focusable="false"
-                      aria-hidden="true" data-ecl-icon="">
-                      <use xlink:href="/images/icons.svg#ui--close-filled"></use>
-                    </svg><span class="ecl-button__label" data-ecl-label="true">Close</span></span></button>
-                <div class="ecl-menu__title">Menu</div><button data-ecl-menu-back="" type="submit"
-                  class="ecl-menu__back ecl-button ecl-button--text"><span class="ecl-button__container"><svg
-                      class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-button__icon ecl-button__icon--before"
-                      focusable="false" aria-hidden="true" data-ecl-icon="">
-                      <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                    </svg><span class="ecl-button__label" data-ecl-label="">Back</span></span></button>
-              </header>
-              <ul class="ecl-menu__list">
-                <li class="ecl-menu__item" data-ecl-menu-item=""><a href="index.html" class="ecl-menu__link"
-                    data-ecl-menu-link="">Home</a></li>
-                <li class="ecl-menu__item ecl-menu__item--has-children" data-ecl-menu-item=""
-                  data-ecl-has-children="" aria-haspopup="" aria-expanded="false"
-                  id="basic-mode">
-                  <a href="#"
-                    class="ecl-menu__link" data-ecl-menu-link="">Basic Mode</a><button
-                    class="ecl-button ecl-button--primary ecl-menu__button-caret" type="button" data-ecl-menu-caret=""
-                    aria-label="Access item&#x27;s children"><span class="ecl-button__container"><svg
-                        class="ecl-icon ecl-icon--xs ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after"
-                        focusable="false" aria-hidden="true" data-ecl-icon="">
-                        <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                      </svg></span></button>
-                  <div class="ecl-menu__mega" data-ecl-menu-mega="">
-                    <ul class="ecl-menu__sublist">
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
-                          class="ecl-menu__sublink"
-                          onclick="getOptionsCollection(this)">EU Vocabularies</a></li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
-                          class="ecl-menu__sublink"
-                          onclick="getOptionsCollection(this)">EU Whoiswho</a></li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
-                          class="ecl-menu__sublink"
-                          onclick="getOptionsCollection(this)">EU Data</a></li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
-                          class="ecl-menu__sublink"
-                          onclick="getOptionsCollection(this)">EU Publications</a></li>
-                      <li class="ecl-menu__subitem" data-ecl-menu-subitem=""><a href="#"
-                          class="ecl-menu__sublink"
-                          onclick="getOptionsCollection(this)">EU Law</a></li>
-                        </a>
-                        </li>
-                          
-                    </ul>
-                  </div>
-                </li>
-                <li class="ecl-menu__item" data-ecl-menu-item=""><a href="#" class="ecl-menu__link"
-                  data-ecl-menu-link=""
-                  onclick="expertMode()">Expert mode</a></li>                
-              </ul>
-            </section>
-          </div>
-        </nav> -->
-        
+
 </header>
 
   <div class="relative overflow-y-scroll">

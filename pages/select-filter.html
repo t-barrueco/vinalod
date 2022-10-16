@@ -1,13 +1,22 @@
-<div class="ecl-form-group"><label for="select-default" class="ecl-form-label">Label</label>
-  <div class="ecl-help-block">HelperText</div>
-  <div class="ecl-select__container ecl-select__container--m">
-    <select class="ecl-select" id="select-default" onchange="relatedFilters(this)">
+<div class="ecl-form-group"><label for="select-default" class="ecl-form-label">Select a country<span
+      class="ecl-form-label__required">*</span></label>
+  <div class="ecl-help-block">This is the input&#x27;s helper text.</div>
+  <div class="ecl-select__container ecl-select__container--m"><select class="ecl-select" id="select-default"
+      required="">
+      <option value="1">Belgium</option>
+      <option value="2">France</option>
+      <option value="3" disabled="">Luxembourg</option>
+      <option value="4">Germany</option>
+      <option value="5" selected="">Bulgaria</option>
+      <option value="6">Italy</option>
+      <option value="7">Romania</option>
+      <option value="8">Greece</option>
+      <option value="9">Hungary</option>
+      <option value="10">Portugal</option>
     </select>
-    <div class="ecl-select__icon">
-        <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape"
+    <div class="ecl-select__icon"><svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape"
         focusable="false" aria-hidden="true">
-            <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
-        </svg>
-    </div>
+        <use xlink:href="/component-library/dist/media/icons.ccfd2174.svg#corner-arrow"></use>
+      </svg></div>
   </div>
 </div>

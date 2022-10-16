@@ -22,6 +22,7 @@ function genRandomString(){
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
+  console.log("entra")
   //if right click on table get all options in a format for table
   if(origin=="table"){
     Items=[{

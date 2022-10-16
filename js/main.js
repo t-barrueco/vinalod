@@ -6,6 +6,8 @@ var timer = 0;
 var delay = 200;
 var prevent = false;
 
+
+
 function dataViz(){
     var optionsMenu;
 
@@ -15,7 +17,6 @@ function dataViz(){
 
     const graphName = urlParams.get('graph')
 
-    console.log(graphName);
     ////console.log(document.getElementsByTagName("table"))
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
@@ -32,92 +33,20 @@ function dataViz(){
               })
           })
 }
-function getOptionsCollection(collection){
-  $('#landing-page').hide();
-  $('#dataviz-collection').show();
-  $('#graph-area').addClass("hidden")
-  $('#dataviz-collection article').remove()
-  ////console.log(document.getElementsByTagName("table"))
 
-  ////console.log(collection)
-  changeCollectionOptions(collection.innerText.trim())
-}
 function getOptionsCollectionSelect(collection){
   $('#landing-page').hide();
   $('#dataviz-collection').show();
   $('#graph-area').addClass("hidden")
   $('#dataviz-collection article').remove()
-  //console.log(collection.value)
-  ////console.log(collection.parentNode.getElementsByClassName("ecl-radio__text")[0].textContent)
-  //////console.log(document.getElementsByTagName("table"))
-  //////console.log(collection.getElementsByClassName("ecl-radio__text"))
-  //////console.log(collection.getElementsByClassName("ecl-radio__text")[0].textContent)
   changeCollectionOptions(collection.value)
-  //collection.value="default"
 }
 
-async function buildBasicGraph(option,node){
-    var sparqlQuery,modal2;
-    $('#landing-page'). hide();
-    $('#dataviz-collection'). hide();
-    $('#graph-area').removeClass("hidden")
-    ////console.log(document.getElementsByTagName("table"))
-    //console.log("buildBasicGraph")
-    if((node==undefined)||(!node["subject-object"])){
-      if(typeof configRow !== 'undefined'){
-        //console.log("configRow.update")
-        configRow.update(option,node)
-      }else{
-        configRow = new ConfigRow(option,node);
-      }
-          //The graph type can be TREE, TIMELINE, TABLE, WORDCLOUD...
-      if(configRow.rowFields.type=="TREE"){
-        console.log("entra por aquí")
-        await buildNetworkGraph(configRow,"basic",node)
-
-      }else{
-        deleteTooltip()
-        sparqlQuery=configRow.rowFields.query
-        if (configRow.type=="TREEGRAPH"){
-          modal2=getModal2()
-          showTreegraph(node,sparqlQuery,modal2.modalHeader,modal2.modalContent,configRow)
-          showModal("#myModal2")
-        }else if (configRow.type=="WIKIPEDIA"){
-          modal2=getModal2()
-          showWikipediaPage(node,modal2.modalHeader,modal2.modalContent,configRow)
-          showModal("#myModal2")
-        }else if (configRow.type=="WEBPAGE"){
-          modal2=getModal2()
-          showWebPage(page,modal2.modalHeader,modal2.modalContent)
-          showModal("#myModal2")
-        }else if (configRow.type=="WEBPAGE_QUERY"){
-          showWebPageQuery(node,sparqlQuery,configRow.url)
-        }else if (configRow.type=="TIMELINE"){
-          modal2=getModal2()
-          showTimeLine(node,modal2.modalHeader,modal2.modalContent,configRow)
-          showModal("#myModal2")
-        }else if (configRow.type=="PDF"){
-          modal2=getModal2()
-          showPdf(node,sparqlQuery,configRow.url,modal2.modalHeader,modal2.modalContent)
-          showModal("#myModal2")
-        }else if (configRow.type=="TABLE"){
-          modal2=getModal2()
-          showTable(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
-          showModal("#myModal2")
-        }else if (configRow.type=="WORDCLOUD"){
-          modal2=getModal2()
-          showWordcloud(node,sparqlQuery,configRow,modal2.modalHeader,modal2.modalContent)
-          showModal("#myModal2")
-        }
-      }
-    }else{
-      await (option,"expert",node)
-    }
-  }
 function collapse(){
 
   networkGraph.collapseAll()
 }
+
 function expand(){
   networkGraph.expandAll()
 }
@@ -166,7 +95,6 @@ d3.select('body')
 
 var modal2 = document.getElementById("myModal2");
 
-// Get the <span> element that closes the modal
 var span2 = document.getElementsByClassName("close2")[0];
 
 
@@ -256,9 +184,113 @@ function downloadData(element){
   
 }
 function downloadQuery(){
-  configRowsList.forEach(function(q){
+  console.log("entra en download query")
+  console.log(networkGraph.queriesArray)
+  networkGraph.queriesArray.forEach(function(q){
     download([{"query":q}], 'testQuery.csv', 'text/csv;encoding:utf-8');       
   })
+}
+
+function downloadGraph(){
+  //console.log(networkGraph.treeData)
+  let file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
+  console.log(file)
+  download(file, 'graph.json', 'text/json;encoding:utf-8');       
+}
+function test(fileText){
+  d3.selectAll(".classFilter").remove()
+  $("#filters .ecl-accordion__item").remove()
+
+  $("#form-container").addClass("hidden")
+
+  $(".graph").remove() 
+  $("#networkGraph-svg").remove()  
+
+  hideModal("#myModal")
+  deleteTooltip()
+  //hide flyout menu
+  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+
+  $('#landing-page'). hide();
+  $('#dataviz-collection'). hide();
+  $('#graph-area').removeClass("hidden")
+
+  $('#settings-tab').parent().removeClass("hidden")
+  $('#legend-tab').parent().removeClass("hidden")
+
+  propertiesFilterHist=[]
+
+  if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+    linkedDataGraph = undefined;
+  }
+
+  linkedDataGraph = new LinkedDataGraphBasic("imported");
+  linkedDataGraph.importGraph(fileText)
+  //console.log(linkedDataGraph)
+  let forces=setForcesGraph()
+  networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
+  console.log(networkGraph)
+  legend=new Legend("legend",networkGraph)
+
+  if(networkGraph.filterClassesObjects.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  }
+
+}
+
+function importGraph(file){
+
+  file.files[0].text().then(text => {
+    console.log(text)
+    test(JSON.parse(text))
+    //let blobText = text
+  })
+  function test(fileText){
+    d3.selectAll(".classFilter").remove()
+    $("#filters .ecl-accordion__item").remove()
+  
+    $("#form-container").addClass("hidden")
+  
+    $(".graph").remove() 
+    $("#networkGraph-svg").remove()  
+  
+    hideModal("#myModal")
+    deleteTooltip()
+    //hide flyout menu
+    $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+    $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+  
+    $('#landing-page'). hide();
+    $('#dataviz-collection'). hide();
+    $('#graph-area').removeClass("hidden")
+  
+    $('#settings-tab').parent().removeClass("hidden")
+    $('#legend-tab').parent().removeClass("hidden")
+  
+    propertiesFilterHist=[]
+  
+    if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+      linkedDataGraph = undefined;
+    }
+  
+    linkedDataGraph = new LinkedDataGraphBasic("imported");
+    linkedDataGraph.importGraph(fileText)
+    //console.log(linkedDataGraph)
+    let forces=setForcesGraph()
+    networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
+    console.log(networkGraph)
+    legend=new Legend("legend",networkGraph)
+  
+    if(networkGraph.filterClassesObjects.length!=0){
+      $("#filters").removeClass("hidden")
+    }else{
+      $("#filters").addClass("hidden")
+    }
+  
+  }
 }
 function getTooltipNode(tooltip,nodeClass){
   var tooltipNode={}
@@ -445,7 +477,7 @@ async function addSharedGraph(file){
   var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
 
   //INCLUIR EN FUNCIÓN
-  d3.selectAll(".classFilter").remove()
+  /* d3.selectAll(".classFilter").remove()
   $("#filters .ecl-accordion__item").remove()
 
   $("#form-container").addClass("hidden")
@@ -472,7 +504,7 @@ async function addSharedGraph(file){
     linkedDataGraph = undefined;
   }
 
-  //let text= retrieveObjectS3(file)
+ */  //let text= retrieveObjectS3(file)
   AWS.config.update({
     region: bucketRegion,
     credentials: new AWS.CognitoIdentityCredentials({
@@ -494,7 +526,8 @@ async function addSharedGraph(file){
       console.log(data)
       const fileText = JSON.parse(data.Body.toString());
       console.log(fileText)
-      linkedDataGraph = new LinkedDataGraphBasic("imported");
+      test(fileText)
+      /* linkedDataGraph = new LinkedDataGraphBasic("imported");
       linkedDataGraph.importGraph(fileText)
       //console.log(linkedDataGraph)
       let forces=setForcesGraph()
@@ -506,7 +539,7 @@ async function addSharedGraph(file){
         $("#filters").removeClass("hidden")
       }else{
         $("#filters").addClass("hidden")
-      }
+      } */
       //linkedDataGraph.importGraph(text)
      }              // successful response
    });
@@ -516,38 +549,6 @@ async function addSharedGraph(file){
     else     console.log(data);           // successful response
 
   }); */
-
-  async function retrieveObjectS3(file){
-    var albumBucketName = "vinalod";
-    var bucketRegion = "us-east-1";
-    var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
-
-    AWS.config.update({
-      region: bucketRegion,
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: IdentityPoolId
-      })
-    });
-
-    console.log("s3")
-    var s3 = new AWS.S3();
-
-    var params = {
-      Bucket: albumBucketName, 
-      Key: file
-    };
-    //processS3File(params)
-    await s3.getObject(params, function(err, data) {
-       if (err) console.log(err, err.stack); // an error occurred
-       else {
-        console.log(data)
-        const text = data.Body.toString();
-        console.log(text)
-        //linkedDataGraph.importGraph(text)
-       }              // successful response
-     });
-     console.log("final")
-  }
 }
 
 async function changeBasicGraph(option){
@@ -589,17 +590,6 @@ async function changeBasicGraph(option){
 
   //get option selected for searching in Config File
   option=option.innerText.trim()
-  
-  //buildBasicGraph(option)
-  /* if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
-    linkedDataGraph.data.flatData={}
-    linkedDataGraph.data.treeData=[]
-    await linkedDataGraph.update(option)
-    ////console.log(linkedDataGraph.data)
-  }else{
-    linkedDataGraph = new LinkedDataGraphBasic(option);
-    await linkedDataGraph.settingsFromOption()
-  } */
 
   if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
     linkedDataGraph = undefined;
@@ -643,57 +633,7 @@ async function changeBasicGraph(option){
   //}
 
 }
-/* async function checkMenuItems(origin,element) {
-  ////////////////console.log(element)
-  if(origin=="form"){
-    node={"uri":element.querySelector('#free-uri').value, "subject-object":element.querySelector('#subject-object').value}
-  }else if(origin=="graph"){
-    if(element instanceof Element){
-      //founded=findNodeTreemap(element.getAttribute("id").replace("_image",""),vis.treeData)
-      node=get_node_from_element(element.getAttribute("id").replace("_image",""))
-    }else{
-      //founded=findNodeTreemap(element,vis.treeData)
-      node=element
-    }
-  }
-  //////////////console.log(menuItems)
-  if(menuItems){
-    await menuItems.update(node)
-  }else{
-    //////////////console.log("crea uno nuevo")
-    //////////////console.log(node)
-    menuItems= new MenuItems(node)
-    await menuItems.init()
-  }
-  ////////////////console.log(menuItems)
-  hideSpinMessage(interval)
-  //////////////console.log(menuItems.selectedRows)
-  if(menuItems.selectedRows.length==0){
-    //////////////console.log("entra")
-    // if (founded[0]["children"]){
-      //SE CONTRAE LOS CHILDREN
-    //}else{
-      //SE EXPANDEN LOS CHILDREN
-    //} 
-  }else if(menuItems.selectedRows.length==1){
-    //////////////console.log(menuItems.selectedRows)
-    if(menuItems.selectedRows[0]["subject-object"]){
-      //////////////console.log(menuItems.selectedRows)
-      await buildBasicGraph(menuItems.selectedRows[0],node)
-    }else{
-      await buildBasicGraph(menuItems.selectedRows[0].option,node)
-      clickBubbleFreeGraph(element)
-    }
-  }else if(menuItems.selectedRows.length>1){
-    //////////////////////////////////console.log("mayor de 1")
-    //getMenuItems(indexRows,node,origin,"basic")
-    if(origin=="table"){
-      menuItems.getMenuItemsInTable()
-    }else{
-      menuItems.getMenuItemsInGraph()
-    }
-  }
-} */
+
 function setForcesGraph(){
   forces = {
     center: {

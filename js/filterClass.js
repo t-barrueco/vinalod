@@ -66,6 +66,32 @@ FilterClassBasic.prototype.initFilters = async function () {
   
 }
 
+FilterClassBasic.prototype.addFiltersImportedGraph = async function () {
+  var cf=this;
+  //let filters=configRow.rowFields.filters.filter(d=>d.class==cf.name)
+  //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
+  await cf.getCode()
+
+  $("#accordion-filters").append(cf.code).ready(function (){
+    
+/*     for (let i = 0; i < filters.length; i++) {
+      console.log(filters[i])
+      if(filters[i]["filter_type"]=="dropdown"){
+        cf.filters.push(new FilterBasicDropdown(filters[i]))
+      }else if(filters[i]["filter_type"]=="date"){
+        console.log("date")
+        cf.filters.push(new FilterBasicDate(filters[i]))
+      }else if(filters[i]["filter_type"]=="text"){
+        cf.filters.push(new FilterBasicText(filters[i]))
+      }else if(filters[i]["filter_type"]=="number"){
+        cf.filters.push(new FilterBasicNumber(filters[i]))
+      }
+    } */
+    //console.log(cf.filters)
+  })
+  
+}
+
 function FilterClassExpert(...args){
   FilterClass.apply(this, args);
   }
@@ -181,16 +207,18 @@ class FilterBasicDropdown extends FilterBasic {
 
     let code = await getHtmlCodeFromFile("pages/select-filter.html");
     code=code.replace("Label",this.details.property.split("_")[1].charAt(0).toUpperCase() + this.details.property.split("_")[1].slice(1))
+    console.log($("#"+this.details.class+"_filters"))
     $("#"+this.details.class+"_filters").append(code).ready(function () {
+      console.log(code)
       ECL.autoInit();
     });
-    var select=document.getElementById("select-default")
+/*     var select=document.getElementById("select-default")
     select.name = this.details.property;
     select.id = this.details.property.replaceAll(" ","_");
 
     let valuesFilter=this.values
     addOptionsSelect(select,valuesFilter,false)
-    select.value = valuesFilter[0];
+    select.value = valuesFilter[0]; */
   }
   checkConditionNode(node){
     let filterCondition=$("#"+this.details.property).val()
