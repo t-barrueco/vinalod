@@ -793,7 +793,7 @@
       {
         "class":"corporateBody",
         "property":"corporateBody_country",
-        "property_name":"Corporate Body Country"
+        "property_name":"Country"
       },
       {
         "class":"corporateBody",
@@ -803,7 +803,7 @@
       {
         "class":"corporateBody",
         "property":"corporateBody_location",
-        "property_name":"Corporate Body Location"
+        "property_name":"Location"
       }
     ],
     "classes_text":[

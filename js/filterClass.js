@@ -1,6 +1,6 @@
 FilterClass = function (_name) {
   this.name = _name;
-  this.init()
+  //this.init()
 };
   
 /* FilterClass.prototype.init = async function () {
@@ -18,14 +18,17 @@ FilterClass = function (_name) {
 FilterClass.prototype.init= async function(){
   var cf=this;
   cf.filters=[]
-  cf.initFilters()
+  console.log("1.1 en filterClass.init")
+  await cf.initFilters()
+  console.log("fin 1.1")
 }
 
 FilterClass.prototype.getCode= async function(){
   var cf=this;
 
   cf.code = await getHtmlCodeFromFile("pages/filter-class-item.html");
-  cf.setTitle()
+  //console.log(cf.code)
+  //cf.setTitle()
 }
 
 function FilterClassBasic(...args){
@@ -36,7 +39,8 @@ FilterClassBasic.prototype = Object.create(FilterClass.prototype);
 
 FilterClassBasic.prototype.setTitle = async function () {
   var cf=this;
-
+  ////console.log(networkGraph)
+  //console.log(cf.code)
   cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
 
@@ -44,16 +48,50 @@ FilterClassBasic.prototype.initFilters = async function () {
   var cf=this;
   let filters=configRow.rowFields.filters.filter(d=>d.class==cf.name)
   //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
-  await cf.getCode()
+  console.log(filters)
+  //cf.getCode()
+  console.log("1.1.1 antes filterClassBasic.initFilter")
+
+  code=await getHtmlCodeFromFile("pages/filter-class-item.html")
+  //console.log(code)
+  
+  cf.code=code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
+  console.log("antes de añadir el código de la clase")
+  $("#accordion-filters").append(cf.code)
+  for (let i = 0; i < filters.length; i++) {
+    //console.log(filters[i])
+    if(filters[i]["filter_type"]=="dropdown"){
+      cf.filters.push(new FilterBasicDropdown(filters[i]))
+    }else if(filters[i]["filter_type"]=="date"){
+      //console.log("date")
+      cf.filters.push(new FilterBasicDate(filters[i]))
+    }else if(filters[i]["filter_type"]=="text"){
+      cf.filters.push(new FilterBasicText(filters[i]))
+    }else if(filters[i]["filter_type"]=="number"){
+      cf.filters.push(new FilterBasicNumber(filters[i]))
+    }
+  }
+  //ECL.autoInit()
+  /* await code.then(function (resolve){
+    console.log(resolve)
+  }) */
+
+}
+
+FilterClassBasic.prototype.addFiltersImportedGraph = function () {
+  var cf=this;
+  //let filters=configRow.rowFields.filters.filter(d=>d.class==cf.name)
+  //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
+  cf.getCode()
 
   $("#accordion-filters").append(cf.code).ready(function (){
     
     for (let i = 0; i < filters.length; i++) {
-      console.log(filters[i])
+      //console.log(filters[i])
       if(filters[i]["filter_type"]=="dropdown"){
         cf.filters.push(new FilterBasicDropdown(filters[i]))
       }else if(filters[i]["filter_type"]=="date"){
-        console.log("date")
+        //console.log("date")
         cf.filters.push(new FilterBasicDate(filters[i]))
       }else if(filters[i]["filter_type"]=="text"){
         cf.filters.push(new FilterBasicText(filters[i]))
@@ -61,33 +99,7 @@ FilterClassBasic.prototype.initFilters = async function () {
         cf.filters.push(new FilterBasicNumber(filters[i]))
       }
     }
-    //console.log(cf.filters)
-  })
-  
-}
-
-FilterClassBasic.prototype.addFiltersImportedGraph = async function () {
-  var cf=this;
-  //let filters=configRow.rowFields.filters.filter(d=>d.class==cf.name)
-  //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
-  await cf.getCode()
-
-  $("#accordion-filters").append(cf.code).ready(function (){
-    
-/*     for (let i = 0; i < filters.length; i++) {
-      console.log(filters[i])
-      if(filters[i]["filter_type"]=="dropdown"){
-        cf.filters.push(new FilterBasicDropdown(filters[i]))
-      }else if(filters[i]["filter_type"]=="date"){
-        console.log("date")
-        cf.filters.push(new FilterBasicDate(filters[i]))
-      }else if(filters[i]["filter_type"]=="text"){
-        cf.filters.push(new FilterBasicText(filters[i]))
-      }else if(filters[i]["filter_type"]=="number"){
-        cf.filters.push(new FilterBasicNumber(filters[i]))
-      }
-    } */
-    //console.log(cf.filters)
+    ////console.log(cf.filters)
   })
   
 }
@@ -114,14 +126,15 @@ FilterClassExpert.prototype.initFilters = async function (){
   
   await cf.getCode()
 
-  $("#accordion-filters").append(cf.code).ready(function (){
+  $("#accordion-filters").append(cf.code).ready(async function (){
     for (let i = 0; i < cf.filters.length; i++) {
-      //console.log(cf.filters[i])
+      ////console.log(cf.filters[i])
       if(cf.filters[i]["filter_type"]=="dropdown"){
         cf.filters[i].filterObject=new FilterExpertDropdown(cf.filters[i])
       }else if(cf.filters[i]["filter_type"]=="text"){
         cf.filters[i].filterObject=new FilterExpertText(cf.filters[i])
       }
+      //await cf.filters[i].filterObject.init()
     }
   })
 }
@@ -134,7 +147,9 @@ Filter = function (_details) {
 Filter.prototype.init = function () {
   var fi=this;
   fi.getValuesVisibleNodes()
+  console.log("antes de addHtml")
   fi.addHtml()
+  //console.log("despues de addHtml")
   //fi.checkVisibility()
   }
 
@@ -172,7 +187,7 @@ FilterBasic.prototype = Object.create(Filter.prototype);
 
 FilterBasic.prototype.addHtml= function () {
   var fi=this;
-
+  //console.log("cuando se llama a la funcion addHtml")
   var div = document.createElement("div");
   div.className="relative"
   div.id=fi.details.property.replaceAll(" ","_")+"_root"
@@ -194,25 +209,122 @@ FilterBasic.prototype.addHtml= function () {
 
 /* FilterBasic.prototype.addValuesField =function (){
   var fi=this;
-  //console.log(fi)
+  ////console.log(fi)
   $(("#accordion-filters #"+fi.details.property)).empty();
   var select = document.querySelector("#accordion-filters #"+fi.details.property);
-  //////console.log(select)
+  ////////console.log(select)
   addOptionsSelect(select,fi.values)
 } */
 
 class FilterBasicDropdown extends FilterBasic {
-  async addHtml() {
+   async addHtml() {
+    var fi=this;
+    //console.log(this)
+    console.log("1.1.1.1.1 dentro del metodo addHtml en la clase Filter Basic Dropdown")
     super.addHtml();
+    
+    console.log("antes de la promise")
 
+    console.log(this)
+    super.addHtml();
     let code = await getHtmlCodeFromFile("pages/select-filter.html");
-    code=code.replace("Label",this.details.property.split("_")[1].charAt(0).toUpperCase() + this.details.property.split("_")[1].slice(1))
-    console.log($("#"+this.details.class+"_filters"))
+    code=code.replace("Label",this.propertyFullName)
+    if(this.details.filter_text){
+      code=code.replaceAll("HelperText",this.details.filter_text)
+    }else{
+      code=code.replaceAll("HelperText","")
+    }
+    
     $("#"+this.details.class+"_filters").append(code).ready(function () {
-      console.log(code)
       ECL.autoInit();
-    });
-/*     var select=document.getElementById("select-default")
+    })
+
+    var select=document.getElementById("select-default")
+      //console.log(select)
+    select.name = fi.details.property;
+    select.id = fi.details.property.replaceAll(" ","_");
+
+    let valuesFilter=fi.values
+    console.log("antes de añadir las opciones")
+    addOptionsSelect(select,valuesFilter,false)
+    console.log("despues de añadir las opciones")
+    select.value = valuesFilter[0];
+/*     $.get( "pages/select-filter.html", function( code ) {
+      console.log("1.1.1.1.1.1")
+      $("#"+fi.details.class+"_filters").append(code)
+      var select=document.getElementById("select-default")
+      //console.log(select)
+      select.name = fi.details.property;
+      select.id = fi.details.property.replaceAll(" ","_");
+
+      let valuesFilter=fi.values
+      console.log("antes de añadir las opciones")
+      addOptionsSelect(select,valuesFilter,false)
+      console.log("despues de añadir las opciones")
+      select.value = valuesFilter[0];
+      console.log("fin 1.1.1.1.1.1")
+    }) */
+    
+    console.log("despues de la promise")
+    
+    //let code = await getHtmlCodeFromFile("pages/select-filter.html");
+    //console.log("despues de get html dropdown")
+    //console.log($("#"+fi.details.class+"_filters"))
+/*     console.log(code)
+    //console.log(fi)
+
+    code.then(
+      (result) => { 
+         console.log(result);
+         console.log("1.1.1.1.1.1")
+         $("#"+fi.details.class+"_filters").append(code)
+         var select=document.getElementById("select-default")
+        //console.log(select)
+        select.name = fi.details.property;
+        select.id = fi.details.property.replaceAll(" ","_");
+
+        let valuesFilter=fi.values
+        addOptionsSelect(select,valuesFilter,false)
+        select.value = valuesFilter[0];
+      },
+      (error) => { 
+         console.log(error);
+      }
+    ); */
+    console.log("despues de la promise")
+    //console.log(document.getElementById(fi.details.class+"_filters"))
+    //console.log("1.1.1.1.1.1")
+    //console.log(code)
+/*     $("#"+fi.details.class+"_filters").append(code).ready(async function () {
+      ////console.log(code)
+      ////console.log("autoInit")
+      //ECL.autoInit();
+    console.log("dentro de despues de añadir el code")
+    var select=document.getElementById("select-default")
+    //console.log(select)
+    select.name = fi.details.property;
+    select.id = fi.details.property.replaceAll(" ","_");
+
+    let valuesFilter=fi.values
+    addOptionsSelect(select,valuesFilter,false)
+    select.value = valuesFilter[0];
+    }) */
+    console.log("fin 1.1.1.1.1")
+
+/*     $("#"+fi.details.class+"_filters").append(code).ready(function () {
+      ////console.log(code)
+      ////console.log("autoInit")
+      //ECL.autoInit();
+      var select=document.getElementById("select-default")
+      //console.log(select)
+      select.name = fi.details.property;
+      select.id = fi.details.property.replaceAll(" ","_");
+
+      let valuesFilter=fi.values
+      addOptionsSelect(select,valuesFilter,false)
+      select.value = valuesFilter[0];
+    }); */
+    /* var select=document.getElementById("select-default")
     select.name = this.details.property;
     select.id = this.details.property.replaceAll(" ","_");
 
@@ -262,7 +374,7 @@ class FilterBasicDate extends FilterBasic {
     $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_end")
   }
   checkConditionNode(node){
-    console.log(this)
+    //console.log(this)
     let startDate=$("#"+this.details.property+"_start").val()
     let endDate=$("#"+this.details.property+"_end").val()
 
@@ -276,19 +388,19 @@ class FilterBasicDate extends FilterBasic {
 class FilterBasicText extends FilterBasic {
   async addHtml() {
     super.addHtml();
-    console.log("entra en filterbasictext")
+    //console.log("entra en filterbasictext")
     let code = await getHtmlCodeFromFile("pages/text-filter.html");
     code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",this.details.filter_text).replaceAll("Placeholder text","Enter "+this.propertyFullName).replaceAll("example-input-id-1",this.details.property+"_filter")
     $("#"+this.details.class+"_filters").append(code).ready(function () {
-      ECL.autoInit();
+      //ECL.autoInit();
     })
     let docs=document.getElementsByClassName(this.details.class)
     let searchValues=[]
     for (let d of docs) {
         searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0]["value"])
     }
-    console.log(this)
-    console.log(searchValues)
+    //console.log(this)
+    //console.log(searchValues)
     
     autocomplete(document.getElementById(this.id+"_filter"), searchValues);
   }
@@ -404,7 +516,7 @@ FilterExpert.prototype.addHtml=function (){
 
     var div = document.createElement("div");
     div.className="relative"
-    console.log(fi)
+    //console.log(fi)
 /*     div.id=fi.details.property.replaceAll(" ","_")+"_root"
     fi.id=fi.details.property.replaceAll(" ","_");
 
@@ -424,12 +536,12 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var valuesFilter;
     super.addHtml();
-    console.log(this)
+    //console.log(this)
     let code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     code=code.replace("Label",this.details.field)
-    console.log($("#"+this.details.internalClass+"_filters"))
+    //console.log($("#"+this.details.internalClass+"_filters"))
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
-      ECL.autoInit();
+      //ECL.autoInit();
     });
     
     var select=document.getElementById("select-multiple")
@@ -457,9 +569,9 @@ class FilterExpertDropdown extends FilterExpert {
     
     
     //let valuesFilter=this.values
-    //console.log("addOptions")
+    ////console.log("addOptions")
     addOptionsSelect(select,valuesFilter,true)
-    console.log(select)
+    //console.log(select)
     //select.value = "Select all";
     //selected=""
 
@@ -492,10 +604,10 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var valuesFilter;
     super.addHtml();
-    console.log(this)
+    //console.log(this)
     let code = await getHtmlCodeFromFile("pages/select-filter.html");
     code=code.replace("Label",this.details.field)
-    console.log($("#"+this.details.internalClass+"_filters"))
+    //console.log($("#"+this.details.internalClass+"_filters"))
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
       ECL.autoInit();
     });
@@ -530,7 +642,7 @@ class FilterExpertDropdown extends FilterExpert {
 
     code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
-      console.log(code)
+      //console.log(code)
       ECL.autoInit();
     });
   }

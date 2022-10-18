@@ -248,7 +248,7 @@ function importGraph(file){
     test(JSON.parse(text))
     //let blobText = text
   })
-  function test(fileText){
+  async function test(fileText){
     d3.selectAll(".classFilter").remove()
     $("#filters .ecl-accordion__item").remove()
   
@@ -282,6 +282,8 @@ function importGraph(file){
     let forces=setForcesGraph()
     networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
     console.log(networkGraph)
+    await networkGraph.initVis()
+
     legend=new Legend("legend",networkGraph)
   
     if(networkGraph.filterClassesObjects.length!=0){
@@ -614,11 +616,20 @@ async function changeBasicGraph(option){
   ////console.log(linkedDataGraph.data)
   networkGraph = new NetworkGraphBasicNotImported("#networkGraph",forces,linkedDataGraph.data);
   console.log(networkGraph)
+
+  await networkGraph.initVis()
+  //console.log("0.1 en main antes de get Filters")
+  console.log("antes de getFilters")
+  networkGraph.getFilters()
+  console.log("despues de getFilters")
+  //console.log("fin 0.1")
+  //ECL.autoInit()
   ////console.log($(".graph"))
   legend=new Legend("legend",networkGraph)
 
-  console.log(linkedDataGraph)
+  //console.log(linkedDataGraph)
   //console.log(linkedDataGraph.treeData.filter(f=>f.filterClassesObjects))
+  console.log(networkGraph.filterClassesObjects.length)
   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
@@ -784,8 +795,21 @@ async function showGraphExpert(selectedRow){
   $("#dataviz-collection").hide()
   $("#landing-text").addClass("hidden")
   console.log("antes de networkgraph")
+
   networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
+
+  await networkGraph.initVis()
+  //console.log("0.1 en main antes de get Filters")
+  console.log("antes de getFilters")
+  networkGraph.getFilters()
+  console.log("despues de getFilters")
+  //console.log("fin 0.1")
+  //ECL.autoInit()
+  ////console.log($(".graph"))
   legend=new Legend("legend",networkGraph)
+
+/*   networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
+  legend=new Legend("legend",networkGraph) */
   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
@@ -844,8 +868,8 @@ function getHtmlFromFiles(files){
   ////////////console.log(element)
 }
 
-function getHtmlCodeFromFile(file){
-  ////console.log(file)
+/* function getHtmlCodeFromFile(file){
+  console.log(file)
   return new Promise((resolve, reject) => {
     $.get({
       url: file,
@@ -853,6 +877,24 @@ function getHtmlCodeFromFile(file){
       error: reject
     });
   });
+} */
+async function getHtmlCodeFromFile(file) {
+  var code;
+  const promise = new Promise(function (resolve, reject) {
+    $.get({
+      url: file,
+      success: resolve,
+      error: reject
+    });
+  })
+  
+  code=await promise.then(function (resolve){
+    //console.log(resolve)
+    return resolve
+  })
+  ;
+  return code
+  //return code;
 }
 /* async function insertCodeInElement(elementId,file){
 
