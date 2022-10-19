@@ -793,7 +793,7 @@
       {
         "class":"corporateBody",
         "property":"corporateBody_country",
-        "property_name":"Corporate Body Country"
+        "property_name":"Country"
       },
       {
         "class":"corporateBody",
@@ -803,7 +803,7 @@
       {
         "class":"corporateBody",
         "property":"corporateBody_location",
-        "property_name":"Corporate Body Location"
+        "property_name":"Location"
       }
     ],
     "classes_text":[
@@ -1211,7 +1211,7 @@
   {
     "class":"Directory Organization",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#Directory Organization_2\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n PREFIX resource: <http:\/\/publications.europa.eu\/resource\/>\nSELECT DISTINCT ?membership ?membership_order ?membership_positionStatus ?person ?person_citiz ?person_image\nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n optional {?membership_uri euvoc:order ?membership_order}\n ?membership_uri euvoc:positionComplement ?membership.\n ?membership_uri euvoc:positionStatus ?membership_positionStatusUri.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.\n ?person_uri org:hasMembership ?membership_uri;\n foaf:name ?person.\n OPTIONAL{?person_uri resource:personcitizenship ?person_citizUri. ?person_citizUri skos:prefLabel ?person_citiz. FILTER(langMatches(lang(?person_citiz), 'en')). }\n OPTIONAL{?person_uri foaf:img ?person_image. BIND (STRBEFORE(STRAFTER( STR(?person_image), 'https:\/\/www.europarl.europa.eu\/mepphoto\/' ), '.jpg' ) AS ?person_id) } }\n filter(?directoryOrg_uri=<PARAMETER>). \nFILTER(langMatches(lang(?membership), 'en')). FILTER(langMatches(lang(?membership_positionStatus), 'en')). FILTER(langMatches(lang(?directoryOrg), 'en')). }ORDER BY desc(-?membership_order) ?person",
+    "query":"#Directory Organization_2\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n PREFIX resource: <http:\/\/publications.europa.eu\/resource\/>\nSELECT DISTINCT ?membership (?membership as ?membership_type) ?membership_order ?membership_positionStatus ?person (?person AS ?person_name) ?person_citiz ?person_image\nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n optional {?membership_uri euvoc:order ?membership_order}\n ?membership_uri euvoc:positionComplement ?membership.\n ?membership_uri euvoc:positionStatus ?membership_positionStatusUri.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.\n ?person_uri org:hasMembership ?membership_uri;\n foaf:name ?person.\n OPTIONAL{?person_uri resource:personcitizenship ?person_citizUri. ?person_citizUri skos:prefLabel ?person_citiz. FILTER(langMatches(lang(?person_citiz), 'en')). }\n OPTIONAL{?person_uri foaf:img ?person_image. BIND (STRBEFORE(STRAFTER( STR(?person_image), 'https:\/\/www.europarl.europa.eu\/mepphoto\/' ), '.jpg' ) AS ?person_id) } }\n filter(?directoryOrg_uri=<PARAMETER>). \nFILTER(langMatches(lang(?membership), 'en')). FILTER(langMatches(lang(?membership_positionStatus), 'en')). FILTER(langMatches(lang(?directoryOrg), 'en')). }ORDER BY desc(-?membership_order) ?person",
     "hierarchy":[
       {
         "parent":"membership",
@@ -1221,18 +1221,28 @@
     "properties":[
       {
         "class":"membership",
+        "property":"membership_type",
+        "property_name":"Membership"
+      },
+      {
+        "class":"membership",
         "property":"membership_order",
         "property_name":"Membership Order"
       },
       {
         "class":"membership",
         "property":"membership_positionStatus",
-        "property_name":"Membership Position Status"
+        "property_name":"Position Status"
+      },
+      {
+        "class":"person",
+        "property":"person_name",
+        "property_name":"Name"
       },
       {
         "class":"person",
         "property":"person_image",
-        "property_name":"Person Image"
+        "property_name":"Image"
       },
       {
         "class":"person",
@@ -1261,8 +1271,8 @@
     ],
     "function":"",
     "columns":[
-      "membership",
-      "person",
+      "membership_type",
+      "person_name",
       "person_image",
       "person_citiz"
     ],

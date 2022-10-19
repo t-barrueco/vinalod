@@ -1,16 +1,20 @@
-function getModal2(){
+  function checkNotTreeGraph(rowInConfigFile,data){
+    if(rowInConfigFile["type"]=="WORDCLOUD"){
+      showWordcloud(rowInConfigFile,data)
+    }else if(rowInConfigFile["type"]=="WIKIPEDIA"){
+      console.log("wikipedia")
+    }else if(rowInConfigFile["type"]=="TABLE"){
+      showTable(rowInConfigFile,data)
+    }
+  }
+  function getModal2(){
     if($("#modal-content2 #modalGraph")){
       $("#modal-content2 #modalGraph").remove()
     }
     if($("#modal-content2 iframe")){
       $("#modal-content2 iframe").remove()
     }
-    /* if($("#modalHeader2 h2")){
-      $("#modalHeader2 h2").remove()
-    }
-    if($("#modal-content2 h2")){
-      $("#modal-content2 h2").remove()
-    } */
+
     showModal("#myModal2")
     return {"modalHeader":document.getElementById("modalHeader2"),"modalContent":document.getElementById("modal-content2")}
   }
@@ -115,35 +119,47 @@ function getModal2(){
 
     window.open(page, '_blank').focus();
   }
-  async function showTable(node,sparqlQuery,configRow,modalHeader,modalContent){
-    var columns=configRow.columns,column_names=configRow.property_names
-    var results,data=[];
+  async function showTable(rowInConfigFile,node){
+    var columns=rowInConfigFile.columns,column_names=rowInConfigFile.properties
+    var results;
 
-    url=configRow["endpoint_url"]
+    console.log(rowInConfigFile)
+    const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
+
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    console.log(results)
+    /* url=configRow["endpoint_url"]
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   
-    results = await runSparlqQuery(settings)
-    table(results,columns,column_names,modalContent)
+    results = await runSparlqQuery(settings) */
+    const title=rowInConfigFile.option + " - " + node.value
+
+    const modalHeader=getModalHeader()
+    modalHeader.innerHTML = title
+
+    table(results,columns,column_names)
   
     ////////////console.log(configRow)
 
-    modalHeader.innerHTML = configRow["option_text"] + " - " + node["value"]
+    
     //modalHeader.innerHTML = node["value"]
-
+/* 
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
       //minHeight: 150
     });
-    $("#myModal2").draggable()
+    $("#myModal2").draggable() */
   }
-  function table(data,columns,column_names,modalContent){
+  function table(data,columns,column_names){
+    console.log(columns)
+    console.log(column_names)
     var cellContent;
-    if(d3.select("#modalGraph")){
-      d3.select("#modalGraph").remove()
-      $("#modal-content iframe").remove()
-    }
+    modalVisibilityOn()
+
+    const modalContent=getModalContent()
+
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
@@ -173,10 +189,11 @@ function getModal2(){
         var headerCell = row.insertCell(0);
         headerCell.setAttribute("scope", "col");
         headerCell.setAttribute("class", "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider");
-        if(Object.keys(column_names).includes(columns[i])){
-          headerCell.innerHTML = column_names[columns[i]]
-        }else{
-          headerCell.innerHTML = nodesClassesCorrespondence[columns[i]]
+        console.log(column_names.filter(c=>c.property==columns[i]))
+        if(column_names.filter(c=>c.property==columns[i]).length>0){
+          headerCell.innerHTML = column_names.filter(c=>c.property==columns[i])[0]["property_name"]
+        /* }else{
+          headerCell.innerHTML = nodesClassesCorrespondence[columns[i]] */
         }
         
     }
@@ -232,34 +249,17 @@ function getModal2(){
     $("#myModal2").draggable()
   }
   
-  async function showWordcloud(node,sparqlQuery,configRow,modalHeader,modalContent){
-    var rowDataConfig,results,dataTreegraph=[],title;
-    ////////////console.log(sparqlQuery)
-    if(node!=undefined){
-      url=configRow["endpoint_url"]
-      title=node["value"]
-    }else{
-      url=configRow["url"]
-      title="WordCloud"
-    }
+  async function showWordcloud(rowInConfigFile,node){
+    var results;
     
-    prefixes=""
-    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    ////////////console.log("antes de results")
-    ////////////console.log(settings)
-    results = await runSparlqQuery(settings)
-    ////////////console.log(results)
+    const title=rowInConfigFile.option + " - " + node.value
+
+    const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
+
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
     dataWordCloud=transformDataWordCloud(results)
-    wordCloudGraph(dataWordCloud,title,modalHeader,modalContent)
+    wordCloudGraph(dataWordCloud,title)
   
-    $("#myModal2").removeClass("translate-x-full")
-    $("#myModal2").addClass("translate-x-0")
-    $('#myModal2').resizable({
-      //alsoResize: ".modal-dialog",
-      //minHeight: 150
-    });
-    $("#myModal2").draggable()
   }
   function transformDataWordCloud(data){
     var wordCloudData=[],splittedStr=[]

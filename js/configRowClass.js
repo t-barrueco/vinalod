@@ -1,5 +1,6 @@
 ConfigRow = function (_option,_node) {
     this.option=_option
+    console.log("entra en configRow")
     this.node=_node
     this.init();
   };
@@ -8,7 +9,7 @@ ConfigRow.prototype.init = function () {
     var cr=this;
     cr.rowNumber=configFile.getRowNumber(cr.option)
     ////console.log(cf.file[cr.rowNumber])
-
+    console.log(cr.node)
     cr.rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
     cr.fromSelectToAskQuery()
     cr.replaceParmtrsQuery("query")
