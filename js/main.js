@@ -17,14 +17,14 @@ function dataViz(){
 
     const graphName = urlParams.get('graph')
 
-    ////console.log(document.getElementsByTagName("table"))
+    //////console.log(document.getElementsByTagName("table"))
     //get configuration from config_basicMode.json where all options for basic mode
     //are specified and get graph_icon.txt where icons shown on bubbles are specified
           d3.json("config_vinalod/config_basicMode.json",function(dataConfig){
               d3.tsv("config_vinalod/graph_icons.txt",function(dataIcons){
                 $("#expand-settings-legend").css("background-color", "#064494");
                 $("#collapse-settings-legend").css("background-color", "#064494");
-                ////console.log(dataConfig)
+                //////console.log(dataConfig)
                 configFile = new ConfigFile(dataConfig);
                 filesIcons=dataIcons;
                 if(graphName){
@@ -59,17 +59,6 @@ var span = document.getElementsByClassName("close")[0];
 var expand_settings_legend = document.getElementById("expand-settings-legend");
 var collapse_settings_legend = document.getElementById("collapse-settings-legend");
 
-/* expand_settings_legend.onclick = function() {
-  $("#settings-legend").removeClass("hidden")
-  $("#expand-settings-legend").addClass("hidden")
-  $("#collapse-settings-legend").removeClass("hidden")
-}
-
-collapse_settings_legend.onclick = function() {
-  $("#settings-legend").addClass("hidden")
-  $("#expand-settings-legend").removeClass("hidden")
-  $("#collapse-settings-legend").addClass("hidden")
-} */
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   if(navigationPanel){
@@ -81,13 +70,8 @@ span.onclick = function() {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  //////////////////////////////console.log(event.target)
-  /* if (event.target == modal) {
-    $("#myModal").removeClass("translate-x-0")
-    $("#myModal").addClass("translate-x-full")
-  } */
-}
+/* window.onclick = function(event) {
+} */
 d3.select('body')
 .on('click', () => {
     d3.select(".contextMenu").remove();
@@ -99,11 +83,11 @@ var span2 = document.getElementsByClassName("close2")[0];
 
 
 // When the user clicks on <span> (x), close the modal
-/* span2.onclick = function() {
-  ////////////////////////////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
+span2.onclick = function() {
+  //////////////////////////////////////////////////////////////////////////////////////////////////console.log($("#myModal2"))
   $("#myModal2").removeClass("translate-x-0")
   $("#myModal2").addClass("translate-x-full")
-} */
+}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -184,20 +168,20 @@ function downloadData(element){
   
 }
 function downloadQuery(){
-  console.log("entra en download query")
-  console.log(networkGraph.queriesArray)
+  //console.log("entra en download query")
+  //console.log(networkGraph.queriesArray)
   networkGraph.queriesArray.forEach(function(q){
     download([{"query":q}], 'testQuery.csv', 'text/csv;encoding:utf-8');       
   })
 }
 
 function downloadGraph(){
-  //console.log(networkGraph.treeData)
+
   let file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
-  console.log(file)
-  download(file, 'graph.json', 'text/json;encoding:utf-8');       
+  download(file, 'graph.json', 'text/json;encoding:utf-8');   
+  
 }
-function test(fileText){
+async function createGraph(fileText){
   d3.selectAll(".classFilter").remove()
   $("#filters .ecl-accordion__item").remove()
 
@@ -216,8 +200,7 @@ function test(fileText){
   $('#dataviz-collection'). hide();
   $('#graph-area').removeClass("hidden")
 
-  $('#settings-tab').parent().removeClass("hidden")
-  $('#legend-tab').parent().removeClass("hidden")
+  tabOptionsGraphVisible()
 
   propertiesFilterHist=[]
 
@@ -227,11 +210,13 @@ function test(fileText){
 
   linkedDataGraph = new LinkedDataGraphBasic("imported");
   linkedDataGraph.importGraph(fileText)
-  //console.log(linkedDataGraph)
   let forces=setForcesGraph()
   networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
-  console.log(networkGraph)
+  await networkGraph.initVis()
+
   legend=new Legend("legend",networkGraph)
+
+  networkGraph.getFilters()
 
   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
@@ -244,11 +229,9 @@ function test(fileText){
 function importGraph(file){
 
   file.files[0].text().then(text => {
-    console.log(text)
-    test(JSON.parse(text))
-    //let blobText = text
+    createGraph(JSON.parse(text))
   })
-  async function test(fileText){
+  async function createGraph(fileText){
     d3.selectAll(".classFilter").remove()
     $("#filters .ecl-accordion__item").remove()
   
@@ -267,8 +250,7 @@ function importGraph(file){
     $('#dataviz-collection'). hide();
     $('#graph-area').removeClass("hidden")
   
-    $('#settings-tab').parent().removeClass("hidden")
-    $('#legend-tab').parent().removeClass("hidden")
+    tabOptionsGraphVisible()
   
     propertiesFilterHist=[]
   
@@ -278,14 +260,14 @@ function importGraph(file){
   
     linkedDataGraph = new LinkedDataGraphBasic("imported");
     linkedDataGraph.importGraph(fileText)
-    //console.log(linkedDataGraph)
     let forces=setForcesGraph()
     networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
-    console.log(networkGraph)
     await networkGraph.initVis()
 
     legend=new Legend("legend",networkGraph)
   
+    networkGraph.getFilters()
+
     if(networkGraph.filterClassesObjects.length!=0){
       $("#filters").removeClass("hidden")
     }else{
@@ -310,17 +292,19 @@ function showCollections(){
   $("#form-container form").hide()
 
   $(".graph").remove() 
+
+  tabOptionsGraphNotVisible()
+  filtersNotVisible()
+
 }
 function expertMode(){
-/*   if($("#flyoutMenu").hasClass("opacity-100")){
-      $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-      $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  } */
+
   $("#graph-area").addClass("hidden")
-  //$("#form-container form").show()
   $("#landing-page").hide()
   $("#dataviz-collection").hide()
   $("#landing-text").addClass("hidden")
+
+  tabOptionsGraphNotVisible()
 
   getHtmlFromFile("pages/expert.html","form-container")
 
@@ -335,36 +319,20 @@ function expertMode(){
     legend=undefined
   }
 }
-function basicMode(){
-  if($("#flyoutMenu").hasClass("opacity-0")){
-      $("#flyoutMenu").addClass("transition ease-out duration-200")
-      $("#flyoutMenu").removeClass("hidden opacity-0 translate-y-1")
-      $("#flyoutMenu").addClass("opacity-100 translate-y-0")
-  }else{
-      changeCollectionOptions("eu_vocabularies")
-      $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-      $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-  } 
-}
+
 function changeCollectionOptions(collection){
-  //////console.log(collection)
-  //////console.log(ConfigFile)
   let optionsMenu=configFile.file.filter(d=>d.collection==collection)
   appendHtmlOptions(optionsMenu)
 }
 function appendHtmlOptions(optionsMenu){
-  //////console.log(optionsMenu)
   $.get("pages/dataviz_collection.html", function (data) {
-    ////console.log(data)
-    //optionsMenuHtml=data
-    //////console.log(document.getElementById("dataviz-collection"))
-    ////console.log(optionsMenu)
     optionsMenu.forEach(element => {
       html=data.replace("textTitle",element.option.trim()).replace("textComment",element.option_text.trim())
       $("#dataviz-collection").append($(html))
   });
   });
 }
+
 function handleNavigation(){
   if(showNavigation){
     if (typeof (navigation) != "object") {
@@ -473,40 +441,15 @@ function copyDuplicates(index,i,node){
 // changeBasicGraph is the function called when changing option in flyout menu
 // of basic mode menu
 
-async function addSharedGraph(file){
-  var albumBucketName = "vinalod";
-  var bucketRegion = "us-east-1";
-  var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
+function addSharedGraph(file){
 
-  //INCLUIR EN FUNCIÓN
-  /* d3.selectAll(".classFilter").remove()
-  $("#filters .ecl-accordion__item").remove()
+  d3.json("config_vinalod/aws-s3.json",async function(data){
+    //console.log(data)
+    const albumBucketName=data["albumBucketName"]
+    const bucketRegion=data["bucketRegion"]
+    const IdentityPoolId=data["IdentityPoolId"]
 
-  $("#form-container").addClass("hidden")
 
-  $(".graph").remove() 
-  $("#networkGraph-svg").remove()  
-
-  hideModal("#myModal")
-  deleteTooltip()
-  //hide flyout menu
-  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-
-  $('#landing-page'). hide();
-  $('#dataviz-collection'). hide();
-  $('#graph-area').removeClass("hidden")
-
-  $('#settings-tab').parent().removeClass("hidden")
-  $('#legend-tab').parent().removeClass("hidden")
-
-  propertiesFilterHist=[]
-
-  if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
-    linkedDataGraph = undefined;
-  }
-
- */  //let text= retrieveObjectS3(file)
   AWS.config.update({
     region: bucketRegion,
     credentials: new AWS.CognitoIdentityCredentials({
@@ -514,43 +457,22 @@ async function addSharedGraph(file){
     })
   });
 
-  console.log("s3")
   var s3 = new AWS.S3();
 
   var params = {
     Bucket: albumBucketName, 
     Key: file
   };
-  //processS3File(params)
+
   await s3.getObject(params, function(err, data) {
      if (err) console.log(err, err.stack); // an error occurred
      else {
-      console.log(data)
       const fileText = JSON.parse(data.Body.toString());
-      console.log(fileText)
-      test(fileText)
-      /* linkedDataGraph = new LinkedDataGraphBasic("imported");
-      linkedDataGraph.importGraph(fileText)
-      //console.log(linkedDataGraph)
-      let forces=setForcesGraph()
-      networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
-      console.log(networkGraph)
-      legend=new Legend("legend",networkGraph)
-
-      if(networkGraph.filterClassesObjects.length!=0){
-        $("#filters").removeClass("hidden")
-      }else{
-        $("#filters").addClass("hidden")
-      } */
-      //linkedDataGraph.importGraph(text)
+      createGraph(fileText)
      }              // successful response
    });
+})
 
-/*   await s3.deleteObject(params, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log(data);           // successful response
-
-  }); */
 }
 
 async function changeBasicGraph(option){
@@ -560,14 +482,9 @@ async function changeBasicGraph(option){
   $("#filters .ecl-accordion__item").remove()
 
   $("#form-container").addClass("hidden")
-  //d3.selectAll(".graph").remove()   
-  ////console.log($("#networkGraph-svg"))
-  ////console.log($(".graph"))
 
   $(".graph").remove() 
   $("#networkGraph-svg").remove()  
-
-  ////console.log($("#networkGraph-svg"))
 
   hideModal("#myModal")
   deleteTooltip()
@@ -579,16 +496,12 @@ async function changeBasicGraph(option){
   $('#dataviz-collection'). hide();
   $('#graph-area').removeClass("hidden")
 
-  $('#settings-tab').parent().removeClass("hidden")
-  $('#legend-tab').parent().removeClass("hidden")
- 
+  tabOptionsGraphVisible()
+
   //build and show graph
   showBasicGraph()
-  ////console.log($("#networkGraph-svg"))
-
   //reset global variables
   propertiesFilterHist=[]
-  //graphHistory=[]
 
   //get option selected for searching in Config File
   option=option.innerText.trim()
@@ -608,43 +521,32 @@ async function changeBasicGraph(option){
     legend=undefined
   }
 
-  //if(networkGraph){
-  //  legend.deleteAllColors()
-  //}else{
-  ////console.log($(".graph"))
-  //$(".graph").remove()
-  ////console.log(linkedDataGraph.data)
   networkGraph = new NetworkGraphBasicNotImported("#networkGraph",forces,linkedDataGraph.data);
-  console.log(networkGraph)
 
   await networkGraph.initVis()
-  //console.log("0.1 en main antes de get Filters")
-  console.log("antes de getFilters")
   networkGraph.getFilters()
-  console.log("despues de getFilters")
-  //console.log("fin 0.1")
-  //ECL.autoInit()
-  ////console.log($(".graph"))
+
   legend=new Legend("legend",networkGraph)
 
-  //console.log(linkedDataGraph)
-  //console.log(linkedDataGraph.treeData.filter(f=>f.filterClassesObjects))
-  console.log(networkGraph.filterClassesObjects.length)
   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
     $("#filters").addClass("hidden")
   }
-  //checkFilters()
-
-
-  ////console.log(document.getElementsByTagName("table"))
-
-  //addFilters()
-  //}
 
 }
+function changeTab(tab){ 
+  ////console.log(tab.id)
+  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
+  $("#content-main-tabs .content-item").addClass("hidden")
+  //////console.log(tab.textContent)
+  tab.classList.add("ecl-tabs__link--active");
+  tab.setAttribute("aria-selected", "true")
+  ////console.log(tab.id.replace("-tab","-content"))
+  ////console.log($("#content-main-tabs #"+tab.id.replace("-tab","-content")))
 
+  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
+}
 function setForcesGraph(){
   forces = {
     center: {
@@ -693,9 +595,6 @@ function clickBubbleFreeGraph(element) {
     configRow.node=node
   }
   networkGraph.node=node
-  //throw new Error("Something went badly wrong!");
-  //////console.log(navigation)
-  //////console.log(navigationPanel)
 
   if (navigationPanel == undefined) {
     navigationPanel= new NavigationPanel("freeGraph", node);
@@ -717,9 +616,8 @@ async function checkMenuItems(origin,element) {
       node=element
     }
   }
-
+  console.log(node)
   if(menuItems){
-    ////////////console.log(node)
     await menuItems.update(node)
   }else{
     if(node.class!="free"){
@@ -730,16 +628,15 @@ async function checkMenuItems(origin,element) {
     await menuItems.init()
   }
 
-  ////////////console.log(menuItems.selectedRows)
   if(menuItems.selectedRows.length==0){
-    ////////////////console.log("entra")
+    //////////////////console.log("entra")
     // if (founded[0]["children"]){
       //SE CONTRAE LOS CHILDREN
     //}else{
       //SE EXPANDEN LOS CHILDREN
     //} 
   }else if(menuItems.selectedRows.length==1){
-
+    console.log("entra en 1")
     if(node.class!="free"){
       await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
       networkGraph.refresh()
@@ -751,15 +648,11 @@ async function checkMenuItems(origin,element) {
       }else{
         await showGraphExpert(menuItems.selectedRows[0])
       }
-      console.log(linkedDataGraph)
-      //checkFiltersExpert()
     }
-    //checkFilters()
   }else if(menuItems.selectedRows.length>1){
     if(origin=="table"){
       menuItems.getMenuItemsInTable()
     }else{
-      ////////////console.log(menuItems.node)
       if(menuItems.node.id){
         menuItems.getMenuItemsInGraph()
       }else{
@@ -769,47 +662,32 @@ async function checkMenuItems(origin,element) {
     }
   }
 }
-function startExpert(origin,element){
-  $("#form-container form").hide()
-  $("#filters").addClass("hidden")
-  checkMenuItems(origin,element)
-}
+
 async function showGraphExpert(selectedRow){
-  console.log("showGraphExpert")
   $("#accordion-filters").empty()
-  ////console.log(linkedDataGraph)
   linkedDataGraph = new LinkedDataGraphExpert("",selectedRow);
   await linkedDataGraph.settingsFromOption()
-  console.log("showGraphExpert2")
 
-  ////////////console.log("antes de networkgraph")
   let forces=setForcesGraph()
-  ////////////console.log(networkGraph)
-  ////////////console.log(linkedDataGraph.data)
-  ////console.log($("#graph-area"))
-  ////console.log($(".graph"))
+
   $(".graph").remove()
   $("#graph-area").removeClass("hidden")
   $("#form-container form").hide()
   $("#landing-page").hide()
   $("#dataviz-collection").hide()
   $("#landing-text").addClass("hidden")
-  console.log("antes de networkgraph")
+
+  tabOptionsGraphVisible()
 
   networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
 
   await networkGraph.initVis()
-  //console.log("0.1 en main antes de get Filters")
-  console.log("antes de getFilters")
+
+  console.log("antes de get filters")
   networkGraph.getFilters()
-  console.log("despues de getFilters")
-  //console.log("fin 0.1")
-  //ECL.autoInit()
-  ////console.log($(".graph"))
+
   legend=new Legend("legend",networkGraph)
 
-/*   networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
-  legend=new Legend("legend",networkGraph) */
   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
@@ -817,7 +695,6 @@ async function showGraphExpert(selectedRow){
   }
 }
 function showGraphExpertFromPopup(form){
-  ////////////console.log(form)
   let newForm={"url":form.querySelector("#url").value,"uri":form.querySelector("#uri").value,"subject-object":form.querySelector("#subject-object").value}
   let selectedRow=menuItems.selectedRows.filter(d=>((d.url==newForm.url)&&(d.uri==newForm.uri)&&(d["subject-object"]==newForm["subject-object"])))[0]
   $("#form-container form").hide
@@ -825,59 +702,14 @@ function showGraphExpertFromPopup(form){
   modal.style.display = "none";
   showGraphExpert(selectedRow)
 }
-function showHideFilter(filter){
-  ////////////console.log(filter)
-  //////////////console.log(this)
-  let content=filter.parentNode.parentNode.getElementsByClassName("ecl-accordion__content").item(0)
-  if(content.hasAttribute("hidden")){
-    content.removeAttribute("hidden")
-  }else{
-    content.setAttribute("hidden","")
-  }
-  //////////////console.log(this)
 
-  //////////////console.log(this.getElementsByClassName("ecl-accordion__content"))
-
-}
 async function getHtmlFromFile(file,location){
   await $.get(file, function (data) {
     let html=data
-    //html=optionsMenuHtml.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.filterText)
     $("#"+location).append($(html))
   });
 }
-async function getHtmlFromFileToElement(file,element){
-  ////////////console.log(element)
-  await $.get(file, function (data) {
-    let html=data
-    element.insertAdjacentHTML('beforeend', html);
-  });
-  ////////////console.log(element)
-}
-function getHtmlFromFiles(files){
-  var filesCode={}
-  ////////////console.log(element)
 
-  files.forEach(async function(f){
-    await $.get(f, function (data) {
-      filesCode['"'+f+'"']=data
-    });
-  })
-  //////////console.log(filesCode)
-  return filesCode
-  ////////////console.log(element)
-}
-
-/* function getHtmlCodeFromFile(file){
-  console.log(file)
-  return new Promise((resolve, reject) => {
-    $.get({
-      url: file,
-      success: resolve,
-      error: reject
-    });
-  });
-} */
 async function getHtmlCodeFromFile(file) {
   var code;
   const promise = new Promise(function (resolve, reject) {
@@ -889,88 +721,10 @@ async function getHtmlCodeFromFile(file) {
   })
   
   code=await promise.then(function (resolve){
-    //console.log(resolve)
     return resolve
   })
   ;
   return code
-  //return code;
-}
-/* async function insertCodeInElement(elementId,file){
-
-const code = await getHtmlCodeFromFile(file);
-
-////////console.log(code)
-
-//let html=data
-$("#"+elementId).append(code)
-//element.insertAdjacentHTML('beforeend', code);
-//////////console.log(element)
-} */
-function checkFilters(){
-  var newFilterClasses;
-  console.log(configRow.rowFields)
-  if(configRow.rowFields.filters!=null){
-    console.log(networkGraph.filterClassesObjects)
-    //networkGraph.filterClassesObjects = [...new Set(networkGraph.filters.map(d=>d.class))]
-    //console.log(configRow.rowFields.filters)
-    newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
-    console.log(newFilterClasses)
-    for (let i = 0; i < newFilterClasses.length; ++i) { 
-      let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])
-      if(filterClass.length>0){
-        let filtersInClass=configRow.rowFields.filters.filter(f=>f.class==newFilterClasses[i])
-        for (let j = 0; j < filtersInClass.length; ++j) { 
-          let indexFilter= filterClass[0].filters.findIndex(f=>(f.filter_type==filtersInClass[j].filter_type)&&(f.property==filtersInClass[j].property))
-          if(indexFilter!=-1){
-            filterClass[0].filters[indexFilter].filterObject.getValuesVisibleNodes()
-            filterClass[0].filters[indexFilter].filterObject.addValuesField()
-          }else{
-
-          }
-        }
-      }else{
-        networkGraph.filterClassesObjects.push(new FilterClassBasic(newFilterClasses[i])) 
-      }
-    }
-  }
-}
-function addFilters(){
-  var newFilterClasses;
-  //console.log(configRow.rowFields.filters)
-  if(configRow.rowFields.filters!=null){
-    networkGraph.filterClassesObjects = [...new Set(networkGraph.filters.map(d=>d.class))]
-    newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
-
-    for (let i = 0; i < newFilterClasses.length; ++i) { 
-      let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])
-      if(filterClass.length>0){
-        let filtersInClass=configRow.rowFields.filters.filter(f=>f.class==newFilterClasses[i])
-        for (let j = 0; j < filtersInClass.length; ++j) { 
-          let indexFilter= filterClass[0].filters.findIndex(f=>(f.filter_type==filtersInClass[j].filter_type)&&(f.property==filtersInClass[j].property))
-          if(indexFilter!=-1){
-            filterClass[0].filters[indexFilter].filterObject.getValuesVisibleNodes()
-            filterClass[0].filters[indexFilter].filterObject.addValuesField()
-          }else{
-
-          }
-        }
-      }else{
-        networkGraph.filterClassesObjects.push(new FilterClassBasic(newFilterClasses[i])) 
-      }
-    }
-  }
-}
-
-function addFiltersExpert(){
-  var newFilterClasses;
-  //console.log(networkGraph.filterClasses)
-  if(networkGraph.filterClasses){
-    networkGraph.filterClasses.push(linkedDataGraph["settings"]["uri"])
-  }else{
-    networkGraph.filterClasses=[linkedDataGraph["settings"]["uri"]]
-  }
-  networkGraph.filterClassesObjects.push(new FilterClassExpert(linkedDataGraph["settings"]["uri"])) 
 }
 
 function applyFilters(){
@@ -978,137 +732,88 @@ function applyFilters(){
   networkGraph.refresh()
 }
 
-function changeTab(tab){ 
-  ////console.log(tab.id)
-  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
-  $("#content-main-tabs .content-item").addClass("hidden")
-  //////console.log(tab.textContent)
-  tab.classList.add("ecl-tabs__link--active");
-  tab.setAttribute("aria-selected", "true")
-  ////console.log(tab.id.replace("-tab","-content"))
-  ////console.log($("#content-main-tabs #"+tab.id.replace("-tab","-content")))
-
-  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
+function startExpert(origin,element){
+  $("#form-container form").hide()
+  $("#filters").addClass("hidden")
+  checkMenuItems(origin,element)
 }
-/* async function addGraph(){
-  await linkedDataGraph.update(menuItems.selectedRows[0],node)
-  networkGraph.refresh()
-} */
-/* function checkFilters(){
-  if(configRow.rowFields.filters){
-    //console.log(configRow.rowFields.filters)
-    if(configRow.rowFields.filters!=0){
-      networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
-      console.log(networkGraph.filters)
-      addFilters()
-      //$("#filters").removeClass("hidden")
-    }
-  }
-  console.log(networkGraph.filters)
-  
-  if(networkGraph.filters.length!=0){
-    $("#filters").removeClass("hidden")
-  }else{
-    $("#filters").addClass("hidden")
-  }
-} */
 
-function checkFiltersExpert(){
-  /* if(configRow.rowFields.filters){
-    //console.log(configRow.rowFields.filters)
-    if(configRow.rowFields.filters!=0){
-      networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
-      //console.log(networkGraph.filters)
-      addFilters()
-      //$("#filters").removeClass("hidden")
-    }
-  } */
-  //console.log(linkedDataGraph["settings"]["uri"])
-  console.log(linkedDataGraph.results)
-  /* if(linkedDataGraph.settings["subject-object"]=="s"){
-    values=linkedDataGraph.results.map(d=>d.o)
-  }else{
-    values=linkedDataGraph.results.map(d=>d.s)
-  } */
-  //console.log(values)
-  //networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"values":values,"properties":linkedDataGraph.results.map(d=>d.p)})
-  let internalClass=linkedDataGraph.settings.uri.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
-  networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"type","internalClass":internalClass,"id":internalClass+"_type"})
-  networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"properties","internalClass":internalClass,"id":internalClass+"_properties"})
-  networkGraph.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"values","internalClass":internalClass,"id":internalClass+"_values"})
-
-  //addFiltersExpert()
-/*   if(networkGraph.filterClasses){
-    networkGraph.filterClasses.push(linkedDataGraph["settings"]["uri"])
-  }else{
-    networkGraph.filterClasses=[linkedDataGraph["settings"]["uri"]]
-  } */
-  addFiltersExpert()
-  //linkedDataGraph["settings"]["uri"]
-  if(networkGraph.filters.length!=0){
-    $("#filters").removeClass("hidden")
-  }else{
-    $("#filters").addClass("hidden")
-  }
-}
 function shareGraph(){
   var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
   
   addFile()
-  //return parent.location='mailto:?subject=VINALOD graph&body=Follow the link to check the graph shared http://127.0.0.1:5500/index.html?graph='+ fileName
   return parent.location="mailto:?subject=VINALOD graph&body=Copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent("https://t-barrueco.github.io/vinalod/index.html?graph="+fileName);
-  
-/*   var form = document.createElement('form');
-	
-	//Set the form attributes 
-	form.setAttribute('method', 'post');
-	form.setAttribute('enctype', 'text/plain');
-	form.setAttribute('action', 'mailto:' + '?Subject=VINALOD graph&Body=' + escape(bodyText ? bodyText : ' ') );
-	form.setAttribute('style', 'display:none');
-	
-	//Append the form to the body
-	document.body.appendChild(form);
-
-	//Submit the form
-	form.submit();
-	
-	//Clean up
-	document.body.removeChild(form); */
-  
   
   function addFile(){
 
-    var albumBucketName = "vinalod";
-    var bucketRegion = "us-east-1";
-    var IdentityPoolId = "us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449";
+    d3.json("config_vinalod/aws-s3.json",function(data){
+      const albumBucketName=data["albumBucketName"]
+      const bucketRegion=data["bucketRegion"]
+      const IdentityPoolId=data["IdentityPoolId"]
 
-    AWS.config.update({
-      region: bucketRegion,
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: IdentityPoolId
-      })
-    });
-
-    file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
-    //var photoKey = albumPhotosKey + fileName;
-    var upload = new AWS.S3.ManagedUpload({
-        params: {
-          Bucket: albumBucketName,
-          Key: fileName,
-          Body: file
-        }
+      AWS.config.update({
+        region: bucketRegion,
+        credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: IdentityPoolId
+        })
       });
-    
-      var promise = upload.promise();
-    
-      promise.then(
-        function(data) {
-          //alert("Successfully uploaded photo.");
-        },
-        function(err) {
-          return alert("There was an error creating the graph share: ", err.message);
-        }
-      );
-    //s3.meta.client.upload_file('/Users/teresab/Documents/VINALOD/config_vinalod_30_12_2021/config_basicMode.json', 'vinalod', 'config_basicMode.json')
+  
+      file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
+      var upload = new AWS.S3.ManagedUpload({
+          params: {
+            Bucket: albumBucketName,
+            Key: fileName,
+            Body: file
+          }
+        });
+      
+        var promise = upload.promise();
+      
+        promise.then(
+          function(data) {
+          },
+          function(err) {
+            return alert("There was an error creating the graph share: ", err.message);
+          }
+        );
+    })
+
+
   }
+}
+async function checkGraph(option,data){
+  console.log(configFile)
+  console.log(option)
+  console.log(data)
+  //console.log(configFile.file.filter(c=>c.option==option)[0]["type"]=="TREE")
+  const rowInConfigFile=configFile.file.filter(c=>c.option==option)[0]
+  if(rowInConfigFile["type"]=="TREE"){
+    await linkedDataGraph.update(option,data)
+    networkGraph.refresh()
+  }else{
+    console.log(rowInConfigFile)
+    checkNotTreeGraph(rowInConfigFile,data)
+  }
+
+}
+function tabOptionsGraphVisible(){
+  $('#settings-tab').parent().removeClass("hidden")
+  $('#legend-tab').parent().removeClass("hidden")
+  $('#share-graph-div').removeClass("hidden")
+  $('#save-graph-div').removeClass("hidden")
+}
+
+function tabOptionsGraphNotVisible(){
+  $('#settings-tab').parent().addClass("hidden")
+  $('#legend-tab').parent().addClass("hidden")
+  $('#share-graph-div').addClass("hidden")
+  $('#save-graph-div').addClass("hidden")
+}
+
+function filtersVisible(){
+  $("#filters").removeClass("hidden")
+}
+
+function filtersNotVisible(){
+  $("#filters").addClass("hidden")
 }

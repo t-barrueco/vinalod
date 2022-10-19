@@ -10,13 +10,13 @@ LinkedDataGraph.prototype.init = async function () {
     await ldg.getResults()
     ldg.buildData()
     //ldg.getFilters()
-    ////////////console.log(ldg.data.treeData)
+    //////////////console.log(ldg.data.treeData)
   }
 
 LinkedDataGraph.prototype.getResults = async function () {
     var ldg=this;
     ldg.results = await runSparlqQuery(ldg.settings.url,ldg.settings.query,"query");
-    ////////////console.log(ldg.results)
+    //////////////console.log(ldg.results)
   }
 
 LinkedDataGraph.prototype.buildData = function () {
@@ -100,20 +100,22 @@ LinkedDataGraph.prototype.filter = function(){
   function checkFilter(node){
     var hidden=false
     let filterClass=networkGraph.filterClassesObjects.filter(function(f){
+      console.log(f)
+      console.log(node)
       return f.name==node.class
     })
     if(filterClass.length>0){
       filterClass[0].filters.forEach(function (fi){
-        ////console.log(fi.filterObject)
+        //////console.log(fi.filterObject)
         if(fi.checkConditionNode(node)){
-          ////console.log("true")
+          //////console.log("true")
           hidden=true
         //}else{
-          ////console.log("false")
+          //////console.log("false")
         }
       })
     }
-    console.log(hidden)
+    //console.log(hidden)
     return hidden
   }
 }
@@ -126,7 +128,10 @@ LinkedDataGraphBasic.prototype = Object.create(LinkedDataGraph.prototype);
 
 LinkedDataGraphBasic.prototype.settingsFromOption = async function(){
   var ldg=this;
-  configRow = new ConfigRow(ldg.option);
+  if(!configRow){
+    configRow = new ConfigRow(ldg.option);
+  }
+  console.log(ldg.settings)
   ldg.settings={}
   ldg.settings["query"]=configRow.rowFields.query
   ldg.settings["url"]=configRow.rowFields.endpoint_url
@@ -136,12 +141,12 @@ LinkedDataGraphBasic.prototype.settingsFromOption = async function(){
 LinkedDataGraphBasic.prototype.importGraph = async function(fileText){
   var ldg=this;
 
-  console.log(fileText)
+  //console.log(fileText)
 
   ldg.treeData=fileText.treeData
   //ldg.classesCorrespondence=fileText.classesCorrespondence
   ldg.resultsData=fileText.treeData
-  console.log(ldg)
+  //console.log(ldg)
   ldg.flatten()
 }
 
@@ -149,14 +154,18 @@ LinkedDataGraphBasic.prototype.update = async function(option,node){
   var ldg=this;
   ldg.option=option
   ldg.node=node
-
+  console.log("entra en linkedDataGraphBasic update")
   console.log(option)
   console.log(node)
-  console.log(configRow)
+  //console.log(configRow)
   if(configRow) configRow.update(option,node)
   else{
+    console.log(node)
     configRow=new ConfigRow(option,node)
+    console.log("despues de crear configrow")
     ldg.settingsFromOption(option)
+    console.log("despues de settingsFromOption")
+
   }
   console.log(configRow)
   ldg.settings["query"]=configRow.rowFields.query
@@ -168,23 +177,23 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   var ldg=this;
   var procNode=[],indexParent,tmpNode,child,classFreeNode;
   var treeResults;
-  //console.log(configRow.rowFields.properties)
+  ////console.log(configRow.rowFields.properties)
   var properties=configRow.rowFields.properties
   var treeData=[]
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
 
-  ////////console.log(ldg.results)
+  //////////console.log(ldg.results)
   for (let j = 0; j < ldg.results.length; ++j) {
-      ////////console.log(ldg.results[j])
+      //////////console.log(ldg.results[j])
       treeResults=get_hierarchy_from_keys(Object.keys(ldg.results[j]))
-      ////////console.log(treeResults)
+      //////////console.log(treeResults)
       for (let i = 0; i < treeResults.length; ++i) {
           if(ldg.results[j][treeResults[i]]){
               if(i>0){
               indexParent=checkNodeInTreeData()
-              ////////console.log(indexParent)
+              //////////console.log(indexParent)
               if(treeData[indexParent]["children"].filter(d=>d.value==ldg.results[j][treeResults[i]]["value"]).length==0){
                   child=nodeValues(ldg.results[j],i)
                   
@@ -215,11 +224,11 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   ldg.treeData=ldg.treeData.concat(treeData)
   ldg.resultsData=treeData
 
-  //console.log(ldg.treeData)
+  ////console.log(ldg.treeData)
   function checkNodeInTreeData(){
       var pathSearch=JSON.parse(JSON.stringify(procNode));
       var prevNodeIndex=-1,prevNodeId;
-      ////////console.log(treeData)
+      //////////console.log(treeData)
       while(pathSearch.length>0){
       if(prevNodeIndex!=-1){
           prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==pathSearch[0])[0]["id"]
@@ -269,18 +278,18 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
       if((configRow.rowFields.detail!="")&&(configRow.rowFields.details!=undefined)){
       node["detail"]=getDetail(configRow.rowFields.details,node["class"])
       }
-      //console.log(properties)
+      ////console.log(properties)
       prop=properties.filter(d=>d.class==treeResults[index])
-      //console.log(prop)
+      ////console.log(prop)
       if(prop.length>0){
       prop.forEach(function(k){
-        //console.log(r)
+        ////console.log(r)
         if(r[k["property"]]!=undefined){
         node[k["property"]]=r[k["property"]].value
         }
       })
       }
-      //console.log(node)
+      ////console.log(node)
       return node
   }
     
@@ -304,7 +313,7 @@ LinkedDataGraphExpert.prototype.buildTreeData = function () {
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
-  ////////////console.log(ldg.settings["subject-object"])
+  //////////////console.log(ldg.settings["subject-object"])
   ldg.results.forEach(r => {
     if (ldg.settings["subject-object"] == "s") {
       if (r["o"]["more_results"]) {
@@ -376,10 +385,12 @@ LinkedDataGraphExpert.prototype.addLink = function (node,c,links) {
 
 LinkedDataGraphExpert.prototype.settingsFromOption = async function(){
   var ldg=this;
+  console.log("antes de init")
   await ldg.init()
+  console.log("despues de init")
 };
 
 LinkedDataGraphExpert.prototype.getFilters = function () {
   var ldg=this;
-  console.log(ldg)
+  //console.log(ldg)
 }

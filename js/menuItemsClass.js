@@ -4,7 +4,7 @@ MenuItems = function (_node) {
 
 MenuItems.prototype.init = async function () {
   var mi=this;
-  ////console.log(document.getElementsByTagName("table"))
+  //////console.log(document.getElementsByTagName("table"))
 
   await mi.buildOptions()
   mi.filterByMenuOption()
@@ -32,11 +32,12 @@ MenuItems.prototype.filterByMenuOption = function () {
   MenuItems.prototype.filterByAskResult = async function () {
     var mi=this;
     mi.selectedRows=[]
-    //console.log(mi.indexRows)
+    ////console.log(mi.indexRows)
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
+            console.log("antes de lanzar la query")
             results = await runSparlqQuery(mi.indexRows[i].url,mi.indexRows[i].askquery,"askquery");
-            //console.log(results)
+            console.log(results)
         } catch (e) {
         results = false
         } 
@@ -66,7 +67,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
     }else{
         width=350
     }
-    console.log(networkGraph)
+    //console.log(networkGraph)
     networkGraph.menuFactory(100,0, mi.menuItems, mi.node,"dblClick",width)
 
 }
@@ -171,8 +172,8 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
   elementMenu = {
       title: "Sparql Endpoint: " + url + " and Position: " + subjectObject,
       action: async (data,d) => {
-      ////console.log(d)
-      ////console.log(query)
+      //////console.log(d)
+      //////console.log(query)
       url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
       subjectObject = d.title.match("and Position: (.*)")[1];
       form = { "url": url, "uri": data.uri, "subject-object": subjectObject,"query":query}
@@ -180,7 +181,7 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
       networkGraph.refresh()
       //checkFilters()
 
-      ////console.log(document.getElementsByTagName("table"))
+      //////console.log(document.getElementsByTagName("table"))
 
       }
   }
@@ -197,7 +198,7 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
 
   var content = document.getElementById("modal3-content");
 
-  ////console.log(mi)
+  //////console.log(mi)
   await addOptions()
 
   modal = document.getElementById("myModal3")
@@ -214,11 +215,11 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
       mi.selectedRows.forEach(function (r) {
         htmlOption=data
         htmlOption=htmlOption.replace("Option *","Option "+ String(i)).replace("Node URI",r.uri).replace("Subject",r["subject-object"]).replace("Value_URL",r.url)
-        ////console.log(i)
+        //////console.log(i)
         if(i!=mi.selectedRows.length){
           htmlOption+="<hr>"
         }
-        ////console.log(htmlOption)
+        //////console.log(htmlOption)
         $("#modal3-content").append($(htmlOption))
         i+=1
       })
@@ -242,7 +243,9 @@ MenuItemsBasic.prototype.buildOptions=function (){
       //mi.indexRows[mi.indexRows.length - 1].fromSelectToAskQuery()
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["endpoint_url"]
       mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["askquery"]
+      console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
   });
+  console.log(mi.indexRows)
 }
 MenuItemsBasic.prototype.addSelectedRow=function (i){
   var mi=this;
@@ -254,13 +257,9 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
   elementMenu={
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {
-        await linkedDataGraph.update(d.title,data)
-        networkGraph.refresh()
-        console.log("checkFilters")
-        checkFilters()
-
-        //console.log(document.getElementsByTagName("table"))
-
+        console.log(data)
+        console.log(d)
+        checkGraph(d.title,data)
     }
     }
   return elementMenu
