@@ -5,7 +5,12 @@
       console.log("wikipedia")
     }else if(rowInConfigFile["type"]=="TABLE"){
       showTable(rowInConfigFile,data)
+    }else if(rowInConfigFile["type"]=="BARCHART"){
+      showBarchart(rowInConfigFile,data)
+    }else if(rowInConfigFile["type"]=="LINECHART"){
+      showLinechart(rowInConfigFile,data)
     }
+
   }
   function getModal2(){
     if($("#modal-content2 #modalGraph")){
@@ -251,7 +256,7 @@
   
   async function showWordcloud(rowInConfigFile,node){
     var results;
-    
+    console.log(node)
     const title=rowInConfigFile.option + " - " + node.value
 
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
@@ -383,4 +388,49 @@
         //minHeight: 150
       });
       $("#myModal2").draggable()
+  }
+  async function showBarchart(rowInConfigFile,node){
+    var results;
+    console.log(node)
+    const title=rowInConfigFile.option + " - " + node.value
+
+    const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
+
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    data=transformDataBarchart(results)
+    createBarchart(data,title)
+  
+    function transformDataBarchart(results){
+      var resultsTransformed=[]
+      console.log(results)
+      results.forEach(function(r){
+        resultsTransformed.push({"Category":r["category"]["value"],"Number":r["number"]["value"]})
+      })
+      return resultsTransformed
+    }
+  }
+
+  async function showLinechart(rowInConfigFile,node){
+    var results;
+    console.log(node)
+    console.log(rowInConfigFile.query)
+    const query=rowInConfigFile.query.replace("PARAMETER2",node[rowInConfigFile.parameters[0]["property"]]).replace("PARAMETER",node[node.class+"_uri"])
+
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    data=transformDataLinechart(results)
+
+    const title=rowInConfigFile.option + " - " + node.value
+
+    createLinechart(data,title)
+  
+    function transformDataLinechart(results){
+      var resultsTransformed=[]
+      console.log(results)
+      results.forEach(function(r){
+        resultsTransformed.push({"date":d3.timeParse("%Y-%m-%d")(r["publicationDocument_date"]["value"]),"value":+r["publicationDocument_dateNumber"]["value"]})
+        //resultsTransformed.push({"Theme":r["opTheme"]["value"],"Number":r["opTheme_number"]["value"]})
+      })
+      return resultsTransformed
+      //return resultsTransformed
+    }
   }

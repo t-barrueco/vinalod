@@ -671,7 +671,7 @@ NetworkGraph.prototype.enterGraph = function(){
               var element=this
               timer = setTimeout(function() {
                 if (!prevent) {
-                  clickBubbleFreeGraph(element,vis.data)
+                  clickBubbleGraph(element,vis.data)
                 }
                 prevent = false;
               }, delay);
@@ -717,7 +717,7 @@ NetworkGraph.prototype.enterGraph = function(){
           var element=this
           timer = setTimeout(function() {
             if (!prevent) {
-              clickBubbleFreeGraph(element,vis.data)
+              clickBubbleGraph(element,vis.data)
             }
             prevent = false;
           }, delay);
@@ -750,9 +750,9 @@ NetworkGraph.prototype.enterGraph = function(){
           if (!prevent) {
               //if (element.getAttribute("stroke-width")=="1px"){
                 //////console.log("clickBubble")
-              clickBubbleFreeGraph(element,vis.data)
+              clickBubbleGraph(element,vis.data)
               //}else{
-              //unclickBubbleFreeGraph()
+              //unclickBubbleGraph()
               //};
           }
           prevent = false;
@@ -1396,6 +1396,51 @@ NetworkGraphExpert.prototype.addClassesShow = function(){
   var vis=this,newClasses;
 }
 
+NetworkGraphExpert.prototype.updateFilters = function () {
+  var vis=this,newFilterClasses,existingFilterClasses,filterClass;
+  //////console.log(ldg)
+  //vis.filterClassesObjects=[]
+/*   if(configRow){
+    if(configRow.rowFields.filters){
+      if(configRow.rowFields.filters!=0){
+        newFilterClasses=[...new Set(configRow.rowFields.filters.map(d=>d.class))]
+        console.log(vis.filterClassesObjects.map(f=>f.name))
+        //existingFilterClasses = [...new Set(networkGraph.treeData.map(d=>d.filters))]
+        existingFilterClasses=vis.filterClassesObjects.map(d=>d.name)
+        newFilterClasses.forEach(function(f){
+          if(!existingFilterClasses.includes(f)){
+            //console.log(f)
+            filterClass=new FilterClassBasic(f)
+            filterClass.init()
+  
+            vis.filterClassesObjects.push(filterClass) 
+          }else{
+            console.log("si incluye")
+            //networkGraph.treeData.filter(d=>d.filters==f.class)[0].addFilters()
+          }
+        })
+  
+        //networkGraph.filters=networkGraph.filters.concat(configRow.rowFields.filters);
+        //////console.log(networkGraph.filters)
+        //addFilters()
+      }
+    }
+  } */
+
+  //////console.log(networkGraph.filters)
+  
+/*   if(networkGraph.filters.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  } */
+}
+/* NetworkGraphExpert.prototype.updateGraph = async function (url,uri,subjectObject,query,data){
+  var vis=this
+  form = { "url": url, "uri": uri, "subject-object": subjectObject,"query":query}
+  await linkedDataGraph.update(form,data)
+  vis.refresh()
+} */
 NetworkGraphExpert.prototype.getFilters = function () {
   var vis=this
   ////console.log(this)

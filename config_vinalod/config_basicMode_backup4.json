@@ -1418,7 +1418,6 @@
 
     ],
     "filters":[
-
     ],
     "tooltip":[
       {
@@ -2208,7 +2207,7 @@
   {
     "class":"Catalog of open datasets",
     "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog ?datatheme (?datatheme AS ?datatheme_name) ?datatheme_uri ?datatheme_definition ?dataset ?dataset_uri (?dataset_uri AS ?dataset_link) ?dataset_description ?dataset_accessRights ?documentation ?documentation_description ?documentation_uri (?documentation_uri AS ?documentation_link)\nWHERE{{\n?DEUCatalog_uri dcat:dataset ?dataset_uri;\ndcterms:title ?title.\n?dataset_uri dcterms:description ?dataset_description;\ndcterms:title ?dataset.\nOPTIONAL{\n?dataset_uri dcat:theme ?datatheme_uri.\n?datatheme_uri skos:prefLabel ?datatheme_temp.\nFILTER(langMatches(lang(?datatheme_temp), 'en')).\n}\nBIND (IF(bound(?datatheme_uri),?datatheme_temp,\"No classified\") as ?datatheme).\nOPTIONAL{\n?dataset_uri dcterms:accessRights ?dataset_accessRightsURI.\n?dataset_accessRightsURI skos:prefLabel ?dataset_accessRights.\n}\nOPTIONAL{\n?dataset_uri foaf:page ?documentation_uri.\n?documentation_uri dcterms:title ?documentation;\ndcterms:description ?documentation_description.\n}\nOPTIONAL\n{ ?DEUCatalog_uri dcterms:description ?description\n} \n?DEUCatalog_uri dcterms:modified ?DEUCatalog_Modified.\n?DEUCatalog_uri dcterms:language ?DEUCatalog_Language.\n}\nfilter(?DEUCatalog_uri=<PARAMETER>).\nFILTER(langMatches(lang(?dataset), 'en')).\nFILTER(langMatches(lang(?dataset_description), 'en')).\n}",
+    "query":"\n#Catalog of open datasets_1\nPREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog ?datatheme (?datatheme AS ?datatheme_name) ?datatheme_uri ?datatheme_definition ?dataset ?dataset_uri (?dataset_uri AS ?dataset_link) ?dataset_description ?dataset_accessRights ?documentation ?documentation_description ?documentation_uri (?documentation_uri AS ?documentation_link)\n#SELECT distinct ?datatheme\nWHERE{{ \n ?DEUCatalog_uri dcat:dataset ?dataset_uri;\ndcterms:title ?title.\n?dataset_uri dcterms:description ?dataset_description;\ndcterms:title ?dataset.\nOPTIONAL{\n?dataset_uri dcat:theme ?datatheme_uri.\n?datatheme_uri skos:prefLabel ?datatheme_temp.\nFILTER(langMatches(lang(?datatheme_temp), 'en')).\n}\nBIND (IF(bound(?datatheme_uri),?datatheme_temp,\"Miscellaneous\") as ?datatheme).\nOPTIONAL{\n?dataset_uri dcterms:accessRights ?dataset_accessRightsURI.\n?dataset_accessRightsURI skos:prefLabel ?dataset_accessRights.\n}\nOPTIONAL{\n?dataset_uri foaf:page ?documentation_uri.\n?documentation_uri dcterms:title ?documentation;\ndcterms:description ?documentation_description.\n}\nOPTIONAL\n{ ?DEUCatalog_uri dcterms:description ?description\n} \n?DEUCatalog_uri dcterms:modified ?DEUCatalog_Modified.\n?DEUCatalog_uri dcterms:language ?DEUCatalog_Language.\n}\nfilter(?DEUCatalog_uri=<PARAMETER>).\nFILTER(langMatches(lang(?dataset), 'en')).\nFILTER(langMatches(lang(?dataset_description), 'en')).\n}\n",
     "hierarchy":[
       {
         "parent":"DEUCatalog",
@@ -2311,14 +2310,12 @@
     "parameters":[
 
     ],
-    "filters":[
-      {
-        "property":"datatheme_name",
-        "class":"datatheme",
-        "filter_type":"dropdown",
-        "filter_text":"Name"
-      }
-    ],
+    "filters":[{
+      "property":"datatheme_name",
+      "class":"datatheme",
+      "filter_type":"dropdown",
+      "filter_text":"Name"
+    }],
     "tooltip":[
 
     ],
@@ -4150,167 +4147,5 @@
       }
     ],
     "askquery":null
-  },
-  {
-    "class":"Directory Organization",
-    "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT ?category COUNT(?publicationDocument_uri) as ?number\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?category_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?category_uri skos:prefLabel ?category.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n}\nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?category), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\nfilter not exists {\n?broader skos:broader ?category_uri\n}\n}GROUP BY ?category\nORDER BY DESC(?number)",
-    "hierarchy":[
-
-    ],
-    "properties":[
-
-    ],
-    "classes_text":[
-
-    ],
-    "parameters":[
-
-    ],
-    "filters":[
-
-    ],
-    "tooltip":[
-
-    ],
-    "function":"",
-    "columns":[
-
-    ],
-    "type":"BARCHART",
-    "option":"Barchart number of publications by theme",
-    "option_text":"Barchart number of publications by theme",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\nfilter not exists {\n?broader skos:broader ?opTheme_uri\n}\n}"
-  },
-  {
-    "class":"Directory Organization",
-    "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT DISTINCT ?corporateBody ?corporateBody_uri ?opTheme ?opTheme_uri (?corporateBody_uri as ?opTheme_corporateBody)\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\nfilter not exists {\n?broader skos:broader ?opTheme_uri\n}\n}ORDER BY ?opTheme_uri",
-    "hierarchy":[
-      {
-        "parent":"corporateBody",
-        "child":"opTheme"
-      }
-    ],
-    "properties":[
-      {
-        "class":"corporateBody",
-        "property":"corporateBody_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"opTheme",
-        "property":"opTheme_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"opTheme",
-        "property":"opTheme_corporateBody",
-        "property_name":"Corporate Body"
-      }
-    ],
-    "classes_text":[
-      {
-        "class":"corporateBody",
-        "text":"Directory Organization"
-      },
-      {
-        "class":"opTheme",
-        "text":"Publication Theme"
-      }
-    ],
-    "parameters":[
-
-    ],
-    "filters":[
-
-    ],
-    "tooltip":[
-
-    ],
-    "function":"",
-    "columns":[
-
-    ],
-    "type":"TREE",
-    "option":"Publication themes by Organisation",
-    "option_text":"Publication themes by Organisation",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\nfilter not exists {\n?broader skos:broader ?opTheme_uri\n}\n}"
-  },
-  {
-    "class":"Publication Theme",
-    "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT ?publicationDocument_date (COUNT(?publicationDocument_date) as ?publicationDocument_dateNumber)\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER2>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(?opTheme_uri=<PARAMETER>)\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}GROUP BY ?publicationDocument_date\nORDER BY ?publicationDocument_date",
-    "hierarchy":[
-
-    ],
-    "properties":[
-
-    ],
-    "classes_text":[
-
-    ],
-    "parameters":[
-      {
-        "property":"opTheme_corporateBody"
-      }
-    ],
-    "filters":[
-
-    ],
-    "tooltip":[
-
-    ],
-    "function":"",
-    "columns":[
-
-    ],
-    "type":"LINECHART",
-    "option":"Linechart number of publications by date",
-    "option_text":"Linechart number of publications by date",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER2>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(?opTheme_uri=<PARAMETER>)\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}"
-  },
-  {
-    "class":"Catalog of open datasets",
-    "endpoint_url":"https:\/\/data.europa.eu\/sparql",
-    "query":"\nPREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT ?category COUNT(?dataset_uri) as ?number\nWHERE{{\n?DEUCatalog_uri dcat:dataset ?dataset_uri.\nOPTIONAL{\n?dataset_uri dcat:theme ?datatheme_uri.\n?datatheme_uri skos:prefLabel ?datatheme_temp.\nFILTER(langMatches(lang(?datatheme_temp), 'en')).\n}\nBIND (IF(bound(?datatheme_uri),?datatheme_temp,\"No classified\") as ?category).\nfilter not exists {\n?broader skos:hasTopConcept ?datatheme_uri\n}\n}\nfilter(?DEUCatalog_uri=<PARAMETER>).\n}GROUP BY ?category\nORDER BY DESC(?number)\n",
-    "hierarchy":[
-
-    ],
-    "properties":[
-
-    ],
-    "classes_text":[
-
-    ],
-    "parameters":[
-
-    ],
-    "filters":[
-
-    ],
-    "tooltip":[
-
-    ],
-    "function":"",
-    "columns":[
-
-    ],
-    "type":"BARCHART",
-    "option":"Barchart number of datasets by data theme",
-    "option_text":"Barchart number of datasets by data theme",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":"PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n#SELECT DISTINCT ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog ?datatheme (?datatheme AS ?datatheme_name) ?datatheme_uri ?datatheme_definition ?dataset ?dataset_uri (?dataset_uri AS ?dataset_link) ?dataset_description ?dataset_accessRights ?documentation ?documentation_description ?documentation_uri (?documentation_uri AS ?documentation_link)\nASK\nWHERE{{\n?DEUCatalog_uri dcat:dataset ?dataset_uri.\nOPTIONAL{\n?dataset_uri dcat:theme ?datatheme_uri.\n?datatheme_uri skos:prefLabel ?datatheme_temp.\nFILTER(langMatches(lang(?datatheme_temp), 'en')).\n}\nBIND (IF(bound(?datatheme_uri),?datatheme_temp,\"No classified\") as ?category).\nfilter not exists {\n?broader skos:hasTopConcept ?datatheme_uri\n}\n}\nfilter(?DEUCatalog_uri=<PARAMETER>).\n}"
   }
 ]

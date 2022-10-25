@@ -583,30 +583,36 @@ function setForcesGraph(){
   }
   return forces
 }
-function clickBubbleFreeGraph(element) {
+function clickBubbleGraph(element) {
   var node
   nodesSelSources = []
   nodesSelTarget = []
 
+  closeNavigationPanel()
+  
   node = d3.select("#" + element.getAttribute("id")).data()[0]
 
+  
   //CAMBIAR LOS CAMPOS DEL CONFIGROW
   if(configRow){
     configRow.node=node
   }
   networkGraph.node=node
 
+  console.log(node)
   if (navigationPanel == undefined) {
-    navigationPanel= new NavigationPanel("freeGraph", node);
+    if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
+    else navigationPanel= new NavigationPanelExpert(node);
   } else {
+    emptyNavigationPanel()
     navigationPanel.element = element
     navigationPanel.node = node
-    //navigation.init()
+    navigationPanel.init()
   }
-  $("#myModal").removeClass("translate-x-full")
-  $("#myModal").addClass("translate-x-0")
+  openNavigationPanel()
 }
 async function checkMenuItems(origin,element) {
+  
   if(origin=="form"){
     node={"uri":element.querySelector('#free-uri').value, "subject-object":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
   }else if(origin=="graph"){
@@ -615,8 +621,12 @@ async function checkMenuItems(origin,element) {
     }else{
       node=element
     }
+  }else if(origin=="table"){
+    console.log(element)
+    //const parent = element.parentElement.closest('tr');
+    node=getNodeFromTableRow(element)
   }
-  console.log(node)
+
   if(menuItems){
     await menuItems.update(node)
   }else{
@@ -636,10 +646,10 @@ async function checkMenuItems(origin,element) {
       //SE EXPANDEN LOS CHILDREN
     //} 
   }else if(menuItems.selectedRows.length==1){
-    console.log("entra en 1")
     if(node.class!="free"){
-      await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
-      networkGraph.refresh()
+      checkGraph(menuItems.selectedRows[0].option,node)
+/*       await linkedDataGraph.update(menuItems.selectedRows[0].option,node)
+      networkGraph.refresh() */
       //checkFilters()
     }else{
       if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
@@ -649,6 +659,7 @@ async function checkMenuItems(origin,element) {
         await showGraphExpert(menuItems.selectedRows[0])
       }
     }
+    clickBubbleGraph(document.getElementById(node.id))
   }else if(menuItems.selectedRows.length>1){
     if(origin=="table"){
       menuItems.getMenuItemsInTable()
@@ -665,6 +676,7 @@ async function checkMenuItems(origin,element) {
 
 async function showGraphExpert(selectedRow){
   $("#accordion-filters").empty()
+  console.log(selectedRow)
   linkedDataGraph = new LinkedDataGraphExpert("",selectedRow);
   await linkedDataGraph.settingsFromOption()
 
@@ -782,11 +794,8 @@ function shareGraph(){
   }
 }
 async function checkGraph(option,data){
-  console.log(configFile)
-  console.log(option)
-  console.log(data)
-  //console.log(configFile.file.filter(c=>c.option==option)[0]["type"]=="TREE")
   const rowInConfigFile=configFile.file.filter(c=>c.option==option)[0]
+  console.log(rowInConfigFile)
   if(rowInConfigFile["type"]=="TREE"){
     await linkedDataGraph.update(option,data)
     networkGraph.refresh()
@@ -794,7 +803,13 @@ async function checkGraph(option,data){
     console.log(rowInConfigFile)
     checkNotTreeGraph(rowInConfigFile,data)
   }
-
+  return rowInConfigFile["type"]
+}
+async function checkGraphExpert(form,data){
+  //form = { "url": url, "uri": uri, "subject-object": subjectObject,"query":query}
+  await linkedDataGraph.update(form,data)
+  networkGraph.refresh()
+  clickBubbleGraph(document.getElementById(data.id))
 }
 function tabOptionsGraphVisible(){
   $('#settings-tab').parent().removeClass("hidden")
@@ -816,4 +831,121 @@ function filtersVisible(){
 
 function filtersNotVisible(){
   $("#filters").addClass("hidden")
+}
+
+async function clickMenuTable(row){
+  navigationPanel.clickMenuTable(row)
+}
+function emptyNavigationPanel(){
+  $("#nav-children-tbody").empty()
+}
+
+function openNavigationPanel(){
+  $("#myModal").removeClass("translate-x-full")
+  $("#myModal").addClass("translate-x-0")
+}
+function closeNavigationPanel(){
+  $("#myModal").addClass("translate-x-full")
+  $("#myModal").removeClass("translate-x-0")
+}
+function clickElNavigationPanel(el){
+  console.log(el)
+  clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
+}
+/* function relatedFilters(){
+  console.log(networkGraph.filterClassesObjects)
+  networkGraph.filterClassesObjects.forEach(function (cf){
+    console.log(cf)
+    cf.filters.forEach(function(f){
+      console.log(f)
+      getValue(f)
+    })
+  })
+  function getValue(f){
+    if(f.details.filter_type=="dropdown"){
+      console.log(f.htmlEl.value)
+    }
+  }
+} */
+function relatedFilters(filter){
+  var nodes = [];
+  let name=filter.getAttribute("name")
+
+  function recurse(node) {
+    if(!node["hidden"]){
+      if(networkGraph.filterClassesObjects.filter(d=>d.name==node.class).length>0){
+        let filters=networkGraph.filterClassesObjects.filter(d=>d.name==node.class)[0].filters
+        for (let i = 0; i < filters.length; ++i) { 
+          if(getValue(filters[i],node[filters[i].details.property])){
+            if (!nodes.includes(node)) nodes.push(node)
+            if (node.children){
+              nodes.push(node)
+              node.children.forEach(function(c){
+                  recurse(c)
+              });
+            }
+          }else{
+            break;
+          }
+        }
+      }else{
+        if (!nodes.includes(node)) nodes.push(node)
+        if(node.children){
+          node.children.forEach(function(c){
+              recurse(c)
+          });
+        }
+      }
+    }
+
+  }
+  networkGraph.treeData.forEach(function(r){
+    recurse(r);
+  })
+  console.log(nodes)
+  setValuesFilters(nodes,name)
+
+  function getValue(f,value){
+    if(f.details.filter_type=="dropdown"){
+      console.log(f.htmlEl.value)
+      console.log(value)
+      if(value){
+        if((f.htmlEl.value==value.toLowerCase())||(f.htmlEl.value=="All")){
+          return true;
+        }else{
+          return false;
+        }
+      }else{
+        return false
+      }
+    }
+  }
+  //ldg.data={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeData};
+}
+function setValuesFilters(nodes,name){
+  networkGraph.filterClassesObjects.forEach(function (cf){
+    cf.setValuesFilters(nodes,name)
+    /* cf.filters.forEach(function(f){
+      if(f.details.property!=name){
+        console.log(f.htmlEl)
+        console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
+        let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
+        removeOptionsSelect(f)
+        addOptionsSelect(f.htmlEl,valuesFilter,false)
+      }
+    }) */
+  })
+}
+function removeOptionsSelect(f){
+  $("#"+f.htmlEl.getAttribute("id")).empty();
+}
+function clearFilters(){
+  linkedDataGraph.clearFilter()
+  networkGraph.filterClassesObjects.forEach(function (cf){
+    cf.filters.forEach(function (f){
+      console.log(f.values)
+      f.addValuesField()
+    })
+  })
+  networkGraph.refresh()
 }

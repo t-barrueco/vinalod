@@ -23,7 +23,18 @@ FilterClass.prototype.getCode= async function(){
 function FilterClassBasic(...args){
   FilterClass.apply(this, args);
 }
-    
+  
+FilterClassBasic.prototype.setValuesFilters = function(nodes,name){
+  cf.filters.forEach(function(f){
+    if(f.details.property!=name){
+      console.log(f.htmlEl)
+      console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
+      let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
+      removeOptionsSelect(f)
+      addOptionsSelect(f.htmlEl,valuesFilter,false)
+    }
+  })
+}
 FilterClassBasic.prototype = Object.create(FilterClass.prototype);
 
 FilterClassBasic.prototype.setTitle = async function () {
@@ -166,19 +177,35 @@ Filter.prototype.getValuesVisibleNodes=function (){
       }
     })
     if(fi.details.filter_type=="date"){
-      values=[...new Set(values)].sort(function(a,b){
+      let setValues=[...new Set(values)]
+      /* if(setValues>1){
+        values=setValues.sort(function(a,b){
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return formatDate(a) - formatDate(b);
+        });
+      }else{
+        console.log(setValues)
+        values=[formatDate(setValues[0])]
+      } */
+      values=setValues.sort(function(a,b){
         // Turn your strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
         return formatDate(a) - formatDate(b);
       });
+      console.log(values)
+      /* values.forEach(function (f){
+
+      }) */
+      values=values.map(d=>dateValidFormat(d))
     }else{
       values=[...new Set(values)].sort()
     }
-    
+    console.log(values)
     fi.values=values
-    if ((fi.values.length>1)&(fi.details.filter_type=="dropdown")){
+    /* if ((fi.values.length>1)&(fi.details.filter_type=="dropdown")){
       fi.values=["All"].concat(fi.values)
-    }
+    } */
   }
 
 function FilterBasic(...args){
@@ -259,10 +286,10 @@ class FilterBasicDropdown extends FilterBasic {
     }
   }
   addValuesField(){
-    this;
-    $(("#accordion-filters #"+this.details.property)).empty();
-    var select = document.querySelector("#accordion-filters #"+this.details.property);
-    addOptionsSelect(select,this.values,false)
+    //console.log(this.values);
+    $(("#accordion-filters #"+this.details.property+"_filter")).empty();
+    var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+    addHtmlOptionsSelect(select,this.values,false)
   }
 }
 
@@ -274,7 +301,7 @@ class FilterBasicDate extends FilterBasic {
     $("#"+this.details.class+"_filters").append(code).ready(function () {
       ECL.autoInit();
     })
-
+    console.log(this.values[0])
     $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
     $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
     $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_start")
@@ -293,6 +320,12 @@ class FilterBasicDate extends FilterBasic {
     }else{
       return true
     }
+  }
+  addValuesField(){
+    //console.log(this.values);
+    $(("#accordion-filters #"+this.details.property+"_filter")).empty();
+    var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+    addHtmlOptionsSelect(select,this.values,false)
   }
 }
 class FilterBasicText extends FilterBasic {

@@ -266,6 +266,7 @@
       </li>
     </ul>
     <ul role="list" class="hidden content-item" id="manual-content">
+      
       <li class="px-6 pb-4">
         <h4 class="ecl-u-type-heading-4">Manual and Live demo</h4>
 
@@ -432,144 +433,141 @@
                       class="ecl-button__label" data-ecl-label="true" onclick="clearFilters()"">Clear</span></span></button>
                   </div>
                 </div>
-                <div class="z-0 h-auto coll-span-11 sm:col-span-9" id="networkGraph">
+                <div class="z-0 h-auto col-span-11 sm:col-span-9" id="networkGraph">
                 </div>
-                
+                <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700 ecl-u-z-modal" id="myModal">
+                  <!--
+                  Slide-over panel, show/hide based on slide-over state.
+      
+                  Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+                      From: "translate-x-full"
+                      To: "translate-x-0"
+                  Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+                      From: "translate-x-0"
+                      To: "translate-x-full"
+                  -->
+                  <div class="w-screen max-w-md pointer-events-auto ecl-u-z-modal">
+                    <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
+                      <div class="px-4 sm:px-6 ecl-u-z-modal">
+                        <div class="flex items-start justify-between p-6 border-1" style="background-color:#F5F5F5">
+                          <h4 class="ecl-u-type-heading-4">Navigaton panel</h4>
+      <!--                     <h2 class="text-lg font-medium text-gray-500 id="slide-over-title">
+                            Navigation panel
+                          </h2> -->
+                          <div class="flex items-center ml-3 h-7">
+                            <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
+                              <span class="sr-only">Close panel</span>
+                              <!-- Heroicon name: outline/x -->
+                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
+                        <div id="navTable" style="overflow: auto" class="mt-6">
+                          <nav aria-label="Progress">
+                            <ol role="list">
+                            </ol>
+                          </nav>
+                        </div>
+      <!--                   <div id="tabsNav" class="hidden">
+                          <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
+                            <div class="ecl-tabs__container">
+                              <ul class="ecl-tabs__list" role="tablist">
+                                <li class="ecl-tabs__item" role="presentation">
+                                  <a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active"
+                                  role="tab" aria-selected="false"
+                                  onclick="selectTab(this,'detailsLink');" id="childNodesLink">Children</a>
+                                </li>
+                                <li class="ecl-tabs__item" role="presentation">
+                                  <a href="#" class="ecl-link ecl-tabs__link"
+                             role="tab" tabindex="-1" aria-selected="false"
+                             onclick="selectTab(this,'childNodesLink');"
+                             id="detailsLink"
+                          >Details</a></li>
+                          <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation">
+                            <button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button"  tabindex="-1">
+                              <span class="ecl-button__container">
+                                <span class="ecl-button__label" data-ecl-label="true">More (%d)</span>
+                                <svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after"
+                                  focusable="false"
+                                  aria-hidden="true"
+                                  data-ecl-icon>
+                                  <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
+                                </svg>
+                              </span>
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg
+                            class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
+                            focusable="false"
+                            aria-hidden="true"
+                            ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg
+                            class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block"
+                            focusable="false"
+                            aria-hidden="true"
+                            ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button></div></nav>
+                        </div> -->
+      
+                        <div id="dvTable" style="overflow: auto">
+                          <div class="inset-0 px-4 sm:px-6">
+                            <div class="flex flex-col">
+                              <div class="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2">
+                                <div class="overflow-auto border-b border-gray-200 md:overflow-scroll">
+                                  <table class="ecl-table ecl-table--zebra">
+                                    <thead class="ecl-table__head">
+                                    </thead>
+                                    <tbody class="ecl-table__body" id="nav-children-tbody">
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+      <!--                         <nav class="ecl-pagination" aria-label="Pagination">
+                                <ul class="ecl-pagination__list">
+                                  <li class="ecl-pagination__item ecl-pagination__item--previous"><a href="/component-library/example"
+                                      class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-before ecl-pagination__link"
+                                      aria-label="Go to previous page"><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-link__icon"
+                                        focusable="false" aria-hidden="true">
+                                        <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                                      </svg><span class="ecl-link__label">Previous</span></a></li>
+                                  <li class="ecl-pagination__item"><a href="/component-library/example"
+                                      class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 24">24</a></li>
+                                  <li class="ecl-pagination__item"><a href="/component-library/example"
+                                      class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 25">25</a></li>
+                                  <li class="ecl-pagination__item ecl-pagination__item--current"><span
+                                      class="ecl-pagination__text ecl-pagination__text--summary" aria-current="true">26</span><span
+                                      class="ecl-pagination__text ecl-pagination__text--full" aria-current="true">Page 26</span></li>
+                                  <li class="ecl-pagination__item"><a href="/component-library/example"
+                                      class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 27">27</a></li>
+                                  <li class="ecl-pagination__item"><a href="/component-library/example"
+                                      class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 28">28</a></li>
+                                  <li class="ecl-pagination__item ecl-pagination__item--next"><a href="/component-library/example"
+                                      class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-pagination__link"
+                                      aria-label="Go to next page"><span class="ecl-link__label">Next</span><svg
+                                        class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
+                                        <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                                      </svg></a></li>
+                                </ul>
+                              </nav> -->
+                          </div>
+                          </div>
+                        <!-- /End replace -->
+                        </div>
+                        <div id="dvDetails" class="overflow-auto bg-white shadow">
+                        </div>
+                        <div id="map"></div>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
               </div>
 
           </div>
-          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700 ecl-u-z-modal" id="myModal">
-            <!--
-            Slide-over panel, show/hide based on slide-over state.
-
-            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                From: "translate-x-full"
-                To: "translate-x-0"
-            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                From: "translate-x-0"
-                To: "translate-x-full"
-            -->
-            <div class="w-screen max-w-md pointer-events-auto ecl-u-z-modal">
-              <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
-                <div class="px-4 sm:px-6 ecl-u-z-modal">
-                  <div class="flex items-start justify-between p-6 border-1" style="background-color:#F5F5F5">
-                    <h4 class="ecl-u-type-heading-4">Navigaton panel</h4>
-<!--                     <h2 class="text-lg font-medium text-gray-500 id="slide-over-title">
-                      Navigation panel
-                    </h2> -->
-                    <div class="flex items-center ml-3 h-7">
-                      <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
-                        <span class="sr-only">Close panel</span>
-                        <!-- Heroicon name: outline/x -->
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
-                  <div id="navTable" style="overflow: auto" class="mt-6">
-                    <nav aria-label="Progress">
-                      <ol role="list">
-                      </ol>
-                    </nav>
-                  </div>
-<!--                   <div id="tabsNav" class="hidden">
-                    <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
-                      <div class="ecl-tabs__container">
-                        <ul class="ecl-tabs__list" role="tablist">
-                          <li class="ecl-tabs__item" role="presentation">
-                            <a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active"
-                            role="tab" aria-selected="false"
-                            onclick="selectTab(this,'detailsLink');" id="childNodesLink">Children</a>
-                          </li>
-                          <li class="ecl-tabs__item" role="presentation">
-                            <a href="#" class="ecl-link ecl-tabs__link"
-                       role="tab" tabindex="-1" aria-selected="false"
-                       onclick="selectTab(this,'childNodesLink');"
-                       id="detailsLink"
-                    >Details</a></li>
-                    <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation">
-                      <button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button"  tabindex="-1">
-                        <span class="ecl-button__container">
-                          <span class="ecl-button__label" data-ecl-label="true">More (%d)</span>
-                          <svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after"
-                            focusable="false"
-                            aria-hidden="true"
-                            data-ecl-icon>
-                            <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
-                          </svg>
-                        </span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-                <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg
-                      class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
-                      focusable="false"
-                      aria-hidden="true"
-                      ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg
-                      class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block"
-                      focusable="false"
-                      aria-hidden="true"
-                      ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button></div></nav>
-                  </div> -->
-
-                  <div id="dvTable" style="overflow: auto">
-                    <div class="inset-0 px-4 sm:px-6">
-                      <div class="flex flex-col">
-                        <div class="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2">
-                          <div class="overflow-auto border-b border-gray-200 md:overflow-scroll">
-                            <table class="ecl-table ecl-table--zebra">
-                              <thead class="ecl-table__head">
-                                  <tr class="ecl-table__row">
-                                      <th colspan="3" scope="colgroup" class="ecl-table__header" id="nav-children-header"></th>
-                                  </tr>
-                              </thead>
-                              <tbody class="ecl-table__body" id="nav-children-tbody">
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-<!--                         <nav class="ecl-pagination" aria-label="Pagination">
-                          <ul class="ecl-pagination__list">
-                            <li class="ecl-pagination__item ecl-pagination__item--previous"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-before ecl-pagination__link"
-                                aria-label="Go to previous page"><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-link__icon"
-                                  focusable="false" aria-hidden="true">
-                                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                                </svg><span class="ecl-link__label">Previous</span></a></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 24">24</a></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 25">25</a></li>
-                            <li class="ecl-pagination__item ecl-pagination__item--current"><span
-                                class="ecl-pagination__text ecl-pagination__text--summary" aria-current="true">26</span><span
-                                class="ecl-pagination__text ecl-pagination__text--full" aria-current="true">Page 26</span></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 27">27</a></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 28">28</a></li>
-                            <li class="ecl-pagination__item ecl-pagination__item--next"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-pagination__link"
-                                aria-label="Go to next page"><span class="ecl-link__label">Next</span><svg
-                                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
-                                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                                </svg></a></li>
-                          </ul>
-                        </nav> -->
-                    </div>
-                    </div>
-                  <!-- /End replace -->
-                  </div>
-                  <div id="dvDetails" class="overflow-auto bg-white shadow">
-                  </div>
-                  <div id="map"></div>
-                </div>
-              </div>
-            </div>
-           </div>
+          
 
   
           <div class="fixed inset-0 z-50 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal2">
@@ -714,6 +712,8 @@
     <script src="js/timeline.js"></script>
     <script src="js/treeGraph.js"></script>
     <script src="js/wordCloud.js"></script>
+    <script src="js/barchart.js"></script>
+    <script src="js/linechart.js"></script>
     <script src="js/download.js"></script>
     <script src="js/d3NetworkGraph.js"></script>
     <script src="js/configFileClass.js"></script>

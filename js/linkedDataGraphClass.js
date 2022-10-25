@@ -92,34 +92,66 @@ LinkedDataGraph.prototype.filter = function(){
   function checkHidden(node){
     if (checkFilter(node)){
       node.hidden=true
+      node.filter=true
     }else{
       delete node.hidden
+      delete node.filter
     }
     hidden=false
   }
+
   function checkFilter(node){
-    var hidden=false
+    var hidden=false,filters
     let filterClass=networkGraph.filterClassesObjects.filter(function(f){
       console.log(f)
       console.log(node)
       return f.name==node.class
     })
     if(filterClass.length>0){
-      filterClass[0].filters.forEach(function (fi){
+      filters=filterClass[0].filters
+      for (let j = 0; j < filters.length; ++j) {
+      //filterClass[0].filters.forEach(function (fi){
         //////console.log(fi.filterObject)
-        if(fi.checkConditionNode(node)){
+        console.log(filters[i].checkConditionNode(node))
+        if(filters[i].checkConditionNode(node)){
           //////console.log("true")
           hidden=true
+          //break;
         //}else{
           //////console.log("false")
         }
-      })
+      }
     }
     //console.log(hidden)
     return hidden
   }
 }
+LinkedDataGraph.prototype.clearFilter = function(){
+  var ldg=this;
 
+  function recurse(node) {
+    //var hidden=false;
+
+    //checkHidden(node)
+    console.log(node)
+    if(node.filter){
+      delete node.hidden
+      delete node.filter
+    }
+    if (node.children){
+      node.children.forEach(function(c){
+        recurse(c)
+      })
+    }
+  }
+
+  ldg.treeData.forEach(function(r){
+    recurse(r);
+  })
+
+  ldg.flatten()
+
+}
 function LinkedDataGraphBasic(...args){
   LinkedDataGraph.apply(this, args);
 }

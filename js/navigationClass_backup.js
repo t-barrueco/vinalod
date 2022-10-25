@@ -437,8 +437,9 @@ NavigationPanel.prototype.contentTable = function (){
     $("#dvTable").show()
     $("#dvDetails").empty()
     navPanel.table = document.createElement("table");
-    navPanel.table.className="ecl-table ecl-table--zebra"
-    
+    //navPanel.table.className="ecl-table ecl-table--zebra"
+    navPanel.table.className="ecl-table"
+
     navPanel.thead=document.createElement("thead")
     navPanel.thead.className="ecl-table__head"
     

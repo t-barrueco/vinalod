@@ -96,7 +96,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 
 //execute sparql query
 async function runSparlqQuery(url,query,type){
-  ////////console.log(query)
+  console.log(query)
   var p = new Promise(function(resolve, reject){
     let prefixes="";
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
@@ -823,8 +823,21 @@ function changeDateFormat(date){
 function formatDate(str){
   const [day, month, year] = str.split('-');
   const date = new Date(+year, +month - 1, +day);
-  //////////console.log(date); 
+  console.log(date); 
   return new Date(date)
+}
+function dateValidFormat(dateStr) {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (dateStr.match(regex) === null) {
+    return dateStr;
+  }
+
+  const date = new Date(dateStr);
+
+  console.log(date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear())
+
+  return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 /* function formatDateTime(str){
   let date=new Date(str)
@@ -836,7 +849,7 @@ function formatDate(str){
   //////////console.log(date); 
   return date
 } */
-function relatedFilters(filterEl){
+/* function relatedFilters(filterEl){
   var values,relNodes,filter;
   console.log(filterEl)
   console.log(networkGraph.filterClassesObjects)
@@ -846,11 +859,11 @@ function relatedFilters(filterEl){
     }
   })
   console.log(filter)
-/*   var selectobject = document.getElementById("mySelect");
+  var selectobject = document.getElementById("mySelect");
   for (var i=0; i<selectobject.length; i++) {
       if (selectobject.options[i].value == 'A')
           selectobject.remove(i);
-  } */
+  }
   //console.log(filterEl.name.split("_")[0])
   //console.log(networkGraph.filterClassesObjects.filter(d=>d.name==filterEl.name.split("_")[0]))
   //const filter=networkGraph.filters.filter(d=>d.property==filterEl.id)[0]
@@ -877,17 +890,17 @@ function relatedFilters(filterEl){
 
     ////////console.log(selectobject.options.remove)
 
-    /* for (var i=0; i<selectobject.options.length; i++) {
+    for (var i=0; i<selectobject.options.length; i++) {
         //////console.log(values)
         //////console.log(selectobject.options[i].value)
         if (!values.includes(selectobject.options[i].value)){
           selectobject.remove(i);
           i--;
         }     
-    } */
+    }
   })
-}
-function checkRelatedFilters(filterEl){
+} */
+/* function checkRelatedFilters(filterEl){
   let classNode=filterEl.parentNode.parentNode.parentNode
 
   let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
@@ -913,12 +926,18 @@ function checkRelatedFilters(filterEl){
     //console.log(r)
     //console.log($("#"+r.id))
   })
-}
+} */
 
 function addOptionsSelect(selectField,valuesFilter,multiple){
   //console.log(selectField)
   //console.log(valuesFilter)
   //console.log(multiple)
+  if(valuesFilter.length>1){
+    valuesFilter.unshift("All")
+  }
+  addHtmlOptionsSelect(selectField,valuesFilter,multiple)
+}
+function addHtmlOptionsSelect(selectField,valuesFilter,multiple){
   for (let i = 0; i < valuesFilter.length; i++) {
     var option = document.createElement("option");
     option.value = valuesFilter[i];
@@ -952,4 +971,9 @@ function modalVisibilityOn(){
     //minHeight: 150
   });
   $("#myModal2").draggable()
+}
+function getNodeFromTableRow(element){
+  const parent = element.parentElement.closest('tr');
+  const node=get_node_from_element(parent.id.replace("_row",""))
+  return node;
 }

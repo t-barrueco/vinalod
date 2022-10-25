@@ -1,0 +1,8 @@
+<tr id="menu-table-id" query="" url="" uri="" subject-object="" class="menu-table" ondblclick="clickMenuTable(this)">
+    <td class="px-2 py-4 bg-gray-100 whitespace-nowrap" colspan="3" x-data="{ tooltip: false }">
+        <a href="#" class="relative flex items-start group" x-on:mouseenter="tooltip = true" x-on:mouseleave="tooltip = false" ondblclick="">
+            <span class="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full">Menu Option</span>
+        </a>
+        <div x-show="tooltip" class="absolute z-50 p-4 mt-1 bg-indigo-300 border-2 rounded border-graphite" style="display: none;">Menu Option Tooltip</div>
+    </td>
+</tr>
