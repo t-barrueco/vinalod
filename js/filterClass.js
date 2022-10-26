@@ -24,18 +24,21 @@ function FilterClassBasic(...args){
   FilterClass.apply(this, args);
 }
   
+FilterClassBasic.prototype = Object.create(FilterClass.prototype);
+
 FilterClassBasic.prototype.setValuesFilters = function(nodes,name){
+  var cf=this;
   cf.filters.forEach(function(f){
     if(f.details.property!=name){
       console.log(f.htmlEl)
       console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
       let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
       removeOptionsSelect(f)
+      console.log(valuesFilter)
       addOptionsSelect(f.htmlEl,valuesFilter,false)
     }
   })
 }
-FilterClassBasic.prototype = Object.create(FilterClass.prototype);
 
 FilterClassBasic.prototype.setTitle = async function () {
   var cf=this;
@@ -178,6 +181,7 @@ Filter.prototype.getValuesVisibleNodes=function (){
     })
     if(fi.details.filter_type=="date"){
       let setValues=[...new Set(values)]
+      console.log(setValues)
       /* if(setValues>1){
         values=setValues.sort(function(a,b){
           // Turn your strings into dates, and then subtract them
@@ -191,6 +195,8 @@ Filter.prototype.getValuesVisibleNodes=function (){
       values=setValues.sort(function(a,b){
         // Turn your strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
+        console.log(a)
+        console.log(b)
         return formatDate(a) - formatDate(b);
       });
       console.log(values)
@@ -249,22 +255,25 @@ class FilterBasicDropdown extends FilterBasic {
     
     $("#"+this.details.class+"_filters").append(code).ready(function () {
       ECL.autoInit();
+      var select=document.getElementById("select-default")
+      select.name = fi.details.property;
+      select.id = fi.id;
+      console.log(fi.id)
+  
+      let valuesFilter=fi.values
+      console.log(select)
+      addOptionsSelect(select,valuesFilter,false)
+      if(fi.elValue){
+        select.value = fi.elValue;
+      }else{
+        select.value = valuesFilter[0];
+      }
+      
+  
+      fi.htmlEl=document.getElementById(fi.id)
     })
 
-    var select=document.getElementById("select-default")
-    select.name = fi.details.property;
-    select.id = fi.id;
 
-    let valuesFilter=fi.values
-    addOptionsSelect(select,valuesFilter,false)
-    if(fi.elValue){
-      select.value = fi.elValue;
-    }else{
-      select.value = valuesFilter[0];
-    }
-    
-
-    fi.htmlEl=document.getElementById(fi.id)
     
   }
   checkConditionNode(node){
@@ -275,7 +284,9 @@ class FilterBasicDropdown extends FilterBasic {
       return false
     }else{
       if(node[this.details.property]){
-        if(elValue==node[this.details.property].toLowerCase()){
+        console.log(elValue)
+        console.log(node[this.details.property].toLowerCase())
+        if(elValue.toLowerCase()==node[this.details.property].toLowerCase()){
           return false
         }else{
           return true
@@ -286,9 +297,11 @@ class FilterBasicDropdown extends FilterBasic {
     }
   }
   addValuesField(){
-    //console.log(this.values);
+    console.log(this);
     $(("#accordion-filters #"+this.details.property+"_filter")).empty();
     var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+    console.log(this.details.property+"_filter")
+    console.log(select)
     addHtmlOptionsSelect(select,this.values,false)
   }
 }
@@ -304,16 +317,16 @@ class FilterBasicDate extends FilterBasic {
     console.log(this.values[0])
     $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
     $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
-    $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_start")
+    $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_filter_start")
 
     $("#"+this.details.class+"_filters #end-date").attr("value",this.values[this.values.length-1])
-    $("#"+this.details.class+"_filters #end-date").attr("name",this.details.property+"_name")
-    $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_end")
+    $("#"+this.details.class+"_filters #end-date").attr("name",this.details.property+"_end")
+    $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_filter_end")
     
   }
   checkConditionNode(node){
-    let startDate=$("#"+this.details.property+"_start").val()
-    let endDate=$("#"+this.details.property+"_end").val()
+    let startDate=$("#"+this.details.property+"_filter_start").val()
+    let endDate=$("#"+this.details.property+"_filter_end").val()
 
     if((formatDate(node[this.details.property])>=formatDate(startDate))&&(formatDate(node[this.details.property])<=formatDate(endDate))){
       return false
@@ -322,10 +335,12 @@ class FilterBasicDate extends FilterBasic {
     }
   }
   addValuesField(){
-    //console.log(this.values);
-    $(("#accordion-filters #"+this.details.property+"_filter")).empty();
-    var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
-    addHtmlOptionsSelect(select,this.values,false)
+    console.log(this.values);
+    $(("#accordion-filters #"+this.details.property+"_filter_start")).val(this.values[0]);
+    $(("#accordion-filters #"+this.details.property+"_filter_end")).val(this.values[this.values.length-1]);
+
+    //var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+    //addHtmlOptionsSelect(select,this.values,false)
   }
 }
 class FilterBasicText extends FilterBasic {
