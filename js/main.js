@@ -214,7 +214,10 @@ async function createGraph(fileText){
 
   linkedDataGraph = new LinkedDataGraphBasic("imported");
   linkedDataGraph.importGraph(fileText)
+  console.log(linkedDataGraph)
   let forces=setForcesGraph()
+  console.log(linkedDataGraph.data)
+
   networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
   await networkGraph.initVis()
 
@@ -836,7 +839,7 @@ function shareGraph(){
         })
       });
   
-      file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
+      file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects,"option":configRow.option})
       var upload = new AWS.S3.ManagedUpload({
           params: {
             Bucket: albumBucketName,

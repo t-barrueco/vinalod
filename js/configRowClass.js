@@ -17,6 +17,23 @@ ConfigRow.prototype.init = async function () {
     await cr.getResults()
     ////////console.log(cr)
 }
+ConfigRow.prototype.initImport = async function () {
+  var cr=this
+  console.log("antes from option")
+  cr.getValuesFromOption()
+  //////////console.log(cr)
+  console.log("despues from option y antes parms")
+
+  cr.replaceParmtrsQuery("query")
+  console.log("despues parms")
+
+  //////////console.log(cr)
+  //cr.getNameClasses()
+  console.log("despues get name classes")
+  //////console.log("configRow.init")
+  //await cr.getResults()
+  ////////console.log(cr)
+}
 ConfigRow.prototype.update = async function(option,node){
   var cr=this;
   ////////console.log(option)

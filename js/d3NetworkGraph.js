@@ -15,6 +15,7 @@ NetworkGraph = function (_parentElement,_forces,_data,_classesCorrespondence,_im
   this.parentElement = _parentElement;
   this.forces = _forces
   this.data= _data
+  console.log(this.data)
   this.classesCorrespondence= _classesCorrespondence
   //////console.log(_filterClasses)
   this.importedFilterClasses= _importedFilterClasses
@@ -27,7 +28,7 @@ NetworkGraph = function (_parentElement,_forces,_data,_classesCorrespondence,_im
 /////////////////// initVis Method //////////////////////
 NetworkGraph.prototype.initVis = function () {
   var vis = this,coorX,coorY;
-
+  console.log(vis.data)
   vis.data=vis.data.flatData
   //vis.treeData=vis.treeData.concat(linkedDataGraph.treeData)
   vis.treeData=linkedDataGraph.treeData

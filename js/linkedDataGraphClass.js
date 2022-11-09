@@ -64,6 +64,7 @@ LinkedDataGraph.prototype.flatten = function(){
     ldg.treeData.forEach(function(r){
       recurse(r);
     })
+    console.log(nodes)
     ldg.data={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeData};
 }
 LinkedDataGraph.prototype.add = function(){
@@ -178,16 +179,27 @@ LinkedDataGraphBasic.prototype.settingsFromOption = async function(){
   await ldg.init()
 };
 
-LinkedDataGraphBasic.prototype.importGraph = async function(fileText){
+LinkedDataGraphBasic.prototype.importGraph = function(fileText){
   var ldg=this;
-
-  ////////////////console.log(fileText)
+  console.log(ldg)
+  //console.log(configRow)
+  console.log(fileText)
 
   ldg.treeData=fileText.treeData
   //ldg.classesCorrespondence=fileText.classesCorrespondence
+  if(!configRow){
+    console.log("antes configRow")
+    configRow = new ConfigRowBasic(fileText.option);
+    console.log("despues crearConfiRowBasic")
+
+    configRow.initImport()
+    console.log("despues initImport")
+
+  }
   configRow.treeData=fileText.treeData
-  ////////////////console.log(ldg)
+  console.log("antes de flatten")
   ldg.flatten()
+  console.log("despues de flatten")
 }
 
 LinkedDataGraphBasic.prototype.update = async function(option){
