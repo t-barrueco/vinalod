@@ -1248,8 +1248,11 @@ NavigationPanelBasic.prototype.clickMenuTable = async function (row){
   ////////console.log(row.id)
   let node=get_node_from_element(row.id.split("_menu-option_")[0])
   //let node=d3.select("#"+row.id.split("_menu-option_")[0]).data[0]
-  ////////console.log(node)
+  console.log(node)
+  
   let i=row.id.split("_menu-option_")[1]
+  console.log(menuItems.selectedRows[i])
+  node.menuOption=menuItems.selectedRows[i]["option"]
   console.log("antes de checkGraph")
   let graphType=await checkGraph(menuItems.selectedRows[i],node)
   if(graphType=="TREE"){
