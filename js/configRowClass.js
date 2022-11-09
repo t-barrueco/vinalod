@@ -55,7 +55,9 @@ ConfigRow.prototype.fromOptionToConfigRow = async function(option){
       cr[k]=rowInConfigFile[k]
     }
   })
-
+  if(cr["filters"]=="None"){
+    cr["filters"]=[]
+  }
   cr["askquery"]=option["askquery"]
   cr["node"]=option["node"]
   cr["query"]=option["query"]
