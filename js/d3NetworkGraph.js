@@ -1303,9 +1303,12 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
   getFilters() {
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
-
+    console.log(configRow)
+    console.log(configFile.file[configRow.rowNumber])
+    console.log(configFile.file)
     if(configRow.filters){
-      if(configRow.filters!=0){
+      console.log(configRow.filters)
+      if(configRow.filters.length!=0){
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
         //console.log(newFilterClasses)
         newFilterClasses.forEach(async function(f){

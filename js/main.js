@@ -282,7 +282,8 @@ function importGraph(file){
 }
 function getTooltipNode(tooltip,nodeClass){
   var tooltipNode={}
-  if(tooltip!=""){
+  console.log(tooltip)
+  if((tooltip!="")&&(tooltip!="None")){
     tooltip.forEach(function(k){
       if(k["property"].split("_")[0]==nodeClass){
         tooltipNode[k["property"]]=k["tooltip_text"]
@@ -513,12 +514,15 @@ async function changeBasicGraph(option){
   //get option selected for searching in Config File
   //option=option.innerText.trim()
   //console.log(option)
-  if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+  /* if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+    linkedDataGraph = undefined;
+  } */
+  if(typeof linkedDataGraph !== 'undefined'){
     linkedDataGraph = undefined;
   }
 
-
   linkedDataGraph = new LinkedDataGraphBasic(option);
+  console.log(linkedDataGraph)
   await linkedDataGraph.settingsFromOption()
 
   let forces=setForcesGraph()
@@ -637,7 +641,15 @@ async function checkMenuItems(origin,element) {
   }
   //console.log(node)
   if(menuItems){
-    await menuItems.update(node)
+    if(((node.class!="free")&&(menuItems instanceof MenuItemsBasic))||((node.class=="free")&&(menuItems instanceof MenuItemsExpert))){
+      await menuItems.update(node)
+    }else if(node.class!="free"){
+      menuItems= new MenuItemsBasic(node)
+      await menuItems.init()
+    }else{
+      menuItems= new MenuItemsExpert(node)
+      await menuItems.init()
+    }
   }else{
     if(node.class!="free"){
       menuItems= new MenuItemsBasic(node)
@@ -646,7 +658,7 @@ async function checkMenuItems(origin,element) {
     }
     await menuItems.init()
   }
-  ////console.log(menuItems)
+  //console.log(menuItems)
   if(menuItems.selectedRows.length==0){
     //////////////////////console.log("entra")
     // if (founded[0]["children"]){
@@ -742,7 +754,7 @@ async function getHtmlFromFile(file,location){
     $("#"+location).append($(html))
   });
 }
-async function getHtmlCodeFromFile3(file) {
+async function getHtmlCodeFromFile(file) {
 
   console.log("getHtmlCodeFromFile2 antes de promise")
   const promise = new Promise(function (resolve, reject) {
@@ -759,7 +771,7 @@ async function getHtmlCodeFromFile3(file) {
   return code;
 }
 
-async function getHtmlCodeFromFile2(file) {
+/* async function getHtmlCodeFromFile2(file) {
 
   console.log("getHtmlCodeFromFile2 antes de promise")
   const promise = new Promise(function (resolve, reject) {
@@ -791,7 +803,7 @@ async function getHtmlCodeFromFile(file) {
   })
   //console.log(code)
   return code;
-}
+} */
 
 function applyFilters(){
   linkedDataGraph.filter()
@@ -849,8 +861,8 @@ function shareGraph(){
 }
 async function checkGraph(option,node){
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
-  ////console.log(rowInConfigFile)
-  //console.log(option)
+  console.log(rowInConfigFile)
+  console.log(option)
   if(rowInConfigFile["type"]=="TREE"){
     //console.log(option)
     //console.log(node)

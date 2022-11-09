@@ -218,7 +218,7 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   //console.log("getCodeElementNav antes de getHtmlCodeFromFile2")
   //let code = getHtmlCodeFromFile2(file);
   //////console.log(code)
-  code = await getHtmlCodeFromFile3(file)
+  code = await getHtmlCodeFromFile(file)
   .then(success => {return (success)})
   //.catch(reason => //console.log(reason))
 

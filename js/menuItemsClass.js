@@ -7,8 +7,9 @@ MenuItems.prototype.init = async function () {
   //////////////console.log(document.getElementsByTagName("table"))
   mi.indexRows=[]
   mi.treeSelectedRows=0
+  console.log(mi)
   await mi.buildOptions()
-  //console.log(mi)
+  //console.log(mi.indexRows[0]["askquery"])
   mi.filterByMenuOption()
   await mi.filterByAskResult()
   //mi.getNumberTreeResults()
@@ -43,7 +44,7 @@ MenuItems.prototype.filterByMenuOption = function () {
 MenuItems.prototype.filterByAskResult = async function () {
     var mi=this;
     mi.selectedRows=[]
-    ////////////console.log(mi.indexRows)
+    console.log(mi.indexRows)
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
             //console.log(mi.indexRows[i].askquery)
@@ -311,8 +312,8 @@ MenuItemsBasic.prototype.buildOptions=function (){
     //////console.log(element)
     mi.indexRows.push(new OptionNodeBasic(element.option,mi.node))
     mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
-    mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["askquery"]
-    ////////console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
+    //mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["askquery"]
+    console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
   });
   //////console.log(mi.indexRows)
 }

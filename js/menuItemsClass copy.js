@@ -32,10 +32,11 @@ MenuItems.prototype.filterByMenuOption = function () {
 MenuItems.prototype.filterByAskResult = async function () {
     var mi=this;
     mi.selectedRows=[]
-    //////console.log(mi.indexRows)
+    //console.log(mi.indexRows)
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
             //console.log("antes de lanzar la query")
+            console.log(mi)
             results = await runSparlqQuery(mi.indexRows[i].url,mi.indexRows[i].askquery,"askquery");
             //console.log(results)
         } catch (e) {

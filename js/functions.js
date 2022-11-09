@@ -107,8 +107,9 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   //////////console.log(query)
-  //////console.log(url)
-  //////console.log(query)
+  console.log(url)
+  console.log(query)
+  console.log(configRow)
   //////console.log(type)
   var p = new Promise(function(resolve, reject){
     let prefixes="";

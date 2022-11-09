@@ -101,7 +101,7 @@ ConfigRow.prototype.getClassesCorrespondence=function(){
 }
 ConfigRow.prototype.getResults = async function () {
   var cr=this;
-  //console.log(cr)
+  console.log(cr)
   cr.results = await runSparlqQuery(cr.endpoint_url,cr.query,"query");
   console.log(cr.results)
 }
@@ -179,6 +179,6 @@ ConfigRowExpert.prototype.getNameClasses = function () {
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
 
-  ////console.log(cr.node)
+  console.log(cr.node)
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
 }

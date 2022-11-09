@@ -61,9 +61,9 @@
     "option":"PUBLICATIONS - Publications by OP Theme",
     "option_text":"PUBLICATIONS - Publications by OP Theme",
     "collection":"EU Publications",
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Membership",
@@ -118,10 +118,10 @@
     "type":"TREE",
     "option":"WHOISWHO Person",
     "option_text":"WHOISWHO Person",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/www.w3.org\/ns\/org#Membership",
-    "details":null,
-    "askquery":null
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"OP Theme",
@@ -214,8 +214,8 @@
     "type":"TREE",
     "option":"OP Themes and publication author",
     "option_text":"This is the long explanation of OP Themes and publication author",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"corporateBodyType",
@@ -248,7 +248,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"OP Theme",
@@ -298,10 +298,10 @@
     "type":"TREE",
     "option":"OP Themes children",
     "option_text":"This is the long explanation for OP Themes children",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Taxonomy Level",
@@ -351,10 +351,10 @@
     "type":"TREE",
     "option":"Taxonomy Level Children",
     "option_text":"Taxonomy Level Children",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"det",
@@ -405,8 +405,8 @@
     "option":"Digital Europa Thesaurus",
     "option_text":"Digital Europa Thesaurus",
     "collection":"EU Vocabularies",
-    "modelClass":null,
-    "details":null,
+    "modelClass":"None",
+    "details":"None",
     "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX owl: <http:\/\/www.w3.org\/2002\/07\/owl#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{ ?det_uri skos:prefLabel ?det;\nskos:hasTopConcept ?detLevel1_uri.\n?detLevel1_uri skos:prefLabel ?detLevel1.\nFILTER(langMatches(lang(?detLevel1), 'en')).\nFILTER(?det_uri=<http:\/\/data.europa.eu\/uxp\/det>)\n}\n}"
   },
   {
@@ -457,10 +457,10 @@
     "type":"TREE",
     "option":"DET Children Level",
     "option_text":"DET Children Level",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"DET Level",
@@ -515,8 +515,8 @@
     "type":"TREE",
     "option":"DET Level to Eurovoc Concept",
     "option_text":"DET Level to Eurovoc Concept",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"eurovocConcept",
@@ -529,7 +529,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Country",
@@ -573,19 +573,19 @@
         "property":"country_uri"
       }
     ],
-    "filters":null,
+    "filters":"None",
     "tooltip":[
 
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Case-law by Case-law concepts",
     "option_text":"Case-law by Case-law concepts",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/publications.europa.eu\/ontology\/euvoc#Country",
-    "details":null,
-    "askquery":null
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Country",
@@ -635,10 +635,10 @@
     "type":"TREE",
     "option":"Languages by country",
     "option_text":"Languages by country",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/publications.europa.eu\/ontology\/euvoc#Country",
-    "details":null,
-    "askquery":null
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Country",
@@ -693,10 +693,10 @@
     "type":"TREE",
     "option":"Countries and organisations",
     "option_text":"Countries and organisations those countries belong to",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/publications.europa.eu\/ontology\/euvoc#Country",
-    "details":null,
-    "askquery":null
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Organisation",
@@ -749,10 +749,10 @@
     "type":"TIMELINE",
     "option":"Timeline organisations",
     "option_text":"Timeline organisations",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"eurun",
@@ -850,9 +850,9 @@
     "option":"European Union Institutions and bodies",
     "option_text":"(update 20220510-1504)This will list the European Union Institutions and bodies",
     "collection":"EU Whoiswho",
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Membership Type",
@@ -957,8 +957,8 @@
     "type":"TREE",
     "option":"WHOISWHO Membership Type",
     "option_text":"WHOISWHO Membership Type",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"person",
@@ -986,7 +986,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Person",
@@ -1025,10 +1025,10 @@
     "type":"WIKIPEDIA",
     "option":"WHOISWHO Wikipedia page",
     "option_text":"WHOISWHO Wikipedia page",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Publication Document",
@@ -1119,8 +1119,8 @@
     "type":"TREE",
     "option":"Manifestation by Expression",
     "option_text":"Manifestation by Expression",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"manifestation",
@@ -1148,7 +1148,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Membership",
@@ -1203,10 +1203,10 @@
     "type":"TREEGRAPH",
     "option":"Hierarchy membership and persons",
     "option_text":"Hierarchy membership and persons",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1279,10 +1279,10 @@
     "type":"TABLE",
     "option":"Table membership and persons",
     "option_text":"Table membership and persons",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1337,10 +1337,10 @@
     "type":"TREE",
     "option":"Eurovoc Domains classification for parlamentary questions",
     "option_text":"Eurovoc Domains classification for parlamentary questions",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1433,10 +1433,10 @@
     "type":"TREE",
     "option":"EU Whoiswho Suborganizations",
     "option_text":"eu Whoiswho Suborganizations",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/publications.europa.eu\/ontology\/euvoc#Corporate",
-    "details":null,
-    "askquery":null
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1486,10 +1486,10 @@
     "type":"TREE",
     "option":"EU Whoiswho membership",
     "option_text":"Show the EU Whoiswho membership",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1569,7 +1569,7 @@
     "type":"TREE",
     "option":"Publications by corporate body",
     "option_text":"This will show the list of publications of the corporate body",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/publications.europa.eu\/ontology\/euvoc#Corporate",
     "details":[
       {
@@ -1593,7 +1593,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1624,10 +1624,10 @@
     "type":"WORDCLOUD",
     "option":"Wordcloud of publications keywords",
     "option_text":"This will show the most representing topics of the corporate body (based on publications keywords)",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1658,10 +1658,10 @@
     "type":"WORDCLOUD",
     "option":"Wordcloud of the organistion chart",
     "option_text":"This will show the most representing topics of the organisation chart",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1692,10 +1692,10 @@
     "type":"WORDCLOUD",
     "option":"Wordcloud of the job titles",
     "option_text":"This will show the most representing topics of the job titles",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -1758,9 +1758,9 @@
     "type":"TABLE",
     "option":"Table: changed in management jobs",
     "option_text":"Table: changed in management jobs",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
     "askquery":"#Directory Organization_10\n ask where { filter( ?nb > 1) {  SELECT distinct count(distinct ?startDate2) as ?nb where {<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org2. ?memberShip_uri2 <http:\/\/www.w3.org\/ns\/org#organization> ?org2.  ?memberShip_uri2 <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate2}} ?org <http:\/\/www.w3.org\/2004\/02\/skos\/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org.} union {?org <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type> <http:\/\/www.w3.org\/ns\/org#Organization>. filter (?org=<PARAMETER>) }} optional{?org <http:\/\/www.w3.org\/ns\/org#identifier>?mnem FILTER(datatype(?mnem)=<http:\/\/publications.europa.eu\/resource\/authority\/use-context\/MNEMONIC>)} ?memberShip_uri <http:\/\/www.w3.org\/ns\/org#organization> ?org. ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#roleQualification> ?roleQualification. filter (?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORG> || ?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORGNO>) ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate. optional {?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http:\/\/www.w3.org\/ns\/org#role> ?role} ?person_uri <http:\/\/www.w3.org\/ns\/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person.}"
   },
   {
@@ -1794,10 +1794,10 @@
     "type":"WORDCLOUD",
     "option":"Wordcloud by Eurovoc Domain for parlamentary questions",
     "option_text":"Wordcloud by Eurovoc Domain for parlamentary questions",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Eurovoc Domain",
@@ -1859,10 +1859,10 @@
     "type":"TREE",
     "option":"Eurovoc Concepts by Eurovoc Domain for parlamentary questions",
     "option_text":"Eurovoc Concepts by Eurovoc Domain for parlamentary questions",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Eurovoc Top Concept",
@@ -1898,10 +1898,10 @@
     "type":"WORDCLOUD",
     "option":"Wordcloud by Eurovoc Top Concepts for parlamentary questions",
     "option_text":"Wordcloud by Eurovoc Top Concepts for parlamentary questions",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Eurovoc Top Concept",
@@ -1937,10 +1937,10 @@
     "type":"WORDCLOUD",
     "option":"Wordcloud by Eurovoc Top Concepts for parlamentary questions",
     "option_text":"Wordcloud by Eurovoc Top Concepts for parlamentary questions",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Eurovoc Concept",
@@ -2000,8 +2000,8 @@
     "type":"TREE",
     "option":"Eurovoc concept and aligments",
     "option_text":"Eurovoc concepts and external aligments",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"aligment",
@@ -2024,7 +2024,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Eurovoc Concept",
@@ -2091,15 +2091,15 @@
         "text":"Publication Document"
       }
     ],
-    "parameters":null,
-    "filters":null,
-    "tooltip":null,
-    "function":null,
-    "columns":null,
+    "parameters":"None",
+    "filters":"None",
+    "tooltip":"None",
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Publications by Corporate body",
     "option_text":"Publications by Corporate body classified by this Eurovoc concept",
-    "collection":null,
+    "collection":"None",
     "modelClass":"http:\/\/publications.europa.eu\/ontology\/cdm#concept_eurovoc",
     "details":[
       {
@@ -2201,9 +2201,9 @@
     "option":"Catalogues of datasets of data.europa.eu",
     "option_text":"Desription - DATASETS - Catalogues of datasets of data.europa.eu",
     "collection":"EU Data",
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Catalog of open datasets",
@@ -2329,8 +2329,8 @@
     "type":"TREE",
     "option":"Data themes and datasets per catalog",
     "option_text":"Adds data themes and datasets included in catalog",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"DEUCatalog",
@@ -2393,7 +2393,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Dataset",
@@ -2491,8 +2491,8 @@
     "type":"TREE",
     "option":"Distributions per dataset",
     "option_text":"Distributions per dataset",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"distribution",
@@ -2535,7 +2535,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Treaty Classification",
@@ -2591,9 +2591,9 @@
     "option":"EU treaties classification",
     "option_text":"The EU treaties classification shows different types of treaties",
     "collection":"EU Law",
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Treaty Type",
@@ -2704,8 +2704,8 @@
     "type":"TREE",
     "option":"EU treaties by type",
     "option_text":"The EU treaties by type shows different treaties for this type",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"location",
@@ -2733,7 +2733,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"location",
@@ -2821,8 +2821,8 @@
     "type":"TREE",
     "option":"CorporateBodies located in this location",
     "option_text":"CorporateBodies located in this location",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"corporateBody",
@@ -2850,7 +2850,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"nutsClassification",
@@ -2932,7 +2932,7 @@
         "text":"Distribution"
       }
     ],
-    "parameters":null,
+    "parameters":"None",
     "filters":[
       {
         "property":"nutsLevel0_name",
@@ -2961,13 +2961,13 @@
         "tooltip_text":"License"
       }
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"NUTS Tree",
     "option_text":"NUTS Tree (Nomenclature of Territorial Units for Statistics)",
     "collection":"EU Vocabularies",
-    "modelClass":null,
+    "modelClass":"None",
     "details":[
       {
         "class":"nutsLevel0",
@@ -3010,7 +3010,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"NUTS level 0",
@@ -3087,8 +3087,8 @@
         "text":"Distribution"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
       {
         "property":"distribution_projection",
@@ -3103,13 +3103,13 @@
         "tooltip_text":"License"
       }
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"NUTS level 1",
     "option_text":"NUTS classification level 1",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"nutsLevel1",
@@ -3152,7 +3152,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"NUTS level 1",
@@ -3229,8 +3229,8 @@
         "text":"Distribution"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
       {
         "property":"distribution_projection",
@@ -3245,13 +3245,13 @@
         "tooltip_text":"License"
       }
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"NUTS level 2",
     "option_text":"NUTS classification level 2",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"nutsLevel2",
@@ -3294,7 +3294,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"NUTS level 2",
@@ -3371,8 +3371,8 @@
         "text":"Distribution"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
       {
         "property":"distribution_projection",
@@ -3387,13 +3387,13 @@
         "tooltip_text":"License"
       }
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"NUTS level 3",
     "option_text":"NUTS classification level 3",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"nutsLevel3",
@@ -3436,7 +3436,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Summaries of EU legislation classification",
@@ -3490,18 +3490,18 @@
         "text":"Summaries of EU legislation classification"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
 
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Subtypes of Summaries of EU legislation classification",
     "option_text":"Subtypes of Summaries of EU legislation classification",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"summaryLegType",
@@ -3534,7 +3534,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Summaries of EU legislation classification",
@@ -3593,18 +3593,18 @@
         "text":"Summary of EU legislation"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
 
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Summaries of EU legislation",
     "option_text":"Summaries of EU legislation",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"summaryLegType",
@@ -3642,7 +3642,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Authority table classification",
@@ -3691,8 +3691,8 @@
         "text":"Authority table"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
       {
         "property":"authorityTable_comment",
@@ -3703,13 +3703,13 @@
         "tooltip_text":"Table ID"
       }
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Authority table classification",
     "option_text":"Authority tables that link to other collections",
     "collection":"EU Vocabularies",
-    "modelClass":null,
+    "modelClass":"None",
     "details":[
       {
         "class":"authorityTable",
@@ -3732,7 +3732,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Authority table",
@@ -3776,18 +3776,18 @@
         "text":"Summaries of EU legislation classification"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
 
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Summaries of EU legislation classification",
     "option_text":"Summaries of EU legislation classification",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"summaryLegType",
@@ -3805,7 +3805,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Authority table",
@@ -3852,20 +3852,20 @@
         "text":"Country"
       }
     ],
-    "parameters":null,
-    "filters":null,
+    "parameters":"None",
+    "filters":"None",
     "tooltip":[
 
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Countries per continent",
     "option_text":"Countries per continent",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Case-law concept",
@@ -3914,19 +3914,19 @@
         "property":"caseLawConcept_country"
       }
     ],
-    "filters":null,
+    "filters":"None",
     "tooltip":[
 
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Case-law concepts subcategories",
     "option_text":"Case-law concepts subcategories",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Case-law concept",
@@ -3980,20 +3980,20 @@
         "property":"caseLawConcept_country"
       }
     ],
-    "filters":null,
+    "filters":"None",
     "tooltip":[
       {
         "property":"caseLaw_title",
         "tooltip_text":"Description"
       }
     ],
-    "function":null,
-    "columns":null,
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Case-laws for category",
     "option_text":"Set of case-laws for category",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"caseLaw",
@@ -4073,18 +4073,18 @@
         "text":"Data theme"
       }
     ],
-    "parameters":null,
-    "filters":null,
-    "tooltip":null,
-    "function":null,
-    "columns":null,
+    "parameters":"None",
+    "filters":"None",
+    "tooltip":"None",
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Data visualizations by Catalogue",
     "option_text":"Data visualizations categorized by Catalogue and Data Theme",
     "collection":"EU Data",
-    "modelClass":null,
-    "details":null,
-    "askquery":null
+    "modelClass":"None",
+    "details":"None",
+    "askquery":"None"
   },
   {
     "class":"Data theme",
@@ -4128,15 +4128,15 @@
         "property":"datatheme_deucatalog"
       }
     ],
-    "filters":null,
-    "tooltip":null,
-    "function":null,
-    "columns":null,
+    "filters":"None",
+    "tooltip":"None",
+    "function":"None",
+    "columns":"None",
     "type":"TREE",
     "option":"Data visualizations",
     "option_text":"Data visualizations",
-    "collection":null,
-    "modelClass":null,
+    "collection":"None",
+    "modelClass":"None",
     "details":[
       {
         "class":"viz",
@@ -4149,7 +4149,7 @@
         ]
       }
     ],
-    "askquery":null
+    "askquery":"None"
   },
   {
     "class":"Directory Organization",
@@ -4180,9 +4180,9 @@
     "type":"BARCHART",
     "option":"Barchart number of publications by theme",
     "option_text":"Barchart number of publications by theme",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
     "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\nfilter not exists {\n?broader skos:broader ?opTheme_uri\n}\n}"
   },
   {
@@ -4238,9 +4238,9 @@
     "type":"TREE",
     "option":"Publication themes by Organisation",
     "option_text":"Publication themes by Organisation",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
     "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\nfilter not exists {\n?broader skos:broader ?opTheme_uri\n}\n}"
   },
   {
@@ -4274,9 +4274,9 @@
     "type":"LINECHART",
     "option":"Linechart number of publications by date",
     "option_text":"Linechart number of publications by date",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
     "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nASK\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?corporateBody_uri=<PARAMETER2>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(?opTheme_uri=<PARAMETER>)\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}"
   },
   {
@@ -4308,9 +4308,88 @@
     "type":"BARCHART",
     "option":"Barchart number of datasets by data theme",
     "option_text":"Barchart number of datasets by data theme",
-    "collection":null,
-    "modelClass":null,
-    "details":null,
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
     "askquery":"PREFIX dcat: <http:\/\/www.w3.org\/ns\/dcat#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n#SELECT DISTINCT ?DEUCatalog_Modified ?DEUCatalog_Language ?DEUCatalog_uri concat(?title, ' - ', ?description) as ?DEUCatalog ?datatheme (?datatheme AS ?datatheme_name) ?datatheme_uri ?datatheme_definition ?dataset ?dataset_uri (?dataset_uri AS ?dataset_link) ?dataset_description ?dataset_accessRights ?documentation ?documentation_description ?documentation_uri (?documentation_uri AS ?documentation_link)\nASK\nWHERE{{\n?DEUCatalog_uri dcat:dataset ?dataset_uri.\nOPTIONAL{\n?dataset_uri dcat:theme ?datatheme_uri.\n?datatheme_uri skos:prefLabel ?datatheme_temp.\nFILTER(langMatches(lang(?datatheme_temp), 'en')).\n}\nBIND (IF(bound(?datatheme_uri),?datatheme_temp,\"No classified\") as ?category).\nfilter not exists {\n?broader skos:hasTopConcept ?datatheme_uri\n}\n}\nfilter(?DEUCatalog_uri=<PARAMETER>).\n}"
+  },
+  {
+    "class":"Summaries EU Legislation",
+    "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
+    "query":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm:<http:\/\/publications.europa.eu\/ontology\/cdm#>\nPREFIX dcterms:<http:\/\/purl.org\/dc\/terms\/>\nPREFIX dcelements:<http:\/\/purl.org\/dc\/elements\/1.1\/>\nSELECT distinct ?summariesLeg ?summariesLeg_uri ?summaryLegType ?summaryLegType_uri ?summaryLegType_abstract ?summaryLegType_identifier\nWHERE{{ \n?summariesLeg_uri rdfs:label ?summariesLeg.\n?summaryLegType_uri skos:inScheme ?summariesLeg_uri;\ndcterms:abstract ?summaryLegType_abstract;\ndcelements:identifier ?summaryLegType_identifier;\nskos:prefLabel ?summaryLegType.\n}\nFILTER(?summariesLeg_uri=<http:\/\/publications.europa.eu\/resource\/authority\/class-sum-leg>).\nFILTER NOT EXISTS{?summaryLegType_uri skos:broader ?sumamaryLegTypeTemp_uri}.\nFILTER (?summaryLegType_uri!=<http:\/\/publications.europa.eu\/resource\/authority\/class-sum-leg\/OP_DATPRO>)\nFILTER(langMatches(lang(?summaryLegType), 'en'))\nFILTER(langMatches(lang(?summaryLegType_abstract), 'en'))\n}\nORDER BY ?summariesLeg ?summaryLegType",
+    "hierarchy":[
+      {
+        "parent":"summariesLeg",
+        "child":"summaryLegType"
+      }
+    ],
+    "properties":[
+      {
+        "class":"summariesLeg",
+        "property":"summariesLeg_uri",
+        "property_name":"URI"
+      },
+      {
+        "class":"summaryLegType",
+        "property":"summaryLegType_uri",
+        "property_name":"URI"
+      },
+      {
+        "class":"summaryLegType",
+        "property":"summaryLegType_identifier",
+        "property_name":"Identifier"
+      },
+      {
+        "class":"summaryLegType",
+        "property":"summaryLegType_abstract",
+        "property_name":"Abstract"
+      }
+    ],
+    "classes_text":[
+      {
+        "class":"summariesLeg",
+        "text":"Summaries EU Legislation"
+      },
+      {
+        "class":"summaryLegType",
+        "text":"Summaries of EU legislation classification"
+      }
+    ],
+    "parameters":[
+
+    ],
+    "filters":[
+
+    ],
+    "tooltip":[
+
+    ],
+    "function":"",
+    "columns":[
+
+    ],
+    "type":"TREE",
+    "option":"Summaries of EU Legislation by topic",
+    "option_text":"Summaries of EU Legislation by topic",
+    "collection":"EU Law",
+    "modelClass":"None",
+    "details":[
+      {
+        "class":"summaryLegType",
+        "details":[
+          {
+            "property":"summaryLegType_identifier",
+            "text":"Identifier",
+            "type":"text"
+          },
+          {
+            "property":"summaryLegType_abstract",
+            "text":"Abstract",
+            "type":"text"
+          }
+        ]
+      }
+    ],
+    "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm:<http:\/\/publications.europa.eu\/ontology\/cdm#>\nPREFIX dcterms:<http:\/\/purl.org\/dc\/terms\/>\nPREFIX dcelements:<http:\/\/purl.org\/dc\/elements\/1.1\/>\nASK\nWHERE{{ \n?summariesLeg_uri rdfs:label ?summariesLeg.\n?summaryLegType_uri skos:inScheme ?summariesLeg_uri;\ndcterms:abstract ?summaryLegType_abstract;\ndcelements:identifier ?summaryLegType_identifier;\nskos:prefLabel ?summaryLegType.\n}\nFILTER(?summariesLeg_uri=<http:\/\/publications.europa.eu\/resource\/authority\/class-sum-leg>).\nFILTER NOT EXISTS{?summaryLegType_uri skos:broader ?sumamaryLegTypeTemp_uri}.\nFILTER (?summaryLegType_uri!=<http:\/\/publications.europa.eu\/resource\/authority\/class-sum-leg\/OP_DATPRO>)\nFILTER(langMatches(lang(?summaryLegType), 'en'))\nFILTER(langMatches(lang(?summaryLegType_abstract), 'en'))\n}"
   }
 ]

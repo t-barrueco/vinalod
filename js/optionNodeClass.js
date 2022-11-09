@@ -6,10 +6,10 @@ OptionNode = function (_option,_node) {
 
 OptionNode.prototype.init = async function () {
   var on=this;
-  //////////////console.log(document.getElementsByTagName("table"))
+  ////////////////console.log(document.getElementsByTagName("table"))
 
   await on.buildOption()
-  //console.log(on)
+  ////console.log(on)
 }
 
 function OptionNodeBasic(...args){
@@ -25,7 +25,10 @@ OptionNodeBasic.prototype.buildOption = async function () {
     on.askquery= configFile.file[on.rowConfigFile]["askquery"]
     on.parameters= configFile.file[on.rowConfigFile]["parameters"]
     on.endpoint_url=configFile.file[on.rowConfigFile]["endpoint_url"]
-    
+    //console.log(configFile.file)
+    //console.log(on.rowConfigFile)
+    //console.log(configFile.file[on.rowConfigFile]["askquery"])
+    //console.log(on.askquery)
     on.fromSelectToAskQuery()
   }
 
@@ -34,13 +37,13 @@ mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.leng
 OptionNodeBasic.prototype.fromSelectToAskQuery = function(){
     var on=this;
     
-    if(on["askquery"]==null){
+    if(on["askquery"]=="None"){
       on.askquery=fromSelectToAskQuery(on.query)
     }
-    ////////////console.log(cr.rowFields.askquery)
-    //////console.log(on["askquery"])
+    //////////////console.log(cr.rowFields.askquery)
+    ////////console.log(on["askquery"])
     on.replaceParmtrsQuery("askquery")
-    //////console.log(on["askquery"])
+    ////////console.log(on["askquery"])
 }
 
 OptionNodeBasic.prototype.replaceParmtrsQuery = function(queryName){
@@ -48,15 +51,15 @@ OptionNodeBasic.prototype.replaceParmtrsQuery = function(queryName){
     /* var on=this;
     if(on.node!=undefined){
         if((on.parameters!="")&&(on.parameters!=null)){
-            ////////////console.log(cr.rowFields.parameters)
-            ////////////console.log(cr.node)
-            ////////////console.log(cr.rowFields.askquery)
+            //////////////console.log(cr.rowFields.parameters)
+            //////////////console.log(cr.node)
+            //////////////console.log(cr.rowFields.askquery)
             for (let i = 0; i < on.parameters.length; ++i) { 
                 on[queryName]=on[queryName].replaceAll("PARAMETER"+(i+2).toString(), on.node[on.parameters[i]["property"]]);
-                ////////////console.log(cr.rowFields.parameters[i])
-                ////////////console.log(cr.node[cr.rowFields.parameters[i]["property"]])
+                //////////////console.log(cr.rowFields.parameters[i])
+                //////////////console.log(cr.node[cr.rowFields.parameters[i]["property"]])
             } 
-            ////////////console.log(cr.rowFields.askquery) 
+            //////////////console.log(cr.rowFields.askquery) 
         }
         on[queryName]=on[queryName].replaceAll("PARAMETER", on.node[on.node["class"]+"_uri"]);    
     } */
@@ -71,8 +74,8 @@ OptionNodeExpert.prototype = Object.create(OptionNode.prototype);
 
 OptionNodeExpert.prototype.buildOption = async function () {
     var on=this;
-    //console.log(on.option)
-    //console.log(on.option.match("Sparql Endpoint: (.*) and Position:"))
+    ////console.log(on.option)
+    ////console.log(on.option.match("Sparql Endpoint: (.*) and Position:"))
     on.endpoint_url = on.option.match("Sparql Endpoint: (.*) and Position:")[1];
     on.position = on.option.match("and Position: (.*)")[1];
     //on.endpoint_url=on.option.endpoint_url
