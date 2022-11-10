@@ -303,11 +303,12 @@
     var results,page;
 
     console.log(rowInConfigFile)
-    const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
-
-    console.log(query)
-    console.log(configRow)
-    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    var sparqlQuery=rowInConfigFile.query
+    sparqlQuery=sparqlQuery.replace("PARAMETER2", node[rowInConfigFile.parameters[0]["property"]]);
+/*     for (i = 0; i < rowInConfigFile.parameters.length; ++i) { 
+      sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[rowInConfigFile.parameters[i]]);
+    }  */ 
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,sparqlQuery,"query")
     console.log(results)
     /* url=configRow["endpoint_url"]
     prefixes=""
@@ -322,19 +323,52 @@
 
     page=results[0]["article"]["value"]
 
+    modalVisibilityOn()
+
     const modalContent=getModalContent()
+
+    var div=document.createElement("div")
+      div.className="h-full"
+      div.setAttribute("id","modalGraph")
+      div.setAttribute("style","overflow: auto")
+      modalContent.appendChild(div)
+      iframe=d3.select("#modalGraph").append("iframe")
+      .attr("src",page)
+        .style("width", "100%")
+        .style("height","100%");
+
+/*     var div=document.createElement("div")
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto")
+    modalContent.appendChild(div)
+
+    iframe=d3.select("#modalGraph").append("iframe")
+      .attr("src",page)
+        .style("width", "100%")
+        .style("height","100%"); */
+    //var mainEl=document.getElementById("modalGraph")
+
+    //console.log(document.getElementById("modalGraph"))
+    /* const modalContent=getModalContent()
 
     var div=document.createElement("div")
     div.className="h-full"
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
-    iframe=d3.select("#modalGraph").append("iframe")
-    .attr("src",page)
-      .style("width", "100%")
-      .style("height","100%");
 
-    modalVisibilityOn()
+    console.log(modalContent)
+ */
+/*     iframe=document.createElement("iframe")
+    iframe.setAttribute("src",page)
+    iframe.setAttribute("style","width: 100%; height: 100%") */
+/*       .style("width", "100%")
+      .style("height","100%"); */
+
+    //var mainEl=document.getElementById("modalGraph")
+    //mainEl.appendChild(iframe)
+    
+    //modalVisibilityOn()
   
     /* if(parameters.length>0){
       parameters=get_parameters(parameters)
