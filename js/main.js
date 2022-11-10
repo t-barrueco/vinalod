@@ -3,7 +3,7 @@ nodesClasses,nodesSelSources=[],nodesSelTarget=[],configRowsList=[],
 nodesClassesShow=[],nodesClassesCorrespondence,filesIcons,colorCorrespondence={},
 optionsMenuHtml,showNavigation=true;
 var timer = 0;
-var delay = 200;
+var delay = 400;
 var prevent = false;
 
 
