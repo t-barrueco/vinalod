@@ -28,6 +28,82 @@ LinkedDataGraph.prototype.buildData = function () {
   ldg.flatten()
 }
 
+LinkedDataGraph.prototype.collapseBranch = function (node){
+  var ldg=this;
+  
+  function recurse(node) {
+    console.log(node)
+    let index=ldg.treeData.findIndex(d=>d.id==node.id)
+    if(index!=-1){
+      ldg.treeData[index]._children = ldg.treeData[index].children;
+      delete ldg.treeData[index].children;
+      ldg.treeData[index]["hidden"]=true
+      if (ldg.treeData[index]._children){
+        ldg.treeData[index]._children.forEach(function(c){
+          console.log(c)
+          recurse(c)
+        })
+      }
+    }
+    
+  }
+  recurse(node)
+}
+
+LinkedDataGraph.prototype.expandBranch = function (node){
+  var ldg=this;
+
+  function recurse(node) {
+    console.log(node)
+    let index=ldg.treeData.findIndex(d=>d.id==node.id)
+    if(index!=-1){
+      if(ldg.treeData[index]._children){
+        ldg.treeData[index].children = ldg.treeData[index]._children;
+        delete ldg.treeData[index]._children;
+      } 
+      if(ldg.treeData[index]["hidden"]) delete ldg.treeData[index]["hidden"]
+      if (ldg.treeData[index].children){
+        ldg.treeData[index].children.forEach(function(c){
+          console.log(c)
+          recurse(c)
+        })
+      }
+    }
+    
+  }
+
+  recurse(node)
+}
+
+LinkedDataGraph.prototype.showFirstLevelBranch = function(node){
+  var ldg=this;
+  let position=ldg.treeData.findIndex(d=>d.id==node.id)
+  if(position!=-1){
+    delete ldg.treeData[position]["hidden"]
+    if(ldg.treeData[position]._children){
+      ldg.treeData[position].children=ldg.treeData[position]._children
+      delete ldg.treeData[position]._children
+      ldg.treeData[position].children.forEach(d=>delete d["hidden"])
+    }
+  }
+  console.log(ldg.treeData)
+}
+
+LinkedDataGraph.prototype.expandFirstLevelBranch = function(node){
+  var ldg=this;
+  let position=ldg.treeData.findIndex(d=>d.id==node.id)
+  if(position!=-1){
+    delete ldg.treeData[position]["hidden"]
+    console.log(ldg.treeData[position]["children"])
+    if(ldg.treeData[position]._children){
+      ldg.treeData[position].children=ldg.treeData[position]._children
+      delete ldg.treeData[position]._children
+      ldg.treeData[position].children.forEach(d=>delete d["hidden"])
+    }
+  }
+  console.log(ldg.treeData)
+}
+
 LinkedDataGraph.prototype.flatten = function(){
     var nodes = [], links=[];
     var ldg=this;
@@ -161,6 +237,10 @@ LinkedDataGraph.prototype.clearFilter = function(){
   ldg.flatten()
 
 }
+/* LinkedDataGraph.prototype.updateData=function(){
+  var ldg=this;
+  
+} */
 function LinkedDataGraphBasic(...args){
   LinkedDataGraph.apply(this, args);
 }

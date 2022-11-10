@@ -362,6 +362,14 @@ MenuItemsBasic.prototype.getMenuItemsInTable = async function (){
   navigationPanel.addMenuToTable()
 }
 
+MenuItemsBasic.prototype.getMenuItemsInTableFromNav = async function (){
+  var menuItems=[],elementMenu,position,width
+  var mi=this;
+
+  ////////console.log(mi)
+  navigationPanel.addMenuToTableFromNav()
+}
+
 /* MenuItemsBasic.prototype.getNumberTreeResults = async function (){
   var mi=this;
 

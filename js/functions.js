@@ -107,8 +107,8 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   ////////////console.log(query)
-  //console.log(url)
-  //console.log(query)
+  console.log(url)
+  console.log(query)
   //console.log(configRow)
   ////////console.log(type)
   var p = new Promise(function(resolve, reject){
@@ -125,6 +125,7 @@ async function runSparlqQuery(url,query,type){
     $.ajax(settings)
   })
   return await p.then(async function(_data){
+    console.log(_data)
     return _data
   })
 }
@@ -987,6 +988,18 @@ function modalVisibilityOn(){
     //minHeight: 150
   });
   $("#myModal2").draggable()
+}
+function showNavContentTable(){
+  $("#dvTable").show()
+}
+function hideNavContentTable(){
+  $("#dvTable").hide()
+}
+function showNavContentTablePagination(){
+  $("#div-pagination").show()
+}
+function hideNavContentTablePagination(){
+  $("#div-pagination").hide()
 }
 function getNodeFromTableRow(element){
   const parent = element.parentElement.closest('tr');

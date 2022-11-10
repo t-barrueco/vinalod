@@ -956,7 +956,8 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
 };
 
 NetworkGraph.prototype.collapseAll = function () {
-  var vis = this,treeDataEl;
+  var vis = this,ldg=linkedDataGraph;
+/*   var vis = this,treeDataEl;
   function recurse(node) {
     var el;
     if(node.children){
@@ -986,7 +987,12 @@ NetworkGraph.prototype.collapseAll = function () {
   vis.data=flatten(vis.treeData).flatData
   vis.initializeSimulation();
   vis.dataJoinGraph()
-  vis.exitGraph()
+  vis.exitGraph() */
+  ldg.collapseBranch(ldg.treeData[0])
+  ldg.showFirstLevelBranch(ldg.treeData[0])
+  ldg.flatten()
+  vis.updateData()
+  vis.refresh()
 
 }
 NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
@@ -1034,7 +1040,8 @@ NetworkGraph.prototype.expandNodeBranch = function (nodeTreeData) {
 
 }
 NetworkGraph.prototype.expandAll = function () {
-  var vis = this,treeDataEl;
+  var vis = this,ldg=linkedDataGraph;
+  /*   var vis = this,treeDataEl;
   function recurse(node) {
     var el;
     if(node._children){
@@ -1047,6 +1054,7 @@ NetworkGraph.prototype.expandAll = function () {
       })
     }
     
+  
   }
   vis.treeData[0]["children"].forEach(function(r){
     treeDataEl=vis.treeData.filter(d=>d.id==r.id)
@@ -1057,16 +1065,46 @@ NetworkGraph.prototype.expandAll = function () {
     
   })
   vis.data=flatten(vis.treeData).flatData
+  vis.refresh() */
+  console.log(ldg.treeData[0]["children"])
+  ldg.expandBranch(ldg.treeData[0])
+  console.log(ldg.treeData[0]["children"])
+  //ldg.expandFirstLevelBranch(ldg.treeData[0])
+  console.log(ldg.treeData)
+  ldg.flatten()
+  vis.updateData()
   vis.refresh()
-}
-NetworkGraph.prototype.collapseBranch = function (node){
-  var vis = this;
-  let index=vis.treeData.findIndex(d=>d.id==node.id)
-  vis.treeData[index]._children = vis.treeData[index].children;
-  delete vis.treeData[index].children;
-  vis.treeData[index]["hidden"]=true
+  
 }
 
+NetworkGraph.prototype.collapseBranch = function (node){
+  var vis = this,ldg=linkedDataGraph;
+
+  ldg.collapseBranch(node)
+  ldg.flatten()
+  vis.updateData()
+  vis.refresh()
+}
+
+NetworkGraph.prototype.expandBranch = function (node){
+  var vis = this,ldg=linkedDataGraph;
+
+  ldg.expandBranch(node)
+  ldg.flatten()
+  vis.updateData()
+  vis.refresh()
+}
+
+NetworkGraph.prototype.checkCollapseExpandBranch = function (node){
+  var vis = this;
+  console.log(node)
+  if(vis.treeData.filter(d=>d.id==node.id)[0]["children"]){
+    vis.collapseBranch(node)
+  }else if(vis.treeData.filter(d=>d.id==node.id)[0]["_children"]){
+    console.log("expandBranch")
+    vis.expandBranch(node)
+  }
+}
 NetworkGraph.prototype.collapseFullBranch = function (node){
   var vis = this;
   var nodes=[]
@@ -1099,13 +1137,6 @@ NetworkGraph.prototype.collapseFullBranch = function (node){
     }
     
   }
-}
-NetworkGraph.prototype.expandBranch = function (node){
-  var vis = this;
-  let index=vis.treeData.findIndex(d=>d.id==node.id)
-  vis.treeData[index].children = vis.treeData[index]._children;
-  delete vis.treeData[index]._children;
-  delete vis.treeData[index]["hidden"]
 }
 
 NetworkGraph.prototype.expandLevelBranch = function (node){
@@ -1170,11 +1201,12 @@ NetworkGraph.prototype.refresh = function (node){
   vis.updateFilters()
   legend.addColors()
 }
-NetworkGraph.prototype.mergeData = function (results,branchType){
+NetworkGraph.prototype.updateData = function (){
   var vis = this;
-  data.update(results,branchType)
-  vis.data=data.flatData.flatData
-  vis.treeData=data.treeData
+  vis.data=linkedDataGraph.data.flatData
+  //vis.treeData=vis.treeData.concat(linkedDataGraph.treeData)
+  vis.treeData=linkedDataGraph.treeData
+  vis.allData=JSON.parse(JSON.stringify(vis.data));
 }
 
 function NetworkGraphBasic(...args){

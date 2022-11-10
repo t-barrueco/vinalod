@@ -605,6 +605,7 @@ function clickBubbleGraph(element) {
 
   closeNavigationPanel()
   
+  console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
 
   
@@ -641,8 +642,10 @@ async function checkMenuItems(origin,element) {
     //////console.log(element)
     //const parent = element.parentElement.closest('tr');
     node=getNodeFromTableRow(element)
+  }else if(origin=="navigation"){
+    node=get_node_from_element(element.getAttribute("id").replace("_a",""))
   }
-  ////console.log(node)
+  console.log(node)
   if(menuItems){
     if(((node.class!="free")&&(menuItems instanceof MenuItemsBasic))||((node.class=="free")&&(menuItems instanceof MenuItemsExpert))){
       await menuItems.update(node)
@@ -661,7 +664,7 @@ async function checkMenuItems(origin,element) {
     }
     await menuItems.init()
   }
-  //console.log(menuItems)
+  console.log(menuItems)
   if(menuItems.selectedRows.length==0){
     ////////////////////////console.log("entra")
     // if (founded[0]["children"]){
@@ -669,6 +672,9 @@ async function checkMenuItems(origin,element) {
     //}else{
       //SE EXPANDEN LOS CHILDREN
     //} 
+    if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
+      networkGraph.checkCollapseExpandBranch(node)
+    }
     clickBubbleGraph(document.getElementById(node.id))
   }else if(menuItems.selectedRows.length==1){
     if(node.class!="free"){
@@ -690,6 +696,8 @@ async function checkMenuItems(origin,element) {
   }else if(menuItems.selectedRows.length>1){
     if(origin=="table"){
       menuItems.getMenuItemsInTable()
+    }else if(origin=="navigation"){
+      menuItems.getMenuItemsInTableFromNav()
     }else{
       if(menuItems.node.id){
         menuItems.getMenuItemsInGraph()
@@ -928,6 +936,9 @@ function clickElNavigationPanel(el){
   //////console.log(el)
   clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
 }
+/* function clickLastElNavigationPanel(el){
+
+} */
 /* function relatedFilters(){
   //////console.log(networkGraph.filterClassesObjects)
   networkGraph.filterClassesObjects.forEach(function (cf){
