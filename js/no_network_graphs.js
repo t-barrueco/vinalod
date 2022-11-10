@@ -3,6 +3,7 @@
       showWordcloud(rowInConfigFile,data)
     }else if(rowInConfigFile["type"]=="WIKIPEDIA"){
       console.log("wikipedia")
+      showWikipediaPage(rowInConfigFile,data)
     }else if(rowInConfigFile["type"]=="TABLE"){
       showTable(rowInConfigFile,data)
     }else if(rowInConfigFile["type"]=="BARCHART"){
@@ -298,16 +299,44 @@
       return treeData
   }
   
-  async function showWikipediaPage(data,modalHeader,modalContent,rowDataConfig){
-    var results,node,page,parameters,parameterTemp="";
-  
-    node=data
-    url=rowDataConfig["endpoint_url"]
-    sparqlQuery=rowDataConfig["query"]
+  async function showWikipediaPage(rowInConfigFile,node){
+    var results,page;
+
+    console.log(rowInConfigFile)
+    const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
+
+    console.log(query)
+    console.log(configRow)
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    console.log(results)
+    /* url=configRow["endpoint_url"]
     prefixes=""
-    parameters=rowDataConfig["parameters"]
+    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   
-    if(parameters.length>0){
+    results = await runSparlqQuery(settings) */
+    const title=rowInConfigFile.option + " - " + node.value
+
+    const modalHeader=getModalHeader()
+    modalHeader.innerHTML = title
+
+    page=results[0]["article"]["value"]
+
+    const modalContent=getModalContent()
+
+    var div=document.createElement("div")
+    div.className="h-full"
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto")
+    modalContent.appendChild(div)
+    iframe=d3.select("#modalGraph").append("iframe")
+    .attr("src",page)
+      .style("width", "100%")
+      .style("height","100%");
+
+    modalVisibilityOn()
+  
+    /* if(parameters.length>0){
       parameters=get_parameters(parameters)
       for (let i = 0; i < parameters.length; ++i) { 
         sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
@@ -342,7 +371,7 @@
     } catch (e) {
       ////////////console.log(e)
       results = false
-    }
+    } */
 
 
 /*     $.ajax(settings).then  (function( _data ) {

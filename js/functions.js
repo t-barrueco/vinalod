@@ -107,6 +107,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   ////////////console.log(query)
+  var settings;
   console.log(url)
   console.log(query)
   //console.log(configRow)
@@ -114,7 +115,14 @@ async function runSparlqQuery(url,query,type){
   var p = new Promise(function(resolve, reject){
     let prefixes="";
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
-    let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    console.log(url)
+    console.log(typeof(url))
+    if(url.includes("wikidata")){
+      settings = { url: queryUrl, async: true       }; 
+    }else{
+      settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    }
+    //
     settings["success"] =function (_data) {
       if(type=="query"){
         resolve(_data.results.bindings)
@@ -125,7 +133,6 @@ async function runSparlqQuery(url,query,type){
     $.ajax(settings)
   })
   return await p.then(async function(_data){
-    console.log(_data)
     return _data
   })
 }
