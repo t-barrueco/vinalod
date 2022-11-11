@@ -425,7 +425,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
     var node,nodeOption1,nodeOption2;
 
     if(configRow.node){
-      let menuOptions=configRow.node.menuOption.split(";")
+/*       let menuOptions=configRow.node.menuOption.split(";")
       if(menuOptions.length==2){
         let children=ldg.treeData.filter(n=>n.id==configRow.node.id)[0]["children"]
         nodeOption1={"id":genRandomString(),"value":menuOptions[0],"shape":1,"class":"menuOption","className":"Menu Option","children":children}
@@ -438,6 +438,25 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
       }else{
         node=nodeValues(configRow.results[j],0,configRow.node.id)
         node["children"]=[]
+      } */
+      if(!configRow.node.menuOption){
+        node=nodeValues(configRow.results[j],0,configRow.node.id)
+        node["children"]=[]
+      }else{
+        let menuOptions=configRow.node.menuOption.split(";")
+        if(menuOptions.length==2){
+           let children=ldg.treeData.filter(n=>n.id==configRow.node.id)[0]["children"]
+           nodeOption1={"id":genRandomString(),"value":menuOptions[0],"shape":1,"class":"menuOption","className":"Menu Option","children":children}
+           treeData.push(nodeOption1)
+           nodeOption2={"id":genRandomString(),"value":menuOptions[1],"shape":1,"class":"menuOption","className":"Menu Option","children":[]}
+           treeData.push(nodeOption2)
+
+           node=nodeValues(configRow.results[j],0,configRow.node.id)
+           node["children"]=[nodeOption1,nodeOption2]
+        }else{
+           node=nodeValues(configRow.results[j],0,configRow.node.id)
+          node["children"]=[]
+        }
       }
       
     }else{
