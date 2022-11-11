@@ -817,9 +817,17 @@ async function getHtmlCodeFromFile(file) {
   //////console.log(code)
   return code;
 } */
-
+function relatedFilters(element){
+  linkedDataGraph.filter(element.getAttribute("id"))
+  console.log(linkedDataGraph.treeDataFiltered)
+  linkedDataGraph.flattenFiltered()
+  console.log(linkedDataGraph.dataFiltered)
+  setValuesFilters(element.getAttribute("id"))
+}
 function applyFilters(){
-  linkedDataGraph.filter()
+  linkedDataGraph.treeData=linkedDataGraph.treeDataFiltered
+  linkedDataGraph.flatten()
+  //linkedDataGraph.filter()
   networkGraph.refresh()
 }
 
@@ -954,7 +962,7 @@ function clickElNavigationPanel(el){
     }
   }
 } */
-function relatedFilters(filter){
+/* function relatedFilters(filter){
   var nodes = [];
   let name=filter.getAttribute("name")
 
@@ -1008,11 +1016,11 @@ function relatedFilters(filter){
     }
   }
   //ldg.data={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeData};
-}
-function setValuesFilters(nodes,name){
+} */
+function setValuesFilters(filterId){
   networkGraph.filterClassesObjects.forEach(function (cf){
     //console.log(cf)
-    cf.setValuesFilters(nodes,name)
+    cf.setValuesFilters(filterId)
     /* cf.filters.forEach(function(f){
       if(f.details.property!=name){
         ////////console.log(f.htmlEl)
@@ -1034,7 +1042,7 @@ function clearFilters(){
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(function (f){
       //console.log(f)
-      f.addValuesField()
+      f.addValuesField(f.values)
     })
   })
   networkGraph.refresh()
