@@ -41,8 +41,9 @@ FilterClassBasic.prototype.setValuesFilters = function(filterId){
   var cf=this,values;
   cf.filters.forEach(function(f){
     if(f.id!=filterId){
-      //console.log(f)
+      console.log(f)
       values=f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
+      console.log(values)
       f.addValuesField(values)
     }
     /* if(f.details.property!=name){
@@ -55,6 +56,7 @@ FilterClassBasic.prototype.setValuesFilters = function(filterId){
     } */
   })
 }
+
 
 FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
   var cf=this,hidden=false;
@@ -251,7 +253,11 @@ Filter.prototype.import = function (details) {
     fi.addHtml()
     //fi.getValuesVisibleNodes()
     //fi.addHtml()
-    }
+}
+Filter.prototype.removeValuesChanged=function (){   
+  console.log("entra en remove values changed") 
+  delete this["valuesChanged"]
+}
 
 Filter.prototype.getValuesNodes=function (nodes){
     var fi=this,values=[]
@@ -434,6 +440,9 @@ class FilterBasicDropdown extends FilterBasic {
     var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
     ////////////console.log(this.details.property+"_filter")
     ////////////console.log(select)
+    if(values.length>1){
+      values=["All"].concat(values)
+    }
     addHtmlOptionsSelect(select,values,false)
   }
   checkConditionNode(node){
@@ -456,6 +465,12 @@ class FilterBasicDropdown extends FilterBasic {
         return true
       }
     }
+  }
+  addValuesChanged(values){
+    //super.valuesChanged(values);
+    console.log("entra")
+    console.log(document.getElementById(this.id))
+    this["valuesChanged"]=values
   }
 }
 
@@ -504,6 +519,9 @@ class FilterBasicDate extends FilterBasic {
 
     //var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
     //addHtmlOptionsSelect(select,this.values,false)
+  }
+  addValuesChanged(values){
+    this["valuesChanged"]=values
   }
 }
 
@@ -563,6 +581,14 @@ class FilterBasicText extends FilterBasic {
       return false
     }
   }
+  addValuesField(values){
+    //this.htmlEl=document.getElementById(fi.id)
+
+    autocomplete(document.getElementById(this.id), values);
+  }
+  addValuesChanged(values){
+    this["valuesChanged"]=values
+  }
 }
 
 class FilterBasicNumber extends FilterBasic {
@@ -589,7 +615,7 @@ class FilterBasicNumber extends FilterBasic {
       document.getElementById(fi.classFilterName+"_filters").appendChild(label);
       document.getElementById(fi.classFilterName+"_filters").appendChild(div).appendChild(textInput); */
     }
-    checkConditionNode(node){
+    //checkConditionNode(node){
 /*       const filterValue=$("#"+this.details.property+"_filter").val()
       if(filterValue!=""){
         if(node[this.details.property]!=$("#"+this.details.property+"_filter").val()){
@@ -600,8 +626,11 @@ class FilterBasicNumber extends FilterBasic {
       }else{
         return false
       } */
+      addValuesChanged(values){
+        this["valuesChanged"]=values
+      }
 
-    }
+    //}
   }
 
 
