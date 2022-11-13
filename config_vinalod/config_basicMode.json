@@ -4391,5 +4391,53 @@
       }
     ],
     "askquery":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm:<http:\/\/publications.europa.eu\/ontology\/cdm#>\nPREFIX dcterms:<http:\/\/purl.org\/dc\/terms\/>\nPREFIX dcelements:<http:\/\/purl.org\/dc\/elements\/1.1\/>\nASK\nWHERE{{ \n?summariesLeg_uri rdfs:label ?summariesLeg.\n?summaryLegType_uri skos:inScheme ?summariesLeg_uri;\ndcterms:abstract ?summaryLegType_abstract;\ndcelements:identifier ?summaryLegType_identifier;\nskos:prefLabel ?summaryLegType.\n}\nFILTER(?summariesLeg_uri=<http:\/\/publications.europa.eu\/resource\/authority\/class-sum-leg>).\nFILTER NOT EXISTS{?summaryLegType_uri skos:broader ?sumamaryLegTypeTemp_uri}.\nFILTER (?summaryLegType_uri!=<http:\/\/publications.europa.eu\/resource\/authority\/class-sum-leg\/OP_DATPRO>)\nFILTER(langMatches(lang(?summaryLegType), 'en'))\nFILTER(langMatches(lang(?summaryLegType_abstract), 'en'))\n}"
+  },
+  {
+    "class":"Person",
+    "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
+    "query":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?person ?person_uri ?directoryOrg ?directoryOrg_uri  \nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n?directoryOrg_uri skos:prefLabel ?directoryOrg.\n?person_uri org:hasMembership ?membership_uri;\nfoaf:name ?person.\n}\n#filter(?directoryOrg_uri=<http:\/\/publications.europa.eu\/resource\/directory\/organization\/EP_MEPS\/EP_DPPED19>).\nfilter(?person_uri=<PARAMETER>).\nFILTER(langMatches(lang(?directoryOrg), 'en')).\n }",
+    "hierarchy":[
+      {
+        "parent":"person",
+        "child":"directoryOrg"
+      }
+    ],
+    "properties":[
+      {
+        "class":"directoryOrg",
+        "property":"directoryOrg_uri",
+        "property_name":"Directory Organisation URI"
+      }
+    ],
+    "classes_text":[
+      {
+        "class":"person",
+        "text":"Person"
+      },
+      {
+        "class":"directoryOrg",
+        "text":"Directory Organization"
+      }
+    ],
+    "parameters":[
+
+    ],
+    "filters":[
+
+    ],
+    "tooltip":[
+
+    ],
+    "function":"",
+    "columns":[
+
+    ],
+    "type":"TREE",
+    "option":"Committees this person participates",
+    "option_text":"Committees this person participates",
+    "collection":"None",
+    "modelClass":"None",
+    "details":"None",
+    "askquery":" \nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX org: <http:\/\/www.w3.org\/ns\/org#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nASK\nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n?directoryOrg_uri skos:prefLabel ?directoryOrg.\n?person_uri org:hasMembership ?membership_uri;\nfoaf:name ?person.\n}\n#filter(?directoryOrg_uri=<http:\/\/publications.europa.eu\/resource\/directory\/organization\/EP_MEPS\/EP_DPPED19>).\nfilter(?person_uri=<PARAMETER>).\nFILTER(langMatches(lang(?directoryOrg), 'en')).\n }"
   }
 ]
