@@ -495,8 +495,10 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
         id=genRandomString()
       }
       //////////console.log(configRow["classes_text"])
-      //////////console.log(treeResults)
+      console.log(treeResults)
       //////////console.log(index)
+      console.log(treeResults[index])
+      console.log(configRow["classes_text"])
       className=configRow["classes_text"].filter(d=>d.class==treeResults[index])[0]["text"]
       node={"id":id,"value":r[treeResults[index]].value,"shape":1,"class":treeResults[index],"className":className}
 

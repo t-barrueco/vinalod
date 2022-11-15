@@ -10,7 +10,7 @@ MenuItems.prototype.init = async function () {
   //console.log(linkedDataGraph.treeData)
   await mi.buildOptions()
   ////////console.log(mi.indexRows[0]["askquery"])
-  ////console.log(mi)
+  console.log(mi)
   mi.filterByMenuOption()
   await mi.filterByAskResult()
   //mi.addCollapsedOptions()
