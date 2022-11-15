@@ -9,7 +9,7 @@ LinkedDataGraph.prototype.init = function () {
     //ldg.filterClassesObjects=[]
     //await ldg.getResults()
     //////////////////console.log("antes de buildData")
-    ////////////////console.log(configRow)
+    console.log(configRow)
     ldg.buildData()
     //ldg.getFilters()
     //////////////////////////////////console.log(ldg.data.treeData)
@@ -410,7 +410,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
-
+  //showSpinMessage()
   for (let j = 0; j < configRow.results.length; ++j) {
       treeResults=get_hierarchy_from_keys(Object.keys(configRow.results[j]))
       //console.log(configRow.results[j])
@@ -450,7 +450,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
   }
   ldg.treeData=ldg.treeData.concat(treeData)
   configRow.treeData=treeData
-
+  
   function checkNodeInTreeData(){
     var pathSearch=JSON.parse(JSON.stringify(procNode));
     var prevNodeIndex=-1,prevNodeId;

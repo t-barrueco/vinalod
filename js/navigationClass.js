@@ -446,7 +446,6 @@ NavigationPanel.prototype.contentTable = async function (){
       //th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
-      ////////////console.log(menuOption)
       if(menuOption){
         if(menuOption.split(";").length>1){
           th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
@@ -465,12 +464,11 @@ NavigationPanel.prototype.contentTable = async function (){
     
     if(($("#div-pagination").length)==0){
       let code = await getHtmlCodeFromFile("pages/navPagination.html");
-      ////////////console.log(code)
-  
+      //$("#dvTable").append(code)
       $("#dvTable").append(code).ready(function () {
-        
+        ECL.autoInit();
       })
-      ECL.autoInit();
+      
     }
 
     navPanel.showNumberPages()
@@ -489,10 +487,7 @@ NavigationPanel.prototype.contentTable = async function (){
     }
   }
 
-  //console.log($( "#dvTable th" ))
-  //console.log($( "#dvTable th" ).html())
   let search=searchHtml()
-  //console.log(search)
   $( "#dvTable th" )
   .html( $( "#dvTable th" ).html()+search);
 
@@ -500,28 +495,6 @@ NavigationPanel.prototype.contentTable = async function (){
 
 
   function searchHtml(){
-/*   var text=`<div>
-          <label for="account-number" class="block text-sm font-medium text-gray-700">` + label + `</label>
-          <div class="mt-1 relative rounded-md shadow-sm w-1/2 inline-block">
-            <input type="text" name="nodeSearch" id="node-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-3 pl-3 sm:text-sm border-gray-300 rounded-md" placeholder="Find node...">
-            <div class="absolute inset-y-0 right-0 pr-3 pt-3 flex items-top pointer-events-auto cursor-pointer inline-block">
-              <svg class="h-5 w-5 text-gray-400 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" id="nav-search" onclick="navSearch()">
-                <path fill-rule="evenodd" d="M21.7071068,20.2928932 C22.0976311,20.6834175 22.0976311,21.3165825 21.7071068,21.7071068 C21.3165825,22.0976311 20.6834175,22.0976311 20.2928932,21.7071068 L16.9056439,18.3198574 C15.5509601,19.3729184 13.8487115,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 C16.418278,4 20,7.581722 20,12 C20,13.8487115 19.3729184,15.5509601 18.3198574,16.9056439 L21.7071068,20.2928932 Z M12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 Z" clip-rule="evenodd" />
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="nav-delete" onclick="removeSelection()">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          </div>
-
-          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden" id="remove-sel" onclick="removeSelection()">
-            Remove selection
-          </button>
-          <button type="button" class="ml-5 py-2 px-3 font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden" id="add-sel-graph" onclick="addSelToGraph(this)">
-            Add to graph
-          </button>
-        </div>` */
-        //onclick="navSearch()"
   var text=`<form class="ecl-search-form ecl-u-mt-m" role="search" onsubmit="navSearch(this);return false">
   <div class="ecl-form-group"><label for="search-input"
       class="ecl-form-label ecl-search-form__label">Search</label><input type="search" name="nodeSearch" id="node-search"
@@ -1241,10 +1214,13 @@ NavigationPanelBasic.prototype.addCodeMenuTable = async function (tBodyRef){
     //newRow = tbodyRef.insertRow(rowIndex+i);
     //tBodyRef.append(code)
     //console.log(tBodyRef)
+    console.log(menuItems.selectedRows[i])
+    console.log(menuItems.selectedRows[i]["option_text"])
+    let option_text=configFile.file[menuItems.selectedRows[i]["rowConfigFile"]]["option_text"]
     if(!tBodyRef){
-      $('#myModal #dvTable tbody').append(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",menuItems.selectedRows[i]["option_text"]).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
+      $('#myModal #dvTable tbody').append(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
     }else{
-      $(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",menuItems.selectedRows[i]["option_text"]).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
+      $(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
     }
    
 /*     newRow.id="menu-table-"+menuItems.selectedRows[i]

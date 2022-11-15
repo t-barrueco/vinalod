@@ -1283,7 +1283,8 @@ NetworkGraphBasic.prototype.updateFilters = function () {
   //vis.filterClassesObjects=[]
   if(configRow){
     if(configRow.filters){
-      if(configRow.filters.length!=0){
+      if((configRow.filters.length!=0)&&(configRow.filters!="None")){
+        console.log(configRow.filters)
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
         ////////console.log(vis.filterClassesObjects.map(f=>f.name))
         //existingFilterClasses = [...new Set(networkGraph.treeData.map(d=>d.filters))]
@@ -1340,7 +1341,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
     //////console.log(configFile.file[configRow.rowNumber])
     //////console.log(configFile.file)
     if(configRow.filters){
-      //console.log(configRow.filters)
+      console.log(configRow.filters)
       if(configRow.filters.length!=0){
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
         ////////console.log(newFilterClasses)

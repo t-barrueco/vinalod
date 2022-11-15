@@ -44,7 +44,7 @@ FilterClassBasic.prototype.setValuesFilters = function(filterId){
       //console.log(f)
       values=f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
       //console.log(values)
-      f.addValuesField(values)
+      f.addValuesField(values,filterId)
     }
     /* if(f.details.property!=name){
       //////////////console.log(f.htmlEl)
@@ -434,16 +434,33 @@ class FilterBasicDropdown extends FilterBasic {
       }
     }
   } */
-  addValuesField(values){
-    ////////////console.log(this.values);
-    $(("#accordion-filters #"+this.details.property+"_filter")).empty();
-    var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
-    //////////////console.log(this.details.property+"_filter")
-    //////////////console.log(select)
-    if(values.length>1){
-      values=["All"].concat(values)
+  addValuesField(values,filterId){
+    console.log(this);
+    if(!this.valuesChanged){
+      if((this.details.parent)&&(this.details.parent!=filterId.replace("_filter",""))){
+        //if(networkGraph.filterClassesObjects.findIndex((element)=>)
+        let index=networkGraph.filterClassesObjects.findIndex((element) => element.children.some((subElement) => subElement.details.property === this.details.parent))
+        if(index==-1){
+          $(("#accordion-filters #"+this.details.property+"_filter")).empty();
+          var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+          //////////////console.log(this.details.property+"_filter")
+          //////////////console.log(select)
+          if(values.length>1){
+            values=["All"].concat(values)
+          }
+          addHtmlOptionsSelect(select,values,false)
+        }
+      }else{
+        $(("#accordion-filters #"+this.details.property+"_filter")).empty();
+        var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+        //////////////console.log(this.details.property+"_filter")
+        //////////////console.log(select)
+        if(values.length>1){
+          values=["All"].concat(values)
+        }
+        addHtmlOptionsSelect(select,values,false)
+      }
     }
-    addHtmlOptionsSelect(select,values,false)
   }
   checkConditionNode(node){
     let elValue=$("#"+this.details.property+"_filter").val()
@@ -512,7 +529,7 @@ class FilterBasicDate extends FilterBasic {
       return true
     }
   }
-  addValuesField(values){
+  addValuesField(values,filterId){
     //////////////console.log(this.values);
     $(("#accordion-filters #"+this.details.property+"_filter_start")).val(values[0]);
     $(("#accordion-filters #"+this.details.property+"_filter_end")).val(values[values.length-1]);
@@ -581,7 +598,7 @@ class FilterBasicText extends FilterBasic {
       return false
     }
   }
-  addValuesField(values){
+  addValuesField(values,filterId){
     //this.htmlEl=document.getElementById(fi.id)
 
     autocomplete(document.getElementById(this.id), values,1);
@@ -762,7 +779,7 @@ class FilterExpertDropdown extends FilterExpert {
       }
     }
   }
-  addValuesField(values){
+  addValuesField(values,filterId){
     this;
     $(("#accordion-filters #"+this.details.property)).empty();
     var select = document.querySelector("#accordion-filters #"+this.details.property);

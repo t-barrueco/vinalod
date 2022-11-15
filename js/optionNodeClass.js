@@ -32,6 +32,9 @@ OptionNodeBasic.prototype.buildOption = async function () {
     on.fromSelectToAskQuery()
   }
 
+/* OptionNodeBasic.prototype.buildCollapsedOption = async function (){
+  OptionNodeBasic
+} */
 /* mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["endpoint_url"]
 mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["askquery"] */
 OptionNodeBasic.prototype.fromSelectToAskQuery = function(){

@@ -109,7 +109,7 @@ async function runSparlqQuery(url,query,type){
   ////////////////console.log(query)
   var settings;
   ////console.log(url)
-  //console.log(query)
+  console.log(query)
   //////console.log(configRow)
   ////////////console.log(type)
   showSpinMessage()

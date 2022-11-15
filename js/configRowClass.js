@@ -9,7 +9,7 @@ ConfigRow.prototype.init = async function () {
     var cr=this
 
     cr.getValuesFromOption()
-    ////////////console.log(cr)
+    console.log(cr)
     cr.replaceParmtrsQuery("query")
     ////////////console.log(cr)
     cr.getNameClasses()
@@ -55,9 +55,7 @@ ConfigRow.prototype.fromOptionToConfigRow = async function(option){
       cr[k]=rowInConfigFile[k]
     }
   })
-  if(cr["filters"]=="None"){
-    cr["filters"]=[]
-  }
+  
   cr["askquery"]=option["askquery"]
   cr["node"]=option["node"]
   cr["query"]=option["query"]
@@ -65,8 +63,15 @@ ConfigRow.prototype.fromOptionToConfigRow = async function(option){
 
   cr.replaceParmtrsQuery("query")
 
+  console.log(cr.filters)
   cr.getNameClasses()
   await cr.getResults()
+}
+ConfigRow.prototype.setDefaultValues = function (){
+  var cr=this;
+  if(cr["filters"]=="None"){
+    cr["filters"]=[]
+  }
 }
 ConfigRow.prototype.filterByValueField = function (value,field) {
     var cr=this;
@@ -157,6 +162,7 @@ ConfigRowBasic.prototype.replaceParmtrsQuery = function(queryName){
 ConfigRowBasic.prototype.getNameClasses = function () {
   var cr=this;
   //////////console.log(cr.rowFields)
+  console.log(cr)
   cr.nameClasses=cr.classes_text.map(d=>d.text)
   ////console.log(cr.nameClasses)
 }
@@ -173,6 +179,7 @@ ConfigRowBasic.prototype.getValuesFromOption = async function () {
   })
 
   cr.fromSelectToAskQuery()
+  cr.setDefaultValues()
 }
 
 function ConfigRowExpert(...args){
@@ -197,7 +204,6 @@ ConfigRowExpert.prototype.getNameClasses = function () {
 }
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
-
   //console.log(cr.node)
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
 }

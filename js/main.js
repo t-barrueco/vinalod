@@ -485,7 +485,7 @@ function addSharedGraph(file){
 }
 
 async function changeBasicGraph(option){
-
+  //showSpinMessage()
   ////////////console.log("changeBasicGraph")
   ////////////console.log(option)
   //INCLUIR EN FUNCIÓN
@@ -520,6 +520,7 @@ async function changeBasicGraph(option){
   /* if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
     linkedDataGraph = undefined;
   } */
+  //showSpinMessage()
   if(typeof linkedDataGraph !== 'undefined'){
     linkedDataGraph = undefined;
   }
@@ -527,6 +528,11 @@ async function changeBasicGraph(option){
   linkedDataGraph = new LinkedDataGraphBasic(option);
   ////////console.log(linkedDataGraph)
   await linkedDataGraph.settingsFromOption()
+  //hideSpinMessage()
+  //linkedDataGraph.collapseBranch(linkedDataGraph.treeData[0])
+  //linkedDataGraph.showFirstLevelBranch(linkedDataGraph.treeData[0])
+
+  //console.log(linkedDataGraph.treeData)
 
   let forces=setForcesGraph()
 
@@ -536,9 +542,11 @@ async function changeBasicGraph(option){
     legend=undefined
   }
 
+  //showSpinMessage()
   networkGraph = new NetworkGraphBasicNotImported("#networkGraph",forces,linkedDataGraph.data);
 
   await networkGraph.initVis()
+  //hideSpinMessage()
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
@@ -548,7 +556,7 @@ async function changeBasicGraph(option){
   }else{
     $("#filters").addClass("hidden")
   }
-
+  networkGraph.collapseAll()
 }
 function changeTab(tab){ 
   ////////////////console.log(tab.id)
@@ -846,7 +854,7 @@ function relatedFilters(element){
   linkedDataGraph.filter(element.getAttribute("id"))
   //console.log(linkedDataGraph.treeDataFiltered)
   linkedDataGraph.flattenFiltered()
-  //console.log(linkedDataGraph.dataFiltered)
+  console.log(linkedDataGraph.dataFiltered)
   setValuesFilters(element.getAttribute("id"))
 }
 
