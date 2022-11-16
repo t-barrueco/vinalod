@@ -4,17 +4,17 @@ MenuItems = function (_node) {
 
 MenuItems.prototype.init = async function () {
   var mi=this;
-  ////////////////////console.log(document.getElementsByTagName("table"))
+  //////////////////////console.log(document.getElementsByTagName("table"))
   mi.indexRows=[]
   mi.treeSelectedRows=0
-  //console.log(linkedDataGraph.treeData)
+  ////console.log(linkedDataGraph.treeData)
   await mi.buildOptions()
-  ////////console.log(mi.indexRows[0]["askquery"])
-  console.log(mi)
+  //////////console.log(mi.indexRows[0]["askquery"])
+  //console.log(mi)
   mi.filterByMenuOption()
   await mi.filterByAskResult()
   //mi.addCollapsedOptions()
-  //console.log("despues filterByAskResult")
+  ////console.log("despues filterByAskResult")
   //mi.getNumberTreeResults()
 }
 
@@ -34,35 +34,35 @@ MenuItems.prototype.filterByMenuOption = function () {
       })
     })
  */
-    ////////console.log(mi.node)
-    ////////console.log(mi.indexRows)
-    ////////console.log(configFileExpert)
+    //////////console.log(mi.node)
+    //////////console.log(mi.indexRows)
+    //////////console.log(configFileExpert)
     if(mi.node.menuOption){
       let menuOptions=mi.node.menuOption.split(";")
       mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.option)))
     }
-    ////////console.log(mi.indexRows)
+    //////////console.log(mi.indexRows)
 }
 
 MenuItems.prototype.filterByAskResult = async function () {
     var mi=this;
     mi.selectedRows=[]
-    //////console.log(mi.indexRows)
+    ////////console.log(mi.indexRows)
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
-            ////////console.log(mi.indexRows[i].askquery)
+            //////////console.log(mi.indexRows[i].askquery)
             results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
-            ////////////console.log(results)
+            //////////////console.log(results)
         } catch (e) {
         results = false
         } 
 
         if(results==true){
-          ////////////console.log("addselectedRow")
+          //////////////console.log("addselectedRow")
           mi.addSelectedRow(i)
         }
     }
-  //console.log("final filterByAskResult")
+  ////console.log("final filterByAskResult")
 }
 
 MenuItems.prototype.getSelectedRowByOption = async function (option){
@@ -90,7 +90,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
     }else{
         width=350
     }
-    ////////////////console.log(networkGraph)
+    //////////////////console.log(networkGraph)
     networkGraph.menuFactory(100,0, mi.menuItems, mi.node,"dblClick",width)
 
 }
@@ -99,8 +99,8 @@ MenuItems.prototype.getMenuItemsInTable = async function (){
     var menuItems=[],elementMenu,position,width
     var mi=this;
 
-    //////////////console.log(mi)
-    //////////////console.log("getMenuInTable")
+    ////////////////console.log(mi)
+    ////////////////console.log("getMenuInTable")
     //navigationPanel.addMenuToTable()
 
     function tableExpert(){
@@ -147,25 +147,25 @@ MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
   var mi=this,option;
-  ////////console.log(configFileExpert)
+  //////////console.log(configFileExpert)
   configFileExpert.option.forEach(option => {
-    ////////console.log(option)
-    ////////console.log(mi.node)
+    //////////console.log(option)
+    //////////console.log(mi.node)
     let position = option.match("and Position: (.*)")[1];
     if((!mi.node["subject-object"])||(position==mi.node["subject-object"])){
       mi.indexRows.push(new OptionNodeExpert(option,mi.node))
     }
-    ////////////console.log(configFileExpert)
+    //////////////console.log(configFileExpert)
     
     /* configFileExpert.position.forEach(position => {
-      ////////console.log(position)
+      //////////console.log(position)
       let option_values={"endpoint_url":element["sparqlEndpoint"],"position":position}
       let option={"option":element.option}
-      ////////console.log(option)
+      //////////console.log(option)
       mi.indexRows.push(new OptionNodeExpert(option_values,mi.node))
     }) */
   })
-  //////////console.log(mi)
+  ////////////console.log(mi)
   
 }
 /* MenuItemsExpert.prototype.buildOptions = async function(){
@@ -209,8 +209,8 @@ MenuItemsExpert.prototype.buildOptions = async function(){
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
   var mi=this;
-  ////////////console.log(i)
-  ////////////console.log(mi.selectedRows)
+  //////////////console.log(i)
+  //////////////console.log(mi.selectedRows)
   //mi.indexRows[i]
   mi.selectedRows.push(mi.indexRows[i])
 }
@@ -225,8 +225,8 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
   elementMenu = {
       title: "Sparql Endpoint: " + mi.selectedRows[i].endpoint_url + " and Position: " + mi.selectedRows[i]["position"],
       action: async (data,d) => {
-      ////////console.log(d)
-      //////////console.log(data)
+      //////////console.log(d)
+      ////////////console.log(data)
       
       let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
       let position = d.title.match("and Position: (.*)")[1];
@@ -235,11 +235,11 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
       //await linkedDataGraph.update(form,data)
       //networkGraph.refresh()
       setMenuOption(data,d.title)
-      ////////console.log(data)
+      //////////console.log(data)
       checkGraphExpert(form,data)
       //checkFilters()
 
-      ////////////////////console.log(document.getElementsByTagName("table"))
+      //////////////////////console.log(document.getElementsByTagName("table"))
 
       }
   }
@@ -257,7 +257,7 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
 
   var content = document.getElementById("modal3-content");
 
-  ////////console.log(mi)
+  //////////console.log(mi)
   addOptions()
 
   modal = document.getElementById("myModal3")
@@ -271,16 +271,16 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
   function addOptions(){
     var i=1;
     $.get("pages/popup_options.html", function (data) {
-      ////////console.log(mi.selectedRows)
+      //////////console.log(mi.selectedRows)
       mi.selectedRows.forEach(function (r) {
-        ////////console.log(r)
+        //////////console.log(r)
         htmlOption=data
         htmlOption=htmlOption.replace("Option *","Option "+ String(i)).replace("Node URI",r.node.uri).replace("Subject",r.position).replace("Value_URL",r.endpoint_url)
-        ////////////////////console.log(i)
+        //////////////////////console.log(i)
         if(i!=mi.selectedRows.length){
           htmlOption+="<hr>"
         }
-        ////////////////////console.log(htmlOption)
+        //////////////////////console.log(htmlOption)
         $("#modal3-content").append($(htmlOption))
         i+=1
       })
@@ -293,7 +293,7 @@ MenuItemsExpert.prototype.getMenuItemsInTable = async function (){
   var menuItems=[],elementMenu,position,width
   var mi=this;
 
-  ////////////console.log(mi)
+  //////////////console.log(mi)
 
   navigationPanel.addMenuToTable()
 /*   for (var i = 0; i < items.length; i++) {
@@ -319,13 +319,13 @@ MenuItemsBasic.prototype.buildOptions=function (){
   var mi=this;
   //mi.indexRows=[]
   configFile.getRowsNodeClass(mi.node["className"]).forEach(element => {
-    ////////////console.log(element)
+    //////////////console.log(element)
     mi.indexRows.push(new OptionNodeBasic(element.option,mi.node))
     mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     //mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["askquery"]
-    //////console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
+    ////////console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
   });
-  ////////////console.log(mi.indexRows)
+  //////////////console.log(mi.indexRows)
 }
 
 /* MenuItemsBasic.prototype.addCollapsedOptions = async function () {
@@ -342,13 +342,13 @@ MenuItemsBasic.prototype.buildOptions=function (){
       //mi.indexRows[mi.indexRows.length - 1].fromSelectToAskQuery()
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["endpoint_url"]
       mi.indexRows[mi.indexRows.length - 1]["askquery"]=mi.indexRows[mi.indexRows.length - 1]["rowFields"]["askquery"]
-      //////////////console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
+      ////////////////console.log(mi.indexRows[mi.indexRows.length - 1]["askquery"])
   });
-  //////////////console.log(mi.indexRows)
+  ////////////////console.log(mi.indexRows)
 } */
 MenuItemsBasic.prototype.addSelectedRow=function (i){
   var mi=this;
-  ////////console.log(mi.indexRows[i])
+  //////////console.log(mi.indexRows[i])
   if(configFile.file.filter(d=>d.option==mi.indexRows[i]["option"])[0]["type"]=="TREE") mi.treeSelectedRows+=1
   mi.selectedRows.push(mi.indexRows[i])
 }
@@ -358,12 +358,12 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
   elementMenu={
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {
-        ////////console.log(data)
-        //////////console.log(d)
-        //////////console.log(mi)
+        //////////console.log(data)
+        ////////////console.log(d)
+        ////////////console.log(mi)
         //data.menuOption=d.title
         setMenuOption(data,d.title)
-        //////console.log(data)
+        ////////console.log(data)
         checkGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
     }
     }
@@ -372,8 +372,8 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
 
 MenuItemsBasic.prototype.collapsedBranchMenuItemsInGraph=function (){
   var mi=this;
-  console.log(mi.node)
-  console.log(configRow)
+  //console.log(mi.node)
+  //console.log(configRow)
   let nodeTreeData=linkedDataGraph.treeData.filter(d=>d.id==mi.node.id)
   if((nodeTreeData.length>0)&&(nodeTreeData[0]._children)){
     elementMenu={
@@ -393,7 +393,7 @@ MenuItemsBasic.prototype.getMenuItemsInTable = async function (){
   var menuItems=[],elementMenu,position,width
   var mi=this;
 
-  ////////////console.log(mi)
+  //////////////console.log(mi)
   navigationPanel.addMenuToTable()
 }
 
@@ -401,7 +401,7 @@ MenuItemsBasic.prototype.getMenuItemsInTableFromNav = async function (){
   var menuItems=[],elementMenu,position,width
   var mi=this;
 
-  ////////////console.log(mi)
+  //////////////console.log(mi)
   navigationPanel.addMenuToTableFromNav()
 }
 
@@ -409,8 +409,8 @@ MenuItemsBasic.prototype.getMenuItemsInTableFromNav = async function (){
   var mi=this;
 
   let results=mi.selectedRows.map(d=>d.option).filter(function(f){
-    ////////console.log(f)
+    //////////console.log(f)
     if(configFile.file.filter(c=>c.option==f)[0]["type"]=="TREE") return f
   })
-  ////////console.log(results)
+  //////////console.log(results)
 } */
