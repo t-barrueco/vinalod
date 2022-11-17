@@ -192,9 +192,9 @@ div.tooltip {
   cursor: not-allowed;
  text-decoration: none;
 }
-.autocomplete-items{
-  text-transform: capitalize;
-}
+/* .autocomplete-items{
+  text-transform: none;
+} */
 
 #logo:hover { text-decoration: none; }
 

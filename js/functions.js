@@ -4,7 +4,17 @@
 *    
 *    created by Teresa Barrueco
 */
-
+function setMenuOption(node,option){
+  //setMenuOption(data,d.title)
+  if((configFile.file.filter(d=>d.option==option).length==0)||(configFile.file.filter(d=>d.option==option)[0]["type"]=="TREE")){
+    if(node.menuOption){
+      node.menuOption+=";"+option
+    }else{
+      node.menuOption=option
+    }
+  }
+  //////////console.log(node)
+}
 function get_unique_values_arrays(arr1,arr2){
   arr1=arr1.concat(arr2)
   return [...new Set(arr1)];
@@ -22,7 +32,7 @@ function genRandomString(){
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
-  //console.log("entra")
+  ////////////////////console.log("entra")
   //if right click on table get all options in a format for table
   if(origin=="table"){
     Items=[{
@@ -79,13 +89,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        //////////////////////////////////////////console.log("pageY menos")
+        ////////////////////////////////////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        //////////////////////////////////////////console.log("pageX menos")
+        ////////////////////////////////////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -96,11 +106,24 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 
 //execute sparql query
 async function runSparlqQuery(url,query,type){
-  ////////console.log(query)
+  //////////////////console.log(query)
+  var settings;
+  //////console.log(url)
+  //console.log(query)
+  ////////console.log(configRow)
+  //////////////console.log(type)
+  showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
-    let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    //////console.log(url)
+    //////console.log(typeof(url))
+    if(url.includes("wikidata")){
+      settings = { url: queryUrl, async: true       }; 
+    }else{
+      settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+    }
+    //
     settings["success"] =function (_data) {
       if(type=="query"){
         resolve(_data.results.bindings)
@@ -111,6 +134,7 @@ async function runSparlqQuery(url,query,type){
     $.ajax(settings)
   })
   return await p.then(async function(_data){
+    hideSpinMessage()
     return _data
   })
 }
@@ -398,10 +422,10 @@ function getTooltipMenu(d){
 
 
 //function to autocomplete in search field
-function autocomplete(inp, arr) {
+function autocomplete(inp, arr,numParentNodes) {
   var currentFocus;
   inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value;
+      var a, b, i, val = this.value,node=this;
       closeAllLists();
       if (!val) { return false;}
       currentFocus = -1;
@@ -410,7 +434,11 @@ function autocomplete(inp, arr) {
       a.setAttribute("id", this.id + "autocomplete-list");
       a.setAttribute("class", "autocomplete-items");
       /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
+      for(i=0;i<numParentNodes;i++){
+        node=node.parentNode
+      }
+      node.appendChild(a)
+      //this.parentNode.appendChild(a);
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -422,6 +450,7 @@ function autocomplete(inp, arr) {
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
           b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
           /*insert a input field that will hold the current array item's value:*/
+          ////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -433,6 +462,7 @@ function autocomplete(inp, arr) {
               closeAllLists();
           });
           a.appendChild(b);
+          a.appendChild(document.createElement("hr"))
         }
       }
   });
@@ -729,8 +759,8 @@ function showSpinMessage(message){
   d3.select("#spin-message")
   .text(message)
   d3.select("#spin").style("display","inline-flex")
-  interval = setInterval(fn, 8000);
-  return interval
+  //interval = setInterval(fn, 8000);
+  //return interval
 }
 function hideSpinMessage(interval){
   d3.select("#sparql-timeout").style("display","none")
@@ -762,7 +792,7 @@ function showBasicGraph(){
 }
 function fromSelectToAskQuery(query){
   var mySubString;
-  
+  ////////////////console.log(query)
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
       query.toLowerCase().indexOf("select"), 
@@ -808,83 +838,110 @@ function fromSelectToAskQuery(query){
     query=query.replace(mySubString,"")
   }
   //query=query.replaceAll("parameter","PARAMETER")
-  ////////console.log(query)
+  //////////////////////////console.log(query)
   return query
 }
 function changeDateFormat(date){
-  //////////console.log(date)
+  ////////////////////////////console.log(date)
   let prevFormat=new Date(date)
-  //////////console.log(prevFormat)
-  //////////console.log(prevFormat.getMonth())
-  //////////console.log(prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
+  ////////////////////////////console.log(prevFormat)
+  ////////////////////////////console.log(prevFormat.getMonth())
+  ////////////////////////////console.log(prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
   return (prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
 }
 
 function formatDate(str){
+  ////////////////console.log(str)
   const [day, month, year] = str.split('-');
   const date = new Date(+year, +month - 1, +day);
-  //////////console.log(date); 
+  //////////////////console.log(date); 
   return new Date(date)
+}
+function dateValidFormat(dateStr) {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (dateStr.match(regex) === null) {
+    return dateStr;
+  }
+
+  const date = new Date(dateStr);
+
+  //////////////////console.log(date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear())
+
+  return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 /* function formatDateTime(str){
   let date=new Date(str)
-  ////////console.log(date.getDate())
-  ////////console.log(date.getMonth())
-  ////////console.log(date.getFullYear())
+  //////////////////////////console.log(date.getDate())
+  //////////////////////////console.log(date.getMonth())
+  //////////////////////////console.log(date.getFullYear())
   const [day, month, year] = str.split('-');
   //const date = new Date(+year, +month - 1, +day);
-  //////////console.log(date); 
+  ////////////////////////////console.log(date); 
   return date
 } */
-function relatedFilters(filterEl){
+/* function relatedFilters(filterEl){
   var values,relNodes,filter;
-  console.log(filterEl)
-  console.log(networkGraph.filterClassesObjects)
+  //////////////////console.log(filterEl)
+  //////////////////console.log(networkGraph.filterClassesObjects)
   networkGraph.filterClassesObjects.forEach(function (d){
     if(d.filters.filter(f=>f.id==filterEl.id)){
       filter=d.filters.filter(f=>f.id==filterEl.id)[0]
     }
   })
-  console.log(filter)
-/*   var selectobject = document.getElementById("mySelect");
+  //////////////////console.log(filter)
+  var selectobject = document.getElementById("mySelect");
   for (var i=0; i<selectobject.length; i++) {
       if (selectobject.options[i].value == 'A')
           selectobject.remove(i);
-  } */
-  //console.log(filterEl.name.split("_")[0])
-  //console.log(networkGraph.filterClassesObjects.filter(d=>d.name==filterEl.name.split("_")[0]))
+  }
+  ////////////////////console.log(filterEl.name.split("_")[0])
+  ////////////////////console.log(networkGraph.filterClassesObjects.filter(d=>d.name==filterEl.name.split("_")[0]))
   //const filter=networkGraph.filters.filter(d=>d.property==filterEl.id)[0]
   const relFilters=networkGraph.filters.filter(d=>d.parent==filterEl.id)
-  //////console.log(filter)
-  //////console.log(filterEl.options[filterEl.selectedIndex].text)
-  ////console.log(networkGraph.allData)
-  ////console.log(networkGraph.data)
-  console.log(filter)
+  ////////////////////////console.log(filter)
+  ////////////////////////console.log(filterEl.options[filterEl.selectedIndex].text)
+  //////////////////////console.log(networkGraph.allData)
+  //////////////////////console.log(networkGraph.data)
+  //////////////////console.log(filter)
   relNodes=networkGraph.allData["nodes"].filter(d=>d.class==filter.class).filter(v=>v[filter.property]==filterEl.options[filterEl.selectedIndex].text)
   relFilters.forEach(function(fi){
-    //////console.log(fi)
+    ////////////////////////console.log(fi)
     if(filterEl.options[filterEl.selectedIndex].text!="All"){
       values=[...new Set(relNodes.map(d=>d[fi.property].toLowerCase()))]
     }else{
-      //////console.log(fi)
+      ////////////////////////console.log(fi)
       values=fi.filterObject.values
-      //////console.log(values)
+      ////////////////////////console.log(values)
     }
     $(("#accordion-filters #"+fi.property)).empty();
     var select = document.querySelector("#accordion-filters #"+fi.property);
-    //////console.log(select)
+    ////////////////////////console.log(select)
     addOptionsSelect(select,values,false)
 
-    ////////console.log(selectobject.options.remove)
+    //////////////////////////console.log(selectobject.options.remove)
 
-    /* for (var i=0; i<selectobject.options.length; i++) {
-        //////console.log(values)
-        //////console.log(selectobject.options[i].value)
+    for (var i=0; i<selectobject.options.length; i++) {
+        ////////////////////////console.log(values)
+        ////////////////////////console.log(selectobject.options[i].value)
         if (!values.includes(selectobject.options[i].value)){
           selectobject.remove(i);
           i--;
         }     
-    } */
+    }
+  })
+} */
+/* function checkRelatedFilters(filterEl){
+  let classNode=filterEl.parentNode.parentNode.parentNode
+
+  let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
+  let selectedValues = Array.from(filterEl.selectedOptions)
+        .map(option => option.value) 
+  
+  let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
+  //////////////////////console.log(relatedFilters)
+  relatedFilters.forEach(function(r){
+    ////////////////////console.log(r)
   })
 }
 function checkRelatedFilters(filterEl){
@@ -895,37 +952,31 @@ function checkRelatedFilters(filterEl){
         .map(option => option.value) 
   
   let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
-  ////console.log(relatedFilters)
+  //////////////////////console.log(relatedFilters)
   relatedFilters.forEach(function(r){
-    //console.log(r)
+    ////////////////////console.log(r)
+    ////////////////////console.log($("#"+r.id))
   })
-}
-function checkRelatedFilters(filterEl){
-  let classNode=filterEl.parentNode.parentNode.parentNode
-
-  let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
-  let selectedValues = Array.from(filterEl.selectedOptions)
-        .map(option => option.value) 
-  
-  let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
-  ////console.log(relatedFilters)
-  relatedFilters.forEach(function(r){
-    //console.log(r)
-    //console.log($("#"+r.id))
-  })
-}
+} */
 
 function addOptionsSelect(selectField,valuesFilter,multiple){
-  //console.log(selectField)
-  //console.log(valuesFilter)
-  //console.log(multiple)
+  ////////////////console.log(selectField)
+  ////////////////console.log(valuesFilter)
+  ////////////////////console.log(multiple)
+  if(valuesFilter.length>1){
+    valuesFilter.unshift("All")
+  }
+  addHtmlOptionsSelect(selectField,valuesFilter,multiple)
+}
+function addHtmlOptionsSelect(selectField,valuesFilter,multiple){
+  ////////////////console.log(selectField)
   for (let i = 0; i < valuesFilter.length; i++) {
     var option = document.createElement("option");
     option.value = valuesFilter[i];
     option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-    ////////console.log(option)
+    //////////////////////////console.log(option)
     selectField.appendChild(option);
-    //console.log(multiple)
+    ////////////////////console.log(multiple)
     if(multiple){
       option.selected = true; 
     }
@@ -952,4 +1003,43 @@ function modalVisibilityOn(){
     //minHeight: 150
   });
   $("#myModal2").draggable()
+}
+function showNavContentTable(){
+  $("#dvTable").show()
+}
+function hideNavContentTable(){
+  $("#dvTable").hide()
+}
+function showNavContentTablePagination(){
+  $("#div-pagination").show()
+}
+function hideNavContentTablePagination(){
+  $("#div-pagination").hide()
+}
+function getNodeFromTableRow(element){
+  const parent = element.parentElement.closest('tr');
+  const node=get_node_from_element(parent.id.replace("_row",""))
+  return node;
+}
+function replaceParmtrsQuery(query,parameters,node){
+  var query;
+  ////////////console.log(query)
+  ////////////console.log(node)
+  ////////////console.log(parameters)
+  if(node!=undefined){
+      if((parameters!="")&&(parameters!=null)){
+          //////////////////////console.log(cr.rowFields.parameters)
+          //////////////////////console.log(cr.node)
+          //////////////////////console.log(cr.rowFields.askquery)
+          for (let i = 0; i < parameters.length; ++i) { 
+              query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
+              //////////////////////console.log(cr.rowFields.parameters[i])
+              //////////////////////console.log(cr.node[cr.rowFields.parameters[i]["property"]])
+          } 
+          //////////////////////console.log(cr.rowFields.askquery) 
+      }
+      ////////////////console.log(query)
+      query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]);    
+  }
+  return query
 }

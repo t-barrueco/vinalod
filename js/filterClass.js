@@ -23,8 +23,63 @@ FilterClass.prototype.getCode= async function(){
 function FilterClassBasic(...args){
   FilterClass.apply(this, args);
 }
-    
+  
 FilterClassBasic.prototype = Object.create(FilterClass.prototype);
+
+FilterClassBasic.prototype.setValuesFilters = function(filterId){
+  /* var cf=this;
+  cf.filters.forEach(function(f){
+    if(f.details.property!=name){
+      ////////////////console.log(f.htmlEl)
+      ////////////////console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
+      let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
+      removeOptionsSelect(f)
+      ////////////////console.log(valuesFilter)
+      addOptionsSelect(f.htmlEl,valuesFilter,false)
+    }
+  }) */
+  var cf=this,values;
+  cf.filters.forEach(function(f){
+    if(f.id!=filterId){
+      ////console.log(f)
+      values=f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
+      ////console.log(values)
+      f.addValuesField(values,filterId)
+    }
+    /* if(f.details.property!=name){
+      ////////////////console.log(f.htmlEl)
+      ////////////////console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
+      let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
+      removeOptionsSelect(f)
+      ////////////////console.log(valuesFilter)
+      addOptionsSelect(f.htmlEl,valuesFilter,false)
+    } */
+  })
+}
+
+
+FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
+  var cf=this,hidden=false;
+  //////console.log(hidden)
+  cf.filters.forEach(function(f){
+      //for (let i = 0; i < cf.filters.length; ++i) 
+      if(f.id==filterId){
+        let condition=f.checkConditionNode(node)
+        ////////////////////console.log(filters[i])
+        ////////////////////console.log(condition)
+      if(condition){
+          ////////////////////////////console.log("true")
+          hidden=true
+          //break;
+        //}else{
+          ////////////////////////////console.log("false")
+      }
+      }
+
+  })
+  //////console.log(hidden)
+  return hidden;
+}
 
 FilterClassBasic.prototype.setTitle = async function () {
   var cf=this;
@@ -33,7 +88,7 @@ FilterClassBasic.prototype.setTitle = async function () {
 
 FilterClassBasic.prototype.initFilters = async function () {
   var cf=this;
-  let filters=configRow.rowFields.filters.filter(d=>d.class==cf.name)
+  let filters=configRow.filters.filter(d=>d.class==cf.name)
 
 /*   code=await getHtmlCodeFromFile("pages/filter-class-item.html")
   
@@ -52,32 +107,42 @@ FilterClassBasic.prototype.initFilters = async function () {
     }else if(filters[i]["filter_type"]=="number"){
       cf.filters.push(new FilterBasicNumber(filters[i]))
     } */
-    cf.addFilterType(filters[i],false)
+    //////////////console.log(filters[i])
+    await cf.addFilterType(filters[i],false)
   }
   //ECL.autoInit()
 
 }
 
 FilterClassBasic.prototype.addFilterType = async function (filter,imported) {
-  var cf=this;
-  console.log(filter)
-  console.log(imported)
+  var cf=this,fi;
+  ////////////////console.log(filter)
+  ////////////////console.log(imported)
   if(filter["filter_type"]=="dropdown"){
-    cf.filters.push(new FilterBasicDropdown(filter,imported))
+    ////////console.log("antes FilterBasicDropdown")
+    fi=new FilterBasicDropdown(filter,imported)
+    await fi.init()
+    cf.filters.push(fi)
+    ////////console.log("despues de FilterBasic Dropdown")
   }else if(filter["filter_type"]=="date"){
-    cf.filters.push(new FilterBasicDate(filter,imported))
+    fi=new FilterBasicDate(filter,imported)
+    await fi.init()
+    cf.filters.push(fi)
   }else if(filter["filter_type"]=="text"){
-    cf.filters.push(new FilterBasicText(filter,imported))
+    fi=new FilterBasicText(filter,imported)
+    await fi.init()
+    cf.filters.push(fi)
   }else if(filter["filter_type"]=="number"){
     cf.filters.push(new FilterBasicNumber(filter,imported))
   }
+  ECL.autoInit()
 }
 
 FilterClassBasic.prototype.addFilterTypeImported = async function (filter,imported) {
-  var cf=this;
-  console.log(filter)
-  console.log(imported)
-  console.log(cf)
+  var cf=this,fi;
+  ////////////////console.log(filter)
+  ////////////////console.log(imported)
+  ////////////////console.log(cf)
   if(filter.details.filter_type=="dropdown"){
     cf.filters.push(new FilterBasicDropdown(filter,imported))
   }else if(filter.details.filter_type=="date"){
@@ -98,20 +163,21 @@ FilterClassExpert.prototype = Object.create(FilterClass.prototype);
 FilterClassExpert.prototype.setTitle = async function () {
   var cf=this,name;
   cf.internalName=cf.name.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
-  console.log(cf)
+  ////////////////console.log(cf)
   cf.code=cf.code.replace("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
 
 FilterClassExpert.prototype.initFilters = async function (){
   var cf=this;
-  console.log("init filters")
+  ////////////////console.log("init filters")
   //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
-  cf.internalClass=linkedDataGraph.settings.uri.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
-  cf.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
-  cf.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"properties","internalClass":cf.internalClass,"id":cf.internalClass+"_properties"})
-  cf.filters.push({"class":linkedDataGraph.settings.uri,"filter_type":"dropdown","field":"values","internalClass":cf.internalClass,"id":cf.internalClass+"_values"})
+  //////////////console.log(cf)
+  cf.internalClass=configRow.node.uri.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
+  cf.filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
+  cf.filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"properties","internalClass":cf.internalClass,"id":cf.internalClass+"_properties"})
+  cf.filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"values","internalClass":cf.internalClass,"id":cf.internalClass+"_values"})
   
-  console.log(cf)
+  ////////////////console.log(cf)
   cf.code=await cf.getCode()
 
   $("#accordion-filters").append(cf.code).ready(async function (){
@@ -125,40 +191,79 @@ FilterClassExpert.prototype.initFilters = async function (){
   })
 }
 
+FilterClassExpert.prototype.setValuesFilters = function(){
+  var cf=this;
+  cf.filters.forEach(function(f){
+  //////console.log(f)
+    /* if(f.details.property!=name){
+      ////////////////console.log(f.htmlEl)
+      ////////////////console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
+      let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
+      removeOptionsSelect(f)
+      ////////////////console.log(valuesFilter)
+      addOptionsSelect(f.htmlEl,valuesFilter,false)
+    } */
+  })
+}
+
 Filter = function (_details,_imported) {
-    console.log(_imported)
-    if(_imported){
-      console.log("import")
-      this.import(_details)
+    ////////////////console.log(_imported)
+    var fi=this
+    fi.details=_details
+    fi.imported=_imported
+    //fi.init()
+    /* if(_imported){
+      ////////////////console.log("import")
+      fi.import(_details)
     }else{
-      this.details = _details;
-      this.init();
-    }
+      fi.details = _details;
+      ////////////console.log(this)
+      fi.init();
+    } */
   };  
-  
-Filter.prototype.init = function () {
+Filter.prototype.init= async function () {
   var fi=this;
-  fi.getValuesVisibleNodes()
-  fi.addHtml()
+  if(fi.imported){
+    ////////////////console.log("import")
+    fi.import(fi.details)
+  }else{
+    ////////console.log("antes de values and html")
+    await fi.valuesAndHtml();
+    //////////console.log("despues de values and html")
+
+  }
+}
+Filter.prototype.valuesAndHtml = async function () {
+  var fi=this;
+  fi.values=fi.getValuesNodes(networkGraph.data["nodes"])
+  ////////console.log("antes de addHtml")
+  await fi.addHtml()
+  //////////console.log("despues de addHtml")
+
+  ////////////console.log("despues addHtml")
+
   }
 
 Filter.prototype.import = function (details) {
     var fi=this;
-    console.log(details)
+    ////////////////console.log(details)
     Object.keys(details).forEach(function(k){
       fi[k]=details[k]
     })
-    console.log(fi)
+    ////////////////console.log(fi)
     fi.addHtml()
-
     //fi.getValuesVisibleNodes()
     //fi.addHtml()
-    }
+}
+Filter.prototype.removeValuesChanged=function (){   
+  ////console.log("entra en remove values changed") 
+  delete this["valuesChanged"]
+}
 
-Filter.prototype.getValuesVisibleNodes=function (){
+Filter.prototype.getValuesNodes=function (nodes){
     var fi=this,values=[]
-    networkGraph.data["nodes"].forEach(function(d){
-      //console.log(fi)
+    nodes.forEach(function(d){
+      //////////////////console.log(fi)
       if(d["class"]==fi.details.class){
         if(d[fi.details.property]!=undefined){
           values.push(d[fi.details.property].toLowerCase())
@@ -166,19 +271,38 @@ Filter.prototype.getValuesVisibleNodes=function (){
       }
     })
     if(fi.details.filter_type=="date"){
-      values=[...new Set(values)].sort(function(a,b){
+      let setValues=[...new Set(values)]
+      ////////////////console.log(setValues)
+      /* if(setValues>1){
+        values=setValues.sort(function(a,b){
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return formatDate(a) - formatDate(b);
+        });
+      }else{
+        ////////////////console.log(setValues)
+        values=[formatDate(setValues[0])]
+      } */
+      values=setValues.sort(function(a,b){
         // Turn your strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
+        ////////////////console.log(a)
+        ////////////////console.log(b)
         return formatDate(a) - formatDate(b);
       });
+      ////////////////console.log(values)
+      /* values.forEach(function (f){
+
+      }) */
+      values=values.map(d=>dateValidFormat(d))
     }else{
       values=[...new Set(values)].sort()
     }
-    
-    fi.values=values
-    if ((fi.values.length>1)&(fi.details.filter_type=="dropdown")){
+    ////////////////console.log(values)
+    return values
+    /* if ((fi.values.length>1)&(fi.details.filter_type=="dropdown")){
       fi.values=["All"].concat(fi.values)
-    }
+    } */
   }
 
 function FilterBasic(...args){
@@ -194,7 +318,7 @@ FilterBasic.prototype.addHtml= function () {
   div.id=fi.details.property.replaceAll(" ","_")+"_root"
   fi.id=fi.details.property.replaceAll(" ","_")+"_filter";
   if(!fi.propertyFullName){
-    fi.propertyFullName=configRow.rowFields.properties.filter(d=>d.property==fi.details.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.details.class],"").trim()
+    fi.propertyFullName=configRow.properties.filter(d=>d.property==fi.details.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.details.class],"").trim()
   }
   
   fi.mainHtmlEl=div
@@ -204,15 +328,63 @@ FilterBasic.prototype.addHtml= function () {
   }else{
     fi.selection="none"
   }
-
+  //////////console.log("al acabar el filter basic genérico")
 }
 
 class FilterBasicDropdown extends FilterBasic {
    async addHtml() {
     var fi=this;
     super.addHtml();
+    ////////console.log("al entrar en filterbasicdropdown")
+    ////////////console.log("entra")
 
-    let code = await getHtmlCodeFromFile("pages/select-filter.html");
+
+    await $.get("pages/select-filter.html", function (code) {
+      ////////console.log("despues de añadir code")
+      code=code.replace("Label",fi.propertyFullName)
+      if(fi.details.filter_text){
+        code=code.replaceAll("HelperText",fi.details.filter_text)
+      }else{
+        code=code.replaceAll("HelperText","")
+      }
+      $("#"+fi.details.class+"_filters").append($(code)).ready(function () {
+        ////////console.log(code)
+        ECL.autoInit();
+        var select=document.getElementById("select-default")
+        select.name = fi.details.property;
+        select.id = fi.id;
+        ////////////////console.log(fi.id)
+  
+        let valuesFilter=fi.values
+        ////////console.log(valuesFilter)
+        addOptionsSelect(select,valuesFilter,false)
+        if(fi.elValue){
+          select.value = fi.elValue;
+        }else{
+          select.value = valuesFilter[0];
+        }
+      }) 
+    });
+    ////////console.log("despues del codigo de añadir el código")
+    /* ECL.autoInit();
+    var select=document.getElementById("select-default")
+    select.name = fi.details.property;
+    select.id = fi.id;
+    ////////////////console.log(fi.id)
+
+    let valuesFilter=fi.values
+    //////////////console.log(valueFilter)
+    addOptionsSelect(select,valuesFilter,false)
+    if(fi.elValue){
+      select.value = fi.elValue;
+    }else{
+      select.value = valuesFilter[0];
+    } */
+    
+
+/*     fi.htmlEl=document.getElementById(fi.id)
+
+    //////////////console.log(code)
     code=code.replace("Label",this.propertyFullName)
     if(this.details.filter_text){
       code=code.replaceAll("HelperText",this.details.filter_text)
@@ -222,25 +394,28 @@ class FilterBasicDropdown extends FilterBasic {
     
     $("#"+this.details.class+"_filters").append(code).ready(function () {
       ECL.autoInit();
-    })
+      var select=document.getElementById("select-default")
+      select.name = fi.details.property;
+      select.id = fi.id;
+      ////////////////console.log(fi.id)
+  
+      let valuesFilter=fi.values
+      //////////////console.log(valueFilter)
+      addOptionsSelect(select,valuesFilter,false)
+      if(fi.elValue){
+        select.value = fi.elValue;
+      }else{
+        select.value = valuesFilter[0];
+      }
+      
+  
+      fi.htmlEl=document.getElementById(fi.id)
+    }) */
 
-    var select=document.getElementById("select-default")
-    select.name = fi.details.property;
-    select.id = fi.id;
 
-    let valuesFilter=fi.values
-    addOptionsSelect(select,valuesFilter,false)
-    if(fi.elValue){
-      select.value = fi.elValue;
-    }else{
-      select.value = valuesFilter[0];
-    }
-    
-
-    fi.htmlEl=document.getElementById(fi.id)
     
   }
-  checkConditionNode(node){
+/*   checkConditionNode(node){
     let elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
 
@@ -248,7 +423,58 @@ class FilterBasicDropdown extends FilterBasic {
       return false
     }else{
       if(node[this.details.property]){
-        if(elValue==node[this.details.property].toLowerCase()){
+        ////////////////console.log(elValue)
+        ////////////////console.log(node[this.details.property].toLowerCase())
+        if(elValue.toLowerCase()==node[this.details.property].toLowerCase()){
+          return false
+        }else{
+          return true
+        }
+      }else{
+        return true
+      }
+    }
+  } */
+  addValuesField(values,filterId){
+    //console.log(this);
+    if(!this.valuesChanged){
+      if((this.details.parent)&&(this.details.parent!=filterId.replace("_filter",""))){
+        //if(networkGraph.filterClassesObjects.findIndex((element)=>)
+        let index=networkGraph.filterClassesObjects.findIndex((element) => element.children.some((subElement) => subElement.details.property === this.details.parent))
+        if(index==-1){
+          $(("#accordion-filters #"+this.details.property+"_filter")).empty();
+          var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+          ////////////////console.log(this.details.property+"_filter")
+          ////////////////console.log(select)
+          if(values.length>1){
+            values=["All"].concat(values)
+          }
+          addHtmlOptionsSelect(select,values,false)
+        }
+      }else{
+        $(("#accordion-filters #"+this.details.property+"_filter")).empty();
+        var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+        ////////////////console.log(this.details.property+"_filter")
+        ////////////////console.log(select)
+        if(values.length>1){
+          values=["All"].concat(values)
+        }
+        addHtmlOptionsSelect(select,values,false)
+      }
+    }
+  }
+  checkConditionNode(node){
+    let elValue=$("#"+this.details.property+"_filter").val()
+    this.elValue=elValue
+    ////console.log(this)
+    ////console.log(elValue)
+    if(elValue=="All"){
+      return false
+    }else{
+      if(node[this.details.property]){
+        ////////////////console.log(elValue)
+        ////////////////console.log(node[this.details.property].toLowerCase())
+        if(elValue.toLowerCase()==node[this.details.property].toLowerCase()){
           return false
         }else{
           return true
@@ -258,35 +484,45 @@ class FilterBasicDropdown extends FilterBasic {
       }
     }
   }
-  addValuesField(){
-    this;
-    $(("#accordion-filters #"+this.details.property)).empty();
-    var select = document.querySelector("#accordion-filters #"+this.details.property);
-    addOptionsSelect(select,this.values,false)
+  addValuesChanged(values){
+    //super.valuesChanged(values);
+    ////console.log("entra")
+    ////console.log(document.getElementById(this.id))
+    this["valuesChanged"]=values
   }
 }
 
 class FilterBasicDate extends FilterBasic {
   async addHtml() {
+    var fi=this;
     super.addHtml();
-    let code = await getHtmlCodeFromFile("pages/date-filter.html");
-    code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",this.details.filter_text)
-    $("#"+this.details.class+"_filters").append(code).ready(function () {
-      ECL.autoInit();
+    //let code = await getHtmlCodeFromFile("pages/date-filter.html");
+
+    await $.get("pages/date-filter.html", function (code) {
+      code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",fi.details.filter_text)
+      $("#"+fi.details.class+"_filters").append(code).ready(function () {
+        ECL.autoInit();
+        $("#"+fi.details.class+"_filters #start-date").attr("value",fi.values[0])
+      $("#"+fi.details.class+"_filters #start-date").attr("name",fi.details.property+"_start")
+      $("#"+fi.details.class+"_filters #start-date").attr("id",fi.details.property+"_filter_start")
+
+      $("#"+fi.details.class+"_filters #end-date").attr("value",fi.values[fi.values.length-1])
+      $("#"+fi.details.class+"_filters #end-date").attr("name",fi.details.property+"_end")
+      $("#"+fi.details.class+"_filters #end-date").attr("id",fi.details.property+"_filter_end")
+      })
+      ////////////////console.log(this.values[0])
+      /* $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
+      $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
+      $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_filter_start")
+
+      $("#"+this.details.class+"_filters #end-date").attr("value",this.values[this.values.length-1])
+      $("#"+this.details.class+"_filters #end-date").attr("name",this.details.property+"_end")
+      $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_filter_end") */
     })
-
-    $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
-    $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
-    $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_start")
-
-    $("#"+this.details.class+"_filters #end-date").attr("value",this.values[this.values.length-1])
-    $("#"+this.details.class+"_filters #end-date").attr("name",this.details.property+"_name")
-    $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_end")
-    
   }
   checkConditionNode(node){
-    let startDate=$("#"+this.details.property+"_start").val()
-    let endDate=$("#"+this.details.property+"_end").val()
+    let startDate=$("#"+this.details.property+"_filter_start").val()
+    let endDate=$("#"+this.details.property+"_filter_end").val()
 
     if((formatDate(node[this.details.property])>=formatDate(startDate))&&(formatDate(node[this.details.property])<=formatDate(endDate))){
       return false
@@ -294,24 +530,81 @@ class FilterBasicDate extends FilterBasic {
       return true
     }
   }
+  addValuesField(values,filterId){
+    ////////////////console.log(this.values);
+    $(("#accordion-filters #"+this.details.property+"_filter_start")).val(values[0]);
+    $(("#accordion-filters #"+this.details.property+"_filter_end")).val(values[values.length-1]);
+
+    //var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
+    //addHtmlOptionsSelect(select,this.values,false)
+  }
+  addValuesChanged(values){
+    this["valuesChanged"]=values
+  }
 }
+
 class FilterBasicText extends FilterBasic {
   async addHtml() {
+    var fi=this;
     super.addHtml();
-    let code = await getHtmlCodeFromFile("pages/text-filter.html");
-    code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",this.details.filter_text).replaceAll("Placeholder text","Enter "+this.propertyFullName).replaceAll("example-input-id-1",this.id)
-    $("#"+this.details.class+"_filters").append(code).ready(function () {
+/*     let code = await getHtmlCodeFromFile("pages/text-filter.html");
+    code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text).replaceAll("Placeholder text","Enter "+fi.propertyFullName).replaceAll("example-input-id-1",fi.id)
+    $("#"+fi.details.class+"_filters").append(code).ready(function () {
       //ECL.autoInit();
     })
-    let docs=document.getElementsByClassName(this.details.class)
+    let docs=document.getElementsByClassName(fi.details.class)
     let searchValues=[]
     for (let d of docs) {
         searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0]["value"])
     }
-    this.htmlEl=document.getElementById(this.id)
+    fi.htmlEl=document.getElementById(fi.id)
 
-    autocomplete(document.getElementById(this.id), searchValues);
+    autocomplete(document.getElementById(fi.id), searchValues); */
+
+
+    await $.get("pages/text-filter.html", function (code) {
+      code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text).replaceAll("Placeholder text","Enter "+fi.propertyFullName).replaceAll("example-input-id-1",fi.id)
+      $("#"+fi.details.class+"_filters").append(code).ready(function () {
+        //ECL.autoInit();
+      })
+      let docs=document.getElementsByClassName(fi.details.class)
+      let searchValues=[]
+      for (let d of docs) {
+          searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0]["value"])
+      }
+      fi.htmlEl=document.getElementById(fi.id)
+
+      autocomplete(document.getElementById(fi.id), searchValues,1);
+      })
+
+      document.getElementById(fi.id).addEventListener("keyup", function(event) {
+        if (event.key === 'Enter' ) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          fi.addValuesChanged($("#"+fi.id).val())
+          //navPanel.valueSelected()
+          closeAllLists()
+          relatedFilters(document.getElementById(fi.id))
+        }
+        
+/*         else{
+          if(this.value==""){
+            $("#nav-search").addClass("hidden")
+          }else{
+            $("#nav-search").removeClass("hidden")
+          }
+        } */
+      })
+      ////////////////console.log(this.values[0])
+      /* $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
+      $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
+      $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_filter_start")
+
+      $("#"+this.details.class+"_filters #end-date").attr("value",this.values[this.values.length-1])
+      $("#"+this.details.class+"_filters #end-date").attr("name",this.details.property+"_end")
+      $("#"+this.details.class+"_filters #end-date").attr("id",this.details.property+"_filter_end") */
   }
+
   checkConditionNode(node){
     const elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
@@ -324,6 +617,14 @@ class FilterBasicText extends FilterBasic {
     }else{
       return false
     }
+  }
+  addValuesField(values,filterId){
+    //this.htmlEl=document.getElementById(fi.id)
+
+    autocomplete(document.getElementById(this.id), values,1);
+  }
+  addValuesChanged(values){
+    this["valuesChanged"]=values
   }
 }
 
@@ -351,7 +652,7 @@ class FilterBasicNumber extends FilterBasic {
       document.getElementById(fi.classFilterName+"_filters").appendChild(label);
       document.getElementById(fi.classFilterName+"_filters").appendChild(div).appendChild(textInput); */
     }
-    checkConditionNode(node){
+    //checkConditionNode(node){
 /*       const filterValue=$("#"+this.details.property+"_filter").val()
       if(filterValue!=""){
         if(node[this.details.property]!=$("#"+this.details.property+"_filter").val()){
@@ -362,8 +663,11 @@ class FilterBasicNumber extends FilterBasic {
       }else{
         return false
       } */
+      addValuesChanged(values){
+        this["valuesChanged"]=values
+      }
 
-    }
+    //}
   }
 
 
@@ -419,11 +723,11 @@ FilterExpert.prototype.addHtml=function (){
 
     var div = document.createElement("div");
     div.className="relative"
-    ////console.log(fi)
+    ////////////////////console.log(fi)
 /*     div.id=fi.details.property.replaceAll(" ","_")+"_root"
     fi.id=fi.details.property.replaceAll(" ","_");
 
-    fi.propertyFullName=configRow.rowFields.properties.filter(d=>d.property==fi.details.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.details.class],"").trim()
+    fi.propertyFullName=configRow.properties.filter(d=>d.property==fi.details.property)[0]["property_name"].replace(networkGraph.nodesClassesShow[fi.details.class],"").trim()
     
     fi.mainHtmlEl=div
 
@@ -439,32 +743,32 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var valuesFilter;
     super.addHtml();
-    ////console.log(this)
+    ////////////////////console.log(this)
     let code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     code=code.replace("Label",this.details.field)
-    console.log($("#"+this.details.internalClass+"_filters"))
+    ////////////////console.log($("#"+this.details.internalClass+"_filters"))
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
       ECL.autoInit();
     });
-    console.log(this)
+    ////////////////console.log(this)
     var select=document.getElementById("select-multiple")
     select.name = this.details.internalClass + "_"+ this.details.field;
     select.id = this.details.internalClass + "_"+ this.details.field;
 
     if(this.details.field=="type"){
-      if(linkedDataGraph.settings["subject-object"]=="s"){
-        valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.o.type))].sort()
+      if(configRow.option.position=="s"){
+        valuesFilter=[...new Set(configRow.results.map(d=>d.o.type))].sort()
       }else{
-        valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.s.type))].sort()
+        valuesFilter=[...new Set(configRow.results.map(d=>d.s.type))].sort()
       }
     }else if(this.details.field=="values"){
-      if(linkedDataGraph.settings["subject-object"]=="s"){
-        valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.o.value))].sort()
+      if(configRow.option.position=="s"){
+        valuesFilter=[...new Set(configRow.results.map(d=>d.o.value))].sort()
       }else{
-        valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.s.value))].sort()
+        valuesFilter=[...new Set(configRow.results.map(d=>d.s.value))].sort()
       }
     }else{
-      valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.p.value))].sort()
+      valuesFilter=[...new Set(configRow.results.map(d=>d.p.value))].sort()
     }
     /* if(valuesFilter.length>1){
       valuesFilter.unshift("All")
@@ -472,9 +776,9 @@ class FilterExpertDropdown extends FilterExpert {
     
     
     //let valuesFilter=this.values
-    //////console.log("addOptions")
+    //////////////////////console.log("addOptions")
     addOptionsSelect(select,valuesFilter,true)
-    ////console.log(select)
+    ////////////////////console.log(select)
     //select.value = "Select all";
     //selected=""
 
@@ -495,11 +799,11 @@ class FilterExpertDropdown extends FilterExpert {
       }
     }
   }
-  addValuesField(){
+  addValuesField(values,filterId){
     this;
     $(("#accordion-filters #"+this.details.property)).empty();
     var select = document.querySelector("#accordion-filters #"+this.details.property);
-    addOptionsSelect(select,this.values,true)
+    addOptionsSelect(select,values,true)
   }
 }
 
@@ -507,10 +811,10 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var valuesFilter;
     super.addHtml();
-    ////console.log(this)
+    ////////////////////console.log(this)
     let code = await getHtmlCodeFromFile("pages/select-filter.html");
     code=code.replace("Label",this.details.field)
-    ////console.log($("#"+this.details.internalClass+"_filters"))
+    ////////////////////console.log($("#"+this.details.internalClass+"_filters"))
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
       ECL.autoInit();
     });
@@ -520,13 +824,13 @@ class FilterExpertDropdown extends FilterExpert {
     select.id = this.details.internalClass + "_"+ this.details.field;
 
     if(this.details.field=="type"){
-      if(linkedDataGraph.settings["subject-object"]=="s"){
+      if(configRow.option.position=="s"){
         valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.o.type))].sort()
       }else{
         valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.s.type))].sort()
       }
     }else if(this.details.field=="values"){
-      if(linkedDataGraph.settings["subject-object"]=="s"){
+      if(configRow.option.position=="s"){
         valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.o.value))].sort()
       }else{
         valuesFilter=[...new Set(linkedDataGraph.results.map(d=>d.s.value))].sort()
@@ -545,7 +849,7 @@ class FilterExpertDropdown extends FilterExpert {
 
     code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
-      ////console.log(code)
+      ////////////////////console.log(code)
       ECL.autoInit();
     });
   }
@@ -565,7 +869,7 @@ class FilterExpertDropdown extends FilterExpert {
       }
     }
   }
-  addValuesField(){
+  addValuesField(values){
     this;
     $(("#accordion-filters #"+this.details.property)).empty();
     var select = document.querySelector("#accordion-filters #"+this.details.property);

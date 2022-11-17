@@ -1,27 +1,33 @@
-<nav class="ecl-pagination" aria-label="Pagination">
-  <ul class="ecl-pagination__list">
-    <li class="ecl-pagination__item ecl-pagination__item--previous"><a href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-before ecl-pagination__link"
-        aria-label="Go to previous page"><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-link__icon"
-          focusable="false" aria-hidden="true">
-          <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-        </svg><span class="ecl-link__label">Previous</span></a></li>
-    <li class="ecl-pagination__item"><a href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 24">24</a></li>
-    <li class="ecl-pagination__item"><a href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 25">25</a></li>
-    <li class="ecl-pagination__item ecl-pagination__item--current"><span
-        class="ecl-pagination__text ecl-pagination__text--summary" aria-current="true">26</span><span
-        class="ecl-pagination__text ecl-pagination__text--full" aria-current="true">Page 26</span></li>
-    <li class="ecl-pagination__item"><a href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 27">27</a></li>
-    <li class="ecl-pagination__item"><a href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 28">28</a></li>
-    <li class="ecl-pagination__item ecl-pagination__item--next"><a href="/component-library/example"
-        class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-pagination__link"
-        aria-label="Go to next page"><span class="ecl-link__label">Next</span><svg
-          class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
-          <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-        </svg></a></li>
-  </ul>
-</nav>
+<div class="ecl-u-ml-l" id="div-pagination">
+    <div>
+        <p class="ecl-u-type-paragraph ecl-u-bg-white">
+            Showing
+            <span class="font-medium" id="numStart"></span>
+            to
+            <span class="font-medium" id="numEnd"></span>
+            of
+            <span class="font-medium" id="numTot"></span>
+            results
+        </p>
+    </div>
+    <nav class="ecl-pagination" aria-label="Pagination">
+        <ul class="ecl-pagination__list">
+            <li class="ecl-pagination__item ecl-pagination__item--previous" id="page-prev" style="display:none">
+                <a href="#" class="page ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-before ecl-pagination__link" aria-label="Go to previous page" onclick="showLines(this)">
+                    <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-link__icon" focusable="false" aria-hidden="true">
+                        <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                    </svg>
+                    <span class="ecl-link__label">Previous</span>
+                </a>
+            </li>
+            <li class="hidden ecl-pagination__item ecl-pagination__item--next" id="page-next" style="display:none">
+                <a href="#" class="page ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-pagination__link" aria-label="Go to next page" onclick="showLines(this)">
+                    <span class="ecl-link__label">Next</span>
+                    <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
+                        <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

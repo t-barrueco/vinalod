@@ -3,9 +3,15 @@
       showWordcloud(rowInConfigFile,data)
     }else if(rowInConfigFile["type"]=="WIKIPEDIA"){
       console.log("wikipedia")
+      showWikipediaPage(rowInConfigFile,data)
     }else if(rowInConfigFile["type"]=="TABLE"){
       showTable(rowInConfigFile,data)
+    }else if(rowInConfigFile["type"]=="BARCHART"){
+      showBarchart(rowInConfigFile,data)
+    }else if(rowInConfigFile["type"]=="LINECHART"){
+      showLinechart(rowInConfigFile,data)
     }
+
   }
   function getModal2(){
     if($("#modal-content2 #modalGraph")){
@@ -251,7 +257,7 @@
   
   async function showWordcloud(rowInConfigFile,node){
     var results;
-    
+    console.log(node)
     const title=rowInConfigFile.option + " - " + node.value
 
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
@@ -293,16 +299,78 @@
       return treeData
   }
   
-  async function showWikipediaPage(data,modalHeader,modalContent,rowDataConfig){
-    var results,node,page,parameters,parameterTemp="";
-  
-    node=data
-    url=rowDataConfig["endpoint_url"]
-    sparqlQuery=rowDataConfig["query"]
+  async function showWikipediaPage(rowInConfigFile,node){
+    var results,page;
+
+    console.log(rowInConfigFile)
+    var sparqlQuery=rowInConfigFile.query
+    sparqlQuery=sparqlQuery.replace("PARAMETER2", node[rowInConfigFile.parameters[0]["property"]]);
+/*     for (i = 0; i < rowInConfigFile.parameters.length; ++i) { 
+      sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[rowInConfigFile.parameters[i]]);
+    }  */ 
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,sparqlQuery,"query")
+    console.log(results)
+    /* url=configRow["endpoint_url"]
     prefixes=""
-    parameters=rowDataConfig["parameters"]
+    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   
-    if(parameters.length>0){
+    results = await runSparlqQuery(settings) */
+    const title=rowInConfigFile.option + " - " + node.value
+
+    const modalHeader=getModalHeader()
+    modalHeader.innerHTML = title
+
+    page=results[0]["article"]["value"]
+
+    modalVisibilityOn()
+
+    const modalContent=getModalContent()
+
+    var div=document.createElement("div")
+      div.className="h-full"
+      div.setAttribute("id","modalGraph")
+      div.setAttribute("style","overflow: auto")
+      modalContent.appendChild(div)
+      iframe=d3.select("#modalGraph").append("iframe")
+      .attr("src",page)
+        .style("width", "100%")
+        .style("height","100%");
+
+/*     var div=document.createElement("div")
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto")
+    modalContent.appendChild(div)
+
+    iframe=d3.select("#modalGraph").append("iframe")
+      .attr("src",page)
+        .style("width", "100%")
+        .style("height","100%"); */
+    //var mainEl=document.getElementById("modalGraph")
+
+    //console.log(document.getElementById("modalGraph"))
+    /* const modalContent=getModalContent()
+
+    var div=document.createElement("div")
+    div.className="h-full"
+    div.setAttribute("id","modalGraph")
+    div.setAttribute("style","overflow: auto")
+    modalContent.appendChild(div)
+
+    console.log(modalContent)
+ */
+/*     iframe=document.createElement("iframe")
+    iframe.setAttribute("src",page)
+    iframe.setAttribute("style","width: 100%; height: 100%") */
+/*       .style("width", "100%")
+      .style("height","100%"); */
+
+    //var mainEl=document.getElementById("modalGraph")
+    //mainEl.appendChild(iframe)
+    
+    //modalVisibilityOn()
+  
+    /* if(parameters.length>0){
       parameters=get_parameters(parameters)
       for (let i = 0; i < parameters.length; ++i) { 
         sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
@@ -337,7 +405,7 @@
     } catch (e) {
       ////////////console.log(e)
       results = false
-    }
+    } */
 
 
 /*     $.ajax(settings).then  (function( _data ) {
@@ -383,4 +451,49 @@
         //minHeight: 150
       });
       $("#myModal2").draggable()
+  }
+  async function showBarchart(rowInConfigFile,node){
+    var results;
+    console.log(node)
+    const title=rowInConfigFile.option + " - " + node.value
+
+    const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
+
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    data=transformDataBarchart(results)
+    createBarchart(data,title)
+  
+    function transformDataBarchart(results){
+      var resultsTransformed=[]
+      console.log(results)
+      results.forEach(function(r){
+        resultsTransformed.push({"Category":r["category"]["value"],"Number":r["number"]["value"]})
+      })
+      return resultsTransformed
+    }
+  }
+
+  async function showLinechart(rowInConfigFile,node){
+    var results;
+    console.log(node)
+    console.log(rowInConfigFile.query)
+    const query=rowInConfigFile.query.replace("PARAMETER2",node[rowInConfigFile.parameters[0]["property"]]).replace("PARAMETER",node[node.class+"_uri"])
+
+    results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
+    data=transformDataLinechart(results)
+
+    const title=rowInConfigFile.option + " - " + node.value
+
+    createLinechart(data,title)
+  
+    function transformDataLinechart(results){
+      var resultsTransformed=[]
+      console.log(results)
+      results.forEach(function(r){
+        resultsTransformed.push({"date":d3.timeParse("%Y-%m-%d")(r["publicationDocument_date"]["value"]),"value":+r["publicationDocument_dateNumber"]["value"]})
+        //resultsTransformed.push({"Theme":r["opTheme"]["value"],"Number":r["opTheme_number"]["value"]})
+      })
+      return resultsTransformed
+      //return resultsTransformed
+    }
   }
