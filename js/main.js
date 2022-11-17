@@ -863,7 +863,7 @@ function applyFilters(){
   linkedDataGraph.treeData=linkedDataGraph.treeDataFiltered
   linkedDataGraph.flatten()
   //linkedDataGraph.filter()
-  networkGraph.refresh()
+  networkGraph.refreshNoFilters()
 }
 
 function startExpert(origin,element){
@@ -923,6 +923,7 @@ async function checkGraph(option,node){
     ////////////console.log(option)
     ////////////console.log(node)
     await linkedDataGraph.update(option,node)
+
     networkGraph.refresh()
   }else{
     //////////////console.log(rowInConfigFile)
@@ -1061,6 +1062,7 @@ function clickElNavigationPanel(el){
 function setValuesFilters(filterId){
   networkGraph.filterClassesObjects.forEach(function (cf){
     ////////console.log(cf)
+    console.log(filterId)
     cf.setValuesFilters(filterId)
     /* cf.filters.forEach(function(f){
       if(f.details.property!=name){
