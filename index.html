@@ -184,7 +184,7 @@
 
         <div>
 <!--           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-4">
- -->          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+ -->          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-4">
 
             <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
               <dd class="mt-1 text-sm font-semibold text-gray-900">
@@ -207,29 +207,34 @@
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
-                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                <fieldset class="ecl-form-group" aria-describedby="helper-show-duplicates">
                   <legend class="ecl-form-label">Show duplicates?<span class="ecl-form-label__required">*</span></legend>
-                  <div class="ecl-help-block" id="helper-id-2">Show duplicates nodes for a more clear graph</div>
+                  <div class="ecl-help-block" id="helper-show-duplicates">Show duplicates nodes for a more clear graph</div>
               </svg>
-                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-1" name="radio-group-2" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-2-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
-                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
+                  <div class="ecl-radio ecl-radio--binary"><input id="show-duplicates-yes" name="show-duplicates" class="ecl-radio__input" type="radio" value="yes" checked required onchange="showDuplicates(this.value)"/><label class="ecl-radio__label" for="show-duplicates-yes"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
+                  <div class="ecl-radio ecl-radio--binary"><input id="show-duplicates-no" name="show-duplicates" class="ecl-radio__input" type="radio" value="no" required onchange="showDuplicates(this.value)"/><label class="ecl-radio__label" for="show-duplicates-no"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
                 </fieldset>
               </div>
             </div> 
 
-<!--             <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
+                </div> 
+                <div class="ecl-form-group">
+                  <label for="cluster-number" class="ecl-form-label">Max. number of results not grouped</label>
+                  <div class="ecl-help-block">Max. number of results not grouped in node.</div>
+                  <input type="text" id="cluster-number" class="ecl-text-input ecl-text-input--m" placeholder="Enter number..." value="300" />
                 </div>
-                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
-                  <legend class="ecl-form-label">Show duplicates?<span class="ecl-form-label__required">*</span></legend>
-                  <div class="ecl-help-block" id="helper-id-2">Show duplicates nodes for a more clear graph</div>
-              </svg>
-                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-1" name="radio-group-2" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-2-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
-                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
-                </fieldset>
-              </div>
-            </div>  -->
+<!--                 <fieldset class="ecl-form-group" aria-describedby="helper-id-3">
+                  <legend class="ecl-form-label">Show duplicates?</legend>
+                  <div class="ecl-help-block" id="helper-id-3">Show duplicates nodes for a more clear graph</div> -->
+<!--               </svg>
+ --><!--                   <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-1" name="radio-group-2" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-2-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
+                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div> -->
+<!--                 </fieldset>
+ -->              </div>
+            </div> 
           </dl>
         </div>
         

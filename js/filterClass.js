@@ -7,7 +7,7 @@ FilterClass = function (_name) {
 FilterClass.prototype.init= async function(){
   var cf=this;
   cf.filters=[]
-  //console.log("initfilters")
+  //////////console.log("initfilters")
   await cf.initFilters()
 }
 
@@ -23,8 +23,9 @@ FilterClass.prototype.getCode= async function(){
 
 FilterClass.prototype.checkHidden=async function(){
   var cf=this,hidden=true;
-
+  ////////console.log("check hidden")
   for(i=0;i<cf.filters.length;i++){
+    ////////console.log(cf.filters[i])
     if(!cf.filters[i].hidden){
       hidden=false
     }
@@ -37,7 +38,7 @@ FilterClass.prototype.checkHidden=async function(){
 }
 
 FilterClass.prototype.hide=async function(){
-  console.log(this)
+  ////////console.log(this)
   $( "#"+this.name+"_filters" )
   .closest( "#accordion-filters" )
   .hide();
@@ -45,8 +46,8 @@ FilterClass.prototype.hide=async function(){
 }
 
 FilterClass.prototype.show=async function(){
-  console.log(this)
-  console.log(this)
+  ////////console.log(this)
+  ////////console.log(this)
   $( "#"+this.name+"_filters" )
   .closest( "#accordion-filters" )
   .show();
@@ -72,24 +73,23 @@ FilterClassBasic.prototype.setValuesFilters= function(filterId){
 
 FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
   var cf=this,hidden=false;
-  ////////console.log(hidden)
+  ////////////////console.log(hidden)
   cf.filters.forEach(function(f){
       //for (let i = 0; i < cf.filters.length; ++i) 
-      if(f.id==filterId){
-        let condition=f.checkConditionNode(node)
-        //////////////////////console.log(filters[i])
-        //////////////////////console.log(condition)
+      //condition=false;
+      var condition;
+      if(filterId){
+        if(f.id==filterId){
+          condition=f.checkConditionNode(node)
+        }
+      }else{
+        condition=f.checkConditionNode(node)
+      }
       if(condition){
-          //////////////////////////////console.log("true")
-          hidden=true
-          //break;
-        //}else{
-          //////////////////////////////console.log("false")
+        hidden=true
       }
-      }
-
   })
-  ////////console.log(hidden)
+  ////////////////console.log(hidden)
   return hidden;
 }
 
@@ -100,13 +100,13 @@ FilterClassBasic.prototype.setTitle = async function () {
 
 FilterClassBasic.prototype.initFilters = async function () {
   var cf=this;
-  //console.log("initFilters")
+  //////////console.log("initFilters")
   let filters=configRow.filters.filter(d=>d.class==cf.name)
-  //console.log(filters)
+  //////////console.log(filters)
   cf.getCode()
-  //console.log(filters.length)
+  //////////console.log(filters.length)
   for (let i = 0; i < filters.length; i++) {
-    //console.log(filters[i])
+    //////////console.log(filters[i])
     await cf.addFilterType(filters[i],false)
   }
   //ECL.autoInit()
@@ -115,14 +115,14 @@ FilterClassBasic.prototype.initFilters = async function () {
 
 FilterClassBasic.prototype.addFilterType = async function (filter,imported) {
   var cf=this,fi;
-  //////////////////console.log(filter)
-  //////////////////console.log(imported)
+  //////////////////////////console.log(filter)
+  //////////////////////////console.log(imported)
   if(filter["filter_type"]=="dropdown"){
-    //////////console.log("antes FilterBasicDropdown")
+    //////////////////console.log("antes FilterBasicDropdown")
     fi=new FilterBasicDropdown(filter,imported)
     await fi.init()
     cf.filters.push(fi)
-    //////////console.log("despues de FilterBasic Dropdown")
+    //////////////////console.log("despues de FilterBasic Dropdown")
   }else if(filter["filter_type"]=="date"){
     fi=new FilterBasicDate(filter,imported)
     await fi.init()
@@ -139,9 +139,9 @@ FilterClassBasic.prototype.addFilterType = async function (filter,imported) {
 
 FilterClassBasic.prototype.addFilterTypeImported = async function (filter,imported) {
   var cf=this,fi;
-  //////////////////console.log(filter)
-  //////////////////console.log(imported)
-  //////////////////console.log(cf)
+  //////////////////////////console.log(filter)
+  //////////////////////////console.log(imported)
+  //////////////////////////console.log(cf)
   if(filter.details.filter_type=="dropdown"){
     cf.filters.push(new FilterBasicDropdown(filter,imported))
   }else if(filter.details.filter_type=="date"){
@@ -162,21 +162,21 @@ FilterClassExpert.prototype = Object.create(FilterClass.prototype);
 FilterClassExpert.prototype.setTitle = async function () {
   var cf=this,name;
   cf.internalName=cf.name.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
-  //////////////////console.log(cf)
+  //////////////////////////console.log(cf)
   cf.code=cf.code.replace("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
 
 FilterClassExpert.prototype.initFilters = async function (){
   var cf=this;
-  //////////////////console.log("init filters")
+  //////////////////////////console.log("init filters")
   //cf.filters=networkGraph.filters.filter(d=>d.class==cf.name)
-  ////////////////console.log(cf)
+  ////////////////////////console.log(cf)
   cf.internalClass=configRow.node.uri.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
   cf.filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
   cf.filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"properties","internalClass":cf.internalClass,"id":cf.internalClass+"_properties"})
   cf.filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"values","internalClass":cf.internalClass,"id":cf.internalClass+"_values"})
   
-  //////////////////console.log(cf)
+  //////////////////////////console.log(cf)
   cf.code=await cf.getCode()
 
   $("#accordion-filters").append(cf.code).ready(async function (){
@@ -193,41 +193,41 @@ FilterClassExpert.prototype.initFilters = async function (){
 FilterClassExpert.prototype.setValuesFilters = function(){
   var cf=this;
   cf.filters.forEach(function(f){
-  ////////console.log(f)
+  ////////////////console.log(f)
     /* if(f.details.property!=name){
-      //////////////////console.log(f.htmlEl)
-      //////////////////console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
+      //////////////////////////console.log(f.htmlEl)
+      //////////////////////////console.log(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))
       let valuesFilter=[...new Set(nodes.map(d=>d[f.details.property]).filter(d=>d!=undefined))]
       removeOptionsSelect(f)
-      //////////////////console.log(valuesFilter)
+      //////////////////////////console.log(valuesFilter)
       addOptionsSelect(f.htmlEl,valuesFilter,false)
     } */
   })
 }
 
 Filter = function (_details,_imported) {
-    //////////////////console.log(_imported)
+    //////////////////////////console.log(_imported)
     var fi=this
     fi.details=_details
     fi.imported=_imported
     //fi.init()
     /* if(_imported){
-      //////////////////console.log("import")
+      //////////////////////////console.log("import")
       fi.import(_details)
     }else{
       fi.details = _details;
-      //////////////console.log(this)
+      //////////////////////console.log(this)
       fi.init();
     } */
   };  
 Filter.prototype.init= async function () {
   var fi=this;
   if(fi.imported){
-    //////////////////console.log("import")
+    //////////////////////////console.log("import")
     fi.import(fi.details)
   }else{
     await fi.valuesAndHtml();
-    ////////////console.log("despues de values and html")
+    ////////////////////console.log("despues de values and html")
 
   }
 }
@@ -235,25 +235,25 @@ Filter.prototype.valuesAndHtml = async function () {
   var fi=this;
   fi.values=fi.getValuesNodes(networkGraph.data["nodes"])
   await fi.addHtml()
-  ////////////console.log("despues de addHtml")
+  ////////////////////console.log("despues de addHtml")
 
-  //////////////console.log("despues addHtml")
+  //////////////////////console.log("despues addHtml")
 
   }
 
 Filter.prototype.import = function (details) {
     var fi=this;
-    //////////////////console.log(details)
+    //////////////////////////console.log(details)
     Object.keys(details).forEach(function(k){
       fi[k]=details[k]
     })
-    //////////////////console.log(fi)
+    //////////////////////////console.log(fi)
     fi.addHtml()
     //fi.getValuesVisibleNodes()
     //fi.addHtml()
 }
 Filter.prototype.removeValuesChanged=function (){   
-  //////console.log("entra en remove values changed") 
+  //////////////console.log("entra en remove values changed") 
   delete this["valuesChanged"]
 }
 
@@ -320,28 +320,34 @@ FilterBasic.prototype.addHtml= function () {
   }else{
     fi.selection="none"
   }
-  ////////////console.log("al acabar el filter basic genérico")
+  ////////////////////console.log("al acabar el filter basic genérico")
 }
 FilterBasic.prototype.addValuesField= function (values,filterId) {
   var hidden=false;
   let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id === filterId))
   let filterChanged=networkGraph.filterClassesObjects[index]["filters"].filter(f=>f.id==filterId)[0]
   let addValuesResult=this.checkValues(linkedDataGraph.dataFiltered.flatData.nodes)
-  console.log(addValuesResult)
+  ////////console.log(linkedDataGraph.treeDataFiltered)
+  ////////console.log(addValuesResult)
   if(filterChanged.details.class==this.details.class){
     if(!this.valuesChanged){
       this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
     }else if(linkedDataGraph.dataFiltered.flatData.nodes.some((subElement) => subElement[this.details.property]==this.valuesChanged)){
       //SE QUEDA EL MISMO VALOR QUE valuesChanged
+      //console.log(this)
+      //console.log("GET VALUES CHANGED")
+      this.getValuesChanged()
     }else{
       this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
     }
   }else if(addValuesResult.length>0){
+    //console.log(this)
     this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
   }else{
     hidden=true
   }
-
+  ////////console.log(this)
+  ////////console.log(hidden)
   if(hidden){
     this.hide()
   }else{
@@ -350,7 +356,7 @@ FilterBasic.prototype.addValuesField= function (values,filterId) {
   
 }
 FilterBasic.prototype.hide= function () {
-  console.log(this)
+  ////////console.log(this)
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
   .hide();
@@ -359,18 +365,18 @@ FilterBasic.prototype.hide= function () {
 }
 FilterBasic.prototype.checkValues=function(nodes){
   var values;
-  console.log(nodes)
+  ////////console.log(nodes)
   if(nodes){
     values=this.getValuesNodes(nodes)
   }else{
     values=this.getValuesAllNodes()
   }
-  console.log(values)
+  ////////console.log(values)
   return values
 }
 
 FilterBasic.prototype.show= function () {
-  console.log(this)
+  ////////console.log(this)
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
   .show();
@@ -398,83 +404,18 @@ class FilterBasicDropdown extends FilterBasic {
       }) 
     });       
   }
-/*   addValuesField(values,filterId){
-    //console.log(values)
-    //console.log(filterId)
-    //console.log(this.valuesChanged)
-    console.log(this)
-    let addValuesResult=this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
-    console.log(addValuesResult)
-    console.log("que esta pasando")
-    if(addValuesResult){
-      if(!this.valuesChanged){
-        let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id === filterId))
-        let filterChanged=networkGraph.filterClassesObjects[index]["filters"].filter(f=>f.id==filterId)[0]
-        if(filterChanged.details.class==this.details.class){
-          this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
-        }
-      }
-    }else{
-      console.log("else")
-      this.hide()
-      //document.querySelector("p").closest(".near.ancestor")
-
-    }
-  } */
-  /* addValuesField(values,filterId){
-    var hidden=false;
-    let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id === filterId))
-    let filterChanged=networkGraph.filterClassesObjects[index]["filters"].filter(f=>f.id==filterId)[0]
-    let addValuesResult=this.checkValues(linkedDataGraph.dataFiltered.flatData.nodes)
-    console.log(addValuesResult)
-    if(filterChanged.details.class==this.details.class){
-      if(!this.valuesChanged){
-        this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
-      }else if(linkedDataGraph.dataFiltered.flatData.nodes.some((subElement) => subElement[this.details.property]==this.valuesChanged)){
-        //SE QUEDA EL MISMO VALOR QUE valuesChanged
-      }else{
-        this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
-      }
-    }else if(addValuesResult.length>0){
-      this.addValues(linkedDataGraph.dataFiltered.flatData.nodes)
-    }else{
-      hidden=true
-    }
-
-    if(hidden){
-      this.hide()
-    }else{
-      this.show()
-    }
-    
-  }
-  hide(){
-    console.log(this)
-    $( "#"+this.id )
-    .closest( ".ecl-form-group" )
-    .hide();
-    this.hidden=true
-    networkGraph.filterClassesObjects.filter(cf=>cf.name==this.details.class)[0].checkHidden()
-  }
-  show(){
-    console.log(this)
-    $( "#"+this.id )
-    .closest( ".ecl-form-group" )
-    .show();
-    delete this.hidden
-    networkGraph.filterClassesObjects.filter(cf=>cf.name==this.details.class)[0].checkHidden()
-  } */
   checkConditionNode(node){
     let elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
-    //////console.log(this)
-    //////console.log(elValue)
+    ////////console.log(this)
+    ////console.log(elValue)
+    ////////console.log(node)
     if(elValue=="All"){
       return false
     }else{
       if(node[this.details.property]){
-        //////////////////console.log(elValue)
-        //////////////////console.log(node[this.details.property].toLowerCase())
+        ////////console.log(elValue)
+        ////////console.log(node[this.details.property].toLowerCase())
         if(elValue.toLowerCase()==node[this.details.property].toLowerCase()){
           return false
         }else{
@@ -487,9 +428,15 @@ class FilterBasicDropdown extends FilterBasic {
   }
   addValuesChanged(values){
     //super.valuesChanged(values);
-    //////console.log("entra")
-    //////console.log(document.getElementById(this.id))
+    //////////////console.log("entra")
+    //////////////console.log(document.getElementById(this.id))
     this["valuesChanged"]=values
+  }
+  getValuesChanged(){
+    //super.valuesChanged(values);
+    //////////////console.log("entra")
+    //////////////console.log(document.getElementById(this.id))
+    select.value=this["valuesChanged"]
   }
   sortValues(values){
     values=[...new Set(values)].sort()
@@ -505,21 +452,31 @@ class FilterBasicDropdown extends FilterBasic {
       values=["All"].concat(values)
     }
     addHtmlOptionsSelect(select,values,false)
-    if(fi.elValue){
-      select.value = fi.elValue;
+    if(values.length!=1){
+      if((fi.elValue)&&(fi.valuesChanged)){
+        select.value=fi.valuesChanged;
+      }else if(fi.elValue){
+        select.value = fi.elValue;
+      }else{
+        select.value = values[0];
+      }
     }else{
       select.value = values[0];
     }
+    
+    //////console.log(select.value)
+    //////console.log(values)
+    //////console.log(fi.elValue)
   }
 /*   checkValues(nodes){
     var values;
-    console.log(nodes)
+    ////////console.log(nodes)
     if(nodes){
       values=this.getValuesNodes(nodes)
     }else{
       values=this.getValuesAllNodes()
     }
-    console.log(values)
+    ////////console.log(values)
     return values
   } */
 }
@@ -542,7 +499,7 @@ class FilterBasicDate extends FilterBasic {
       $("#"+fi.details.class+"_filters #end-date").attr("name",fi.details.property+"_end")
       $("#"+fi.details.class+"_filters #end-date").attr("id",fi.details.property+"_filter_end")
       })
-      //////////////////console.log(this.values[0])
+      //////////////////////////console.log(this.values[0])
       /* $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
       $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
       $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_filter_start")
@@ -625,7 +582,7 @@ class FilterBasicText extends FilterBasic {
           }
         } */
       })
-      //////////////////console.log(this.values[0])
+      //////////////////////////console.log(this.values[0])
       /* $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])
       $("#"+this.details.class+"_filters #start-date").attr("name",this.details.property+"_start")
       $("#"+this.details.class+"_filters #start-date").attr("id",this.details.property+"_filter_start")
@@ -769,7 +726,7 @@ FilterExpert.prototype.addHtml=function (){
 
     var div = document.createElement("div");
     div.className="relative"
-    //////////////////////console.log(fi)
+    //////////////////////////////console.log(fi)
 /*     div.id=fi.details.property.replaceAll(" ","_")+"_root"
     fi.id=fi.details.property.replaceAll(" ","_");
 
@@ -789,14 +746,14 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var valuesFilter;
     super.addHtml();
-    //////////////////////console.log(this)
+    //////////////////////////////console.log(this)
     let code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     code=code.replace("Label",this.details.field)
-    //////////////////console.log($("#"+this.details.internalClass+"_filters"))
+    //////////////////////////console.log($("#"+this.details.internalClass+"_filters"))
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
       ECL.autoInit();
     });
-    //////////////////console.log(this)
+    //////////////////////////console.log(this)
     var select=document.getElementById("select-multiple")
     select.name = this.details.internalClass + "_"+ this.details.field;
     select.id = this.details.internalClass + "_"+ this.details.field;
@@ -822,9 +779,9 @@ class FilterExpertDropdown extends FilterExpert {
     
     
     //let valuesFilter=this.values
-    ////////////////////////console.log("addOptions")
+    ////////////////////////////////console.log("addOptions")
     addOptionsSelect(select,valuesFilter,true)
-    //////////////////////console.log(select)
+    //////////////////////////////console.log(select)
     //select.value = "Select all";
     //selected=""
 
@@ -857,10 +814,10 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var valuesFilter;
     super.addHtml();
-    //////////////////////console.log(this)
+    //////////////////////////////console.log(this)
     let code = await getHtmlCodeFromFile("pages/select-filter.html");
     code=code.replace("Label",this.details.field)
-    //////////////////////console.log($("#"+this.details.internalClass+"_filters"))
+    //////////////////////////////console.log($("#"+this.details.internalClass+"_filters"))
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
       ECL.autoInit();
     });
@@ -895,7 +852,7 @@ class FilterExpertDropdown extends FilterExpert {
 
     code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     $("#"+this.details.internalClass+"_filters").append(code).ready(function () {
-      //////////////////////console.log(code)
+      //////////////////////////////console.log(code)
       ECL.autoInit();
     });
   }

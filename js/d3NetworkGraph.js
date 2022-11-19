@@ -393,6 +393,7 @@ NetworkGraph.prototype.enterGraph = function(){
     drawCirclesBasic()
     addTextForCircles()
     drawImageCirclesBasic()
+    //drawShadow()
     drawCirclesFree()
     drawImageClusterFree()
       
@@ -467,6 +468,7 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.nodeCircle=vis.nodeCircle
         .enter().append("g")
         .attr("class", "nodeCircleBasic")
+        //.attr("style","filter:url(#dropshadow)")
         .attr("id",function(d){
           return (d.id+"_g")
         })
@@ -497,6 +499,18 @@ NetworkGraph.prototype.enterGraph = function(){
           
         })
         .attr("r", function(d){
+            //if((d.more_results!="")&&(d.more_results!=undefined)){
+              //return vis.sizeNode(d.more_results)
+            if(d.class=="more_results"){
+              return 50;
+            }else{
+              //return vis.sizeNode(d.number)
+              //return 17;
+              return vis.sizeNode(d.number)
+            }
+          })
+       /*  .attr("r", function(d){
+          console.log(d)
           if(!d.number){
             if((d.more_results!="")&&(d.more_results!=undefined)){
               //return vis.sizeNode(d.more_results)
@@ -508,7 +522,7 @@ NetworkGraph.prototype.enterGraph = function(){
           }else{
             return vis.sizeNode(d.number)
           }
-          })
+          }) */
         .attr("stroke", function(d){
           return "black"
         })
@@ -574,6 +588,123 @@ NetworkGraph.prototype.enterGraph = function(){
           return (d.id+"_image")
         })
         .attr("xlink:href", function(d){
+          if(d.class=="more_results"){
+            return "images/bubbles.svg";
+          }else{
+            let bubbleImg=bubbleImage(d)
+          return bubbleImg;
+          }
+        })
+        .attr("x",function(d){
+          if(d.class=="more_results"){
+            return "-"+(50-4)+"px"
+          }else{
+            return "-"+(vis.sizeNode(d.number)-4)+"px"
+          }
+        })
+        .attr("y",function(d){
+          if(d.class=="more_results"){
+            return "-"+(50-4)+"px"
+          }else{
+            return "-"+(vis.sizeNode(d.number)-4)+"px"
+          }
+        })
+        .attr("width",function(d){
+          if(d.class=="more_results"){
+            return 50*1.5+"px"
+          }else{
+            return (vis.sizeNode(d.number)*1.5)+"px"
+          }
+        })
+        .attr("height",function(d){
+        if(d.class=="more_results"){
+          return 50*1.5+"px"
+        }else{
+          return (vis.sizeNode(d.number)*1.5)+"px"
+        }
+      })
+        .on('dblclick', function(d){
+          handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
+          if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
+            event.pageX=d3.mouse(vis.g.node())[0]
+            event.pageY=d3.mouse(vis.g.node())[0]
+
+            var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
+            var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
+            vis.wrangleData(this,"bubble",d.x + dcx,d.y + dcy);
+          }
+          return false;
+        })
+        .on('mouseover', function(d){
+          handleMouseover(d,this.getAttribute("id").replace("_image",""))
+        })
+        .on('mouseout', function(d){
+          handleMouseout(d,this.getAttribute("id").replace("_image",""))
+        })
+        .on("click",function(d){
+          handleClickEvent(document.getElementById(this.getAttribute("id").replace("_image","")))
+        })
+        .on('contextmenu', (d) => {
+          d3.event.preventDefault();
+          getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
+        })
+        .attr('opacity', function(d) {
+          if(vis.zoomScale>1.5){
+            return 0;
+          }else{
+            return 1;
+          }
+          
+        })
+      }
+      function drawShadow(){
+  
+/*         vis.nodeCircleImage=vis.nodeCircle.append("defs").append("filter")
+        .attr("id", "dropshadow")
+        .attr("x", "-40%")
+        .attr("y", "-40%")
+        .attr("width", "180%")
+        .attr("height", "180%")
+        .append("feGaussianBlur")
+        .attr("in", "SourceAlpha")
+        .attr("stdDeviation", "3")
+        .append("feOffset")
+        .attr("dx", "5")
+        .attr("dy", "5")
+        .attr("result", "offsetblur")
+        .append("feOffset")
+        .attr("dx", "-5")
+        .attr("dy", "-5")
+        .attr("result", "offsetblur")
+        .append("feMerge")
+        .append("feMergeNode")
+        .append("feMergeNode")
+        .attr("in", "SourceGraphic")
+        .append("feMergeNode")
+        .attr("in", "SourceGraphic") */
+        vis.nodeCircleImage=vis.nodeCircle.append("defs").append("filter")
+        .attr("id", "dropshadow")
+        .attr("height", "130%")
+        .append("feGaussianBlur")
+        .attr("in", "SourceAlpha")
+        .attr("stdDeviation", 5)
+        .attr("result", "blur")
+        .append("feOffset")
+        .attr("in", "blur")
+        .attr("dx", 0.5)
+        .attr("dy", 0.5)
+        .attr("result", "offsetBlur")
+        .append("feMerge")
+        .append("feMergeNode")
+        .attr("in", "offsetBlur")
+        .append("feMergeNode")
+        .attr("in", "SourceGraphic")
+        /* 
+        .attr("class", "nodeCircleImage")
+        .attr("id",function(d){
+          return (d.id+"_image")
+        })
+        .attr("xlink:href", function(d){
           let bubbleImg=bubbleImage(d)
           return bubbleImg;
         })
@@ -613,14 +744,15 @@ NetworkGraph.prototype.enterGraph = function(){
             return 1;
           }
           
-        })
+        }) */
+        
       }
-
       function drawCirclesFree(){
         vis.nodeCircleFree=vis.nodeCircleFree
         .enter().append("g")
         .attr("class",function(d){
-          if((d.more_results!="")&&(d.more_results!=undefined)){
+          //if((d.more_results!="")&&(d.more_results!=undefined)){
+          if(d.class=="more_results"){
             return "nodeCircleFree g-cluster"
           }else{
             return "nodeCircleFree"
@@ -633,14 +765,16 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.nodeCircleCircleFree=vis.nodeCircleFree
             .append("circle")
             .attr("class",function(d){
-              if((d.more_results!="")&&(d.more_results!=undefined)){
+              //if((d.more_results!="")&&(d.more_results!=undefined)){
+              if(d.class=="more_results"){
                 return d.class + " nodeCircleCircleFree cluster"
               }else{
                 return d.class + " nodeCircleCircleFree"
               }
             }) 
             .attr("r", function(d){
-              if((d.more_results!="")&&(d.more_results!=undefined)){
+              //if((d.more_results!="")&&(d.more_results!=undefined)){
+              if(d.class=="more_results"){
                 //return vis.sizeNode(d.more_results)
                 return 25;
               }else{
@@ -786,16 +920,41 @@ NetworkGraph.prototype.enterGraph = function(){
         d3.select("#"+circleId)
         .transition()
         .attr("r", function(d) { 
-          return vis.sizeNode(d.number);})
+          if(d.class=="more_results"){
+            return 50;
+          }else{
+            return vis.sizeNode(d.number);
+          }
+          })
         d3.select("#"+circleId+"_image")
         .transition()
-        .attr("x",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
-        .attr("y",function(d){return "-"+(vis.sizeNode(d.number)-4)+"px"})
+        .attr("x",function(d){
+          if(d.class=="more_results"){
+            return "-"+(50-4)+"px"
+          }else{
+            return "-"+(vis.sizeNode(d.number)-4)+"px"
+          }
+        })
+        .attr("y",function(d){
+          if(d.class=="more_results"){
+            return "-"+(50-4)+"px"
+          }else{
+            return "-"+(vis.sizeNode(d.number)-4)+"px"
+          }
+        })
         .attr("width", function(d) { 
-          return (vis.sizeNode(d.number)*1.5)+"px";
+          if(d.class=="more_results"){
+            return 50*1.5+"px"
+          }else{
+            return (vis.sizeNode(d.number)*1.5)+"px"
+          }
         })
         .attr("height", function(d) { 
-          return (vis.sizeNode(d.number)*1.5)+"px";
+          if(d.class=="more_results"){
+            return 50*1.5+"px"
+          }else{
+            return (vis.sizeNode(d.number)*1.5)+"px"
+          }
         })
       }    
 
@@ -1208,12 +1367,6 @@ NetworkGraph.prototype.refreshNoFilters = function (){
 
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
-  if(configRow){
-    if(!vis.queriesArray){
-      vis.queriesArray=[]
-    }
-    vis.queriesArray.push(configRow.query)
-  }
 
   vis.dataJoinGraph()
   vis.enterGraph()
