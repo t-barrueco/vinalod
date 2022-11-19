@@ -187,45 +187,21 @@ NavigationPanel.prototype.addElementNav = async function (source,i){
 NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   var navPanel=this,file;
 
-  //////////////console.log(last+""+i)
   if(!last){
     file="pages/navTable_element.html"
   }else{
     file="pages/navTable_element_last.html"
   }
-  ////////////console.log("getCodeElementNav antes de getHtmlCodeFromFile2")
-  //let code = getHtmlCodeFromFile2(file);
-  ////////////////console.log(code)
+
   code = await getHtmlCodeFromFile(file)
   .then(success => {return (success)})
-  //.catch(reason => ////////////console.log(reason))
-
-  ////////////console.log(code)
-  ////////////console.log("getCodeElementNav despues de getHtmlCodeFromFile2")
-  //.finally(() => ////////////console.log("Friends are ready for party !"));
-
-  /* await getHtmlCodeFromFile2(file).then(function (resolve){
-    //////////////console.log(resolve)
-    $("#navTable ol").append(resolve)
-
-    const children = [...document.getElementById("navTable").getElementsByTagName('ol')];
-    children.forEach((child) => { 
-      const children2=[...child.getElementsByTagName('li')];
-      children2.forEach((child2) => {//////////////console.log(file);//////////////console.log(child2);//////////////console.log("---------------")})
-     }); 
-    //return resolve
-  }) */
-  //////////////console.log(code)
-  ////////////console.log("despues get code")
+  
   $("#navTable ol").append(code)
   let li=navPanel.ol.querySelector("#li-empty")
   li.removeAttribute("id")
   let a=li.querySelector("a")
   a.id=navPanel.sources[i]["id"]+"_a"
-  //////////console.log(networkGraph.colorCorrespondence)
-  //////////console.log(networkGraph.nodesClassesShow)
-  //////////console.log(networkGraph.colorScale.domain())
-  //////////console.log(networkGraph.colorScale.range())
+
   colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
   let navImage=li.querySelector("#nav_image")
   navImage.classList.add("bg-"+ colorCircle)
@@ -234,47 +210,6 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   let navTableElement=li.querySelector("#navTable_element")
   navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
   navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-  //return code;
-  //if($($("p:last-child"))
-  ////////////////console.log($("#navTable ol li:last-child"))
-  ////////////////console.log($("#navTable ol li:last-child").length)
-
-  
-
-  //$(code).insertAfter("#navTable ol li:last-child")
-  /* $("#navTable ol").append(code).ready(function () {
-  }) */
-/*   if($("#navTable ol li:last-child").length==0) $("#navTable ol").append(code).ready(function (){
-    let li=navPanel.ol.querySelector("#li-empty")
-    li.removeAttribute("id")
-    let a=li.querySelector("a")
-    a.id=navPanel.sources[i]["id"]+"_a"
-    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-    let navImage=li.querySelector("#nav_image")
-    navImage.classList.add("bg-"+ colorCircle)
-    navImage.classList.add("group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-
-    let navTableElement=li.querySelector("#navTable_element")
-    navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
-    navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-  })
-  //else $(code).insertAfter("#navTable ol li:last-child")
-  else $("#navTable ol li:last-child").after(code).ready(function (){
-    let li=navPanel.ol.querySelector("#li-empty")
-    li.removeAttribute("id")
-    let a=li.querySelector("a")
-    a.id=navPanel.sources[i]["id"]+"_a"
-    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
-    let navImage=li.querySelector("#nav_image")
-    navImage.classList.add("bg-"+ colorCircle)
-    navImage.classList.add("group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-
-    let navTableElement=li.querySelector("#navTable_element")
-    navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
-    navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
-  }) */
-
-  
 }
 
 NavigationPanel.prototype.addElementNavProp = async function (source,i,property){
@@ -293,89 +228,6 @@ NavigationPanel.prototype.addElementNavProp = async function (source,i,property)
   $("#navTable ol").append(code).ready(function () {
 
   })
-  /* var li=document.createElement("li")
-  var div,a,li,span,span2,el1
-  var navPanel=this;
-  li.setAttribute("class", "relative pb-2");
-  ////////////////console.log(source)
-  //li.id=source["target"]["id"]+"_li"
-  li.id=source["id"]+"_li"
-  if((property)||((i<navPanel.sources.length-1)&&(navPanel.node.type!="menuOption"))){
-    div=document.createElement("div")
-    div.setAttribute("class", "-ml-px absolute mt-0.5 top-4 left-4 w-0.5 h-full bg-black");
-    div.setAttribute("aria-hidden", "true");
-    li.appendChild(div)
-  }
-  a=document.createElement("a")
-  a.setAttribute("href", "#");
-  if(property){
-    a.setAttribute("class", "relative flex items-start group isDisabled");
-  }else{
-    a.setAttribute("class", "relative flex items-start group");
-  }
-  
-  //a.id=source["target"]["id"]+"_a"
-  a.id=source["id"]+"_a"
-  span=document.createElement("span")
-  span.setAttribute("class","h-9 flex items-center")
-  
-  span2=document.createElement("span")
-  if(property){
-    colorCircle="gray-300"
-  }else{
-    //colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["target"]["type"]])]
-    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[source["type"]])]
-  }
-
-
-  span2.setAttribute("class","relative z-10 w-8 h-8 flex items-center justify-center bg-"+ colorCircle + " rounded-full group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
-  img=document.createElement("img")
-
-  if(property){
-    //if(source["target"]["subject-object"]=="s"){
-    if(source["subject-object"]=="s"){
-
-      img.setAttribute("src",navPanel.imageArrowDown)
-    }else{
-      img.setAttribute("src",navPanel.imageArrowUp)
-    }
-    img.setAttribute('width','40px')
-    img.setAttribute('height','40px')
-  }
-  el1=navPanel.ol.appendChild(li)
-
-  if(i<navPanel.sources.length-1){
-      if(div!=undefined){
-        el1.appendChild(div)
-      }
-  }
-  el2=el1.appendChild(a)
-  
-  if(property){
-    el2.appendChild(span).appendChild(span2).appendChild(img)
-  }else{
-    el2.appendChild(span).appendChild(span2)
-  }
-  
-  span3=document.createElement("span")
-  span3.setAttribute("class","ml-4 min-w-0 flex flex-col")
-  span4=document.createElement("h5")
-
-  span4.setAttribute("class","ecl-u-type-heading-5")
-  if(property){
-    span4.innerHTML= source["target"]["property"]
-    span5=document.createElement("span")
-    span5.setAttribute("class","text-xs tracking-wide")
-    span5.setAttribute("style","color:blue;font-weight:bolder")
-    span5.innerHTML=  "   Sparql Endpoint(" + source["target"]["url"] + ")"
-    el3=el2.appendChild(span3)
-    el3.appendChild(span4)
-    el3.appendChild(span5)
-  }else{
-    span4.innerHTML = source["target"]["value"]
-    el3=el2.appendChild(span3)
-    el3.appendChild(span4)
-  } */
 }
 
 NavigationPanel.prototype.addEventsNav = function (){
@@ -398,10 +250,8 @@ NavigationPanel.prototype.contentTable = async function (){
   var menuOption;
   navPanel.numStart=1
   navPanel.numTot=navPanel.targets.length
-  ////////////////console.log(navPanel.numTot)
   navPanel.numLinesShown=10
   navPanel.numEnd=(navPanel.numLinesShown>navPanel.numTot) ? navPanel.numTot : navPanel.numLinesShown;
-  ////////////////console.log(navPanel.numEnd)
   navPanel.numCurrent=navPanel.numStart
   navPanel.contentRows=[]
 
@@ -409,19 +259,16 @@ NavigationPanel.prototype.contentTable = async function (){
     $("#dvDetails").hide()
     showNavContentTable()
     showNavContentTablePagination()
-    //$("#dvDetails").empty()
     if($("#dvTable th").length==0){
       navPanel.addHeaderContentTable()
     }else{
       navPanel.addTextToHeaderContentTable()
     }
-    //document.getElementById("nav-children-header").textContent=navPanel.node["value"]
 
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       label=navPanel.labelGraph(menuOption)
       
-      //th.innerHTML=searchHtml()
     }else{
       menuOption=navPanel.node["menuOption"]
       if(menuOption){
@@ -430,8 +277,6 @@ NavigationPanel.prototype.contentTable = async function (){
         }else{
           menuOption=menuOption.split(",")
           label=navPanel.labelGraph(menuOption)
-
-          //th.innerHTML=searchHtml()
         }
       }
 
@@ -443,9 +288,6 @@ NavigationPanel.prototype.contentTable = async function (){
     if(($("#div-pagination").length)==0){
       let code = await getHtmlCodeFromFile("pages/navPagination.html");
       $("#dvTable").append(code)
-/*       $("#dvTable").append(code).ready(function () {
-        ECL.autoInit();
-      }) */
       ECL.autoInit();
       
     }
@@ -456,7 +298,6 @@ NavigationPanel.prototype.contentTable = async function (){
     $("#numTot").text(navPanel.numTot)
 
     navPanel.prevNextVisibility()
-    //navPanel.addEventsContentNav()
   }else{
     $("#dvTable").hide()
     if(navPanel.node.detail!=undefined){
@@ -506,9 +347,7 @@ NavigationPanel.prototype.showDetails = function (){
       $.get("pages/nav_detail_row_0.html", function (row0) {
         $.get("pages/nav_detail_row_1.html", function (row1) {
           $.get("pages/nav_detail_row_attach.html", function (rowAttach) {
-            ////////////////////////console.log(navPanel.node["value"])
             navDetailHeader=header.replace("Title",navPanel.node["value"])
-            ////////////////////////console.log(navDetailHeader)
             $("#dvDetails").append($(navDetailHeader))
             if(navPanel.node.detail){
               Object.keys(navPanel.node.detail).forEach(key => {
@@ -567,12 +406,11 @@ NavigationPanel.prototype.contentTableSearch = function (){
 }
 NavigationPanel.prototype.paginationNumbers = function (){
   var navPanel=this
- {  ////////////////console.log(navPanel.numCurrent)
-    if (navPanel.numCurrent < 1) {
-      navPanel.numCurrent = 1;
-    } else if (navPanel.numCurrent > navPanel.numPages) {
-      navPanel.numCurrent = navPanel.numPages;
-    }
+  if (navPanel.numCurrent < 1) {
+    navPanel.numCurrent = 1;
+  } else if (navPanel.numCurrent > navPanel.numPages) {
+    navPanel.numCurrent = navPanel.numPages;
+  }
 
     let startPage,endPage;
 
@@ -619,9 +457,9 @@ NavigationPanel.prototype.paginationNumbers = function (){
         pages: pages
     };
 }
-}
+
 NavigationPanel.prototype.showNumberPages = async function (){
-  var navPanel=this,textHtml="",afterElement="#page-prev"
+  var navPanel=this,afterElement="#page-prev"
   navPanel.firstPage=1
   navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
   navPanel.arrNumberPages=[]
@@ -656,12 +494,10 @@ NavigationPanel.prototype.showNumberPages = async function (){
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
-  //////////console.log("showChildrenDetails")
   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
     hideNavTabs()
 
   }else{
-    //console.log("pasa por showNavTabs")
     showNavTabs()
     $("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav");
   }
@@ -675,8 +511,6 @@ function showLines(numCurrent){
     numCurrent=numCurrent.parentNode.id.replace("page-","")
   }
   navigationPanel.showLines(numCurrent,false,false)
-  //////////////////console.log(navigationPanel.pages)
-
 }
 function removeLinesNavContent(){
   var sel=document.querySelectorAll("#dvTable tbody tr")
@@ -690,8 +524,6 @@ function removeLinesNavContent(){
 }
 function removeNumberPages(){
   $("#div-pagination nav li").each(function( index ){
-    ////////////////console.log(index)
-    ////////////////console.log($( this )[0])
     if(($( this )[0].id!="page-prev")&&($( this )[0].id!="page-next")) $( this )[0].remove()
   })
 }
@@ -749,7 +581,6 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   }
 
   for (var i = 0; i < linesShown.length; i++) {
-    //////////////////console.log(navPanel.tbody)
     row = navPanel.tbody.insertRow(-1);
     row.classList.add("ecl-table__row")
     row.id=linesShown[i]["target"]["id"]+"_row"
@@ -772,11 +603,8 @@ NavigationPanel.prototype.addEventsContentNav = function (){
   navPanel.isDblclick = false;
 
   navPanel.searchValues=navPanel.targets.map(d=>d.target.value)
-  //////console.log(navPanel.searchValues)
   nodeSearchField=document.getElementById("node-search")
-  //////console.log(nodeSearchField)
   if(nodeSearchField){
-    //////console.log("entra")
     autocomplete(nodeSearchField, navPanel.searchValues,3);
 
     // Execute a function when the user releases a key on the keyboard
@@ -797,51 +625,12 @@ NavigationPanel.prototype.addEventsContentNav = function (){
         }
       }
       });
-  }
-
-
-  //navPanel.timeoutTiming = 500;
-  /* d3.selectAll("#modal-content td").on("dblclick",function(){ 
-    $("#dvDetails").empty()
-    node=d3.select("#"+this.getAttribute("id")).data()[0]
-    d3.event.preventDefault();
-    navPanel.isDblclick = true;
-    clearTimeout(navPanel.dblclickTimeout);
-    navPanel.dblclickTimeout = setTimeout(function () {
-      navPanel.isDblclick = false;
-    }, navPanel.timeoutTiming);
-
-    if(this.getAttribute("cluster")){
-      dblclickCellCluster(node)
-    }else{
-      node=d3.select("#"+this.getAttribute("id")).data()[0]
-      if(node.more_results){
-        if(node.more_results.length>0){
-          navPanel.dblclickCellCluster(node)
-        }else{
-          dblclickCellContent(this)
-        }
-      }else{
-        dblclickCellContent(this)
-      }
-      
-    }
-
-    return false;
-  })
-  .on("click",function(){  
-    cell=this;
-    $("#dvDetails").empty()
-    clearTimeout(navPanel.clickTimeout);
-
-  }) */
-  
+  }  
 }
 NavigationPanel.prototype.valueSelected=function(){
   var navPanel=this;
   nodeSearchField=document.getElementById("node-search")
   removeLinesNavContent()
-  //alert(navPanel.targetsBackup)
   if(navPanel.targetsBackup){
     navPanel.resultsSearch = navPanel.targetsBackup.filter(a =>(a.target.value.toUpperCase().includes(nodeSearchField.value.toUpperCase())||(a.target.value.toUpperCase()==nodeSearchField.value.toUpperCase())));
   }else{
@@ -852,15 +641,11 @@ NavigationPanel.prototype.valueSelected=function(){
   navPanel.contentTableSearch()
   $("#nav-search").addClass("hidden")
   $("#nav-delete").removeClass("hidden")
-  //navPanel.addEventsContentNav()
 }
 NavigationPanel.prototype.addHeaderContentTable = async function (){
   var navPanel=this;
   let code = await getHtmlCodeFromFile("pages/headerContentTable.html");
   $("#dvTable thead").append(code).ready(function () {
-/*     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
-    $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))
-    $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]); */
   })
   navPanel.addTextToHeaderContentTable()
 }
@@ -870,7 +655,6 @@ NavigationPanel.prototype.addElementContentTable = async function (target,i){
   console.log(target)
   $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
-    //$("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(target["target"]))
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]);
     if(navPanel.more_results){
@@ -902,7 +686,6 @@ NavigationPanel.prototype.addToGraph = function (){
   linkedDataGraph.treeData["index"]
   linkedDataGraph.treeData.filter(d=>d.id==na)
   linkedDataGraph.flatten()
-  //linkedDataGraph.filter()
   networkGraph.refreshNoFilters()
   clickBubbleGraph(document.getElementById(linkedDataGraph.treeData[index]["id"]))
 }
@@ -918,11 +701,8 @@ NavigationPanel.prototype.addElChecked = function (el){
 }
 NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluster){
   var navPanel=this;
-  //insertCheckBox()
 
-  ////////////////console.log("entra")
   insertContent(true)
-  //insertContent(false)
   function insertCheckBox(){
     cell = row.insertCell(-1);
     cell.className="px-2 py-4 whitespace-nowrap"
@@ -946,92 +726,13 @@ NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluste
   async function insertContent(property){
     var menuOption;
 
-    /* cell = row.insertCell(-1);
-    cell.className="px-2 py-4 whitespace-nowrap"
-    if(cluster){
-      cell.setAttribute("cluster",cluster)
-    }
-    if(!property){
-      cell.id=target["target"]["id"]
-    }else{
-      cell.id=target["source"]["id"]+target["target"]["id"]
-    } */
     let code = await getHtmlCodeFromFile("pages/elementContentTableProperty.html");
     $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
-      
-/*       $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
-      $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(d3.select("#"+target["target"]["id"]).data()[0]))
-      $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]); */
+
     })
     $("#"+target["target"]["id"]+"_row #property span").text(target["target"]["property"])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row #subject-object img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(target["target"]["type"])])
     $("#"+target["target"]["id"]+"_row #subject-object span").text(target["target"]["value"])
-/*     div=document.createElement("div")
-    if(!property){
-      div.className="flex items-center w-full"
-    }else{
-      div.className="flex items-center w-full property"
-      div.setAttribute("url",target["target"]["url"])
-      div.setAttribute("subject-object",target["target"]["subject-object"])
-      div.setAttribute("uri",target["value"])
-    }
-    
-    div2=document.createElement("div")
-    div2.className="flex-shrink-0 w-5 h-5"
-    img=document.createElement("img")
-    
-    if(!property){
-      ////////////////console.log(target)
-      ////////////////console.log(networkGraph.colorCorrespondence)
-      ////////////////console.log(networkGraph.colorScale.domain())
-      ////////////////console.log(networkGraph.colorScale.range())
-      ////////////////console.log(networkGraph.colorScale(target["target"]["type"]))
-      ////////////////console.log(networkGraph.colorCorrespondence[networkGraph.colorScale(target["target"]["type"])])
-
-      //img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["type"]])] + " rounded-full"
-      img.className="w-5 h-5 bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(target["target"]["type"])] + " rounded-full"
-    }else{
-        img.className="w-5 h-5 bg-gray-300 rounded-full"
-    }
-  
-    div3=document.createElement("div")
-    div3.className="relative ml-4"
-    div4=document.createElement("div")
-    div4.className="relative text-xs font-medium text-gray-900"
-    if(!property){
-        a=document.createElement("a")
-        a.setAttribute("href", "#");
-        if((target["target"]["type"]!="bnode")&&(target["target"]["type"]!="uri")&&(target["target"]["type"]!="menuOption")){
-          a.setAttribute("class", "relative flex items-start group isDisabled");
-        }else{
-          a.setAttribute("class", "relative flex items-start group");
-        }
-        
-        span=document.createElement("span")
-        if(target["target"]["type"]=="menuOption"){
-          menuOption=target["target"]["value"].split(",")
-          newText = document.createTextNode("Sparql Endpoint: "+ menuOption[0]+ "and Position: "+menuOption[1]);
-        }else{
-          newText =document.createTextNode(target["target"]["value"]);
-        }
-        
-        div4.appendChild(a).appendChild(span).appendChild(newText);
-    }else{
-        span=document.createElement("span")
-        if(target["value"]!=undefined){
-          newText = document.createTextNode(target["value"]);
-        }else if(target["target"]["property"]!=undefined){
-          newText = document.createTextNode(target["target"]["property"]);
-        }else{
-          newText = document.createTextNode("no property");
-        }
-        
-        div4.appendChild(span).appendChild(newText);
-    }
-        
-    el1=cell.appendChild(div)
-    el1.appendChild(div2).appendChild(img)
-    el1.appendChild(div3).appendChild(div4) */
   }
   }
   function dblclickCellCluster(el){
@@ -1204,96 +905,43 @@ function NavigationPanelBasic(...args){
 NavigationPanelBasic.prototype = Object.create(NavigationPanel.prototype);
 
 
-//NavigationPanelBasic.prototype.addMenuToTable = async function (){
 NavigationPanel.prototype.addMenuToTable = async function (){
 
   var navPanel=this;
 
   var newText,newCell,newRow,span,div,textNode
   d3.selectAll(".menu-table").remove()
-  ////////////////console.log(menuItems)
   var rowIndex=$('#myModal #'+ menuItems.node["id"]+"_row")[0].rowIndex
-  ////////////////console.log($('#myModal #'+ menuItems.node["id"]+"_row")[0].rowIndex)
-  ////////////////console.log(rowIndex)
-  //var rowIndex=$('#myModal #'+ menuItems.node["id"]).parent()[0].rowIndex
-  //var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
   let tBodyRef=$('#myModal #'+ menuItems.node["id"]+"_row")
   navPanel.addCodeMenuTable(tBodyRef)
 }
 
 NavigationPanelBasic.prototype.addCodeMenuTable = async function (tBodyRef){
   let code = await getHtmlCodeFromFile("pages/menu-table.html");
-/*   $("#"+fi.details.class+"_filters").append(code).ready(function () {
-    ECL.autoInit();
-  }) */
   
   for (var i = 0; i < menuItems.selectedRows.length; i++) {
-    //newRow = tbodyRef.insertRow(rowIndex+i);
-    //tBodyRef.append(code)
-    //////console.log(tBodyRef)
-    ////console.log(menuItems.selectedRows[i])
-    ////console.log(menuItems.selectedRows[i]["option_text"])
     let option_text=configFile.file[menuItems.selectedRows[i]["rowConfigFile"]]["option_text"]
     if(!tBodyRef){
       $('#myModal #dvTable tbody').append(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
     }else{
       $(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
     }
-   
-/*     newRow.id="menu-table-"+menuItems.selectedRows[i]
-    newRow.className = 'menu-table';
-    newCell = newRow.insertCell();
-    newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
-    newCell.setAttribute("x-data","{ tooltip: false }")
-    a=document.createElement("a")
-    a.setAttribute("href", "#");
-    a.setAttribute("class", "relative flex items-start group");
-    a.setAttribute("x-on:mouseenter","tooltip = true")
-    a.setAttribute("x-on:mouseleave","tooltip = false")
-
-    div=document.createElement("div")
-    div.setAttribute("x-show","tooltip")
-    div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
-    
-    if(menuItems.node["class"]!="free"){
-      textNode = document.createTextNode (getCommentOption(menuItems.selectedRows[i]["option"]));
-    }
-    
-    
-    span=document.createElement("span")
-    span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
-    newText = document.createTextNode(menuItems.selectedRows[i]["option"]);
-    newCell.appendChild(a).appendChild(span).appendChild(newText);
-    newCell.appendChild(div).appendChild(textNode)
-    
-    d3.selectAll("#menu-table-"+menuItems.selectedRows[i]["position"]).on("dblclick",function(){  
-      navPanel.clickMenuTable(menuItems.selectedRows[0]["option"],menuItems.node)
-    }) */
   }
 }
 
 NavigationPanelBasic.prototype.addMenuToTableFromNav = async function (){
   var navPanel=this;
-  //let tBodyRef=$('#myModal #dvTable tbody')
   showNavContentTable()
   hideNavContentTablePagination()
   navPanel.addCodeMenuTable()
 }
 NavigationPanelBasic.prototype.clickMenuTable = async function (row){
-  ////////////////console.log(row.id)
   let node=get_node_from_element(row.id.split("_menu-option_")[0])
-  //let node=d3.select("#"+row.id.split("_menu-option_")[0]).data[0]
-  ////////console.log(node)
-  
   let i=row.id.split("_menu-option_")[1]
-  ////////console.log(menuItems.selectedRows[i])
   node.menuOption=menuItems.selectedRows[i]["option"]
-  ////////console.log("antes de checkGraph")
   let graphType=await checkGraph(menuItems.selectedRows[i],node)
   if(graphType=="TREE"){
-    ////////console.log("antes de clickBubbleGraph")
     clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
-    ////////console.log("despues de clickBubbleGraph")
   }
 }
 
@@ -1306,135 +954,38 @@ NavigationPanelExpert.prototype = Object.create(NavigationPanel.prototype);
 NavigationPanelExpert.prototype.clickMenuTable = async function (row){
   var navPanel=this;
   let miNumber=row.getAttribute("id").split("_menu-option_")[1]
-  ////////////////console.log(miNumber)
-  ////////////////console.log(menuItems)
-  ////////////////console.log(menuItems.selectedRows[miNumber])
   let form = { "url": menuItems.selectedRows[miNumber]["url"], "uri": menuItems.selectedRows[miNumber]["uri"], "subject-object": menuItems.selectedRows[miNumber]["subject-object"],"query":menuItems.selectedRows[miNumber]["query"]}
-  //setMenuOption(data,d.title)
   checkGraphExpert(form,navPanel.node)
 
 }
 
 NavigationPanelExpert.prototype.addCodeMenuTable = async function (tBodyRef){
   let code = await getHtmlCodeFromFile("pages/menu-table-property.html");
-/*   $("#"+fi.details.class+"_filters").append(code).ready(function () {
-    ECL.autoInit();
-  }) */
-  for (var i = 0; i < menuItems.selectedRows.length; i++) {
-    //newRow = tbodyRef.insertRow(rowIndex+i);
-    //tBodyRef.append(code)
-    //$(code.replace('query=""','query="'+menuItems.selectedRows[i]["query"]+'"').replace('uri=""','uri="'+menuItems.selectedRows[i]["uri"]+'"').replace('url=""','url="'+menuItems.selectedRows[i]["url"]+'"').replace('subject-object=""','subject-object="'+menuItems.selectedRows[i]["subject-object"]+'"').replace("Menu Option","Sparql Endpoint: "+ menuItems.selectedRows[i]["url"]+" Position: " +menuItems.selectedRows[i]["subject-object"]).replace("Menu Option Tooltip","Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["url"]).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-    $(code.replace("Menu Option","Sparql Endpoint: "+ menuItems.selectedRows[i]["url"]+" Position: " +menuItems.selectedRows[i]["subject-object"]).replace("Menu Option Tooltip","Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["url"]).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-    /*     newRow.id="menu-table-"+menuItems.selectedRows[i]
-    newRow.className = 'menu-table';
-    newCell = newRow.insertCell();
-    newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
-    newCell.setAttribute("x-data","{ tooltip: false }")
-    a=document.createElement("a")
-    a.setAttribute("href", "#");
-    a.setAttribute("class", "relative flex items-start group");
-    a.setAttribute("x-on:mouseenter","tooltip = true")
-    a.setAttribute("x-on:mouseleave","tooltip = false")
 
-    div=document.createElement("div")
-    div.setAttribute("x-show","tooltip")
-    div.setAttribute("class","z-50 absolute bg-indigo-300 border-graphite border-2 rounded p-4 mt-1")
-    
-    if(menuItems.node["class"]!="free"){
-      textNode = document.createTextNode (getCommentOption(menuItems.selectedRows[i]["option"]));
-    }
-    
-    
-    span=document.createElement("span")
-    span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
-    newText = document.createTextNode(menuItems.selectedRows[i]["option"]);
-    newCell.appendChild(a).appendChild(span).appendChild(newText);
-    newCell.appendChild(div).appendChild(textNode)
-    
-    d3.selectAll("#menu-table-"+menuItems.selectedRows[i]["position"]).on("dblclick",function(){  
-      navPanel.clickMenuTable(menuItems.selectedRows[0]["option"],menuItems.node)
-    }) */
+  for (var i = 0; i < menuItems.selectedRows.length; i++) {
+    $(code.replace("Menu Option","Sparql Endpoint: "+ menuItems.selectedRows[i]["url"]+" Position: " +menuItems.selectedRows[i]["subject-object"]).replace("Menu Option Tooltip","Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["url"]).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
   }
 }
-/* NavigationPanelExpert.prototype.addMenuToTable = function (){
-  var navPanel=this;
-  var textTooltip,div,textNode,newText,newCell,newRow,span,form,textMenu,property,propertyNode,new_url,new_subjectObject
-  d3.selectAll(".menu-table").remove()
-  var rowIndex=$('#myModal #'+ (node["id"]+"_row"))[0].rowIndex;
-
-  var tbodyRef = document.getElementById('myModal').getElementsByTagName('tbody')[0];
-  for (var i = 0; i < menuItems.selectedRows.length; i++) {
-      newRow = tbodyRef.insertRow(rowIndex+i);
-      newRow.id="menu-table-"+ node.id + "-" + [i]
-      newRow.className = 'menu-table';
-      newCell = newRow.insertCell();
-      newCell.className="px-2 py-4 bg-gray-100 whitespace-nowrap"
-      newCell.setAttribute("colspan","3")
-      newCell.setAttribute("x-data","{ tooltip: false }")
-
-      a=document.createElement("a")
-      a.setAttribute("href", "#");
-      a.setAttribute("class", "relative flex items-start group");
-      a.setAttribute("x-on:mouseenter","tooltip = true")
-      a.setAttribute("x-on:mouseleave","tooltip = false")
-
-      div=document.createElement("div")
-      div.setAttribute("x-show","tooltip")
-      div.setAttribute("class","z-50 absolute text-xs bg-blue-300 border-graphite border-2 rounded p-4 mt-1")
-      if(menuItems[i]["subject-object"]=="s"){
-        textTooltip="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
-      }else{
-        textTooltip="Find all subjects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems[i]["url"]
-      }
-      textNode = document.createTextNode (textTooltip);
-
-      span=document.createElement("span")
-      span.className="inline-flex px-2 text-xs font-semibold leading-5 text-gray-800 bg-white rounded-full"
-      newText = document.createTextNode("Sparql Endpoint: "+ menuItems[i]["url"]+" Position: " +menuItems[i]["subject-object"]);
-      newCell.appendChild(a).appendChild(span).appendChild(newText);
-      newCell.appendChild(div).appendChild(textNode)      
-  }
-
-  d3.selectAll(".menu-table" ).on("dblclick",function(){ 
-    textMenu=this.querySelector("span").innerHTML
-    new_url = textMenu.match("Sparql Endpoint: (.*) Position:")[1]; 
-    new_subjectObject=textMenu.match("Position: (.*)")[1];
-    propertyNode=document.getElementById(node.id+"_row").querySelector(".property")
-    url=propertyNode.getAttribute("url")
-    subjectObject=propertyNode.getAttribute("subject-object")
-    property=document.getElementById(node.id+"_row").querySelector(".property").querySelector("span").innerHTML
-    form={"url":url,"uri":d3.select("#"+node.id).data()[0].value,"subjectObject":subjectObject,"property":property,"new_url":new_url,"new_subjectObject":new_subjectObject}
-    navPanel.clickMenuTable(form,node)
-  })
-} */
 
 NavigationPanelExpert.prototype.checkElementNav = async function (d,i){
   var navPanel=this;
   if(i==0){
     await navPanel.addElementNav(d,i)
   }else{
-    ////////////////console.log(d)
-    //if(d["target"]["type"]!="menuOption"){
     await navPanel.addElementNavProp(d,i)
     await navPanel.addElementNav(d,i)
-    //}
   }
 }
 
 NavigationPanelBasic.prototype.checkElementNav = async function (d,i){
   var navPanel=this;
-  ////////////console.log("checkElementNav antes de addElementNav")
   await navPanel.addElementNav(d,i)
-  ////////////console.log("checkElementNav despues de addElementNav")
 }
 NavigationPanelBasic.prototype.addTextToHeaderContentTable = function (){
-  ////////////////console.log(configRow.option)
   $("#dvTable #nav-children-header").text(configRow.option_text)
 }
 
 NavigationPanelExpert.prototype.addTextToHeaderContentTable = function (){
-  //////////////////console.log(configRow.option)
-  //$("#dvTable #nav-children-header").text(configRow.option)
 }
 
 NavigationPanelExpert.prototype.labelGraph = function (menuOption){
@@ -1471,6 +1022,5 @@ function showHideNavigation(){
   }
 }
 function navSearch(){
-  //alert("llega")
   navigationPanel.valueSelected()
 }

@@ -1,38 +1,20 @@
 ConfigRow = function (_option,_node) {
     this.option=_option
-    //////////////////console.log("entra en configRow")
     this.node=_node
-    //this.init();
   };
 
 ConfigRow.prototype.init = async function () {
     var cr=this
 
     cr.getValuesFromOption()
-    //////console.log(cr)
     cr.replaceParmtrsQuery("query")
-    //////////////////console.log(cr)
     cr.getNameClasses()
-    //////////////console.log("configRow.init")
     await cr.getResults()
-    ////////////////console.log(cr)
 }
 ConfigRow.prototype.initImport = async function () {
   var cr=this
-  ////////console.log("antes from option")
   cr.getValuesFromOption()
-  //////////////////console.log(cr)
-  ////////console.log("despues from option y antes parms")
-
   cr.replaceParmtrsQuery("query")
-  ////////console.log("despues parms")
-
-  //////////////////console.log(cr)
-  //cr.getNameClasses()
-  ////////console.log("despues get name classes")
-  //////////////console.log("configRow.init")
-  //await cr.getResults()
-  ////////////////console.log(cr)
 }
 ConfigRow.prototype.update = async function(option,node){
   var cr=this;
@@ -43,10 +25,7 @@ ConfigRow.prototype.update = async function(option,node){
 }
 ConfigRow.prototype.fromOptionToConfigRow = async function(option){
   var cr=this;
-  //////////console.log(option)
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
-  //////////////console.log(rowInConfigFile)
-
 
   Object.keys(rowInConfigFile).forEach(function(k){
     if(option[k]){
@@ -63,7 +42,6 @@ ConfigRow.prototype.fromOptionToConfigRow = async function(option){
 
   cr.replaceParmtrsQuery("query")
 
-  //////console.log(cr.filters)
   cr.getNameClasses()
   await cr.getResults()
 }
@@ -77,42 +55,11 @@ ConfigRow.prototype.filterByValueField = function (value,field) {
     var cr=this;
     return cf.file.filter(d=>d[field]==value)
   }
-
-
-
-/* ConfigRow.prototype.replaceParmtrsQuery = function(queryName){
-    var cr=this;
-    if(cr.node!=undefined){
-        if((cr.rowFields.parameters!="")&&(cr.rowFields.parameters!=null)){
-            //////////////////////console.log(cr.rowFields.parameters)
-            //////////////////////console.log(cr.node)
-            //////////////////////console.log(cr.rowFields.askquery)
-            for (let i = 0; i < cr.rowFields.parameters.length; ++i) { 
-                cr.rowFields[queryName]=cr.rowFields[queryName].replaceAll("PARAMETER"+(i+2).toString(), cr.node[cr.rowFields.parameters[i]["property"]]);
-                //////////////////////console.log(cr.rowFields.parameters[i])
-                //////////////////////console.log(cr.node[cr.rowFields.parameters[i]["property"]])
-            } 
-            //////////////////////console.log(cr.rowFields.askquery) 
-        }
-        cr.rowFields[queryName]=cr.rowFields[queryName].replaceAll("PARAMETER", cr.node[cr.node["class"]+"_uri"]);    
-    }
-  } */
-/* ConfigRow.prototype.fromSelectToAskQuery = function(){
-  var cr=this;
-  if(!cr.rowFields["askquery"]){
-    cr.rowFields.askquery=fromSelectToAskQuery(cr.rowFields.query)
-  }
-  //////////////////////console.log(cr.rowFields.askquery)
-  cr.replaceParmtrsQuery("askquery")
-} */
-
-
 ConfigRow.prototype.fromSelectToAskQuery = function(){
   var cr=this;
   if(cr["askquery"]==null){
     cr["askquery"]=fromSelectToAskQuery(cr["query"])
   }
-  //////////////////////console.log(cr.rowFields.askquery)
   cr.replaceParmtrsQuery("askquery")
 }
 
@@ -125,10 +72,7 @@ ConfigRow.prototype.getClassesCorrespondence=function(){
 }
 ConfigRow.prototype.getResults = async function () {
   var cr=this;
-  ////////console.log(cr)
   cr.results = await runSparlqQuery(cr.endpoint_url,cr.query,"query");
-  //console.log(cr.results)
-  //cr.clusterResults()
 }
 
 function ConfigRowBasic(...args){
@@ -139,96 +83,24 @@ ConfigRowBasic.prototype = Object.create(ConfigRow.prototype);
 
 ConfigRowBasic.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
-  ////////////console.log("replace parms query")
-  /* var on=this;
-  if(on.node!=undefined){
-      if((on.parameters!="")&&(on.parameters!=null)){
-          //////////////////////console.log(cr.rowFields.parameters)
-          //////////////////////console.log(cr.node)
-          //////////////////////console.log(cr.rowFields.askquery)
-          for (let i = 0; i < on.parameters.length; ++i) { 
-              on[queryName]=on[queryName].replaceAll("PARAMETER"+(i+2).toString(), on.node[on.parameters[i]["property"]]);
-              //////////////////////console.log(cr.rowFields.parameters[i])
-              //////////////////////console.log(cr.node[cr.rowFields.parameters[i]["property"]])
-          } 
-          //////////////////////console.log(cr.rowFields.askquery) 
-      }
-      on[queryName]=on[queryName].replaceAll("PARAMETER", on.node[on.node["class"]+"_uri"]);    
-  } */
-  //////////console.log(cr.node)
   if(cr.node!=undefined) cr[queryName]=replaceParmtrsQuery(cr[queryName],cr.parameters,cr.node)
-  //////////////console.log(cr[queryName])
 }
 
 ConfigRowBasic.prototype.clusterResults = function (){
   var cr=this,number,unique,numberResults={};
-/*   var ocurrences = [], small, big, results_small, results_big, num_occ, results_big_filtered;
-  if(settings["subject-object"]){
-    var properties = results.map(function (r) {
-      return r["p"]["value"]
-    })
-    var subjectObject=settings["subject-object"]
-    var unique_properties = [...new Set(properties)]
-    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-    unique_properties.forEach(function (d) {
-      ocurrences.push({ "value": d, "ocurrences": countOccurrences(properties, d) })
-    })
-    small = ocurrences.filter(d => d.ocurrences <= 20).map(d => d.value)
-    big = ocurrences.filter(d => d.ocurrences > 20).map(d => d.value)
-    results_small = results.filter(r => small.includes(r["p"]["value"]))
-    results_big = results.filter(r => big.includes(r["p"]["value"]))
-    big.forEach(function (b) {
-      results_big_filtered = results_big.filter(r => r["p"]["value"] == b)
-      num_occ = ocurrences.filter(o => o.value == results_big[0]["p"]["value"])[0]["ocurrences"]
-      if (subjectObject == "s") {
-        results_small.push({ "o": { "type": results_big_filtered[0]["o"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "s": results_big_filtered[0]["s"], "class": "Cluster" })
-      } else {
-        results_small.push({ "s": { "type": results_big_filtered[0]["s"]["type"], "value": num_occ + " results", "more_results": results_big_filtered }, "p": results_big_filtered[0]["p"], "o": results_big_filtered[0]["o"], "class": "Cluster" })
-      }
-    })
-    return results_small;
-  }else{
-    return results;
-  }   */
 
   var maxNumber=$("#cluster-number").val()
-  //console.log(maxNumber)
-  //console.log(cr.results)
-  //console.log(cr.hierarchy)
-  
-  /* cr.hierarchy.forEach(function(h){
-    ////console.log(h)
-    unique = [...new Set(cr.results.map(item => item[h.child].value))];
-    ////console.log(unique)
-    unique.forEach(function(u){
-      ////console.log(u)
-      number = cr.results.reduce(function (n, r) {
-        return n + (r[h.child].value == u);
-      }, 0);
-      //console.log(number)
-      if(number>maxNumber){
-        //console.log(u)
-      }
-    })
-    
-  
-  }) */
 
   if(cr.hierarchy.length==1){
     numberResults[cr.results[0][cr.hierarchy[0].parent].value]=cr.results.length
   }else{
-    //cr.hierarchy.slice(1).forEach(function(h){
     cr.hierarchy.forEach(function(h,i){
-      //console.log(h)
       unique = [...new Set(cr.results.map(item => item[h.parent].value))];
       console.log(unique)
       unique.forEach(function(u){
         number = cr.results.reduce(function (n, r) {
-          ////console.log(r[h.parent].value)
           return n + (r[h.parent].value == u);
         }, 0);
-        //console.log(u)
-        //console.log(number)
         numberResults[u]=number
       })
       console.log(numberResults)
@@ -239,57 +111,17 @@ ConfigRowBasic.prototype.clusterResults = function (){
     })
   }
   if(cr.results.length>maxNumber){
-    //console.log(cr.results.length)
   }
-/*   cr.hierarchy.forEach(function(h){
-    //console.log(h)
-    unique = [...new Set(cr.results.map(item => item[h.parent].value))];
-    console.log(unique.length)
-    unique.forEach(function(u){
-      number = cr.results.reduce(function (n, r) {
-        ////console.log(r[h.parent].value)
-        return n + (r[h.parent].value == u);
-      }, 0);
-      //console.log(u)
-      //console.log(number)
-      numberResults[u]=number
-    })
-  }) */
-  console.log(numberResults)
-  console.log(cr.results)
-/*   cr.hierarchy.forEach(function(h){
-    //console.log(h)
-    unique = [...new Set(cr.results.map(item => item[h.child].value))];
-    ////console.log(unique)
-    unique.forEach(function(u){
-      ////console.log(u)
-      number = cr.results.reduce(function (n, r) {
-        return n + (r[h.child].value == u);
-      }, 0);
-      //console.log(number)
-      if(number>maxNumber){
-        //console.log(u)
-      }
-    })
-    
-  
-  }) */
 }
 
 ConfigRowBasic.prototype.getNameClasses = function () {
   var cr=this;
-  ////////////////console.log(cr.rowFields)
-  //////console.log(cr)
   cr.nameClasses=cr.classes_text.map(d=>d.text)
-  //////////console.log(cr.nameClasses)
 }
 
 ConfigRowBasic.prototype.getValuesFromOption = async function () {
   var cr=this,rowFields;
   cr.rowNumber=configFile.getRowNumber(cr.option)
-  //////////////////////console.log(cf.file[cr.rowNumber])
-  //////////////////console.log(cr.node)
-  
   rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
   Object.keys(rowFields).forEach(function(k){
     cr[k]=rowFields[k]
@@ -307,7 +139,6 @@ ConfigRowExpert.prototype = Object.create(ConfigRow.prototype);
 
 ConfigRowExpert.prototype.getValuesFromOption = async function () {
   var cr=this;
-  //////////console.log(cr.option)
   let option=JSON.parse(JSON.stringify(cr.option));
   Object.keys(option).forEach(function(k){
     cr[k]=option[k]
@@ -315,13 +146,10 @@ ConfigRowExpert.prototype.getValuesFromOption = async function () {
 }
 ConfigRowExpert.prototype.getNameClasses = function () {
   var cr=this;
-  ////////////////console.log(cr.rowFields)
   cr.nameClasses=["uri","bnode","literal","menu option","link basic graph","typed-literal"]
-  //////////console.log(cr.nameClasses)
 }
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
-  ////////console.log(cr.node)
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
 }
 
