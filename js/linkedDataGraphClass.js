@@ -10,6 +10,9 @@ LinkedDataGraph.prototype.init = function () {
 LinkedDataGraph.prototype.buildData = function () {
   var ldg=this;
   ldg.buildTreeData()
+  if(getShowDuplicates()){
+    ldg.showNoDuplicatesGraph()
+  }
   ldg.flatten()
 }
 
@@ -225,7 +228,14 @@ LinkedDataGraph.prototype.filter = function(filterId){
 
   function recurse(node) {
     var hidden=false,nodesIds=[],index;
-    index=ldg.treeDataFiltered.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
+    //index=ldg.treeDataFiltered.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
+    
+    index=ldg.treeDataFiltered.findIndex(function(element){
+      if(element.children){
+        return (element.children.some((subElement) => subElement.id === id))
+      }
+    })
+
     if((index!=-1)&&(ldg.treeDataFiltered[index].hidden)){
       node.hidden=true;
       node.filter=true;
@@ -468,7 +478,13 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
           })
         }
       }else{
-        let index=ldg.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === id))
+        console.log(ldg.treeData)
+        //let index=ldg.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === id))
+        let index=ldg.treeData.findIndex(function(element){
+          if(element.children){
+            return (element.children.some((subElement) => subElement.id === id))
+          }
+        })
         node=ldg.treeData[index].children.filter(d=>d.id==id)[0]
       }
       return node

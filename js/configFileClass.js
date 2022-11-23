@@ -14,10 +14,10 @@ ConfigFileBasic.prototype.init = function () {
 
 }
 
-ConfigFileBasic.prototype.filterByValueField = function (value,field) {
+/* ConfigFileBasic.prototype.filterByValueField = function (value,field) {
     var cf=this;
     return cf.file.filter(d=>d[field]==value)
-  }
+  } */
 
 ConfigFileBasic.prototype.getRowNumber = function (option) {
     var cf=this;
@@ -39,7 +39,7 @@ ConfigFileBasic.prototype.getRowsNodeClass= function(classNode){
     return cf.file.filter(d=>d.class==classNode)
   }
 
-ConfigFileBasic.prototype.getProperties= function(configRow){
+/* ConfigFileBasic.prototype.getProperties= function(configRow){
     var temp={}
     var cf=this;
     configRow["properties"].forEach(function(d){
@@ -50,9 +50,9 @@ ConfigFileBasic.prototype.getProperties= function(configRow){
       }
     })
     return temp
-  }
+  } */
 
-ConfigFileBasic.prototype.getTooltip= function(option_text){
+/* ConfigFileBasic.prototype.getTooltip= function(option_text){
   var cf=this;
   var selClass=cf.file.filter(function(d){
     return d.option_text==option_text
@@ -62,7 +62,7 @@ ConfigFileBasic.prototype.getTooltip= function(option_text){
   }else{
     return ""
   } 
-}
+} */
 
 function ConfigFileExpert(...args){
   ConfigFile.apply(this, args);

@@ -581,7 +581,7 @@ function clickBubbleGraph(element) {
 
   closeNavigationPanel()
   
-  console.log(element)
+  //console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
 
   
@@ -884,7 +884,7 @@ function noOptionSelectedCollections(){
   document.getElementById("select-collections").value = "------------";
 }
 function showDuplicates(value){
-  console.log(value)
+  //console.log(value)
   if(value=="yes"){
     showDuplicatesGraph()
   }else if(value=="no"){
@@ -897,6 +897,10 @@ function showDuplicatesGraph(){
   linkedDataGraph.showDuplicatesGraph()
 }
 function showNoDuplicatesGraph(){
-  console.log(linkedDataGraph.treeData)
+  //console.log(linkedDataGraph.treeData)
   linkedDataGraph.showNoDuplicatesGraph()
+}
+
+function getShowDuplicates(){
+  return $("#show-duplicates-no").is(":checked")
 }

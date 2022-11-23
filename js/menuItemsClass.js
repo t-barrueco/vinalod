@@ -34,12 +34,12 @@ MenuItems.prototype.filterByAskResult = async function () {
         }
     }
 }
-
+/* 
 MenuItems.prototype.getSelectedRowByOption = async function (option){
     var mi=this;
     let row=mi.selectedRows.filter(d=>d.option==option)[0]
     return row
-}
+} */
 MenuItems.prototype.getMenuItemsInGraph = async function (){
     var mi=this;
 
@@ -64,7 +64,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
 
 }
 
-MenuItems.prototype.getMenuItemsInTable = async function (){
+/* MenuItems.prototype.getMenuItemsInTable = async function (){
     var menuItems=[],elementMenu,position,width
     var mi=this;
 
@@ -88,7 +88,7 @@ MenuItems.prototype.getMenuItemsInTable = async function (){
         menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
         }
     }
-}
+} */
 
 MenuItems.prototype.update = async function (node) {
     var mi=this;

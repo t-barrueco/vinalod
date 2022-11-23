@@ -45,16 +45,17 @@ ConfigRow.prototype.fromOptionToConfigRow = async function(option){
   cr.getNameClasses()
   await cr.getResults()
 }
+
 ConfigRow.prototype.setDefaultValues = function (){
   var cr=this;
   if(cr["filters"]=="None"){
     cr["filters"]=[]
   }
 }
-ConfigRow.prototype.filterByValueField = function (value,field) {
+/* ConfigRow.prototype.filterByValueField = function (value,field) {
     var cr=this;
     return cf.file.filter(d=>d[field]==value)
-  }
+  } */
 ConfigRow.prototype.fromSelectToAskQuery = function(){
   var cr=this;
   if(cr["askquery"]==null){

@@ -2,6 +2,7 @@
 *    VINALOD
 *    functions.js
 *    
+*    AUTOCOMPLETE https://www.w3schools.com/howto/howto_js_autocomplete.asp
 *    created by Teresa Barrueco
 */
 function setMenuOption(node,option){
@@ -890,6 +891,15 @@ function showNavContentTable(){
 }
 function hideNavContentTable(){
   $("#dvTable").hide()
+}
+function showNavDetails(){
+  $("#dvDetails").show()
+}
+function hideNavDetails(){
+  $("#dvDetails").hide()
+}
+function emptyNavDetails(){
+  $("#dvDetails").empty()
 }
 function showNavContentTablePagination(){
   $("#div-pagination").show()
