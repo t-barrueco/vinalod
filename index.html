@@ -99,7 +99,7 @@
       <div class="ecl-tabs__container">
         <ul class="ecl-tabs__list" role="tablist">
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="changeTab(this)" id="mode-tab">Mode</a></li>
-          <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
+          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="import-tab">Import/Export</a></li>
           <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="legend-tab">Legend</a></li>
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="manual-tab">Manual and Live Demo</a></li>
@@ -183,7 +183,7 @@
         <div>
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-4">
 
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="collapse-graph-div">
               <dd class="mt-1 text-sm font-semibold text-gray-900">
                 <button class="ecl-button ecl-button--secondary" type="button"  onclick='collapse()' id="collapse">Collapse all</button>
                 <button class="ecl-button ecl-button--secondary" type="button"  onclick='expand()' id="expand">Expand all</button>
@@ -561,7 +561,8 @@
     <script src="js/optionNodeClass.js"></script>
     <script src="js/filterClass.js"></script>
     <script>
-      ECL.autoInit();
+      console.log("autoInit")
+      console.log(ECL.autoInit());
     </script>
     </body>
 </html>

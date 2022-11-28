@@ -276,7 +276,7 @@ class FilterBasicDropdown extends FilterBasic {
       }
       $("#"+fi.details.class+"_filters").append($(code))
 
-      ECL.autoInit();
+      console.log(ECL.autoInit());
       var select=document.getElementById("select-default")
       select.name = fi.details.property;
       select.id = fi.id;
@@ -377,7 +377,7 @@ class FilterBasicDate extends FilterBasic {
     let code = await getHtmlCodeFromFile("pages/date-filter.html");
     code=code.replace("Label",this.propertyFullName).replaceAll("HelperText",this.details.filter_text)
     $("#"+this.details.class+"_filters").append(code).ready(function () {
-      ECL.autoInit();
+      //ECL.autoInit();
     })
     ////console.log(this.values[0])
     $("#"+this.details.class+"_filters #start-date").attr("value",this.values[0])

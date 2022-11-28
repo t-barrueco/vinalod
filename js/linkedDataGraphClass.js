@@ -146,9 +146,9 @@ LinkedDataGraph.prototype.showNoDuplicatesGraph = function(){
   function replaceDuplicates(id,uri){
     var indexChild;
     ldg.treeData.forEach(function(i){
-      console.log(i)
-      console.log(i[i["class"]+"_uri"])
-      console.log(uri)
+      ////console.log(i)
+      ////console.log(i[i["class"]+"_uri"])
+      ////console.log(uri)
       if(i[i["class"]+"_uri"]==uri){
         i["id"]=id
       }
@@ -225,17 +225,19 @@ LinkedDataGraph.prototype.add = function(){
 
 LinkedDataGraph.prototype.filter = function(filterId){
   var ldg=this;
-
+  ////console.log("filter")
   function recurse(node) {
     var hidden=false,nodesIds=[],index;
     //index=ldg.treeDataFiltered.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
     
     index=ldg.treeDataFiltered.findIndex(function(element){
       if(element.children){
-        return (element.children.some((subElement) => subElement.id === id))
+        return (element.children.some((subElement) => subElement.id === node.id))
       }
     })
-
+    //console.log(index)
+    //console.log(ldg.treeDataFiltered[index])
+    //console.log(node.id)
     if((index!=-1)&&(ldg.treeDataFiltered[index].hidden)){
       node.hidden=true;
       node.filter=true;
@@ -265,6 +267,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
       delete node.hidden
       delete node.filter
     }
+    //////console.log(node)
   }
 
   function checkFilter(node){
@@ -275,6 +278,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
     if(filterClass.length>0){
       hidden=filterClass[0].checkConditionNode(node,filterId)
     }
+    ////console.log(hidden)
     return hidden
   }
 }
@@ -359,7 +363,7 @@ LinkedDataGraphBasic.prototype.clusterData = function (treeData) {
   return treeData
 
   function transformData(branch){
-    console.log(branch)
+    ////console.log(branch)
     branch.cluster=true
     branch.more_results=branch.children
     let node={"id":genRandomString(),"value":branch.children.length + " results collpsed","shape":1,"class":"more_results","className":"Results collapsed"}
@@ -472,13 +476,16 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
         prop=properties.filter(d=>d.class==treeResults[index])
         if(prop.length>0){
           prop.forEach(function(k){
+            //console.log(k)
+            
             if(r[k["property"]]!=undefined){
-            node[k["property"]]=r[k["property"]].value
+              //checkPropertyInFilters(k) 
+              node[k["property"]]=r[k["property"]].value
             }
           })
         }
       }else{
-        console.log(ldg.treeData)
+        ////console.log(ldg.treeData)
         //let index=ldg.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === id))
         let index=ldg.treeData.findIndex(function(element){
           if(element.children){
@@ -489,6 +496,19 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
       }
       return node
   }
+/*   function checkPropertyInFilters(property){
+    var filterProperty;
+    console.log(property)
+    console.log(configRow)
+    if(configRow.filters.length>0){
+      filterProperty=configRow.filter.filter(d=>d.property==property.property)
+      if(filterProperty.length>0){
+        if(filterProperty[0]["filter_type"]=="date"){
+
+        }
+      }
+    }
+  } */
   function createMenuOptionNodes(j){
     var node,nodeOption1,nodeOption2;
 

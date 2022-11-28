@@ -55,6 +55,7 @@ function expand(){
 // Get the modal
 var modal = document.getElementById("myModal");
 
+
 var span = document.getElementsByClassName("close")[0];
 
 var expand_settings_legend = document.getElementById("expand-settings-legend");
@@ -216,11 +217,11 @@ async function createGraph(fileText){
 
   networkGraph.getFilters()
 
-  if(networkGraph.filterClassesObjects.length!=0){
+/*   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
     $("#filters").addClass("hidden")
-  }
+  } */
 
 }
 
@@ -266,11 +267,11 @@ function importGraph(file){
   
     networkGraph.getFilters()
 
-    if(networkGraph.filterClassesObjects.length!=0){
+/*     if(networkGraph.filterClassesObjects.length!=0){
       $("#filters").removeClass("hidden")
     }else{
       $("#filters").addClass("hidden")
-    }
+    } */
   
   }
 }
@@ -519,16 +520,20 @@ async function changeBasicGraph(option){
 
   await networkGraph.initVis()
   //hideSpinMessage()
-  networkGraph.getFilters()
+  //console.log("antes de getFilters")
+  await networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
 
-  if(networkGraph.filterClassesObjects.length!=0){
+/*   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
     $("#filters").addClass("hidden")
-  }
+  } */
   networkGraph.collapseAll()
+  //console.log("autoInit")
+  console.log(ECL.autoInit());
+
 }
 function changeTab(tab){ 
   $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
@@ -581,7 +586,7 @@ function clickBubbleGraph(element) {
 
   closeNavigationPanel()
   
-  //console.log(element)
+  //////console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
 
   
@@ -601,7 +606,7 @@ function clickBubbleGraph(element) {
     navigationPanel.init()
   }
   openNavigationPanel()
-  ECL.autoInit()
+  //ECL.autoInit()
 }
 async function checkMenuItems(origin,element) {
   if(origin=="form"){
@@ -695,11 +700,11 @@ async function showGraphExpert(selectedRow){
 
   legend=new Legend("legend",networkGraph)
 
-  if(networkGraph.filterClassesObjects.length!=0){
+/*   if(networkGraph.filterClassesObjects.length!=0){
     $("#filters").removeClass("hidden")
   }else{
     $("#filters").addClass("hidden")
-  }
+  } */
 }
 function showGraphExpertFromPopup(form){
   let url=form.querySelector("#url").value
@@ -733,12 +738,15 @@ async function getHtmlCodeFromFile(file) {
 
 
 function relatedFilters(element){
-  let filterClassName=element.getAttribute("id").replace("_filter","").split("_")[0]
+  //console.log(element.value)
+  var id=element.getAttribute("id").replace("_start","").replace("_end","")
+  let filterClassName=id.replace("_filter","").split("_")[0]
   let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==filterClassName)[0]
 
-  let filter=filterClass.filters.filter(d=>d.id==element.getAttribute("id"))[0]
+  let filter=filterClass.filters.filter(d=>d.id==id)[0]
 
-  filter.addValuesChanged(element.value)
+  //console.log(filter)
+  filter.addValuesChanged(element)
   linkedDataGraph.filter(element.getAttribute("id"))
   linkedDataGraph.flattenFiltered()
   setValuesFilters(element.getAttribute("id"))
@@ -807,6 +815,7 @@ async function checkGraph(option,node){
     await linkedDataGraph.update(option,node)
 
     networkGraph.refresh()
+    //ECL.autoInit()
   }else{
     checkNotTreeGraph(rowInConfigFile,node)
   }
@@ -817,21 +826,25 @@ async function checkGraphExpert(form,data){
   networkGraph.refresh()
 }
 function tabOptionsGraphVisible(){
-  $('#settings-tab').parent().removeClass("hidden")
+  //$('#settings-tab').parent().removeClass("hidden")
+  $('#collapse-graph-div').removeClass("hidden")
   $('#legend-tab').parent().removeClass("hidden")
   $('#share-graph-div').removeClass("hidden")
   $('#save-graph-div').removeClass("hidden")
 }
 
 function tabOptionsGraphNotVisible(){
-  $('#settings-tab').parent().addClass("hidden")
+  //$('#settings-tab').parent().addClass("hidden")
   $('#legend-tab').parent().addClass("hidden")
   $('#share-graph-div').addClass("hidden")
   $('#save-graph-div').addClass("hidden")
+  $('#collapse-graph-div').addClass("hidden")
+
 }
 function showNavTabs(){
   $("#tabsNav").removeClass("hidden")
-  ECL.autoInit()
+  //console.log("autoInit")
+  console.log(ECL.autoInit())
 }
 function hideNavTabs(){
   $("#tabsNav").addClass("hidden")
@@ -854,7 +867,7 @@ function emptyNavigationPanel(){
 function openNavigationPanel(){
   $("#myModal").removeClass("translate-x-full")
   $("#myModal").addClass("translate-x-0")
-  ECL.autoInit();
+  //ECL.autoInit();
 }
 function closeNavigationPanel(){
   $("#myModal").addClass("translate-x-full")
@@ -873,18 +886,26 @@ function removeOptionsSelect(f){
 }
 function clearFilters(){
   linkedDataGraph.clearFilter()
+  ////console.log(linkedDataGraph.treeData)
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(function (f){
-      f.addValuesField(f.values)
+      //f.addValuesField(f.values)
+      ////console.log(f)
+      f.addValues(linkedDataGraph.data.flatData.nodes)
+      ////console.log("despues de addValues")
+      f.resetValue()
+      ////console.log("despues de resetvalue")
     })
   })
-  networkGraph.refresh()
+  ////console.log("despues forEach")
+  networkGraph.refreshNoFilters()
+  ////console.log("despues refresh")
 }
 function noOptionSelectedCollections(){
   document.getElementById("select-collections").value = "------------";
 }
 function showDuplicates(value){
-  //console.log(value)
+  //////console.log(value)
   if(value=="yes"){
     showDuplicatesGraph()
   }else if(value=="no"){
@@ -897,7 +918,7 @@ function showDuplicatesGraph(){
   linkedDataGraph.showDuplicatesGraph()
 }
 function showNoDuplicatesGraph(){
-  //console.log(linkedDataGraph.treeData)
+  //////console.log(linkedDataGraph.treeData)
   linkedDataGraph.showNoDuplicatesGraph()
 }
 

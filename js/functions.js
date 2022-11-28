@@ -103,6 +103,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
+  //console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -438,7 +439,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
           b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          //////console.log(arr[i])
+          ////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -833,7 +834,11 @@ function changeDateFormat(date){
 
 function formatDate(str){
   const [day, month, year] = str.split('-');
+/*   //console.log(day)
+  //console.log(month)
+  //console.log(year) */
   const date = new Date(+year, +month - 1, +day);
+  ////console.log(date)
   return new Date(date)
 }
 function dateValidFormat(dateStr) {

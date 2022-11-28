@@ -1198,6 +1198,7 @@ NetworkGraph.prototype.refresh = function (node){
   vis.exitGraph()
 
   vis.updateFilters()
+  //ECL.autoInit()
   legend.addColors()
 }
 
@@ -1230,7 +1231,18 @@ NetworkGraphBasic.prototype = Object.create(NetworkGraph.prototype);
 NetworkGraphBasic.prototype.addClassesShow = function(){
   var vis=this,newClasses;
 }
-
+NetworkGraphBasic.prototype.getFilters = function(){
+  var vis=this;
+  console.log("super getFilters")
+  console.log(vis.filterClassesObjects)
+  if(vis.filterClassesObjects.length!=0){
+    //$("#filters").removeClass("hidden")
+    filtersVisible()
+  }else{
+    //$("#filters").addClass("hidden")
+    filtersNotVisible()
+  }
+}
 NetworkGraphBasic.prototype.setColorScale = async function(){
   var vis=this;
   vis.colorCorrespondence={
@@ -1265,24 +1277,28 @@ NetworkGraphBasic.prototype.checkMenuItems = async function(){
   }
 }
 
-NetworkGraphBasic.prototype.updateFilters = function () {
+NetworkGraphBasic.prototype.updateFilters = async function () {
   var vis=this,newFilterClasses,existingFilterClasses,filterClass,values;
   if(configRow){
     if(configRow.filters){
       if((configRow.filters.length!=0)&&(configRow.filters!="None")){
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
         existingFilterClasses=vis.filterClassesObjects.map(f=>f.name)
-        newFilterClasses.forEach(function(cf){
-          if(!existingFilterClasses.includes(cf)){
-            filterClass=new FilterClassBasic(cf)
-            filterClass.init()
+        //newFilterClasses.forEach(function(cf){
+        for (let i = 0; i < newFilterClasses.length; i++) {
+          if(!existingFilterClasses.includes(newFilterClasses[i])){
+            filterClass=new FilterClassBasic(newFilterClasses[i])
+            await filterClass.init()
+            console.log("checkHidden")
+            filterClass.checkHidden()
             vis.filterClassesObjects.push(filterClass) 
           }else{
-            networkGraph.filterClassesObjects.filter(d=>d.name==cf)[0].filters.forEach(function(f){
+            networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
               f.addValues()
             })
           }
-        })
+        //})
+        }
       }
     }
   }
@@ -1304,19 +1320,25 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
     vis.nodesClassesShow=configRow.getClassesCorrespondence()
     super.setColorScale()
   }
-  getFilters() {
+  async getFilters() {
+    //console.log("en getfilters principio")
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
     if(configRow.filters){
       if(configRow.filters.length!=0){
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
-        newFilterClasses.forEach(function(f){
-          filterClass=new FilterClassBasic(f)
-          filterClass.init()
+        for (let i = 0; i < newFilterClasses.length; i++) {
+        //newFilterClasses.forEach(function(f){
+          filterClass=new FilterClassBasic(newFilterClasses[i])
+          await filterClass.init()
           vis.filterClassesObjects.push(filterClass) 
-        })
+        //})
+        }
       }
     }
+    super.getFilters()
+    //console.log("en getfilters final")
+
   }
 }
 class NetworkGraphBasicImported extends NetworkGraphBasic {
@@ -1343,6 +1365,7 @@ class NetworkGraphBasicImported extends NetworkGraphBasic {
         filterClass.addFilterTypeImported(f,true)
       })
     })
+    super.getFilters()
   }
 }
 
