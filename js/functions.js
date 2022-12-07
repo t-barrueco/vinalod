@@ -103,7 +103,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
-  //console.log(query)
+  //////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -439,7 +439,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
           b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          ////////console.log(arr[i])
+          ////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -833,13 +833,42 @@ function changeDateFormat(date){
 }
 
 function formatDate(str){
+  //console.log(str)
   const [day, month, year] = str.split('-');
-/*   //console.log(day)
-  //console.log(month)
-  //console.log(year) */
+/*   //////console.log(day)
+  //////console.log(month)
+  //////console.log(year) */
   const date = new Date(+year, +month - 1, +day);
-  ////console.log(date)
+  ////////console.log(date)
   return new Date(date)
+}
+
+function formatDateComp(str){
+  //console.log(str)
+  return formatDate(str).getTime()
+}
+function formatDateShow(str){
+  let day=("0" + formatDate(str).getDate()).slice(-2)
+  let month=("0" + (formatDate(str).getMonth() + 1)).slice(-2)
+  return day+"-"+month+"-"+formatDate(str).getFullYear()
+}
+
+function ECLdestroy(component){
+  let eclComponent=window.ECL.components.filter(d=>d.element==component)
+  if(eclComponent.length>0){
+    eclComponent[0].destroy()
+  }
+}
+function ECLupdate(component){
+  let eclComponent=window.ECL.components.filter(d=>d.element==component)
+  if(eclComponent.length>0){
+    ////console.log(Object.getOwnPropertyNames(eclComponent[0]))
+    ////console.log(eclComponent[0].format)
+    ////console.log(eclComponent[0].element)
+    //$('#my-datepicker').datepicker('update');
+    ////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
+    eclComponent[0].update()
+  }
 }
 function dateValidFormat(dateStr) {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
@@ -856,9 +885,11 @@ function addOptionsSelect(selectField,valuesFilter,multiple){
   if(valuesFilter.length>1){
     valuesFilter.unshift("All")
   }
+  ////console.log(selectField)
   addHtmlOptionsSelect(selectField,valuesFilter,multiple)
 }
 function addHtmlOptionsSelect(selectField,valuesFilter,multiple){
+  ////console.log(selectField)
   for (let i = 0; i < valuesFilter.length; i++) {
     var option = document.createElement("option");
     option.value = valuesFilter[i];
@@ -898,7 +929,9 @@ function hideNavContentTable(){
   $("#dvTable").hide()
 }
 function showNavDetails(){
+  console.log("entra en NavDetails")
   $("#dvDetails").show()
+  console.log(ECL.autoInit())
 }
 function hideNavDetails(){
   $("#dvDetails").hide()
@@ -932,4 +965,16 @@ function replaceParmtrsQuery(query,parameters,node){
 function findAncestorWithClass(el, cls) {
   while ((el = el.parentElement) && !el.classList.contains(cls));
   return el;
+}
+function runAutoInit(component){
+  if(component){
+    //console.log(component.getAttribute("id"))
+    //console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
+    //eclComponents.filter(e=>e.element.id==component.getAttribute("id"))[0].destroy()
+    ECLdestroy(component)
+  }
+  let autoInit=ECL.autoInit()
+  console.log(autoInit)
+  
+  console.log(window.ECL.components)
 }

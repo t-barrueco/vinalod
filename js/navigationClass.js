@@ -218,7 +218,15 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   }else{
     file="pages/navTable_element_last.html"
   }
+  if(last){
+    file="pages/navTable_element_last.html"
+  }else if(navPanel.sources[i]["relation"]){
+    file="pages/navTable_element_middle.html"
+  }else{
+    file="pages/navTable_element.html"
+  }
 
+  console.log(navPanel.sources[i])
   code = await getHtmlCodeFromFile(file)
   .then(success => {return (success)})
   
@@ -228,6 +236,12 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   let a=li.querySelector("a")
   a.id=navPanel.sources[i]["id"]+"_a"
 
+  if(navPanel.sources[i]["relation"]){
+    let relation=navPanel.ol.querySelector("#navTable_relation")
+    relation.querySelector(".ecl-timeline__content").innerHTML = navPanel.sources[i]["relation"]
+    relation.id=navPanel.sources[i]["id"]+"_relation"
+  }
+  
   colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
   let navImage=li.querySelector("#nav_image")
   navImage.classList.add("bg-"+ colorCircle)
@@ -318,8 +332,8 @@ NavigationPanel.prototype.contentTable = async function (){
       let code = await getHtmlCodeFromFile("pages/navPagination.html");
       $("#dvTable").append(code)
       //console.log("autoInit")
-      console.log(ECL.autoInit());
-      
+      //console.log(ECL.autoInit());
+      runAutoInit()
     }
 
     navPanel.showNumberPages()
@@ -544,7 +558,13 @@ NavigationPanel.prototype.showChildrenDetails = function (){
   ////console.log(navPanel.node.detail!="")
   if((navPanel.fromNodes.length>0)||((navPanel.targets.length>0)&&(navPanel.node.detail!=""))){
     showNavTabs()
-    $("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav");
+    //let autoInit=ECL.autoInit()
+    //console.log(autoInit)
+    //console.log(autoInit.update())
+    let component=$("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav")[0]
+    console.log(component);
+    console.log(component)
+    runAutoInit(component)
   }else{
     hideNavTabs()
   }

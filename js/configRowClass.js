@@ -5,7 +5,7 @@ ConfigRow = function (_option,_node) {
 
 ConfigRow.prototype.init = async function () {
     var cr=this
-
+    //console.log("init")
     cr.getValuesFromOption()
     cr.replaceParmtrsQuery("query")
     cr.getNameClasses()
@@ -26,11 +26,17 @@ ConfigRow.prototype.update = async function(option,node){
 ConfigRow.prototype.fromOptionToConfigRow = async function(option){
   var cr=this;
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
-
+  console.log(configFile.file)
+  console.log(rowInConfigFile)
   Object.keys(rowInConfigFile).forEach(function(k){
+    console.log(k)
+    console.log(option[k])
     if(option[k]){
       cr[k]=option[k]
     }else{
+      console.log(rowInConfigFile)
+      console.log(k)
+      console.log(rowInConfigFile[k])
       cr[k]=rowInConfigFile[k]
     }
   })
@@ -124,7 +130,11 @@ ConfigRowBasic.prototype.getValuesFromOption = async function () {
   var cr=this,rowFields;
   cr.rowNumber=configFile.getRowNumber(cr.option)
   rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
+  console.log(rowFields)
   Object.keys(rowFields).forEach(function(k){
+    if(k=="hierarchy"){
+      console.log(rowFields[k])
+    }
     cr[k]=rowFields[k]
   })
 
@@ -140,10 +150,15 @@ ConfigRowExpert.prototype = Object.create(ConfigRow.prototype);
 
 ConfigRowExpert.prototype.getValuesFromOption = async function () {
   var cr=this;
+  //console.log(cr)
   let option=JSON.parse(JSON.stringify(cr.option));
   Object.keys(option).forEach(function(k){
+    /* if(k=="hierarchy"){
+      console.log(option[k])
+    } */
     cr[k]=option[k]
   })
+  console.log(cr)
 }
 ConfigRowExpert.prototype.getNameClasses = function () {
   var cr=this;

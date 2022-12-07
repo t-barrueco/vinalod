@@ -6,7 +6,8 @@
     "hierarchy":[
       {
         "parent":"publicationsClassification",
-        "child":"opTheme"
+        "child":"opTheme",
+        "relation":"type"
       }
     ],
     "properties":[
@@ -67,7 +68,8 @@
     "hierarchy":[
       {
         "parent":"membership",
-        "child":"person"
+        "child":"person",
+        "relation":"assigned to"
       }
     ],
     "properties":[
@@ -125,7 +127,8 @@
     "hierarchy":[
       {
         "parent":"opTheme",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"author"
       }
     ],
     "properties":[
@@ -340,7 +343,8 @@
     "hierarchy":[
       {
         "parent":"det",
-        "child":"detLevel1"
+        "child":"detLevel1",
+        "relation":"has concept"
       }
     ],
     "properties":[
@@ -393,7 +397,8 @@
     "hierarchy":[
       {
         "parent":"detLevel2",
-        "child":"detLevel3"
+        "child":"detLevel3",
+        "relation":"narrower"
       }
     ],
     "properties":[
@@ -738,7 +743,8 @@
     "hierarchy":[
       {
         "parent":"eurun",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"suborganization"
       }
     ],
     "properties":[
@@ -838,7 +844,8 @@
     "hierarchy":[
       {
         "parent":"membership",
-        "child":"person"
+        "child":"person",
+        "relation":"assigned to"
       }
     ],
     "properties":[
@@ -1014,7 +1021,8 @@
     "hierarchy":[
       {
         "parent":"expression",
-        "child":"manifestation"
+        "child":"manifestation",
+        "relation":"manifestation type"
       }
     ],
     "properties":[
@@ -1326,7 +1334,8 @@
     "hierarchy":[
       {
         "parent":"corporateBody",
-        "child":"directoryOrg"
+        "child":"directoryOrg",
+        "relation":"suborganization"
       }
     ],
     "properties":[
@@ -1422,7 +1431,8 @@
     "hierarchy":[
       {
         "parent":"directoryOrg",
-        "child":"membership"
+        "child":"membership",
+        "relation":"has membership"
       }
     ],
     "properties":[
@@ -1475,7 +1485,8 @@
     "hierarchy":[
       {
         "parent":"corporateBody",
-        "child":"publicationDocument"
+        "child":"publicationDocument",
+        "relation":"publish"
       }
     ],
     "properties":[

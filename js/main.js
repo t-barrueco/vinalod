@@ -93,7 +93,7 @@ span2.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
 }
-
+//$( window ).on( "load", function() {loaded=true})
 function downloadData(element){
   
   var nodes = [],row2,classIndex,hierarchy,lastHierarchy,row={};
@@ -520,8 +520,8 @@ async function changeBasicGraph(option){
 
   await networkGraph.initVis()
   //hideSpinMessage()
-  //console.log("antes de getFilters")
-  await networkGraph.getFilters()
+  ////console.log("antes de getFilters")
+  networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
 
@@ -531,8 +531,8 @@ async function changeBasicGraph(option){
     $("#filters").addClass("hidden")
   } */
   networkGraph.collapseAll()
-  //console.log("autoInit")
-  console.log(ECL.autoInit());
+  ////console.log("autoInit")
+  ////console.log(ECL.autoInit());
 
 }
 function changeTab(tab){ 
@@ -586,7 +586,7 @@ function clickBubbleGraph(element) {
 
   closeNavigationPanel()
   
-  //////console.log(element)
+  ////////console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
 
   
@@ -738,7 +738,12 @@ async function getHtmlCodeFromFile(file) {
 
 
 function relatedFilters(element){
-  //console.log(element.value)
+  /* if (isLoading){
+    return
+  } */
+  ////console.log(loaded)
+  ////console.log(element.value)
+  //console.log(element)
   var id=element.getAttribute("id").replace("_start","").replace("_end","")
   let filterClassName=id.replace("_filter","").split("_")[0]
   let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==filterClassName)[0]
@@ -747,9 +752,24 @@ function relatedFilters(element){
 
   //console.log(filter)
   filter.addValuesChanged(element)
-  linkedDataGraph.filter(element.getAttribute("id"))
+  linkedDataGraph.filter(id)
   linkedDataGraph.flattenFiltered()
-  setValuesFilters(element.getAttribute("id"))
+  console.log(linkedDataGraph.treeDataFiltered)
+  setValuesFilters(id)
+}
+function changeDate(el){
+  var values;
+
+  var filterId=el.getAttribute("id").replace("_start","").replace("_end","")
+  //let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id === filterId))
+  //values=networkGraph.filterClassesObjects[index].filters.filter(d=>d.id==filterId)[0]["values"]
+  //if((el.getAttribute("id").endsWith("_end"))&&(formatDate(values[values.length-1])!=formatDate(el.value))){
+    //relatedFilters(el)
+  //}else if((el.getAttribute("id").endsWith("_start"))&&(formatDate(values[0])!=formatDate(el.value))){
+    //relatedFilters(el)
+  //}
+  //ECL.autoInit()
+  relatedFilters(this)
 }
 
 function applyFilters(){
@@ -843,18 +863,32 @@ function tabOptionsGraphNotVisible(){
 }
 function showNavTabs(){
   $("#tabsNav").removeClass("hidden")
-  //console.log("autoInit")
-  console.log(ECL.autoInit())
+  ////console.log("autoInit")
+  //console.log(ECL.autoInit())
 }
 function hideNavTabs(){
   $("#tabsNav").addClass("hidden")
 }
 function filtersVisible(){
-  $("#filters").removeClass("hidden")
+  //$("#filters").removeClass("hidden").fadeToggle("slow");
+  $("#filters").fadeIn( "slow", function() {
+    //this.removeClass("hidden");
+    this.classList.remove("hidden")
+  });
 }
 
 function filtersNotVisible(){
-  $("#filters").addClass("hidden")
+  //$("#filters").addClass("hidden").fadeToggle("slow");
+  /* if(!$("#filters").hasClass( "hidden")){
+    $("#filters").fadeToggle( "slow", function() {
+      this.addClass("hidden");
+    });
+  } */
+  $("#filters").fadeOut( "slow", function() {
+    console.log(this)
+    //this.addClass("hidden");
+    this.classList.add("hidden")
+  });
 }
 
 async function clickMenuTable(row){
@@ -877,6 +911,7 @@ function clickElNavigationPanel(el){
   clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
 }
 function setValuesFilters(filterId){
+  ////console.log("function setValuesFilters")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.setValuesFilters(filterId)
   })
@@ -886,26 +921,26 @@ function removeOptionsSelect(f){
 }
 function clearFilters(){
   linkedDataGraph.clearFilter()
-  ////console.log(linkedDataGraph.treeData)
+  //////console.log(linkedDataGraph.treeData)
   networkGraph.filterClassesObjects.forEach(function (cf){
-    cf.filters.forEach(function (f){
+    cf.filters.forEach(async function (f){
       //f.addValuesField(f.values)
-      ////console.log(f)
-      f.addValues(linkedDataGraph.data.flatData.nodes)
-      ////console.log("despues de addValues")
+      //////console.log(f)
+      await f.addValues()
+      console.log("despues de addValues")
       f.resetValue()
-      ////console.log("despues de resetvalue")
+      //////console.log("despues de resetvalue")
     })
   })
-  ////console.log("despues forEach")
-  networkGraph.refreshNoFilters()
-  ////console.log("despues refresh")
+  //////console.log("despues forEach")
+  networkGraph.refresh()
+  //////console.log("despues refresh")
 }
 function noOptionSelectedCollections(){
   document.getElementById("select-collections").value = "------------";
 }
 function showDuplicates(value){
-  //////console.log(value)
+  ////////console.log(value)
   if(value=="yes"){
     showDuplicatesGraph()
   }else if(value=="no"){
@@ -918,7 +953,7 @@ function showDuplicatesGraph(){
   linkedDataGraph.showDuplicatesGraph()
 }
 function showNoDuplicatesGraph(){
-  //////console.log(linkedDataGraph.treeData)
+  ////////console.log(linkedDataGraph.treeData)
   linkedDataGraph.showNoDuplicatesGraph()
 }
 

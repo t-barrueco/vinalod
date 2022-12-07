@@ -54,8 +54,8 @@ NetworkGraph.prototype.initVis = function () {
   vis.graphAdded=false
   vis.centerGraphX=0
   vis.centerGraphY=0
-  /* vis.svg.append('defs').append('marker')
-        .attr("id",'arrow')
+  vis.svg.append('defs').append('marker')
+        .attr("id",'arrowhead')
         .attr('viewBox','-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
          .attr('refX',23) // x coordinate for the reference point of the marker. If circle is bigger, this need to be bigger.
          .attr('refY',0)
@@ -66,23 +66,8 @@ NetworkGraph.prototype.initVis = function () {
         .append('svg:path')
         .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
         .attr('fill', 'black')
-        .style('stroke','none') */
+        .style('stroke','none')
         
-        vis.svg.append('defs')
-        .append("marker")
-                .attr("id", "arrow")
-                .attr("viewBox","-0 -5 10 10")
-                .attr("refX","23")
-                .attr("refY","0")
-                //.attr("markerUnits","strokeWidth")
-                .attr('markerUnits', 'userSpaceOnUse')
-                .attr("markerWidth","13")
-                .attr("markerHeight","13")
-                .attr("orient","auto")
-                .append("svg:path")
-                .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-                .attr("fill", "black")
-                .style('stroke','none');      
   
   
 
@@ -263,15 +248,13 @@ NetworkGraph.prototype.initializeForces = function() {
   vis.updateForces();
 
   function ticked() {
-    vis.link.attr('d', function (d){
-      return   'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
-    });
-        /* .attr("x1", function(d) { 
+    vis.link
+        .attr("x1", function(d) { 
             return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
- */
+
     vis.edgepaths.attr('d', function (d){
           return   'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
         });
@@ -347,7 +330,7 @@ NetworkGraph.prototype.dataJoinGraph = function(){
   var vis=this;
 
   vis.link = vis.gLinks
-  .selectAll(".link")
+  .selectAll("line")
   .data(vis.data.links,function(d){
     return d.id;
   })
@@ -362,7 +345,7 @@ NetworkGraph.prototype.dataJoinGraph = function(){
     return d.id;
   })
 
-  //console.log(vis.linklabels)
+  console.log(vis.linklabels)
 
   vis.edgepaths = vis.gLinks.selectAll(".edgepath")
   .data(vis.data.links.filter(function(item) {
@@ -415,26 +398,7 @@ NetworkGraph.prototype.enterGraph = function(){
     function drawLinks(){
         vis.link=vis.link
         .enter()
-        .append('path')
-        .attr('class', 'link')
-        //.attr('fill-opacity', 0)
-        //.attr('stroke-opacity', 0)
-        .attr('id',function(d){
-          console.log(d)
-          console.log(d.id)
-          console.log(d.source.id+"_"+d.target.id)
-          return d.id+"_link";
-          //return (d.source.id+"_"+d.target.id)+"_link"
-        })
-        .attr('link_id',function(d){
-          return d.id;
-          //return d["source"]["id"]+d["target"]["id"]
-        })
-        .style("pointer-events", "none")
-        .style("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("marker-end","url(#arrow)"); ;
-        /* .enter().append("path")
+        .append("line")
         .attr("class", "link")
         .attr("origId",function(d){
           return (d.source.id+"_"+d.target.id)
@@ -459,8 +423,23 @@ NetworkGraph.prototype.enterGraph = function(){
           if(d["target"]["class"]=="free"){
             deleteTooltip()
           }
-        }); */
+        });
         
+        vis.edgepaths = vis.edgepaths
+        .enter()
+        .append('path')
+        .attr('class', 'edgepath')
+        .attr('fill-opacity', 0)
+        .attr('stroke-opacity', 0)
+        .attr('id', function (d, i) {
+          console.log(i)
+          return 'edgepath' + i})
+        .attr('link_id',function(d){
+          return d["source"]["id"]+d["target"]["id"]
+        })
+        .style("pointer-events", "none");
+
+
         vis.linklabels = vis.linklabels
         .enter()
         .append('text')
@@ -468,38 +447,28 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr('class', 'linklabel')
         .attr('id', function (d) {return d["id"]+"_label"})
         .attr('link_id',function(d){
-          //console.log(d)
-          //console.log(d["id"]+"_label")
+          console.log(d)
+          console.log(d["id"]+"_label")
           return d["id"]+"_label"
           //return d["source"]["id"]+d["target"]["id"]+"_label"
         })
         .attr('link_value',function(d){
-          //console.log(d)
+          console.log(d)
           return d["relation"]
         })
-        .attr('font-size', 12)
-        .attr('fill', 'black')
-        .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
+        .attr('font-size', 14)
+        .attr('fill', 'black');
+  
+        vis.linklabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d) {
-              console.log(d3.select("#"+d.id+"_link"))
-              return "#"+d.id+"_link"})
+              console.log(d3.select("#"+d.id))
+              return "#"+d.id})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
             .attr("startOffset", "50%")
             .text(function(d){
               return d.relation
             });
-  
-/*         vis.linklabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
-            .attr('xlink:href', function (d) {
-              //console.log(d3.select("#"+d.id))
-              return "#"+d.id+"_link"})
-            .style("text-anchor", "middle")
-            .style("pointer-events", "none")
-            .attr("startOffset", "50%")
-            .text(function(d){
-              return d.relation
-            }); */
           }
       function drawArrowLinesFree(){
         vis.edgepaths = vis.edgepaths
@@ -509,7 +478,7 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr('fill-opacity', 0)
         .attr('stroke-opacity', 0)
         .attr('id', function (d, i) {
-          //console.log(i)
+          console.log(i)
           return 'edgepath' + i})
         .attr('link_id',function(d){
           return d["source"]["id"]+d["target"]["id"]
@@ -1322,8 +1291,8 @@ NetworkGraphBasic.prototype.addClassesShow = function(){
 }
 NetworkGraphBasic.prototype.getFilters = function(){
   var vis=this;
-  ////console.log("super getFilters")
-  //console.log(vis.filterClassesObjects)
+  //console.log("super getFilters")
+  console.log(vis.filterClassesObjects)
   if(vis.filterClassesObjects.length!=0){
     //$("#filters").removeClass("hidden")
     filtersVisible()
@@ -1378,7 +1347,7 @@ NetworkGraphBasic.prototype.updateFilters = async function () {
           if(!existingFilterClasses.includes(newFilterClasses[i])){
             filterClass=new FilterClassBasic(newFilterClasses[i])
             await filterClass.init()
-            ////console.log("checkHidden")
+            //console.log("checkHidden")
             filterClass.checkHidden()
             vis.filterClassesObjects.push(filterClass) 
           }else{
@@ -1410,7 +1379,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
     super.setColorScale()
   }
   async getFilters() {
-    //////console.log("en getfilters principio")
+    ////console.log("en getfilters principio")
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
     if(configRow.filters){
@@ -1426,7 +1395,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
       }
     }
     super.getFilters()
-    //////console.log("en getfilters final")
+    ////console.log("en getfilters final")
 
   }
 }

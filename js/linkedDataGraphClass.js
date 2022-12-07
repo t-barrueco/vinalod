@@ -120,6 +120,7 @@ LinkedDataGraph.prototype.flatten = function(){
     ldg.treeData.forEach(function(r){
       recurse(r);
     })
+    //console.log(links)
     ldg.data={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeData};
 }
 
@@ -194,6 +195,7 @@ LinkedDataGraph.prototype.flattenFiltered = function(){
       if (node.children){
         nodes[position]["number"]=node.children.length
         node.children.forEach(function(c){
+          console.log(c)
           if(!c["hidden"]){
             position=links.indexOf(links.filter(function(item) {
               return ((item.source == node.id)&&(item.target == c.id))
@@ -214,6 +216,7 @@ LinkedDataGraph.prototype.flattenFiltered = function(){
   ldg.treeDataFiltered.forEach(function(r){
     recurse(r);
   })
+  //console.log(links)
   ldg.dataFiltered={"flatData":{"nodes":nodes,"links":links},"treeData":ldg.treeDataFiltered};
 }
 
@@ -272,6 +275,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
 
   function checkFilter(node){
     var hidden=false;
+    console.log(node)
     let filterClass=networkGraph.filterClassesObjects.filter(function(f){
       return f.name==node.class
     })
@@ -321,6 +325,7 @@ LinkedDataGraphBasic.prototype.settingsFromOption = async function(){
   }else{
     await configRow.update(ldg.option,ldg.node)
   }
+  console.log(configRow)
   await ldg.init()
 };
 
@@ -389,7 +394,6 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
                 indexParent=checkNodeInTreeData()
                 if(treeData[indexParent]["children"].filter(d=>d.value==configRow.results[j][treeResults[i]]["value"]).length==0){
                     child=nodeValues(configRow.results[j],i)
-                    
                     child["configRowNumber"]=configRow["rowNumber"]
                     treeData[indexParent]["children"].push(child)
                     if(i<(treeResults.length-1)){
@@ -416,7 +420,7 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
 
   ldg.treeData=ldg.treeData.concat(treeData)
   configRow.treeData=treeData
-
+  console.log(treeData)
   treeData=ldg.clusterData(treeData)
   if(treeData.length>1){
     ldg.collapseBranch(treeData[0])
@@ -460,13 +464,25 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
       return keysH
   }
   
+  /* function getRelation(node){
+    console.log(node)
+  } */
   
   function nodeValues(r,index,id){
-      var node,className,prop;
+      var node,className,prop,relation;
       if(id==undefined){
         id=genRandomString()
         className=configRow["classes_text"].filter(d=>d.class==treeResults[index])[0]["text"]
-        node={"id":id,"value":r[treeResults[index]].value,"shape":1,"class":treeResults[index],"className":className}
+        relation=configRow["hierarchy"].filter(d=>d.child==treeResults[index])
+        console.log(configRow["hierarchy"])
+        console.log(treeResults[index])
+        console.log(configFile)
+        if(relation.length>0){
+          relation=configRow["hierarchy"].filter(d=>d.child==treeResults[index])[0]["relation"]
+          node={"id":id,"value":r[treeResults[index]].value,"shape":1,"class":treeResults[index],"className":className,"relation":relation}
+        }else{
+          node={"id":id,"value":r[treeResults[index]].value,"shape":1,"class":treeResults[index],"className":className}
+        }  
         if(configRow.tooltip){
           node["tooltip"]=getTooltipNode(configRow.tooltip,node["class"])
         }
@@ -543,7 +559,8 @@ LinkedDataGraphBasic.prototype.buildTreeData = function () {
 }
 
 LinkedDataGraphBasic.prototype.addLink = function (node,c,links) {
-  links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id)})
+  console.log(c)
+  links.push({"source": node.id, "target": c.id,"id":(node.id+"_"+c.id),"relation":c.relation})
 }
 
 function LinkedDataGraphExpert(...args){
