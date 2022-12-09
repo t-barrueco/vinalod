@@ -520,7 +520,7 @@ async function changeBasicGraph(option){
 
   await networkGraph.initVis()
   //hideSpinMessage()
-  ////console.log("antes de getFilters")
+  //////console.log("antes de getFilters")
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
@@ -531,8 +531,8 @@ async function changeBasicGraph(option){
     $("#filters").addClass("hidden")
   } */
   networkGraph.collapseAll()
-  ////console.log("autoInit")
-  ////console.log(ECL.autoInit());
+  //////console.log("autoInit")
+  //////console.log(ECL.autoInit());
 
 }
 function changeTab(tab){ 
@@ -586,7 +586,7 @@ function clickBubbleGraph(element) {
 
   closeNavigationPanel()
   
-  ////////console.log(element)
+  //////////console.log(element)
   node = d3.select("#" + element.getAttribute("id")).data()[0]
 
   
@@ -741,20 +741,20 @@ function relatedFilters(element){
   /* if (isLoading){
     return
   } */
-  ////console.log(loaded)
-  ////console.log(element.value)
-  //console.log(element)
+  //////console.log(loaded)
+  //////console.log(element.value)
+  ////console.log(element)
   var id=element.getAttribute("id").replace("_start","").replace("_end","")
   let filterClassName=id.replace("_filter","").split("_")[0]
   let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==filterClassName)[0]
 
   let filter=filterClass.filters.filter(d=>d.id==id)[0]
 
-  //console.log(filter)
+  ////console.log(filter)
   filter.addValuesChanged(element)
   linkedDataGraph.filter(id)
   linkedDataGraph.flattenFiltered()
-  console.log(linkedDataGraph.treeDataFiltered)
+  //console.log(linkedDataGraph.treeDataFiltered)
   setValuesFilters(id)
 }
 function changeDate(el){
@@ -863,8 +863,8 @@ function tabOptionsGraphNotVisible(){
 }
 function showNavTabs(){
   $("#tabsNav").removeClass("hidden")
-  ////console.log("autoInit")
-  //console.log(ECL.autoInit())
+  //////console.log("autoInit")
+  ////console.log(ECL.autoInit())
 }
 function hideNavTabs(){
   $("#tabsNav").addClass("hidden")
@@ -885,7 +885,7 @@ function filtersNotVisible(){
     });
   } */
   $("#filters").fadeOut( "slow", function() {
-    console.log(this)
+    //console.log(this)
     //this.addClass("hidden");
     this.classList.add("hidden")
   });
@@ -911,7 +911,7 @@ function clickElNavigationPanel(el){
   clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
 }
 function setValuesFilters(filterId){
-  ////console.log("function setValuesFilters")
+  //////console.log("function setValuesFilters")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.setValuesFilters(filterId)
   })
@@ -921,26 +921,27 @@ function removeOptionsSelect(f){
 }
 function clearFilters(){
   linkedDataGraph.clearFilter()
-  //////console.log(linkedDataGraph.treeData)
+  console.log(linkedDataGraph.data.flatData.nodes)
+  console.log(linkedDataGraph.data.treeData)
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(async function (f){
       //f.addValuesField(f.values)
-      //////console.log(f)
-      await f.addValues()
-      console.log("despues de addValues")
-      f.resetValue()
-      //////console.log("despues de resetvalue")
+      ////////console.log(f)
+      f.resetAllValues()
+      //console.log("despues de addValues")
+      //f.resetValue()
+      ////////console.log("despues de resetvalue")
     })
   })
-  //////console.log("despues forEach")
+  ////////console.log("despues forEach")
   networkGraph.refresh()
-  //////console.log("despues refresh")
+  ////////console.log("despues refresh")
 }
 function noOptionSelectedCollections(){
   document.getElementById("select-collections").value = "------------";
 }
 function showDuplicates(value){
-  ////////console.log(value)
+  //////////console.log(value)
   if(value=="yes"){
     showDuplicatesGraph()
   }else if(value=="no"){
@@ -953,7 +954,7 @@ function showDuplicatesGraph(){
   linkedDataGraph.showDuplicatesGraph()
 }
 function showNoDuplicatesGraph(){
-  ////////console.log(linkedDataGraph.treeData)
+  //////////console.log(linkedDataGraph.treeData)
   linkedDataGraph.showNoDuplicatesGraph()
 }
 

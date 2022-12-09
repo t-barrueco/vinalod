@@ -179,8 +179,10 @@ NetworkGraph.prototype.initVis = function () {
   }
 
   vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
-  vis.sizeNode = d3.scaleLinear()
-  .domain([0,300])
+  //console.log(vis.maxSizeNode)
+  //vis.sizeNode = d3.scaleLinear()
+  vis.sizeNode=d3.scalePow()
+  .domain([0,vis.maxSizeNode])
   .range([ 15, 45])  // Size in pixel
  
   vis.initializeSimulation();
@@ -362,7 +364,7 @@ NetworkGraph.prototype.dataJoinGraph = function(){
     return d.id;
   })
 
-  //console.log(vis.linklabels)
+  //////console.log(vis.linklabels)
 
   vis.edgepaths = vis.gLinks.selectAll(".edgepath")
   .data(vis.data.links.filter(function(item) {
@@ -396,6 +398,14 @@ NetworkGraph.prototype.enterGraph = function(){
     var vis=this,r;
     let lineHeight = 12;
 
+    vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
+    //console.log(vis.maxSizeNode)
+    vis.sizeNode
+    .domain([0,vis.maxSizeNode])
+
+    //console.log(vis.data.nodes)
+    vis.data.nodes.forEach(n=>handleMouseout(n.id))
+
     vis.colorScale.domain(Object.values(vis.nodesClassesShow))
     vis.colorScale.range(vis.colors.slice(0,Object.values(vis.nodesClassesShow).length))
     vis.isDblclick = false;
@@ -420,9 +430,9 @@ NetworkGraph.prototype.enterGraph = function(){
         //.attr('fill-opacity', 0)
         //.attr('stroke-opacity', 0)
         .attr('id',function(d){
-          console.log(d)
-          console.log(d.id)
-          console.log(d.source.id+"_"+d.target.id)
+          ////console.log(d)
+          ////console.log(d.id)
+          ////console.log(d.source.id+"_"+d.target.id)
           return d.id+"_link";
           //return (d.source.id+"_"+d.target.id)+"_link"
         })
@@ -468,20 +478,20 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr('class', 'linklabel')
         .attr('id', function (d) {return d["id"]+"_label"})
         .attr('link_id',function(d){
-          //console.log(d)
-          //console.log(d["id"]+"_label")
+          //////console.log(d)
+          //////console.log(d["id"]+"_label")
           return d["id"]+"_label"
           //return d["source"]["id"]+d["target"]["id"]+"_label"
         })
         .attr('link_value',function(d){
-          //console.log(d)
+          //////console.log(d)
           return d["relation"]
         })
         .attr('font-size', 12)
         .attr('fill', 'black')
         .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d) {
-              console.log(d3.select("#"+d.id+"_link"))
+              ////console.log(d3.select("#"+d.id+"_link"))
               return "#"+d.id+"_link"})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
@@ -492,7 +502,7 @@ NetworkGraph.prototype.enterGraph = function(){
   
 /*         vis.linklabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d) {
-              //console.log(d3.select("#"+d.id))
+              //////console.log(d3.select("#"+d.id))
               return "#"+d.id+"_link"})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
@@ -509,7 +519,7 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr('fill-opacity', 0)
         .attr('stroke-opacity', 0)
         .attr('id', function (d, i) {
-          //console.log(i)
+          //////console.log(i)
           return 'edgepath' + i})
         .attr('link_id',function(d){
           return d["source"]["id"]+d["target"]["id"]
@@ -697,7 +707,7 @@ NetworkGraph.prototype.enterGraph = function(){
           handleMouseover(d,this.getAttribute("id").replace("_image",""))
         })
         .on('mouseout', function(d){
-          handleMouseout(d,this.getAttribute("id").replace("_image",""))
+          handleMouseout(this.getAttribute("id").replace("_image",""))
         })
         .on("click",function(d){
           handleClickEvent(document.getElementById(this.getAttribute("id").replace("_image","")))
@@ -916,7 +926,7 @@ NetworkGraph.prototype.enterGraph = function(){
           return (vis.sizeNode(d.number)*1.5*2)+"px";
         })
       }
-      function handleMouseout(data,circleId){
+      function handleMouseout(circleId){
         deleteTooltip()
         d3.select("#"+circleId)
         .transition()
@@ -1322,8 +1332,8 @@ NetworkGraphBasic.prototype.addClassesShow = function(){
 }
 NetworkGraphBasic.prototype.getFilters = function(){
   var vis=this;
-  ////console.log("super getFilters")
-  //console.log(vis.filterClassesObjects)
+  ////////console.log("super getFilters")
+  //////console.log(vis.filterClassesObjects)
   if(vis.filterClassesObjects.length!=0){
     //$("#filters").removeClass("hidden")
     filtersVisible()
@@ -1378,12 +1388,13 @@ NetworkGraphBasic.prototype.updateFilters = async function () {
           if(!existingFilterClasses.includes(newFilterClasses[i])){
             filterClass=new FilterClassBasic(newFilterClasses[i])
             await filterClass.init()
-            ////console.log("checkHidden")
+            ////////console.log("checkHidden")
             filterClass.checkHidden()
             vis.filterClassesObjects.push(filterClass) 
           }else{
             networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
-              f.addValues()
+              console.log("update filters")
+              f.resetAllValues()
             })
           }
         //})
@@ -1410,7 +1421,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
     super.setColorScale()
   }
   async getFilters() {
-    //////console.log("en getfilters principio")
+    //////////console.log("en getfilters principio")
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
     if(configRow.filters){
@@ -1426,7 +1437,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
       }
     }
     super.getFilters()
-    //////console.log("en getfilters final")
+    //////////console.log("en getfilters final")
 
   }
 }

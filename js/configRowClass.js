@@ -5,7 +5,7 @@ ConfigRow = function (_option,_node) {
 
 ConfigRow.prototype.init = async function () {
     var cr=this
-    //console.log("init")
+    ////console.log("init")
     cr.getValuesFromOption()
     cr.replaceParmtrsQuery("query")
     cr.getNameClasses()
@@ -18,7 +18,7 @@ ConfigRow.prototype.initImport = async function () {
 }
 ConfigRow.prototype.update = async function(option,node){
   var cr=this;
-  ////////////////console.log(option)
+  //////////////////console.log(option)
   cr.option=option
   cr.node=node
   await cr.init()
@@ -26,17 +26,17 @@ ConfigRow.prototype.update = async function(option,node){
 ConfigRow.prototype.fromOptionToConfigRow = async function(option){
   var cr=this;
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
-  console.log(configFile.file)
-  console.log(rowInConfigFile)
+  //console.log(configFile.file)
+  //console.log(rowInConfigFile)
   Object.keys(rowInConfigFile).forEach(function(k){
-    console.log(k)
-    console.log(option[k])
+    //console.log(k)
+    //console.log(option[k])
     if(option[k]){
       cr[k]=option[k]
     }else{
-      console.log(rowInConfigFile)
-      console.log(k)
-      console.log(rowInConfigFile[k])
+      //console.log(rowInConfigFile)
+      //console.log(k)
+      //console.log(rowInConfigFile[k])
       cr[k]=rowInConfigFile[k]
     }
   })
@@ -103,16 +103,16 @@ ConfigRowBasic.prototype.clusterResults = function (){
   }else{
     cr.hierarchy.forEach(function(h,i){
       unique = [...new Set(cr.results.map(item => item[h.parent].value))];
-      console.log(unique)
+      //console.log(unique)
       unique.forEach(function(u){
         number = cr.results.reduce(function (n, r) {
           return n + (r[h.parent].value == u);
         }, 0);
         numberResults[u]=number
       })
-      console.log(numberResults)
+      //console.log(numberResults)
       if(cr.hierarchy[i-1]){
-        console.log(cr.results[0][cr.hierarchy[i-1]["parent"]].value)
+        //console.log(cr.results[0][cr.hierarchy[i-1]["parent"]].value)
         numberResults[cr.results[0][cr.hierarchy[i-1]["parent"]].value]=unique.length
       }
     })
@@ -130,10 +130,10 @@ ConfigRowBasic.prototype.getValuesFromOption = async function () {
   var cr=this,rowFields;
   cr.rowNumber=configFile.getRowNumber(cr.option)
   rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
-  console.log(rowFields)
+  //console.log(rowFields)
   Object.keys(rowFields).forEach(function(k){
     if(k=="hierarchy"){
-      console.log(rowFields[k])
+      //console.log(rowFields[k])
     }
     cr[k]=rowFields[k]
   })
@@ -150,15 +150,15 @@ ConfigRowExpert.prototype = Object.create(ConfigRow.prototype);
 
 ConfigRowExpert.prototype.getValuesFromOption = async function () {
   var cr=this;
-  //console.log(cr)
+  ////console.log(cr)
   let option=JSON.parse(JSON.stringify(cr.option));
   Object.keys(option).forEach(function(k){
     /* if(k=="hierarchy"){
-      console.log(option[k])
+      //console.log(option[k])
     } */
     cr[k]=option[k]
   })
-  console.log(cr)
+  //console.log(cr)
 }
 ConfigRowExpert.prototype.getNameClasses = function () {
   var cr=this;
