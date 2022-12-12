@@ -772,10 +772,14 @@ function changeDate(el){
   relatedFilters(this)
 }
 
-function applyFilters(){
+function getFilteredData(){
   linkedDataGraph.filter()
   linkedDataGraph.treeData=linkedDataGraph.treeDataFiltered
   linkedDataGraph.flatten()
+}
+
+function applyFilters(){
+  getFilteredData()
   networkGraph.refreshNoFilters()
 }
 
@@ -923,19 +927,20 @@ function clearFilters(){
   linkedDataGraph.clearFilter()
   console.log(linkedDataGraph.data.flatData.nodes)
   console.log(linkedDataGraph.data.treeData)
+  
+  ////////console.log("despues forEach")
+  networkGraph.refreshNoFilters()
+  ////////console.log("despues refresh")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(async function (f){
       //f.addValuesField(f.values)
-      ////////console.log(f)
+      console.log(f)
       f.resetAllValues()
       //console.log("despues de addValues")
       //f.resetValue()
       ////////console.log("despues de resetvalue")
     })
   })
-  ////////console.log("despues forEach")
-  networkGraph.refresh()
-  ////////console.log("despues refresh")
 }
 function noOptionSelectedCollections(){
   document.getElementById("select-collections").value = "------------";

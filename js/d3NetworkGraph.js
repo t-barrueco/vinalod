@@ -1277,6 +1277,8 @@ NetworkGraph.prototype.refresh = function (node){
   var vis = this;
   vis.addingGraph=true
 
+  getFilteredData()
+
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
   if(configRow){

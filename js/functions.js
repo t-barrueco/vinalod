@@ -887,6 +887,8 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
+  console.log(dateStr)
+  console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 

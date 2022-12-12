@@ -111,27 +111,27 @@ FilterClassBasic.prototype.setValuesFilters= function(filterId){
   cf.filters.forEach(function(f){
     if(f.id!=filterId){
       //get all values from nodes after data has been filtered
-      values=f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
-      f.addValues(values)
+      f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
+      console.log(f.values)
     }
   })
 }
 
 FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
   var cf=this,hidden=false;
-  //console.log(node)
-  //console.log(filterId)
+  ////console.log(node)
+  ////console.log(filterId)
   cf.filters.forEach(function(f){
       var condition;
       if(filterId){
-        //console.log(f.id)
-        //console.log(filterId)
+        ////console.log(f.id)
+        ////console.log(filterId)
         if(f.id==filterId){
-          //console.log("f.id==filterID")
+          ////console.log("f.id==filterID")
           condition=f.checkConditionNode(node)
         }
       }else{
-        //console.log("f.id!=filterID")
+        ////console.log("f.id!=filterID")
         condition=f.checkConditionNode(node)
       }
       if(condition){
@@ -200,12 +200,12 @@ Filter.prototype.init= async function () {
   }
 }
 
-Filter.prototype.valuesAndHtml = async function () {
+/* Filter.prototype.valuesAndHtml = async function () {
   var fi=this;
   //fi.values=fi.getValuesNodes(networkGraph.data["nodes"])
   //fi.setAllValues()
   fi.addHtml()
-  }
+  } */
 
 Filter.prototype.import = function (details) {
     var fi=this;
@@ -227,8 +227,15 @@ Filter.prototype.getValuesNodes=function (nodes){
         }
       }
     })
-    //////////////console.log(values)
-    return fi.sortValues(values)
+    console.log(values)
+    if(values.length==0){
+      fi.hide()
+    }else{
+      fi.show()
+      fi.values=values
+      fi.sortValues()
+      fi.fillField()
+    }
 }
 
 Filter.prototype.getValuesAllNodes=function (){
@@ -236,19 +243,30 @@ Filter.prototype.getValuesAllNodes=function (){
   let docs=document.getElementsByClassName(fi.details.class)
   let searchValues=[]
   for (let d of docs) {
+    //console.log(d3.select("#"+d.getAttribute("id")).data()[0])
+    //console.log(fi.details.property)
     if(d3.select("#"+d.getAttribute("id")).data()[0][fi.details.property]){
       searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0][fi.details.property])
     }
   }  
+  //console.log(searchValues)
   fi.values=searchValues
   fi.sortValues()
 }
 
 Filter.prototype.resetAllValues=function (){
   var fi=this
-  fi.values=fi.getValuesAllNodes()
+  fi.getValuesAllNodes()
+  console.log(fi.values)
   fi.fillField()
+  console.log(fi.values)
   fi.resetComponent()
+  console.log(fi.values)
+  if(fi.values.length==0){
+    fi.hide()
+  }else{
+    fi.show()
+  }
 }
 /* Filter.prototype.update=function(){
   getValuesAllNodes
@@ -256,7 +274,7 @@ Filter.prototype.resetAllValues=function (){
 Filter.prototype.setAllValues=function (){
   var fi=this
   fi.values=fi.getValuesAllNodes()
-  console.log(fi.values)
+  //console.log(fi.values)
   fi.sortValues()
   //fi.resetValue()
 }
@@ -286,6 +304,8 @@ FilterBasic.prototype.addHtml= function () {
   }
 
   fi.getValuesAllNodes()
+
+  //console.log("addHtml super")
 }
 
 FilterBasic.prototype.hide= function () {
@@ -325,7 +345,6 @@ class FilterBasicDropdown extends FilterBasic {
         var select=document.getElementById("select-default")
         select.name = fi.details.property;
         select.id = fi.id;
-        fi.checkAddAll()
         fi.fillField();
         runAutoInit()
       }) 
@@ -333,6 +352,7 @@ class FilterBasicDropdown extends FilterBasic {
   }
   fillField(){
     var fi=this;
+    fi.checkAddAll()
     $(("#accordion-filters #"+fi.details.property+"_filter")).empty();
     var select=document.getElementById(fi.details.property+"_filter")
     addHtmlOptionsSelect(select,fi.values,false)
@@ -384,26 +404,20 @@ class FilterBasicDropdown extends FilterBasic {
       addHtmlOptionsSelect(select,values,false)
       fi.setValue(values)
     }
-    //console.log(ECL.autoInit())
+    ////console.log(ECL.autoInit())
   }
-  resetValue(){
+/*   resetValue(){
     var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
-    const $select = document.querySelector('#mySelect');
-    //$select.value = 'steve'
     if(this.values.length>1){
       select.value = "All"
     }else{
       select.value = this.values[0];
     }
     const $options = Array.from(select.options);
-    //console.log($options)
+    ////console.log($options)
     const optionToSelect = $options.find(item => item.text ===select.value);
     optionToSelect.selected = true;
-    //select[0].selectedIndex=0
-    ////console.log(this)
-    //$("#"+this.id).val(select.value)
-    //$("#"+this.id).val(select.value).change();
-  }
+  } */
   setValue(values){
     var fi=this;
     var select = document.querySelector("#accordion-filters #"+this.details.property+"_filter");
@@ -418,60 +432,77 @@ class FilterBasicDropdown extends FilterBasic {
       }
     }
   }
+  resetComponent(){
+    let component=$("#"+this.id)[0]
+    runAutoInit(component)
+  }
 }
 
 class FilterBasicDate extends FilterBasic {
   async addHtml() {
     var fi=this;
+    //console.log("addHtml date")
     super.addHtml();
 
     await $.get("pages/date-filter.html", function (code) {
-      //////////console.log(fi)
-      //////console.log(ECL.autoInit());
+      ////////////console.log(fi)
+      ////////console.log(ECL.autoInit());
       code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text)
       $("#"+fi.details.class+"_filters").append(code).ready(function () {
-      ////console.log(fi.values[0])
-      fi.fillField()
+      //////console.log(fi.values[0])
+
       //$("#"+fi.details.class+"_filters #start-date").attr("value",fi.values[0])
       //$("#"+fi.details.class+"_filters #start-date").attr("value",'01-06-2019')
-      ////console.log($("#"+fi.details.class+"_filters #start-date").val())
+      //////console.log($("#"+fi.details.class+"_filters #start-date").val())
       $("#"+fi.details.class+"_filters #start-date").attr("name",fi.details.property+"_start")
       $("#"+fi.details.class+"_filters #start-date").attr("id",fi.details.property+"_filter_start")
 
       //$("#"+fi.details.class+"_filters #end-date").attr("value",fi.values[fi.values.length-1])
       $("#"+fi.details.class+"_filters #end-date").attr("name",fi.details.property+"_end")
       $("#"+fi.details.class+"_filters #end-date").attr("id",fi.details.property+"_filter_end")
-      ////console.log(ECL.autoInit());
+      //////console.log(ECL.autoInit());
+      //console.log(fi)
+      //console.log(this)
+      //console.log(Object.getOwnPropertyNames(fi))
+      fi.fillField()
       runAutoInit()
-      ////console.log($("#"+fi.details.property+"_filter_start").val())
+      //////console.log($("#"+fi.details.property+"_filter_start").val())
 
       })
     })
   }
   fillField(){
-    $("#"+fi.details.class+"_filters #start-date").attr("value",fi.values[0])
-    $("#"+fi.details.class+"_filters #end-date").attr("value",fi.values[fi.values.length-1])
+    var fi=this;
+/*     //console.log(fi.values)
+    //console.log($("#"+fi.details.property+"_filter_start"))
+    //console.log($("#"+fi.details.property+"_filter_end"))
+    $("#"+fi.details.property+"_filter_start").attr("value",fi.values[0])
+    ////console.log(fi.values)
+    ////console.log(fi.values.length)
+    //console.log(fi.values[fi.values.length-1])
+    //console.log($("#"+fi.details.property+"_filter_end"))
+    $("#"+fi.details.property+"_filter_end").attr("value",fi.values[fi.values.length-1])
+ */
+    document.getElementById(fi.details.property+"_filter_start").value = fi.values[0];
+    document.getElementById(fi.details.property+"_filter_end").value = fi.values[fi.values.length-1];
   }
   checkConditionNode(node){
     let startDate=$("#"+this.details.property+"_filter_start").val()
     let endDate=$("#"+this.details.property+"_filter_end").val()
-    //console.log(formatDateComp(node[this.details.property]))
-    //console.log(formatDateComp(startDate))
-    //console.log(formatDateComp(endDate))
+    ////console.log(formatDateComp(node[this.details.property]))
+    ////console.log(formatDateComp(startDate))
+    ////console.log(formatDateComp(endDate))
     if((formatDateComp(node[this.details.property])>=formatDateComp(startDate))&&(formatDateComp(node[this.details.property])<=formatDateComp(endDate))){
       return false
     }else{
       return true
     }
   }
-  fillField(){
-
-  }
   addValues(values){
-    //console.log(values)
+    ////console.log(values)
 /*     if(!values){
       values=this.getValuesAllNodes()
-      console.log(values)
+      //console.log(values)
     } */
     if(values.length==0){
       this.hide()
@@ -482,11 +513,11 @@ class FilterBasicDate extends FilterBasic {
       this.setValues(values)
       this.resetComponent()
       //let component=$("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav")[0]
-      //console.log(this.id);
-      //console.log(component)
-      //console.log(values)
+      ////console.log(this.id);
+      ////console.log(component)
+      ////console.log(values)
       //if((fi.valuesChanged)&&(values.includes(fi.valuesChanged))){
-      ////console.log(this.valuesChanged)
+      //////console.log(this.valuesChanged)
 /*       if(values.length>1){
         if(this.valuesChanged){
           if(this.valuesChanged["start"]){
@@ -508,8 +539,8 @@ class FilterBasicDate extends FilterBasic {
           document.getElementById(this.details.property+"_filter_start").value=formatDateShow(values[0])
           //$(("#accordion-filters #"+this.details.property+"_filter_start")).val(values[0]);
           
-          ////console.log(document.getElementById(this.details.property+"_filter_start").value)
-          ////console.log(document.getElementById(this.details.property+"_filter_start"))
+          //////console.log(document.getElementById(this.details.property+"_filter_start").value)
+          //////console.log(document.getElementById(this.details.property+"_filter_start"))
           //$(("#accordion-filters #"+this.details.property+"_filter_end")).val(values[values.length-1]);    
           document.getElementById(this.details.property+"_filter_end").value=formatDateShow(values[values.length-1])
       
@@ -520,10 +551,10 @@ class FilterBasicDate extends FilterBasic {
       } */
 
     }
-    ////console.log(document.getElementById(this.details.property+"_filter_start"))
-    ////console.log(document.getElementById(this.details.property+"_filter_end"))
+    //////console.log(document.getElementById(this.details.property+"_filter_start"))
+    //////console.log(document.getElementById(this.details.property+"_filter_end"))
 
-    //////console.log(window.ECL.components)
+    ////////console.log(window.ECL.components)
     //ECL.autoInit.update()
     //ECLupdate($(("#accordion-filters #"+this.details.property+"_filter_start"))[0])
     //ECL.autoInit().update()
@@ -531,13 +562,13 @@ class FilterBasicDate extends FilterBasic {
     //ECLdestroy($(("#accordion-filters #"+this.details.property+"_filter_start"))[0])
     //ECLdestroy($(("#accordion-filters #"+this.details.property+"_filter_end"))[0])
     
-    //////console.log( $(("#accordion-filters #"+this.details.property+"_filter_start"))[0].autoinit.destroy())
-    //////console.log(ECL.autoInit())
+    ////////console.log( $(("#accordion-filters #"+this.details.property+"_filter_start"))[0].autoinit.destroy())
+    ////////console.log(ECL.autoInit())
   }
   addValuesChanged(el){
-    //////console.log(el)
-    //////////console.log(el.id)
-    //////////console.log(el.value)
+    ////////console.log(el)
+    ////////////console.log(el.id)
+    ////////////console.log(el.value)
     if(el.id.endsWith("_start")){
       if(this["valuesChanged"]){
         this["valuesChanged"]["start"]=el.value
@@ -551,17 +582,21 @@ class FilterBasicDate extends FilterBasic {
         this["valuesChanged"]={"end":el.value}
       }
     }
-    //////console.log(this["valuesChanged"])
+    ////////console.log(this["valuesChanged"])
   }
   sortValues(){
     var fi=this;
     let setValues=[...new Set(fi.values)]
-    //console.log(setValues)
+    ////console.log(setValues)
     setValues=setValues.sort(function(a,b){
       return formatDateComp(a) - formatDateComp(b);
     });
-    fi.values=setValues.map(d=>dateValidFormat(d))
-    
+    //console.log(setValues)
+    fi.values=setValues.map(d=>{
+      //console.log(d)
+      return dateValidFormat(d)
+    })
+    //console.log(fi.values)
     //return values
   }
   setValues(values){
@@ -587,8 +622,8 @@ class FilterBasicDate extends FilterBasic {
         document.getElementById(this.details.property+"_filter_start").value=formatDateShow(values[0])
         //$(("#accordion-filters #"+this.details.property+"_filter_start")).val(values[0]);
         
-        ////console.log(document.getElementById(this.details.property+"_filter_start").value)
-        ////console.log(document.getElementById(this.details.property+"_filter_start"))
+        //////console.log(document.getElementById(this.details.property+"_filter_start").value)
+        //////console.log(document.getElementById(this.details.property+"_filter_start"))
         //$(("#accordion-filters #"+this.details.property+"_filter_end")).val(values[values.length-1]);    
         document.getElementById(this.details.property+"_filter_end").value=formatDateShow(values[values.length-1])
     
@@ -605,8 +640,8 @@ class FilterBasicDate extends FilterBasic {
     component=$("#"+this.id+"_end")[0]
     runAutoInit(component)
   }
-  resetValue(){
-    console.log(this)
+/*   resetValue(){
+    //console.log(this)
     if(this.values.length>1){
       document.getElementById(this.details.property+"_filter_start").value=formatDateShow(this.values[0])
       document.getElementById(this.details.property+"_filter_end").value=formatDateShow(this.values[1])
@@ -615,7 +650,7 @@ class FilterBasicDate extends FilterBasic {
       document.getElementById(this.details.property+"_filter_end").value=formatDateShow(this.values[0])
     }
     //this.resetComponent()
-  }
+  } */
 }
 
 class FilterBasicText extends FilterBasic {
@@ -627,10 +662,12 @@ class FilterBasicText extends FilterBasic {
     await $.get("pages/text-filter.html", function (code) {
       code=code.replace("Label",fi.propertyFullName).replaceAll("HelperText",fi.details.filter_text).replaceAll("Placeholder text","Enter "+fi.propertyFullName).replaceAll("example-input-id-1",fi.id)
       $("#"+fi.details.class+"_filters").append(code).ready(function () {
+        fi.fillField()
+        runAutoInit()
+        fi.htmlEl=document.getElementById(fi.id)
         //ECL.autoInit();
       })
-      fi.htmlEl=document.getElementById(fi.id)
-      fi.addValues()
+      //fi.addValues()
       })
 
       document.getElementById(fi.id).addEventListener("keyup", function(event) {
@@ -643,14 +680,18 @@ class FilterBasicText extends FilterBasic {
         }
       })
   }
-
+  fillField(){
+    var fi=this;
+    //values=this.sortValues(value)
+    autocomplete(document.getElementById(fi.id), fi.values,1);
+  }
   checkConditionNode(node){
     const elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
     if(elValue!=""){
-      //////////////console.log(elValue.toLowerCase())
-      ////////////////console.log(node)
-      //////////////console.log(node[this.details.property].toLowerCase())
+      ////////////////console.log(elValue.toLowerCase())
+      //////////////////console.log(node)
+      ////////////////console.log(node[this.details.property].toLowerCase())
       if(!node[this.details.property].toLowerCase().includes(elValue.toLowerCase())){
         return true
       }else{
@@ -677,15 +718,20 @@ class FilterBasicText extends FilterBasic {
   }
   
   addValuesChanged(el){
-    this["valuesChanged"]=el.val()
+    console.log(el)
+    this["valuesChanged"]=el.value;
   }
   sortValues(){
-    this.values=[...new Set(values)].sort()
+    var fi=this;
+    fi.values=[...new Set(fi.values)].sort()
     //return values
   }
-  resetValue(){
-    
+  resetComponent(){
+  
   }
+/*   resetValue(){
+    
+  } */
 }
 
 class FilterBasicNumber extends FilterBasic {
@@ -738,7 +784,7 @@ class FilterExpertDropdown extends FilterExpert {
     }else{
       valuesFilter=[...new Set(configRow.results.map(d=>d.p.value))].sort()
     }
-    //////////console.log(select)
+    ////////////console.log(select)
     addOptionsSelect(select,valuesFilter,true)
   }
   checkConditionNode(node){
