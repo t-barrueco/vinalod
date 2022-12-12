@@ -50,9 +50,9 @@ div.tooltip {
   -ms-user-select: none;
   user-select: none;
 } */
-.modal.ui-resizable {
+/* .modal.ui-resizable {
   overflow: scroll;
-}
+} */
 
 /* Modal Content/Box */
 /* .modal-content {

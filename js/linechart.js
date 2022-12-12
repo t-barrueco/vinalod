@@ -1,23 +1,6 @@
-/* date,value
-2013-04-28,135.98
-2013-04-29,147.49
-2013-04-30,146.93
-2013-05-01,139.89
-2013-05-02,125.6
-2013-05-03,108.13
-2013-05-04,115
-2013-05-05,118.8
-2013-05-06,124.66
-2013-05-07,113.44
-2013-05-08,115.78
-2013-05-09,113.46
-2013-05-10,122
-2013-05-11,118.68
-2013-05-12,117.45
-2013-05-13,118.7
-2013-05-14,119.8 */
+
 function createLinechart(data,title){
-    console.log(data)
+    //console.log(data)
 
     modalVisibilityOn()
 
@@ -29,7 +12,7 @@ function createLinechart(data,title){
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
-    console.log(modalContent)
+    //console.log(modalContent)
     let titleColor="white"
     let titleAltColor="black"
 
@@ -37,7 +20,7 @@ function createLinechart(data,title){
     width = modalContent.offsetWidth - margin.left - margin.right,
     height = modalContent.offsetHeight - margin.top - margin.bottom;
     //height =data.length * 40
-    //console.log(document.getElementById("modalGraph"))
+    ////console.log(document.getElementById("modalGraph"))
             
     // append the svg object to the body of the page
     var svg=d3.select("#modalGraph").append("svg")

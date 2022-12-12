@@ -2,11 +2,12 @@
   {
     "class":"publicationsClassification",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#publicationsClassification\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\n PREFIX rdf: <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#>\n PREFIX rdfs: <http:\/\/www.w3.org\/2000\/01\/rdf-schema#>\n PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nSELECT DISTINCT ('Publication Themes Classification' AS ?publicationsClassification) ?publicationsClassification_uri ?opTheme ?opTheme_uri ?opTheme_dateCreated\nwhere\n {\n{?opTheme_uri rdf:type ?publicationsClassification_uri;\nskos:prefLabel ?opTheme;\ndcterms:created ?opTheme_dateCreated.\n#?publicationsClassification_uri rdfs:label ?publicationsClassification                    \n}\nfilter(?publicationsClassification_uri=<http:\/\/publications.europa.eu\/ontology\/cdm#concept_op_theme>)\nFILTER(langMatches(lang(?opTheme), 'en')).\nfilter not exists {\n?opTheme_uri skos:broader ?broader\n}\n}ORDER BY ?publicationsClassification ?opTheme",
+    "query":"#publicationsClassification\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nPREFIX rdf: <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#>\nPREFIX rdfs: <http:\/\/www.w3.org\/2000\/01\/rdf-schema#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nSELECT DISTINCT ('Publication Themes Classification' AS ?publicationsClassification) ?publicationsClassification_uri ?opTheme ?opTheme_uri \n#(CONCAT(?opTheme_dateCreated_day, \n#                     \"-\", \n#                     ?opTheme_dateCreated_month, \n#                     \"-\", \n#                    STR(YEAR(?opTheme_dateCreated_temp))) as ?opTheme_dateCreated)\nconcat(DAY(?opTheme_dateCreated_temp),'-',MONTH(?opTheme_dateCreated_temp),'-',YEAR(?opTheme_dateCreated_temp)) as ?opTheme_dateCreated\nwhere\n{\n{?opTheme_uri rdf:type ?publicationsClassification_uri;\nskos:prefLabel ?opTheme;\ndcterms:created ?opTheme_dateCreated_temp.\n#?publicationsClassification_uri rdfs:label ?publicationsClassification                    \n}\n#BIND (STR(MONTH(?opTheme_dateCreated_temp)) AS ?opTheme_dateCreated_month_).\n#BIND (IF(STRLEN(?opTheme_dateCreated_month_)=1,CONCAT(\"0\", ?opTheme_dateCreated_month_),?opTheme_dateCreated_month_) AS ?opTheme_dateCreated_month).\n#BIND (STR(DAY(?opTheme_dateCreated_temp)) AS ?opTheme_dateCreated_day_).\n#BIND (IF(STRLEN(?opTheme_dateCreated_day_)=1,CONCAT(\"0\", ?opTheme_dateCreated_day_),?opTheme_dateCreated_day_) AS ?opTheme_dateCreated_day).\nfilter(?publicationsClassification_uri=<http:\/\/publications.europa.eu\/ontology\/cdm#concept_op_theme>)\nFILTER(langMatches(lang(?opTheme), 'en')).\nfilter not exists {\n?opTheme_uri skos:broader ?broader\n}\n}ORDER BY ?publicationsClassification ?opTheme",
     "hierarchy":[
       {
         "parent":"publicationsClassification",
-        "child":"opTheme"
+        "child":"opTheme",
+        "relation":"type"
       }
     ],
     "properties":[
@@ -40,12 +41,7 @@
 
     ],
     "filters":[
-      {
-        "property":"opTheme_dateCreated",
-        "filter_type":"date",
-        "class":"opTheme",
-        "filter_text":"Creation date"
-      }
+
     ],
     "tooltip":[
       {
@@ -72,7 +68,8 @@
     "hierarchy":[
       {
         "parent":"membership",
-        "child":"person"
+        "child":"person",
+        "relation":"assigned to"
       }
     ],
     "properties":[
@@ -126,15 +123,12 @@
   {
     "class":"OP Theme",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#OP Theme_1\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>  PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>  PREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>  PREFIX geo: <http:\/\/www.w3.org\/2003\/01\/geo\/wgs84_pos#>  PREFIX geosparql: <http:\/\/www.opengis.net\/ont\/geosparql#>  PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>  PREFIX vcard: <http:\/\/www.w3.org\/2006\/vcard\/ns#> SELECT DISTINCT ?opTheme ?opTheme_uri ?corporateBodyType ?corporateBodyType_uri ?corporateBody_img ?corporateBodyType_definition ?corporateBody ?corporateBody_uri (group_concat(distinct ?corporateBody_locationTemp;separator=';') as ?corporateBody_location) ?corporateBody_homepage (group_concat(distinct STR(?corporateBody_telephoneTemp);separator=';') as ?corporateBody_telephone) (?opTheme_uri AS ?corporateBody_opTheme) where {{?publicationDocument_uri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri; cdm:work_authored_by_agent ?corporateBody_uri. ?opTheme_uri skos:prefLabel ?opTheme. ?corporateBody_uri skos:prefLabel ?corporateBody. ?corporateBody_uri dcterms:type ?corporateBodyType_uri. ?corporateBodyType_uri skos:prefLabel ?corporateBodyType; skos:definition ?corporateBodyType_definition. OPTIONAL{  ?corporateBody_uri <http:\/\/xmlns.com\/foaf\/0.1\/depiction> ?corporateBody_img} OPTIONAL{  ?corporateBody_uri geo:location ?corporateBody_locationTempURI.  ?corporateBody_locationTempURI skos:prefLabel ?corporateBody_cityTemp;  geosparql:sfWithin ?corporateBody_countryTempURI.  ?corporateBody_countryTempURI skos:prefLabel ?corporateBody_countryTemp.  BIND(CONCAT(STR(?corporateBody_cityTemp),'-',STR(?corporateBody_countryTemp)) AS ?corporateBody_locationTemp).  FILTER(langMatches(lang(?corporateBody_cityTemp), 'en')).  FILTER(langMatches(lang(?corporateBody_countryTemp), 'en')). } OPTIONAL{  ?corporateBody_uri foaf:homepage ?corporateBody_homepage. } OPTIONAL{  ?corporateBody_uri vcard:hasTelephone ?bnode.  ?bnode vcard:hasValue ?corporateBody_telephoneTemp. } } filter(?opTheme_uri=<PARAMETER>) FILTER(langMatches(lang(?corporateBody), 'en')). FILTER(langMatches(lang(?corporateBodyType), 'en')). FILTER(langMatches(lang(?opTheme), 'en')). }ORDER BY ?opTheme ?corporateBodyType ?corporateBody",
+    "query":"#OP Theme_1\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nPREFIX dcterms: <http:\/\/purl.org\/dc\/terms\/>\nPREFIX geo: <http:\/\/www.w3.org\/2003\/01\/geo\/wgs84_pos#>\nPREFIX geosparql: <http:\/\/www.opengis.net\/ont\/geosparql#>\nPREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nPREFIX vcard: <http:\/\/www.w3.org\/2006\/vcard\/ns#>\nSELECT DISTINCT ?opTheme ?opTheme_uri ?corporateBody ?corporateBody_img ?corporateBody_type ?corporateBody_uri (group_concat(distinct ?corporateBody_locationTemp;separator=';') as ?corporateBody_location) ?corporateBody_homepage (group_concat(distinct STR(?corporateBody_telephoneTemp);separator=';') as ?corporateBody_telephone) (?opTheme_uri AS ?corporateBody_opTheme)\nwhere {{\n?publicationDocument_uri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?corporateBody_uri dcterms:type ?corporateBody_typeUri.\n?corporateBody_typeUri skos:prefLabel ?corporateBody_type.\nOPTIONAL{\n    ?corporateBody_uri <http:\/\/xmlns.com\/foaf\/0.1\/depiction> ?corporateBody_img\n}\nOPTIONAL{\n    ?corporateBody_uri geo:location ?corporateBody_locationTempURI.\n    ?corporateBody_locationTempURI skos:prefLabel ?corporateBody_cityTemp;\n    geosparql:sfWithin ?corporateBody_countryTempURI.\n    ?corporateBody_countryTempURI skos:prefLabel ?corporateBody_countryTemp.\n    BIND(CONCAT(STR(?corporateBody_cityTemp),'-',STR(?corporateBody_countryTemp)) AS ?corporateBody_locationTemp).\n    FILTER(langMatches(lang(?corporateBody_cityTemp), 'en')).\n    FILTER(langMatches(lang(?corporateBody_countryTemp), 'en')).\n} \nOPTIONAL{  \n    ?corporateBody_uri foaf:homepage ?corporateBody_homepage.\n} \nOPTIONAL{\n    ?corporateBody_uri vcard:hasTelephone ?bnode.\n    ?bnode vcard:hasValue ?corporateBody_telephoneTemp.\n}\n}\nfilter(?opTheme_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?corporateBody_type), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\n}ORDER BY ?opTheme ?corporateBody",
     "hierarchy":[
       {
         "parent":"opTheme",
-        "child":"corporateBodyType"
-      },
-      {
-        "parent":"corporateBodyType",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"author"
       }
     ],
     "properties":[
@@ -144,19 +138,14 @@
         "property_name":"OP Theme URI"
       },
       {
-        "class":"corporateBodyType",
-        "property":"corporateBodyType_uri",
-        "property_name":"URI"
-      },
-      {
-        "class":"corporateBodyType",
-        "property":"corporateBodyType_definition",
-        "property_name":"Definition"
-      },
-      {
         "class":"corporateBody",
         "property":"corporateBody_uri",
         "property_name":"Corporate Body URI"
+      },
+      {
+        "class":"corporateBody",
+        "property":"corporateBody_type",
+        "property_name":"Corporate Body Type"
       },
       {
         "class":"corporateBody",
@@ -190,10 +179,6 @@
         "text":"OP Theme"
       },
       {
-        "class":"corporateBodyType",
-        "text":"Corporate Body Type"
-      },
-      {
         "class":"corporateBody",
         "text":"Directory Organization"
       }
@@ -202,7 +187,12 @@
 
     ],
     "filters":[
-
+      {
+        "property":"corporateBody_type",
+        "filter_type":"dropdown",
+        "class":"corporateBody",
+        "filter_text":"Type organisation"
+      }
     ],
     "tooltip":[
 
@@ -217,16 +207,6 @@
     "collection":"None",
     "modelClass":"None",
     "details":[
-      {
-        "class":"corporateBodyType",
-        "details":[
-          {
-            "property":"corporateBodyType_definition",
-            "text":"Definition",
-            "type":"text"
-          }
-        ]
-      },
       {
         "class":"corporateBody",
         "details":[
@@ -257,7 +237,8 @@
     "hierarchy":[
       {
         "parent":"opThemeParent",
-        "child":"opThemeChild"
+        "child":"opThemeChild",
+        "relation":"narrow"
       }
     ],
     "properties":[
@@ -363,7 +344,8 @@
     "hierarchy":[
       {
         "parent":"det",
-        "child":"detLevel1"
+        "child":"detLevel1",
+        "relation":"has concept"
       }
     ],
     "properties":[
@@ -416,7 +398,8 @@
     "hierarchy":[
       {
         "parent":"detLevel2",
-        "child":"detLevel3"
+        "child":"detLevel3",
+        "relation":"narrower"
       }
     ],
     "properties":[
@@ -469,7 +452,8 @@
     "hierarchy":[
       {
         "parent":"detLevel1",
-        "child":"eurovocConcept"
+        "child":"eurovocConcept",
+        "relation":"match"
       }
     ],
     "properties":[
@@ -538,7 +522,8 @@
     "hierarchy":[
       {
         "parent":"country",
-        "child":"caseLawConcept"
+        "child":"caseLawConcept",
+        "relation":"originates in"
       }
     ],
     "properties":[
@@ -594,7 +579,8 @@
     "hierarchy":[
       {
         "parent":"country",
-        "child":"language"
+        "child":"language",
+        "relation":"speak"
       }
     ],
     "properties":[
@@ -647,7 +633,8 @@
     "hierarchy":[
       {
         "parent":"country",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"has membership"
       }
     ],
     "properties":[
@@ -761,7 +748,8 @@
     "hierarchy":[
       {
         "parent":"eurun",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"suborganization"
       }
     ],
     "properties":[
@@ -861,7 +849,8 @@
     "hierarchy":[
       {
         "parent":"membership",
-        "child":"person"
+        "child":"person",
+        "relation":"assigned to"
       }
     ],
     "properties":[
@@ -1037,7 +1026,8 @@
     "hierarchy":[
       {
         "parent":"expression",
-        "child":"manifestation"
+        "child":"manifestation",
+        "relation":"manifestation type"
       }
     ],
     "properties":[
@@ -1155,10 +1145,7 @@
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
     "query":"#Directory Organization_1\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n PREFIX resource: <http:\/\/publications.europa.eu\/resource\/>\nSELECT DISTINCT ?membership ?membership_order ?membership_positionStatus ?person ?person_image \n\nwhere {{?membership_uri org:organization ?directoryOrg_uri;\n euvoc:order ?membership_order;\n euvoc:positionComplement ?membership;\n euvoc:positionStatus ?membership_positionStatusUri.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.\n ?person_uri org:hasMembership ?membership_uri;\n foaf:name ?person.\nOPTIONAL{\n ?person_uri foaf:img ?person_image.\n BIND (STRBEFORE(STRAFTER( STR(?person_image), 'https:\/\/www.europarl.europa.eu\/mepphoto\/' ), '.jpg' ) AS ?person_id)\n }\n } \nfilter(?directoryOrg_uri=<PARAMETER>).\nFILTER(langMatches(lang(?membership), 'en')).\nFILTER(langMatches(lang(?membership_positionStatus), 'en')).\nFILTER(langMatches(lang(?directoryOrg), 'en')).\n}ORDER BY ?membership_order ?person",
     "hierarchy":[
-      {
-        "parent":"membership",
-        "child":"person"
-      }
+
     ],
     "properties":[
       {
@@ -1213,10 +1200,7 @@
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
     "query":"#Directory Organization_2\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX euvoc: <http:\/\/publications.europa.eu\/ontology\/euvoc#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\n PREFIX resource: <http:\/\/publications.europa.eu\/resource\/>\nSELECT DISTINCT ?membership (?membership as ?membership_type) ?membership_order ?membership_positionStatus ?person (?person AS ?person_name) ?person_citiz ?person_image\nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n optional {?membership_uri euvoc:order ?membership_order}\n ?membership_uri euvoc:positionComplement ?membership.\n ?membership_uri euvoc:positionStatus ?membership_positionStatusUri.\n ?directoryOrg_uri skos:prefLabel ?directoryOrg.\n ?membership_positionStatusUri skos:prefLabel ?membership_positionStatus.\n ?person_uri org:hasMembership ?membership_uri;\n foaf:name ?person.\n OPTIONAL{?person_uri resource:personcitizenship ?person_citizUri. ?person_citizUri skos:prefLabel ?person_citiz. FILTER(langMatches(lang(?person_citiz), 'en')). }\n OPTIONAL{?person_uri foaf:img ?person_image. BIND (STRBEFORE(STRAFTER( STR(?person_image), 'https:\/\/www.europarl.europa.eu\/mepphoto\/' ), '.jpg' ) AS ?person_id) } }\n filter(?directoryOrg_uri=<PARAMETER>). \nFILTER(langMatches(lang(?membership), 'en')). FILTER(langMatches(lang(?membership_positionStatus), 'en')). FILTER(langMatches(lang(?directoryOrg), 'en')). }ORDER BY desc(-?membership_order) ?person",
     "hierarchy":[
-      {
-        "parent":"membership",
-        "child":"person"
-      }
+
     ],
     "properties":[
       {
@@ -1291,7 +1275,8 @@
     "hierarchy":[
       {
         "parent":"directoryOrg",
-        "child":"eurovocDomain"
+        "child":"eurovocDomain",
+        "relation":"concept"
       }
     ],
     "properties":[
@@ -1349,7 +1334,8 @@
     "hierarchy":[
       {
         "parent":"corporateBody",
-        "child":"directoryOrg"
+        "child":"directoryOrg",
+        "relation":"suborganization"
       }
     ],
     "properties":[
@@ -1445,7 +1431,8 @@
     "hierarchy":[
       {
         "parent":"directoryOrg",
-        "child":"membership"
+        "child":"membership",
+        "relation":"has membership"
       }
     ],
     "properties":[
@@ -1494,11 +1481,12 @@
   {
     "class":"Directory Organization",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"#Directory Organization_6\n PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT DISTINCT ?corporateBody ?corporateBody_uri ?publicationDocument (?publicationDocument as ?publicationDocument_title) ?publicationDocument_uri ?publicationDocument_abstract ?publicationDocument_language ?publicationDocument_date ?publicationDocument_id\nwhere {{?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n} \nfilter(?opTheme_uri=<PARAMETER2>)\nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}ORDER BY ?corporateBody DESC(?publicationDocument_date)",
+    "query":"\n#Directory Organization_6\nPREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\nPREFIX cdm: <http:\/\/publications.europa.eu\/ontology\/cdm#>\nSELECT DISTINCT ?corporateBody ?corporateBody_uri ?publicationDocument (?publicationDocument as ?publicationDocument_title) ?publicationDocument_uri ?publicationDocument_abstract ?publicationDocument_language ?publicationDocument_id \n#(CONCAT(?publicationDocument_day, \n#                     \"-\", \n#                     ?publicationDocument_month, \n#                     \"-\", \n#                    STR(YEAR(?publicationDocument_date_temp))) as ?publicationDocument_date)\nconcat(DAY(?publicationDocument_date_temp),'-',MONTH(?publicationDocument_date_temp),'-',YEAR(?publicationDocument_date_temp)) as ?publicationDocument_date\n\nwhere {{\n?publicationDocument_documentUri cdm:publication_general_is_about_concept_op_theme ?opTheme_uri;\ncdm:work_authored_by_agent ?corporateBody_uri.\n?opTheme_uri skos:prefLabel ?opTheme.\n?corporateBody_uri skos:prefLabel ?corporateBody.\n?publicationDocument_documentUri cdm:work_date_document ?publicationDocument_date_temp;\ncdm:work_id_document ?publicationDocument_id.\n?publicationDocument_uri cdm:expression_belongs_to_work ?publicationDocument_documentUri;\ncdm:expression_uses_language ?expression_languageUri;\ncdm:expression_title ?publicationDocument.\n?expression_languageUri skos:prefLabel ?publicationDocument_language.\nOPTIONAL{\n?publicationDocument_uri cdm:expression_abstract ?publicationDocument_abstract.\n}\n}\n#BIND (STR(MONTH(?publicationDocument_date_temp)) AS ?publicationDocument_month_).\n#BIND (IF(STRLEN(?publicationDocument_month_)=1,CONCAT(\"0\", ?publicationDocument_month_),?publicationDocument_month_) AS ?publicationDocument_month).\n#BIND (STR(DAY(?publicationDocument_date_temp)) AS ?publicationDocument_day_).\n#BIND (IF(STRLEN(?publicationDocument_day_)=1,CONCAT(\"0\", ?publicationDocument_day_),?publicationDocument_day_) AS ?publicationDocument_day).\nfilter(?opTheme_uri=<PARAMETER2>)\nfilter(?corporateBody_uri=<PARAMETER>)\nFILTER(langMatches(lang(?corporateBody), 'en')).\nFILTER(langMatches(lang(?opTheme), 'en')).\nFILTER(?expression_languageUri=<http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG>).\nFILTER(langMatches(lang(?publicationDocument_language), 'en')).\n}ORDER BY ?corporateBody DESC(?publicationDocument_date_temp)",
     "hierarchy":[
       {
         "parent":"corporateBody",
-        "child":"publicationDocument"
+        "child":"publicationDocument",
+        "relation":"publish"
       }
     ],
     "properties":[
@@ -1550,10 +1538,10 @@
     ],
     "filters":[
       {
-        "property":"publicationDocument_title",
-        "filter_type":"text",
+        "property":"publicationDocument_date",
+        "filter_type":"date",
         "class":"publicationDocument",
-        "filter_text":"Publication document title"
+        "filter_text":"Publication date"
       }
     ],
     "tooltip":[
@@ -1702,10 +1690,7 @@
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
     "query":"#Directory Organization_10\n SELECT distinct ?role ?startDate ?person ?membership ?mnem ?orgPrefLabel where { filter( ?nb > 1) {  SELECT distinct count(distinct ?startDate2) as ?nb where {<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org2. ?memberShip_uri2 <http:\/\/www.w3.org\/ns\/org#organization> ?org2.  ?memberShip_uri2 <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate2}} ?org <http:\/\/www.w3.org\/2004\/02\/skos\/core#prefLabel> ?orgPrefLabel. FILTER(LANG(?orgPrefLabel)='en') {{<PARAMETER> <http:\/\/www.w3.org\/ns\/org#hasSubOrganization>+ ?org.} union {?org <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type> <http:\/\/www.w3.org\/ns\/org#Organization>. filter (?org=<PARAMETER>) }} optional{?org <http:\/\/www.w3.org\/ns\/org#identifier>?mnem FILTER(datatype(?mnem)=<http:\/\/publications.europa.eu\/resource\/authority\/use-context\/MNEMONIC>)} ?memberShip_uri <http:\/\/www.w3.org\/ns\/org#organization> ?org. ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#roleQualification> ?roleQualification. filter (?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORG> || ?roleQualification=<http:\/\/publications.europa.eu\/resource\/authority\/role-qualifier\/STAFF_LEAD_ORGNO>) ?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#startDate> ?startDate. optional {?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#endDate> ?endDate} filter( ?startDate!=?endDate) optional{?memberShip_uri <http:\/\/publications.europa.eu\/ontology\/euvoc#positionComplement> ?membership. filter(lang(?membership)='en')} optional{?memberShip_uri <http:\/\/www.w3.org\/ns\/org#role> ?role} ?person_uri <http:\/\/www.w3.org\/ns\/org#hasMembership> ?memberShip_uri. ?person_uri foaf:name ?person.} order by desc(?startDate) limit 100",
     "hierarchy":[
-      {
-        "parent":"membership",
-        "child":"person"
-      }
+
     ],
     "properties":[
       {
@@ -1806,7 +1791,8 @@
     "hierarchy":[
       {
         "parent":"eurovocDomain",
-        "child":"eurovocTop"
+        "child":"eurovocTop",
+        "relation":"has domain"
       }
     ],
     "properties":[
@@ -1949,7 +1935,8 @@
     "hierarchy":[
       {
         "parent":"eurovocConcept",
-        "child":"aligment"
+        "child":"aligment",
+        "relation":"match"
       }
     ],
     "properties":[
@@ -2033,11 +2020,13 @@
     "hierarchy":[
       {
         "parent":"eurovocConcept",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"author"
       },
       {
         "parent":"corporateBody",
-        "child":"publicationDocument"
+        "child":"publicationDocument",
+        "relation":"publish"
       }
     ],
     "properties":[
@@ -2132,7 +2121,8 @@
     "hierarchy":[
       {
         "parent":"dataeuropa",
-        "child":"DEUCatalog"
+        "child":"DEUCatalog",
+        "relation":"has catalog"
       }
     ],
     "properties":[
@@ -2212,15 +2202,18 @@
     "hierarchy":[
       {
         "parent":"DEUCatalog",
-        "child":"datatheme"
+        "child":"datatheme",
+        "relation":"classified by"
       },
       {
         "parent":"datatheme",
-        "child":"dataset"
+        "child":"dataset",
+        "relation":"has dataset"
       },
       {
         "parent":"dataset",
-        "child":"documentation"
+        "child":"documentation",
+        "relation":"has documentation"
       }
     ],
     "properties":[
@@ -2402,11 +2395,13 @@
     "hierarchy":[
       {
         "parent":"dataset",
-        "child":"distributionType"
+        "child":"distributionType",
+        "relation":"type"
       },
       {
         "parent":"distributionType",
-        "child":"distribution"
+        "child":"distribution",
+        "relation":"has distribution"
       }
     ],
     "properties":[
@@ -2544,7 +2539,8 @@
     "hierarchy":[
       {
         "parent":"treatyClassification",
-        "child":"treatyType"
+        "child":"treatyType",
+        "relation":"type"
       }
     ],
     "properties":[
@@ -2602,11 +2598,13 @@
     "hierarchy":[
       {
         "parent":"treatyType",
-        "child":"treaty"
+        "child":"treaty",
+        "relation":"has treaty"
       },
       {
         "parent":"treaty",
-        "child":"location"
+        "child":"location",
+        "relation":"signed in"
       }
     ],
     "properties":[
@@ -2742,11 +2740,13 @@
     "hierarchy":[
       {
         "parent":"location",
-        "child":"classificationOrg"
+        "child":"classificationOrg",
+        "relation":"has organisation type"
       },
       {
         "parent":"classificationOrg",
-        "child":"corporateBody"
+        "child":"corporateBody",
+        "relation":"classifies organisation"
       }
     ],
     "properties":[
@@ -2859,11 +2859,13 @@
     "hierarchy":[
       {
         "parent":"nuts",
-        "child":"nutsLevel0"
+        "child":"nutsLevel0",
+        "relation":"has country"
       },
       {
         "parent":"nutsLevel0",
-        "child":"distribution"
+        "child":"distribution",
+        "relation":"has distribution"
       }
     ],
     "properties":[
@@ -3019,11 +3021,13 @@
     "hierarchy":[
       {
         "parent":"nutsLevel0",
-        "child":"nutsLevel1"
+        "child":"nutsLevel1",
+        "relation":"narrower"
       },
       {
         "parent":"nutsLevel1",
-        "child":"distribution"
+        "child":"distribution",
+        "relation":"has distribution"
       }
     ],
     "properties":[
@@ -3161,11 +3165,13 @@
     "hierarchy":[
       {
         "parent":"nutsLevel1",
-        "child":"nutsLevel2"
+        "child":"nutsLevel2",
+        "relation":"narrower"
       },
       {
         "parent":"nutsLevel2",
-        "child":"distribution"
+        "child":"distribution",
+        "relation":"has distribution"
       }
     ],
     "properties":[
@@ -3303,11 +3309,13 @@
     "hierarchy":[
       {
         "parent":"nutsLevel2",
-        "child":"nutsLevel3"
+        "child":"nutsLevel3",
+        "relation":"narrower"
       },
       {
         "parent":"nutsLevel3",
-        "child":"distribution"
+        "child":"distribution",
+        "relation":"has distribution"
       }
     ],
     "properties":[
@@ -3445,7 +3453,8 @@
     "hierarchy":[
       {
         "parent":"summaryLegType",
-        "child":"summaryLegTypeC"
+        "child":"summaryLegTypeC",
+        "relation":"narrower"
       }
     ],
     "properties":[
@@ -3543,7 +3552,8 @@
     "hierarchy":[
       {
         "parent":"summaryLegType",
-        "child":"summaryLeg"
+        "child":"summaryLeg",
+        "relation":"classifies summary"
       }
     ],
     "properties":[
@@ -3651,7 +3661,8 @@
     "hierarchy":[
       {
         "parent":"authorityTableClassification",
-        "child":"authorityTable"
+        "child":"authorityTable",
+        "relation":"has authority table"
       }
     ],
     "properties":[
@@ -3741,7 +3752,8 @@
     "hierarchy":[
       {
         "parent":"authorityTable",
-        "child":"summaryLegType"
+        "child":"summaryLegType",
+        "relation":"has summary type"
       }
     ],
     "properties":[
@@ -3814,11 +3826,13 @@
     "hierarchy":[
       {
         "parent":"authorityTable",
-        "child":"continent"
+        "child":"continent",
+        "relation":"has continent"
       },
       {
         "parent":"continent",
-        "child":"country"
+        "child":"country",
+        "relation":"has country"
       }
     ],
     "properties":[
@@ -3874,7 +3888,8 @@
     "hierarchy":[
       {
         "parent":"caseLawConceptParent",
-        "child":"caseLawConcept"
+        "child":"caseLawConcept",
+        "relation":"narrower"
       }
     ],
     "properties":[
@@ -3935,7 +3950,8 @@
     "hierarchy":[
       {
         "parent":"caseLawConcept",
-        "child":"caseLaw"
+        "child":"caseLaw",
+        "relation":"classifies case-law"
       }
     ],
     "properties":[
@@ -4025,11 +4041,13 @@
     "hierarchy":[
       {
         "parent":"dataeuropa",
-        "child":"DEUCatalog"
+        "child":"DEUCatalog",
+        "relation":"has catalog"
       },
       {
         "parent":"DEUCatalog",
-        "child":"datatheme"
+        "child":"datatheme",
+        "relation":"classified by"
       }
     ],
     "properties":[
@@ -4093,7 +4111,8 @@
     "hierarchy":[
       {
         "parent":"datatheme",
-        "child":"viz"
+        "child":"viz",
+        "relation":"has dataviz"
       }
     ],
     "properties":[
@@ -4192,7 +4211,8 @@
     "hierarchy":[
       {
         "parent":"corporateBody",
-        "child":"opTheme"
+        "child":"opTheme",
+        "relation":"classified by"
       }
     ],
     "properties":[
@@ -4320,7 +4340,8 @@
     "hierarchy":[
       {
         "parent":"summariesLeg",
-        "child":"summaryLegType"
+        "child":"summaryLegType",
+        "relation":"type"
       }
     ],
     "properties":[
@@ -4395,11 +4416,12 @@
   {
     "class":"Person",
     "endpoint_url":"https:\/\/publications.europa.eu\/webapi\/rdf\/sparql",
-    "query":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?person ?person_uri ?directoryOrg ?directoryOrg_uri  \nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n?directoryOrg_uri skos:prefLabel ?directoryOrg.\n?person_uri org:hasMembership ?membership_uri;\nfoaf:name ?person.\n}\n#filter(?directoryOrg_uri=<http:\/\/publications.europa.eu\/resource\/directory\/organization\/EP_MEPS\/EP_DPPED19>).\nfilter(?person_uri=<PARAMETER>).\nFILTER(langMatches(lang(?directoryOrg), 'en')).\n }",
+    "query":"PREFIX skos: <http:\/\/www.w3.org\/2004\/02\/skos\/core#>\n PREFIX org: <http:\/\/www.w3.org\/ns\/org#>\n PREFIX foaf: <http:\/\/xmlns.com\/foaf\/0.1\/>\nSELECT DISTINCT ?person ?person_uri ?directoryOrg ?directoryOrg_uri  \nwhere {{?membership_uri org:organization ?directoryOrg_uri.\n?directoryOrg_uri skos:prefLabel ?directoryOrg.\n?person_uri org:hasMembership ?membership_uri;\nfoaf:name ?person.\n}\nfilter(?person_uri=<PARAMETER>).\nFILTER(langMatches(lang(?directoryOrg), 'en')).\n }",
     "hierarchy":[
       {
         "parent":"person",
-        "child":"directoryOrg"
+        "child":"directoryOrg",
+        "relation":"in organisation"
       }
     ],
     "properties":[

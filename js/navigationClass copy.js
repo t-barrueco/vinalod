@@ -17,11 +17,9 @@ NavigationPanel.prototype.init = function () {
   navPanel.element=document.getElementById(navPanel.node.id)
   navPanel.getNodes()
 
-  //////console.log(navPanel.sources)
-  //////console.log(navPanel.targets)
-  //////console.log(navPanel.fromNodes)
-  //////console.log(navPanel.toNodes)
-
+  console.log(navPanel.sources)
+  console.log(navPanel.targets)
+  console.log(navPanel.fromNodes)
   navPanel.initModal()
   navPanel.navTableTable()
 
@@ -42,7 +40,7 @@ NavigationPanel.prototype.getNodes = function (){
       navPanel.targets=networkGraph.data.links.filter(function(item) {
         return item.source.id == navPanel.node.id
       })
-      //////console.log(navPanel.targets)
+      console.log(navPanel.targets)
       navPanel.more_results=false
     }
   }else{
@@ -56,10 +54,7 @@ NavigationPanel.prototype.getNodes = function (){
     navPanel.fromNodes=networkGraph.data.links.filter(function(item) {
       return item.target.id == navPanel.node.id
     })
-    navPanel.toNodes=navPanel.targets
-    //////console.log(navPanel.fromNodes)
-    navPanel.fromNodes=changetargetPerSource(navPanel.fromNodes)
-    navPanel.targets=navPanel.fromNodes
+    navPanel.toNodes=navPanel.targetNodes
   }else{
     sources=networkGraph.data.links.filter(function(item) {
       return item.target.id == navPanel.node.id
@@ -73,9 +68,6 @@ NavigationPanel.prototype.getNodes = function (){
     if (navPanel.sources.length>0){
       navPanel.sources=navPanel.sources.reverse();
     }
-    navPanel.fromNodes=[]
-    navPanel.toNodes=[]
-
   }
 
   function recurse(node) {
@@ -93,16 +85,6 @@ NavigationPanel.prototype.getNodes = function (){
       links.push({"target":d})
     })
     return links
-  }
-  function changetargetPerSource(nodes){
-    var tmp,reverse=[];
-    nodes.forEach(function(n){
-      tmp=n.source
-      n.source=n.target
-      n.target=tmp
-      reverse.push(n)
-    })
-    return reverse
   }
 }
 
@@ -170,7 +152,9 @@ NavigationPanel.prototype.selectBubbles = function (){
 NavigationPanel.prototype.initModal = function (){
   var navPanel=this;
   showModal("#myModal")
-  $('#myModal').resizable();
+  $('#myModal').resizable({
+
+  });
   $("#myModal").draggable()
 }
 
@@ -218,15 +202,7 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   }else{
     file="pages/navTable_element_last.html"
   }
-  if(last){
-    file="pages/navTable_element_last.html"
-  }else if(navPanel.sources[i]["relation"]){
-    file="pages/navTable_element_middle.html"
-  }else{
-    file="pages/navTable_element.html"
-  }
 
-  //console.log(navPanel.sources[i])
   code = await getHtmlCodeFromFile(file)
   .then(success => {return (success)})
   
@@ -236,12 +212,6 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   let a=li.querySelector("a")
   a.id=navPanel.sources[i]["id"]+"_a"
 
-  if(navPanel.sources[i]["relation"]){
-    let relation=navPanel.ol.querySelector("#navTable_relation")
-    relation.querySelector(".ecl-timeline__content").innerHTML = navPanel.sources[i]["relation"]
-    relation.id=navPanel.sources[i]["id"]+"_relation"
-  }
-  
   colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
   let navImage=li.querySelector("#nav_image")
   navImage.classList.add("bg-"+ colorCircle)
@@ -285,7 +255,6 @@ NavigationPanel.prototype.addEventsNav = function (){
     d3.event.preventDefault();
   });
 }
-
 NavigationPanel.prototype.contentTable = async function (){
   var navPanel=this,label;
   var menuOption;
@@ -315,8 +284,7 @@ NavigationPanel.prototype.contentTable = async function (){
       menuOption=navPanel.node["menuOption"]
       if(menuOption){
         if(menuOption.split(";").length>1){
-          $("#dvTable th").text("Several options displayed in graph. Click on each option to see results:");
-          ////console.log($("#dvTable th").text())
+          th.innerHTML="Several options displayed in graph. Click on each option to see results values:";
         }else{
           menuOption=menuOption.split(",")
           label=navPanel.labelGraph(menuOption)
@@ -331,9 +299,8 @@ NavigationPanel.prototype.contentTable = async function (){
     if(($("#div-pagination").length)==0){
       let code = await getHtmlCodeFromFile("pages/navPagination.html");
       $("#dvTable").append(code)
-      ////console.log("autoInit")
-      ////console.log(ECL.autoInit());
-      runAutoInit()
+      ECL.autoInit();
+      
     }
 
     navPanel.showNumberPages()
@@ -352,11 +319,9 @@ NavigationPanel.prototype.contentTable = async function (){
     }
   }
 
-  if(navPanel.numPages>1){
-    let search=searchHtml()
-    $( "#dvTable th" )
-    .html( $( "#dvTable th" ).html()+search);
-  }
+  let search=searchHtml()
+  $( "#dvTable th" )
+  .html( $( "#dvTable th" ).html()+search);
 
   navPanel.addEventsContentNav()
 
@@ -377,9 +342,7 @@ NavigationPanel.prototype.contentTable = async function (){
     </span>
   </button>
   </form>
-  <div class="demo-container ecl-u-d-flex ecl-u-justify-content-center ecl-u-mt-xs">
-    <button class="items-center ecl-button ecl-button--primary" onclick="addToGraph()"  id="cluster-add" style="display: none;">Add to graph</button>
-  </div>`
+  <button class="items-center ecl-button ecl-button--primary" onclick="addToGraph()">Add to graph</button>`
     return text
   }
 }
@@ -545,28 +508,12 @@ NavigationPanel.prototype.showNumberPages = async function (){
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
-  //(navPanel.fromNodes.length==0)||
-/*   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
+  if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
     hideNavTabs()
+
   }else{
     showNavTabs()
     $("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav");
-  } */
-  //////console.log(navPanel.fromNodes)
-  //////console.log(navPanel.targets)
-  //////console.log(navPanel.node.detail)
-  //////console.log(navPanel.node.detail!="")
-  if((navPanel.fromNodes.length>0)||((navPanel.targets.length>0)&&(navPanel.node.detail!=""))){
-    showNavTabs()
-    //let autoInit=ECL.autoInit()
-    ////console.log(autoInit)
-    ////console.log(autoInit.update())
-    let component=$("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav")[0]
-    //console.log(component);
-    //console.log(component)
-    runAutoInit(component)
-  }else{
-    hideNavTabs()
   }
 }
 function showLines(numCurrent){
@@ -643,9 +590,9 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
     linesShown=navPanel.targets.slice(navPanel.pages.startIndex - 1, navPanel.pages.endIndex);
   }
   
-/*   if(cluster){
+  if(cluster){
     $("#add-sel-graph").show()
-  } */
+  }
 
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
@@ -678,7 +625,7 @@ NavigationPanel.prototype.addEventsContentNav = function (){
       nodeSearchField.addEventListener("keyup", function(event) {
       if (event.key === 'Enter' ) {
         // Cancel the default action, if needed
-        ////////console.log("enter")
+        //console.log("enter")
         event.preventDefault();
 
         navPanel.valueSelected()
@@ -719,14 +666,13 @@ NavigationPanel.prototype.addHeaderContentTable = async function (){
 NavigationPanel.prototype.addElementContentTable = async function (target,i){
   var navPanel=this;
   let code = await getHtmlCodeFromFile("pages/elementContentTable.html");
-  //////console.log(target)
+  console.log(target)
   $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(target["target"]))
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]);
     if(navPanel.more_results){
       $(".cluster-check").parent().removeClass("hidden")
-      $("#cluster-add").show()
     }
   })
 
@@ -740,10 +686,10 @@ function addToGraph(){
 }
 NavigationPanel.prototype.addToGraph = function (){
   var navPanel=this,node,indexChild;
-  //////console.log(navPanel.clusterElSelected)
+  console.log(navPanel.clusterElSelected)
   let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
   navPanel.clusterElSelected.forEach(function(d){
-    //////console.log(linkedDataGraph.treeData[index])
+    console.log(linkedDataGraph.treeData[index])
     indexChild=linkedDataGraph.treeData[index]["more_results"].findIndex(c=>c.id==d)
     node=linkedDataGraph.treeData[index]["more_results"][indexChild]
     linkedDataGraph.treeData[index]["children"].push(node)
@@ -759,8 +705,8 @@ NavigationPanel.prototype.addToGraph = function (){
 }
 NavigationPanel.prototype.addElChecked = function (el){
   var navPanel=this;
-  //////console.log(el)
-  //////console.log(el.closest( "tr" ))
+  console.log(el)
+  console.log(el.closest( "tr" ))
   if(el.checked){
     navPanel.clusterElSelected.push(el.closest( "tr" ).getAttribute("id").replace("_row",""))
   }else{

@@ -2,10 +2,10 @@
 *    VINALOD
 *    functions.js
 *    
+*    AUTOCOMPLETE https://www.w3schools.com/howto/howto_js_autocomplete.asp
 *    created by Teresa Barrueco
 */
 function setMenuOption(node,option){
-  //setMenuOption(data,d.title)
   if((configFile.file.filter(d=>d.option==option).length==0)||(configFile.file.filter(d=>d.option==option)[0]["type"]=="TREE")){
     if(node.menuOption){
       node.menuOption+=";"+option
@@ -13,7 +13,6 @@ function setMenuOption(node,option){
       node.menuOption=option
     }
   }
-  //////////console.log(node)
 }
 function get_unique_values_arrays(arr1,arr2){
   arr1=arr1.concat(arr2)
@@ -32,7 +31,6 @@ function genRandomString(){
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
-  ////////////////////console.log("entra")
   //if right click on table get all options in a format for table
   if(origin=="table"){
     Items=[{
@@ -89,13 +87,11 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       addContextMenuToTable(node,Items)
     }else{
       if(pageY-200<0){
-        ////////////////////////////////////////////////////////////console.log("pageY menos")
         pageY=pageY+100
       }else{
         pageY=pageY-100
       }
       if(pageX-200<150){
-        ////////////////////////////////////////////////////////////console.log("pageX menos")
         pageX=pageX+150
       }else{
         //pageX=pageX-200
@@ -106,24 +102,17 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 
 //execute sparql query
 async function runSparlqQuery(url,query,type){
-  //////////////////console.log(query)
   var settings;
-  //////console.log(url)
-  //console.log(query)
-  ////////console.log(configRow)
-  //////////////console.log(type)
+  ////////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
     let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
-    //////console.log(url)
-    //////console.log(typeof(url))
     if(url.includes("wikidata")){
       settings = { url: queryUrl, async: true       }; 
     }else{
       settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
     }
-    //
     settings["success"] =function (_data) {
       if(type=="query"){
         resolve(_data.results.bindings)
@@ -450,7 +439,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
           b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          ////console.log(arr[i])
+          //////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -792,7 +781,6 @@ function showBasicGraph(){
 }
 function fromSelectToAskQuery(query){
   var mySubString;
-  ////////////////console.log(query)
   if(query.toLowerCase().indexOf("where")!=-1){
     mySubString = query.substring(
       query.toLowerCase().indexOf("select"), 
@@ -837,25 +825,59 @@ function fromSelectToAskQuery(query){
     );
     query=query.replace(mySubString,"")
   }
-  //query=query.replaceAll("parameter","PARAMETER")
-  //////////////////////////console.log(query)
   return query
 }
 function changeDateFormat(date){
-  ////////////////////////////console.log(date)
   let prevFormat=new Date(date)
-  ////////////////////////////console.log(prevFormat)
-  ////////////////////////////console.log(prevFormat.getMonth())
-  ////////////////////////////console.log(prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
   return (prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
 }
 
 function formatDate(str){
-  ////////////////console.log(str)
+  ////console.log(str)
   const [day, month, year] = str.split('-');
+/*   ////////console.log(day)
+  ////////console.log(month)
+  ////////console.log(year) */
   const date = new Date(+year, +month - 1, +day);
-  //////////////////console.log(date); 
+  //////////console.log(date)
   return new Date(date)
+}
+
+function formatDateComp(str){
+  ////console.log(str)
+  return formatDate(str).getTime()
+}
+function formatDateShow(str){
+  let day=("0" + formatDate(str).getDate()).slice(-2)
+  let month=("0" + (formatDate(str).getMonth() + 1)).slice(-2)
+  return day+"-"+month+"-"+formatDate(str).getFullYear()
+}
+
+function ECLdestroy(component){
+  //let eclComponent=window.ECL.components.filter(d=>d.element==component)
+  let index=window.ECL.components.findIndex(d=>d.element==component)
+  let eclComponent=window.ECL.components[index]
+  //console.log(index)
+  //console.log(eclComponent)
+  //console.log(eclComponent.length)
+  //console.log(window.ECL.components)
+  if(index!=-1){
+    console.log("entra")
+    eclComponent.destroy()
+    window.ECL.components.splice(index, 1);
+  }
+  //console.log(window.ECL.components)
+}
+function ECLupdate(component){
+  let eclComponent=window.ECL.components.filter(d=>d.element==component)
+  if(eclComponent.length>0){
+    //////console.log(Object.getOwnPropertyNames(eclComponent[0]))
+    //////console.log(eclComponent[0].format)
+    //////console.log(eclComponent[0].element)
+    //$('#my-datepicker').datepicker('update');
+    //////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
+    eclComponent[0].update()
+  }
 }
 function dateValidFormat(dateStr) {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
@@ -865,118 +887,25 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-
-  //////////////////console.log(date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear())
-
+  console.log(dateStr)
+  console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
-/* function formatDateTime(str){
-  let date=new Date(str)
-  //////////////////////////console.log(date.getDate())
-  //////////////////////////console.log(date.getMonth())
-  //////////////////////////console.log(date.getFullYear())
-  const [day, month, year] = str.split('-');
-  //const date = new Date(+year, +month - 1, +day);
-  ////////////////////////////console.log(date); 
-  return date
-} */
-/* function relatedFilters(filterEl){
-  var values,relNodes,filter;
-  //////////////////console.log(filterEl)
-  //////////////////console.log(networkGraph.filterClassesObjects)
-  networkGraph.filterClassesObjects.forEach(function (d){
-    if(d.filters.filter(f=>f.id==filterEl.id)){
-      filter=d.filters.filter(f=>f.id==filterEl.id)[0]
-    }
-  })
-  //////////////////console.log(filter)
-  var selectobject = document.getElementById("mySelect");
-  for (var i=0; i<selectobject.length; i++) {
-      if (selectobject.options[i].value == 'A')
-          selectobject.remove(i);
-  }
-  ////////////////////console.log(filterEl.name.split("_")[0])
-  ////////////////////console.log(networkGraph.filterClassesObjects.filter(d=>d.name==filterEl.name.split("_")[0]))
-  //const filter=networkGraph.filters.filter(d=>d.property==filterEl.id)[0]
-  const relFilters=networkGraph.filters.filter(d=>d.parent==filterEl.id)
-  ////////////////////////console.log(filter)
-  ////////////////////////console.log(filterEl.options[filterEl.selectedIndex].text)
-  //////////////////////console.log(networkGraph.allData)
-  //////////////////////console.log(networkGraph.data)
-  //////////////////console.log(filter)
-  relNodes=networkGraph.allData["nodes"].filter(d=>d.class==filter.class).filter(v=>v[filter.property]==filterEl.options[filterEl.selectedIndex].text)
-  relFilters.forEach(function(fi){
-    ////////////////////////console.log(fi)
-    if(filterEl.options[filterEl.selectedIndex].text!="All"){
-      values=[...new Set(relNodes.map(d=>d[fi.property].toLowerCase()))]
-    }else{
-      ////////////////////////console.log(fi)
-      values=fi.filterObject.values
-      ////////////////////////console.log(values)
-    }
-    $(("#accordion-filters #"+fi.property)).empty();
-    var select = document.querySelector("#accordion-filters #"+fi.property);
-    ////////////////////////console.log(select)
-    addOptionsSelect(select,values,false)
-
-    //////////////////////////console.log(selectobject.options.remove)
-
-    for (var i=0; i<selectobject.options.length; i++) {
-        ////////////////////////console.log(values)
-        ////////////////////////console.log(selectobject.options[i].value)
-        if (!values.includes(selectobject.options[i].value)){
-          selectobject.remove(i);
-          i--;
-        }     
-    }
-  })
-} */
-/* function checkRelatedFilters(filterEl){
-  let classNode=filterEl.parentNode.parentNode.parentNode
-
-  let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
-  let selectedValues = Array.from(filterEl.selectedOptions)
-        .map(option => option.value) 
-  
-  let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
-  //////////////////////console.log(relatedFilters)
-  relatedFilters.forEach(function(r){
-    ////////////////////console.log(r)
-  })
-}
-function checkRelatedFilters(filterEl){
-  let classNode=filterEl.parentNode.parentNode.parentNode
-
-  let field=filterEl.id.replace(classNode.id.replace("filters",""),"")
-  let selectedValues = Array.from(filterEl.selectedOptions)
-        .map(option => option.value) 
-  
-  let relatedFilters=networkGraph.filters.filter(f=>((f.class.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")+"_filters"==classNode.id)&&(f.field!=field)))
-  //////////////////////console.log(relatedFilters)
-  relatedFilters.forEach(function(r){
-    ////////////////////console.log(r)
-    ////////////////////console.log($("#"+r.id))
-  })
-} */
 
 function addOptionsSelect(selectField,valuesFilter,multiple){
-  ////////////////console.log(selectField)
-  ////////////////console.log(valuesFilter)
-  ////////////////////console.log(multiple)
   if(valuesFilter.length>1){
     valuesFilter.unshift("All")
   }
+  //////console.log(selectField)
   addHtmlOptionsSelect(selectField,valuesFilter,multiple)
 }
-function addHtmlOptionsSelect(selectField,valuesFilter,multiple){
-  ////////////////console.log(selectField)
-  for (let i = 0; i < valuesFilter.length; i++) {
+function addHtmlOptionsSelect(selectField,values,multiple){
+  //////console.log(selectField)
+  for (let i = 0; i < values.length; i++) {
     var option = document.createElement("option");
-    option.value = valuesFilter[i];
-    option.text = valuesFilter[i].charAt(0).toUpperCase() + valuesFilter[i].slice(1);
-    //////////////////////////console.log(option)
+    option.value = values[i];
+    option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
     selectField.appendChild(option);
-    ////////////////////console.log(multiple)
     if(multiple){
       option.selected = true; 
     }
@@ -1010,6 +939,17 @@ function showNavContentTable(){
 function hideNavContentTable(){
   $("#dvTable").hide()
 }
+function showNavDetails(){
+  //console.log("entra en NavDetails")
+  $("#dvDetails").show()
+  //console.log(ECL.autoInit())
+}
+function hideNavDetails(){
+  $("#dvDetails").hide()
+}
+function emptyNavDetails(){
+  $("#dvDetails").empty()
+}
 function showNavContentTablePagination(){
   $("#div-pagination").show()
 }
@@ -1023,23 +963,29 @@ function getNodeFromTableRow(element){
 }
 function replaceParmtrsQuery(query,parameters,node){
   var query;
-  ////////////console.log(query)
-  ////////////console.log(node)
-  ////////////console.log(parameters)
   if(node!=undefined){
       if((parameters!="")&&(parameters!=null)){
-          //////////////////////console.log(cr.rowFields.parameters)
-          //////////////////////console.log(cr.node)
-          //////////////////////console.log(cr.rowFields.askquery)
           for (let i = 0; i < parameters.length; ++i) { 
               query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
-              //////////////////////console.log(cr.rowFields.parameters[i])
-              //////////////////////console.log(cr.node[cr.rowFields.parameters[i]["property"]])
           } 
-          //////////////////////console.log(cr.rowFields.askquery) 
       }
-      ////////////////console.log(query)
       query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]);    
   }
   return query
+}
+function findAncestorWithClass(el, cls) {
+  while ((el = el.parentElement) && !el.classList.contains(cls));
+  return el;
+}
+function runAutoInit(component){
+  if(component){
+    ////console.log(component.getAttribute("id"))
+    ////console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
+    //eclComponents.filter(e=>e.element.id==component.getAttribute("id"))[0].destroy()
+    ECLdestroy(component)
+  }
+  let autoInit=ECL.autoInit()
+  //console.log(autoInit)
+  
+  //console.log(window.ECL.components)
 }
