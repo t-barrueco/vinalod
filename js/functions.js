@@ -103,7 +103,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
-  ////////console.log(query)
+  //////////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -439,7 +439,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
           b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          //////////////console.log(arr[i])
+          ////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -833,18 +833,18 @@ function changeDateFormat(date){
 }
 
 function formatDate(str){
-  ////console.log(str)
+  //////console.log(str)
   const [day, month, year] = str.split('-');
-/*   ////////console.log(day)
-  ////////console.log(month)
-  ////////console.log(year) */
+/*   //////////console.log(day)
+  //////////console.log(month)
+  //////////console.log(year) */
   const date = new Date(+year, +month - 1, +day);
-  //////////console.log(date)
+  ////////////console.log(date)
   return new Date(date)
 }
 
 function formatDateComp(str){
-  ////console.log(str)
+  //////console.log(str)
   return formatDate(str).getTime()
 }
 function formatDateShow(str){
@@ -857,25 +857,25 @@ function ECLdestroy(component){
   //let eclComponent=window.ECL.components.filter(d=>d.element==component)
   let index=window.ECL.components.findIndex(d=>d.element==component)
   let eclComponent=window.ECL.components[index]
-  //console.log(index)
-  //console.log(eclComponent)
-  //console.log(eclComponent.length)
-  //console.log(window.ECL.components)
+  ////console.log(index)
+  ////console.log(eclComponent)
+  ////console.log(eclComponent.length)
+  ////console.log(window.ECL.components)
   if(index!=-1){
-    console.log("entra")
+    //console.log("entra")
     eclComponent.destroy()
     window.ECL.components.splice(index, 1);
   }
-  //console.log(window.ECL.components)
+  ////console.log(window.ECL.components)
 }
 function ECLupdate(component){
   let eclComponent=window.ECL.components.filter(d=>d.element==component)
   if(eclComponent.length>0){
-    //////console.log(Object.getOwnPropertyNames(eclComponent[0]))
-    //////console.log(eclComponent[0].format)
-    //////console.log(eclComponent[0].element)
+    ////////console.log(Object.getOwnPropertyNames(eclComponent[0]))
+    ////////console.log(eclComponent[0].format)
+    ////////console.log(eclComponent[0].element)
     //$('#my-datepicker').datepicker('update');
-    //////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
+    ////////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
     eclComponent[0].update()
   }
 }
@@ -887,20 +887,20 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-  console.log(dateStr)
-  console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
+  //console.log(dateStr)
+  //console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 
 function addOptionsSelect(selectField,valuesFilter,multiple){
-  if(valuesFilter.length>1){
+  if((valuesFilter.length>1)&&(!multiple)){
     valuesFilter.unshift("All")
   }
-  //////console.log(selectField)
+  ////////console.log(selectField)
   addHtmlOptionsSelect(selectField,valuesFilter,multiple)
 }
 function addHtmlOptionsSelect(selectField,values,multiple){
-  //////console.log(selectField)
+  ////////console.log(selectField)
   for (let i = 0; i < values.length; i++) {
     var option = document.createElement("option");
     option.value = values[i];
@@ -940,9 +940,9 @@ function hideNavContentTable(){
   $("#dvTable").hide()
 }
 function showNavDetails(){
-  //console.log("entra en NavDetails")
+  ////console.log("entra en NavDetails")
   $("#dvDetails").show()
-  //console.log(ECL.autoInit())
+  ////console.log(ECL.autoInit())
 }
 function hideNavDetails(){
   $("#dvDetails").hide()
@@ -979,13 +979,87 @@ function findAncestorWithClass(el, cls) {
 }
 function runAutoInit(component){
   if(component){
-    ////console.log(component.getAttribute("id"))
-    ////console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
+    //////console.log(component.getAttribute("id"))
+    //////console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
     //eclComponents.filter(e=>e.element.id==component.getAttribute("id"))[0].destroy()
     ECLdestroy(component)
   }
   let autoInit=ECL.autoInit()
   //console.log(autoInit)
   
-  //console.log(window.ECL.components)
+  ////console.log(window.ECL.components)
+}
+
+function hideElements(){
+  //$("#filters").addClass("hidden")
+  $("#filters").hide()
+
+  d3.selectAll(".classFilter").remove()
+  $("#filters .ecl-accordion__item").remove()
+
+  $("#form-container").addClass("hidden")
+
+  $(".graph").remove() 
+  $("#networkGraph-svg").remove()  
+
+  hideModal("#myModal")
+  deleteTooltip()
+  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+
+  $('#landing-page'). hide();
+  $('#dataviz-collection'). hide();
+  $('#graph-area').removeClass("hidden")
+  //document.getElementById("filters").classList.add("hidden")
+}
+
+function filtersVisible(){
+  $("#filters").fadeIn( "slow")
+/*   $("#filters").fadeIn( "slow", function() {
+    //this.removeClass("hidden");
+    this.classList.remove("hidden")
+  }); */
+}
+
+function filtersNotVisible(){
+  $("#filters").fadeOut( "slow")
+  //$("#filters").addClass("hidden").fadeToggle("slow");
+  /* if(!$("#filters").hasClass( "hidden")){
+    $("#filters").fadeToggle( "slow", function() {
+      this.addClass("hidden");
+    });
+  } */
+/*   $("#filters").fadeOut( "slow", function() {
+    ////console.log(this)
+    //this.addClass("hidden");
+    this.classList.add("hidden")
+  }); */
+}
+function getFilters(){
+  if(networkGraph.filterClassesObjects.length!=0){
+    //$("#filters").removeClass("hidden")
+    filtersVisible()
+  }else{
+    //$("#filters").addClass("hidden")
+    filtersNotVisible()
+  }
+}
+function fitSizeModal(node){
+  let modal=document.getElementById("modal-content").parentNode
+  //console.log(document.getElementById("modal-content"))
+  //console.log(modal)
+  if(node.class=="free"){
+    modal.classList.remove("max-w-md")
+    modal.classList.add("max-w-4xl")
+  }else{
+    modal.classList.add("max-w-md")
+    modal.classList.remove("max-w-4xl")
+  }
+}
+function positionFullText(p){
+  if(p=="s"){
+    return "Subject"
+  }else if(p=="o"){
+    return "Object"
+  }
 }

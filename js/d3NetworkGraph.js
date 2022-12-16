@@ -179,7 +179,7 @@ NetworkGraph.prototype.initVis = function () {
   }
 
   vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
-  //console.log(vis.maxSizeNode)
+  //////////////////////console.log(vis.maxSizeNode)
   //vis.sizeNode = d3.scaleLinear()
   vis.sizeNode=d3.scalePow()
   .domain([0,vis.maxSizeNode])
@@ -204,6 +204,8 @@ NetworkGraph.prototype.zoomed = function(){
 
 NetworkGraph.prototype.initializeSimulation = function () {
   var vis = this;
+  //////console.log(vis.data.nodes)
+  //vis.simulation.stop() 
   vis.simulation.nodes(vis.data.nodes);
   vis.initializeForces();
 
@@ -262,10 +264,15 @@ NetworkGraph.prototype.initializeForces = function() {
     }
   });    
 
+  //console.log(vis.data.nodes[0].vx)
+  vis.simulation.stop()
+
   vis.updateForces();
+  //console.log(vis.data.nodes[0].vx)
 
   function ticked() {
     vis.link.attr('d', function (d){
+      //////////console.log(d)
       return   'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
     });
         /* .attr("x1", function(d) { 
@@ -275,6 +282,7 @@ NetworkGraph.prototype.initializeForces = function() {
         .attr("y2", function(d) { return d.target.y; });
  */
     vis.edgepaths.attr('d', function (d){
+         //////console.log(d)
           return   'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
         });
 
@@ -348,49 +356,67 @@ NetworkGraph.prototype.updateDisplay = function () {
 NetworkGraph.prototype.dataJoinGraph = function(){
   var vis=this;
 
+  ////console.log("datajoingraph")
+
+  ////////console.log(vis.data.links[0]["source"]["class"])
+  ////////console.log(vis.data.links[1]["source"]["class"])
+  ////////console.log(vis.data.links[1]["source"]["class"])
+  //////////console.log(vis.link)
+  //////console.log(vis.gLinks.selectAll(".link"))
   vis.link = vis.gLinks
   .selectAll(".link")
-  .data(vis.data.links,function(d){
-    return d.id;
-  })
+  .data(vis.data.links.filter(function(item) {
+    return item["source"]["class"] != "free"
+  }), function(d) { return d.id; })
 
+  ////console.log(vis.link)
+  //////console.log(vis.data.links)
 /*   vis.link=vis.linkSel
   .data(vis.data.links,function(d){
     return d.id;
   }) */
 
   vis.linklabels = vis.gLinks.selectAll(".linklabel")
-  .data(vis.data.links,function(d){
-    return d.id;
-  })
+  .data(vis.data.links.filter(function(item) {
+    ////////////////console.log(item)
+    return item["source"]["class"] != "free"
+  }), function(d) { return d.id; })
 
-  //////console.log(vis.linklabels)
+  //////////////////////////console.log(vis.linklabels)
 
-  vis.edgepaths = vis.gLinks.selectAll(".edgepath")
+  vis.edgepaths = vis.gLinks
+  .selectAll(".edgepath")
   .data(vis.data.links.filter(function(item) {
     return item["source"]["class"] == "free"
   }), function(d) { return d.id; })
 
+  ////console.log(vis.edgepaths)
+  //////console.log(vis.data.links.length)
   vis.edgelabels = vis.gLinks.selectAll(".edgelabel")
   .data(vis.data.links.filter(function(item) {
+    ////////////////console.log(item)
     return item["source"]["class"] == "free"
   }), function(d) { return d.id; })
 
+  ////////////////console.log(vis.edge)
   vis.circleSel=vis.gNodes
   .selectAll('.nodeCircleBasic')
 
   vis.nodeCircle=vis.circleSel
   .data(vis.data.nodes.filter(function(item) {
+    ////////////////////console.log(item)
     return item["class"] != "free"
   }), function(d) { return d.id; })
 
   vis.circleSelFree=vis.gNodesFree
   .selectAll('.nodeCircleFree')
 
+  //////////////////console.log(vis.data.nodes)
   vis.nodeCircleFree=vis.circleSelFree
   .data(vis.data.nodes.filter(function(item) {
     return item["class"] == "free"
   }), function(d) { return d.id; })
+  //////////////////console.log(vis.nodeCircleFree)
 
 }
 
@@ -399,13 +425,20 @@ NetworkGraph.prototype.enterGraph = function(){
     let lineHeight = 12;
 
     vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
-    //console.log(vis.maxSizeNode)
+    //////////////////////console.log(vis.maxSizeNode)
     vis.sizeNode
     .domain([0,vis.maxSizeNode])
 
-    //console.log(vis.data.nodes)
-    vis.data.nodes.forEach(n=>handleMouseout(n.id))
-
+    //////////////////////console.log("handleMouseout")
+    //vis.data.nodes.forEach(n=>handleMouseout(n.id))
+    ////////////////////console.log(vis.data.nodes)
+    ////////////////////console.log(configRow.node)
+    if(configRow.node){
+      d3.select("#"+configRow.node.id).data(vis.data.nodes.filter(d=>d.id==configRow.node.id)[0])
+      //////////////////console.log(d3.select("#"+configRow.node.id).data()[0])
+      handleMouseout(configRow.node.id)
+    }
+    
     vis.colorScale.domain(Object.values(vis.nodesClassesShow))
     vis.colorScale.range(vis.colors.slice(0,Object.values(vis.nodesClassesShow).length))
     vis.isDblclick = false;
@@ -415,62 +448,33 @@ NetworkGraph.prototype.enterGraph = function(){
     drawLinks()
 
     //these arrow lines will shown only in free graph
-    drawArrowLinesFree()  
+
     drawCirclesBasic()
     addTextForCircles()
     drawImageCirclesBasic()
+    drawArrowLinesFree()  
     drawCirclesFree()
     drawImageClusterFree()
       
     function drawLinks(){
+      ////////console.log("before drawlinks")
+        //////////////console.log(vis.link)
         vis.link=vis.link
         .enter()
         .append('path')
         .attr('class', 'link')
-        //.attr('fill-opacity', 0)
-        //.attr('stroke-opacity', 0)
         .attr('id',function(d){
-          ////console.log(d)
-          ////console.log(d.id)
-          ////console.log(d.source.id+"_"+d.target.id)
           return d.id+"_link";
-          //return (d.source.id+"_"+d.target.id)+"_link"
         })
         .attr('link_id',function(d){
           return d.id;
-          //return d["source"]["id"]+d["target"]["id"]
         })
         .style("pointer-events", "none")
         .style("stroke", "black")
         .attr("stroke-width", 1)
         .attr("marker-end","url(#arrow)"); ;
-        /* .enter().append("path")
-        .attr("class", "link")
-        .attr("origId",function(d){
-          return (d.source.id+"_"+d.target.id)
-        })
-        .attr("index",function(d){
-          return d.index;
-                })
-        .attr("value",d=>d["type"])
-        .style("stroke", "black")
-        .style("fill","black")
-        .style("stroke-width", "1px")
-        .attr('marker-end','url(#arrowhead)') 
-        .on('mouseover', function(d){
-          if(d["target"]["class"]=="free"){
-            addTooltip(getTooltipTextFreeGraph(d))
-          }
-        })
-        .attr("id",function(d){
-          return (d.source.id+"_"+d.target.id)
-        })
-        .on('mouseout', function(d){
-          if(d["target"]["class"]=="free"){
-            deleteTooltip()
-          }
-        }); */
-        
+
+        //////////////console.log(vis.linklabels)
         vis.linklabels = vis.linklabels
         .enter()
         .append('text')
@@ -478,20 +482,16 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr('class', 'linklabel')
         .attr('id', function (d) {return d["id"]+"_label"})
         .attr('link_id',function(d){
-          //////console.log(d)
-          //////console.log(d["id"]+"_label")
           return d["id"]+"_label"
-          //return d["source"]["id"]+d["target"]["id"]+"_label"
         })
         .attr('link_value',function(d){
-          //////console.log(d)
           return d["relation"]
         })
         .attr('font-size', 12)
         .attr('fill', 'black')
         .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d) {
-              ////console.log(d3.select("#"+d.id+"_link"))
+              ////////////////////////console.log(d3.select("#"+d.id+"_link"))
               return "#"+d.id+"_link"})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
@@ -502,7 +502,7 @@ NetworkGraph.prototype.enterGraph = function(){
   
 /*         vis.linklabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d) {
-              //////console.log(d3.select("#"+d.id))
+              //////////////////////////console.log(d3.select("#"+d.id))
               return "#"+d.id+"_link"})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
@@ -511,38 +511,84 @@ NetworkGraph.prototype.enterGraph = function(){
               return d.relation
             }); */
           }
-      function drawArrowLinesFree(){
+    function drawArrowLinesFree(){
+/*       vis.link=vis.link
+      .enter()
+      .append('path')
+      .attr('class', 'link')
+      .attr('id',function(d){
+        return d.id+"_link";
+      })
+      .attr('link_id',function(d){
+        return d.id;
+      })
+      .style("pointer-events", "none")
+      .style("stroke", "black")
+      .attr("stroke-width", 1)
+      .attr("marker-end","url(#arrow)"); ; */
+        ////////console.log("before edgepaths")
+        //////console.log(vis.edgepaths)
         vis.edgepaths = vis.edgepaths
         .enter()
         .append('path')
         .attr('class', 'edgepath')
-        .attr('fill-opacity', 0)
-        .attr('stroke-opacity', 0)
+        //.attr('fill-opacity', 0)
+        //.attr('stroke-opacity', 0)
         .attr('id', function (d, i) {
-          //////console.log(i)
-          return 'edgepath' + i})
+          //////////////console.log(d)
+          return d.id+"_link"})
+          //return 'edgepath' + i})
         .attr('link_id',function(d){
-          return d["source"]["id"]+d["target"]["id"]
+          return d.id
+          //return d["source"]["id"]+"_"+d["target"]["id"]
         })
-        .style("pointer-events", "none");
+        .style("pointer-events", "none")
+        .style("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("marker-end","url(#arrow)"); ;
 
+        //////////////console.log(vis.edgelabels)
+
+/*         vis.linklabels = vis.linklabels
+        .enter()
+        .append('text')
+        .style("pointer-events", "none")
+        .attr('class', 'linklabel')
+        .attr('id', function (d) {return d["id"]+"_label"})
+        .attr('link_id',function(d){
+          return d["id"]+"_label"
+        })
+        .attr('link_value',function(d){
+          return d["relation"]
+        })
+        .attr('font-size', 12)
+        .attr('fill', 'black')
+        .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
+            .attr('xlink:href', function (d) {
+              ////////////////////////console.log(d3.select("#"+d.id+"_link"))
+              return "#"+d.id+"_link"})
+            .style("text-anchor", "middle")
+            .style("pointer-events", "none")
+            .attr("startOffset", "50%")
+            .text(function(d){
+              return d.relation
+            }); */
         vis.edgelabels = vis.edgelabels
             .enter()
             .append('text')
             .style("pointer-events", "none")
             .attr('class', 'edgelabel')
-            .attr('id', function (d, i) {return 'edgelabel' + i})
+            .attr('id', function (d, i) {return d.id+"_label"})
             .attr('link_id',function(d){
-              return d["source"]["id"]+d["target"]["id"]
+              return d["id"]+"_label"
             })
             .attr('link_value',function(d){
               return d["value"]
             })
-            .attr('font-size', 14)
-            .attr('fill', 'black');
-      
-        vis.edgelabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
-            .attr('xlink:href', function (d, i) {return '#edgepath' + i})
+            .attr('font-size', 12)
+            .attr('fill', 'black')
+            .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
+            .attr('xlink:href', function (d, i) {return "#"+d.id+"_link"})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
             .attr("startOffset", "50%")
@@ -550,7 +596,7 @@ NetworkGraph.prototype.enterGraph = function(){
               return d.value
             });
       }
-      function drawCirclesBasic(){
+    function drawCirclesBasic(){
         vis.nodeCircle=vis.nodeCircle
         .enter().append("g")
         .attr("class", "nodeCircleBasic")
@@ -606,7 +652,6 @@ NetworkGraph.prototype.enterGraph = function(){
           handleClickEvent(this)    
         })
         .on('dblclick', function(){
-
           handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
           if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
             vis.wrangleData(this,"bubble",d3.event);
@@ -619,7 +664,7 @@ NetworkGraph.prototype.enterGraph = function(){
         })
 
       }
-      function addTextForCircles(){
+    function addTextForCircles(){
         vis.textCircle=vis.nodeCircle
             .append("text")
             .attr("class","nodeCircleText")
@@ -648,7 +693,7 @@ NetworkGraph.prototype.enterGraph = function(){
               .attr("y", (d, i) => (i - lines.length / 2 + 0.8) * lineHeight)
               .text(d => d.text);
       }
-      function drawImageCirclesBasic(){
+    function drawImageCirclesBasic(){
         var event={};
         vis.nodeCircleImage=vis.nodeCircle.append("svg:image")
         .attr("class", "nodeCircleImage")
@@ -725,7 +770,7 @@ NetworkGraph.prototype.enterGraph = function(){
           
         })
       }
-      function drawShadow(){
+    function drawShadow(){
   
 /*         vis.nodeCircleImage=vis.nodeCircle.append("defs").append("filter")
         .attr("id", "dropshadow")
@@ -768,7 +813,7 @@ NetworkGraph.prototype.enterGraph = function(){
         .append("feMergeNode")
         .attr("in", "SourceGraphic")
       }
-      function drawCirclesFree(){
+    function drawCirclesFree(){
         vis.nodeCircleFree=vis.nodeCircleFree
         .enter().append("g")
         .attr("class",function(d){
@@ -785,6 +830,7 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.nodeCircleCircleFree=vis.nodeCircleFree
             .append("circle")
             .attr("class",function(d){
+              //////////////////console.log(d)
               if(d.class=="more_results"){
                 return d.class + " nodeCircleCircleFree cluster"
               }else{
@@ -828,21 +874,26 @@ NetworkGraph.prototype.enterGraph = function(){
               }, delay);
             })
             .on('dblclick', function(d){
-              d3.event.stopPropagation();
+/*               d3.event.stopPropagation();
               d3.event.preventDefault();
               if((d.type=="uri")||(d.type=="bnode")){
                 clearTimeout(timer);
                 prevent = true;
                 vis.wrangleData(this,"bubble");
                 return false;
+              } */
+              handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
+              if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
+                vis.wrangleData(this,"bubble",d3.event);
               }
+              return false;
             })
             .on('contextmenu', (d) => {
                 d3.event.preventDefault();
                 getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
             })
       }
-      function drawImageClusterFree(){
+    function drawImageClusterFree(){
         d3.selectAll(".g-cluster")
         .append("svg:image")
         .attr("class", "clusterImage")
@@ -889,14 +940,14 @@ NetworkGraph.prototype.enterGraph = function(){
         })
 
       }
-      function handleDblClickEvent(mouseX,mouseY,id){
+    function handleDblClickEvent(mouseX,mouseY,id){
         d3.event.stopPropagation();
         d3.event.preventDefault();
         clearTimeout(timer);
         prevent = true;
         vis.dblClickId=id.replace("_image","")
       }
-      function handleClickEvent(element){
+    function handleClickEvent(element){
           timer = setTimeout(function() {
           if (!prevent) {
               clickBubbleGraph(element,vis.data)
@@ -934,6 +985,8 @@ NetworkGraph.prototype.enterGraph = function(){
           if(d.class=="more_results"){
             return 50;
           }else{
+            ////////////////////console.log(d.value)
+            ////////////////////console.log(d)
             return vis.sizeNode(d.number);
           }
           })
@@ -1277,10 +1330,28 @@ NetworkGraph.prototype.refresh = function (node){
   var vis = this;
   vis.addingGraph=true
 
-  getFilteredData()
+  //getFilteredData()
 
+  ////////////////console.log(linkedDataGraph.data.flatData)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].value)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].value)
+/*   console.log(vis.data.links[0]["source"].vx)
+  console.log(vis.data.links[0]["source"].x)
+  console.log(vis.data.links[0]["source"].value)
+  console.log(vis.data.links[0]["target"].vx)
+  console.log(vis.data.links[0]["target"].x)
+  console.log(vis.data.links[0]["target"].value) */
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
+  ////console.log(vis.data)
+  ////console.log(vis.data.nodes[vis.data.nodes.length-1])
+  ////console.log(vis.data.links[vis.data.links.length-1])
+  ////console.log(vis.treeData)
+  ////console.log(vis.treeData.length)
   if(configRow){
     if(!vis.queriesArray){
       vis.queriesArray=[]
@@ -1289,16 +1360,52 @@ NetworkGraph.prototype.refresh = function (node){
   }
   vis.addClassesShow()
 
+  ////console.log(vis.data.links[0]["source"].vx)
+
+  console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].value)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].value)
+/*   console.log(vis.data.links[0]["source"].vx)
+  console.log(vis.data.links[0]["source"].x)
+  console.log(vis.data.links[0]["source"].value)
+  console.log(vis.data.links[0]["target"].vx)
+  console.log(vis.data.links[0]["target"].x)
+  console.log(vis.data.links[0]["target"].value) */
+
+
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+
   vis.dataJoinGraph()
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  ////console.log(vis.data.links[0]["source"].vx)
 
+  //////console.log(vis.edgepaths)
+  //////////////////console.log("refresh update filters")
   vis.enterGraph()
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  ////console.log(vis.data.links[0]["source"].vx)
 
+  //////console.log(vis.edgepaths)
 
   vis.initializeSimulation();
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  ////console.log(vis.data.links[0]["source"].vx)
+
+  ////////console.log("after simulation")
   vis.dataJoinGraph()
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+
+  ////////console.log("after datajoin")
   vis.exitGraph()
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+
 
   vis.updateFilters()
+  ////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+
   //ECL.autoInit()
   legend.addColors()
 }
@@ -1311,6 +1418,7 @@ NetworkGraph.prototype.refreshNoFilters = function (){
   vis.treeData=linkedDataGraph.treeData
 
   vis.dataJoinGraph()
+  //////////////////console.log("refresh no update filters")
   vis.enterGraph()
   vis.initializeSimulation();
   vis.dataJoinGraph()
@@ -1332,10 +1440,9 @@ NetworkGraphBasic.prototype = Object.create(NetworkGraph.prototype);
 NetworkGraphBasic.prototype.addClassesShow = function(){
   var vis=this,newClasses;
 }
-NetworkGraphBasic.prototype.getFilters = function(){
+/* NetworkGraphBasic.prototype.getFilters = function(){
   var vis=this;
-  ////////console.log("super getFilters")
-  //////console.log(vis.filterClassesObjects)
+
   if(vis.filterClassesObjects.length!=0){
     //$("#filters").removeClass("hidden")
     filtersVisible()
@@ -1343,7 +1450,7 @@ NetworkGraphBasic.prototype.getFilters = function(){
     //$("#filters").addClass("hidden")
     filtersNotVisible()
   }
-}
+} */
 NetworkGraphBasic.prototype.setColorScale = async function(){
   var vis=this;
   vis.colorCorrespondence={
@@ -1390,12 +1497,12 @@ NetworkGraphBasic.prototype.updateFilters = async function () {
           if(!existingFilterClasses.includes(newFilterClasses[i])){
             filterClass=new FilterClassBasic(newFilterClasses[i])
             await filterClass.init()
-            ////////console.log("checkHidden")
+            ////////////////////////////console.log("checkHidden")
             filterClass.checkHidden()
             vis.filterClassesObjects.push(filterClass) 
           }else{
             networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
-              console.log("update filters")
+              ////////////////////console.log("update filters")
               f.resetAllValues()
             })
           }
@@ -1423,7 +1530,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
     super.setColorScale()
   }
   async getFilters() {
-    //////////console.log("en getfilters principio")
+    //////////////////////////////console.log("en getfilters principio")
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
     if(configRow.filters){
@@ -1438,8 +1545,8 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
         }
       }
     }
-    super.getFilters()
-    //////////console.log("en getfilters final")
+    getFilters()
+    //////////////////////////////console.log("en getfilters final")
 
   }
 }
@@ -1467,7 +1574,7 @@ class NetworkGraphBasicImported extends NetworkGraphBasic {
         filterClass.addFilterTypeImported(f,true)
       })
     })
-    super.getFilters()
+    getFilters()
   }
 }
 
@@ -1515,4 +1622,5 @@ NetworkGraphExpert.prototype.getFilters = function () {
   const filterClass=new FilterClassExpert(configRow.node["uri"])
   filterClass.init()
   vis.filterClassesObjects.push(filterClass) 
+  getFilters()
 }

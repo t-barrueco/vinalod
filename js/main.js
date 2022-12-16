@@ -181,22 +181,7 @@ function downloadGraph(){
   
 }
 async function createGraph(fileText){
-  d3.selectAll(".classFilter").remove()
-  $("#filters .ecl-accordion__item").remove()
-
-  $("#form-container").addClass("hidden")
-
-  $(".graph").remove() 
-  $("#networkGraph-svg").remove()  
-
-  hideModal("#myModal")
-  deleteTooltip()
-  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
-
-  $('#landing-page'). hide();
-  $('#dataviz-collection'). hide();
-  $('#graph-area').removeClass("hidden")
+  hideElements()
 
   tabOptionsGraphVisible()
 
@@ -297,12 +282,13 @@ function showCollections(){
   noOptionSelectedCollections()
 }
 function expertMode(){
-
+/* 
   $("#graph-area").addClass("hidden")
   $("#landing-page").hide()
   $("#dataviz-collection").hide()
-  $("#landing-text").addClass("hidden")
+  $("#landing-text").addClass("hidden") */
 
+  hideElements()
   tabOptionsGraphNotVisible()
 
   getHtmlFromFile("pages/expert.html","form-container")
@@ -520,7 +506,7 @@ async function changeBasicGraph(option){
 
   await networkGraph.initVis()
   //hideSpinMessage()
-  //////console.log("antes de getFilters")
+  //////////console.log("antes de getFilters")
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
@@ -531,8 +517,8 @@ async function changeBasicGraph(option){
     $("#filters").addClass("hidden")
   } */
   networkGraph.collapseAll()
-  //////console.log("autoInit")
-  //////console.log(ECL.autoInit());
+  //////////console.log("autoInit")
+  //////////console.log(ECL.autoInit());
 
 }
 function changeTab(tab){ 
@@ -586,15 +572,18 @@ function clickBubbleGraph(element) {
 
   closeNavigationPanel()
   
-  //////////console.log(element)
+  ////console.log(element)
+  ////console.log(element.getAttribute("id"))
   node = d3.select("#" + element.getAttribute("id")).data()[0]
-
+  ////console.log(node)
   
   //CAMBIAR LOS CAMPOS DEL CONFIGROW
   if(configRow){
     configRow.node=node
   }
   networkGraph.node=node
+
+  fitSizeModal(node)
 
   if (navigationPanel == undefined) {
     if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
@@ -610,7 +599,7 @@ function clickBubbleGraph(element) {
 }
 async function checkMenuItems(origin,element) {
   if(origin=="form"){
-    node={"uri":element.querySelector('#free-uri').value, "subject-object":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
+    node={"uri":element.querySelector('#free-uri').value, "position":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
   }else if(origin=="graph"){
     if(element instanceof Element){
       node=get_node_from_element(element.getAttribute("id").replace("_image",""))
@@ -622,8 +611,12 @@ async function checkMenuItems(origin,element) {
   }else if(origin=="navigation"){
     node=get_node_from_element(element.getAttribute("id").replace("_a",""))
   }
-  if(menuItems){
+  console.log(menuItems)
+/*   if(menuItems){
+    console.log(node.class)
+    console.log(menuItems)
     if(((node.class!="free")&&(menuItems instanceof MenuItemsBasic))||((node.class=="free")&&(menuItems instanceof MenuItemsExpert))){
+      console.log("menuItems.update()")
       await menuItems.update(node)
     }else if(node.class!="free"){
       menuItems= new MenuItemsBasic(node)
@@ -639,7 +632,15 @@ async function checkMenuItems(origin,element) {
       menuItems= new MenuItemsExpert(node)
     }
     await menuItems.init()
+  } */
+
+  if(node.class!="free"){
+    menuItems= new MenuItemsBasic(node)
+  }else{
+    menuItems= new MenuItemsExpert(node)
   }
+  await menuItems.init()
+  
   if(menuItems.selectedRows.length==0){
     if(origin!="table"){
       if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
@@ -653,6 +654,7 @@ async function checkMenuItems(origin,element) {
       await checkGraph(menuItems.selectedRows[0],node)
     }else{
       if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
+        ////console.log("update linkedata")
         await linkedDataGraph.update(menuItems.selectedRows[0],node)
         networkGraph.refresh()
       }else{
@@ -677,7 +679,9 @@ async function checkMenuItems(origin,element) {
 }
 
 async function showGraphExpert(selectedRow){
+  ////console.log("showExpert")
   $("#accordion-filters").empty()
+  ////console.log(selectedRow)
   linkedDataGraph = new LinkedDataGraphExpert(selectedRow);
   await linkedDataGraph.settingsFromOption()
 
@@ -696,6 +700,7 @@ async function showGraphExpert(selectedRow){
 
   await networkGraph.initVis()
 
+  ////console.log("showGraphExpert")
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
@@ -711,7 +716,11 @@ function showGraphExpertFromPopup(form){
   let position=form.querySelector("#subject-object").value
   let uri=form.querySelector("#uri").value
 
-  let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.option.position==position)))[0]
+  ////console.log(menuItems)
+  ////console.log(url)
+  ////console.log(position)
+  ////console.log(uri)
+  let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.position==position)))[0]
   $("#form-container form").hide
   let modal = document.getElementById("myModal3")
   modal.style.display = "none";
@@ -736,26 +745,70 @@ async function getHtmlCodeFromFile(file) {
   return code;
 }
 
-
 function relatedFilters(element){
+  var filter,filterId,id;
   /* if (isLoading){
     return
   } */
-  //////console.log(loaded)
-  //////console.log(element.value)
+  //////////console.log(loaded)
+  //////////console.log(element.value)
   ////console.log(element)
-  var id=element.getAttribute("id").replace("_start","").replace("_end","")
-  let filterClassName=id.replace("_filter","").split("_")[0]
-  let filterClass=networkGraph.filterClassesObjects.filter(d=>d.name==filterClassName)[0]
+  ////console.log(element.getAttribute("id"))
 
-  let filter=filterClass.filters.filter(d=>d.id==id)[0]
+  id=element.getAttribute("id").replace("_filter","")
+  id=id.replace("_start","").replace("_end","")
 
-  ////console.log(filter)
-  filter.addValuesChanged(element)
-  linkedDataGraph.filter(id)
-  linkedDataGraph.flattenFiltered()
-  //console.log(linkedDataGraph.treeDataFiltered)
-  setValuesFilters(id)
+  let filterClassName=id.split("_")[0]
+  ////console.log(filterClassName)
+  ////console.log(networkGraph.filterClassesObjects)
+
+  let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.name==filterClassName)[0]
+
+  ////console.log(filterClass)
+  if(filterClass){
+    filter=filterClass.filters.filter((f)=>f.details.property==id)[0]
+
+    ////console.log(filter)
+    filter.addValuesChanged(element)
+    linkedDataGraph.filter(filterId)
+    linkedDataGraph.flattenFiltered()
+    ////console.log(linkedDataGraph.treeDataFiltered)
+    setValuesFilters(id)
+  }
+  
+}
+
+function relatedFiltersExpert(element){
+  var filter,id;
+  /* if (isLoading){
+    return
+  } */
+  //////////console.log(loaded)
+  //////////console.log(element.value)
+  ////console.log(element)
+  ////console.log(element.getAttribute("id"))
+
+  id=element.getAttribute("id").replace(/(_type$)/, '')
+  id=id.replace(/(_property$)/, '')
+  id=id.replace(/(_value$)/, '')
+
+  let filterClassName=id
+  ////console.log(filterClassName)
+  ////console.log(networkGraph.filterClassesObjects)
+
+  let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==filterClassName)[0]
+  ////console.log(filterClass)
+  if(filterClass){
+    filter=filterClass.filters.filter((f)=>f.id==element.getAttribute("id"))[0]
+    
+    ////console.log(filter)
+    filter.addValuesChanged(element)
+    linkedDataGraph.filter(filter.id)
+    linkedDataGraph.flattenFiltered()
+    ////console.log(linkedDataGraph.treeDataFiltered)
+    setValuesFilters(id)
+  }
+  
 }
 function changeDate(el){
   var values;
@@ -785,7 +838,7 @@ function applyFilters(){
 
 function startExpert(origin,element){
   $("#form-container form").hide()
-  $("#filters").addClass("hidden")
+  //$("#filters").addClass("hidden")
   checkMenuItems(origin,element)
 }
 
@@ -836,7 +889,19 @@ async function checkGraph(option,node){
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
 
   if(rowInConfigFile["type"]=="TREE"){
+/*     console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].x)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].value)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].x)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].value) */
     await linkedDataGraph.update(option,node)
+/*     console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].x)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].value)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].x)
+    console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].value) */
 
     networkGraph.refresh()
     //ECL.autoInit()
@@ -846,7 +911,22 @@ async function checkGraph(option,node){
   return rowInConfigFile["type"]
 }
 async function checkGraphExpert(form,data){
+  //console.log(data.menu)
+/*   console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].value)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].value) */
   await linkedDataGraph.update(form,data)
+/*   console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].value)
+  console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].x)
+  console.log(vis.data.links[vis.data.links.length-1]["target"].value) */
+  //console.log(networkGraph.data.nodes)
+  //console.log(linkedDataGraph.data.flatData.nodes)
   networkGraph.refresh()
 }
 function tabOptionsGraphVisible(){
@@ -867,38 +947,18 @@ function tabOptionsGraphNotVisible(){
 }
 function showNavTabs(){
   $("#tabsNav").removeClass("hidden")
-  //////console.log("autoInit")
-  ////console.log(ECL.autoInit())
+  //////////console.log("autoInit")
+  ////////console.log(ECL.autoInit())
 }
 function hideNavTabs(){
   $("#tabsNav").addClass("hidden")
-}
-function filtersVisible(){
-  //$("#filters").removeClass("hidden").fadeToggle("slow");
-  $("#filters").fadeIn( "slow", function() {
-    //this.removeClass("hidden");
-    this.classList.remove("hidden")
-  });
-}
-
-function filtersNotVisible(){
-  //$("#filters").addClass("hidden").fadeToggle("slow");
-  /* if(!$("#filters").hasClass( "hidden")){
-    $("#filters").fadeToggle( "slow", function() {
-      this.addClass("hidden");
-    });
-  } */
-  $("#filters").fadeOut( "slow", function() {
-    //console.log(this)
-    //this.addClass("hidden");
-    this.classList.add("hidden")
-  });
 }
 
 async function clickMenuTable(row){
   navigationPanel.clickMenuTable(row)
 }
 function emptyNavigationPanel(){
+  //$(".ecl-search-form").delete()
   $("#nav-children-tbody").empty()
 }
 
@@ -915,7 +975,7 @@ function clickElNavigationPanel(el){
   clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
 }
 function setValuesFilters(filterId){
-  //////console.log("function setValuesFilters")
+  //////////console.log("function setValuesFilters")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.setValuesFilters(filterId)
   })
@@ -925,20 +985,20 @@ function removeOptionsSelect(f){
 }
 function clearFilters(){
   linkedDataGraph.clearFilter()
-  console.log(linkedDataGraph.data.flatData.nodes)
-  console.log(linkedDataGraph.data.treeData)
+  ////console.log(linkedDataGraph.data.flatData.nodes)
+  ////console.log(linkedDataGraph.data.treeData)
   
-  ////////console.log("despues forEach")
+  ////////////console.log("despues forEach")
   networkGraph.refreshNoFilters()
-  ////////console.log("despues refresh")
+  ////////////console.log("despues refresh")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(async function (f){
       //f.addValuesField(f.values)
-      console.log(f)
+      ////console.log(f)
       f.resetAllValues()
-      //console.log("despues de addValues")
+      //////console.log("despues de addValues")
       //f.resetValue()
-      ////////console.log("despues de resetvalue")
+      ////////////console.log("despues de resetvalue")
     })
   })
 }
@@ -946,7 +1006,7 @@ function noOptionSelectedCollections(){
   document.getElementById("select-collections").value = "------------";
 }
 function showDuplicates(value){
-  //////////console.log(value)
+  //////////////console.log(value)
   if(value=="yes"){
     showDuplicatesGraph()
   }else if(value=="no"){
@@ -959,7 +1019,7 @@ function showDuplicatesGraph(){
   linkedDataGraph.showDuplicatesGraph()
 }
 function showNoDuplicatesGraph(){
-  //////////console.log(linkedDataGraph.treeData)
+  //////////////console.log(linkedDataGraph.treeData)
   linkedDataGraph.showNoDuplicatesGraph()
 }
 
