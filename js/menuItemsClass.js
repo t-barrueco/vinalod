@@ -1,5 +1,6 @@
-MenuItems = function (_node) {
+MenuItems = function (_node,_position) {
     this.node=_node
+    this.position=_position
   };
 
 MenuItems.prototype.init = async function () {
@@ -57,7 +58,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
       mi.menuItems.push(elementMenu)
     }
     if(mi.node["class"]=="free"){
-        width=550
+        width=600
     }else{
         width=350
     }
@@ -121,9 +122,10 @@ MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
   var mi=this,option;
+  console.log(mi.node["position"])
   configFileExpert.option.forEach(option => {
     let position = option.match("and Position: (.*)")[1];
-    if((!mi.node["subject-object"])||(position==mi.node["subject-object"])){
+    if((!mi.node["position"])||(position==mi.node["position"])){
       mi.indexRows.push(new OptionNodeExpert(option,mi.node))
     }
   })  

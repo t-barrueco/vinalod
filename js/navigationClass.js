@@ -73,6 +73,8 @@ NavigationPanel.prototype.getNodes = function (){
     if (navPanel.sources.length>0){
       navPanel.sources=navPanel.sources.reverse();
     }
+
+    console.log(navPanel.sources)
     navPanel.fromNodes=[]
     navPanel.toNodes=[]
 
@@ -219,7 +221,11 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
     file="pages/navTable_element_last.html"
   }
   if(last){
-    file="pages/navTable_element_last.html"
+    if(navPanel.sources[i]["relation"]){
+      file="pages/navTable_element_last.html"
+    }else{
+      file="pages/navTable_element_property_last.html"
+    } 
   }else if(navPanel.sources[i]["relation"]){
     file="pages/navTable_element_middle.html"
   }else{
@@ -231,6 +237,8 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   .then(success => {return (success)})
   
   $("#navTable ol").append(code)
+
+  console.log(navPanel.ol.querySelector("#li-empty"))
   let li=navPanel.ol.querySelector("#li-empty")
   li.removeAttribute("id")
   let a=li.querySelector("a")
@@ -241,15 +249,30 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
     relation.querySelector(".ecl-timeline__content").innerHTML = navPanel.sources[i]["relation"]
     relation.id=navPanel.sources[i]["id"]+"_relation"
   }
+  console.log(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])
+  console.log(networkGraph.nodesClassesShow)
+  console.log(navPanel.sources)
+  console.log(navPanel.sources[i]["class"])
   
-  colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
+  if(navPanel.sources[i]["class"]=="free"){
+    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(navPanel.sources[i]["type"])]
+  }else{
+    colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
+  }
+
+  console.log(colorCircle)
   let navImage=li.querySelector("#nav_image")
-  navImage.classList.add("bg-"+ colorCircle)
-  navImage.classList.add("group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
+  if(navImage){
+    navImage.classList.add("bg-"+ colorCircle)
+    navImage.classList.add("group-hover:bg-"+colorCircle.split("-")[0]+"-"+(parseInt(colorCircle.split("-")[1])+100))
+  }
 
   let navTableElement=li.querySelector("#navTable_element")
   navTableElement.querySelector("span").innerHTML = navPanel.sources[i]["value"]
-  navTableElement.querySelector("img").setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
+  navImage=navTableElement.querySelector("img")
+  if(navImage){
+    navImage.setAttribute("src",bubbleImage(d3.select("#"+navPanel.sources[i]["id"]).data()[0]))
+  }
 }
 
 NavigationPanel.prototype.addElementNavProp = async function (source,i,property){
@@ -257,14 +280,24 @@ NavigationPanel.prototype.addElementNavProp = async function (source,i,property)
 
   let code = await getHtmlCodeFromFile("pages/navTable_property.html");
 
-  code=code.replace("arrow-image",navPanel.imageArrowDown)
-  if(source["subject-object"]=="s"){
+  //code=code.replace("arrow-image",navPanel.imageArrowDown)
+  console.log(source)
+  if(configRow["position"]=="s"){
     code=code.replace("arrow-image",navPanel.imageArrowDown)
-  }else{
+  }else if(configRow["position"]=="o"){
+    console.log("entra en o")
+    console.log(navPanel.imageArrowUp)
     code=code.replace("arrow-image",navPanel.imageArrowUp)
   }
-  code=code.replace("Text Property",source["property"]).replace("NameSparqlEndpoint",source["url"])
+  console.log(code)
+  if(source["property"]){
+    code=code.replace("Text Property",source["property"]).replace("NameSparqlEndpoint",source["url"])
+  }else{
+    console.log(source)
+    code=code.replace("Text Property","").replace("NameSparqlEndpoint",source["url"])
+  }
 
+  //console.log(code)
   $("#navTable ol").append(code).ready(function () {
 
   })
@@ -353,10 +386,16 @@ NavigationPanel.prototype.contentTable = async function (){
     }
   }
 
-  if(navPanel.numPages>1){
+  if((navPanel.numPages>1)&&(!document.getElementById("search-nav-content"))){
+    console.log(document.getElementById("search-nav-content"))
+    //if()
     let search=searchHtml()
     $( "#dvTable th" )
     .html( $( "#dvTable th" ).html()+search);
+  }else if((navPanel.numPages>1)&&(document.getElementById("search-nav-content"))){
+    showSearchNavContent()
+  }else if((navPanel.numPages==1)&&(document.getElementById("search-nav-content"))){
+    hideSearchNavContent()
   }
 
   navPanel.addEventsContentNav()
@@ -364,7 +403,7 @@ NavigationPanel.prototype.contentTable = async function (){
 
   function searchHtml(){
   var text=`
-  <form class="ecl-search-form ecl-u-mt-m" role="search" onsubmit="navSearch(this);return false">
+  <form class="ecl-search-form ecl-u-mt-m" role="search" onsubmit="navSearch(this);return false" id="search-nav-content">
   <div class="ecl-form-group">
     <label for="search-input" class="ecl-form-label ecl-search-form__label">Search</label>
     <input type="search" name="nodeSearch" id="node-search" class="ecl-text-input ecl-text-input--m ecl-search-form__text-input" placeholder="Find node..." />
@@ -725,7 +764,9 @@ NavigationPanel.prototype.addElementContentTable = async function (target,i){
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(target["target"]))
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]);
+    console.log(navPanel.more_results)
     if(navPanel.more_results){
+
       $(".cluster-check").parent().removeClass("hidden")
       $("#cluster-add").show()
     }
@@ -768,41 +809,22 @@ NavigationPanel.prototype.addElChecked = function (el){
     navPanel.clusterElSelected.splice(navPanel.clusterElSelected.indexOf(el.closest( "tr" ).getAttribute("id").replace("_row","")), 1);
   }
 }
-NavigationPanel.prototype.addElementContentTableProp = function (target,i,cluster){
+NavigationPanel.prototype.addElementContentTableProp = async function (target,i,cluster){
   var navPanel=this;
 
-  insertContent(true)
-  function insertCheckBox(){
-    cell = row.insertCell(-1);
-    cell.className="px-2 py-4 whitespace-nowrap"
-    div=document.createElement("div")
-    if(cluster){
-      div.className="flex items-center h-5"
-    }else{
-      div.className="flex items-center hidden h-5"
-    }
-    
-    input=document.createElement("input")
-    input.id=target["target"]["id"]+"_check"
-    input.setAttribute("name","nodeTable")
-    input.setAttribute("type","checkbox")
-    input.className="form-checkbox cluster-check"
-    input.setAttribute("onclick","addElChecked(this);");
-    cell.appendChild(div).appendChild(input)
-    
-  }
-  
-  async function insertContent(property){
-    var menuOption;
+  var navPanel=this;
+  let code = await getHtmlCodeFromFile("pages/elementContentTableProperty.html");
 
-    let code = await getHtmlCodeFromFile("pages/elementContentTableProperty.html");
-    $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
-
-    })
+  $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
     $("#"+target["target"]["id"]+"_row #property span").text(target["target"]["property"])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row #subject-object img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(target["target"]["type"])])
     $("#"+target["target"]["id"]+"_row #subject-object span").text(target["target"]["value"])
-  }
+    if(navPanel.more_results){
+      $(".cluster-check").parent().removeClass("hidden")
+      $("#cluster-add").show()
+    }
+  })
+
   }
   function dblclickCellCluster(el){
     navigation.dblclickCellCluster(el)
@@ -990,6 +1012,7 @@ NavigationPanel.prototype.addMenuToTable = async function (){
 NavigationPanelBasic.prototype.addCodeMenuTable = async function (tBodyRef){
   let code = await getHtmlCodeFromFile("pages/menu-table.html");
   
+  menuItems.selectedRows = menuItems.selectedRows.reverse();
   for (var i = 0; i < menuItems.selectedRows.length; i++) {
     let option_text=configFile.file[menuItems.selectedRows[i]["rowConfigFile"]]["option_text"]
     if(!tBodyRef){
@@ -1038,7 +1061,8 @@ NavigationPanelExpert.prototype.clickMenuTable = async function (row){
   //let form = { "url": menuItems.selectedRows[miNumber]["endpoint_url"], "uri": menuItems.selectedRows[miNumber]["uri"], "position": menuItems.selectedRows[miNumber]["position"],"query":menuItems.selectedRows[miNumber]["query"]}
   //console.log(node)
   //console.log(menuItems.selectedRows[miNumber])
-  checkGraphExpert(menuItems.selectedRows[miNumber],node)
+  await checkGraphExpert(menuItems.selectedRows[miNumber],node)
+  clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
 /*   let node=get_node_from_element(row.id.split("_menu-option_")[0])
   let i=row.id.split("_menu-option_")[1]
   node.menuOption=menuItems.selectedRows[i]["option"]
@@ -1051,6 +1075,7 @@ NavigationPanelExpert.prototype.clickMenuTable = async function (row){
 NavigationPanelExpert.prototype.addCodeMenuTable = async function (tBodyRef){
   let code = await getHtmlCodeFromFile("pages/menu-table-property.html");
 
+  menuItems.selectedRows = menuItems.selectedRows.reverse();
   for (var i = 0; i < menuItems.selectedRows.length; i++) {
     let menuOption="Sparql Endpoint: "+ menuItems.selectedRows[i]["endpoint_url"]+" Position: " +positionFullText(menuItems.selectedRows[i]["position"])
     let tooltipText="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["endpoint_url"]

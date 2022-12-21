@@ -533,7 +533,7 @@ function closeAllLists(elmnt) {
 //function used in autocomplete to add value selected to the navigation panel.
 function autocompleteValSelected(el){
   if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
-    navigation.valueSelected()
+    navigationPanel.valueSelected()
   }
 }
 function getCommentOption(option){
@@ -939,6 +939,14 @@ function showNavContentTable(){
 function hideNavContentTable(){
   $("#dvTable").hide()
 }
+
+function showSearchNavContent(){
+  $("#search-nav-content").show()
+}
+function hideSearchNavContent(){
+  $("#search-nav-content").hide()
+}
+
 function showNavDetails(){
   ////console.log("entra en NavDetails")
   $("#dvDetails").show()
@@ -1045,10 +1053,17 @@ function getFilters(){
   }
 }
 function fitSizeModal(node){
+  var classText;
   let modal=document.getElementById("modal-content").parentNode
   //console.log(document.getElementById("modal-content"))
   //console.log(modal)
-  if(node.class=="free"){
+  if(node.class=="more_results"){
+    let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
+    classText=linkedDataGraph.treeData[index]["class"]
+  }else{
+    classText=node.class
+  }
+  if(classText=="free"){
     modal.classList.remove("max-w-md")
     modal.classList.add("max-w-4xl")
   }else{

@@ -574,7 +574,12 @@ function clickBubbleGraph(element) {
   
   ////console.log(element)
   ////console.log(element.getAttribute("id"))
-  node = d3.select("#" + element.getAttribute("id")).data()[0]
+  if(element){
+    node = d3.select("#" + element.getAttribute("id")).data()[0]
+  }else{
+    node=networkGraph.treeData[0]
+  }
+  
   ////console.log(node)
   
   //CAMBIAR LOS CAMPOS DEL CONFIGROW
@@ -598,8 +603,10 @@ function clickBubbleGraph(element) {
   //ECL.autoInit()
 }
 async function checkMenuItems(origin,element) {
+  var position;
   if(origin=="form"){
     node={"uri":element.querySelector('#free-uri').value, "position":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
+    position=element.querySelector('#subject-object').value
   }else if(origin=="graph"){
     if(element instanceof Element){
       node=get_node_from_element(element.getAttribute("id").replace("_image",""))
@@ -611,7 +618,7 @@ async function checkMenuItems(origin,element) {
   }else if(origin=="navigation"){
     node=get_node_from_element(element.getAttribute("id").replace("_a",""))
   }
-  console.log(menuItems)
+  
 /*   if(menuItems){
     console.log(node.class)
     console.log(menuItems)
@@ -637,10 +644,12 @@ async function checkMenuItems(origin,element) {
   if(node.class!="free"){
     menuItems= new MenuItemsBasic(node)
   }else{
-    menuItems= new MenuItemsExpert(node)
+    menuItems= new MenuItemsExpert(node,position)
   }
   await menuItems.init()
   
+  console.log(menuItems)
+
   if(menuItems.selectedRows.length==0){
     if(origin!="table"){
       if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
@@ -661,6 +670,7 @@ async function checkMenuItems(origin,element) {
         await showGraphExpert(menuItems.selectedRows[0])
       }
     }
+    console.log(node.id)
     clickBubbleGraph(document.getElementById(node.id))
   }else if(menuItems.selectedRows.length>1){
     if(origin=="table"){
@@ -836,10 +846,12 @@ function applyFilters(){
   networkGraph.refreshNoFilters()
 }
 
-function startExpert(origin,element){
+function startExpert(element){
   $("#form-container form").hide()
   //$("#filters").addClass("hidden")
-  checkMenuItems(origin,element)
+  //node={"uri":element.querySelector('#free-uri').value, "position":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
+  //console.log(node)
+  checkMenuItems('form',element)
 }
 
 function shareGraph(){
@@ -962,6 +974,10 @@ function emptyNavigationPanel(){
   $("#nav-children-tbody").empty()
 }
 
+function removeSearchNavContent(){
+  $("#search-nav-content").remove()
+}
+
 function openNavigationPanel(){
   $("#myModal").removeClass("translate-x-full")
   $("#myModal").addClass("translate-x-0")
@@ -972,6 +988,7 @@ function closeNavigationPanel(){
   $("#myModal").removeClass("translate-x-0")
 }
 function clickElNavigationPanel(el){
+  //removeSearchNavContent()
   clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
 }
 function setValuesFilters(filterId){

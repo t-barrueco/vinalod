@@ -174,7 +174,7 @@ FilterClassBasic.prototype.setValuesFilters= function(filterId){
 
 FilterClassBasic.prototype.setTitle = async function () {
   var cf=this;
-  cf.code=cf.code.replace("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
+  cf.code=cf.code.replaceAll("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
 
 function FilterClassExpert(...args){
@@ -186,7 +186,7 @@ FilterClassExpert.prototype = Object.create(FilterClass.prototype);
 FilterClassExpert.prototype.setTitle = async function () {
   var cf=this,name;
   cf.internalName=cf.name.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
-  cf.code=cf.code.replace("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
+  cf.code=cf.code.replaceAll("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
 
 FilterClassExpert.prototype.initFilters = async function (){
