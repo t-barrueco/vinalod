@@ -125,6 +125,8 @@ FilterClassBasic.prototype.addFilterType = async function (filter,imported) {
 
 FilterClassBasic.prototype.addFilterTypeImported = async function (filter,imported) {
   var cf=this,fi;
+  console.log(filter)
+  console.log(imported)
   if(filter.details.filter_type=="dropdown"){
     cf.filters.push(new FilterBasicDropdown(filter,imported))
   }else if(filter.details.filter_type=="date"){
@@ -134,6 +136,7 @@ FilterClassBasic.prototype.addFilterTypeImported = async function (filter,import
   }else if(filter.details.filter_type=="number"){
     cf.filters.push(new FilterBasicNumber(filter,imported))
   }
+  console.log(cf.filters)
 }
 //set values to other filters when filter changes
 //filterId=id from changed filter
@@ -247,9 +250,11 @@ FilterClassExpert.prototype.setValuesFilters = function(){
 
 Filter = function (_details,_imported) {
     var fi=this
-    //console.log(_details)
+    console.log(_details)
+    console.log(_imported)
     fi.imported=_imported
     fi.copyDetails(_details)
+    console.log(fi)
   };  
 
 Filter.prototype.init= async function () {
@@ -347,9 +352,16 @@ function FilterBasic(...args){
     
 FilterBasic.prototype = Object.create(Filter.prototype);
 
-FilterBasic.prototype.copyDetails=function(_details){
+FilterBasic.prototype.copyDetails=function(details){
   var fi=this;
-  fi.details=_details
+  console.log(details)
+  if(fi.imported){
+    fi.import(details)
+    //fi=details
+    fi.imported=true
+  }else{
+    fi.details=details
+  }
 }
 
 FilterBasic.prototype.addHtml= function () {

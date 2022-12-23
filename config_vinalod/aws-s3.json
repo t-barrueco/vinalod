@@ -1,5 +1,5 @@
 {
-    "albumBucketName":"vinalod",
-    "bucketRegion":"us-east-1",
-    "IdentityPoolId":"us-east-1:b863f29f-01bc-4715-a3e3-313e3af07449"
+    "albumBucketName":"deu-ppe-vinalod",
+    "bucketRegion":"eu-central-1",
+    "IdentityPoolId":"eu-central-1:39be532f-e579-44fc-b289-7246f3d7939f"
 }

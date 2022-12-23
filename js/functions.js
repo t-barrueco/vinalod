@@ -428,6 +428,7 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
+      console.log(arr)
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -435,9 +436,12 @@ function autocomplete(inp, arr,numParentNodes) {
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
           b.setAttribute("class", "cursor-pointer");
-          b.innerHTML = arr[i].toUpperCase().substr(0,arr[i].toUpperCase().indexOf(val.toUpperCase()));
+/*           b.innerHTML = arr[i].toUpperCase().substr(0,arr[i].toUpperCase().indexOf(val.toUpperCase()));
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
-          b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
+          b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length); */
+          b.innerHTML = arr[i].substr(0,arr[i].indexOf(val));
+          b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
           /*insert a input field that will hold the current array item's value:*/
           ////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
@@ -597,6 +601,11 @@ function textImageZoom(zoomScale){
     .attr('opacity', function(d) {
                 return 0;
               })
+    d3.selectAll(".nodeCircleMnemo")
+    .transition()
+    .attr('opacity', function(d) {
+                return 0;
+              })
     //}
     d3.selectAll(".nodeCircleText")
     .transition()
@@ -605,6 +614,12 @@ function textImageZoom(zoomScale){
               })
   }else{
     d3.selectAll(".nodeCircleImage")
+    .transition()
+    .attr('opacity', function(d) {
+                return 1;
+              })
+
+    d3.selectAll(".nodeCircleMnemo")
     .transition()
     .attr('opacity', function(d) {
                 return 1;
@@ -918,6 +933,13 @@ function getModalContent(){
   return document.getElementById("modal-content2")
 }
 
+function getNavPanelVisibility(){
+  if($( "#myModal" ).hasClass( "translate-x-0" )){
+    return true;
+  }else{
+    return false;
+  }
+}
 function modalVisibilityOn(){
   if($("#modal-content2 #modalGraph")){
     $("#modal-content2 #modalGraph").remove()

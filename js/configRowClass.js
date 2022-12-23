@@ -11,11 +11,19 @@ ConfigRow.prototype.init = async function () {
     cr.getNameClasses()
     await cr.getResults()
 }
-ConfigRow.prototype.initImport = async function () {
+ConfigRow.prototype.import=function(configRowObject){
+  var cr=this
+  console.log(configRowObject)
+  Object.keys(configRowObject).forEach(function(k){
+    cr[k]=configRowObject[k]
+  })
+  console.log(cr)
+}
+/* ConfigRow.prototype.initImport = async function () {
   var cr=this
   cr.getValuesFromOption()
   cr.replaceParmtrsQuery("query")
-}
+} */
 ConfigRow.prototype.update = async function(option,node){
   var cr=this;
   //////////////////////////console.log(option)
