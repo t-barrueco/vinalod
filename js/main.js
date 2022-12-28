@@ -109,6 +109,9 @@ function downloadQuery(){
   download(networkGraph.queriesArray, 'sparqlQueriesFromVINALOD.csv', 'text/csv;encoding:utf-8');       
 
 }
+/****************************************************
+************IMPORT AND EXPORT FUNCTIONS**************
+*****************************************************/
 
 //create json data from graph for being exported or shared
 function getDataToFile(){
@@ -120,6 +123,59 @@ function getDataToFile(){
   }
   let file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects,"configRow":configRow,"navPanelNode":navPanelNode})
   return file
+}
+
+//run when click on button "Share graph"
+//create an email with link to vinalod and the name of the graph stored in aws s3 
+//added to the content of the email
+
+function shareGraph(){
+  //create a random file name
+  var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
+  
+  addFile()
+  return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent("https://t-barrueco.github.io/vinalod/index.html?graph="+fileName);
+  
+  function addFile(){
+    d3.json("config_vinalod/aws-s3.json",function(data){
+      const albumBucketName=data["albumBucketName"]
+      const bucketRegion=data["bucketRegion"]
+      const IdentityPoolId=data["IdentityPoolId"]
+
+      AWS.config.update({
+        region: bucketRegion,
+        credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: IdentityPoolId
+        })
+      });
+      file=getDataToFile()
+      /* if(getNavPanelVisibility()){
+        navPanelNode=navigationPanel.node
+      }else{
+        navPanelNode=none
+      }
+      file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects,"configRow":configRow,"navPanelNode":navPanelNode}) */
+      var upload = new AWS.S3.ManagedUpload({
+          params: {
+            Bucket: albumBucketName,
+            Key: fileName,
+            Body: file
+          }
+        });
+      
+        var promise = upload.promise();
+      
+        promise.then(
+          function(data) {
+          },
+          function(err) {
+            return alert("There was an error creating the graph share: ", err.message);
+          }
+        );
+    })
+
+
+  }
 }
 
 //create and save JSON file that has data from the graph and save it to file. Launch from menu 'Save graph for later?'
@@ -248,9 +304,6 @@ function expertMode(){
   }
 }
 
-
-
-
 /* function handleNavigation(){
   if(showNavigation){
     if (typeof (navigation) != "object") {
@@ -264,6 +317,16 @@ function expertMode(){
   }
 } */
 
+
+/****************************************************
+*******FUNTIONS FOR CREATING AND ADDING GRAPHS*******
+*****************************************************/ 
+
+//function run when expert form is filled and click on "Show" button
+function startExpert(element){
+  hideExpertForm()
+  checkMenuItems('form',element)
+}
 
 //launched if option selected in when page that shows collection options is added
 async function createNewBasicGraph(option){
@@ -305,39 +368,38 @@ async function createNewBasicGraph(option){
   networkGraph.collapseAll()
 }
 
-//shows the bubble navigation panel
-function clickBubbleGraph(element) {
-  var node
+//create new expert graph
+async function createNewExpertGraph(selectedRow){
+  linkedDataGraph = new LinkedDataGraphExpert(selectedRow);
+  await linkedDataGraph.settingsFromOption()
 
-  closeNavigationPanel()
+  let forces=setForcesGraph()
 
-  if(element){
-    node=get_node_from_element(element.getAttribute("id"))
-  }else{
-    node=networkGraph.treeData[0]
-  }
-  
-  if(configRow){
-    configRow.node=node
-  }
+  removeGraph()
+  showGraphArea()
+  hideExpertForm()
+  hidePageCollection()
+  removePreviousFilters()
+  tabOptionsGraphVisible()
 
-  networkGraph.node=node
+  networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
 
-  
-  //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
-  //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
-  if (navigationPanel == undefined) {
-    if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
-    else navigationPanel= new NavigationPanelExpert(node);
-  } else {
-    emptyNavigationPanel()
-    navigationPanel.element = element
-    navigationPanel.node = node
-    navigationPanel.init()
-  }
+  await networkGraph.initVis()
 
-  fitSizeModal(node)
-  openNavigationPanel()
+  networkGraph.getFilters()
+
+  legend=new Legend("legend",networkGraph)
+}
+
+//form sent from pop expert menu to create a new graph when option is selected
+function createNewExpertGraphFromPopup(form){
+  let url=form.querySelector("#url").value
+  let position=form.querySelector("#subject-object").value
+  let uri=form.querySelector("#uri").value
+
+  let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.position==position)))[0]
+  hideExpertForm()
+  createNewExpertGraph(selectedRow)
 }
 
 //this function is launched when a bubble is clicled on the graph
@@ -437,57 +499,51 @@ async function checkMenuItems(origin,element) {
   }
 }
 
-//create new expert graph
-async function createNewExpertGraph(selectedRow){
-  linkedDataGraph = new LinkedDataGraphExpert(selectedRow);
-  await linkedDataGraph.settingsFromOption()
+async function addBasicGraph(option,node){
+  const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
 
-  let forces=setForcesGraph()
+  if(rowInConfigFile["type"]=="TREE"){
+    await linkedDataGraph.update(option,node)
 
-  removeGraph()
-  showGraphArea()
-  hideExpertForm()
-  hidePageCollection()
-  removePreviousFilters()
-  tabOptionsGraphVisible()
+    networkGraph.refresh()
 
-  networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
-
-  await networkGraph.initVis()
-
-  networkGraph.getFilters()
-
-  legend=new Legend("legend",networkGraph)
+  }else{
+    checkNotTreeGraph(rowInConfigFile,node)
+  }
+  return rowInConfigFile["type"]
+}
+async function addExpertGraph(option,node){
+  await linkedDataGraph.update(option,node)
+  networkGraph.refresh()
 }
 
-//form sent from pop expert menu to create a new graph when option is selected
-function createNewExpertGraphFromPopup(form){
-  let url=form.querySelector("#url").value
-  let position=form.querySelector("#subject-object").value
-  let uri=form.querySelector("#uri").value
+/****************************************************
+*******FUNTIONS FOR GRAPH NOT TREE - DUPLICATES*******
+*****************************************************/ 
 
-  let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.position==position)))[0]
-  hideExpertForm()
-  createNewExpertGraph(selectedRow)
+function showDuplicates(value){
+  if(value=="yes"){
+    showDuplicatesGraph()
+  }else if(value=="no"){
+    showNoDuplicatesGraph()
+  }
+  linkedDataGraph.flatten()
+  networkGraph.refreshNoFilters()
+}
+function showDuplicatesGraph(){
+  linkedDataGraph.showDuplicatesGraph()
+}
+function showNoDuplicatesGraph(){
+  linkedDataGraph.showNoDuplicatesGraph()
 }
 
-async function getHtmlFromFile(file,location){
-  await $.get(file, function (data) {
-    let html=data
-    $("#"+location).append($(html))
-  });
+function getShowDuplicates(){
+  return $("#show-duplicates-no").is(":checked")
 }
-async function getHtmlCodeFromFile(file) {
-  const promise = new Promise(function (resolve, reject) {
-    $.get({
-      url: file,
-      success: resolve,
-      error: reject
-    });
-  })
-  const code = await promise;
-  return code;
-}
+
+/****************************************************
+************FUNTIONS RELATED TO FILTERS**************
+*****************************************************/
 
 function relatedFilters(element){
   var filter,filterId,id;
@@ -523,41 +579,22 @@ function relatedFilters(element){
 }
 function relatedFiltersExpert(element){
   var filter,id;
-  /* if (isLoading){
-    return
-  } */
-  ////////////console.log(loaded)
-  ////////////console.log(element.value)
-  //////console.log(element)
-  //////console.log(element.getAttribute("id"))
 
   id=element.getAttribute("id").replace(/(_type$)/, '')
   id=id.replace(/(_property$)/, '')
   id=id.replace(/(_value$)/, '')
 
   let filterClassName=id
-  //////console.log(filterClassName)
-  //////console.log(networkGraph.filterClassesObjects)
 
   let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==filterClassName)[0]
-  //////console.log(filterClass)
   if(filterClass){
     filter=filterClass.filters.filter((f)=>f.id==element.getAttribute("id"))[0]
-    
-    //////console.log(filter)
     filter.addValuesChanged(element)
     linkedDataGraph.filter(filter.id)
     linkedDataGraph.flattenFiltered()
-    //////console.log(linkedDataGraph.treeDataFiltered)
     setValuesFilters(id)
   }
   
-}
-function changeDate(el){
-  var values;
-
-  var filterId=el.getAttribute("id").replace("_start","").replace("_end","")
-  relatedFilters(this)
 }
 
 function getFilteredData(){
@@ -571,149 +608,13 @@ function applyFilters(){
   networkGraph.refreshNoFilters()
 }
 
-function startExpert(element){
-  hideExpertForm()
-  //$("#filters").addClass("hidden")
-  //node={"uri":element.querySelector('#free-uri').value, "position":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
-  ////console.log(node)
-  checkMenuItems('form',element)
-}
-
-function shareGraph(){
-  var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
-  
-  addFile()
-  return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent("https://t-barrueco.github.io/vinalod/index.html?graph="+fileName);
-  
-  function addFile(){
-    d3.json("config_vinalod/aws-s3.json",function(data){
-      const albumBucketName=data["albumBucketName"]
-      const bucketRegion=data["bucketRegion"]
-      const IdentityPoolId=data["IdentityPoolId"]
-
-      AWS.config.update({
-        region: bucketRegion,
-        credentials: new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: IdentityPoolId
-        })
-      });
-      file=getDataToFile()
-      /* if(getNavPanelVisibility()){
-        navPanelNode=navigationPanel.node
-      }else{
-        navPanelNode=none
-      }
-      file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects,"configRow":configRow,"navPanelNode":navPanelNode}) */
-      var upload = new AWS.S3.ManagedUpload({
-          params: {
-            Bucket: albumBucketName,
-            Key: fileName,
-            Body: file
-          }
-        });
-      
-        var promise = upload.promise();
-      
-        promise.then(
-          function(data) {
-          },
-          function(err) {
-            return alert("There was an error creating the graph share: ", err.message);
-          }
-        );
-    })
-
-
-  }
-}
-
-
-async function addBasicGraph(option,node){
-  const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
-
-  if(rowInConfigFile["type"]=="TREE"){
-    await linkedDataGraph.update(option,node)
-
-    networkGraph.refresh()
-
-  }else{
-    checkNotTreeGraph(rowInConfigFile,node)
-  }
-  return rowInConfigFile["type"]
-}
-async function addExpertGraph(option,node){
-  await linkedDataGraph.update(option,node)
-  networkGraph.refresh()
-}
-async function checkGraphExpert(form,data){
-  ////console.log(data.menu)
-/*   //console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //console.log(vis.data.links[vis.data.links.length-1]["source"].x)
-  //console.log(vis.data.links[vis.data.links.length-1]["source"].value)
-  //console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //console.log(vis.data.links[vis.data.links.length-1]["target"].x)
-  //console.log(vis.data.links[vis.data.links.length-1]["target"].value) */
-  await linkedDataGraph.update(form,data)
-/*   //console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //console.log(vis.data.links[vis.data.links.length-1]["source"].x)
-  //console.log(vis.data.links[vis.data.links.length-1]["source"].value)
-  //console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //console.log(vis.data.links[vis.data.links.length-1]["target"].x)
-  //console.log(vis.data.links[vis.data.links.length-1]["target"].value) */
-  ////console.log(networkGraph.data.nodes)
-  ////console.log(linkedDataGraph.data.flatData.nodes)
-  networkGraph.refresh()
-}
-function tabOptionsGraphVisible(){
-  //$('#settings-tab').parent().removeClass("hidden")
-  $('#collapse-graph-div').removeClass("hidden")
-  $('#legend-tab').parent().removeClass("hidden")
-  $('#share-graph-div').removeClass("hidden")
-  $('#save-graph-div').removeClass("hidden")
-}
-
-function tabOptionsGraphNotVisible(){
-  //$('#settings-tab').parent().addClass("hidden")
-  $('#legend-tab').parent().addClass("hidden")
-  $('#share-graph-div').addClass("hidden")
-  $('#save-graph-div').addClass("hidden")
-  $('#collapse-graph-div').addClass("hidden")
-
-}
-function showNavTabs(){
-  $("#tabsNav").removeClass("hidden")
-  ////////////console.log("autoInit")
-  //////////console.log(ECL.autoInit())
-}
-function hideNavTabs(){
-  $("#tabsNav").addClass("hidden")
-}
-
-async function clickMenuTable(row){
-  navigationPanel.clickMenuTable(row)
-}
-function emptyNavigationPanel(){
-  //$(".ecl-search-form").delete()
-  $("#nav-children-tbody").empty()
-}
-
-function removeSearchNavContent(){
-  $("#search-nav-content").remove()
-}
-
-function clickElNavigationPanel(el){
-  //removeSearchNavContent()
-  clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
-}
 function setValuesFilters(filterId){
   ////////////console.log("function setValuesFilters")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.setValuesFilters(filterId)
   })
 }
-function removeOptionsSelect(f){
-  $("#"+f.htmlEl.getAttribute("id")).empty();
-}
+
 function clearFilters(){
   linkedDataGraph.clearFilter()
   //////console.log(linkedDataGraph.data.flatData.nodes)
@@ -732,33 +633,13 @@ function clearFilters(){
       //////////////console.log("despues de resetvalue")
     })
   })
-}
-function noOptionSelectedCollections(){
-  document.getElementById("select-collections").value = "------------";
-}
-function showDuplicates(value){
-  ////////////////console.log(value)
-  if(value=="yes"){
-    showDuplicatesGraph()
-  }else if(value=="no"){
-    showNoDuplicatesGraph()
-  }
-  linkedDataGraph.flatten()
   networkGraph.refreshNoFilters()
 }
-function showDuplicatesGraph(){
-  linkedDataGraph.showDuplicatesGraph()
-}
-function showNoDuplicatesGraph(){
-  ////////////////console.log(linkedDataGraph.treeData)
-  linkedDataGraph.showNoDuplicatesGraph()
-}
 
-function getShowDuplicates(){
-  return $("#show-duplicates-no").is(":checked")
-}
+/****************************************************
+************INITIALIZE ALL MODAL WINDOWS**************
+*****************************************************/
 
-//INITIALIZE ALL MODAL WINDOWS
 
 // get navigation panel modal window
 var modal = document.getElementById("myModal");

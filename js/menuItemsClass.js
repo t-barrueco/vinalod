@@ -148,9 +148,9 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
       //console.log(data)
       //console.log(d)
       //console.log("entra por details menu in graph")
-      checkGraphExpert(form,data)
+      addExpertGraph(form,data)
       setMenuOption(data,d.title) */
-      checkGraphExpert(selectedRow,node)
+      addExpertGraph(selectedRow,node)
       }
   }
   return elementMenu

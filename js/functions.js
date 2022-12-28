@@ -1125,6 +1125,37 @@ function removeOptionsCollections(){
 function hideGraphArea(){
   $('#graph-area').addClass("hidden")
 }
+
+function tabOptionsGraphVisible(){
+  $('#collapse-graph-div').removeClass("hidden")
+  $('#legend-tab').parent().removeClass("hidden")
+  $('#share-graph-div').removeClass("hidden")
+  $('#save-graph-div').removeClass("hidden")
+}
+
+function tabOptionsGraphNotVisible(){
+  //$('#settings-tab').parent().addClass("hidden")
+  $('#legend-tab').parent().addClass("hidden")
+  $('#share-graph-div').addClass("hidden")
+  $('#save-graph-div').addClass("hidden")
+  $('#collapse-graph-div').addClass("hidden")
+
+}
+function showNavTabs(){
+  $("#tabsNav").removeClass("hidden")
+}
+function hideNavTabs(){
+  $("#tabsNav").addClass("hidden")
+}
+
+function emptyNavigationPanel(){
+  $("#nav-children-tbody").empty()
+}
+
+function removeSearchNavContent(){
+  $("#search-nav-content").remove()
+}
+
 function filtersVisible(){
   $("#filters").fadeIn( "slow")
 /*   $("#filters").fadeIn( "slow", function() {
@@ -1193,4 +1224,74 @@ function getTooltipNode(tooltip,nodeClass){
     })
   }
   return tooltipNode
+}
+
+async function getHtmlFromFile(file,location){
+  await $.get(file, function (data) {
+    let html=data
+    $("#"+location).append($(html))
+  });
+}
+async function getHtmlCodeFromFile(file) {
+  const promise = new Promise(function (resolve, reject) {
+    $.get({
+      url: file,
+      success: resolve,
+      error: reject
+    });
+  })
+  const code = await promise;
+  return code;
+}
+
+function removeOptionsSelect(f){
+  $("#"+f.htmlEl.getAttribute("id")).empty();
+}
+
+function noOptionSelectedCollections(){
+  document.getElementById("select-collections").value = "------------";
+}
+
+//shows the bubble navigation panel
+function clickBubbleGraph(element) {
+  var node
+
+  closeNavigationPanel()
+
+  if(element){
+    node=get_node_from_element(element.getAttribute("id"))
+  }else{
+    node=networkGraph.treeData[0]
+  }
+  
+  if(configRow){
+    configRow.node=node
+  }
+
+  networkGraph.node=node
+
+  
+  //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
+  //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
+  if (navigationPanel == undefined) {
+    if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
+    else navigationPanel= new NavigationPanelExpert(node);
+  } else {
+    emptyNavigationPanel()
+    navigationPanel.element = element
+    navigationPanel.node = node
+    navigationPanel.init()
+  }
+
+  fitSizeModal(node)
+  openNavigationPanel()
+}
+
+async function clickMenuTable(row){
+  navigationPanel.clickMenuTable(row)
+}
+
+//click element in Navigation panel
+function clickElNavigationPanel(el){
+  clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
 }
