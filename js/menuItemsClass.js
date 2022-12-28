@@ -167,13 +167,8 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
   var content = document.getElementById("modal3-content");
   addOptions()
 
-  modal = document.getElementById("myModal3")
-  modal.style.display = "block";
+  showPopupWindowExpert()
   showGraphArea()
-  $('#myModal3').resizable({
-
-  });
-  $("#myModal3").draggable()
 
   function addOptions(){
     var i=1;

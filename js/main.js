@@ -437,9 +437,8 @@ async function checkMenuItems(origin,element) {
   }
 }
 
+//create new expert graph
 async function createNewExpertGraph(selectedRow){
-  //////console.log("showExpert")
-  //////console.log(selectedRow)
   linkedDataGraph = new LinkedDataGraphExpert(selectedRow);
   await linkedDataGraph.settingsFromOption()
 
@@ -448,27 +447,20 @@ async function createNewExpertGraph(selectedRow){
   removeGraph()
   showGraphArea()
   hideExpertForm()
-  //landingPageNotVisible()
   hidePageCollection()
   removePreviousFilters()
-  //hideLandingText() 
   tabOptionsGraphVisible()
 
   networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
 
   await networkGraph.initVis()
 
-  //////console.log("showGraphExpert")
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
-
-/*   if(networkGraph.filterClassesObjects.length!=0){
-    $("#filters").removeClass("hidden")
-  }else{
-    $("#filters").addClass("hidden")
-  } */
 }
+
+//form sent from pop expert menu to create a new graph when option is selected
 function createNewExpertGraphFromPopup(form){
   let url=form.querySelector("#url").value
   let position=form.querySelector("#subject-object").value
@@ -476,8 +468,6 @@ function createNewExpertGraphFromPopup(form){
 
   let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.position==position)))[0]
   hideExpertForm()
-  let modal = document.getElementById("myModal3")
-  modal.style.display = "none";
   createNewExpertGraph(selectedRow)
 }
 
@@ -531,7 +521,6 @@ function relatedFilters(element){
   }
   
 }
-
 function relatedFiltersExpert(element){
   var filter,id;
   /* if (isLoading){
@@ -568,14 +557,6 @@ function changeDate(el){
   var values;
 
   var filterId=el.getAttribute("id").replace("_start","").replace("_end","")
-  //let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id === filterId))
-  //values=networkGraph.filterClassesObjects[index].filters.filter(d=>d.id==filterId)[0]["values"]
-  //if((el.getAttribute("id").endsWith("_end"))&&(formatDate(values[values.length-1])!=formatDate(el.value))){
-    //relatedFilters(el)
-  //}else if((el.getAttribute("id").endsWith("_start"))&&(formatDate(values[0])!=formatDate(el.value))){
-    //relatedFilters(el)
-  //}
-  //ECL.autoInit()
   relatedFilters(this)
 }
 
