@@ -22,12 +22,13 @@ NavigationPanel.prototype.init = function () {
   //////////console.log(navPanel.fromNodes)
   //////////console.log(navPanel.toNodes)
 
-  navPanel.initModal()
   navPanel.navTableTable()
 
   navPanel.contentTable()
 
   navPanel.showChildrenDetails()
+
+  navPanel.initModal()
 }
 
 NavigationPanel.prototype.getNodes = function (){
@@ -173,8 +174,8 @@ NavigationPanel.prototype.selectBubbles = function (){
   
 }
 NavigationPanel.prototype.initModal = function (){
-  var navPanel=this;
-  showModal("#myModal")
+  openNavigationPanel()
+
   $('#myModal').resizable();
   $("#myModal").draggable()
 }
@@ -1036,7 +1037,7 @@ NavigationPanelBasic.prototype.clickMenuTable = async function (row){
   let node=get_node_from_element(row.id.split("_menu-option_")[0])
   let i=row.id.split("_menu-option_")[1]
   node.menuOption=menuItems.selectedRows[i]["option"]
-  let graphType=await checkGraph(menuItems.selectedRows[i],node)
+  let graphType=await addBasicGraph(menuItems.selectedRows[i],node)
   if(graphType=="TREE"){
     clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
   }
@@ -1069,7 +1070,7 @@ NavigationPanelExpert.prototype.clickMenuTable = async function (row){
 /*   let node=get_node_from_element(row.id.split("_menu-option_")[0])
   let i=row.id.split("_menu-option_")[1]
   node.menuOption=menuItems.selectedRows[i]["option"]
-  let graphType=await checkGraph(menuItems.selectedRows[i],node)
+  let graphType=await addBasicGraph(menuItems.selectedRows[i],node)
   if(graphType=="TREE"){
     clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
   } */

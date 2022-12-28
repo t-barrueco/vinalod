@@ -1,6 +1,6 @@
 var data={},
 linkedDataGraph,networkGraph,legend,navigationPanel,menuItems,configFile,configRow,filesIcons,
-nodesClasses,configRowsList=[],
+nodesClasses,nodesSelSources=[],nodesSelTarget=[],configRowsList=[],
 nodesClassesShow=[],nodesClassesCorrespondence,filesIcons,colorCorrespondence={},
 optionsMenuHtml,showNavigation=true,mnemonicCodes;
 var timer = 0;
@@ -58,7 +58,7 @@ function getOptionsCollectionSelect(collection){
   showPageCollection()
 
   //remove all options from previous collections
-  removeOptionsCollections()
+  $('#dataviz-collection article').remove()
 
   changeCollectionOptions(collection.value)
 }
@@ -101,11 +101,85 @@ function downloadData(){
   })
 
   download(data, 'graphDataFromVINALOD.csv', 'text/csv;encoding:utf-8');
+
+/*   root=networkGraph.treeData.filter(function(item) {
+    if(item[item["class"]+"_uri"]!=undefined){
+      return item[item["class"]+"_uri"] == element[element["class"]+"_uri"]
+    }else{
+      return item[item["class"]+"_code"] == element[element["class"]+"_code"]
+    }
+    
+  })[0]
+
+  for (let i = 0; i < nodesClasses.length; ++i) { 
+    if(nodesClasses[i]==root["class"]){
+      classIndex=i
+    }
+  }  
+  hierarchy=nodesClasses.slice(classIndex, nodesClasses.length);
+
+  lastHierarchy=hierarchy[hierarchy.length-1]
+
+  if (root.children){
+    root.children.forEach(function(r){
+      row={}
+      row[root["class"]]=root["value"]
+      if(root[root["class"]+"_uri"]!=undefined){
+        row[root["class"]+"_uri"]=root[root["class"]+"_uri"]
+      }else{
+        row[root["class"]+"_code"]=root[root["class"]+"_code"]
+      }
+      recurse(r);
+      nodes.push(row)
+    })
+  }else if (root._children){
+    root._children.forEach(function(r){
+      row={}
+      row[root["class"]]=root["value"]
+      if(root[root["class"]+"_uri"]!=undefined){
+        row[root["class"]+"_uri"]=root[root["class"]+"_uri"]
+      }else{
+        row[root["class"]+"_code"]=root[root["class"]+"_code"]
+      }
+      recurse(r);
+      nodes.push(row)
+    })
+  }
+  console.log(nodes)
+  download(nodes, 'testDownload.csv', 'text/csv;encoding:utf-8');
+  function recurse(node) {
+    var i=0
+    row[node["class"]]=node["value"]
+    if(node[node["class"]+"_uri"]!=undefined){
+      row[node["class"]+"_uri"]=node[node["class"]+"_uri"]
+    }else{
+      row[node["class"]+"_code"]=node[node["class"]+"_code"]
+    }
+    if (node["class"]==lastHierarchy){
+      nodes.push(row)
+      row={ ...row2};
+    }else{
+      row2={ ...row };
+    }
+    if(node.children){
+        node.children.forEach(function(c){
+          recurse(c)
+      });     
+    }else if (node._children){
+        node._children.forEach(function(c){
+          recurse(c)
+        });
+    }
+  } */
   
 }
 
 //create a file whith all queries that have been run to construct the graph
 function downloadQuery(){
+/*   var data=[]
+  networkGraph.queriesArray.forEach(function(q){
+    da
+  }) */
   download(networkGraph.queriesArray, 'sparqlQueriesFromVINALOD.csv', 'text/csv;encoding:utf-8');       
 
 }
@@ -125,6 +199,7 @@ function getDataToFile(){
 //create and save JSON file that has data from the graph and save it to file. Launch from menu 'Save graph for later?'
 function downloadGraph(){
 
+  //let file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects})
   let file=getDataToFile()
   download(file, 'graph.json', 'text/json;encoding:utf-8');   
   
@@ -138,6 +213,16 @@ async function createGraphFromFile(fileText){
 
   //show elements from tabs menu on the top that are visible when a graph is showed
   tabOptionsGraphVisible()
+
+  //propertiesFilterHist=[]
+
+/*   if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+    linkedDataGraph = undefined;
+  } */
+
+/*   if(typeof linkedDataGraph !== 'undefined'){
+    linkedDataGraph = undefined;
+  } */
 
   //create a new element for storing the data. We specify that it is imported data
   linkedDataGraph = new LinkedDataGraphBasic("imported");
@@ -165,6 +250,12 @@ async function createGraphFromFile(fileText){
 
   networkGraph.refreshNoFilters()
 
+/*   if(networkGraph.filterClassesObjects.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  } */
+
 }
 
 //function launched when click on import button in menu
@@ -176,6 +267,43 @@ function importGraph(file){
 
   //remove value from file imported
   document.getElementById('import-file').value = null;
+/*   async function createGraph(fileText){
+    d3.selectAll(".classFilter").remove()
+    $("#filters .ecl-accordion__item").remove()
+  
+    hideExpertForm()
+    removeGraph()
+    $("#networkGraph-svg").remove()  
+  
+    closeNavigationPanel()
+    deleteTooltip()
+    //hide flyout menu
+    //$("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+    //$("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+  
+    //landingPageNotVisible()
+    hidePageCollection()
+    showGraphArea()
+  
+    tabOptionsGraphVisible()
+  
+    propertiesFilterHist=[]
+  
+    if((typeof linkedDataGraph !== 'undefined')&&(linkedDataGraph instanceof LinkedDataGraphBasic)){
+      linkedDataGraph = undefined;
+    }
+  
+    linkedDataGraph = new LinkedDataGraphBasic("imported");
+    linkedDataGraph.importGraph(fileText)
+    let forces=setForcesGraph()
+    networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
+    await networkGraph.initVis()
+
+    legend=new Legend("legend",networkGraph)
+  
+    networkGraph.getFilters()
+  
+  } */
 }
 
 //add graph when added in url
@@ -266,17 +394,33 @@ function expertMode(){
 
 
 //launched if option selected in when page that shows collection options is added
-async function createNewBasicGraph(option){
+async function changeBasicGraph(option){
 
   removePreviousFilters()
+/*   d3.selectAll(".classFilter").remove()
+  $("#filters .ecl-accordion__item").remove() */
+
   hideExpertForm()
   removeGraph()
+  //$("#networkGraph-svg").remove()  
+
   closeNavigationPanel()
   deleteTooltip()
+  //hide flyout menu
+  /* $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1") */
+
+  //landingPageNotVisible()
   hidePageCollection()
   showGraphArea()
   removeColorsFromLegend()
   tabOptionsGraphVisible()
+
+  //build and show graph
+  //showBasicGraph()
+
+  //reset global variables
+  //propertiesFilterHist=[]
 
   if(typeof linkedDataGraph !== 'undefined'){
     linkedDataGraph = undefined;
@@ -297,35 +441,55 @@ async function createNewBasicGraph(option){
 
   await networkGraph.initVis()
   //hideSpinMessage()
-
+  ////////////console.log("antes de getFilters")
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
 
+/*   if(networkGraph.filterClassesObjects.length!=0){
+    $("#filters").removeClass("hidden")
+  }else{
+    $("#filters").addClass("hidden")
+  } */
   networkGraph.collapseAll()
+  ////////////console.log("autoInit")
+  ////////////console.log(ECL.autoInit());
+
+}
+function changeTab(tab){ 
+  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
+  $("#content-main-tabs .content-item").addClass("hidden")
+  tab.classList.add("ecl-tabs__link--active");
+  tab.setAttribute("aria-selected", "true")
+
+  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
 }
 
-//shows the bubble navigation panel
 function clickBubbleGraph(element) {
   var node
+  nodesSelSources = []
+  nodesSelTarget = []
 
   closeNavigationPanel()
-
+  
+  //////console.log(element)
+  //////console.log(element.getAttribute("id"))
   if(element){
-    node=get_node_from_element(element.getAttribute("id"))
+    node = d3.select("#" + element.getAttribute("id")).data()[0]
   }else{
     node=networkGraph.treeData[0]
   }
   
+  //////console.log(node)
+  
+  //CAMBIAR LOS CAMPOS DEL CONFIGROW
   if(configRow){
     configRow.node=node
   }
-
   networkGraph.node=node
 
-  
-  //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
-  //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
+  fitSizeModal(node)
+
   if (navigationPanel == undefined) {
     if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
     else navigationPanel= new NavigationPanelExpert(node);
@@ -335,91 +499,78 @@ function clickBubbleGraph(element) {
     navigationPanel.node = node
     navigationPanel.init()
   }
-
-  fitSizeModal(node)
   openNavigationPanel()
+  //ECL.autoInit()
 }
-
-//this function is launched when a bubble is clicled on the graph
-//when a row is clicked on the navigationPanel table
-//when an option is selected in the pop form for expert options
-//we check the options that can be retrieved for the node and show
-//them in the context menu, navigation panel or pop form 
-//depending on the origin we will get data differently
-//we pass the origin and the element from where the graph will be added
-//or the options will be shown
 async function checkMenuItems(origin,element) {
   var position;
-
-  //first we get the parameters that will be passed when creating menuItems object
-  //the way of getting the node depends on the origin
-
   if(origin=="form"){
-    //when origin is the expert form we build the node with the options from the form
     node={"uri":element.querySelector('#free-uri').value, "position":element.querySelector('#subject-object').value,"class":element.querySelector('#class-node').value}
-    
-    //get the position from the form
     position=element.querySelector('#subject-object').value
   }else if(origin=="graph"){
-    //when origin is the graph get the node from the element id
-    node=get_node_from_element(element.getAttribute("id").replace("_image",""))
-/*     if(element instanceof Element){
+    if(element instanceof Element){
       node=get_node_from_element(element.getAttribute("id").replace("_image",""))
     }else{
       node=element
-    } */
+    }
   }else if(origin=="table"){
-    //when origin is table content in navigation panel
-    // get the node from the table row id
     node=getNodeFromTableRow(element)
   }else if(origin=="navigation"){
-    //when origin is the last element in the navigation panel history
-    //we get the node from the element id
     node=get_node_from_element(element.getAttribute("id").replace("_a",""))
   }
+  
+/*   if(menuItems){
+    //console.log(node.class)
+    //console.log(menuItems)
+    if(((node.class!="free")&&(menuItems instanceof MenuItemsBasic))||((node.class=="free")&&(menuItems instanceof MenuItemsExpert))){
+      //console.log("menuItems.update()")
+      await menuItems.update(node)
+    }else if(node.class!="free"){
+      menuItems= new MenuItemsBasic(node)
+      await menuItems.init()
+    }else{
+      menuItems= new MenuItemsExpert(node)
+      await menuItems.init()
+    }
+  }else{
+    if(node.class!="free"){
+      menuItems= new MenuItemsBasic(node)
+    }else{
+      menuItems= new MenuItemsExpert(node)
+    }
+    await menuItems.init()
+  } */
 
-  //we create the menuItems object
-  //it is created from the basic or expert type depending on the node class
   if(node.class!="free"){
     menuItems= new MenuItemsBasic(node)
   }else{
     menuItems= new MenuItemsExpert(node,position)
   }
   await menuItems.init()
+  
+  //console.log(menuItems)
 
-
-  //after the menuItems object is created and initialized we get the number of
-  //possible options for graphs from that node
-  //depending on the number of menu options we will do something different
   if(menuItems.selectedRows.length==0){
-/*     if(origin!="table"){
+    if(origin!="table"){
       if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
         networkGraph.checkCollapseExpandBranch(node)
       }
-    } */
-    console.log("message for no graph")
-    showMessageForNoGraphs()
-    //clickBubbleGraph(document.getElementById(node.id))
+    }
+    clickBubbleGraph(document.getElementById(node.id))
   }else if(menuItems.selectedRows.length==1){
-
-    //if we get 1 result from the node options we show the graph
-    //and show the navigation panel for the new option if active
     if(node.class!="free"){
-      //if basic graph we add the menuOption to the node
-      //like this we have a history of the options that have been selected
       setMenuOption(node,menuItems.selectedRows[0]["option"])
-      //add basic graph to the existing graph
-      await addBasicGraph(menuItems.selectedRows[0],node)
+      await checkGraph(menuItems.selectedRows[0],node)
     }else{
       if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
         //////console.log("update linkedata")
-        await addExpertGraph(menuItems.selectedRows[0],node)
-/*         await linkedDataGraph.update(menuItems.selectedRows[0],node)
-        networkGraph.refresh() */
+        await linkedDataGraph.update(menuItems.selectedRows[0],node)
+        networkGraph.refresh()
       }else{
-        await createNewExpertGraph(menuItems.selectedRows[0])
+        await showGraphExpert(menuItems.selectedRows[0])
       }
     }
+    //console.log(node.id)
     clickBubbleGraph(document.getElementById(node.id))
   }else if(menuItems.selectedRows.length>1){
     if(origin=="table"){
@@ -437,7 +588,7 @@ async function checkMenuItems(origin,element) {
   }
 }
 
-async function createNewExpertGraph(selectedRow){
+async function showGraphExpert(selectedRow){
   //////console.log("showExpert")
   //////console.log(selectedRow)
   linkedDataGraph = new LinkedDataGraphExpert(selectedRow);
@@ -469,16 +620,20 @@ async function createNewExpertGraph(selectedRow){
     $("#filters").addClass("hidden")
   } */
 }
-function createNewExpertGraphFromPopup(form){
+function showGraphExpertFromPopup(form){
   let url=form.querySelector("#url").value
   let position=form.querySelector("#subject-object").value
   let uri=form.querySelector("#uri").value
 
+  //////console.log(menuItems)
+  //////console.log(url)
+  //////console.log(position)
+  //////console.log(uri)
   let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.position==position)))[0]
   hideExpertForm()
   let modal = document.getElementById("myModal3")
   modal.style.display = "none";
-  createNewExpertGraph(selectedRow)
+  showGraphExpert(selectedRow)
 }
 
 async function getHtmlFromFile(file,location){
@@ -647,22 +802,31 @@ function shareGraph(){
 }
 
 
-async function addBasicGraph(option,node){
+async function checkGraph(option,node){
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
 
   if(rowInConfigFile["type"]=="TREE"){
+/*     //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].x)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].value)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].x)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].value) */
     await linkedDataGraph.update(option,node)
+/*     //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].x)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].value)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["source"].vx)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].x)
+    //console.log(networkGraph.data.links[networkGraph.data.links.length-1]["target"].value) */
 
     networkGraph.refresh()
 
+    //ECL.autoInit()
   }else{
     checkNotTreeGraph(rowInConfigFile,node)
   }
   return rowInConfigFile["type"]
-}
-async function addExpertGraph(option,node){
-  await linkedDataGraph.update(option,node)
-  networkGraph.refresh()
 }
 async function checkGraphExpert(form,data){
   ////console.log(data.menu)

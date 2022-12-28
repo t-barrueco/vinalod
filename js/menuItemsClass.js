@@ -169,7 +169,7 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
 
   modal = document.getElementById("myModal3")
   modal.style.display = "block";
-  $("#graph-area").removeClass("hidden")
+  showGraphArea()
   $('#myModal3').resizable({
 
   });
@@ -225,7 +225,7 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {
         setMenuOption(data,d.title)
-        checkGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
+        addBasicGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
     }
     }
   return elementMenu

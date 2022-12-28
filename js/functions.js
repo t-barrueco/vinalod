@@ -27,7 +27,12 @@ function genRandomString(){
   }
   return s; 
 }
-
+function showMessageForNoGraphs(){
+  $("#no-graphs-message").show()
+  component=$("#no-graphs-message")[0]
+  runAutoInit(component)
+  //console.log(ECL.autoInit())
+}
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
@@ -36,7 +41,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
     Items=[{
       option: 'Download data',
       position: 1,
-      action:"downloadData(node)"
+      action:"downloadData()"
     },{
       option: 'Download SPARQL query',
       position: 2,
@@ -58,7 +63,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         position:1,
         action: (d) => {
           // TODO: add any action you want to perform
-          downloadData(d)
+          downloadData()
         }
       },
       {
@@ -789,11 +794,36 @@ function addTooltip(htmlData){
   .style("left",x+50)
 }
 function showBasicGraph(){
-  $("#graph-area").removeClass("hidden")
-  $("#form-container").addClass("hidden")
-  $("#landing-img").addClass("hidden")
-  $("#landing-text").addClass("hidden")
+  showGraphArea()
+  hideExpertForm()
+/*   $("#landing-img").addClass("hidden")
+  hideLandingText() */
 }
+function collectionOptionsVisible(){
+  $("#collections-div").removeClass("hidden")
+}
+function collectionOptionsNotVisible(){
+  $("#collections-div").addClass("hidden")
+}
+function openNavigationPanel(){
+  $("#myModal").removeClass("translate-x-full")
+  $("#myModal").addClass("translate-x-0")
+  //ECL.autoInit();
+}
+function closeNavigationPanel(){
+  $("#myModal").addClass("translate-x-full")
+  $("#myModal").removeClass("translate-x-0")
+}
+
+function removeColorsFromLegend(){
+  d3.selectAll("#legend li").remove()
+}
+/* function showLandingText(){
+  $("#landing-text").removeClass("hidden")
+}
+function hideLandingText(){
+  $("#landing-text").addClass("hidden")
+} */
 function fromSelectToAskQuery(query){
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
@@ -968,7 +998,12 @@ function showSearchNavContent(){
 function hideSearchNavContent(){
   $("#search-nav-content").hide()
 }
-
+function showExpertForm(){
+  $("#form-container").show()
+}
+function hideExpertForm(){
+  $("#form-container").hide()
+}
 function showNavDetails(){
   ////console.log("entra en NavDetails")
   $("#dvDetails").show()
@@ -985,6 +1020,12 @@ function showNavContentTablePagination(){
 }
 function hideNavContentTablePagination(){
   $("#div-pagination").hide()
+}
+function removeGraph(){
+  $(".graph").remove() 
+}
+function removePreviousFilters(){
+  $("#accordion-filters").empty()
 }
 function getNodeFromTableRow(element){
   const parent = element.parentElement.closest('tr');
@@ -1022,27 +1063,54 @@ function runAutoInit(component){
 
 function hideElements(){
   //$("#filters").addClass("hidden")
-  $("#filters").hide()
-
-  d3.selectAll(".classFilter").remove()
+/*   $("#filters").hide()
+ */
+  filtersNotVisible()
+  removePreviousFilters()
+/*   d3.selectAll(".classFilter").remove()
   $("#filters .ecl-accordion__item").remove()
+ */
+  hideExpertForm()
+  removeGraph()
+  //$("#networkGraph-svg").remove()  
 
-  $("#form-container").addClass("hidden")
-
-  $(".graph").remove() 
-  $("#networkGraph-svg").remove()  
-
-  hideModal("#myModal")
+  closeNavigationPanel()
   deleteTooltip()
-  $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1")
+/*   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1") */
 
-  $('#landing-page'). hide();
-  $('#dataviz-collection'). hide();
-  $('#graph-area').removeClass("hidden")
+  //landingPageNotVisible()
+  hidePageCollection()
+  showGraphArea()
   //document.getElementById("filters").classList.add("hidden")
 }
+/* function landingPageNotVisible(){
+  $('#landing-page'). hide();
+} */
 
+//change tab in main menu
+function changeTab(tab){ 
+  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
+  $("#content-main-tabs .content-item").addClass("hidden")
+  tab.classList.add("ecl-tabs__link--active");
+  tab.setAttribute("aria-selected", "true")
+  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
+}
+function showPageCollection(){
+  $('#dataviz-collection').show();
+}
+function hidePageCollection(){
+  $('#dataviz-collection').hide();
+}
+function showGraphArea(){
+  $('#graph-area').removeClass("hidden")
+}
+function removeOptionsCollections(){
+  $('#dataviz-collection article').remove()
+}
+function hideGraphArea(){
+  $('#graph-area').addClass("hidden")
+}
 function filtersVisible(){
   $("#filters").fadeIn( "slow")
 /*   $("#filters").fadeIn( "slow", function() {
@@ -1099,4 +1167,16 @@ function positionFullText(p){
   }else if(p=="o"){
     return "Object"
   }
+}
+
+function getTooltipNode(tooltip,nodeClass){
+  var tooltipNode={}
+  if((tooltip!="")&&(tooltip!="None")){
+    tooltip.forEach(function(k){
+      if(k["property"].split("_")[0]==nodeClass){
+        tooltipNode[k["property"]]=k["tooltip_text"]
+      }
+    })
+  }
+  return tooltipNode
 }

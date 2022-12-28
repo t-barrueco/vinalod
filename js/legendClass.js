@@ -27,10 +27,10 @@ Legend.prototype.addColors=function(){
     }
 }
 
-Legend.prototype.deleteAllColors=function(){
+/* Legend.prototype.deleteAllColors=function(){
   var le=this;
   d3.selectAll("#legend li").remove()
-}
+} */
 Legend.prototype.addOne=function (index,textLi){
   var le=this;
   var li,classLi;

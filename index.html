@@ -265,8 +265,8 @@
                   <legend class="ecl-form-label">Import file?</legend>
                   <div class="ecl-help-block" id="helper-id-2">Import local copy of the graph</div>
                   </svg>
-                  <input type="file" class="ecl-file-upload" data-ecl-file-upload-input="" id="example-input-id-1" name="file-upload-name" required="" onchange="importGraph(this)"/>
-                  <label class="ecl-file-upload__button-container" for="example-input-id-1">
+                  <input type="file" class="ecl-file-upload" data-ecl-file-upload-input="" id="import-file" name="file-upload-name" required="" onchange="importGraph(this)"/>     
+                  <label class="ecl-file-upload__button-container" for="import-file">
                     <span class="ecl-file-upload__button ecl-button ecl-button--primary" data-ecl-file-upload-button="" data-ecl-file-upload-label-choose="Choose file" data-ecl-file-upload-label-replace="Replace file">Choose file</span>
                   </label>
                   <ul class="ecl-file-upload__list" data-ecl-file-upload-list=""></ul>
@@ -525,6 +525,24 @@
             </div>
       
           </div>
+          <div id="no-graphs-message" class="z-50" style="display:none;">
+            <div class="ecl-message ecl-message--warning" data-ecl-message="" role="alert" data-ecl-auto-init="Message"><svg
+              class="ecl-icon ecl-icon--l ecl-message__icon" focusable="false" aria-hidden="true">
+              <use xlink:href="/images/icons.svg#notifications--warning"></use>
+            </svg>
+            <div class="ecl-message__content"><button class="ecl-button ecl-button--ghost ecl-message__close" type="button"
+                data-ecl-message-close=""><span class="ecl-button__container"><span class="ecl-button__label"
+                    data-ecl-label="true">Close</span><svg class="ecl-icon ecl-icon--xs ecl-button__icon ecl-button__icon--after"
+                    focusable="false" aria-hidden="true" data-ecl-icon="">
+                    <use xlink:href="/images/icons.svg#notifications--warning"></use>
+                  </svg></span></button>
+              <div class="ecl-message__title">Warning message</div>
+              <div class="ecl-message__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam accumsan
+                semper lorem, ac mollis lacus tincidunt eu. Duis scelerisque diam eu tempus fringilla.</div>
+            </div>
+          </div>
+          </div>
+          
           <div class="ecl-spinner ecl-spinner--primary ecl-spinner--medium ecl-spinner--centered ecl-spinner--visible" id="spin"><svg
             class="ecl-spinner__loader" viewBox="25 25 50 50">
             <circle class="ecl-spinner__circle" cx="50" cy="50" r="20" fill="none" stroke-width="4px" stroke-miterlimit="10"

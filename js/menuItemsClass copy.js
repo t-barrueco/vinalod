@@ -196,7 +196,6 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
 MenuItemsExpert.prototype.getMenuItemsInPopup=async function (){
   var mi=this;
   var modal;
-  //$(".graph").remove()
 
   $("#modal3-content form").remove()
 
