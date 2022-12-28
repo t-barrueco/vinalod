@@ -1,5 +1,6 @@
-MenuItems = function (_node) {
+MenuItems = function (_node,_position) {
     this.node=_node
+    this.position=_position
   };
 
 MenuItems.prototype.init = async function () {
@@ -46,6 +47,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
     var elementMenu,position,width
     mi.menuItems=[]
 
+    //console.log(mi.selectedRows)
     for (var i = 0; i < mi.selectedRows.length; i++) {
         elementMenu=mi.detailsMenuItemsInGraph(i)
         mi.menuItems.push(elementMenu)
@@ -56,7 +58,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
       mi.menuItems.push(elementMenu)
     }
     if(mi.node["class"]=="free"){
-        width=500
+        width=600
     }else{
         width=350
     }
@@ -97,6 +99,21 @@ MenuItems.prototype.update = async function (node) {
     await mi.init()
   }
 
+MenuItems.prototype.collapsedBranchMenuItemsInGraph=function (){
+  var mi=this;
+  let nodeTreeData=linkedDataGraph.treeData.filter(d=>d.id==mi.node.id)
+  if((nodeTreeData.length>0)&&(nodeTreeData[0]._children)){
+    elementMenu={
+      title: configRow.option,
+      action: async (data,d) => {
+          networkGraph.expandBranch(data)
+      }
+      }
+    return elementMenu
+  }
+  return -1
+}
+
 function MenuItemsExpert(...args){
   MenuItems.apply(this, args);
   }
@@ -105,9 +122,10 @@ MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
   var mi=this,option;
+  console.log(mi.node["position"])
   configFileExpert.option.forEach(option => {
     let position = option.match("and Position: (.*)")[1];
-    if((!mi.node["subject-object"])||(position==mi.node["subject-object"])){
+    if((!mi.node["position"])||(position==mi.node["position"])){
       mi.indexRows.push(new OptionNodeExpert(option,mi.node))
     }
   })  
@@ -126,9 +144,13 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
       let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
       let position = d.title.match("and Position: (.*)")[1];
       let selectedRow=mi.selectedRows.filter(s=>(s.position==position&&s.endpoint_url==url))[0]
-      form = { "url": url, "uri": selectedRow.node.uri, "position": position,"query":selectedRow.query}
-      setMenuOption(data,d.title)
+/*       form = { "url": url, "uri": selectedRow.node.uri, "position": position,"query":selectedRow.query}
+      //console.log(data)
+      //console.log(d)
+      //console.log("entra por details menu in graph")
       checkGraphExpert(form,data)
+      setMenuOption(data,d.title) */
+      checkGraphExpert(selectedRow,node)
       }
   }
   return elementMenu
@@ -147,7 +169,7 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
 
   modal = document.getElementById("myModal3")
   modal.style.display = "block";
-  $("#graph-area").removeClass("hidden")
+  showGraphArea()
   $('#myModal3').resizable({
 
   });
@@ -203,25 +225,10 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {
         setMenuOption(data,d.title)
-        checkGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
+        addBasicGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
     }
     }
   return elementMenu
-}
-
-MenuItemsBasic.prototype.collapsedBranchMenuItemsInGraph=function (){
-  var mi=this;
-  let nodeTreeData=linkedDataGraph.treeData.filter(d=>d.id==mi.node.id)
-  if((nodeTreeData.length>0)&&(nodeTreeData[0]._children)){
-    elementMenu={
-      title: configRow.option,
-      action: async (data,d) => {
-          networkGraph.expandBranch(data)
-      }
-      }
-    return elementMenu
-  }
-  return -1
 }
 
 MenuItemsBasic.prototype.getMenuItemsInTable = async function (){

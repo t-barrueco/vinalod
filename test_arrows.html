@@ -1,0 +1,83 @@
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>VINALOD</title>
+
+  <meta content="width=device-width,initial-scale=1" name="viewport" />
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+    <style>
+      .kge-search-picker {
+        width: 500;
+      }
+    input[type=range]::-webkit-slider-thumb {
+      pointer-events: all;
+      width: 24px;
+      height: 24px;
+      -webkit-appearance: none;
+    /* @apply w-6 h-6 appearance-none pointer-events-auto; */
+    }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+  
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="dist/styles.css">
+   <!-- D3 Tooltip CSS -->
+  <link rel="stylesheet" href="css/d3-tip.css">
+  <link
+    rel="stylesheet"
+    href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/optional/ecl-ec-default.css"
+    integrity="sha256-WK5hy3Ceb1aNnKy15Bp5KW+CVYBmHb4hmJ1Pdt3TbIM="
+    crossorigin="anonymous"
+    media="screen"
+  />
+  <link
+  rel="stylesheet"
+  href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/optional/ecl-reset.css"
+  integrity="sha256-UVESELfX0pvRysLCqyLCIEQDAc65AXBPfES9hWP/fgM="
+  crossorigin="anonymous"
+  media="screen"
+  />
+  <link
+  rel="stylesheet"
+  href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/ecl-ec.css"
+  integrity="sha256-VLpAKlo85TEtUcWazHxBoDZavge0QuMsrU3jE64Na1k="
+  crossorigin="anonymous"
+  media="screen"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.4.2/ec/styles/ecl-ec-print.css"
+    integrity="sha256-QzATuL8r4ZY0kLFaAkxMmX4VIL2KxvSS0aG74lG5fsQ=""
+    crossorigin="anonymous"
+    media="print"
+  />
+  <script>
+    var cl = document.querySelector('html').classList;
+    cl.remove('no-js');
+    cl.add('has-js');
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://d3js.org/d3-color.v2.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script type="text/javascript" src="jslib/d3-tip.js"></script>
+  
+  <script src="https://gisco-services.ec.europa.eu/distribution/v2/nuts/distribution/BE-region-03m-4326-2016.geojson"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
+   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="jslib/moment.min.js"></script>
+   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.752.0.min.js">
+  </script>
+
+</head>
+<body>
+    <div id="graph">
+        
+    </div>
+    <script src="test_arrows.js"></script>
+</body>
+</html>

@@ -27,7 +27,12 @@ function genRandomString(){
   }
   return s; 
 }
-
+function showMessageForNoGraphs(){
+  $("#no-graphs-message").show()
+  component=$("#no-graphs-message")[0]
+  runAutoInit(component)
+  //console.log(ECL.autoInit())
+}
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;
@@ -36,7 +41,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
     Items=[{
       option: 'Download data',
       position: 1,
-      action:"downloadData(node)"
+      action:"downloadData()"
     },{
       option: 'Download SPARQL query',
       position: 2,
@@ -58,7 +63,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         position:1,
         action: (d) => {
           // TODO: add any action you want to perform
-          downloadData(d)
+          downloadData()
         }
       },
       {
@@ -103,7 +108,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
-  ////////console.log(query)
+  //////////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -428,6 +433,7 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
+      console.log(arr)
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -435,11 +441,14 @@ function autocomplete(inp, arr,numParentNodes) {
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
           b.setAttribute("class", "cursor-pointer");
-          b.innerHTML = arr[i].toUpperCase().substr(0,arr[i].toUpperCase().indexOf(val.toUpperCase()));
+/*           b.innerHTML = arr[i].toUpperCase().substr(0,arr[i].toUpperCase().indexOf(val.toUpperCase()));
           b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
-          b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length);
+          b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length); */
+          b.innerHTML = arr[i].substr(0,arr[i].indexOf(val));
+          b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          //////////////console.log(arr[i])
+          ////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -533,7 +542,7 @@ function closeAllLists(elmnt) {
 //function used in autocomplete to add value selected to the navigation panel.
 function autocompleteValSelected(el){
   if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
-    navigation.valueSelected()
+    navigationPanel.valueSelected()
   }
 }
 function getCommentOption(option){
@@ -597,6 +606,11 @@ function textImageZoom(zoomScale){
     .attr('opacity', function(d) {
                 return 0;
               })
+    d3.selectAll(".nodeCircleMnemo")
+    .transition()
+    .attr('opacity', function(d) {
+                return 0;
+              })
     //}
     d3.selectAll(".nodeCircleText")
     .transition()
@@ -605,6 +619,12 @@ function textImageZoom(zoomScale){
               })
   }else{
     d3.selectAll(".nodeCircleImage")
+    .transition()
+    .attr('opacity', function(d) {
+                return 1;
+              })
+
+    d3.selectAll(".nodeCircleMnemo")
     .transition()
     .attr('opacity', function(d) {
                 return 1;
@@ -774,11 +794,36 @@ function addTooltip(htmlData){
   .style("left",x+50)
 }
 function showBasicGraph(){
-  $("#graph-area").removeClass("hidden")
-  $("#form-container").addClass("hidden")
-  $("#landing-img").addClass("hidden")
-  $("#landing-text").addClass("hidden")
+  showGraphArea()
+  hideExpertForm()
+/*   $("#landing-img").addClass("hidden")
+  hideLandingText() */
 }
+function collectionOptionsVisible(){
+  $("#collections-div").removeClass("hidden")
+}
+function collectionOptionsNotVisible(){
+  $("#collections-div").addClass("hidden")
+}
+function openNavigationPanel(){
+  $("#myModal").removeClass("translate-x-full")
+  $("#myModal").addClass("translate-x-0")
+  //ECL.autoInit();
+}
+function closeNavigationPanel(){
+  $("#myModal").addClass("translate-x-full")
+  $("#myModal").removeClass("translate-x-0")
+}
+
+function removeColorsFromLegend(){
+  d3.selectAll("#legend li").remove()
+}
+/* function showLandingText(){
+  $("#landing-text").removeClass("hidden")
+}
+function hideLandingText(){
+  $("#landing-text").addClass("hidden")
+} */
 function fromSelectToAskQuery(query){
   var mySubString;
   if(query.toLowerCase().indexOf("where")!=-1){
@@ -833,18 +878,18 @@ function changeDateFormat(date){
 }
 
 function formatDate(str){
-  ////console.log(str)
+  //////console.log(str)
   const [day, month, year] = str.split('-');
-/*   ////////console.log(day)
-  ////////console.log(month)
-  ////////console.log(year) */
+/*   //////////console.log(day)
+  //////////console.log(month)
+  //////////console.log(year) */
   const date = new Date(+year, +month - 1, +day);
-  //////////console.log(date)
+  ////////////console.log(date)
   return new Date(date)
 }
 
 function formatDateComp(str){
-  ////console.log(str)
+  //////console.log(str)
   return formatDate(str).getTime()
 }
 function formatDateShow(str){
@@ -857,25 +902,25 @@ function ECLdestroy(component){
   //let eclComponent=window.ECL.components.filter(d=>d.element==component)
   let index=window.ECL.components.findIndex(d=>d.element==component)
   let eclComponent=window.ECL.components[index]
-  //console.log(index)
-  //console.log(eclComponent)
-  //console.log(eclComponent.length)
-  //console.log(window.ECL.components)
+  ////console.log(index)
+  ////console.log(eclComponent)
+  ////console.log(eclComponent.length)
+  ////console.log(window.ECL.components)
   if(index!=-1){
-    console.log("entra")
+    //console.log("entra")
     eclComponent.destroy()
     window.ECL.components.splice(index, 1);
   }
-  //console.log(window.ECL.components)
+  ////console.log(window.ECL.components)
 }
 function ECLupdate(component){
   let eclComponent=window.ECL.components.filter(d=>d.element==component)
   if(eclComponent.length>0){
-    //////console.log(Object.getOwnPropertyNames(eclComponent[0]))
-    //////console.log(eclComponent[0].format)
-    //////console.log(eclComponent[0].element)
+    ////////console.log(Object.getOwnPropertyNames(eclComponent[0]))
+    ////////console.log(eclComponent[0].format)
+    ////////console.log(eclComponent[0].element)
     //$('#my-datepicker').datepicker('update');
-    //////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
+    ////////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
     eclComponent[0].update()
   }
 }
@@ -887,20 +932,20 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-  console.log(dateStr)
-  console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
+  //console.log(dateStr)
+  //console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 
 function addOptionsSelect(selectField,valuesFilter,multiple){
-  if(valuesFilter.length>1){
+  if((valuesFilter.length>1)&&(!multiple)){
     valuesFilter.unshift("All")
   }
-  //////console.log(selectField)
+  ////////console.log(selectField)
   addHtmlOptionsSelect(selectField,valuesFilter,multiple)
 }
 function addHtmlOptionsSelect(selectField,values,multiple){
-  //////console.log(selectField)
+  ////////console.log(selectField)
   for (let i = 0; i < values.length; i++) {
     var option = document.createElement("option");
     option.value = values[i];
@@ -918,6 +963,13 @@ function getModalContent(){
   return document.getElementById("modal-content2")
 }
 
+function getNavPanelVisibility(){
+  if($( "#myModal" ).hasClass( "translate-x-0" )){
+    return true;
+  }else{
+    return false;
+  }
+}
 function modalVisibilityOn(){
   if($("#modal-content2 #modalGraph")){
     $("#modal-content2 #modalGraph").remove()
@@ -939,10 +991,23 @@ function showNavContentTable(){
 function hideNavContentTable(){
   $("#dvTable").hide()
 }
+
+function showSearchNavContent(){
+  $("#search-nav-content").show()
+}
+function hideSearchNavContent(){
+  $("#search-nav-content").hide()
+}
+function showExpertForm(){
+  $("#form-container").show()
+}
+function hideExpertForm(){
+  $("#form-container").hide()
+}
 function showNavDetails(){
-  //console.log("entra en NavDetails")
+  ////console.log("entra en NavDetails")
   $("#dvDetails").show()
-  //console.log(ECL.autoInit())
+  ////console.log(ECL.autoInit())
 }
 function hideNavDetails(){
   $("#dvDetails").hide()
@@ -955,6 +1020,12 @@ function showNavContentTablePagination(){
 }
 function hideNavContentTablePagination(){
   $("#div-pagination").hide()
+}
+function removeGraph(){
+  $(".graph").remove() 
+}
+function removePreviousFilters(){
+  $("#accordion-filters").empty()
 }
 function getNodeFromTableRow(element){
   const parent = element.parentElement.closest('tr');
@@ -979,13 +1050,133 @@ function findAncestorWithClass(el, cls) {
 }
 function runAutoInit(component){
   if(component){
-    ////console.log(component.getAttribute("id"))
-    ////console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
+    //////console.log(component.getAttribute("id"))
+    //////console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
     //eclComponents.filter(e=>e.element.id==component.getAttribute("id"))[0].destroy()
     ECLdestroy(component)
   }
   let autoInit=ECL.autoInit()
   //console.log(autoInit)
   
-  //console.log(window.ECL.components)
+  ////console.log(window.ECL.components)
+}
+
+function hideElements(){
+  //$("#filters").addClass("hidden")
+/*   $("#filters").hide()
+ */
+  filtersNotVisible()
+  removePreviousFilters()
+/*   d3.selectAll(".classFilter").remove()
+  $("#filters .ecl-accordion__item").remove()
+ */
+  hideExpertForm()
+  removeGraph()
+  //$("#networkGraph-svg").remove()  
+
+  closeNavigationPanel()
+  deleteTooltip()
+/*   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
+  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1") */
+
+  //landingPageNotVisible()
+  hidePageCollection()
+  showGraphArea()
+  //document.getElementById("filters").classList.add("hidden")
+}
+/* function landingPageNotVisible(){
+  $('#landing-page'). hide();
+} */
+
+//change tab in main menu
+function changeTab(tab){ 
+  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
+  $("#content-main-tabs .content-item").addClass("hidden")
+  tab.classList.add("ecl-tabs__link--active");
+  tab.setAttribute("aria-selected", "true")
+  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
+}
+function showPageCollection(){
+  $('#dataviz-collection').show();
+}
+function hidePageCollection(){
+  $('#dataviz-collection').hide();
+}
+function showGraphArea(){
+  $('#graph-area').removeClass("hidden")
+}
+function removeOptionsCollections(){
+  $('#dataviz-collection article').remove()
+}
+function hideGraphArea(){
+  $('#graph-area').addClass("hidden")
+}
+function filtersVisible(){
+  $("#filters").fadeIn( "slow")
+/*   $("#filters").fadeIn( "slow", function() {
+    //this.removeClass("hidden");
+    this.classList.remove("hidden")
+  }); */
+}
+
+function filtersNotVisible(){
+  $("#filters").fadeOut( "slow")
+  //$("#filters").addClass("hidden").fadeToggle("slow");
+  /* if(!$("#filters").hasClass( "hidden")){
+    $("#filters").fadeToggle( "slow", function() {
+      this.addClass("hidden");
+    });
+  } */
+/*   $("#filters").fadeOut( "slow", function() {
+    ////console.log(this)
+    //this.addClass("hidden");
+    this.classList.add("hidden")
+  }); */
+}
+function getFilters(){
+  if(networkGraph.filterClassesObjects.length!=0){
+    //$("#filters").removeClass("hidden")
+    filtersVisible()
+  }else{
+    //$("#filters").addClass("hidden")
+    filtersNotVisible()
+  }
+}
+function fitSizeModal(node){
+  var classText;
+  let modal=document.getElementById("modal-content").parentNode
+  //console.log(document.getElementById("modal-content"))
+  //console.log(modal)
+  if(node.class=="more_results"){
+    let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
+    classText=linkedDataGraph.treeData[index]["class"]
+  }else{
+    classText=node.class
+  }
+  if(classText=="free"){
+    modal.classList.remove("max-w-md")
+    modal.classList.add("max-w-4xl")
+  }else{
+    modal.classList.add("max-w-md")
+    modal.classList.remove("max-w-4xl")
+  }
+}
+function positionFullText(p){
+  if(p=="s"){
+    return "Subject"
+  }else if(p=="o"){
+    return "Object"
+  }
+}
+
+function getTooltipNode(tooltip,nodeClass){
+  var tooltipNode={}
+  if((tooltip!="")&&(tooltip!="None")){
+    tooltip.forEach(function(k){
+      if(k["property"].split("_")[0]==nodeClass){
+        tooltipNode[k["property"]]=k["tooltip_text"]
+      }
+    })
+  }
+  return tooltipNode
 }

@@ -215,3 +215,27 @@ div#networkgraph{
 .page span{
     display: inline-block;
   }
+
+/* button.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
+
+/* button.truncate{
+  white-space:normal !important;
+  word-wrap:break-word; 
+} */
+
+.filter-class {
+  overflow: hidden;
+}
+
+.filter-class-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+/*   width: calc(100% - 25px);
+ */
+}
