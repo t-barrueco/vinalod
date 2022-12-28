@@ -999,10 +999,11 @@ function hideSearchNavContent(){
   $("#search-nav-content").hide()
 }
 function showExpertForm(){
-  $("#form-container").show()
+  $("#form-container").removeClass("hidden")
 }
 function hideExpertForm(){
-  $("#form-container").hide()
+  //document.getElementById('form-container').style.visibility = 'hidden';
+  $("#form-container").addClass("hidden")
 }
 function showNavDetails(){
   ////console.log("entra en NavDetails")
@@ -1027,6 +1028,17 @@ function removeGraph(){
 function removePreviousFilters(){
   $("#accordion-filters").empty()
 }
+function hidePopupWindowExpert(){
+  $("#myModal3").hide()
+}
+function showPopupWindowExpert(){
+  $("#myModal3").show()
+  $('#myModal3').resizable({
+  });
+  $("#myModal3").draggable()
+}
+
+
 function getNodeFromTableRow(element){
   const parent = element.parentElement.closest('tr');
   const node=get_node_from_element(parent.id.replace("_row",""))
