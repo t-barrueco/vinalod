@@ -999,11 +999,13 @@ function hideSearchNavContent(){
   $("#search-nav-content").hide()
 }
 function showExpertForm(){
-  $("#form-container").removeClass("hidden")
+  //$("#form-container").removeClass("hidden")
+  $("#form-container form").show()
 }
 function hideExpertForm(){
   //document.getElementById('form-container').style.visibility = 'hidden';
-  $("#form-container").addClass("hidden")
+  //$("#form-container").addClass("hidden")
+  $("#form-container form").hide()
 }
 function showNavDetails(){
   ////console.log("entra en NavDetails")
