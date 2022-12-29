@@ -271,6 +271,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
     recurse(r);
   })
 
+  console.log(ldg.treeDataFiltered)
   function checkHidden(node){
     var check;
     if(node.class!="free"){
@@ -278,6 +279,8 @@ LinkedDataGraph.prototype.filter = function(filterId){
     }else{
       check=checkFilterExpert(node)
     }
+    console.log(node.value)
+    console.log(check)
     if(check){
       node.hidden=true
       node.filter=true
@@ -290,7 +293,6 @@ LinkedDataGraph.prototype.filter = function(filterId){
 
   function checkFilter(node){
     var hidden=false;
-    //////////////////console.log(node)
     let filterClass=networkGraph.filterClassesObjects.filter(function(f){
       return f.name==node.class
     })
@@ -303,27 +305,39 @@ LinkedDataGraph.prototype.filter = function(filterId){
     return hidden
   }
   function checkFilterExpert(node){
-    var hidden=false;
-    //////////////////console.log(node)
+    var hidden=false,className;
+    let index=networkGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id == node.id))
+    if(index!=-1){
+      className=noPunctuationStr(networkGraph.treeData[index]["value"])
+      let filterClass=networkGraph.filterClassesObjects.filter(function(f){
+        return f.internalName==className
+      })
+      if(filterClass.length>0){
+        hidden=filterClass[0].checkConditionNode(node)
+      }
+    }
+    /* console.log(node)
     let index=networkGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id == node.id))
     //if(networkGraph.filter((element) => element.children.some((subElement) => subElement.id === node.id)).length>0){
     //////////////////console.log(networkGraph.treeData)
-    //////////////////console.log(index)
+    console.log(index)
     if(index!=-1){
-      let className=networkGraph.treeData[index]["value"].replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
+      let className=noPunctuationStr(networkGraph.treeData[index]["value"])
+      console.log(className)
       //////////////////console.log(networkGraph.data.links)
       //////////////////console.log(networkGraph.treeData[index])
       let filterClass=networkGraph.filterClassesObjects.filter(function(f){
         return f.internalName==className
       })
-      ////////////////console.log(filterClass)
+      console.log(filterClass)
+      console.log(filterId)
       if(filterClass.length>0){
         hidden=filterClass[0].checkConditionNode(node,filterId)
         ////////////////console.log(node.value)
         ////////////////console.log(hidden)
       }
-    }
-
+    } */
+    console.log(node)
     //////////////////////console.log(hidden)
     return hidden
   }

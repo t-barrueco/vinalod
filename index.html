@@ -74,7 +74,7 @@
       </script>
 
     </head>
-    <body onload="dataViz()">
+    <body>
       <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header">
         <div class="ecl-site-header__container ecl-container">
           <div class="ecl-site-header__top">
@@ -368,9 +368,9 @@
                         <nav class="ecl-tabs" data-ecl-tabs="true" data-ecl-auto-init="Tabs">
                           <div class="ecl-tabs__container">
                             <ul class="ecl-tabs__list" role="tablist">
-                              <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="selectTab(this,'detailsLink');" id="parentNodesLink">From</a></li>
-                              <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="selectTab(this,'detailsLink');" id="childNodesLink">Children</a></li>
-                              <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="selectTab(this,'childNodesLink');" id="detailsLink">Details</a></li>
+                              <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="selectTabNavPanel(this,'detailsLink');" id="parentNodesLink">From</a></li>
+                              <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="selectTabNavPanel(this,'detailsLink');" id="childNodesLink">Children</a></li>
+                              <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="selectTabNavPanel(this,'childNodesLink');" id="detailsLink">Details</a></li>
                               <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation"><button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button" tabindex="-1"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">More (%d)</span><svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
                                       <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
                                     </svg></span></button></li>

@@ -5,6 +5,8 @@
 *    AUTOCOMPLETE https://www.w3schools.com/howto/howto_js_autocomplete.asp
 *    created by Teresa Barrueco
 */
+
+//set option chosen from menu
 function setMenuOption(node,option){
   if((configFile.file.filter(d=>d.option==option).length==0)||(configFile.file.filter(d=>d.option==option)[0]["type"]=="TREE")){
     if(node.menuOption){
@@ -13,10 +15,6 @@ function setMenuOption(node,option){
       node.menuOption=option
     }
   }
-}
-function get_unique_values_arrays(arr1,arr2){
-  arr1=arr1.concat(arr2)
-  return [...new Set(arr1)];
 }
 
 // Generate random string for ids
@@ -31,7 +29,7 @@ function showMessageForNoGraphs(){
   $("#no-graphs-message").show()
   component=$("#no-graphs-message")[0]
   runAutoInit(component)
-  //console.log(ECL.autoInit())
+  ////console.log(ECL.autoInit())
 }
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
@@ -55,6 +53,21 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         action:"checkBasicGraph(node)"
       })
     }
+    if((networkGraph.treeData.filter(n=>n.id==node.id).length>0)&&(networkGraph.treeData.filter(n=>n.id==node.id))[0]["children"]){
+      Items.push({
+        option: 'Collapse Branch',
+        position: 4,
+        action: "networkGraph.collapseBranch(node)"
+      })
+    }
+    if((networkGraph.treeData.filter(n=>n.id==node.id).length>0)&&(networkGraph.treeData.filter(n=>n.id==node.id))[0]["_children"]){
+      Items.push({
+        option: 'Expand Branch',
+        position: 5,
+        action:"networkGraph.expandBranch(node)"
+      })
+    }
+    
   }else{
     //if right click on bubble get all options in a format for bubble
     Items = [
@@ -85,6 +98,30 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         }
       })
     }
+    if((networkGraph.treeData.filter(n=>n.id==node.id).length>0)&&(networkGraph.treeData.filter(n=>n.id==node.id))[0]["children"]){
+      Items.push({
+        title: 'Collapse Branch',
+        position: 4,
+        action: (d) => {
+          // TODO: add any action you want to perform
+          //checkBasicGraph(d)
+          //console.log(d)
+          networkGraph.collapseBranch(d)
+        }
+      })
+    }
+    if((networkGraph.treeData.filter(n=>n.id==node.id).length>0)&&(networkGraph.treeData.filter(n=>n.id==node.id))[0]["_children"]){
+      Items.push({
+        title: 'Expand Branch',
+        position: 5,
+        action: (d) => {
+          // TODO: add any action you want to perform
+          //checkBasicGraph(d)
+          //console.log(d)
+          networkGraph.expandBranch(d)
+        }
+      })
+    }
   }
 
     //add a different menu if clicking from table or bubble
@@ -104,11 +141,13 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
       networkGraph.menuFactory(pageX, pageY , Items, node,"contextMenu",250);
     }  
 }
-
+/****************************************************
+************SPARQL QUERY FUNCTIONS**************
+*****************************************************/
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
-  //////////console.log(query)
+  ////////////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -132,15 +171,69 @@ async function runSparlqQuery(url,query,type){
     return _data
   })
 }
+function fromSelectToAskQuery(query){
+  var mySubString;
+  if(query.toLowerCase().indexOf("where")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("where") - 1 
+    );
+    query=query.replace(mySubString,"ASK")
+    if(query.toLowerCase().indexOf("select")!=-1){
+      mySubString = query.substring(
+        query.toLowerCase().indexOf("select"), 
+        query.toLowerCase().lastIndexOf("where") + 5 
+      );
+      query=query.replace(mySubString,"")
+    }
+  }else{
+    mySubString = query.substring(
+      query.toLowerCase().indexOf("select"), 
+      query.toLowerCase().indexOf("{") - 1 
+    );
+    query=query.replace(mySubString,"ASK")
+  }
+  
+  if(query.toLowerCase().lastIndexOf("group by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("group by"), 
+      query.length - 1 
+    );
+    query=query.replace(mySubString,"")
+  }
 
- //function that return node in the treeMap if founded
- function findNodeTreemap(nodeId,treeData){
-   var founded=treeData.filter(function(item) {
-     return item.id == nodeId
-   })
-   return founded
- }
+  if(query.toLowerCase().lastIndexOf("order by")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("order by"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
 
+  if(query.toLowerCase().lastIndexOf("limit")!=-1){
+    mySubString = query.substring(
+      query.toLowerCase().lastIndexOf("limit"), 
+      query.length 
+    );
+    query=query.replace(mySubString,"")
+  }
+  return query
+}
+function replaceParmtrsQuery(query,parameters,node){
+  var query;
+  if(node!=undefined){
+      if((parameters!="")&&(parameters!=null)){
+          for (let i = 0; i < parameters.length; ++i) { 
+              query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
+          } 
+      }
+      query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]);    
+  }
+  return query
+}
+/****************************************************
+************FUNCTIONS FOR TOOLTIPS**************
+*****************************************************/
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
@@ -414,6 +507,9 @@ function getTooltipMenu(d){
 }
 // Add to legend
 
+/****************************************************
+************AUTOCOMPLET FOR TEXT FIELD**************
+*****************************************************/
 
 //function to autocomplete in search field
 function autocomplete(inp, arr,numParentNodes) {
@@ -433,7 +529,7 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
-      console.log(arr)
+      //console.log(arr)
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -448,7 +544,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
           b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          ////////////////console.log(arr[i])
+          //////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -545,6 +641,8 @@ function autocompleteValSelected(el){
     navigationPanel.valueSelected()
   }
 }
+
+
 function getCommentOption(option){
   return configFile.file.filter(d=>d.option==option)[0]["option_text"]
 }
@@ -598,6 +696,7 @@ function propertyUriImage(node){
   }
   return propertyUri
 }
+
 //function for transition from bubble image to text in bubbles when zoom in and zoom out
 function textImageZoom(zoomScale){
   if(zoomScale>1.5){
@@ -637,20 +736,6 @@ function textImageZoom(zoomScale){
               })
   }
 }
-//select tab from navigation panel. Show children or show detail for node
-function selectTab(element,otherText){
-  var otherEl;
-  element.classList.add("ecl-tabs__link--active")
-
-  if(element.getAttribute("id")=="detailsLink"){
-    document.getElementById("childNodesLink").classList.remove("ecl-tabs__link--active")
-    navigationPanel.showDetails()
-  }else{
-    document.getElementById("detailsLink").classList.remove("ecl-tabs__link--active")
-    navigationPanel.contentTable()
-  }
-  
-}
 
 //Save detail properties in node. When click on detail tab, the detail will shown
 //based on structure
@@ -670,43 +755,6 @@ function getDetail(detail,nodeClass){
   return detailNode;
 }
 
-//change networkgraph type of visualization
-//with this function we have unique bubbles per value and all links will point to
-//the same bubble
-function nestedNodes(el){
-  if(el.classList.contains("bg-gray-200")){
-    el.classList.remove("bg-gray-200")
-    el.classList.add("bg-blue-600")
-    const span=el.querySelector("span")
-    span.classList.remove("translate-x-0")
-    span.classList.add("translate-x-5")
-    
-    networkGraph.data=treeDataNestedNodes().flatData
-    networkGraph.initializeSimulation();
-    networkGraph.dataJoinGraph()
-    networkGraph.enterGraph()
-    networkGraph.initializeSimulation();
-    networkGraph.dataJoinGraph()
-    networkGraph.exitGraph()
-  }else{
-    el.classList.remove("bg-blue-600")
-    el.classList.add("bg-gray-200")
-    const span=el.querySelector("span")
-    span.classList.remove("translate-x-5")
-    span.classList.add("translate-x-0")
-
-    networkGraph.data=flatten_v2(networkGraph.treeData).flatData
-    networkGraph.initializeSimulation();
-    networkGraph.dataJoinGraph()
-    networkGraph.enterGraph()
-    networkGraph.initializeSimulation();
-    networkGraph.dataJoinGraph()
-    networkGraph.exitGraph()
-  }  
-}
-function highlightLinkedNodes(node){
-  deselectNodes()
-}
 function highlightTargetNodes(node){
   let dataHighlight=selectTargetNodes(node)
   deselectNodesAndLinks()
@@ -725,18 +773,7 @@ function selectTargetNodes(node){
   })
   return {nodes:targetNodes,links:targetLinks};
 }
-function selectSourceNodes(node){
-  var sourceNodes=[],sourceLinks=[]
 
-  let sources=networkGraph.data.links.filter(function(item) {
-    return item.target.id == node.id
-  })
-  sources.forEach(function (d){
-    sourceLinks.push(d.id)
-    sourceNodes.push(d.target.id)
-  })
-  return {nodes:sourceNodes,links:sourceLinks};
-}
 function highlightLinks(links){
   const even = d3.selectAll(".link").filter(function(d){
     return links.includes(d.id)
@@ -793,137 +830,31 @@ function addTooltip(htmlData){
   .style("top",y+50)
   .style("left",x+50)
 }
-function showBasicGraph(){
-  showGraphArea()
-  hideExpertForm()
-/*   $("#landing-img").addClass("hidden")
-  hideLandingText() */
-}
-function collectionOptionsVisible(){
-  $("#collections-div").removeClass("hidden")
-}
-function collectionOptionsNotVisible(){
-  $("#collections-div").addClass("hidden")
-}
-function openNavigationPanel(){
-  $("#myModal").removeClass("translate-x-full")
-  $("#myModal").addClass("translate-x-0")
-  //ECL.autoInit();
-}
-function closeNavigationPanel(){
-  $("#myModal").addClass("translate-x-full")
-  $("#myModal").removeClass("translate-x-0")
-}
 
-function removeColorsFromLegend(){
-  d3.selectAll("#legend li").remove()
-}
-/* function showLandingText(){
-  $("#landing-text").removeClass("hidden")
-}
-function hideLandingText(){
-  $("#landing-text").addClass("hidden")
-} */
-function fromSelectToAskQuery(query){
-  var mySubString;
-  if(query.toLowerCase().indexOf("where")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().indexOf("where") - 1 
-    );
-    query=query.replace(mySubString,"ASK")
-    if(query.toLowerCase().indexOf("select")!=-1){
-      mySubString = query.substring(
-        query.toLowerCase().indexOf("select"), 
-        query.toLowerCase().lastIndexOf("where") + 5 
-      );
-      query=query.replace(mySubString,"")
-    }
-  }else{
-    mySubString = query.substring(
-      query.toLowerCase().indexOf("select"), 
-      query.toLowerCase().indexOf("{") - 1 
-    );
-    query=query.replace(mySubString,"ASK")
-  }
-  
-  if(query.toLowerCase().lastIndexOf("group by")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("group by"), 
-      query.length - 1 
-    );
-    query=query.replace(mySubString,"")
-  }
-
-  if(query.toLowerCase().lastIndexOf("order by")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("order by"), 
-      query.length 
-    );
-    query=query.replace(mySubString,"")
-  }
-
-  if(query.toLowerCase().lastIndexOf("limit")!=-1){
-    mySubString = query.substring(
-      query.toLowerCase().lastIndexOf("limit"), 
-      query.length 
-    );
-    query=query.replace(mySubString,"")
-  }
-  return query
-}
+/***************************************
+************DATE FUNCTIONS**************
+****************************************/
 function changeDateFormat(date){
   let prevFormat=new Date(date)
   return (prevFormat.getDate()+"-"+(prevFormat.getMonth()+1)+"-"+prevFormat.getFullYear())
 }
 
 function formatDate(str){
-  //////console.log(str)
   const [day, month, year] = str.split('-');
-/*   //////////console.log(day)
-  //////////console.log(month)
-  //////////console.log(year) */
   const date = new Date(+year, +month - 1, +day);
-  ////////////console.log(date)
   return new Date(date)
 }
 
 function formatDateComp(str){
-  //////console.log(str)
   return formatDate(str).getTime()
 }
+
 function formatDateShow(str){
   let day=("0" + formatDate(str).getDate()).slice(-2)
   let month=("0" + (formatDate(str).getMonth() + 1)).slice(-2)
   return day+"-"+month+"-"+formatDate(str).getFullYear()
 }
 
-function ECLdestroy(component){
-  //let eclComponent=window.ECL.components.filter(d=>d.element==component)
-  let index=window.ECL.components.findIndex(d=>d.element==component)
-  let eclComponent=window.ECL.components[index]
-  ////console.log(index)
-  ////console.log(eclComponent)
-  ////console.log(eclComponent.length)
-  ////console.log(window.ECL.components)
-  if(index!=-1){
-    //console.log("entra")
-    eclComponent.destroy()
-    window.ECL.components.splice(index, 1);
-  }
-  ////console.log(window.ECL.components)
-}
-function ECLupdate(component){
-  let eclComponent=window.ECL.components.filter(d=>d.element==component)
-  if(eclComponent.length>0){
-    ////////console.log(Object.getOwnPropertyNames(eclComponent[0]))
-    ////////console.log(eclComponent[0].format)
-    ////////console.log(eclComponent[0].element)
-    //$('#my-datepicker').datepicker('update');
-    ////////console.log(Object.getOwnPropertyNames(eclComponent[0].picker.update()))
-    eclComponent[0].update()
-  }
-}
 function dateValidFormat(dateStr) {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -932,36 +863,57 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-  //console.log(dateStr)
-  //console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
+  ////console.log(dateStr)
+  ////console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 
-function addOptionsSelect(selectField,valuesFilter,multiple){
-  if((valuesFilter.length>1)&&(!multiple)){
-    valuesFilter.unshift("All")
-  }
-  ////////console.log(selectField)
-  addHtmlOptionsSelect(selectField,valuesFilter,multiple)
-}
-function addHtmlOptionsSelect(selectField,values,multiple){
-  ////////console.log(selectField)
+function addHtmlOptionsSelect(selectField,values){
   for (let i = 0; i < values.length; i++) {
+    //console.log(values[i])
     var option = document.createElement("option");
     option.value = values[i];
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
     selectField.appendChild(option);
-    if(multiple){
+/*     if(multiple){
       option.selected = true; 
-    }
+    } */
+    //console.log(selectField)
   }
 }
+function addHtmlOptionsSelectMultiple(selectField,values){
+  for (let i = 0; i < values.length; i++) {
+    //console.log(values[i])
+    var option = document.createElement("option");
+    option.value = noPunctuationStr(values[i]);
+    option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
+    selectField.appendChild(option);
+/*     if(multiple){
+      option.selected = true; 
+    } */
+    //console.log(selectField)
+  }
+}
+function checkAddAll(values){
+  if(values.length>1){
+    return["All"].concat(values);
+  }else{
+    return values;
+  }
+}
+
+
+
 function getModalHeader(){
   return document.getElementById("modal-header2")
 }
 function getModalContent(){
   return document.getElementById("modal-content2")
 }
+
+/***************************************
+************VISIBILITY FUNCTIONS**************
+****************************************/
 
 function getNavPanelVisibility(){
   if($( "#myModal" ).hasClass( "translate-x-0" )){
@@ -970,6 +922,7 @@ function getNavPanelVisibility(){
     return false;
   }
 }
+
 function modalVisibilityOn(){
   if($("#modal-content2 #modalGraph")){
     $("#modal-content2 #modalGraph").remove()
@@ -999,18 +952,13 @@ function hideSearchNavContent(){
   $("#search-nav-content").hide()
 }
 function showExpertForm(){
-  //$("#form-container").removeClass("hidden")
   $("#form-container form").show()
 }
 function hideExpertForm(){
-  //document.getElementById('form-container').style.visibility = 'hidden';
-  //$("#form-container").addClass("hidden")
   $("#form-container form").hide()
 }
 function showNavDetails(){
-  ////console.log("entra en NavDetails")
   $("#dvDetails").show()
-  ////console.log(ECL.autoInit())
 }
 function hideNavDetails(){
   $("#dvDetails").hide()
@@ -1040,75 +988,16 @@ function showPopupWindowExpert(){
   $("#myModal3").draggable()
 }
 
-
-function getNodeFromTableRow(element){
-  const parent = element.parentElement.closest('tr');
-  const node=get_node_from_element(parent.id.replace("_row",""))
-  return node;
-}
-function replaceParmtrsQuery(query,parameters,node){
-  var query;
-  if(node!=undefined){
-      if((parameters!="")&&(parameters!=null)){
-          for (let i = 0; i < parameters.length; ++i) { 
-              query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
-          } 
-      }
-      query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]);    
-  }
-  return query
-}
-function findAncestorWithClass(el, cls) {
-  while ((el = el.parentElement) && !el.classList.contains(cls));
-  return el;
-}
-function runAutoInit(component){
-  if(component){
-    //////console.log(component.getAttribute("id"))
-    //////console.log(eclComponents.filter(e=>e.element.id==component.getAttribute("id")))
-    //eclComponents.filter(e=>e.element.id==component.getAttribute("id"))[0].destroy()
-    ECLdestroy(component)
-  }
-  let autoInit=ECL.autoInit()
-  //console.log(autoInit)
-  
-  ////console.log(window.ECL.components)
-}
-
 function hideElements(){
-  //$("#filters").addClass("hidden")
-/*   $("#filters").hide()
- */
   filtersNotVisible()
   removePreviousFilters()
-/*   d3.selectAll(".classFilter").remove()
-  $("#filters .ecl-accordion__item").remove()
- */
   hideExpertForm()
   removeGraph()
-  //$("#networkGraph-svg").remove()  
 
   closeNavigationPanel()
   deleteTooltip()
-/*   $("#flyoutMenu").removeClass("opacity-100 translate-y-0")
-  $("#flyoutMenu").addClass("hidden opacity-0 translate-y-1") */
-
-  //landingPageNotVisible()
   hidePageCollection()
   showGraphArea()
-  //document.getElementById("filters").classList.add("hidden")
-}
-/* function landingPageNotVisible(){
-  $('#landing-page'). hide();
-} */
-
-//change tab in main menu
-function changeTab(tab){ 
-  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
-  $("#content-main-tabs .content-item").addClass("hidden")
-  tab.classList.add("ecl-tabs__link--active");
-  tab.setAttribute("aria-selected", "true")
-  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
 }
 function showPageCollection(){
   $('#dataviz-collection').show();
@@ -1132,7 +1021,6 @@ function tabOptionsGraphVisible(){
   $('#share-graph-div').removeClass("hidden")
   $('#save-graph-div').removeClass("hidden")
 }
-
 function tabOptionsGraphNotVisible(){
   //$('#settings-tab').parent().addClass("hidden")
   $('#legend-tab').parent().addClass("hidden")
@@ -1147,51 +1035,79 @@ function showNavTabs(){
 function hideNavTabs(){
   $("#tabsNav").addClass("hidden")
 }
-
 function emptyNavigationPanel(){
   $("#nav-children-tbody").empty()
 }
-
 function removeSearchNavContent(){
   $("#search-nav-content").remove()
 }
 
-function filtersVisible(){
-  $("#filters").fadeIn( "slow")
-/*   $("#filters").fadeIn( "slow", function() {
-    //this.removeClass("hidden");
-    this.classList.remove("hidden")
-  }); */
-}
-
-function filtersNotVisible(){
-  $("#filters").fadeOut( "slow")
-  //$("#filters").addClass("hidden").fadeToggle("slow");
-  /* if(!$("#filters").hasClass( "hidden")){
-    $("#filters").fadeToggle( "slow", function() {
-      this.addClass("hidden");
-    });
-  } */
-/*   $("#filters").fadeOut( "slow", function() {
-    ////console.log(this)
-    //this.addClass("hidden");
-    this.classList.add("hidden")
-  }); */
-}
-function getFilters(){
+function getFiltersVisibility(){
   if(networkGraph.filterClassesObjects.length!=0){
-    //$("#filters").removeClass("hidden")
     filtersVisible()
   }else{
-    //$("#filters").addClass("hidden")
     filtersNotVisible()
   }
 }
+function filtersVisible(){
+  $("#filters").fadeIn( "slow")
+}
+function filtersNotVisible(){
+  $("#filters").fadeOut( "slow")
+}
+
+function collectionOptionsVisible(){
+  $("#collections-div").removeClass("hidden")
+}
+function collectionOptionsNotVisible(){
+  $("#collections-div").addClass("hidden")
+}
+
+function openNavigationPanel(){
+  $("#myModal").removeClass("translate-x-full")
+  $("#myModal").addClass("translate-x-0")
+}
+function closeNavigationPanel(){
+  $("#myModal").addClass("translate-x-full")
+  $("#myModal").removeClass("translate-x-0")
+}
+
+function removeColorsFromLegend(){
+  d3.selectAll("#legend li").remove()
+}
+/****************************************/
+
+function runAutoInit(component){
+  if(component){
+    ECLdestroy(component)
+  }
+  let autoInit=ECL.autoInit()
+  ////console.log(autoInit)
+}
+function ECLdestroy(component){
+  let index=window.ECL.components.findIndex(d=>d.element==component)
+  let eclComponent=window.ECL.components[index]
+
+  if(index!=-1){
+    eclComponent.destroy()
+    window.ECL.components.splice(index, 1);
+  }
+}
+
+//change tab in main menu
+function changeTab(tab){ 
+  $("#main-tabs .ecl-tabs__link--active").removeClass("ecl-tabs__link--active")
+  $("#content-main-tabs .content-item").addClass("hidden")
+  tab.classList.add("ecl-tabs__link--active");
+  tab.setAttribute("aria-selected", "true")
+  $("#content-main-tabs #"+tab.id.replace("-tab","-content")).removeClass("hidden")
+}
+
 function fitSizeModal(node){
   var classText;
   let modal=document.getElementById("modal-content").parentNode
-  //console.log(document.getElementById("modal-content"))
-  //console.log(modal)
+  ////console.log(document.getElementById("modal-content"))
+  ////console.log(modal)
   if(node.class=="more_results"){
     let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
     classText=linkedDataGraph.treeData[index]["class"]
@@ -1287,6 +1203,10 @@ function clickBubbleGraph(element) {
   openNavigationPanel()
 }
 
+/***************************************
+************NAVIGATION PANEL FUNCTIONS**************
+****************************************/
+
 async function clickMenuTable(row){
   navigationPanel.clickMenuTable(row)
 }
@@ -1294,4 +1214,28 @@ async function clickMenuTable(row){
 //click element in Navigation panel
 function clickElNavigationPanel(el){
   clickBubbleGraph(document.getElementById(el.id.replace("_a","")))
+}
+
+function getNodeFromTableRow(element){
+  const parent = element.parentElement.closest('tr');
+  const node=get_node_from_element(parent.id.replace("_row",""))
+  return node;
+}
+
+//select tab from navigation panel. Show children or show detail for node
+function selectTabNavPanel(element,otherText){
+  element.classList.add("ecl-tabs__link--active")
+
+  if(element.getAttribute("id")=="detailsLink"){
+    document.getElementById("childNodesLink").classList.remove("ecl-tabs__link--active")
+    navigationPanel.showDetails()
+  }else{
+    document.getElementById("detailsLink").classList.remove("ecl-tabs__link--active")
+    navigationPanel.contentTable()
+  }
+  
+}
+
+function noPunctuationStr(id){
+  return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_")
 }

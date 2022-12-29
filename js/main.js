@@ -7,8 +7,11 @@ var timer = 0;
 var delay = 400;
 var prevent = false;
 
-
-//this function will be execute when loading the page in <body> onload
+window.onload = (event) => {
+  console.log("page is fully loaded");
+  dataViz()
+};
+//this function will be execute when the page is fully loaded
 function dataViz(){
     //If a graph is shared the name of the graph will be added to the url
     //we get the graph name from the url
@@ -31,6 +34,7 @@ function dataViz(){
                     configFileExpert=new ConfigFileExpert(dataConfigExpert);
                     //get all uris with mnemonicCode. This code will be shown instead of icons
                     mnemonicCodes=await getMnemonicCodes(dataMnemonicCodes);
+                    console.log(mnemonicCodes)
                     //icons for bubbles in basic mode will be stored in filesIcons
                     filesIcons=dataIcons;
                     //if a graph name is added to the url we will show the graph shared
@@ -547,48 +551,47 @@ function getShowDuplicates(){
 
 function relatedFilters(element){
   var filter,filterId,id;
-  /* if (isLoading){
-    return
-  } */
-  ////////////console.log(loaded)
-  ////////////console.log(element.value)
-  //////console.log(element)
-  //////console.log(element.getAttribute("id"))
+  console.log("entra aquí")
 
   id=element.getAttribute("id").replace("_filter","")
   id=id.replace("_start","").replace("_end","")
 
   let filterClassName=id.split("_")[0]
-  //////console.log(filterClassName)
-  //////console.log(networkGraph.filterClassesObjects)
 
   let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.name==filterClassName)[0]
 
-  //////console.log(filterClass)
   if(filterClass){
     filter=filterClass.filters.filter((f)=>f.details.property==id)[0]
 
-    //////console.log(filter)
     filter.addValuesChanged(element)
     linkedDataGraph.filter(filterId)
     linkedDataGraph.flattenFiltered()
-    //////console.log(linkedDataGraph.treeDataFiltered)
     setValuesFilters(id)
   }
   
 }
 function relatedFiltersExpert(element){
   var filter,id;
-
+  console.log(element)
   id=element.getAttribute("id").replace(/(_type$)/, '')
   id=id.replace(/(_property$)/, '')
   id=id.replace(/(_value$)/, '')
+/*   console.log("relatedFiltersExpert")
+  console.log(networkGraph.filterClassesObjects)
+  console.log(element.closest(".ecl-form-group"))
+  console.log(element.closest(".ecl-accordion__content"))
+  console.log(element.closest(".ecl-form-group").querySelector("label").textContent) */
+/*   id=element.getAttribute("id").replace(/(_type$)/, '')
+  id=id.replace(/(_property$)/, '')
+  id=id.replace(/(_value$)/, '') */
 
-  let filterClassName=id
+  console.log(id)
+  //let filterClassName=element.closest(".ecl-accordion__content").getAttribute("id").replace("_filters","")
 
-  let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==filterClassName)[0]
+  let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==id)[0]
+  console.log(filterClass)
   if(filterClass){
-    filter=filterClass.filters.filter((f)=>f.id==element.getAttribute("id"))[0]
+    filter=filterClass.filters.filter((f)=>f.field==element.closest(".ecl-form-group").querySelector("label").textContent)[0]
     filter.addValuesChanged(element)
     linkedDataGraph.filter(filter.id)
     linkedDataGraph.flattenFiltered()
@@ -609,7 +612,6 @@ function applyFilters(){
 }
 
 function setValuesFilters(filterId){
-  ////////////console.log("function setValuesFilters")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.setValuesFilters(filterId)
   })

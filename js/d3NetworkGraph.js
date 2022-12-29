@@ -1734,7 +1734,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
         }
       }
     }
-    getFilters()
+    getFiltersVisibility()
     ////////////////////////////////////////console.log("en getfilters final")
 
   }
@@ -1817,7 +1817,7 @@ NetworkGraphExpert.prototype.getFilters = function () {
   const filterClass=new FilterClassExpert(configRow.node["uri"])
   filterClass.init()
   vis.filterClassesObjects.push(filterClass) 
-  getFilters()
+  getFiltersVisibility()
 }
 function setForcesGraph(){
   forces = {
