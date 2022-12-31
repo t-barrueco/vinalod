@@ -8,7 +8,7 @@ var delay = 400;
 var prevent = false;
 
 window.onload = (event) => {
-  console.log("page is fully loaded");
+  //console.log("page is fully loaded");
   dataViz()
 };
 //this function will be execute when the page is fully loaded
@@ -34,7 +34,7 @@ function dataViz(){
                     configFileExpert=new ConfigFileExpert(dataConfigExpert);
                     //get all uris with mnemonicCode. This code will be shown instead of icons
                     mnemonicCodes=await getMnemonicCodes(dataMnemonicCodes);
-                    console.log(mnemonicCodes)
+                    //console.log(mnemonicCodes)
                     //icons for bubbles in basic mode will be stored in filesIcons
                     filesIcons=dataIcons;
                     //if a graph name is added to the url we will show the graph shared
@@ -229,7 +229,7 @@ async function createGraphFromFile(fileText){
 
 //function launched when click on import button in menu
 function importGraph(file){
-  console.log(file)
+  //console.log(file)
   file.files[0].text().then(text => {
     createGraphFromFile(JSON.parse(text))
   })
@@ -463,7 +463,7 @@ async function checkMenuItems(origin,element) {
         networkGraph.checkCollapseExpandBranch(node)
       }
     } */
-    console.log("message for no graph")
+    //console.log("message for no graph")
     showMessageForNoGraphs()
     //clickBubbleGraph(document.getElementById(node.id))
   }else if(menuItems.selectedRows.length==1){
@@ -478,7 +478,7 @@ async function checkMenuItems(origin,element) {
       await addBasicGraph(menuItems.selectedRows[0],node)
     }else{
       if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
-        //////console.log("update linkedata")
+        ////////console.log("update linkedata")
         await addExpertGraph(menuItems.selectedRows[0],node)
 /*         await linkedDataGraph.update(menuItems.selectedRows[0],node)
         networkGraph.refresh() */
@@ -551,7 +551,7 @@ function getShowDuplicates(){
 
 function relatedFilters(element){
   var filter,filterId,id;
-  console.log("entra aquí")
+  //console.log("entra aquí")
 
   id=element.getAttribute("id").replace("_filter","")
   id=id.replace("_start","").replace("_end","")
@@ -570,31 +570,35 @@ function relatedFilters(element){
   }
   
 }
-function relatedFiltersExpert(element){
-  var filter,id;
-  console.log(element)
-  id=element.getAttribute("id").replace(/(_type$)/, '')
+function getFilterClassExpertName(id){
+  id=id.replace(/(_type$)/, '')
   id=id.replace(/(_property$)/, '')
   id=id.replace(/(_value$)/, '')
-/*   console.log("relatedFiltersExpert")
-  console.log(networkGraph.filterClassesObjects)
-  console.log(element.closest(".ecl-form-group"))
-  console.log(element.closest(".ecl-accordion__content"))
-  console.log(element.closest(".ecl-form-group").querySelector("label").textContent) */
+  return id
+}
+function relatedFiltersExpert(element){
+  var filter,id;
+  id=getFilterClassExpertName(element.getAttribute("id"))
+/*   //console.log("relatedFiltersExpert")
+  //console.log(networkGraph.filterClassesObjects)
+  //console.log(element.closest(".ecl-form-group"))
+  //console.log(element.closest(".ecl-accordion__content"))
+  //console.log(element.closest(".ecl-form-group").querySelector("label").textContent) */
 /*   id=element.getAttribute("id").replace(/(_type$)/, '')
   id=id.replace(/(_property$)/, '')
   id=id.replace(/(_value$)/, '') */
 
-  console.log(id)
+  //console.log(id)
   //let filterClassName=element.closest(".ecl-accordion__content").getAttribute("id").replace("_filters","")
 
   let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==id)[0]
-  console.log(filterClass)
+  //console.log(filterClass)
   if(filterClass){
     filter=filterClass.filters.filter((f)=>f.field==element.closest(".ecl-form-group").querySelector("label").textContent)[0]
     filter.addValuesChanged(element)
     linkedDataGraph.filter(filter.id)
     linkedDataGraph.flattenFiltered()
+    //console.log(linkedDataGraph)
     setValuesFilters(id)
   }
   
@@ -603,11 +607,15 @@ function relatedFiltersExpert(element){
 function getFilteredData(){
   linkedDataGraph.filter()
   linkedDataGraph.treeData=linkedDataGraph.treeDataFiltered
+  console.log(linkedDataGraph.treeData)
   linkedDataGraph.flatten()
+  console.log(linkedDataGraph.data)
 }
 
 function applyFilters(){
   getFilteredData()
+  //checkTest()
+  //networkGraph.refresh()
   networkGraph.refreshNoFilters()
 }
 
@@ -619,20 +627,20 @@ function setValuesFilters(filterId){
 
 function clearFilters(){
   linkedDataGraph.clearFilter()
-  //////console.log(linkedDataGraph.data.flatData.nodes)
-  //////console.log(linkedDataGraph.data.treeData)
+  ////////console.log(linkedDataGraph.data.flatData.nodes)
+  ////////console.log(linkedDataGraph.data.treeData)
   
-  //////////////console.log("despues forEach")
+  ////////////////console.log("despues forEach")
   networkGraph.refreshNoFilters()
-  //////////////console.log("despues refresh")
+  ////////////////console.log("despues refresh")
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(async function (f){
       //f.addValuesField(f.values)
-      //////console.log(f)
+      ////////console.log(f)
       f.resetAllValues()
-      ////////console.log("despues de addValues")
+      //////////console.log("despues de addValues")
       //f.resetValue()
-      //////////////console.log("despues de resetvalue")
+      ////////////////console.log("despues de resetvalue")
     })
   })
   networkGraph.refreshNoFilters()

@@ -869,6 +869,9 @@ function dateValidFormat(dateStr) {
 }
 
 function addHtmlOptionsSelect(selectField,values){
+  //console.log(values)
+  values=checkAddAll(values)
+  $('#'+selectField.getAttribute("id")+ ' option').remove()
   for (let i = 0; i < values.length; i++) {
     //console.log(values[i])
     var option = document.createElement("option");
@@ -1185,7 +1188,12 @@ function clickBubbleGraph(element) {
   }
 
   networkGraph.node=node
-
+  
+  if((node.class!="free")&&(navigationPanel instanceof NavigationPanelExpert)){
+    navigationPanel=undefined
+  }else if((node.class=="free")&&(navigationPanel instanceof NavigationPanelBasic)){
+    navigationPanel=undefined
+  }
   
   //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
   //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
