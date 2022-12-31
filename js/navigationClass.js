@@ -1065,7 +1065,7 @@ NavigationPanelExpert.prototype.clickMenuTable = async function (row){
   //let form = { "url": menuItems.selectedRows[miNumber]["endpoint_url"], "uri": menuItems.selectedRows[miNumber]["uri"], "position": menuItems.selectedRows[miNumber]["position"],"query":menuItems.selectedRows[miNumber]["query"]}
   ////console.log(node)
   ////console.log(menuItems.selectedRows[miNumber])
-  await checkGraphExpert(menuItems.selectedRows[miNumber],node)
+  await addExpertGraph(menuItems.selectedRows[miNumber],node)
   clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
 /*   let node=get_node_from_element(row.id.split("_menu-option_")[0])
   let i=row.id.split("_menu-option_")[1]
