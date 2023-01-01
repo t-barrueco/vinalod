@@ -1011,6 +1011,12 @@ function hidePageCollection(){
 function showGraphArea(){
   $('#graph-area').removeClass("hidden")
 }
+function showSelectGraphInCollection(){
+  $('#graph-in-collection-div').removeClass("hidden")
+}
+function hideSelectGraphInCollection(){
+  $('#graph-in-collection-div').addClass("hidden")
+}
 function removeOptionsCollections(){
   $('#dataviz-collection article').remove()
 }
