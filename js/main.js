@@ -70,6 +70,9 @@ function getOptionsCollectionSelect(collection){
 //get options from config file and show them as different choices in a page
 function changeCollectionOptions(collection){
   let optionsMenu=configFile.file.filter(d=>d.collection==collection)
+  if(optionsMenu.length==1){
+    hideSelectGraphInCollection()
+  }
   appendHtmlOptions(optionsMenu)
 }
 
@@ -335,6 +338,7 @@ function startExpert(element){
 //launched if option selected in when page that shows collection options is added
 async function createNewBasicGraph(option){
 
+  console.log(option)
   removePreviousFilters()
   hideExpertForm()
   removeGraph()
@@ -344,6 +348,9 @@ async function createNewBasicGraph(option){
   showGraphArea()
   removeColorsFromLegend()
   tabOptionsGraphVisible()
+
+
+  //checkSelectGraphInCollection(option)
 
   if(typeof linkedDataGraph !== 'undefined'){
     linkedDataGraph = undefined;
@@ -393,6 +400,35 @@ async function createNewExpertGraph(selectedRow){
   networkGraph.getFilters()
 
   legend=new Legend("legend",networkGraph)
+}
+
+function checkSelectGraphInCollection(option)
+{
+  let collection=configFile.file.filter(d=>d.option==option)[0]["collection"]
+  let collectionOptions=configFile.file.filter(d=>d.collection==collection)
+  let values=collectionOptions.map(d=>d.option)
+  if(collectionOptions.length>1){
+    showSelectGraphInCollection()
+    $('#select-graph-in-collection option').remove()
+    let selectField=document.getElementById("select-graph-in-collection")
+    for (let i = 0; i < values.length; i++) {
+      var optionSel = document.createElement("option");
+      optionSel.value = values[i];
+      optionSel.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
+      if(optionSel.value==option){
+        console.log(option)
+        optionSel.selected=true
+      }
+      selectField.appendChild(optionSel);
+    }
+  }
+  
+}
+function changeGraphInCollection(element){
+  //getOptionsCollectionSelect(this)
+
+  console.log(element.value)
+  createNewBasicGraph(element.value)
 }
 
 //form sent from pop expert menu to create a new graph when option is selected
