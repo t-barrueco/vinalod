@@ -1428,11 +1428,12 @@ NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY)
 
 NetworkGraph.prototype.collapseAll = function () {
   var vis = this,ldg=linkedDataGraph;
+  ldg.collapseBranch(ldg.treeData[0])
   ldg.showFirstLevelBranch(ldg.treeData[0])
   ldg.flatten()
   vis.updateData()
+  console.log(networkGraph.treeData)
   vis.refreshNoFilters()
-
 }
 NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
   var vis = this,treeDataEl;

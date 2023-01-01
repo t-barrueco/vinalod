@@ -87,6 +87,7 @@ function appendHtmlOptions(optionsMenu){
 
 //when collapse button is clicked
 function collapse(){
+  console.log("collapse")
   networkGraph.collapseAll()
 }
 //when expand button is clicked
