@@ -179,56 +179,56 @@ FilterClassExpert.prototype.initFilters = async function (){
   }
   cf.checkHidden()
   document.querySelectorAll('.ecl-checkbox').forEach(item => {
-    ////console.log(item)
+    //////console.log(item)
     item.addEventListener('click', event => {
       relatedFiltersExpert(item)
       //handle click
     })
   })
 
-/*   ////console.log($( ".ecl-checkbox__input" ))
+/*   //////console.log($( ".ecl-checkbox__input" ))
   $( ".ecl-checkbox__input" ).each(function(){
-    ////console.log(this)
-    ////console.log($("#"+this.getAttribute("id")).on( "click", function() {
+    //////console.log(this)
+    //////console.log($("#"+this.getAttribute("id")).on( "click", function() {
       alert( $( this ) );
     }))
   
-    ////console.log(this)
+    //////console.log(this)
   })
   $( ".ecl-checkbox" ).each(function(){
-    ////console.log(this)
-    ////console.log($("#"+this.getAttribute("id")).on( "click", function() {
+    //////console.log(this)
+    //////console.log($("#"+this.getAttribute("id")).on( "click", function() {
       alert( $( this ) );
     }))
   
-    ////console.log(this)
+    //////console.log(this)
   }) */
 /*   $( ".ecl-checkbox__input" ).on( "click", function() {
     alert( $( this ) );
   }); */
 /*   const checkBox = document.querySelectorAll('.ecl-checkbox__input');
 
-  //////console.log(checkBox)
+  ////////console.log(checkBox)
   checkBox.forEach(box => {
-    ////console.log(box)
+    //////console.log(box)
     box.addEventListener("click", relatedFiltersExpert);
-    ////console.log(box)
+    //////console.log(box)
     throw new Error('missing channels property: ');
   }); */
 }
 
 FilterClassExpert.prototype.checkConditionNode = function(node){
   var cf=this,hidden=false;
-  ////console.log(node)
+  //////console.log(node)
   cf.filters.forEach(function(f){
       var condition;
       condition=f.checkConditionNode(node)
-      ////console.log(condition)
+      //////console.log(condition)
       if(condition){
         hidden=true
       }
   })
-  ////console.log("final hidden:"+hidden)
+  //////console.log("final hidden:"+hidden)
   return hidden;
 }
 
@@ -254,7 +254,7 @@ FilterClassExpert.prototype.setValuesFilters = function(filterId){
     f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
     /* if(f.id!=filterId){
       //get all values from nodes after data has been filtered
-      ////console.log(linkedDataGraph.dataFiltered["flatData"]["nodes"])
+      //////console.log(linkedDataGraph.dataFiltered["flatData"]["nodes"])
       f.getValuesNodes(linkedDataGraph.dataFiltered["flatData"]["nodes"])
     } */
   })
@@ -303,7 +303,7 @@ Filter.prototype.removeValuesChanged=function (){
 Filter.prototype.getValuesNodes=function (nodes){
     var fi=this
     let values=fi.valuesNodes(nodes);
-    ////console.log(values)
+    //////console.log(values)
     if(values.length==0){
       fi.hide()
     }else{
@@ -319,13 +319,13 @@ Filter.prototype.getValuesAllNodes=function (){
   let docs=document.getElementsByClassName(fi.details.class)
   let searchValues=[]
   for (let d of docs) {
-    ////////////console.log(d3.select("#"+d.getAttribute("id")).data()[0])
-    ////////////console.log(fi.details.property)
+    //////////////console.log(d3.select("#"+d.getAttribute("id")).data()[0])
+    //////////////console.log(fi.details.property)
     if(d3.select("#"+d.getAttribute("id")).data()[0][fi.details.property]){
       searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0][fi.details.property])
     }
   }  
-  ////////////console.log(searchValues)
+  //////////////console.log(searchValues)
   fi.values=searchValues
   fi.sortValues()
 }
@@ -333,11 +333,11 @@ Filter.prototype.getValuesAllNodes=function (){
 Filter.prototype.resetAllValues=function (){
   var fi=this
   fi.getValuesAllNodes()
-  //////////console.log(fi.values)
+  ////////////console.log(fi.values)
   fi.fillField()
-  //////////console.log(fi.values)
+  ////////////console.log(fi.values)
   fi.resetComponent()
-  //////////console.log(fi.values)
+  ////////////console.log(fi.values)
   if(fi.values.length==0){
     fi.hide()
   }else{
@@ -350,7 +350,7 @@ Filter.prototype.resetAllValues=function (){
 Filter.prototype.setAllValues=function (){
   var fi=this
   fi.values=fi.getValuesAllNodes()
-  ////////////console.log(fi.values)
+  //////////////console.log(fi.values)
   fi.sortValues()
   //fi.resetValue()
 }
@@ -363,7 +363,7 @@ FilterBasic.prototype = Object.create(Filter.prototype);
 
 FilterBasic.prototype.copyDetails=function(details){
   var fi=this;
-  ////console.log(details)
+  //////console.log(details)
   if(fi.imported){
     fi.import(details)
     //fi=details
@@ -405,7 +405,7 @@ FilterBasic.prototype.addHtml= function () {
 
   fi.getValuesAllNodes()
 
-  ////////////console.log("addHtml super")
+  //////////////console.log("addHtml super")
 }
 
 FilterBasic.prototype.hide= function () {
@@ -564,9 +564,9 @@ class FilterBasicDate extends FilterBasic {
     }
   }
   addValuesChanged(el){
-    //////////////////console.log(el)
-    //////////////////////console.log(el.id)
-    //////////////////////console.log(el.value)
+    ////////////////////console.log(el)
+    ////////////////////////console.log(el.id)
+    ////////////////////////console.log(el.value)
     if(el.id.endsWith("_start")){
       if(this["valuesChanged"]){
         this["valuesChanged"]["start"]=el.value
@@ -580,7 +580,7 @@ class FilterBasicDate extends FilterBasic {
         this["valuesChanged"]={"end":el.value}
       }
     }
-    //////////////////console.log(this["valuesChanged"])
+    ////////////////////console.log(this["valuesChanged"])
   }
   sortValues(){
     var fi=this;
@@ -615,8 +615,8 @@ class FilterBasicDate extends FilterBasic {
         document.getElementById(this.details.property+"_filter_start").value=formatDateShow(values[0])
         //$(("#accordion-filters #"+this.details.property+"_filter_start")).val(values[0]);
         
-        ////////////////console.log(document.getElementById(this.details.property+"_filter_start").value)
-        ////////////////console.log(document.getElementById(this.details.property+"_filter_start"))
+        //////////////////console.log(document.getElementById(this.details.property+"_filter_start").value)
+        //////////////////console.log(document.getElementById(this.details.property+"_filter_start"))
         //$(("#accordion-filters #"+this.details.property+"_filter_end")).val(values[values.length-1]);    
         document.getElementById(this.details.property+"_filter_end").value=formatDateShow(values[values.length-1])
     
@@ -671,9 +671,9 @@ class FilterBasicText extends FilterBasic {
     const elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
     if(elValue!=""){
-      //////////////////////////console.log(elValue.toLowerCase())
-      ////////////////////////////console.log(node)
-      //////////////////////////console.log(node[this.details.property].toLowerCase())
+      ////////////////////////////console.log(elValue.toLowerCase())
+      //////////////////////////////console.log(node)
+      ////////////////////////////console.log(node[this.details.property].toLowerCase())
       if(!node[this.details.property].toLowerCase().includes(elValue.toLowerCase())){
         return true
       }else{
@@ -733,17 +733,17 @@ FilterExpert.prototype = Object.create(Filter.prototype);
 
 FilterExpert.prototype.copyDetails=function(_details){
   var fi=this;
-  //////console.log(_details)
+  ////////console.log(_details)
   Object.assign(fi, _details);
-  //////console.log(fi)
+  ////////console.log(fi)
   /* _details.forEach(function(d){
-    //////console.log(d)
+    ////////console.log(d)
   }) */
 }
 
 FilterExpert.prototype.valuesNodes=function(nodes){
   var fi=this,values=[],filterClassName
-  //console.log(fi)
+  ////console.log(fi)
   let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id == node.id))
   networkGraph.filterClassesObjects.filter((d)=>d.name==filterClassName)[0]
 
@@ -751,7 +751,7 @@ FilterExpert.prototype.valuesNodes=function(nodes){
     if(d.value!=fi.class){
       values.push(d[fi["field"]])
     }
-    //////console.log(d[fi["field"]])
+    ////////console.log(d[fi["field"]])
     //values.push(d[fi["field"]])
     /* if(d["class"]==fi.details.class){
       if(d[fi.details.property]!=undefined){
@@ -759,8 +759,8 @@ FilterExpert.prototype.valuesNodes=function(nodes){
       }
     } */
   })
-  ////console.log(fi)
-  ////console.log(values)
+  //////console.log(fi)
+  //////console.log(values)
   return values
 }
 
@@ -792,7 +792,7 @@ class FilterExpertDropdown extends FilterExpert {
         code=code.replaceAll("HelperText","")
       } */
       $("#"+fi.internalClass+"_filters").append($(code)).ready(function () {
-        console.log(code)
+        //console.log(code)
         var select=document.getElementById("select-default")
         select.name = fi.internalClass + "_"+ fi.field;
         select.id = fi.internalClass + "_"+ fi.field;
@@ -804,9 +804,9 @@ class FilterExpertDropdown extends FilterExpert {
   }
   getResultsField(){
     var fi=this,valuesFilter;
-    ////console.log(fi.field)
+    //////console.log(fi.field)
     if(fi.field=="type"){
-      ////console.log(configRow)
+      //////console.log(configRow)
       if(configRow.position=="s"){
         valuesFilter=[...new Set(configRow.results.map(d=>d.o.type))].sort()
       }else{
@@ -826,15 +826,15 @@ class FilterExpertDropdown extends FilterExpert {
   fillField(){
     var fi=this;
     let select=document.getElementById(fi.internalClass + "_"+ fi.field)
-    //////////////////////console.log(select)
-    //////console.log(valuesFilter)
+    ////////////////////////console.log(select)
+    ////////console.log(valuesFilter)
     //fi.values=checkAddAll(fi.values)
     addHtmlOptionsSelect(select,fi.values)
   }
   addValuesChanged(el){
-/*     ////console.log(el)
+/*     //////console.log(el)
     var value=el.value()
-    ////console.log(value)
+    //////console.log(value)
     var checked=el.querySelector("input").checked
     if(!this["valuesChanged"]){
       this["valuesChanged"]=[]
@@ -851,15 +851,15 @@ class FilterExpertDropdown extends FilterExpert {
     }else if((value=="Select all")&&(!checked)){
       this["valuesChanged"]=[]
     }
-    ////console.log(this["valuesChanged"]) */
+    //////console.log(this["valuesChanged"]) */
     this["valuesChanged"]=el.value
-    ////console.log(el.value)
+    //////console.log(el.value)
   }
   checkConditionNode(node){
     var fi=this;
-    ////console.log(node[fi.field])
+    //////console.log(node[fi.field])
 
-    //////console.log(filterCondition)
+    ////////console.log(filterCondition)
     if(fi.valuesChanged){
       if(fi.valuesChanged.includes(node[fi.field])){
         return false
@@ -878,7 +878,7 @@ class FilterExpertDropdown extends FilterExpert {
 /* class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var fi=this;
-    //////////console.log("addHtml expert dropdown")
+    ////////////console.log("addHtml expert dropdown")
     super.addHtml();
     let code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
     code=code.replace("Label",fi.field)
@@ -896,9 +896,9 @@ class FilterExpertDropdown extends FilterExpert {
   fillField(){
     var fi=this,valuesFilter;
     let select=document.getElementById(fi.internalClass + "_"+ fi.field)
-    ////console.log(fi.field)
+    //////console.log(fi.field)
     if(fi.field=="type"){
-      ////console.log(configRow)
+      //////console.log(configRow)
       if(configRow.position=="s"){
         valuesFilter=[...new Set(configRow.results.map(d=>d.o.type))].sort()
       }else{
@@ -913,10 +913,10 @@ class FilterExpertDropdown extends FilterExpert {
     }else if(fi.field=="property"){
       valuesFilter=[...new Set(configRow.results.map(d=>d.p.value))].sort()
     }
-    //////////////////////console.log(select)
-    //////console.log(valuesFilter)
+    ////////////////////////console.log(select)
+    ////////console.log(valuesFilter)
     this.values=valuesFilter
-    ////console.log(this)
+    //////console.log(this)
     addHtmlOptionsSelectMultiple(select,valuesFilter)
   }
   addValuesChanged(el){
@@ -937,13 +937,13 @@ class FilterExpertDropdown extends FilterExpert {
     }else if((value=="Select all")&&(!checked)){
       this["valuesChanged"]=[]
     }
-    ////console.log(this["valuesChanged"])
+    //////console.log(this["valuesChanged"])
   }
   checkConditionNode(node){
     var fi=this;
-    ////console.log(node[fi.field])
+    //////console.log(node[fi.field])
 
-    //////console.log(filterCondition)
+    ////////console.log(filterCondition)
     if(fi.valuesChanged){
       if(fi.valuesChanged.includes(node[fi.field])){
         return false
