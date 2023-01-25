@@ -147,7 +147,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
-  ////////////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -1195,17 +1194,16 @@ function clickBubbleGraph(element) {
 
   networkGraph.node=node
   
-  if((node.class!="free")&&(navigationPanel instanceof NavigationPanelExpert)){
+  /* if((node.class!="free")&&(navigationPanel instanceof NavigationPanelExpert)){
     navigationPanel=undefined
   }else if((node.class=="free")&&(navigationPanel instanceof NavigationPanelBasic)){
     navigationPanel=undefined
-  }
+  } */
   
   //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
   //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
   if (navigationPanel == undefined) {
-    if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
-    else navigationPanel= new NavigationPanelExpert(node);
+    navigationPanel= new NavigationPanel(node);
   } else {
     emptyNavigationPanel()
     navigationPanel.element = element
@@ -1251,5 +1249,7 @@ function selectTabNavPanel(element,otherText){
 }
 
 function noPunctuationStr(id){
+  console.log(id)
+  console.log(id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_"))
   return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_")
 }

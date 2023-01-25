@@ -10,6 +10,7 @@ MenuItems.prototype.init = async function () {
   await mi.buildOptions()
   mi.filterByMenuOption()
   await mi.filterByAskResult()
+  console.log(mi)
 }
 
 MenuItems.prototype.filterByMenuOption = function () {
@@ -26,6 +27,7 @@ MenuItems.prototype.filterByAskResult = async function () {
     for (var i = 0; i < mi.indexRows.length; i++) {
         try {
             results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+            console.log(results)
         } catch (e) {
         results = false
         } 
@@ -129,6 +131,7 @@ MenuItemsExpert.prototype.buildOptions = async function(){
       mi.indexRows.push(new OptionNodeExpert(option,mi.node))
     }
   })  
+  //console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){

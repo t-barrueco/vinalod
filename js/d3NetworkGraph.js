@@ -308,22 +308,6 @@ function checkTestLdg(){
 }
 NetworkGraph.prototype.initializeSimulation = function () {
   var vis = this;
-/*   console.log("---------------------nuevo initialize simulation----------------")
-  var test=vis.data.nodes.filter(d=>d.value=="Publications Office of the European Union")
-  if(test.length>0){
-    console.log("node: "+ vis.data.nodes.filter(d=>d.value=="Publications Office of the European Union")[0]["x"])
-    //let test2=vis.data.links.filter(d=>{console.log(d.source.value);d.source.value=="Publications Office of the European Union"})
-    let test2=vis.data.links.filter(d=>d.source.value=="Publications Office of the European Union")
-    if(test2.length>0){
-      console.log("source: "+test2[0]["source"]["x"])
-    }
-    let test3=vis.data.links.filter(d=>d.target.value=="Publications Office of the European Union")
-    if(test3.length>0){
-      console.log("target: "+test3[0]["target"]["x"])
-    }
-  } */
-  //console.log("----------------fin initialize simulation----------------")
-  //checkTest()
   vis.simulation.stop() 
   vis.simulation.nodes(vis.data.nodes);
   vis.initializeForces();
@@ -1690,89 +1674,101 @@ NetworkGraph.prototype.updateData = function (){
   vis.allData=JSON.parse(JSON.stringify(vis.data));
 }
 
-function NetworkGraphBasic(...args){
-  NetworkGraph.apply(this, args);
-}
-
-NetworkGraphBasic.prototype = Object.create(NetworkGraph.prototype);
-
-NetworkGraphBasic.prototype.addClassesShow = function(){
+NetworkGraph.prototype.addClassesShow = function(){
   var vis=this,newClasses;
 }
-/* NetworkGraphBasic.prototype.getFilters = function(){
+
+NetworkGraph.prototype.setColorScale = async function(){
   var vis=this;
 
-  if(vis.filterClassesObjects.length!=0){
-    //$("#filters").removeClass("hidden")
-    filtersVisible()
+  if(configRow.class){
+    setColorScaleBasic()
   }else{
-    //$("#filters").addClass("hidden")
-    filtersNotVisible()
+    setColorScaleExpert()
   }
-} */
-NetworkGraphBasic.prototype.setColorScale = async function(){
-  var vis=this;
-  vis.colorCorrespondence={
-    "#6EE7B7":"green-300",
-    "#FCA5A5":"red-300",
-    "#FCD34D":"yellow-300",
-    "#F9A8D4":"pink-300",
-    "#C4B5FD":"purple-300",
-    "#93C5FD":"blue-300",
-    "#D1D5DB":"gray-300",
-    "#10B981":"green-500",
-    "#EF4444":"red-500",
-    "#F59E0B":"yellow-500",
-    "#EC4899":"pink-500",
-    "#8B5CF6":"purple-500",
-    "#3B82F6":"blue-500",
-    "#6B7280":"gray-500"}
-  vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
-  ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
 
-  vis.colorScaleRange=vis.colors.slice(0,Object.values(vis.nodesClassesShow).length)
-  vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
+  function setColorScaleBasic(){
+    vis.colorCorrespondence={
+      "#6EE7B7":"green-300",
+      "#FCA5A5":"red-300",
+      "#FCD34D":"yellow-300",
+      "#F9A8D4":"pink-300",
+      "#C4B5FD":"purple-300",
+      "#93C5FD":"blue-300",
+      "#D1D5DB":"gray-300",
+      "#10B981":"green-500",
+      "#EF4444":"red-500",
+      "#F59E0B":"yellow-500",
+      "#EC4899":"pink-500",
+      "#8B5CF6":"purple-500",
+      "#3B82F6":"blue-500",
+      "#6B7280":"gray-500"}
+    vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
+    ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
+  
+    vis.colorScaleRange=vis.colors.slice(0,Object.values(vis.nodesClassesShow).length)
+    vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
+  }
+  function setColorScaleExpert(){
+    vis.colorCorrespondence={
+      "#6EE7B7":"green-300",
+      "#FCA5A5":"red-300",
+      "#FCD34D":"yellow-300",
+      "#F9A8D4":"pink-300",
+      "#C4B5FD":"purple-300",
+      "#93C5FD":"blue-300",
+      "#D1D5DB":"gray-300",
+      "#10B981":"green-500",
+      "#EF4444":"red-500",
+      "#F59E0B":"yellow-500",
+      "#EC4899":"pink-500",
+      "#8B5CF6":"purple-500",
+      "#3B82F6":"blue-500",
+      "#6B7280":"gray-500"}
+    //vis.nodesClassesShow=["uri","bnode","literal","menu option","link basic graph","typed-literal","Results collapsed"]
+    nodesClassesCorrespondence={uri:"uri",bnode:"bnode",literal:"literal","menu-option":"menu option",link_basic_graph:"link basic graph","typed-literal":"typed-literal","more_results":"Results collapsed"}
+    vis.nodesClassesShow=nodesClassesCorrespondence
+
+    vis.colorScaleRange=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
+    vis.colors=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
+  
+    vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
+  }
+
 }
 
-NetworkGraphBasic.prototype.checkMenuItems = async function(){
-  let node=get_node_from_element(element.getAttribute("id").replace("_image",""))
-
-  if(menuItems){
-    await menuItems.update(node)
-  }else{
-    menuItems= new MenuItems(node)
-  }
-}
-
-NetworkGraphBasic.prototype.updateFilters = async function () {
-  var vis=this,newFilterClasses,existingFilterClasses,filterClass,values;
+NetworkGraph.prototype.updateFilters = async function () {
+  var vis=this,newFilterClasses,existingFilterClasses,filterClass;
   if(configRow){
-    if(configRow.filters){
-      if((configRow.filters.length!=0)&&(configRow.filters!="None")){
-        newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
-        existingFilterClasses=vis.filterClassesObjects.map(f=>f.name)
-        //newFilterClasses.forEach(function(cf){
-        for (let i = 0; i < newFilterClasses.length; i++) {
-          if(!existingFilterClasses.includes(newFilterClasses[i])){
-            filterClass=new FilterClassBasic(newFilterClasses[i])
-            await filterClass.init()
-            //////////////////////////////////////////console.log("checkHidden")
-            filterClass.checkHidden()
-            vis.filterClassesObjects.push(filterClass) 
-          }else{
-            networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
-              //////////////////////////////////console.log("update filters")
-              f.resetAllValues()
-            })
+    if(configRow.class){
+      if(configRow.filters){
+        if((configRow.filters.length!=0)&&(configRow.filters!="None")){
+          newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
+          existingFilterClasses=vis.filterClassesObjects.map(f=>f.name)
+          for (let i = 0; i < newFilterClasses.length; i++) {
+            if(!existingFilterClasses.includes(newFilterClasses[i])){
+              filterClass=new FilterClassBasic(newFilterClasses[i])
+              await filterClass.init()
+              filterClass.checkHidden()
+              vis.filterClassesObjects.push(filterClass) 
+            }else{
+              networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
+                f.resetAllValues()
+              })
+            }
           }
-        //})
         }
       }
+    }else{
+      const filterClass=new FilterClassExpert(configRow.node["uri"])
+      filterClass.init()
+      vis.filterClassesObjects.push(filterClass) 
+      getFiltersVisibility()
     }
   }
 }
 
-class NetworkGraphBasicNotImported extends NetworkGraphBasic {
+class NetworkGraphNotImported extends NetworkGraph {
   async addClassesShow() {
     super.addClassesShow();
     var vis=this,newClasses;
@@ -1809,7 +1805,7 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
 
   }
 }
-class NetworkGraphBasicImported extends NetworkGraphBasic {
+class NetworkGraphImported extends NetworkGraph {
   addClassesShow() {
     var vis=this;
     super.addClassesShow();
@@ -1842,53 +1838,6 @@ class NetworkGraphBasicImported extends NetworkGraphBasic {
   }
 }
 
-function NetworkGraphExpert(...args){
-  NetworkGraph.apply(this, args);
-}
-
-NetworkGraphExpert.prototype = Object.create(NetworkGraph.prototype);
-
-NetworkGraphExpert.prototype.setColorScale = async function(){
-  var vis=this;
-  vis.colorCorrespondence={
-    "#6EE7B7":"green-300",
-    "#FCA5A5":"red-300",
-    "#FCD34D":"yellow-300",
-    "#F9A8D4":"pink-300",
-    "#C4B5FD":"purple-300",
-    "#93C5FD":"blue-300",
-    "#D1D5DB":"gray-300",
-    "#10B981":"green-500",
-    "#EF4444":"red-500",
-    "#F59E0B":"yellow-500",
-    "#EC4899":"pink-500",
-    "#8B5CF6":"purple-500",
-    "#3B82F6":"blue-500",
-    "#6B7280":"gray-500"}
-  //vis.nodesClassesShow=["uri","bnode","literal","menu option","link basic graph","typed-literal","Results collapsed"]
-  nodesClassesCorrespondence={uri:"uri",bnode:"bnode",literal:"literal","menu-option":"menu option",link_basic_graph:"link basic graph","typed-literal":"typed-literal","more_results":"Results collapsed"}
-  vis.nodesClassesShow=nodesClassesCorrespondence
-  vis.colorScaleRange=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
-  vis.colors=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
-
-  vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
-}
-NetworkGraphExpert.prototype.addClassesShow = function(){
-  var vis=this,newClasses;
-}
-
-NetworkGraphExpert.prototype.updateFilters = function () {
-  var vis=this;
-  vis.getFilters()
-}
-
-NetworkGraphExpert.prototype.getFilters = function () {
-  var vis=this
-  const filterClass=new FilterClassExpert(configRow.node["uri"])
-  filterClass.init()
-  vis.filterClassesObjects.push(filterClass) 
-  getFiltersVisibility()
-}
 function setForcesGraph(){
   forces = {
     center: {

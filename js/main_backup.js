@@ -491,7 +491,7 @@ function clickBubbleGraph(element) {
   fitSizeModal(node)
 
   if (navigationPanel == undefined) {
-    if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
+    if(node.class!="free") navigationPanel= new NavigationPanel(node);
     else navigationPanel= new NavigationPanelExpert(node);
   } else {
     emptyNavigationPanel()

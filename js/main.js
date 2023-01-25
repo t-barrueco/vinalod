@@ -127,7 +127,7 @@ function getDataToFile(){
   if(getNavPanelVisibility()){
     navPanelNode=navigationPanel.node
   }else{
-    navPanelNode=none
+    navPanelNode="None"
   }
   let file=JSON.stringify({"treeData":networkGraph.treeData,"classesCorrespondence":networkGraph.nodesClassesShow,"filterClasses":networkGraph.filterClassesObjects,"configRow":configRow,"navPanelNode":navPanelNode})
   return file
@@ -204,7 +204,7 @@ async function createGraphFromFile(fileText){
   tabOptionsGraphVisible()
 
   //create a new element for storing the data. We specify that it is imported data
-  linkedDataGraph = new LinkedDataGraphBasic("imported");
+  linkedDataGraph = new LinkedDataGraph("imported");
 
   //import data into object that contains the data for the network graph
   linkedDataGraph.importGraph(fileText)
@@ -213,7 +213,7 @@ async function createGraphFromFile(fileText){
   let forces=setForcesGraph()
 
   //create networkgraph with elements from the fileText that contains the data
-  networkGraph = new NetworkGraphBasicImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
+  networkGraph = new NetworkGraphImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
   await networkGraph.initVis()
 
   //create colors legend
@@ -336,7 +336,7 @@ function startExpert(element){
   checkMenuItems('form',element)
 }
 
-//launched if option selected in when page that shows collection options is added
+//launched if option selected when page that shows collection options is added
 async function createNewBasicGraph(option){
 
   console.log(option)
@@ -357,8 +357,8 @@ async function createNewBasicGraph(option){
     linkedDataGraph = undefined;
   }
 
-  linkedDataGraph = new LinkedDataGraphBasic(option);
-  await linkedDataGraph.settingsFromOption()
+  linkedDataGraph = new LinkedDataGraph(option);
+  await settingsFromOption("basic")
 
   let forces=setForcesGraph()
 
@@ -368,7 +368,7 @@ async function createNewBasicGraph(option){
   }
 
   //showSpinMessage()
-  networkGraph = new NetworkGraphBasicNotImported("#networkGraph",forces,linkedDataGraph.data);
+  networkGraph = new NetworkGraphNotImported("#networkGraph",forces,linkedDataGraph.data);
 
   await networkGraph.initVis()
   //hideSpinMessage()
@@ -382,8 +382,8 @@ async function createNewBasicGraph(option){
 
 //create new expert graph
 async function createNewExpertGraph(selectedRow){
-  linkedDataGraph = new LinkedDataGraphExpert(selectedRow);
-  await linkedDataGraph.settingsFromOption()
+  linkedDataGraph = new LinkedDataGraph(selectedRow);
+  await settingsFromOption("expert")
 
   let forces=setForcesGraph()
 
@@ -394,11 +394,12 @@ async function createNewExpertGraph(selectedRow){
   removePreviousFilters()
   tabOptionsGraphVisible()
 
-  networkGraph = new NetworkGraphExpert("#networkGraph",forces,linkedDataGraph.data);
+  networkGraph = new NetworkGraph("#networkGraph",forces,linkedDataGraph.data);
 
   await networkGraph.initVis()
 
-  networkGraph.getFilters()
+  //networkGraph.getFilters()
+  networkGraph.updateFilters()
 
   legend=new Legend("legend",networkGraph)
 }
@@ -439,7 +440,8 @@ function createNewExpertGraphFromPopup(form){
   let uri=form.querySelector("#uri").value
 
   let selectedRow=menuItems.selectedRows.filter(d=>((d.endpoint_url==url)&&(d.node.uri==uri)&&(d.position==position)))[0]
-  hideExpertForm()
+  //hideExpertForm()
+  hidePopupWindowExpert()
   createNewExpertGraph(selectedRow)
 }
 
@@ -514,7 +516,7 @@ async function checkMenuItems(origin,element) {
       //add basic graph to the existing graph
       await addBasicGraph(menuItems.selectedRows[0],node)
     }else{
-      if((linkedDataGraph)&&(linkedDataGraph instanceof LinkedDataGraphExpert)){
+      if(linkedDataGraph){
         ////////console.log("update linkedata")
         await addExpertGraph(menuItems.selectedRows[0],node)
 /*         await linkedDataGraph.update(menuItems.selectedRows[0],node)

@@ -19,14 +19,9 @@ ConfigRow.prototype.import=function(configRowObject){
   })
   console.log(cr)
 }
-/* ConfigRow.prototype.initImport = async function () {
-  var cr=this
-  cr.getValuesFromOption()
-  cr.replaceParmtrsQuery("query")
-} */
+
 ConfigRow.prototype.update = async function(option,node){
   var cr=this;
-  //////////////////////////console.log(option)
   cr.option=option
   cr.node=node
   await cr.init()
@@ -74,27 +69,16 @@ ConfigRowBasic.prototype.getValuesFromConfig=function(option){
 
 ConfigRowBasic.prototype.fromOptionToConfigRow = async function(option){
   var cr=this;
-  //const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
-  //////////console.log(configFile.file)
-  //////////console.log(rowInConfigFile)
-  //////console.log(option)
-  //////console.log(node)
-  //////console.log(cr)
+
   values=cr.getValuesFromConfig(option)
-  ////console.log(values)
+
   Object.keys(values).forEach(function(k){
-    ////console.log(k)
-    ////console.log(option[k])
     if(option[k]){
       cr[k]=option[k]
     }else{
-      //////////console.log(rowInConfigFile)
-      //////////console.log(k)
-      //////////console.log(rowInConfigFile[k])
       cr[k]=values[k]
     }
   })
-  ////console.log(cr)
   
   cr["askquery"]=option["askquery"]
   cr["node"]=option["node"]

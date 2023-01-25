@@ -995,55 +995,95 @@ NavigationPanel.prototype.addSelToGraph = function (){
 
 }
 
-function NavigationPanelBasic(...args){
-  NavigationPanel.apply(this, args);
-  }
-  
-NavigationPanelBasic.prototype = Object.create(NavigationPanel.prototype);
-
-
 NavigationPanel.prototype.addMenuToTable = async function (){
 
   var navPanel=this;
 
-  var newText,newCell,newRow,span,div,textNode
+  //var newText,newCell,newRow,span,div,textNode
   d3.selectAll(".menu-table").remove()
   var rowIndex=$('#myModal #'+ menuItems.node["id"]+"_row")[0].rowIndex
   let tBodyRef=$('#myModal #'+ menuItems.node["id"]+"_row")
-  navPanel.addCodeMenuTable(tBodyRef)
+  //console.log(menuItems.node)
+  addCodeMenuTable(tBodyRef)
+/*   if(menuItems.node["class"]!="free"){
+    addCodeMenuTableBasic(tBodyRef)
+  }else{
+    addCodeMenuTableExpert(tBodyRef)
+  } */
+  //navPanel.addCodeMenuTable(tBodyRef)
 }
 
-NavigationPanelBasic.prototype.addCodeMenuTable = async function (tBodyRef){
-  let code = await getHtmlCodeFromFile("pages/menu-table.html");
+function addCodeMenuTable(tBodyRef){
+
+  if(menuItems.node["class"]!="free"){
+    addCodeMenuTableBasic(tBodyRef)
+  }else{
+    addCodeMenuTableExpert(tBodyRef)
+  }
+
+  async function addCodeMenuTableBasic(tBodyRef){
+      let code = await getHtmlCodeFromFile("pages/menu-table.html");
+    
+      menuItems.selectedRows = menuItems.selectedRows.reverse();
+      for (var i = 0; i < menuItems.selectedRows.length; i++) {
+        let option_text=configFile.file[menuItems.selectedRows[i]["rowConfigFile"]]["option_text"]
+        if(!tBodyRef){
+          $('#myModal #dvTable tbody').append(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
+        }else{
+          $(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
+        }
+      }
+  }
   
-  menuItems.selectedRows = menuItems.selectedRows.reverse();
-  for (var i = 0; i < menuItems.selectedRows.length; i++) {
-    let option_text=configFile.file[menuItems.selectedRows[i]["rowConfigFile"]]["option_text"]
-    if(!tBodyRef){
-      $('#myModal #dvTable tbody').append(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
-    }else{
-      $(code.replace("Menu Option",menuItems.selectedRows[i]["option"]).replace("Menu Option Tooltip",option_text).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-    }
+  async function addCodeMenuTableExpert(tBodyRef){
+      let code = await getHtmlCodeFromFile("pages/menu-table-property.html");
+    
+      menuItems.selectedRows = menuItems.selectedRows.reverse();
+      for (var i = 0; i < menuItems.selectedRows.length; i++) {
+        let menuOption="Sparql Endpoint: "+ menuItems.selectedRows[i]["endpoint_url"]+" Position: " +positionFullText(menuItems.selectedRows[i]["position"])
+        let tooltipText="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["endpoint_url"]
+        if(!tBodyRef){
+          $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
+        }else{
+          //$('#myModal #dvTable tbody').append(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
+          $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
+        } 
+      }
   }
 }
 
-NavigationPanelBasic.prototype.addMenuToTableFromNav = async function (){
+NavigationPanel.prototype.addMenuToTableFromNav = async function (){
   var navPanel=this;
   showNavContentTable()
   hideNavContentTablePagination()
-  navPanel.addCodeMenuTable()
+  addCodeMenuTable()
 }
-NavigationPanelBasic.prototype.clickMenuTable = async function (row){
+
+NavigationPanel.prototype.clickMenuTable = async function (row){
   let node=get_node_from_element(row.id.split("_menu-option_")[0])
-  let i=row.id.split("_menu-option_")[1]
-  node.menuOption=menuItems.selectedRows[i]["option"]
-  let graphType=await addBasicGraph(menuItems.selectedRows[i],node)
-  if(graphType=="TREE"){
+
+  if(node.class!="free"){
+    clickMenuTableBasic(row,node)
+  }else{
+    clickMenuTableExpert(row,node)
+  }
+  async function clickMenuTableBasic(row,node){
+    let i=row.id.split("_menu-option_")[1]
+    node.menuOption=menuItems.selectedRows[i]["option"]
+    let graphType=await addBasicGraph(menuItems.selectedRows[i],node)
+    if(graphType=="TREE"){
+      clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
+    }
+  }
+  async function clickMenuTableExpert(row,node){
+    let miNumber=row.getAttribute("id").split("_menu-option_")[1]
+
+    await addExpertGraph(menuItems.selectedRows[miNumber],node)
     clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
   }
 }
 
-class NavigationPanelNoDuplicates extends NavigationPanelBasic {
+class NavigationPanelNoDuplicates extends NavigationPanel {
   async addHtml() {
    var fi=this;
    super.addHtml();
@@ -1051,101 +1091,51 @@ class NavigationPanelNoDuplicates extends NavigationPanelBasic {
  }
 }
 
-function NavigationPanelExpert(...args){
-  NavigationPanel.apply(this, args);
-  }
-  
-NavigationPanelExpert.prototype = Object.create(NavigationPanel.prototype);
-
-NavigationPanelExpert.prototype.clickMenuTable = async function (row){
+NavigationPanel.prototype.checkElementNav = async function (d,i){
   var navPanel=this;
-  ////console.log(row)
-  let node=get_node_from_element(row.id.split("_menu-option_")[0])
-  let miNumber=row.getAttribute("id").split("_menu-option_")[1]
-  //let form = { "url": menuItems.selectedRows[miNumber]["endpoint_url"], "uri": menuItems.selectedRows[miNumber]["uri"], "position": menuItems.selectedRows[miNumber]["position"],"query":menuItems.selectedRows[miNumber]["query"]}
-  ////console.log(node)
-  ////console.log(menuItems.selectedRows[miNumber])
-  await addExpertGraph(menuItems.selectedRows[miNumber],node)
-  clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
-/*   let node=get_node_from_element(row.id.split("_menu-option_")[0])
-  let i=row.id.split("_menu-option_")[1]
-  node.menuOption=menuItems.selectedRows[i]["option"]
-  let graphType=await addBasicGraph(menuItems.selectedRows[i],node)
-  if(graphType=="TREE"){
-    clickBubbleGraph(document.getElementById(row.id.split("_menu-option_")[0]))
-  } */
-}
-
-NavigationPanelExpert.prototype.addCodeMenuTable = async function (tBodyRef){
-  let code = await getHtmlCodeFromFile("pages/menu-table-property.html");
-
-  menuItems.selectedRows = menuItems.selectedRows.reverse();
-  for (var i = 0; i < menuItems.selectedRows.length; i++) {
-    let menuOption="Sparql Endpoint: "+ menuItems.selectedRows[i]["endpoint_url"]+" Position: " +positionFullText(menuItems.selectedRows[i]["position"])
-    let tooltipText="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["endpoint_url"]
-    if(!tBodyRef){
-      $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-    }else{
-      //$('#myModal #dvTable tbody').append(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
-      $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-    } 
-  }
-/*   ////console.log(menuItems.selectedRows[i])
-  let menuOption="Sparql Endpoint: "+ menuItems.selectedRows[i]["endpoint_url"]+" Position: " +positionFullText(menuItems.selectedRows[i]["position"])
-  let tooltipText="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["endpoint_url"]
-  if(!tBodyRef){
-    $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-  }else{
-    //$('#myModal #dvTable tbody').append(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
-    $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-  }  */
-}
-
-NavigationPanelExpert.prototype.checkElementNav = async function (d,i){
-  var navPanel=this;
-  if(i==0){
+  if(d.class!="free"){
     await navPanel.addElementNav(d,i)
   }else{
-    await navPanel.addElementNavProp(d,i)
-    await navPanel.addElementNav(d,i)
-  }
-}
-
-NavigationPanelBasic.prototype.checkElementNav = async function (d,i){
-  var navPanel=this;
-  await navPanel.addElementNav(d,i)
-}
-NavigationPanelBasic.prototype.addTextToHeaderContentTable = function (){
-  $("#dvTable #nav-children-header").text(configRow.option_text)
-}
-
-NavigationPanelExpert.prototype.addTextToHeaderContentTable = function (){
-}
-
-NavigationPanelExpert.prototype.labelGraph = function (menuOption){
-  let label=`Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1]
-  return label
-}
-NavigationPanelBasic.prototype.labelGraph = function (menuOption){
-  var navPanel=this,exists;
-  let label=menuOption[0]
-  if(label=="no options"){
-    if(configFile.filter(d=>d.class==navPanel.node.class)[0]){
-      label=configFile.filter(d=>d.class==navPanel.node.class)[0]["option_text"]
+    if(i==0){
+      await navPanel.addElementNav(d,i)
     }else{
-      const res = configFile.filter(function (x){
-          if(x.hierarchy){
-            exists=x.hierarchy.some(y => y.parent === navPanel.node.class)
-          }
-        return exists
-      })
-      label=res[0]["option_text"]
+      await navPanel.addElementNavProp(d,i)
+      await navPanel.addElementNav(d,i)
     }
-    
-  }else{
-    label=configFile.file.filter(d=>d.option==label)[0]["option_text"]
   }
+}
+
+NavigationPanel.prototype.labelGraph = function (menuOption){
+  var navPanel=this,exists,label;
+  if(navPanel.node.class!="free"){
+    label=menuOption[0]
+    if(label=="no options"){
+      if(configFile.filter(d=>d.class==navPanel.node.class)[0]){
+        label=configFile.filter(d=>d.class==navPanel.node.class)[0]["option_text"]
+      }else{
+        const res = configFile.filter(function (x){
+            if(x.hierarchy){
+              exists=x.hierarchy.some(y => y.parent === navPanel.node.class)
+            }
+          return exists
+        })
+        label=res[0]["option_text"]
+      }
+      
+    }else{
+      label=configFile.file.filter(d=>d.option==label)[0]["option_text"]
+    }
+  }else{
+    label=`Sparql Endpoint: ` + menuOption[0]+ ` and Position: ` +menuOption[1]
+  }
+
   return label
+}
+NavigationPanel.prototype.addTextToHeaderContentTable = function (){
+  var navPanel=this
+  if(navPanel.node.class!="free"){
+    $("#dvTable #nav-children-header").text(configRow.option_text)
+  } 
 }
 
 function showHideNavigation(){

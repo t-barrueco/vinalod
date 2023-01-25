@@ -142,6 +142,7 @@ FilterClassBasic.prototype.setValuesFilters= function(filterId){
 
 FilterClassBasic.prototype.setTitle = async function () {
   var cf=this;
+  console.log(cf)
   cf.code=cf.code.replaceAll("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
 
@@ -262,7 +263,7 @@ FilterClassExpert.prototype.setValuesFilters = function(filterId){
 
 FilterClassExpert.prototype.setTitle = async function () {
   var cf=this,name;
-  cf.internalName=cf.name.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_")
+  cf.internalName=noPunctuationStr(cf.name)
   cf.code=cf.code.replaceAll("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
 
@@ -791,6 +792,8 @@ class FilterExpertDropdown extends FilterExpert {
       }else{
         code=code.replaceAll("HelperText","")
       } */
+      console.log(fi.internalClass)
+      console.log(document.getElementById(fi.internalClass+"_filters"))
       $("#"+fi.internalClass+"_filters").append($(code)).ready(function () {
         //console.log(code)
         var select=document.getElementById("select-default")
