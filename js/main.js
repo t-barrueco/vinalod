@@ -685,6 +685,31 @@ function clearFilters(){
   networkGraph.refreshNoFilters()
 }
 
+/*************************************************************************
+************CHECK EXISTING BASIC GRAPH NODE IN EXPERT GRAPH**************
+*************************************************************************/
+async function checkBasicGraph(node){
+  var classesLinesConfig={},results;
+  console.log(node)
+/*   if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
+    node["children"]=networkGraph.treeData.filter(d=>d.id==node.id)[0]["children"]
+  } */
+  for (var i = 0; i < configFile.length; i++) {
+    if(configFile[i].modelClass!=undefined){
+      if(Object.keys(classesLinesConfig).includes(configFile[i].modelClass)){
+        classesLinesConfig[configFile[i].modelClass]["lines"].push(i)
+      }else{
+        classesLinesConfig[configFile[i].modelClass]={"class":configFile[i]["class"],"lines":[i],"class_orig":configFile[i]["classes_text"].filter(o => o.text === configFile[i].class)[0]["class"]}
+      }
+    }
+  }
+  networkGraph.classesLinesConfig=classesLinesConfig
+  results=await checkClassesNode(node,classesLinesConfig)
+  //////////console.log(results)
+  networkGraph.nodesLinkBasicGraph=results
+  addColorsBasicGraph(results,node["children"])
+}
+
 /****************************************************
 ************INITIALIZE ALL MODAL WINDOWS**************
 *****************************************************/
