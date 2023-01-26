@@ -689,25 +689,100 @@ function clearFilters(){
 ************CHECK EXISTING BASIC GRAPH NODE IN EXPERT GRAPH**************
 *************************************************************************/
 async function checkBasicGraph(node){
-  var classesLinesConfig={},results;
-  console.log(node)
+  var classesLinesConfig={},filterClasses="",results,child;
+  //console.log(node)
+  //console.log(classesLinesConfig)
 /*   if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
     node["children"]=networkGraph.treeData.filter(d=>d.id==node.id)[0]["children"]
   } */
-  for (var i = 0; i < configFile.length; i++) {
-    if(configFile[i].modelClass!=undefined){
-      if(Object.keys(classesLinesConfig).includes(configFile[i].modelClass)){
-        classesLinesConfig[configFile[i].modelClass]["lines"].push(i)
+  //console.log(configFile)
+  for (var i = 0; i < configFile.file.length; i++) {
+    if((configFile.file[i].modelClass!=undefined)&&(configFile.file[i].modelClass!="None")){
+      if(Object.keys(classesLinesConfig).includes(configFile.file[i].modelClass)){
+        classesLinesConfig[configFile.file[i].modelClass]["lines"].push(i)
       }else{
-        classesLinesConfig[configFile[i].modelClass]={"class":configFile[i]["class"],"lines":[i],"class_orig":configFile[i]["classes_text"].filter(o => o.text === configFile[i].class)[0]["class"]}
+        //console.log(configFile.file[i])
+        classesLinesConfig[configFile.file[i].modelClass]={"class":configFile.file[i]["class"],"lines":[i],"class_orig":configFile.file[i]["classes_text"].filter(o => o.text === configFile.file[i].class)[0]["class"]}
       }
     }
   }
-  networkGraph.classesLinesConfig=classesLinesConfig
-  results=await checkClassesNode(node,classesLinesConfig)
+  console.log(classesLinesConfig)
+  var classesInConfig=Object.keys(classesLinesConfig)
+  //networkGraph.classesLinesConfig=classesLinesConfig
+  for (var i = 0; i < classesInConfig.length; i++) {
+    console.log(classesInConfig[i])
+    if(filterClasses==""){
+      filterClasses+="(<"+classesInConfig[i]+">"
+    }else{
+      filterClasses+=",<"+classesInConfig[i]+">"
+    }
+    console.log(filterClasses)
+  }
+  filterClasses+=")"
+
+  for (var i = 0; i < node.children.length; i++) {
+    console.log(node.children[i])
+    if(node.children[i]["type"]=="uri"){
+      results=await checkClassesNode(node.children[i],classesLinesConfig,filterClasses)
+    }
+  }
+  
   //////////console.log(results)
-  networkGraph.nodesLinkBasicGraph=results
-  addColorsBasicGraph(results,node["children"])
+  //networkGraph.nodesLinkBasicGraph=results
+  //addColorsBasicGraph(results,node["children"])
+}
+
+async function checkClassesNode(node,classesLinesConfig,filterClasses){
+  ////////console.log(node)
+  //var filterClasses="",subjectObject=node.children[0]["subject-object"],sparqlQuery,settings,endpoint_url=node.children[0]["url"],results,resultsAsk;
+  var sparqlQuery,settings,results,resultsAsk;
+ 
+
+  console.log(filterClasses)
+  console.log(node)
+
+/*   if(subjectObject=="s"){
+    sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?s ?p ?child. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
+  }else{
+    sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?child ?p ?o. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?o=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
+  } */
+  sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?s ?p ?child. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
+  console.log(sparqlQuery)
+  prefixes=""
+  queryUrl = node["url"] + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+  results = await runSparlqQuery(node["url"],sparqlQuery,"query")
+  console.log(results)
+  results=await filterResults(results,classesLinesConfig)
+  //////////console.log(results)
+  return results
+  async function filterResults(results,classesLinesConfig){
+    var askquery,filteredResults=[];
+    for (var i = 0; i < results.length; i++) {
+      for (var j = 0; j < classesLinesConfig[results[i]["class"]["value"]]["lines"].length; j++) {
+        if(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]){
+          askquery=configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
+        }else{
+          askquery=fromSelectToAskQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["query"])
+        }
+        if(askquery){
+          if(askquery.indexOf("PARAMETER2") === -1){
+            askquery=askquery.replaceAll("PARAMETER",results[i]["child"]["value"])
+            resultsAsk= await runAskSparlqQuery(configFile[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery)
+            if(resultsAsk){
+              filteredResults.push(results[i])
+              idNode=node["children"].filter(d=>d.value==results[i]["child"]["value"]).map(v=>v.id)
+              if(d3.select("#"+idNode).data()[0]["configRow"]==""){
+                d3.select("#"+idNode).data()[0]["configRow"]=[]
+              }
+              d3.select("#"+idNode).data()[0]["configRow"].push(classesLinesConfig[results[i]["class"]["value"]]["lines"][j])
+            }
+          }
+        }
+      }
+    }
+    return filteredResults
+  }
 }
 
 /****************************************************
