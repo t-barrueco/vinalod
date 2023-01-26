@@ -486,6 +486,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
     ldg.treeData=[]
   }
 
+  console.log(configRow)
   if(configRow.class){
     buildTreeDataBasic()
   }else{
@@ -514,6 +515,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
       for (let i = 0; i < treeResults.length; ++i) {
           if(configRow.results[j][treeResults[i]]){
               if(i>0){
+                console.log(treeData)
                 indexParent=checkNodeInTreeData()
                 if(treeData[indexParent]["children"].filter(d=>d.value==configRow.results[j][treeResults[i]]["value"]).length==0){
                     child=nodeValues(configRow.results[j],i)
@@ -524,11 +526,20 @@ LinkedDataGraph.prototype.buildTreeData = function () {
                         treeData.push(child)
                     }
                 }
+                procNode[i]=configRow.results[j][treeResults[i]]["value"]
               }else{
                 if(treeData.length==0) createMenuOptionNodes(j)
+                //console.log(configRow.node)
+                if((configRow.node)&&(configRow.node.class=="free")){
+                  procNode[i]=configRow.node.value
+                }else{
+                  procNode[i]=configRow.results[j][treeResults[i]]["value"]
+                }
               } 
-          } 
-          procNode[i]=configRow.results[j][treeResults[i]]["value"]
+          }
+          //if 
+          //console.log(treeData)
+          //procNode[i]=configRow.results[j][treeResults[i]]["value"]
       }
       procNode=[]
     }
@@ -589,6 +600,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
     }
   }
   function checkNodeInTreeData(){
+    console.log(procNode)
     var pathSearch=JSON.parse(JSON.stringify(procNode));
     var prevNodeIndex=-1,prevNodeId;
     while(pathSearch.length>0){
@@ -596,6 +608,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
           prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==pathSearch[0])[0]["id"]
           prevNodeIndex=treeData.findIndex(d=>d.id==prevNodeId)
       }else{
+          //if(d.class!="free")
           prevNodeIndex=treeData.findIndex(d=>d.value==pathSearch[0])
           if(treeData.filter((element) => element.children.some((subElement) => subElement.class === "menuOption")).length>0){
             prevNodeId=treeData[prevNodeIndex]["children"].filter(d=>d.value==configRow.option)[0]["id"]

@@ -226,7 +226,13 @@ function replaceParmtrsQuery(query,parameters,node){
               query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
           } 
       }
-      query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]);    
+      console.log(node)
+      if(node.class!="free"){
+        query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]); 
+      }else{
+        query=query.replaceAll("PARAMETER", node.value); 
+      }
+         
   }
   return query
 }

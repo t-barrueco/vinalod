@@ -556,9 +556,10 @@ NetworkGraph.prototype.enterGraph = function(){
       ////////////////////////////////console.log(d3.select("#"+configRow.node.id).data()[0])
       handleMouseout(configRow.node.id)
     }
-    
+    console.log(vis.nodesClassesShow)
     vis.colorScale.domain(Object.values(vis.nodesClassesShow))
     vis.colorScale.range(vis.colors.slice(0,Object.values(vis.nodesClassesShow).length))
+    console.log(vis.colorScale.range())
     vis.isDblclick = false;
   
     vis.timeoutTiming = 500;
