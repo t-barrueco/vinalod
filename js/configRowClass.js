@@ -5,7 +5,7 @@ ConfigRow = function (_option,_node) {
 
 ConfigRow.prototype.init = async function () {
     var cr=this
-    ////////////console.log("init")
+    //////////////console.log("init")
     cr.getValuesFromOption()
     cr.replaceParmtrsQuery("query")
     cr.getNameClasses()
@@ -13,11 +13,11 @@ ConfigRow.prototype.init = async function () {
 }
 ConfigRow.prototype.import=function(configRowObject){
   var cr=this
-  console.log(configRowObject)
+  //console.log(configRowObject)
   Object.keys(configRowObject).forEach(function(k){
     cr[k]=configRowObject[k]
   })
-  console.log(cr)
+  //console.log(cr)
 }
 
 ConfigRow.prototype.update = async function(option,node){
@@ -106,16 +106,16 @@ ConfigRowBasic.prototype.clusterResults = function (){
   }else{
     cr.hierarchy.forEach(function(h,i){
       unique = [...new Set(cr.results.map(item => item[h.parent].value))];
-      //////////console.log(unique)
+      ////////////console.log(unique)
       unique.forEach(function(u){
         number = cr.results.reduce(function (n, r) {
           return n + (r[h.parent].value == u);
         }, 0);
         numberResults[u]=number
       })
-      //////////console.log(numberResults)
+      ////////////console.log(numberResults)
       if(cr.hierarchy[i-1]){
-        //////////console.log(cr.results[0][cr.hierarchy[i-1]["parent"]].value)
+        ////////////console.log(cr.results[0][cr.hierarchy[i-1]["parent"]].value)
         numberResults[cr.results[0][cr.hierarchy[i-1]["parent"]].value]=unique.length
       }
     })
@@ -133,10 +133,10 @@ ConfigRowBasic.prototype.getValuesFromOption = async function () {
   var cr=this,rowFields;
   cr.rowNumber=configFile.getRowNumber(cr.option)
   rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
-  //////////console.log(rowFields)
+  ////////////console.log(rowFields)
   Object.keys(rowFields).forEach(function(k){
     if(k=="hierarchy"){
-      //////////console.log(rowFields[k])
+      ////////////console.log(rowFields[k])
     }
     cr[k]=rowFields[k]
   })
@@ -153,26 +153,26 @@ ConfigRowExpert.prototype = Object.create(ConfigRow.prototype);
 
 ConfigRowExpert.prototype.getValuesFromConfig = async function (option) {
   var cr=this;
-  ////////console.log(option)
+  //////////console.log(option)
   option=JSON.parse(JSON.stringify(option));
   Object.keys(option).forEach(function(k){
     /* if(k=="hierarchy"){
-      //////////console.log(option[k])
+      ////////////console.log(option[k])
     } */
     cr[k]=option[k]
   })
-  ////////console.log(cr)
+  //////////console.log(cr)
 }
 
 ConfigRowExpert.prototype.fromOptionToConfigRow = async function(option){
   var cr=this;
 
   Object.keys(option).forEach(function(k){
-    ////console.log(k)
-    ////console.log(option[k])
+    //////console.log(k)
+    //////console.log(option[k])
     cr[k]=option[k]
   })
-  ////console.log(cr)
+  //////console.log(cr)
   
   //cr["askquery"]=option["askquery"]
   cr["node"]=node
@@ -183,20 +183,20 @@ ConfigRowExpert.prototype.fromOptionToConfigRow = async function(option){
 
   cr.getNameClasses()
   await cr.getResults()
-  ////console.log(cr.results)
+  //////console.log(cr.results)
 }
 
 ConfigRowExpert.prototype.getValuesFromOption = async function () {
   var cr=this;
-  ////////console.log(cr.option)
+  //////////console.log(cr.option)
   let option=JSON.parse(JSON.stringify(cr.option));
   Object.keys(option).forEach(function(k){
     /* if(k=="hierarchy"){
-      //////////console.log(option[k])
+      ////////////console.log(option[k])
     } */
     cr[k]=option[k]
   })
-  ////////console.log(cr)
+  //////////console.log(cr)
 }
 ConfigRowExpert.prototype.getNameClasses = function () {
   var cr=this;
@@ -204,7 +204,7 @@ ConfigRowExpert.prototype.getNameClasses = function () {
 }
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
-  //////console.log(cr)
+  ////////console.log(cr)
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
 }
 

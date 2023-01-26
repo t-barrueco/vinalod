@@ -12,8 +12,8 @@ Legend.prototype.init = function () {
 }
 Legend.prototype.initColors=function(i){
     var le=this;
-    console.log(le.graph.colorScale.domain())
-    console.log(le.graph.colorScale.range())
+    //console.log(le.graph.colorScale.domain())
+    //console.log(le.graph.colorScale.range())
 
     for (i; i < le.graph.colorScale.domain().length; i++) {
         le.addOne(i,le.graph.colorScale.domain()[i])
@@ -21,7 +21,7 @@ Legend.prototype.initColors=function(i){
 }
 Legend.prototype.addColors=function(){
     var le=this;
-    console.log(le.graph.colorScale.domain())
+    //console.log(le.graph.colorScale.domain())
     if(le.graph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }

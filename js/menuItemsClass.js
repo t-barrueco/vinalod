@@ -10,7 +10,7 @@ MenuItems.prototype.init = async function () {
   await mi.buildOptions()
   mi.filterByMenuOption()
   await mi.filterByAskResult()
-  console.log(mi)
+  //console.log(mi)
 }
 
 MenuItems.prototype.filterByMenuOption = function () {
@@ -25,11 +25,11 @@ MenuItems.prototype.filterByMenuOption = function () {
   var mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
-    console.log(mi.indexRows[i])
+    //console.log(mi.indexRows[i])
       try {
-          console.log(mi.indexRows[i].askquery)
+          //console.log(mi.indexRows[i].askquery)
           results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
-          console.log(results)
+          //console.log(results)
       } catch (e) {
       results = false
       } 
@@ -51,7 +51,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
     var elementMenu,position,width
     mi.menuItems=[]
 
-    //console.log(mi.selectedRows)
+    ////console.log(mi.selectedRows)
     for (var i = 0; i < mi.selectedRows.length; i++) {
         elementMenu=mi.detailsMenuItemsInGraph(i)
         mi.menuItems.push(elementMenu)
@@ -126,21 +126,21 @@ MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
   var mi=this,option;
-  //console.log(mi.node["position"])
+  ////console.log(mi.node["position"])
   configFileExpert.option.forEach(option => {
     let position = option.match("and Position: (.*)")[1];
     if((!mi.node["position"])||(position==mi.node["position"])){
       mi.indexRows.push(new OptionNodeExpert(option,mi.node))
     }
   })  
-  console.log(node)
+  //console.log(node)
   if((node.configRow)&&(node.configRow.length>0)){
     for (var i = 0; i < node.configRow.length; i++) {
       mi.indexRows.push(new OptionNodeBasic(configFile.file[node.configRow[i]].option,mi.node))
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     }
   }
-  console.log(mi.indexRows)
+  //console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
@@ -154,9 +154,9 @@ MenuItemsExpert.prototype.filterByAskResult = async function () {
   for (var i = 0; i < mi.indexRows.length; i++) {
     if(!mi.indexRows[i] instanceof OptionNodeBasic){
       try {
-        console.log(mi.indexRows[i].askquery)
+        //console.log(mi.indexRows[i].askquery)
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
-        console.log(results)
+        //console.log(results)
       } catch (e) {
       results = false
       } 
@@ -172,28 +172,33 @@ MenuItemsExpert.prototype.filterByAskResult = async function () {
 
 MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
   var mi=this;
-  console.log(mi.selectedRows[i])
+  //console.log(mi.selectedRows[i])
+  //console.log(mi.selectedRows[i] instanceof OptionNodeBasic)
   //detailsMenuItemsInGraphBasic(i)
-  if(!mi.selectedRows[i] instanceof OptionNodeBasic){
+  if(!(mi.selectedRows[i] instanceof OptionNodeBasic)){
+    //console.log("pasa por if")
     elementMenu = {
         title: "Sparql Endpoint: " + mi.selectedRows[i].endpoint_url + " and Position: " + mi.selectedRows[i]["position"],
         action: async (data,d) => {
+        configRow=new ConfigRowExpert(d.title,menuItems.node)
+        //settingsFromOption("expert")
         let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
         let position = d.title.match("and Position: (.*)")[1];
         let selectedRow=mi.selectedRows.filter(s=>(s.position==position&&s.endpoint_url==url))[0]
   /*       form = { "url": url, "uri": selectedRow.node.uri, "position": position,"query":selectedRow.query}
-        //console.log(data)
-        //console.log(d)
-        //console.log("entra por details menu in graph")
+        ////console.log(data)
+        ////console.log(d)
+        ////console.log("entra por details menu in graph")
         addExpertGraph(form,data)
         setMenuOption(data,d.title) */
         addExpertGraph(selectedRow,node)
         }
     }
-    return elementMenu
   }else{
-    return detailsMenuItemsInGraphBasic(i)
+    //console.log("pasa por aquí")
+    elementMenu=detailsMenuItemsInGraphBasic(i)
   }
+  return elementMenu
 }
 
 MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
@@ -258,11 +263,11 @@ MenuItemsBasic.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
-    console.log(mi.indexRows[i])
+    //console.log(mi.indexRows[i])
       try {
-          console.log(mi.indexRows[i].askquery)
+          //console.log(mi.indexRows[i].askquery)
           results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
-          console.log(results)
+          //console.log(results)
       } catch (e) {
       results = false
       } 
@@ -278,8 +283,12 @@ MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
   elementMenu={
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {
-        setMenuOption(data,d.title)
-        addBasicGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
+      if(configRow instanceof ConfigRowExpert){
+        configRow = new ConfigRowBasic(d.title);
+        await configRow.init()
+      }
+      setMenuOption(data,d.title)
+      addBasicGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
     }
     }
   return elementMenu
@@ -292,24 +301,24 @@ function detailsMenuItemsInGraphBasic(i){
     action: async (data,d) => {
         if((!configRow)||(configRow instanceof ConfigRowExpert)){
           configRow = new ConfigRowBasic(d.title);
-          console.log(networkGraph)
-          console.log(Object.keys(networkGraph.colorCorrespondence))
-          console.log(Object.keys(networkGraph.colorCorrespondence).filter(x => !networkGraph.colorScaleRange.includes(x)) );
+          //console.log(networkGraph)
+          //console.log(Object.keys(networkGraph.colorCorrespondence))
+          //console.log(Object.keys(networkGraph.colorCorrespondence).filter(x => !networkGraph.colorScaleRange.includes(x)) );
 
           await configRow.init()
           let newColors=Object.keys(networkGraph.colorCorrespondence).filter(function(x){
-            console.log(x)
-            console.log(networkGraph.colorScaleRange.includes(x))
+            //console.log(x)
+            //console.log(networkGraph.colorScaleRange.includes(x))
             if(!networkGraph.colorScaleRange.includes(x)){
               return x;
             }
           });
-          console.log(newColors)
+          //console.log(newColors)
 
           let newClasses=configRow.getClassesCorrespondence()
-          console.log(newClasses)
+          //console.log(newClasses)
           networkGraph.nodesClassesShow = { ...networkGraph.nodesClassesShow,  ...newClasses };
-          console.log(networkGraph.nodesClassesShow)
+          //console.log(networkGraph.nodesClassesShow)
           networkGraph.colorScaleRange=networkGraph.colorScaleRange.concat(newColors)
           networkGraph.colors=networkGraph.colors.concat(["#FCA5A5","#C4B5FD","#D1D5DB","#10B981","#F59E0B","#EC4899","#3B82F6","#6B7280"])
           networkGraph.colorScale
@@ -319,7 +328,7 @@ function detailsMenuItemsInGraphBasic(i){
         addBasicGraph(menuItems.selectedRows.filter(s=>s.option==d.title)[0],data)
     }
     }
-    console.log(configRow)
+    //console.log(configRow)
   return elementMenu
 }
 
