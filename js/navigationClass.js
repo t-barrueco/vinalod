@@ -17,11 +17,6 @@ NavigationPanel.prototype.init = function () {
   navPanel.element=document.getElementById(navPanel.node.id)
   navPanel.getNodes()
 
-  //////////console.log(navPanel.sources)
-  //////////console.log(navPanel.targets)
-  //////////console.log(navPanel.fromNodes)
-  //////////console.log(navPanel.toNodes)
-
   navPanel.navTableTable()
 
   navPanel.contentTable()
@@ -34,7 +29,6 @@ NavigationPanel.prototype.init = function () {
 NavigationPanel.prototype.getNodes = function (){
   var navPanel=this;
   var sources
-  //console.log(networkGraph.data.links)
 
   if(navPanel.node){
     if(navPanel.node.class=="more_results"){
@@ -42,10 +36,12 @@ NavigationPanel.prototype.getNodes = function (){
       navPanel.targets=buildtargetNodes(index)
       navPanel.more_results=true
     }else{
+      //console.log(networkGraph.data.links)
+      //console.log(navPanel.node.id)
       navPanel.targets=networkGraph.data.links.filter(function(item) {
         return item.source.id == navPanel.node.id
       })
-      //////////console.log(navPanel.targets)
+      //console.log(navPanel.targets)
       navPanel.more_results=false
     }
   }else{
@@ -60,7 +56,6 @@ NavigationPanel.prototype.getNodes = function (){
       return item.target.id == navPanel.node.id
     })
     navPanel.toNodes=navPanel.targets
-    //////////console.log(navPanel.fromNodes)
     navPanel.fromNodes=changetargetPerSource(navPanel.fromNodes)
     navPanel.targets=navPanel.fromNodes
   }else{
@@ -76,16 +71,18 @@ NavigationPanel.prototype.getNodes = function (){
     if (navPanel.sources.length>0){
       navPanel.sources=navPanel.sources.reverse();
     }
-
-    //console.log(navPanel.sources)
     navPanel.fromNodes=[]
     navPanel.toNodes=[]
-
   }
+  //console.log(networkGraph.data)
+  //console.log(networkGraph.treeData)
+  //console.log(navPanel.sources)
   //console.log(navPanel.targets)
 
   function recurse(node) {
-    navPanel.sources.push(node)
+    if(navPanel.sources.indexOf(node)==-1){
+      navPanel.sources.push(node)
+    }
     let sourcesNode=networkGraph.data.links.filter(function(item) {
       return item.target.id == node.id
     })
@@ -235,14 +232,11 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
   }else{
     file="pages/navTable_element.html"
   }
-
-  //////console.log(navPanel.sources[i])
   code = await getHtmlCodeFromFile(file)
   .then(success => {return (success)})
   
   $("#navTable ol").append(code)
 
-  //console.log(navPanel.ol.querySelector("#li-empty"))
   let li=navPanel.ol.querySelector("#li-empty")
   li.removeAttribute("id")
   let a=li.querySelector("a")
@@ -253,10 +247,6 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
     relation.querySelector(".ecl-timeline__content").innerHTML = navPanel.sources[i]["relation"]
     relation.id=navPanel.sources[i]["id"]+"_relation"
   }
-  //console.log(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])
-  //console.log(networkGraph.nodesClassesShow)
-  //console.log(navPanel.sources)
-  //console.log(navPanel.sources[i]["class"])
   
   if(navPanel.sources[i]["class"]=="free"){
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(navPanel.sources[i]["type"])]
@@ -264,7 +254,6 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
   }
 
-  //console.log(colorCircle)
   let navImage=li.querySelector("#nav_image")
   if(navImage){
     navImage.classList.add("bg-"+ colorCircle)
@@ -284,24 +273,18 @@ NavigationPanel.prototype.addElementNavProp = async function (source,i,property)
 
   let code = await getHtmlCodeFromFile("pages/navTable_property.html");
 
-  //code=code.replace("arrow-image",navPanel.imageArrowDown)
-  //console.log(source)
   if(configRow["position"]=="s"){
     code=code.replace("arrow-image",navPanel.imageArrowDown)
   }else if(configRow["position"]=="o"){
-    //console.log("entra en o")
-    //console.log(navPanel.imageArrowUp)
     code=code.replace("arrow-image",navPanel.imageArrowUp)
   }
-  //console.log(code)
+
   if(source["property"]){
     code=code.replace("Text Property",source["property"]).replace("NameSparqlEndpoint",source["url"])
   }else{
-    //console.log(source)
     code=code.replace("Text Property","").replace("NameSparqlEndpoint",source["url"])
   }
 
-  ////console.log(code)
   $("#navTable ol").append(code).ready(function () {
 
   })
@@ -311,7 +294,6 @@ NavigationPanel.prototype.addEventsNav = function (){
   var navPanel=this;
   d3.selectAll("#navTable a").on("dblclick",function(){ 
     d3.event.preventDefault();
-    ////console.log("dblclick")
     dblclickNav(this)
     d3.event.stopPropagation()
   })
@@ -335,7 +317,6 @@ NavigationPanel.prototype.contentTable = async function (){
   navPanel.contentRows=[]
 
   if (navPanel.targets.length>0){
-    //$("#dvDetails").hide()
     hideNavDetails()
     showNavContentTable()
     showNavContentTablePagination()
@@ -354,14 +335,11 @@ NavigationPanel.prototype.contentTable = async function (){
       if(menuOption){
         if(menuOption.split(";").length>1){
           $("#dvTable th").text("Several options displayed in graph. Click on each option to see results:");
-          ////////console.log($("#dvTable th").text())
         }else{
           menuOption=menuOption.split(",")
           label=navPanel.labelGraph(menuOption)
         }
-      }
-
-     
+      }     
     }
     navPanel.tbody=document.getElementById("nav-children-tbody")
     navPanel.showLines(navPanel.numCurrent,true)
@@ -369,8 +347,6 @@ NavigationPanel.prototype.contentTable = async function (){
     if(($("#div-pagination").length)==0){
       let code = await getHtmlCodeFromFile("pages/navPagination.html");
       $("#dvTable").append(code)
-      ////////console.log("autoInit")
-      ////////console.log(ECL.autoInit());
       runAutoInit()
     }
 
@@ -385,14 +361,11 @@ NavigationPanel.prototype.contentTable = async function (){
     if(navPanel.node.detail!=undefined){
       navPanel.showDetails()
     }else{
-      //$("#dvDetails").empty()
       emptyNavDetails()
     }
   }
 
   if((navPanel.numPages>1)&&(!document.getElementById("search-nav-content"))){
-    //console.log(document.getElementById("search-nav-content"))
-    //if()
     let search=searchHtml()
     $( "#dvTable th" )
     .html( $( "#dvTable th" ).html()+search);
@@ -589,25 +562,9 @@ NavigationPanel.prototype.showNumberPages = async function (){
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
   var navPanel=this;
-  //(navPanel.fromNodes.length==0)||
-/*   if((navPanel.targets.length==0)||((navPanel.node.detail=="")||(navPanel.node.detail==undefined))){
-    hideNavTabs()
-  }else{
-    showNavTabs()
-    $("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav");
-  } */
-  //////////console.log(navPanel.fromNodes)
-  //////////console.log(navPanel.targets)
-  //////////console.log(navPanel.node.detail)
-  //////////console.log(navPanel.node.detail!="")
   if((navPanel.fromNodes.length>0)||((navPanel.targets.length>0)&&(navPanel.node.detail!=""))){
     showNavTabs()
-    //let autoInit=ECL.autoInit()
-    ////////console.log(autoInit)
-    ////////console.log(autoInit.update())
     let component=$("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav")[0]
-    //////console.log(component);
-    //////console.log(component)
     runAutoInit(component)
   }else{
     hideNavTabs()
@@ -686,10 +643,6 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
   }else{
     linesShown=navPanel.targets.slice(navPanel.pages.startIndex - 1, navPanel.pages.endIndex);
   }
-  
-/*   if(cluster){
-    $("#add-sel-graph").show()
-  } */
 
   for (var i = 0; i < linesShown.length; i++) {
     row = navPanel.tbody.insertRow(-1);
@@ -722,7 +675,6 @@ NavigationPanel.prototype.addEventsContentNav = function (){
       nodeSearchField.addEventListener("keyup", function(event) {
       if (event.key === 'Enter' ) {
         // Cancel the default action, if needed
-        ////////////console.log("enter")
         event.preventDefault();
 
         navPanel.valueSelected()
@@ -763,12 +715,10 @@ NavigationPanel.prototype.addHeaderContentTable = async function (){
 NavigationPanel.prototype.addElementContentTable = async function (target,i){
   var navPanel=this;
   let code = await getHtmlCodeFromFile("pages/elementContentTable.html");
-  //////////console.log(target)
   $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(target["target"]))
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]);
-    //console.log(navPanel.more_results)
     if(navPanel.more_results){
 
       $(".cluster-check").parent().removeClass("hidden")
@@ -786,10 +736,8 @@ function addToGraph(){
 }
 NavigationPanel.prototype.addToGraph = function (){
   var navPanel=this,node,indexChild;
-  //////////console.log(navPanel.clusterElSelected)
   let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
   navPanel.clusterElSelected.forEach(function(d){
-    //////////console.log(linkedDataGraph.treeData[index])
     indexChild=linkedDataGraph.treeData[index]["more_results"].findIndex(c=>c.id==d)
     node=linkedDataGraph.treeData[index]["more_results"][indexChild]
     linkedDataGraph.treeData[index]["children"].push(node)
@@ -805,8 +753,6 @@ NavigationPanel.prototype.addToGraph = function (){
 }
 NavigationPanel.prototype.addElChecked = function (el){
   var navPanel=this;
-  //////////console.log(el)
-  //////////console.log(el.closest( "tr" ))
   if(el.checked){
     navPanel.clusterElSelected.push(el.closest( "tr" ).getAttribute("id").replace("_row",""))
   }else{
@@ -888,9 +834,7 @@ NavigationPanel.prototype.clickCellContent = async function (cell){
 NavigationPanel.prototype.dblclickNav = async function (cell) {
   var navPanel=this,bubble;
   bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","").replace("_li","")))
-  //$("#dvDetails").empty()
   emptyNavDetails()
-  ////console.log("dblclickNav")
   clickBubbleGraph(bubble,networkGraph.data)
   d3.select("#"+row.getAttribute("id"))
   .attr("stroke", "yellow")
@@ -998,23 +942,13 @@ NavigationPanel.prototype.addSelToGraph = function (){
 NavigationPanel.prototype.addMenuToTable = async function (){
 
   var navPanel=this;
-
-  //var newText,newCell,newRow,span,div,textNode
   d3.selectAll(".menu-table").remove()
   var rowIndex=$('#myModal #'+ menuItems.node["id"]+"_row")[0].rowIndex
   let tBodyRef=$('#myModal #'+ menuItems.node["id"]+"_row")
-  //console.log(menuItems.node)
   addCodeMenuTable(tBodyRef)
-/*   if(menuItems.node["class"]!="free"){
-    addCodeMenuTableBasic(tBodyRef)
-  }else{
-    addCodeMenuTableExpert(tBodyRef)
-  } */
-  //navPanel.addCodeMenuTable(tBodyRef)
 }
 
 function addCodeMenuTable(tBodyRef){
-
   if(menuItems.node["class"]!="free"){
     addCodeMenuTableBasic(tBodyRef)
   }else{
@@ -1045,7 +979,6 @@ function addCodeMenuTable(tBodyRef){
         if(!tBodyRef){
           $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
         }else{
-          //$('#myModal #dvTable tbody').append(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i));
           $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
         } 
       }
@@ -1087,7 +1020,6 @@ class NavigationPanelNoDuplicates extends NavigationPanel {
   async addHtml() {
    var fi=this;
    super.addHtml();
-       
  }
 }
 

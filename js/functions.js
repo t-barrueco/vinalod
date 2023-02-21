@@ -29,7 +29,7 @@ function showMessageForNoGraphs(){
   $("#no-graphs-message").show()
   component=$("#no-graphs-message")[0]
   runAutoInit(component)
-  ////console.log(ECL.autoInit())
+  //////console.log(ECL.autoInit())
 }
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
@@ -105,7 +105,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         action: (d) => {
           // TODO: add any action you want to perform
           //checkBasicGraph(d)
-          //console.log(d)
+          ////console.log(d)
           networkGraph.collapseBranch(d)
         }
       })
@@ -117,7 +117,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         action: (d) => {
           // TODO: add any action you want to perform
           //checkBasicGraph(d)
-          //console.log(d)
+          ////console.log(d)
           networkGraph.expandBranch(d)
         }
       })
@@ -226,7 +226,7 @@ function replaceParmtrsQuery(query,parameters,node){
               query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
           } 
       }
-      console.log(node)
+      //console.log(node)
       if(node.class!="free"){
         query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]); 
       }else{
@@ -242,6 +242,7 @@ function replaceParmtrsQuery(query,parameters,node){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
+  //console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -503,6 +504,7 @@ function getTooltipTextFreeGraph(d) {
 }
 //This is the tooltip for the menu options
 function getTooltipMenu(d){
+  //console.log(d)
   var text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="border-t border-gray-200 py-3 px-2">
           ` + d + `
@@ -534,7 +536,7 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
-      //console.log(arr)
+      ////console.log(arr)
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -549,7 +551,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
           b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          //////////////////console.log(arr[i])
+          ////////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -746,7 +748,7 @@ function textImageZoom(zoomScale){
 //based on structure
 function getDetail(detail,nodeClass){
   var detailNode="";
-
+  //console.log(detail)
   if(detail!=undefined){
     if(detail!=""){
       for (let k of detail) {
@@ -868,17 +870,17 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-  ////console.log(dateStr)
-  ////console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
+  //////console.log(dateStr)
+  //////console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 
 function addHtmlOptionsSelect(selectField,values){
-  //console.log(values)
+  ////console.log(values)
   values=checkAddAll(values)
   $('#'+selectField.getAttribute("id")+ ' option').remove()
   for (let i = 0; i < values.length; i++) {
-    //console.log(values[i])
+    ////console.log(values[i])
     var option = document.createElement("option");
     option.value = values[i];
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
@@ -886,12 +888,12 @@ function addHtmlOptionsSelect(selectField,values){
 /*     if(multiple){
       option.selected = true; 
     } */
-    //console.log(selectField)
+    ////console.log(selectField)
   }
 }
 function addHtmlOptionsSelectMultiple(selectField,values){
   for (let i = 0; i < values.length; i++) {
-    //console.log(values[i])
+    ////console.log(values[i])
     var option = document.createElement("option");
     option.value = noPunctuationStr(values[i]);
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
@@ -899,7 +901,7 @@ function addHtmlOptionsSelectMultiple(selectField,values){
 /*     if(multiple){
       option.selected = true; 
     } */
-    //console.log(selectField)
+    ////console.log(selectField)
   }
 }
 function checkAddAll(values){
@@ -1096,7 +1098,7 @@ function runAutoInit(component){
     ECLdestroy(component)
   }
   let autoInit=ECL.autoInit()
-  ////console.log(autoInit)
+  //////console.log(autoInit)
 }
 function ECLdestroy(component){
   let index=window.ECL.components.findIndex(d=>d.element==component)
@@ -1120,8 +1122,8 @@ function changeTab(tab){
 function fitSizeModal(node){
   var classText;
   let modal=document.getElementById("modal-content").parentNode
-  ////console.log(document.getElementById("modal-content"))
-  ////console.log(modal)
+  //////console.log(document.getElementById("modal-content"))
+  //////console.log(modal)
   if(node.class=="more_results"){
     let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
     classText=linkedDataGraph.treeData[index]["class"]
@@ -1255,7 +1257,11 @@ function selectTabNavPanel(element,otherText){
 }
 
 function noPunctuationStr(id){
-  console.log(id)
-  console.log(id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_"))
+  //console.log(id)
+  //console.log(id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_"))
   return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_")
+}
+
+function getMnemonicCodeForOrg(org){
+  return mnemonicCodes.filter(m=>m.org.value==org)[0]
 }

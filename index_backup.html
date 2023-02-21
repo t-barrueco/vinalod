@@ -69,14 +69,12 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> -->
        <script src="jslib/moment.min.js"></script>
        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.752.0.min.js">
       </script>
-      <!-- <script src="node_modules/moment/moment.js"></script> -->
 
     </head>
-    <body onload="dataViz()">
+    <body>
       <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header">
         <div class="ecl-site-header__container ecl-container">
           <div class="ecl-site-header__top">
@@ -97,11 +95,11 @@
         <div class="ecl-site-header__site-name">Vinalod</div>
       </div>
     </div>
-<!--     <nav class="ecl-tabs" data-ecl-tabs="true" data-ecl-auto-init="Tabs" id="main-tabs">
+    <nav class="ecl-tabs" data-ecl-tabs="true" data-ecl-auto-init="Tabs" id="main-tabs">
       <div class="ecl-tabs__container">
         <ul class="ecl-tabs__list" role="tablist">
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="changeTab(this)" id="mode-tab">Mode</a></li>
-          <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
+          <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="settings-tab">Settings</a></li>
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="import-tab">Import/Export</a></li>
           <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="legend-tab">Legend</a></li>
           <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="changeTab(this)" id="manual-tab">Manual and Live Demo</a></li>
@@ -115,9 +113,9 @@
           </svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
             <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
           </svg><span class="ecl-u-sr-only"></span></button></div>
-    </nav> -->
+    </nav>
     <div class="ecl-u-border-bottom ecl-u-border-color-grey-20" id="content-main-tabs">
-<!--     <ul role="list" class="content-item" id="mode-content">
+    <ul role="list" class="content-item" id="mode-content">
       
       <li class="px-6">
 
@@ -173,18 +171,36 @@
               </div>
               </div>
             </div>
+            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="graph-in-collection-div">
+              <div class="relative flex items-start">
+                  <div class="ecl-form-group"><label for="select-collections" class="ecl-form-label">Change graph</label>
+                  <div class="helper-collections">Show different graph in same collection.</div>
+                  <div class="ecl-select__container ecl-select__container--m">
+                    <select class="ecl-select" id="select-graph-in-collection"
+                      required="" onchange="changeGraphInCollection(this)">
+<!--                     <option value="EU Vocabularies">EU Vocabularies</option>
+ -->                  </select>
+                  <div class="ecl-select__icon"><svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape"
+                      focusable="false" aria-hidden="true">
+                      <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
+                    </svg></div>
+                </div>
+              </div>
+              </div>
+            </div>
           </dl>
         </div>
         
       </li>
-    </ul> -->
-<!--     <ul role="list" class="hidden content-item" id="settings-content">
+    </ul>
+    <ul role="list" class="hidden content-item" id="settings-content">
       <li class="px-6">
         <h4 class="ecl-u-type-heading-4">Settings buttons</h4>
 
         <div>
-          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+          <dl class="grid grid-cols-1 gap-5 sm:grid-cols-4">
+
+            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="collapse-graph-div">
               <dd class="mt-1 text-sm font-semibold text-gray-900">
                 <button class="ecl-button ecl-button--secondary" type="button"  onclick='collapse()' id="collapse">Collapse all</button>
                 <button class="ecl-button ecl-button--secondary" type="button"  onclick='expand()' id="expand">Expand all</button>
@@ -200,28 +216,41 @@
                 <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2" name="radio-group-1" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
               </fieldset>
             </div>
+
             <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
-                <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
+                <fieldset class="ecl-form-group" aria-describedby="helper-show-duplicates">
                   <legend class="ecl-form-label">Show duplicates?<span class="ecl-form-label__required">*</span></legend>
-                  <div class="ecl-help-block" id="helper-id-2">Show duplicates nodes for a more clear graph</div>
+                  <div class="ecl-help-block" id="helper-show-duplicates">Show duplicates nodes for a more clear graph</div>
               </svg>
-                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-1" name="radio-group-2" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-2-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
-                  <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
+                  <div class="ecl-radio ecl-radio--binary"><input id="show-duplicates-yes" name="show-duplicates" class="ecl-radio__input" type="radio" value="yes" checked required onchange="showDuplicates(this.value)"/><label class="ecl-radio__label" for="show-duplicates-yes"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
+                  <div class="ecl-radio ecl-radio--binary"><input id="show-duplicates-no" name="show-duplicates" class="ecl-radio__input" type="radio" value="no" required onchange="showDuplicates(this.value)"/><label class="ecl-radio__label" for="show-duplicates-no"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
                 </fieldset>
               </div>
+            </div> 
+
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+              <div class="relative flex items-start">
+                <div class="flex items-center h-5">
+                </div> 
+                <div class="ecl-form-group">
+                  <label for="cluster-number" class="ecl-form-label">Max. number of results not grouped</label>
+                  <div class="ecl-help-block">Max. number of results not grouped in node.</div>
+                  <input type="text" id="cluster-number" class="ecl-text-input ecl-text-input--m" placeholder="Enter number..." value="200" />
+                </div>
+             </div>
             </div> 
           </dl>
         </div>
         
       </li>
-    </ul> -->
-<!--     <ul role="list" class="hidden content-item" id="import-content">
+    </ul>
+    <ul role="list" class="hidden content-item" id="import-content">
       <li class="px-6">
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="share-graph-div">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -233,7 +262,7 @@
                 </fieldset>
               </div>
             </div>
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="save-graph-div">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -245,7 +274,7 @@
                 </fieldset>
               </div>
             </div>
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="import-graph-div">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -253,8 +282,8 @@
                   <legend class="ecl-form-label">Import file?</legend>
                   <div class="ecl-help-block" id="helper-id-2">Import local copy of the graph</div>
                   </svg>
-                  <input type="file" class="ecl-file-upload" data-ecl-file-upload-input="" data-ecl-auto-init="FileUpload" id="example-input-id-1" name="file-upload-name" required="" onchange="importGraph(this)"/>
-                  <label class="ecl-file-upload__button-container" for="example-input-id-1">
+                  <input type="file" class="ecl-file-upload" data-ecl-file-upload-input="" id="import-file" name="file-upload-name" required="" onchange="importGraph(this)"/>     
+                  <label class="ecl-file-upload__button-container" for="import-file">
                     <span class="ecl-file-upload__button ecl-button ecl-button--primary" data-ecl-file-upload-button="" data-ecl-file-upload-label-choose="Choose file" data-ecl-file-upload-label-replace="Replace file">Choose file</span>
                   </label>
                   <ul class="ecl-file-upload__list" data-ecl-file-upload-list=""></ul>
@@ -263,8 +292,9 @@
             </div>
           </dl>     
       </li>
-    </ul> -->
-<!--     <ul role="list" class="hidden content-item" id="manual-content">
+    </ul>
+    <ul role="list" class="hidden content-item" id="manual-content">
+      
       <li class="px-6 pb-4">
         <h4 class="ecl-u-type-heading-4">Manual and Live demo</h4>
 
@@ -275,8 +305,8 @@
           <span class="ecl-link__label">Show live demo</span>
         </a>
       </li>
-    </ul> -->
-<!--     <ul role="list" class="hidden content-item" id="legend-content">
+    </ul>
+    <ul role="list" class="hidden content-item" id="legend-content">
       <li class="px-6 pb-4">
         <h4 class="ecl-u-type-heading-4">Legend</h4>
 
@@ -284,145 +314,28 @@
       
         </ul>
       </li>
-    </ul> -->
+    </ul>
   </div>
 
 </header>
 
   <div class="relative overflow-y-scroll">
     <main class="lg:relative">
-<!--       <section class="ecl-hero-banner ecl-hero-banner--white ecl-hero-banner--centered" id="landing-page">
-        <div class="ecl-container">
-          
-          <div class="ecl-hero-banner__container">
-            <div class="ecl-hero-banner__content">
-              <div class="ecl-hero-banner__title">Visualisation and navigation of LOD graphs</div>
-              <p class="ecl-hero-banner__description">
-                <span class="ecl-hero-banner__description-text">Start navigating on basic or expert mode by selecting an option from the menu above. If you want to know more on how to navigate read the manual or see the live demo below.</span>
-              </p>
-              <div class="ecl-hero-banner__cta">
-                <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
-                  <span class="ecl-link__label">Show manual</span> -->
-<!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-180 ecl-link__icon" focusable="false" aria-hidden="true">
-                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                  </svg> -->
-<!--                 </a>
-                <a href="#" class="ecl-link ecl-link--cta ecl-link--icon ecl-link--icon-after ecl-hero-banner__link-cta">
-                  <span class="ecl-link__label">Live demo</span> -->
-<!--                   <svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
-                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                  </svg> -->
-<!--                 </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> -->
-
-
       <div class="ecl-navigation-list ecl-navigation-list--col-2" id="dataviz-collection">
 
       </div>
-<!--       <form class="ecl-search-form" role="search">
-        <div class="ecl-form-group"><label for="search-input"
-            class="ecl-form-label ecl-search-form__label">Search</label><input type="search" id="search-input"
-            class="ecl-text-input ecl-text-input--m ecl-search-form__text-input" placeholder="Placeholder text" /></div>
-        <button class="ecl-button ecl-button--search ecl-search-form__button" type="submit" aria-label="Search"><span
-            class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">Search</span><svg
-              class="ecl-icon ecl-icon--xs ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true"
-              data-ecl-icon="">
-              <use xlink:href="/component-library/dist/media/icons.cec58484.svg#search"></use>
-            </svg></span></button>
-      </form> -->
-      
       <div class="ecl-container ecl-u-d-flex" id="form-container">
       </div>
       <div class="grid hidden grid-cols-14" id="graph-area">
         <div class="object-contain col-span-12 bg-white">
           
           <div class="object-contain w-full h-full">
-      
-<!--             <div class="bg-white">
-              <div class="hidden bg-white rounded-md" id="settings-legend">                
-                <ul role="list" class="">
-                  <li class="px-6 pt-4">
-                    <h4 class="ecl-u-type-heading-4">Settings buttons</h4>
-
-                    <div>
-                      <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
-                          <dd class="mt-1 text-sm font-semibold text-gray-900">
-                            <button class="ecl-button ecl-button--secondary" type="button"  onclick='collapse()' id="collapse">Collapse all</button>
-                            <button class="ecl-button ecl-button--secondary" type="button"  onclick='expand()' id="expand">Expand all</button>
-
-                          </dd>
-                        </div>
-                    
-                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
-                          <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
-                            <legend class="ecl-form-label">Show navigation?<span class="ecl-form-label__required">*</span></legend>
-                            <div class="ecl-help-block" id="helper-id-1">Show navigation panel after clicking on graph</div>
-                            <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-1" name="radio-group-1" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
-                            <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2" name="radio-group-1" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
-                          </fieldset>
-                        </div>
-                        <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
-                          <div class="relative flex items-start">
-                            <div class="flex items-center h-5">
-                            </div>
-                            <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
-                              <legend class="ecl-form-label">Show duplicates?<span class="ecl-form-label__required">*</span></legend>
-                              <div class="ecl-help-block" id="helper-id-2">Show duplicates nodes for a more clear graph</div>
-                          </svg>
-                              <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-1" name="radio-group-2" class="ecl-radio__input" type="radio" value="yes" checked required /><label class="ecl-radio__label" for="radio-binary-2-1"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">Yes</span></label></div>
-                              <div class="ecl-radio ecl-radio--binary"><input id="radio-binary-2-2" name="radio-group-2" class="ecl-radio__input" type="radio" value="no" required /><label class="ecl-radio__label" for="radio-binary-2-2"><span class="ecl-radio__box"><span class="ecl-radio__box-inner"></span></span><span class="ecl-radio__text">No</span></label></div>
-                            </fieldset>
-                          </div>
-                        </div>
-                      </dl>
-                    </div>
-                    
-                  </li>
-                  <li class="px-6 pb-4">
-                    <h4 class="ecl-u-type-heading-4">Legend</h4>
-
-                    <ul class="grid grid-cols-1 gap-5 mt-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4" id="legend">
-                  
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="grid w-full grid-cols-11 bg-white shadow-2xl grid-child place-items-center">
-                <div class="col-span-5 border-t">
-                </div>
-                <div class="col-span-1 p-2 border-b border-l border-r rounded-md shadow-2xl" id="expand-settings-legend">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div class="col-span-5 bg-white border-t">
-                </div>
-              </div>
-              <div class="grid w-full grid-cols-11 bg-white shadow-2xl grid-child place-items-center">
-                <div class="col-span-5 border-t">
-                </div>
-                <div class="hidden col-span-1 p-2 border-b border-l border-r rounded-lg shadow-2xl" id="collapse-settings-legend">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
-                  </svg>
-                </div>
-              </div>
-              </div> -->
               <div class="grid w-full grid-cols-11">
-                <div class="z-0 hidden h-full col-span-2 bg-white shadow-2xl" id="filters">
+                <div class="z-0 h-full col-span-11 bg-white shadow-2xl sm:col-span-2" id="filters" style="display: none;">
                   <div class="ecl-container left-aligned ecl-u-mv-s">
                     <h3 class="ecl-u-type-heading-3">Filter by</h3>
                   </div>
-<!--                   <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters"></div>
- -->                  <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters"></div>
-<!--                   <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters">
-                  </div> -->
+                  <div class="ecl-accordion ecl-u-mh-s" data-ecl-auto-init="Accordion" data-ecl-accordion="" id="accordion-filters"></div>
                   <div class="ecl-container ecl-u-d-flex ecl-u-justify-content-center ecl-u-mt-xl" id="apply-filter">
                     <button class="ecl-button ecl-button--primary" type="submit" onclick="applyFilters()">Apply</button>
                   </div>
@@ -431,198 +344,102 @@
                       class="ecl-button__label" data-ecl-label="true" onclick="clearFilters()"">Clear</span></span></button>
                   </div>
                 </div>
-                <div class="z-0 h-auto col-span-9" id="networkGraph">
+                <div class="z-0 h-auto col-span-11 sm:col-span-9" id="networkGraph">
                 </div>
-                
+                <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700 ecl-u-z-modal" id="myModal">
+                  <!--
+                  Slide-over panel, show/hide based on slide-over state.
+      
+                  Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+                      From: "translate-x-full"
+                      To: "translate-x-0"
+                  Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+                      From: "translate-x-0"
+                      To: "translate-x-full"
+                  -->
+                  <div class="w-screen pointer-events-auto ecl-u-z-modal">
+                    <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
+                      <div class="px-4 sm:px-6 ecl-u-z-modal">
+                        <div class="flex items-start justify-between p-6 border-1" style="background-color:#F5F5F5">
+                          <h4 class="ecl-u-type-heading-4">Navigaton panel</h4>
+                          <div class="flex items-center ml-3 h-7">
+                            <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
+                              <span class="sr-only">Close panel</span>
+                              <!-- Heroicon name: outline/x -->
+                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
+                        <div id="navTable" style="overflow: auto" class="mt-6">
+                          <nav aria-label="Progress">
+                            <ol role="list">
+                            </ol>
+                          </nav>
+                        </div>
+                      <div id="tabsNav" class="hidden">
+  
+                        <nav class="ecl-tabs" data-ecl-tabs="true" data-ecl-auto-init="Tabs">
+                          <div class="ecl-tabs__container">
+                            <ul class="ecl-tabs__list" role="tablist">
+                              <li class="hidden ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="selectTabNavPanel(this,'detailsLink');" id="parentNodesLink">From</a></li>
+                              <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active" role="tab" aria-selected="true" onclick="selectTabNavPanel(this,'detailsLink');" id="childNodesLink">Children</a></li>
+                              <li class="ecl-tabs__item" role="presentation"><a href="#" class="ecl-link ecl-tabs__link" role="tab" tabindex="-1" aria-selected="false" onclick="selectTabNavPanel(this,'childNodesLink');" id="detailsLink">Details</a></li>
+                              <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation"><button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button" tabindex="-1"><span class="ecl-button__container"><span class="ecl-button__label" data-ecl-label="true">More (%d)</span><svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon>
+                                      <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
+                                    </svg></span></button></li>
+                            </ul>
+                          </div>
+                          <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
+                                <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
+                              </svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block" focusable="false" aria-hidden="true">
+                                <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
+                              </svg><span class="ecl-u-sr-only"></span></button></div>
+                        </nav>
+                      </div>
+                      <div id="dvTable" style="overflow: auto">
+                        <div class="inset-0 px-4 sm:px-6">
+                          <div class="flex flex-col">
+                            <div class="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2">
+                              <div class="overflow-auto border-b border-gray-200 md:overflow-scroll">
+                                <table class="ecl-table ecl-table--zebra">
+                                  <thead class="ecl-table__head">
+                                  </thead>
+                                  <tbody class="ecl-table__body" id="nav-children-tbody">
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        <!-- /End replace -->
+                        </div>
+                        <div id="dvDetails" class="overflow-auto bg-white shadow">
+                        </div>
+                        <div id="map"></div>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
               </div>
 
           </div>
-          <div class="fixed inset-y-0 right-0 flex max-w-full pl-10 transition duration-700 ease-in-out transform translate-x-full pointer-events-none sm:duration-700 ecl-u-z-modal" id="myModal">
-            <!--
-            Slide-over panel, show/hide based on slide-over state.
-
-            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                From: "translate-x-full"
-                To: "translate-x-0"
-            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                From: "translate-x-0"
-                To: "translate-x-full"
-            -->
-            <div class="w-screen max-w-md pointer-events-auto ecl-u-z-modal">
-              <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
-                <div class="px-4 sm:px-6 ecl-u-z-modal">
-                  <div class="flex items-start justify-between p-6 border-1" style="background-color:#F5F5F5">
-                    <h4 class="ecl-u-type-heading-4">Navigaton panel</h4>
-<!--                     <h2 class="text-lg font-medium text-gray-500 id="slide-over-title">
-                      Navigation panel
-                    </h2> -->
-                    <div class="flex items-center ml-3 h-7">
-                      <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
-                        <span class="sr-only">Close panel</span>
-                        <!-- Heroicon name: outline/x -->
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div id="mainNav" class="relative flex-1 px-4 mt-6 sm:px-6">
-                  <div id="navTable" style="overflow: auto" class="mt-6">
-                    <nav aria-label="Progress">
-                      <ol role="list">
-                      </ol>
-                    </nav>
-                  </div>
-                  <div id="tabsNav" class="hidden">
-                    <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
-                      <div class="ecl-tabs__container">
-                        <ul class="ecl-tabs__list" role="tablist">
-                          <li class="ecl-tabs__item" role="presentation">
-                            <a href="#" class="ecl-link ecl-tabs__link ecl-tabs__link--active"
-                            role="tab" aria-selected="false"
-                            onclick="selectTab(this,'detailsLink');" id="childNodesLink">Children</a>
-                          </li>
-                          <li class="ecl-tabs__item" role="presentation">
-                            <a href="#" class="ecl-link ecl-tabs__link"
-                       role="tab" tabindex="-1" aria-selected="false"
-                       onclick="selectTab(this,'childNodesLink');"
-                       id="detailsLink"
-                    >Details</a></li>
-                    <li class="ecl-tabs__item ecl-tabs__item--more" role="presentation">
-                      <button class="ecl-button ecl-button--secondary ecl-tabs__toggle" type="button"  tabindex="-1">
-                        <span class="ecl-button__container">
-                          <span class="ecl-button__label" data-ecl-label="true">More (%d)</span>
-                          <svg class="ecl-icon ecl-icon--fluid ecl-icon--rotate-180 ecl-button__icon ecl-button__icon--after"
-                            focusable="false"
-                            aria-hidden="true"
-                            data-ecl-icon>
-                            <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
-                          </svg>
-                        </span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-                <div class="ecl-tabs__controls"><button class="ecl-tabs__prev" aria-hidden="true"><svg
-                      class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
-                      focusable="false"
-                      aria-hidden="true"
-                      ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button><button class="ecl-tabs__next" aria-hidden="true"><svg
-                      class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block"
-                      focusable="false"
-                      aria-hidden="true"
-                      ><use xlink:href="images/icons.svg#ui--corner-arrow"></use></svg><span class="ecl-u-sr-only"></span></button></div></nav>
-<!--                <nav class="ecl-tabs"data-ecl-tabs="true" data-ecl-auto-init="Tabs">
-                      <div class="ecl-tabs__container">
-                        <ul class="ecl-tabs__list">
-                            <li class="ecl-tabs__item">
-                                <a href="#" id="childNodesLink"
-                                    class="ecl-link ecl-tabs__link ecl-tabs__link--active"
-                                    onclick="selectTab(this,'detailsLink');">
-                                    Children nodes
-                                </a>
-                            </li>
-                            <li class="ecl-tabs__item">
-                                <a href="#" id="detailsLink"
-                                    class="ecl-link ecl-tabs__link"
-                                    onclick="selectTab(this,'childNodesLink');">
-                                    Details
-                                </a>
-                            </li>
-                        </ul>
-                      </div>
-                      <div class="ecl-tabs__controls">
-                        <button class="ecl-tabs__prev" aria-hidden="true">
-                            <svg class="ecl-icon ecl-icon--m ecl-icon--rotate-270 ecl-icon--inverted ecl-u-d-block"
-                                focusable="false"
-                                aria-hidden="true">
-                                <use xlink:href="/images/icons.svg#corner-arrow"></use>
-                            </svg>
-                            <span class="ecl-u-sr-only"></span>
-                        </button>
-                        <button class="ecl-tabs__next" aria-hidden="true">
-                            <svg class="ecl-icon ecl-icon--m ecl-icon--rotate-90 ecl-icon--inverted ecl-u-d-block"
-                                focusable="false"
-                                aria-hidden="true">
-                                <use xlink:href="/images/icons.svg#corner-arrow"></use>
-                            </svg>
-                            <span class="ecl-u-sr-only"></span>
-                        </button>
-                     </div>
-                    </nav> -->
-                  </div>
-
-                  <div id="dvTable" style="overflow: auto">
-                    <div class="inset-0 px-4 sm:px-6">
-                      <div class="flex flex-col">
-                        <div class="inline-block min-w-full py-2 align-middle sm:px-2 lg:px-2">
-                          <div class="overflow-auto border-b border-gray-200 md:overflow-scroll">
-                            <table class="ecl-table ecl-table--zebra">
-                              <thead class="ecl-table__head">
-                                  <tr class="ecl-table__row">
-                                      <th colspan="3" scope="colgroup" class="ecl-table__header" id="nav-children-header"></th>
-                                  </tr>
-                              </thead>
-                              <tbody class="ecl-table__body" id="nav-children-tbody">
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-<!--                         <nav class="ecl-pagination" aria-label="Pagination">
-                          <ul class="ecl-pagination__list">
-                            <li class="ecl-pagination__item ecl-pagination__item--previous"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-before ecl-pagination__link"
-                                aria-label="Go to previous page"><svg class="ecl-icon ecl-icon--xs ecl-icon--rotate-270 ecl-link__icon"
-                                  focusable="false" aria-hidden="true">
-                                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                                </svg><span class="ecl-link__label">Previous</span></a></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 24">24</a></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 25">25</a></li>
-                            <li class="ecl-pagination__item ecl-pagination__item--current"><span
-                                class="ecl-pagination__text ecl-pagination__text--summary" aria-current="true">26</span><span
-                                class="ecl-pagination__text ecl-pagination__text--full" aria-current="true">Page 26</span></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 27">27</a></li>
-                            <li class="ecl-pagination__item"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-pagination__link" aria-label="Go to page 28">28</a></li>
-                            <li class="ecl-pagination__item ecl-pagination__item--next"><a href="/component-library/example"
-                                class="ecl-link ecl-link--standalone ecl-link--icon ecl-link--icon-after ecl-pagination__link"
-                                aria-label="Go to next page"><span class="ecl-link__label">Next</span><svg
-                                  class="ecl-icon ecl-icon--xs ecl-icon--rotate-90 ecl-link__icon" focusable="false" aria-hidden="true">
-                                  <use xlink:href="/images/icons.svg#ui--corner-arrow"></use>
-                                </svg></a></li>
-                          </ul>
-                        </nav> -->
-                    </div>
-                    </div>
-                  <!-- /End replace -->
-                  </div>
-                  <div id="dvDetails" class="overflow-auto bg-white shadow">
-                  </div>
-                  <div id="map"></div>
-                </div>
-              </div>
-            </div>
-           </div>
+          
 
   
-          <div class="fixed inset-0 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal2">
+          <div class="fixed inset-0 z-50 overflow-hidden transition duration-700 ease-in-out transform translate-x-full sm:duration-700" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" id="myModal2">
             <div class="absolute inset-0 overflow-hidden">
               <div class="absolute inset-0" aria-hidden="true">
                 <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
 
                   <div class="w-screen max-w-5xl">
-<!--                   <div class="w-screen max-w-xl">
- -->
                     <div class="flex flex-col h-full pb-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2">
-                    <!-- <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content2"> -->
                       <div>
-                      <!-- <div class="px-4 sm:px-6"> -->
                         <div class="flex items-start justify-between p-6 mb-2 bg-blue-100 border-2">
-                          <h2 class="text-lg font-medium text-gray-500 uppercase" id="modalHeader2">
+                          <h2 class="text-lg font-medium text-gray-500 uppercase" id="modal-header2">
                           </h2>
                           <div class="flex items-center ml-3 h-7">
                             <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close2">
@@ -725,12 +542,30 @@
             </div>
       
           </div>
-          <div wire:loading class="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-screen overflow-hidden bg-gray-700 opacity-30" id="spin" style="display:none;">  
-            <div class="fixed top-0 right-0 z-50 flex items-center justify-center w-screen h-screen">
-              <div class="w-32 h-32 border-t-2 border-b-2 border-gray-900 rounded-full animate-spin"></div>
+          <div id="no-graphs-message" class="z-50" style="display:none;">
+            <div class="ecl-message ecl-message--warning" data-ecl-message="" role="alert" data-ecl-auto-init="Message"><svg
+              class="ecl-icon ecl-icon--l ecl-message__icon" focusable="false" aria-hidden="true">
+              <use xlink:href="/images/icons.svg#notifications--warning"></use>
+            </svg>
+            <div class="ecl-message__content"><button class="ecl-button ecl-button--ghost ecl-message__close" type="button"
+                data-ecl-message-close=""><span class="ecl-button__container"><span class="ecl-button__label"
+                    data-ecl-label="true">Close</span><svg class="ecl-icon ecl-icon--xs ecl-button__icon ecl-button__icon--after"
+                    focusable="false" aria-hidden="true" data-ecl-icon="">
+                    <use xlink:href="/images/icons.svg#notifications--warning"></use>
+                  </svg></span></button>
+              <div class="ecl-message__title">Warning message</div>
+              <div class="ecl-message__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam accumsan
+                semper lorem, ac mollis lacus tincidunt eu. Duis scelerisque diam eu tempus fringilla.</div>
             </div>
-            <h2 class="text-xl font-semibold text-center text-white" id="spin-message"></h2>
-                <p class="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
+          </div>
+          </div>
+          
+          <div class="ecl-spinner ecl-spinner--primary ecl-spinner--medium ecl-spinner--centered ecl-spinner--visible" id="spin"><svg
+            class="ecl-spinner__loader" viewBox="25 25 50 50">
+            <circle class="ecl-spinner__circle" cx="50" cy="50" r="20" fill="none" stroke-width="4px" stroke-miterlimit="10"
+              vector-effect="non-scaling-stroke"></circle>
+          </svg>
+          <div class="ecl-spinner__text">Loading...</div>
           </div>
           </div>
         </div>
@@ -751,15 +586,19 @@
     <script src="js/timeline.js"></script>
     <script src="js/treeGraph.js"></script>
     <script src="js/wordCloud.js"></script>
+    <script src="js/barchart.js"></script>
+    <script src="js/linechart.js"></script>
     <script src="js/download.js"></script>
     <script src="js/d3NetworkGraph.js"></script>
     <script src="js/configFileClass.js"></script>
     <script src="js/configRowClass.js"></script>
     <script src="js/menuItemsClass.js"></script>
-<!--     <script src="js/filtersWithClass.js"></script>
- -->    <script src="js/filterClass.js"></script>
+    <script src="js/optionNodeClass.js"></script>
+    <script src="js/filterClass.js"></script>
     <script>
-      ECL.autoInit();
+      console.log("autoInit")
+      //console.log(ECL.autoInit());
+      runAutoInit()
     </script>
     </body>
 </html>
