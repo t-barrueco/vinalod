@@ -35,13 +35,6 @@ function treeGraph(treeData,title,modalHeader,modalContent){
   // declares a tree layout and assigns the size
   var treemap = d3.tree().size([height, width]);
 
-
-
-// Collapse after the second level
-//root.children.forEach(collapse);
-//console.log(root.children)
-
-
 update(root);
 
 // Collapse the node and all it's children
@@ -64,8 +57,6 @@ function update(source) {
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d){ d.y = d.depth * 180});
-
-  //console.log(nodes)
 
   // ****************** Nodes section ***************************
 

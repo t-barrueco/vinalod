@@ -36,12 +36,9 @@ NavigationPanel.prototype.getNodes = function (){
       navPanel.targets=buildtargetNodes(index)
       navPanel.more_results=true
     }else{
-      //console.log(networkGraph.data.links)
-      //console.log(navPanel.node.id)
       navPanel.targets=networkGraph.data.links.filter(function(item) {
         return item.source.id == navPanel.node.id
       })
-      //console.log(navPanel.targets)
       navPanel.more_results=false
     }
   }else{
@@ -74,10 +71,6 @@ NavigationPanel.prototype.getNodes = function (){
     navPanel.fromNodes=[]
     navPanel.toNodes=[]
   }
-  //console.log(networkGraph.data)
-  //console.log(networkGraph.treeData)
-  //console.log(navPanel.sources)
-  //console.log(navPanel.targets)
 
   function recurse(node) {
     if(navPanel.sources.indexOf(node)==-1){
@@ -407,8 +400,6 @@ NavigationPanel.prototype.showDetails = function (){
   itemDetails()
   function itemDetails(){
     let navDetailHeader,navDetailRow0,navDetailRow1;
-    //$("#dvDetails").empty()
-    //$("#dvDetails").show()
     emptyNavDetails()
     showNavDetails()
     $.get("pages/nav_detail.html", function (header) {

@@ -138,7 +138,6 @@ FilterClassBasic.prototype.setValuesFilters= function(filterId){
 
 FilterClassBasic.prototype.setTitle = async function () {
   var cf=this;
-  ////console.log(cf)
   cf.code=cf.code.replaceAll("FilterClassName",networkGraph.nodesClassesShow[cf.name]).replaceAll("accordion-example-content",cf.name+"_filters")
 }
 
@@ -224,20 +223,13 @@ Filter.prototype.init= async function () {
   if(fi.imported){
     fi.import(fi.details)
   }else{
-    ////console.log("antes de addHtml")
     await fi.addHtml()
-    ////console.log("despues addHtml")
   }
   if(fi.values.length==0){
-    ////console.log(fi)
-    ////console.log(d3.select("#"+fi.id))
     fi.hide()
   }else{
     fi.show()
   }
-
-  ////console.log(fi.values)
-  ////console.log(networkGraph)
 }
 
 Filter.prototype.import = function (details) {
@@ -264,32 +256,15 @@ Filter.prototype.getValuesNodes=function (nodes){
     }
 }
 
-/* Filter.prototype.getValuesAllNodes=function (){
-  var fi=this
-  let docs=document.getElementsByClassName(fi.details.class)
-  let searchValues=[]
-  for (let d of docs) {
-    ////console.log(d3.select("#"+d.getAttribute("id")).data()[0])
-    ////console.log(fi.details.property)
-    if(d3.select("#"+d.getAttribute("id")).data()[0][fi.details.property]){
-      searchValues.push(d3.select("#"+d.getAttribute("id")).data()[0][fi.details.property])
-    }
-  }  
-  fi.values=[...new Set(searchValues)].sort()
-  fi.getValuesAllData()
-} */
-
 Filter.prototype.getValuesAllNodes=function (){
   var fi=this
   let nodes=linkedDataGraph.data.flatData.nodes.filter(d=>d.class==fi.details.class)
-  //console.log(nodes)
   let searchValues=nodes.map(d=>d[fi.details.property]).filter(d=>d!=undefined)
   fi.values=[...new Set(searchValues)].sort()
 }
 
 Filter.prototype.resetAllValues=function (){
   var fi=this
-  ////console.log("resetAllValues")
   fi.getValuesAllNodes()
   fi.fillField()
   fi.resetComponent()
@@ -302,7 +277,6 @@ Filter.prototype.resetAllValues=function (){
 
 Filter.prototype.setAllValues=function (){
   var fi=this
-  ////console.log("setAllValues")
   fi.values=fi.getValuesAllNodes()
   fi.sortValues()
 }
@@ -352,20 +326,15 @@ FilterBasic.prototype.addHtml= function () {
   }else{
     fi.selection="none"
   }
-  ////console.log("addHtml")
   fi.getValuesAllNodes()
 }
 
 FilterBasic.prototype.hide= function () {
-  ////console.log(this.id)
-  ////console.log($( "#"+this.id ))
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
   .fadeOut( "slow", function() {
   });
   this.hidden=true
-  ////console.log(networkGraph.filterClassesObjects)
-  //networkGraph.filterClassesObjects.filter(cf=>cf.name==this.details.class)[0].checkHidden()
 }
 
 FilterBasic.prototype.show= function () {
@@ -375,8 +344,6 @@ FilterBasic.prototype.show= function () {
   .fadeIn( "slow", function() {
   });
   delete this.hidden
-  ////console.log(networkGraph.filterClassesObjects)
-  ////console.log(this.details.class)
   filterClass=networkGraph.filterClassesObjects.filter(cf=>cf.name==this.details.class)
   
   if(filterClass.length>0){
@@ -396,33 +363,28 @@ class FilterBasicDropdown extends FilterBasic {
         code=code.replaceAll("HelperText","")
       }
       $("#"+fi.details.class+"_filters").append($(code))
-      //.ready(function () {
       var select=document.getElementById("select-default")
       select.name = fi.details.property;
       select.id = fi.id;
       fi.fillField();
       runAutoInit()
-      //}) 
     });  
   }
   fillField(){
     var fi=this;
     checkAddAll(this.values)
-    ////console.log(this.values)
     $(("#accordion-filters #"+fi.details.property+"_filter")).empty();
     var select=document.getElementById(fi.details.property+"_filter")
     addHtmlOptionsSelect(select,fi.values,false)
     if(fi.valuesChanged){
       select.value=fi.valuesChanged
       const $options = Array.from(select.options);
-      ////console.log($options)
       const optionToSelect = $options.find(item => item.text ===fi.valuesChanged);
       optionToSelect.selected = true;
     }
   }
   checkConditionNode(node){
     let elValue=$("#"+this.details.property+"_filter").val()
-    ////console.log(elValue)
     this.elValue=elValue
     if(elValue=="All"){
       return false
@@ -606,7 +568,6 @@ class FilterBasicText extends FilterBasic {
   sortValues(){
     var fi=this;
     fi.values=[...new Set(fi.values)].sort()
-    //return values
   }
   resetComponent(){
   
@@ -667,7 +628,6 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var fi=this;
     super.addHtml();
-    ////console.log("addHTml")
     await $.get("pages/select-filter.html", function (code) {
       code=code.replace("Label",fi.field).replace("relatedFilters(this)","relatedFiltersExpert(this)")
       ////console.log(fi.internalClass)
@@ -726,90 +686,3 @@ class FilterExpertDropdown extends FilterExpert {
     this.values=[...new Set(this.values)].sort()
   }
 }
-/* class FilterExpertDropdown extends FilterExpert {
-  async addHtml() {
-    var fi=this;
-    ////////////////console.log("addHtml expert dropdown")
-    super.addHtml();
-    let code = await getHtmlCodeFromFile("pages/select-multiple-filter.html");
-    code=code.replace("Label",fi.field)
-    $("#"+fi.internalClass+"_filters").append(code).ready(function () {
-      //ECL.autoInit();
-      var select=document.getElementById("select-multiple")
-      select.name = fi.internalClass + "_"+ fi.field;
-      select.id = fi.internalClass + "_"+ fi.field;
-      fi.fillField();
-      runAutoInit()
-      //$(".ecl-checkbox__input").click(relatedFiltersExpert(this));
-    });
-    
-  }
-  fillField(){
-    var fi=this,valuesFilter;
-    let select=document.getElementById(fi.internalClass + "_"+ fi.field)
-    //////////console.log(fi.field)
-    if(fi.field=="type"){
-      //////////console.log(configRow)
-      if(configRow.position=="s"){
-        valuesFilter=[...new Set(configRow.results.map(d=>d.o.type))].sort()
-      }else{
-        valuesFilter=[...new Set(configRow.results.map(d=>d.s.type))].sort()
-      }
-    }else if(fi.field=="value"){
-      if(configRow.position=="s"){
-        valuesFilter=[...new Set(configRow.results.map(d=>d.o.value))].sort()
-      }else{
-        valuesFilter=[...new Set(configRow.results.map(d=>d.s.value))].sort()
-      }
-    }else if(fi.field=="property"){
-      valuesFilter=[...new Set(configRow.results.map(d=>d.p.value))].sort()
-    }
-    ////////////////////////////console.log(select)
-    ////////////console.log(valuesFilter)
-    this.values=valuesFilter
-    //////////console.log(this)
-    addHtmlOptionsSelectMultiple(select,valuesFilter)
-  }
-  addValuesChanged(el){
-    var value=el.getAttribute("data-select-multiple-value")
-    var checked=el.querySelector("input").checked
-    if(!this["valuesChanged"]){
-      this["valuesChanged"]=[]
-    }
-    if(checked){
-      this["valuesChanged"].push(value)
-    }else{
-      if(this["valuesChanged"].includes(value)){
-        this["valuesChanged"].splice(this["valuesChanged"].indexOf(el.getAttribute("data-select-multiple-value")),1);
-      }
-    }
-    if((value=="Select all")&&(checked)){
-      this["valuesChanged"]=this.values
-    }else if((value=="Select all")&&(!checked)){
-      this["valuesChanged"]=[]
-    }
-    //////////console.log(this["valuesChanged"])
-  }
-  checkConditionNode(node){
-    var fi=this;
-    //////////console.log(node[fi.field])
-
-    ////////////console.log(filterCondition)
-    if(fi.valuesChanged){
-      if(fi.valuesChanged.includes(node[fi.field])){
-        return false
-      }else{
-        return true
-      }
-    }else{
-      return false
-    }
-
-  }
-  addValuesField(values,filterId){
-    this;
-    $(("#accordion-filters #"+this.property)).empty();
-    var select = document.querySelector("#accordion-filters #"+this.property);
-    addHtmlOptionsSelectMultiple(select,values,true)
-  }
-} */

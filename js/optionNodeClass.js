@@ -6,10 +6,7 @@ OptionNode = function (_option,_node) {
 
 OptionNode.prototype.init = async function () {
   var on=this;
-  //////////////////console.log(document.getElementsByTagName("table"))
-
   await on.buildOption()
-  //////console.log(on)
 }
 
 function OptionNodeBasic(...args){

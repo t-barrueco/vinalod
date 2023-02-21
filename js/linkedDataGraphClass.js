@@ -16,7 +16,6 @@ LinkedDataGraph.prototype.buildData = function () {
     ldg.showNoDuplicatesGraph()
   }
   ldg.flatten()
-  checkTestLdg()
 }
 
 LinkedDataGraph.prototype.collapseBranch = function (node){
@@ -156,8 +155,6 @@ LinkedDataGraph.prototype.showNoDuplicatesGraph = function(){
     var indexChild;
     ldg.treeData.forEach(function(i){
       
-      
-      
       if(i[i["class"]+"_uri"]==uri){
         i["id"]=id
       }
@@ -210,10 +207,6 @@ LinkedDataGraph.prototype.flattenFiltered = function(){
             position=links.indexOf(links.filter(function(item) {
               return ((item.source.id == node.id)&&(item.target.id == c.id))
             })[0])
-            ////console.log(links)
-            ////console.log(position)
-            ////console.log(node.id)
-            ////console.log(c.id)
             if(position==-1){
               ldg.addLink(node,c,links)
             }
@@ -251,10 +244,6 @@ LinkedDataGraph.prototype.filter = function(filterId){
         return (element.children.some((subElement) => subElement.id === node.id))
       }
     })
-    
-    
-    
-    
     if(ldg.treeDataFiltered[index]){
       
     }
@@ -266,7 +255,6 @@ LinkedDataGraph.prototype.filter = function(filterId){
       checkHidden(node)
     }
 
-    
       if (node.children){
         node.children.forEach(function(c){
           recurse(c)
@@ -348,7 +336,6 @@ LinkedDataGraph.prototype.filter = function(filterId){
 LinkedDataGraph.prototype.clearFilter = function(){
   var ldg=this;
 
-  //console.log("clear Filter")
   function recurse(node) {
     console.log(node.filter)
     if(node.filter){
@@ -374,12 +361,8 @@ LinkedDataGraph.prototype.clearFilter = function(){
 LinkedDataGraph.prototype.clusterData = function (treeData) {
   var ldg=this;
   var maxNumber=parseInt($("#cluster-number").val())
-
-  
   
   treeData.forEach(function(t){
-    
-    
     if(t.children.length>maxNumber){
       transformData(t)
     }
@@ -494,7 +477,6 @@ LinkedDataGraph.prototype.buildTreeData = function () {
     ldg.treeData=[]
   }
 
-  
   if(configRow.class){
     buildTreeDataBasic()
   }else{
@@ -672,10 +654,8 @@ LinkedDataGraph.prototype.buildTreeData = function () {
         node["detail"]=getDetail(configRow.details,node["class"])
         }
         prop=properties.filter(d=>d.class==treeResults[index])
-        //////console.log(prop)
         if(prop.length>0){
           prop.forEach(function(k){
-            //////console.log(r)
             if(r[k["property"]]!=undefined){
               node[k["property"]]=r[k["property"]].value
             }

@@ -1,7 +1,5 @@
 
 function createLinechart(data,title){
-    //console.log(data)
-
     modalVisibilityOn()
 
     const modalHeader=getModalHeader()
@@ -12,7 +10,6 @@ function createLinechart(data,title){
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
-    //console.log(modalContent)
     let titleColor="white"
     let titleAltColor="black"
 

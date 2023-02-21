@@ -680,7 +680,6 @@ function getFilteredData(){
 
 function applyFilters(){
   getFilteredData()
-  //checkTest()
   //networkGraph.refresh()
   networkGraph.filtered=true
   networkGraph.refreshNoFilters()

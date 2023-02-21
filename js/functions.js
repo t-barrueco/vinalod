@@ -104,8 +104,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         position: 4,
         action: (d) => {
           // TODO: add any action you want to perform
-          //checkBasicGraph(d)
-          ////console.log(d)
           networkGraph.collapseBranch(d)
         }
       })
@@ -116,8 +114,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         position: 5,
         action: (d) => {
           // TODO: add any action you want to perform
-          //checkBasicGraph(d)
-          ////console.log(d)
           networkGraph.expandBranch(d)
         }
       })
@@ -226,7 +222,6 @@ function replaceParmtrsQuery(query,parameters,node){
               query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
           } 
       }
-      //console.log(node)
       if(node.class!="free"){
         query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]); 
       }else{
@@ -242,7 +237,6 @@ function replaceParmtrsQuery(query,parameters,node){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  //console.log(d)
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -504,7 +498,6 @@ function getTooltipTextFreeGraph(d) {
 }
 //This is the tooltip for the menu options
 function getTooltipMenu(d){
-  //console.log(d)
   var text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="border-t border-gray-200 py-3 px-2">
           ` + d + `
@@ -870,38 +863,25 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-  //////console.log(dateStr)
-  //////console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 
 function addHtmlOptionsSelect(selectField,values){
-  ////console.log(values)
   values=checkAddAll(values)
   $('#'+selectField.getAttribute("id")+ ' option').remove()
   for (let i = 0; i < values.length; i++) {
-    ////console.log(values[i])
     var option = document.createElement("option");
     option.value = values[i];
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
     selectField.appendChild(option);
-/*     if(multiple){
-      option.selected = true; 
-    } */
-    ////console.log(selectField)
   }
 }
 function addHtmlOptionsSelectMultiple(selectField,values){
   for (let i = 0; i < values.length; i++) {
-    ////console.log(values[i])
     var option = document.createElement("option");
     option.value = noPunctuationStr(values[i]);
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
     selectField.appendChild(option);
-/*     if(multiple){
-      option.selected = true; 
-    } */
-    ////console.log(selectField)
   }
 }
 function checkAddAll(values){
@@ -911,8 +891,6 @@ function checkAddAll(values){
     return values;
   }
 }
-
-
 
 function getModalHeader(){
   return document.getElementById("modal-header2")
@@ -1098,7 +1076,6 @@ function runAutoInit(component){
     ECLdestroy(component)
   }
   let autoInit=ECL.autoInit()
-  //////console.log(autoInit)
 }
 function ECLdestroy(component){
   let index=window.ECL.components.findIndex(d=>d.element==component)
@@ -1122,8 +1099,7 @@ function changeTab(tab){
 function fitSizeModal(node){
   var classText;
   let modal=document.getElementById("modal-content").parentNode
-  //////console.log(document.getElementById("modal-content"))
-  //////console.log(modal)
+
   if(node.class=="more_results"){
     let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
     classText=linkedDataGraph.treeData[index]["class"]
@@ -1202,12 +1178,6 @@ function clickBubbleGraph(element) {
 
   networkGraph.node=node
   
-  /* if((node.class!="free")&&(navigationPanel instanceof NavigationPanelExpert)){
-    navigationPanel=undefined
-  }else if((node.class=="free")&&(navigationPanel instanceof NavigationPanelBasic)){
-    navigationPanel=undefined
-  } */
-  
   //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
   //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
   if (navigationPanel == undefined) {
@@ -1257,8 +1227,6 @@ function selectTabNavPanel(element,otherText){
 }
 
 function noPunctuationStr(id){
-  //console.log(id)
-  //console.log(id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_"))
   return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_")
 }
 

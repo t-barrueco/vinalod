@@ -247,33 +247,7 @@ NetworkGraph.prototype.zoomed = function(){
   }
     
 };
-function checkTest(){
-  var test=networkGraph.data.nodes.filter(d=>d.value=="Publications Office of the European Union")
-  if(test.length>0){
-    let test2=networkGraph.data.links.filter(d=>d.source.value=="Publications Office of the European Union")
-    if(test2.length>0){
-      ////console.log("source: "+test2[0]["source"]["x"])
-    }
-  }
-}
-function checkTestLdg(){
-  ////console.log("---------------------nuevo initialize simulation----------------")
-  ////console.log(linkedDataGraph)
-  var test=linkedDataGraph.data.flatData.nodes.filter(d=>d.value=="Publications Office of the European Union")
-  if(test.length>0){
-    ////console.log("node: "+ linkedDataGraph.data.flatData.nodes.filter(d=>d.value=="Publications Office of the European Union")[0]["x"])
-    //let test2=linkedDataGraph.flatData.data.links.filter(d=>{////console.log(d.source.value);d.source.value=="Publications Office of the European Union"})
-    let test2=linkedDataGraph.data.flatData.links.filter(d=>d.source.value=="Publications Office of the European Union")
-    if(test2.length>0){
-      ////console.log("source: "+test2[0]["source"]["x"])
-    }
-    let test3=linkedDataGraph.data.flatData.links.filter(d=>d.target.value=="Publications Office of the European Union")
-    if(test3.length>0){
-      ////console.log("target: "+test3[0]["target"]["x"])
-    }
-  }
-  ////console.log("----------------fin initialize simulation----------------")
-}
+
 NetworkGraph.prototype.initializeSimulation = function () {
   var vis = this;
   vis.simulation.stop() 

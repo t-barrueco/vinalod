@@ -15,7 +15,6 @@ function download(data, fileName, mimeType) {
   var str = '';
   var content = '';
   var outerArr = [];
-  //console.log(mimeType.split(";")[0].split("/")[1])
   var type=mimeType.split(";")[0].split("/")[1]
   if(type=="csv"){
     outerArr.push(Object.keys(data[0]));  // column headers 
