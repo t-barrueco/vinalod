@@ -29,7 +29,7 @@ function showMessageForNoGraphs(){
   $("#no-graphs-message").show()
   component=$("#no-graphs-message")[0]
   runAutoInit(component)
-  ////console.log(ECL.autoInit())
+  //////console.log(ECL.autoInit())
 }
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
@@ -104,8 +104,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         position: 4,
         action: (d) => {
           // TODO: add any action you want to perform
-          //checkBasicGraph(d)
-          //console.log(d)
           networkGraph.collapseBranch(d)
         }
       })
@@ -116,8 +114,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         position: 5,
         action: (d) => {
           // TODO: add any action you want to perform
-          //checkBasicGraph(d)
-          //console.log(d)
           networkGraph.expandBranch(d)
         }
       })
@@ -147,7 +143,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
-  ////////////console.log(query)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -227,7 +222,12 @@ function replaceParmtrsQuery(query,parameters,node){
               query=query.replaceAll("PARAMETER"+(i+2).toString(), node[parameters[i]["property"]]);
           } 
       }
-      query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]);    
+      if(node.class!="free"){
+        query=query.replaceAll("PARAMETER", node[node["class"]+"_uri"]); 
+      }else{
+        query=query.replaceAll("PARAMETER", node.value); 
+      }
+         
   }
   return query
 }
@@ -529,7 +529,7 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
-      //console.log(arr)
+      ////console.log(arr)
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -544,7 +544,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
           b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          //////////////////console.log(arr[i])
+          ////////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -741,7 +741,7 @@ function textImageZoom(zoomScale){
 //based on structure
 function getDetail(detail,nodeClass){
   var detailNode="";
-
+  //console.log(detail)
   if(detail!=undefined){
     if(detail!=""){
       for (let k of detail) {
@@ -848,6 +848,20 @@ function formatDate(str){
 function formatDateComp(str){
   return formatDate(str).getTime()
 }
+function isValidDate(text){
+  var validity;
+
+  //var d_reg = /^(0[1-9]|1[0-2])\-(0[1-9]|1\d|2\d|3[01])\-(0[1-9]|1[1-9]|2[1-9])$/;
+  //var d_reg = /^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
+  var d_reg =/^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
+  if (d_reg.test(text)) {
+    validity=true
+  }
+  else{
+    validity=false
+  }
+  return validity
+}
 
 function formatDateShow(str){
   let day=("0" + formatDate(str).getDate()).slice(-2)
@@ -863,38 +877,25 @@ function dateValidFormat(dateStr) {
   }
 
   const date = new Date(dateStr);
-  ////console.log(dateStr)
-  ////console.log(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear())
   return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
 }
 
 function addHtmlOptionsSelect(selectField,values){
-  //console.log(values)
   values=checkAddAll(values)
   $('#'+selectField.getAttribute("id")+ ' option').remove()
   for (let i = 0; i < values.length; i++) {
-    //console.log(values[i])
     var option = document.createElement("option");
     option.value = values[i];
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
     selectField.appendChild(option);
-/*     if(multiple){
-      option.selected = true; 
-    } */
-    //console.log(selectField)
   }
 }
 function addHtmlOptionsSelectMultiple(selectField,values){
   for (let i = 0; i < values.length; i++) {
-    //console.log(values[i])
     var option = document.createElement("option");
     option.value = noPunctuationStr(values[i]);
     option.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
     selectField.appendChild(option);
-/*     if(multiple){
-      option.selected = true; 
-    } */
-    //console.log(selectField)
   }
 }
 function checkAddAll(values){
@@ -904,8 +905,6 @@ function checkAddAll(values){
     return values;
   }
 }
-
-
 
 function getModalHeader(){
   return document.getElementById("modal-header2")
@@ -947,7 +946,14 @@ function showNavContentTable(){
 function hideNavContentTable(){
   $("#dvTable").hide()
 }
-
+function showErrorMessageExpertForm(){
+  $("#form-expert-error").show()
+  $("#free-uri").addClass("ecl-text-input--invalid")
+}
+function hideErrorMessageExpertForm(){
+  $("#form-expert-error").hide()
+  $("#free-uri").removeClass("ecl-text-input--invalid")
+}
 function showSearchNavContent(){
   $("#search-nav-content").show()
 }
@@ -1080,6 +1086,13 @@ function closeNavigationPanel(){
   $("#myModal").addClass("translate-x-full")
   $("#myModal").removeClass("translate-x-0")
 }
+function checkNavigationPanelOpen(){
+if($( "#myModal" ).hasClass( "translate-x-0" )){
+  return true;
+}else{
+  return false;
+}
+}
 
 function removeColorsFromLegend(){
   d3.selectAll("#legend li").remove()
@@ -1091,7 +1104,6 @@ function runAutoInit(component){
     ECLdestroy(component)
   }
   let autoInit=ECL.autoInit()
-  ////console.log(autoInit)
 }
 function ECLdestroy(component){
   let index=window.ECL.components.findIndex(d=>d.element==component)
@@ -1115,8 +1127,7 @@ function changeTab(tab){
 function fitSizeModal(node){
   var classText;
   let modal=document.getElementById("modal-content").parentNode
-  ////console.log(document.getElementById("modal-content"))
-  ////console.log(modal)
+
   if(node.class=="more_results"){
     let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === node.id))
     classText=linkedDataGraph.treeData[index]["class"]
@@ -1195,17 +1206,10 @@ function clickBubbleGraph(element) {
 
   networkGraph.node=node
   
-  if((node.class!="free")&&(navigationPanel instanceof NavigationPanelExpert)){
-    navigationPanel=undefined
-  }else if((node.class=="free")&&(navigationPanel instanceof NavigationPanelBasic)){
-    navigationPanel=undefined
-  }
-  
   //CAMBIAR ESTO PARA TENER SOLO UN TIPO DE NAVIGATION PANEL
   //MIRAR TAMBIÉN COMO QUEDARÁN LOS OBJETOS
   if (navigationPanel == undefined) {
-    if(node.class!="free") navigationPanel= new NavigationPanelBasic(node);
-    else navigationPanel= new NavigationPanelExpert(node);
+    navigationPanel= new NavigationPanel(node);
   } else {
     emptyNavigationPanel()
     navigationPanel.element = element
@@ -1252,4 +1256,8 @@ function selectTabNavPanel(element,otherText){
 
 function noPunctuationStr(id){
   return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_")
+}
+
+function getMnemonicCodeForOrg(org){
+  return mnemonicCodes.filter(m=>m.org.value==org)[0]
 }

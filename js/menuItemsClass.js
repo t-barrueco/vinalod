@@ -20,34 +20,12 @@ MenuItems.prototype.filterByMenuOption = function () {
     }
 }
 
-MenuItems.prototype.filterByAskResult = async function () {
-    var mi=this;
-    mi.selectedRows=[]
-    for (var i = 0; i < mi.indexRows.length; i++) {
-        try {
-            results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
-        } catch (e) {
-        results = false
-        } 
-
-        if(results==true){
-          mi.addSelectedRow(i)
-        }
-    }
-}
-/* 
-MenuItems.prototype.getSelectedRowByOption = async function (option){
-    var mi=this;
-    let row=mi.selectedRows.filter(d=>d.option==option)[0]
-    return row
-} */
 MenuItems.prototype.getMenuItemsInGraph = async function (){
     var mi=this;
 
     var elementMenu,position,width
     mi.menuItems=[]
 
-    //console.log(mi.selectedRows)
     for (var i = 0; i < mi.selectedRows.length; i++) {
         elementMenu=mi.detailsMenuItemsInGraph(i)
         mi.menuItems.push(elementMenu)
@@ -66,38 +44,12 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
 
 }
 
-/* MenuItems.prototype.getMenuItemsInTable = async function (){
-    var menuItems=[],elementMenu,position,width
-    var mi=this;
-
-    function tableExpert(){
-        for (var i = 0; i < items.length; i++) {
-        if (items[i]["subject-object"]) {
-            if(items[i]["subject-object"][0]){
-            menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"][0] })
-            }else{
-            menuItems.push({ "url": items[i]["url"], "uri": items[i]["uri"], "subject-object": items[i]["subject-object"]})
-            }
-        }else {
-            menuItems.push({ "rowDataConfig": items[i]["rowNumber"], "node": node, "menuOption": items[i]["menuOption"] })
-        }
-        }
-    }
-    function tableBasic(){
-        for (var i = 0; i < items.length; i++) {
-        //add all items to menu in table. Get options text and line in config file
-        //and add it to the table
-        menuItems.push({"option":items[i]["option"],"position":items[i]["position"]})
-        }
-    }
-} */
-
 MenuItems.prototype.update = async function (node) {
     var mi=this;
     mi.node=node
     mi.menuItems=[]
     await mi.init()
-  }
+}
 
 MenuItems.prototype.collapsedBranchMenuItemsInGraph=function (){
   var mi=this;
@@ -122,13 +74,20 @@ MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
   var mi=this,option;
-  console.log(mi.node["position"])
   configFileExpert.option.forEach(option => {
     let position = option.match("and Position: (.*)")[1];
     if((!mi.node["position"])||(position==mi.node["position"])){
       mi.indexRows.push(new OptionNodeExpert(option,mi.node))
     }
   })  
+
+  if((node.configRow)&&(node.configRow.length>0)){
+    for (var i = 0; i < node.configRow.length; i++) {
+      mi.indexRows.push(new OptionNodeBasic(configFile.file[node.configRow[i]].option,mi.node))
+      mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
+    }
+  }
+  console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
@@ -136,22 +95,43 @@ MenuItemsExpert.prototype.addSelectedRow=function (i){
   mi.selectedRows.push(mi.indexRows[i])
 }
 
+MenuItemsExpert.prototype.filterByAskResult = async function () {
+  var mi=this;
+  mi.selectedRows=[]
+  for (var i = 0; i < mi.indexRows.length; i++) {
+    //console.log(mi.indexRows[i] instanceof OptionNodeBasic)
+    if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
+      try {
+        results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+      } catch (e) {
+      results = false
+      } 
+      console.log(results)
+      if(results==true){
+        mi.addSelectedRow(i)
+      }
+    }else{
+      mi.addSelectedRow(i)
+    }
+  }
+}
+
 MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
   var mi=this;
-  elementMenu = {
-      title: "Sparql Endpoint: " + mi.selectedRows[i].endpoint_url + " and Position: " + mi.selectedRows[i]["position"],
-      action: async (data,d) => {
-      let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
-      let position = d.title.match("and Position: (.*)")[1];
-      let selectedRow=mi.selectedRows.filter(s=>(s.position==position&&s.endpoint_url==url))[0]
-/*       form = { "url": url, "uri": selectedRow.node.uri, "position": position,"query":selectedRow.query}
-      //console.log(data)
-      //console.log(d)
-      //console.log("entra por details menu in graph")
-      addExpertGraph(form,data)
-      setMenuOption(data,d.title) */
-      addExpertGraph(selectedRow,node)
-      }
+
+  if(!(mi.selectedRows[i] instanceof OptionNodeBasic)){
+    elementMenu = {
+        title: "Sparql Endpoint: " + mi.selectedRows[i].endpoint_url + " and Position: " + mi.selectedRows[i]["position"],
+        action: async (data,d) => {
+        configRow=new ConfigRowExpert(d.title,menuItems.node)
+        let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
+        let position = d.title.match("and Position: (.*)")[1];
+        let selectedRow=mi.selectedRows.filter(s=>(s.position==position&&s.endpoint_url==url))[0]
+        addExpertGraph(selectedRow,node)
+        }
+    }
+  }else{
+    elementMenu=detailsMenuItemsInGraphBasic(i)
   }
   return elementMenu
 }
@@ -214,13 +194,59 @@ MenuItemsBasic.prototype.addSelectedRow=function (i){
   mi.selectedRows.push(mi.indexRows[i])
 }
 
+MenuItemsBasic.prototype.filterByAskResult = async function () {
+  var mi=this;
+  mi.selectedRows=[]
+  for (var i = 0; i < mi.indexRows.length; i++) {
+      try {
+          results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+      } catch (e) {
+      results = false
+      } 
+
+      if(results==true){
+        mi.addSelectedRow(i)
+      }
+  }
+}
+
 MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
   var mi=this;
   elementMenu={
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {
+      if(configRow instanceof ConfigRowExpert){
+        configRow = new ConfigRowBasic(d.title);
+        await configRow.init()
+      }
+      setMenuOption(data,d.title)
+      addBasicGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
+    }
+    }
+  return elementMenu
+}
+
+function detailsMenuItemsInGraphBasic(i){
+  elementMenu={
+    title: menuItems.selectedRows[i]["option"],
+    action: async (data,d) => {
+        if((!configRow)||(configRow instanceof ConfigRowExpert)){
+          configRow = new ConfigRowBasic(d.title);
+          await configRow.init()
+          let newColors=Object.keys(networkGraph.colorCorrespondence).filter(function(x){
+            if(!networkGraph.colorScaleRange.includes(x)){
+              return x;
+            }
+          });
+          let newClasses=configRow.getClassesCorrespondence()
+          networkGraph.nodesClassesShow = { ...networkGraph.nodesClassesShow,  ...newClasses };
+          networkGraph.colorScaleRange=networkGraph.colorScaleRange.concat(newColors)
+          networkGraph.colors=networkGraph.colors.concat(["#FCA5A5","#C4B5FD","#D1D5DB","#10B981","#F59E0B","#EC4899","#3B82F6","#6B7280"])
+          networkGraph.colorScale
+          .range(networkGraph.colorScaleRange)
+        }
         setMenuOption(data,d.title)
-        addBasicGraph(mi.selectedRows.filter(s=>s.option==d.title)[0],data)
+        addBasicGraph(menuItems.selectedRows.filter(s=>s.option==d.title)[0],data)
     }
     }
   return elementMenu

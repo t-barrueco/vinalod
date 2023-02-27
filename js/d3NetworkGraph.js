@@ -38,9 +38,16 @@ NetworkGraph.prototype.initVis = function () {
   
 
   vis.filters=[]
+  networkGraph.filtered=false
 
   vis.width=1400
-  vis.height=800
+  //vis.height=800
+/*   if(offsetHeight>800){
+    vis.height=offsetHeight
+  }else{
+    vis.height=800
+  } */
+  vis.height=$( document ).height();
   vis.svg = d3.select(this.parentElement).append("svg")
   .attr("id", "networkGraph-svg")
   .attr("class", "graph z-0")
@@ -68,36 +75,7 @@ NetworkGraph.prototype.initVis = function () {
         .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
         .attr('fill', 'black')
         .style('stroke','none') 
-  /* vis.svg.append('defs').append('marker')
-        .attr("id",'arrow')
-        .attr('viewBox','-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
-         .attr('refX',23) // x coordinate for the reference point of the marker. If circle is bigger, this need to be bigger.
-         .attr('refY',0)
-         .attr('orient','auto')
-            .attr('markerWidth',13)
-            .attr('markerHeight',13)
-            .attr('xoverflow','visible')
-        .append('svg:path')
-        .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-        .attr('fill', 'black')
-        .style('stroke','none') */
-        
-/*         vis.svg.append('defs')
-        .append("marker")
-                .attr("id", "arrow")
-                .attr("viewBox","-0 -5 10 10")
-                .attr("refX","23")
-                .attr("refY","0")
-                //.attr("markerUnits","strokeWidth")
-                .attr('markerUnits', 'userSpaceOnUse')
-                .attr("markerWidth","13")
-                .attr("markerHeight","13")
-                .attr("orient","auto")
-                .append("svg:path")
-                .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-                .attr("fill", "black")
-                .style('stroke','none');   */    
-
+  
     vis.svg.append("defs").append("marker")
     .attr("id", "arrowEnd")
     .attr('viewBox','-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
@@ -125,34 +103,6 @@ NetworkGraph.prototype.initVis = function () {
       .attr("d", "M0,0L10,-5L10,5Z")
       .attr('fill', 'black')
       .style('stroke','none');
-  /*               
-  vis.append("defs").selectAll("marker")
-  .data(["arrow"])
-  .enter().append("marker")
-  .attr("id", "markerEnd")
-  .attr("viewBox", "0 -5 10 10")
-  .attr("refX", 19)
-  .attr("refY", -0,7)
-  .attr("markerWidth", 6)
-  .attr("markerHeight", 6)
-  .attr('markerUnits', "userSpaceOnUse")
-  .attr("orient", "auto")
-  .append("path")
-  .attr("d", "M0,-5L10,0L0,5");
-
-  vis.append("defs").selectAll("marker")
-    .data(["arrow"])
-    .enter().append("marker")
-    .attr("id", "markerStart")
-    .attr("viewBox", "0 -5 10 10")
-    .attr("refX", -12)
-    .attr("refY", -0,7)
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
-    .attr('markerUnits', "userSpaceOnUse")
-    .attr("orient", "auto")
-    .append("path")
-    .attr("d", "M0,0L10,-5L10,5Z"); */
   
   
 
@@ -179,20 +129,26 @@ NetworkGraph.prototype.initVis = function () {
     var dragSvg = d3.zoom()
     .scaleExtent([0.25, 2.5])
     .on("zoom", function(e){
-      vis.zoomed.call(vis);
-      vis.zoomScale=d3.event.transform.k
-      return true;
+      if (lineDragActive == false) {
+        vis.zoomed.call(vis);
+        vis.zoomScale=d3.event.transform.k
+        return true;
+      }
     })
     .on("start", function(){
-      d3.select('body').style("cursor", "move");
-      d3.event.transform.x=0
-      d3.event.transform.y=0
+      if (lineDragActive == false) {
+        d3.select('body').style("cursor", "move");
+        d3.event.transform.x=0
+        d3.event.transform.y=0
+      }
     })
     .on("end", function(){
-      vis.dragX=d3.event.transform.x
-      vis.dragY=d3.event.transform.y
-      vis.zoomScale=d3.event.transform.k
-      d3.select('body').style("cursor", "auto"); 
+      if (lineDragActive == false) {
+        vis.dragX=d3.event.transform.x
+        vis.dragY=d3.event.transform.y
+        vis.zoomScale=d3.event.transform.k
+        d3.select('body').style("cursor", "auto"); 
+      }
     })
 
   vis.gLinks=vis.g.append("g")
@@ -250,7 +206,6 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
 
-  //vis.sizeNode = d3.scaleLinear()
   vis.sizeNode=d3.scalePow()
   .domain([0,vis.maxSizeNode])
   .range([ 15, 45])  // Size in pixel
@@ -271,59 +226,9 @@ NetworkGraph.prototype.zoomed = function(){
   }
     
 };
-function checkTest(){
-  console.log("---------------------nuevo initialize simulation----------------")
-  var test=networkGraph.data.nodes.filter(d=>d.value=="Publications Office of the European Union")
-  if(test.length>0){
-    console.log("node: "+ networkGraph.data.nodes.filter(d=>d.value=="Publications Office of the European Union")[0]["x"])
-    //let test2=networkGraph.data.links.filter(d=>{console.log(d.source.value);d.source.value=="Publications Office of the European Union"})
-    let test2=networkGraph.data.links.filter(d=>d.source.value=="Publications Office of the European Union")
-    if(test2.length>0){
-      console.log("source: "+test2[0]["source"]["x"])
-    }
-    let test3=networkGraph.data.links.filter(d=>d.target.value=="Publications Office of the European Union")
-    if(test3.length>0){
-      console.log("target: "+test3[0]["target"]["x"])
-    }
-  }
-  console.log("----------------fin initialize simulation----------------")
-}
-function checkTestLdg(){
-  console.log("---------------------nuevo initialize simulation----------------")
-  console.log(linkedDataGraph)
-  var test=linkedDataGraph.data.flatData.nodes.filter(d=>d.value=="Publications Office of the European Union")
-  if(test.length>0){
-    console.log("node: "+ linkedDataGraph.data.flatData.nodes.filter(d=>d.value=="Publications Office of the European Union")[0]["x"])
-    //let test2=linkedDataGraph.flatData.data.links.filter(d=>{console.log(d.source.value);d.source.value=="Publications Office of the European Union"})
-    let test2=linkedDataGraph.data.flatData.links.filter(d=>d.source.value=="Publications Office of the European Union")
-    if(test2.length>0){
-      console.log("source: "+test2[0]["source"]["x"])
-    }
-    let test3=linkedDataGraph.data.flatData.links.filter(d=>d.target.value=="Publications Office of the European Union")
-    if(test3.length>0){
-      console.log("target: "+test3[0]["target"]["x"])
-    }
-  }
-  console.log("----------------fin initialize simulation----------------")
-}
+
 NetworkGraph.prototype.initializeSimulation = function () {
   var vis = this;
-/*   console.log("---------------------nuevo initialize simulation----------------")
-  var test=vis.data.nodes.filter(d=>d.value=="Publications Office of the European Union")
-  if(test.length>0){
-    console.log("node: "+ vis.data.nodes.filter(d=>d.value=="Publications Office of the European Union")[0]["x"])
-    //let test2=vis.data.links.filter(d=>{console.log(d.source.value);d.source.value=="Publications Office of the European Union"})
-    let test2=vis.data.links.filter(d=>d.source.value=="Publications Office of the European Union")
-    if(test2.length>0){
-      console.log("source: "+test2[0]["source"]["x"])
-    }
-    let test3=vis.data.links.filter(d=>d.target.value=="Publications Office of the European Union")
-    if(test3.length>0){
-      console.log("target: "+test3[0]["target"]["x"])
-    }
-  } */
-  //console.log("----------------fin initialize simulation----------------")
-  //checkTest()
   vis.simulation.stop() 
   vis.simulation.nodes(vis.data.nodes);
   vis.initializeForces();
@@ -332,6 +237,7 @@ NetworkGraph.prototype.initializeSimulation = function () {
 NetworkGraph.prototype.initializeForces = function() {
   var vis = this;
 
+  //var x,y,value
   vis.simulation
       .force("link", d3.forceLink())
       .force("charge", d3.forceManyBody())
@@ -382,44 +288,37 @@ NetworkGraph.prototype.initializeForces = function() {
       return {translate: [tx, ty], scale: vis.zoomScale}
     }
   });    
-
-  ////////////////console.log(vis.data.nodes[0].vx)
   vis.simulation.stop()
 
   vis.updateForces();
-  ////////////////console.log(vis.data.nodes[0].vx)
 
   function ticked() {
-    fixCoordinates()
+    var positions=[]
     vis.link.attr('d', function (d){
-/*       //console.log(d.source.value)
-      //console.log(d.source.x)
-      //console.log(d.source.y)
-      //console.log(d.target.value)
-      //console.log(d.target.x)
-      //console.log(d.target.y) */
-      ////////////console.log(d.source.x + 17)
-      return   'M ' + (d.source.x) + ' ' + (d.source.y) + ' L ' + d.target.x + ' ' + d.target.y
+      var source,target
+      var index=positions.findIndex(n=>n.id==d.source.id)
+      if(index==-1){
+        source=addPosition(d.source)
+        positions.push(source)
+      }else{
+        source=positions[index]
+      }
+      index=positions.findIndex(n=>n.id==d.target.id)
+      if(index==-1){
+        target=addPosition(d.target)
+        positions.push(target)
+      }else{
+        target=positions[index]
+      }
+      //console.log('M ' + (d.source.x) + ' ' + (d.source.y) + ' L ' + d.target.x + ' ' + d.target.y)
+      return   'M ' + (source.x) + ' ' + (source.y) + ' L ' + target.x + ' ' + target.y
     });
-        /* .attr("x1", function(d) { 
-            return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
- */
     vis.edgepaths.attr('d', function (d){
-         ////////////console.log(d)
-         //return   'M ' + (d.source.x - 17) + ' ' + (d.source.y-17) + ' L ' + d.target.x + ' ' + d.target.y
-
-         //return `M${d.source.x},${d.source.y}A0,0 0 0,1 ${d.target.x},${d.target.y}`
           return   'M ' + (d.source.x) + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
         });
 
     vis.nodeCircle
         .attr("transform", function(d) { 
-          ////console.log(d.value)
-          ////console.log(d.x)
-          ////console.log(d.y)
           return "translate(" + d.x + "," + d.y + ")"; })
 
     vis.nodeCircleFree
@@ -427,15 +326,15 @@ NetworkGraph.prototype.initializeForces = function() {
   
             return "translate(" + d.x + "," + d.y + ")"; })
     }
-  function fixCoordinates(){
-    //console.log(vis.link.data())
-    //console.log(vis.link)
+  function addPosition(node){
+    return {"id":node.id,"x":node.x,"y":node.y}
   }
 }
 
 NetworkGraph.prototype.updateForces= function() {
 
   var vis = this;
+
   vis.simulation.force("center")
       .x(vis.width * vis.forceProperties.center.x)
       .y(vis.height * vis.forceProperties.center.y);
@@ -491,13 +390,12 @@ NetworkGraph.prototype.updateDisplay = function () {
 
 NetworkGraph.prototype.dataJoinGraph = function(){
   var vis=this;
-  ////////console.log("dataJoin")
+
   vis.link = vis.gLinks
   .selectAll(".link")
   .data(vis.data.links.filter(function(item) {
     return item["source"]["class"] != "free"
   }), function(d) { return d.id; })
-
 
   vis.linklabels = vis.gLinks.selectAll(".linklabel")
   .data(vis.data.links.filter(function(item) {
@@ -523,56 +421,27 @@ NetworkGraph.prototype.dataJoinGraph = function(){
     return item["class"] != "free"
   }), function(d) { return d.id; })
 
-  ////console.log(vis.data.nodes)
   vis.circleSelFree=vis.gNodesFree
   .selectAll('.nodeCircleFree')
 
   vis.nodeCircleFree=vis.circleSelFree
   .data(vis.data.nodes.filter(function(item) {
-    ////console.log(item.value)
     return item["class"] == "free"
   }), function(d) { return d.id; })
-
-  ////console.log(vis.circleSelFree)
-
-  vis.nodeCircleImages=vis.nodeCircle
-  .data(vis.data.nodes.filter(function(item) {
-    //////console.log(item)
-    return !(mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"]))
-  }), function(d) { return d.id; })
-
-  /* vis.nodeCircleMnemonic=vis.nodeCircle.selectAll(".nodeCircleMnemo")
-  .data(vis.data.nodes.filter(function(item) {
-    return (mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"]))
-  }), function(d) { return d.id; }) */
-  
-  vis.nodeCircleMnemonic=vis.nodeCircle
-  .data(vis.data.nodes.filter(function(item) {
-    return (mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"]))
-  }), function(d) { return d.id; })
-  //////////console.log(vis.nodeCircleMnemonic)
-  ////////////console.log(vis.nodeCircleImages)
-
 }
 
 NetworkGraph.prototype.enterGraph = function(){
     var vis=this,r;
     let lineHeight = 12;
     vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
-    ////////////////////////////////////console.log(vis.maxSizeNode)
+
     vis.sizeNode
     .domain([0,vis.maxSizeNode])
 
-    ////////////////////////////////////console.log("handleMouseout")
-    //vis.data.nodes.forEach(n=>handleMouseout(n.id))
-    //////////////////////////////////console.log(vis.data.nodes)
-    //////////////////////////////////console.log(configRow.node)
     if(configRow.node){
       d3.select("#"+configRow.node.id).data(vis.data.nodes.filter(d=>d.id==configRow.node.id)[0])
-      ////////////////////////////////console.log(d3.select("#"+configRow.node.id).data()[0])
       handleMouseout(configRow.node.id)
     }
-    
     vis.colorScale.domain(Object.values(vis.nodesClassesShow))
     vis.colorScale.range(vis.colors.slice(0,Object.values(vis.nodesClassesShow).length))
     vis.isDblclick = false;
@@ -582,7 +451,7 @@ NetworkGraph.prototype.enterGraph = function(){
     drawLinks()
 
     //these arrow lines will shown only in free graph
-
+    drawGCircles()
     drawCirclesBasic()
     addTextForCircles()
     drawImageCirclesBasic()
@@ -592,8 +461,6 @@ NetworkGraph.prototype.enterGraph = function(){
     drawImageClusterFree()
       
     function drawLinks(){
-      //////////////////////console.log("before drawlinks")
-        ////////////////////////////console.log(vis.link)
         vis.link=vis.link
         .enter()
         .append('path')
@@ -607,10 +474,7 @@ NetworkGraph.prototype.enterGraph = function(){
         .style("pointer-events", "none")
         .style("stroke", "black")
         .attr("stroke-width", 1)
-        //.attr("marker-end","url(#arrow)");
-        //.attr("marker-start", "url(#arrowStart");
 
-        ////////////////////////////console.log(vis.linklabels)
         vis.linklabels = vis.linklabels
         .enter()
         .append('text')
@@ -627,7 +491,6 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr('fill', 'black')
         .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
             .attr('xlink:href', function (d) {
-              //////////////////////////////////////console.log(d3.select("#"+d.id+"_link"))
               return "#"+d.id+"_link"})
             .style("text-anchor", "middle")
             .style("pointer-events", "none")
@@ -636,88 +499,22 @@ NetworkGraph.prototype.enterGraph = function(){
               return d.relation
             });
   
-/*         vis.linklabels.append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
-            .attr('xlink:href', function (d) {
-              ////////////////////////////////////////console.log(d3.select("#"+d.id))
-              return "#"+d.id+"_link"})
-            .style("text-anchor", "middle")
-            .style("pointer-events", "none")
-            .attr("startOffset", "50%")
-            .text(function(d){
-              return d.relation
-            }); */
-          }
+    }
     function drawArrowLinesFree(){
-/*       vis.link=vis.link
-      .enter()
-      .append('path')
-      .attr('class', 'link')
-      .attr('id',function(d){
-        return d.id+"_link";
-      })
-      .attr('link_id',function(d){
-        return d.id;
-      })
-      .style("pointer-events", "none")
-      .style("stroke", "black")
-      .attr("stroke-width", 1)
-      .attr("marker-end","url(#arrow)"); ; */
-        //////////////////////console.log("before edgepaths")
-        ////////////////////console.log(vis.edgepaths)
         vis.edgepaths = vis.edgepaths
         .enter()
         .append('path')
         .attr('class', 'edgepath')
-        //.attr('fill-opacity', 0)
-        //.attr('stroke-opacity', 0)
         .attr('id', function (d, i) {
-          ////////////////////////////console.log(d)
           return d.id+"_link"})
-          //return 'edgepath' + i})
         .attr('link_id',function(d){
           return d.id
-          //return d["source"]["id"]+"_"+d["target"]["id"]
         })
         .style("poin ter-events", "none")
         .style("stroke", "black")
         .attr("stroke-width", 1)
         .attr("marker-end", "url(#arrow)")
-/*         .attr("marker-mid", "url(#arrow)")
-        .attr("marker-start", "url(#arrow)") */
 
-        //.attr("marker-start", "url(#arrowEnd)")
-        //.attr("marker-start", "url(#arrowEnd")
-/*         if(configRow.position=="s"){
-          vis.edgepaths=vis.edgepaths.attr("marker-end","url(#arrowEnd)")
-        }else if(configRow.position=="o"){
-          vis.edgepaths=vis.edgepaths.attr("marker-start", "url(#arrowEnd")
-        } */
-        ////////////////////////////console.log(vis.edgelabels)
-
-/*         vis.linklabels = vis.linklabels
-        .enter()
-        .append('text')
-        .style("pointer-events", "none")
-        .attr('class', 'linklabel')
-        .attr('id', function (d) {return d["id"]+"_label"})
-        .attr('link_id',function(d){
-          return d["id"]+"_label"
-        })
-        .attr('link_value',function(d){
-          return d["relation"]
-        })
-        .attr('font-size', 12)
-        .attr('fill', 'black')
-        .append('textPath') //To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href attribute with a reference to the <path> element.
-            .attr('xlink:href', function (d) {
-              //////////////////////////////////////console.log(d3.select("#"+d.id+"_link"))
-              return "#"+d.id+"_link"})
-            .style("text-anchor", "middle")
-            .style("pointer-events", "none")
-            .attr("startOffset", "50%")
-            .text(function(d){
-              return d.relation
-            }); */
         vis.edgelabels = vis.edgelabels
             .enter()
             .append('text')
@@ -740,17 +537,48 @@ NetworkGraph.prototype.enterGraph = function(){
             .text(function(d){
               return d.value
             });
-      }
+    }
+    function drawGCircles(){
+      vis.nodeCircle=vis.nodeCircle
+      .enter().append("g")
+      .attr("class", "nodeCircleBasic")
+      .attr("id",function(d){
+        return (d.id+"_g")
+      })
+      .on('dblclick', function(d){
+        handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id").replace("_g",""))
+        if(get_node_from_element(this.getAttribute("id").replace("_g",""))["class"]!="menuOption"){
+          event.pageX=d3.mouse(vis.g.node())[0]
+          event.pageY=d3.mouse(vis.g.node())[0]
+
+          var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
+          var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
+          vis.wrangleData(this,"bubble",d.x + dcx,d.y + dcy);
+        }
+        return false;
+      })
+      .on('mouseover', function(d){
+        handleMouseover(d,this.getAttribute("id").replace("_g",""))
+      })
+      .on('mouseout', function(d){
+        handleMouseout(this.getAttribute("id").replace("_g",""))
+      })
+      .on("click",function(d){
+        handleClickEvent(document.getElementById(this.getAttribute("id").replace("_g","")))
+      })
+      .on('contextmenu', (d) => {
+        d3.event.preventDefault();
+        getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
+      })
+      .call(
+        d3
+          .drag()
+          .on("start", dragStart)
+          .on("drag", drag)
+          .on("end", dragEnd)
+      );
+    }
     function drawCirclesBasic(){
-
-        vis.nodeCircle=vis.nodeCircle
-        .enter().append("g")
-        .attr("class", "nodeCircleBasic")
-        //.attr("style","filter:url(#dropshadow)")
-        .attr("id",function(d){
-          return (d.id+"_g")
-        })
-
         vis.nodeCircleCircle=vis.nodeCircle
         .append("circle")
         .attr("class",function(d){
@@ -789,28 +617,11 @@ NetworkGraph.prototype.enterGraph = function(){
         })
         .attr("stroke-width", "1px")
         .style("fill", function(d){ 
-           test=vis.colorScale(d.className)
-           return test;
-
-        })
-        .on('clickout', function(d){
-        })
-        .on("click",function(){
-          handleClickEvent(this)    
-        })
-        .on('dblclick', function(){
-          handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
-          if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
-            vis.wrangleData(this,"bubble",d3.event);
-          }
-          return false;
-        })
-        .on('contextmenu', (d) => {
-          d3.event.preventDefault();
-          getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
+           return vis.colorScale(d.className);
         })
 
-      }
+
+    }
     function addTextForCircles(){
         d3.selectAll(".nodeCircleMnemo").remove()
 
@@ -832,8 +643,6 @@ NetworkGraph.prototype.enterGraph = function(){
                     return 0;
                   }
                       })
-/*         vis.textCircle
-           .selectAll("tspan").remove(); */
 
         vis.textCircleSpan=vis.textCircle
             .selectAll("tspan")
@@ -847,14 +656,18 @@ NetworkGraph.prototype.enterGraph = function(){
               .attr("x", 0)
               .attr("y", (d, i) => (i - lines.length / 2 + 0.8) * lineHeight)
               .text(d => d.text);
-
-        //vis.textCircleSpan.exit().remove()
-      }
+    }
     function drawImageCirclesBasic(){
-        var event={};
-        d3.selectAll(".nodeCircleImage").remove()
+        var event={},mnemonic,bubbleImg;
 
-        vis.nodeCircleImage=vis.nodeCircleImages.append("svg:image")
+        vis.nodeCircleImage=d3.selectAll(".nodeCircleBasic").filter(function(item){
+          return !mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"])
+        })
+
+        d3.selectAll(".nodeCircleImage").remove();
+
+        vis.nodeCircleImage
+        .append("svg:image")
         .attr("class", "nodeCircleImage")
         .attr("id",function(d){
           return (d.id+"_image")
@@ -863,7 +676,7 @@ NetworkGraph.prototype.enterGraph = function(){
           if(d.class=="more_results"){
             return "images/bubbles.svg";
           }else{
-            let bubbleImg=bubbleImage(d)
+            bubbleImg=bubbleImage(d)
           return bubbleImg;
           }
         })
@@ -894,31 +707,6 @@ NetworkGraph.prototype.enterGraph = function(){
         }else{
           return (vis.sizeNode(d.number)*1.5)+"px"
         }
-      })
-        .on('dblclick', function(d){
-          handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
-          if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
-            event.pageX=d3.mouse(vis.g.node())[0]
-            event.pageY=d3.mouse(vis.g.node())[0]
-
-            var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
-            var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
-            vis.wrangleData(this,"bubble",d.x + dcx,d.y + dcy);
-          }
-          return false;
-        })
-        .on('mouseover', function(d){
-          handleMouseover(d,this.getAttribute("id").replace("_image",""))
-        })
-        .on('mouseout', function(d){
-          handleMouseout(this.getAttribute("id").replace("_image",""))
-        })
-        .on("click",function(d){
-          handleClickEvent(document.getElementById(this.getAttribute("id").replace("_image","")))
-        })
-        .on('contextmenu', (d) => {
-          d3.event.preventDefault();
-          getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
         })
         .attr('opacity', function(d) {
           if(vis.zoomScale>1.5){
@@ -928,52 +716,33 @@ NetworkGraph.prototype.enterGraph = function(){
           }
           
         })
-      }
+    }
     function drawTextCirclesBasic(){
-      var textValue;
-      //////////console.log(vis.nodeCircleMnemonic)
-      ////////console.log("drawTextCirclesBasic")
-      //vis.nodeCircleMnemonic
+      var textValue,mnemonic;
+      //console.log(d3.selectAll(".nodeCircleBasic"))
 
-      vis.mnemoCircle=vis.nodeCircleMnemonic
-      .append("text")
+      vis.mnemoCircle=d3.selectAll(".nodeCircleBasic").filter(function(item){
+        return mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"])
+      })
+
+      //console.log(vis.mnemoCircle)
+
+      vis.mnemoCircle=vis.mnemoCircle.append("text")
       .attr("class","nodeCircleMnemo")
       .attr("id",function(d){
-        //////////console.log(d)
+        //console.log(d)
         return (d.id)+"_mnemo"
-      })       
+      })  
       .attr("transform", 
       function(d){
-        ////////////console.log(d)
-        textValue=getMnemonicCodeForOrg(d[d["class"]+"_uri"])["code"]["value"]
-        ////////////console.log(textValue)
-        textRadiusText=textRadius(lines(words(textValue),textValue))
-        return `translate(${-vis.sizeNode(d.number)/1.2},${-(textRadiusText/vis.sizeNode(d.number))/1.2}) scale(${vis.sizeNode(d.number) / textRadiusText})`
-      })
-      .on('dblclick', function(d){
-        handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
-        if(get_node_from_element(this.getAttribute("id").replace("_image",""))["class"]!="menuOption"){
-          event.pageX=d3.mouse(vis.g.node())[0]
-          event.pageY=d3.mouse(vis.g.node())[0]
-
-          var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
-          var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
-          vis.wrangleData(this,"bubble",d.x + dcx,d.y + dcy);
+        mnemonic=getMnemonicCodeForOrg(d[d["class"]+"_uri"])
+        if(mnemonic!=undefined){
+          textValue=mnemonic["code"]["value"]
+          textRadiusText=textRadius(lines(words(textValue),textValue))
+          return `translate(${-vis.sizeNode(d.number)/1.2},${-(textRadiusText/vis.sizeNode(d.number))/1.2}) scale(${vis.sizeNode(d.number) / textRadiusText})`
+        }else{
+          return `translate(0,0)`
         }
-        return false;
-      })
-      .on('mouseover', function(d){
-        handleMouseover(d,this.getAttribute("id").replace("_mnemo",""))
-      })
-      .on('mouseout', function(d){
-        handleMouseout(this.getAttribute("id").replace("_mnemo",""))
-      })
-      .on("click",function(d){
-        handleClickEvent(document.getElementById(this.getAttribute("id").replace("_mnemo","")))
-      })
-      .on('contextmenu', (d) => {
-        d3.event.preventDefault();
-        getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
       })
       .attr('opacity', function(d) {
         if(vis.zoomScale>1.5){
@@ -983,86 +752,28 @@ NetworkGraph.prototype.enterGraph = function(){
         }
         
       })
-/*       .selectAll("tspan")
-      .data(function(d){
-        ////////console.log(d)
-        textValue=getMnemonicCodeForOrg(d[d["class"]+"_uri"])["code"]["value"]
-        return lines(words(textValue),textValue)
-      })
-      .enter()
-      .append("tspan")
-        .attr("x", 0)
-        .attr("y", (d, i) => (i - lines.length / 2 + 1.5) * lineHeight)
-        .text(d => d.text); */
 
-     /*  .attr('opacity', function(d) {
-            //if(vis.zoomScale>1.5){
-              return 1;
-            //}else{
-            //  return 0;
-            //}
-                }) */
       vis.mnemoCircleText=vis.mnemoCircle
       .selectAll("tspan")
       .data(function(d){
-        textValue=getMnemonicCodeForOrg(d[d["class"]+"_uri"])["code"]["value"]
+        mnemonic=getMnemonicCodeForOrg(d[d["class"]+"_uri"])
+        if(mnemonic!=undefined){
+          textValue=mnemonic["code"]["value"]
+        }else{
+          textValue=""
+        }
         return lines(words(textValue),textValue)
       })
 
-      ////////console.log(vis.mnemoCircleText)
       vis.mnemoCircleText
       .enter().append("tspan")
         .attr("x", 0)
-        .attr("y", (d, i) => (i - lines.length / 2 + 1.5) * lineHeight)
+        .attr("y", function(d, i){
+          return (i - lines.length / 2 + 1.5) * lineHeight
+        })
         .text(d => d.text);
-      
-      function getMnemonicCodeForOrg(org){
-        return mnemonicCodes.filter(m=>m.org.value==org)[0]
-      }
     }
-    function drawShadow(){
-  
-/*         vis.nodeCircleImage=vis.nodeCircle.append("defs").append("filter")
-        .attr("id", "dropshadow")
-        .attr("x", "-40%")
-        .attr("y", "-40%")
-        .attr("width", "180%")
-        .attr("height", "180%")
-        .append("feGaussianBlur")
-        .attr("in", "SourceAlpha")
-        .attr("stdDeviation", "3")
-        .append("feOffset")
-        .attr("dx", "5")
-        .attr("dy", "5")
-        .attr("result", "offsetblur")
-        .append("feOffset")
-        .attr("dx", "-5")
-        .attr("dy", "-5")
-        .attr("result", "offsetblur")
-        .append("feMerge")
-        .append("feMergeNode")
-        .append("feMergeNode")
-        .attr("in", "SourceGraphic")
-        .append("feMergeNode")
-        .attr("in", "SourceGraphic") */
-        vis.nodeCircleImage=vis.nodeCircle.append("defs").append("filter")
-        .attr("id", "dropshadow")
-        .attr("height", "130%")
-        .append("feGaussianBlur")
-        .attr("in", "SourceAlpha")
-        .attr("stdDeviation", 5)
-        .attr("result", "blur")
-        .append("feOffset")
-        .attr("in", "blur")
-        .attr("dx", 0.5)
-        .attr("dy", 0.5)
-        .attr("result", "offsetBlur")
-        .append("feMerge")
-        .append("feMergeNode")
-        .attr("in", "offsetBlur")
-        .append("feMergeNode")
-        .attr("in", "SourceGraphic")
-      }
+
     function drawCirclesFree(){
         vis.nodeCircleFree=vis.nodeCircleFree
         .enter().append("g")
@@ -1080,7 +791,6 @@ NetworkGraph.prototype.enterGraph = function(){
         vis.nodeCircleCircleFree=vis.nodeCircleFree
             .append("circle")
             .attr("class",function(d){
-              ////console.log(d.value)
               if(d.class=="more_results"){
                 return d.class + " nodeCircleCircleFree cluster"
               }else{
@@ -1124,17 +834,12 @@ NetworkGraph.prototype.enterGraph = function(){
               }, delay);
             })
             .on('dblclick', function(d){
-/*               d3.event.stopPropagation();
-              d3.event.preventDefault();
-              if((d.type=="uri")||(d.type=="bnode")){
-                clearTimeout(timer);
-                prevent = true;
-                vis.wrangleData(this,"bubble");
-                return false;
-              } */
-              handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
-              if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
-                vis.wrangleData(this,"bubble",d3.event);
+
+              if(d.type=="uri"){
+                handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
+                if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
+                  vis.wrangleData(this,"bubble",d3.event);
+                }
               }
               return false;
             })
@@ -1142,7 +847,14 @@ NetworkGraph.prototype.enterGraph = function(){
                 d3.event.preventDefault();
                 getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
             })
-      }
+            .call(
+              d3
+                .drag()
+                .on("start", dragStart)
+                .on("drag", drag)
+                .on("end", dragEnd)
+            );
+    }
     function drawImageClusterFree(){
         d3.selectAll(".g-cluster")
         .append("svg:image")
@@ -1189,14 +901,14 @@ NetworkGraph.prototype.enterGraph = function(){
             getMenuItemsContextMenu(d,"bubble",d3.event.pageX,d3.event.pageY)
         })
 
-      }
+    }
     function handleDblClickEvent(mouseX,mouseY,id){
         d3.event.stopPropagation();
         d3.event.preventDefault();
         clearTimeout(timer);
         prevent = true;
         vis.dblClickId=id.replace("_image","")
-      }
+    }
     function handleClickEvent(element){
           timer = setTimeout(function() {
           if (!prevent) {
@@ -1204,9 +916,10 @@ NetworkGraph.prototype.enterGraph = function(){
           }
           prevent = false;
           }, delay);
-      }
+    }
 
-      function handleMouseover(data,circleId){
+    function handleMouseover(data,circleId){
+        document.body.style.cursor = 'pointer';
         addTooltip(getTooltipText(data))
 
         d3.select("#"+circleId)
@@ -1226,8 +939,9 @@ NetworkGraph.prototype.enterGraph = function(){
         .attr("width", function(d) { 
           return (vis.sizeNode(d.number)*1.5*2)+"px";
         })
-      }
-      function handleMouseout(circleId){
+    }
+    function handleMouseout(circleId){
+        document.body.style.cursor = 'auto';
         deleteTooltip()
         d3.select("#"+circleId)
         .transition()
@@ -1235,8 +949,6 @@ NetworkGraph.prototype.enterGraph = function(){
           if(d.class=="more_results"){
             return 50;
           }else{
-            //////////////////////////////////console.log(d.value)
-            //////////////////////////////////console.log(d)
             return vis.sizeNode(d.number);
           }
           })
@@ -1270,48 +982,48 @@ NetworkGraph.prototype.enterGraph = function(){
             return (vis.sizeNode(d.number)*1.5)+"px"
           }
         })
-      }    
+    }    
 
-      function words(text){
-        const words = text.split(/\s+/g); // To hyphenate: /\s+|(?<=-)/
-        if (!words[words.length - 1]) words.pop();
-        if (!words[0]) words.shift();
-        return words;
-      }
-      function lines(words,text){
-        let targetWidth = Math.sqrt(measureWidth(text.trim()) * lineHeight)
-        let line;
-        let lineWidth0 = Infinity;
-        const lines = [];
-        for (let i = 0, n = words.length; i < n; ++i) {
-          let lineText1 = (line ? line.text + " " : "") + words[i];
-          let lineWidth1 = measureWidth(lineText1);
-          if ((lineWidth0 + lineWidth1) / 2 < targetWidth) {
-            line.width = lineWidth0 = lineWidth1;
-            line.text = lineText1;
-          } else {
-            lineWidth0 = measureWidth(words[i]);
-            line = {width: lineWidth0, text: words[i]};
-            lines.push(line);
-          }
+    function words(text){
+      const words = text.split(/\s+/g); // To hyphenate: /\s+|(?<=-)/
+      if (!words[words.length - 1]) words.pop();
+      if (!words[0]) words.shift();
+      return words;
+    }
+    function lines(words,text){
+      let targetWidth = Math.sqrt(measureWidth(text.trim()) * lineHeight)
+      let line;
+      let lineWidth0 = Infinity;
+      const lines = [];
+      for (let i = 0, n = words.length; i < n; ++i) {
+        let lineText1 = (line ? line.text + " " : "") + words[i];
+        let lineWidth1 = measureWidth(lineText1);
+        if ((lineWidth0 + lineWidth1) / 2 < targetWidth) {
+          line.width = lineWidth0 = lineWidth1;
+          line.text = lineText1;
+        } else {
+          lineWidth0 = measureWidth(words[i]);
+          line = {width: lineWidth0, text: words[i]};
+          lines.push(line);
         }
-        return lines;
       }
-      function textRadius(lines){
-        let radius = 0;
-        for (let i = 0, n = lines.length; i < n; ++i) {
-          const dy = (Math.abs(i - n / 2 + 0.5) + 0.5) * lineHeight;
-          const dx = lines[i].width / 1.5;
-          radius = Math.max(radius, Math.sqrt(dx ** 2 + dy ** 2));
-        }
-        return radius;
+      return lines;
+    }
+    function textRadius(lines){
+      let radius = 0;
+      for (let i = 0, n = lines.length; i < n; ++i) {
+        const dy = (Math.abs(i - n / 2 + 0.5) + 0.5) * lineHeight;
+        const dx = lines[i].width / 1.5;
+        radius = Math.max(radius, Math.sqrt(dx ** 2 + dy ** 2));
       }
-      function measureWidth(text) {
-        const context = document.createElement("canvas").getContext("2d");
-        return (context.measureText(text).width)
-      }
+      return radius;
+    }
+    function measureWidth(text) {
+      const context = document.createElement("canvas").getContext("2d");
+      return (context.measureText(text).width)
+    }
       
-  }
+}
 
 NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width){
 
@@ -1352,11 +1064,9 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       .on('mouseover', function(d){
         if(configFile.file.filter(v=>v.option==d.title).length>0){
           addTooltip(getTooltipMenu(getCommentOption(d.title)));
-
         }else{
           addTooltip(getTooltipInside(d.title,uri));
         }
-        //d3.select(this).style("fill","#DCDDF5")
       })
       .on('mouseout', function(d){
         deleteTooltip()
@@ -1404,6 +1114,8 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
         textTooltip="Find all subjects for the URI :" + uri + " in the SPARQL EndPoint: "+url
       }
       return getTooltipMenu(textTooltip)
+    }else{
+      return getTooltipMenu(title)
     }
 
   }
@@ -1415,14 +1127,11 @@ NetworkGraph.prototype.exitGraph = function(){
 
     vis.nodeCircle.exit().remove();
     vis.nodeCircleFree.exit().remove();
-    //if(vis.graphType=="expert"){
     vis.edgepaths.exit().remove();
-    //}
 }
 
 NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY) {
   var vis = this;
-  ////////console.log(element)
   checkMenuItems("graph",element)
 };
 
@@ -1432,7 +1141,6 @@ NetworkGraph.prototype.collapseAll = function () {
   ldg.showFirstLevelBranch(ldg.treeData[0])
   ldg.flatten()
   vis.updateData()
-  console.log(networkGraph.treeData)
   vis.refreshNoFilters()
 }
 NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
@@ -1582,197 +1290,199 @@ NetworkGraph.prototype.expandLevelBranch = function (node){
 NetworkGraph.prototype.refresh = function (node){
   var vis = this;
   vis.addingGraph=true
-
-  //getFilteredData()
-
-  //////////////////////////////console.log(linkedDataGraph.data.flatData)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["source"].x)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["source"].value)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["target"].vx)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["target"].x)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["target"].value)
-/*   //////////////console.log(vis.data.links[0]["source"].vx)
-  //////////////console.log(vis.data.links[0]["source"].x)
-  //////////////console.log(vis.data.links[0]["source"].value)
-  //////////////console.log(vis.data.links[0]["target"].vx)
-  //////////////console.log(vis.data.links[0]["target"].x)
-  //////////////console.log(vis.data.links[0]["target"].value) */
-  vis.data=linkedDataGraph.data.flatData
-  vis.treeData=linkedDataGraph.treeData
-
-  //////////////////console.log(vis.data)
-  //////////////////console.log(vis.data.nodes[vis.data.nodes.length-1])
-  //////////////////console.log(vis.data.links[vis.data.links.length-1])
-  //////////////////console.log(vis.treeData)
-  //////////////////console.log(vis.treeData.length)
+  vis.updateData()
   if(configRow){
     if(!vis.queriesArray){
       vis.queriesArray=[]
     }
     vis.queriesArray.push({"option":configRow.option,"query":configRow.query})
   }
+  
   vis.addClassesShow()
 
-  //////////////////console.log(vis.data.links[0]["source"].vx)
-
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["source"].x)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["source"].value)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["target"].vx)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["target"].x)
-  //////////////console.log(vis.data.links[vis.data.links.length-1]["target"].value)
-/*   //////////////console.log(vis.data.links[0]["source"].vx)
-  //////////////console.log(vis.data.links[0]["source"].x)
-  //////////////console.log(vis.data.links[0]["source"].value)
-  //////////////console.log(vis.data.links[0]["target"].vx)
-  //////////////console.log(vis.data.links[0]["target"].x)
-  //////////////console.log(vis.data.links[0]["target"].value) */
-
-
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-
   vis.dataJoinGraph()
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //////////////////console.log(vis.data.links[0]["source"].vx)
-
-  ////////////////////console.log(vis.edgepaths)
-  ////////////////////////////////console.log("refresh update filters")
   vis.enterGraph()
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //////////////////console.log(vis.data.links[0]["source"].vx)
-
-  ////////////////////console.log(vis.edgepaths)
-
-  //console.log(vis.data.nodes)
-  //console.log(vis.data.links)
   vis.initializeSimulation();
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-  //////////////////console.log(vis.data.links[0]["source"].vx)
-
-  //////////////////////console.log("after simulation")
   vis.dataJoinGraph()
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-
-  //////////////////////console.log("after datajoin")
   vis.exitGraph()
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-
-
   vis.updateFilters()
-  //////////////////console.log(vis.data.links[vis.data.links.length-1]["source"].vx)
-
-  //ECL.autoInit()
   legend.addColors()
+  changeSvgHeight()
 
-  vis.refreshNoFilters()
+/*   var elements = document.getElementsByClassName("filter-class");
+
+console.log(elements)
+
+var myFunction = function() {
+    //var attribute = this.getAttribute("data-myattribute");
+    alert("attribute");
+};
+
+for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', myFunction, false);
 }
 
+  var offsetHeight = $( document ).height();
+  console.log(document.getElementById('graph-area'))
+  console.log($( document ).height())
+  console.log(offsetHeight)
+  if(offsetHeight>800){
+    vis.height=offsetHeight
+  }else{
+    vis.height=800
+  } */
+/*   vis.height=$( document ).height();
+  console.log(vis.height)
+  vis.svg.attr("viewBox", `0 0 ${vis.width} ${vis.height}`) */
+}
+
+NetworkGraph.prototype.getFilteredOrNotFilteredData = function (){
+  var vis = this,ldg=linkedDataGraph;
+  if(ldg.dataFiltered){
+    vis.data=ldg.dataFiltered.flatData
+    vis.treeData=ldg.treeDataFiltered
+  }else{
+    vis.data=ldg.data.flatData
+    vis.treeData=ldg.treeData
+  }
+}
 NetworkGraph.prototype.refreshNoFilters = function (){
   var vis = this;
   vis.addingGraph=true
 
-  vis.data=linkedDataGraph.data.flatData
-  vis.treeData=linkedDataGraph.treeData
+  vis.updateData()
+  vis.refreshCommon()
+}
 
-  //console.log(vis.data.nodes)
+NetworkGraph.prototype.refreshClearFilters = function (){
+  var vis = this;
+  //vis.addingGraph=true
+  vis.updateData()
+  vis.refreshCommon()
+}
+NetworkGraph.prototype.refreshCommon = function (){
+  var vis = this;
   vis.dataJoinGraph()
-  ////////////////////////////////console.log("refresh no update filters")
   vis.enterGraph()
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.exitGraph()
 }
+
 NetworkGraph.prototype.updateData = function (){
   var vis = this;
-  vis.data=linkedDataGraph.data.flatData
-  vis.treeData=linkedDataGraph.treeData
-  vis.allData=JSON.parse(JSON.stringify(vis.data));
+  //console.log(vis.filtered)
+  //console.log(linkedDataGraph)
+  if(vis.filtered){
+    vis.data=linkedDataGraph.dataFiltered.flatData
+    vis.treeData=linkedDataGraph.treeDataFiltered
+  }else{
+    vis.data=linkedDataGraph.data.flatData
+    vis.treeData=linkedDataGraph.treeData
+  }
+  //console.log(vis.data)
+  //console.log(vis.treeData)
+  
+  vis.allData=JSON.parse(JSON.stringify(linkedDataGraph.data.flatData));
 }
 
-function NetworkGraphBasic(...args){
-  NetworkGraph.apply(this, args);
-}
-
-NetworkGraphBasic.prototype = Object.create(NetworkGraph.prototype);
-
-NetworkGraphBasic.prototype.addClassesShow = function(){
+NetworkGraph.prototype.addClassesShow = function(){
   var vis=this,newClasses;
 }
-/* NetworkGraphBasic.prototype.getFilters = function(){
+
+NetworkGraph.prototype.setColorScale = async function(){
   var vis=this;
 
-  if(vis.filterClassesObjects.length!=0){
-    //$("#filters").removeClass("hidden")
-    filtersVisible()
+  if(configRow.class){
+    setColorScaleBasic()
   }else{
-    //$("#filters").addClass("hidden")
-    filtersNotVisible()
+    setColorScaleExpert()
   }
-} */
-NetworkGraphBasic.prototype.setColorScale = async function(){
-  var vis=this;
-  vis.colorCorrespondence={
-    "#6EE7B7":"green-300",
-    "#FCA5A5":"red-300",
-    "#FCD34D":"yellow-300",
-    "#F9A8D4":"pink-300",
-    "#C4B5FD":"purple-300",
-    "#93C5FD":"blue-300",
-    "#D1D5DB":"gray-300",
-    "#10B981":"green-500",
-    "#EF4444":"red-500",
-    "#F59E0B":"yellow-500",
-    "#EC4899":"pink-500",
-    "#8B5CF6":"purple-500",
-    "#3B82F6":"blue-500",
-    "#6B7280":"gray-500"}
-  vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
-  ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
 
-  vis.colorScaleRange=vis.colors.slice(0,Object.values(vis.nodesClassesShow).length)
-  vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
+  function setColorScaleBasic(){
+    vis.colorCorrespondence={
+      "#6EE7B7":"green-300",
+      "#FCA5A5":"red-300",
+      "#FCD34D":"yellow-300",
+      "#F9A8D4":"pink-300",
+      "#C4B5FD":"purple-300",
+      "#93C5FD":"blue-300",
+      "#D1D5DB":"gray-300",
+      "#10B981":"green-500",
+      "#EF4444":"red-500",
+      "#F59E0B":"yellow-500",
+      "#EC4899":"pink-500",
+      "#8B5CF6":"purple-500",
+      "#3B82F6":"blue-500",
+      "#6B7280":"gray-500"}
+    vis.colors=["#6EE7B7","#FCA5A5","#FCD34D","#F9A8D4","#C4B5FD","#93C5FD","#D1D5DB"
+    ,"#10B981","#EF4444","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#6B7280"]
+  
+    vis.colorScaleRange=vis.colors.slice(0,Object.values(vis.nodesClassesShow).length)
+    vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
+  }
+  function setColorScaleExpert(){
+    vis.colorCorrespondence={
+      "#6EE7B7":"green-300",
+      "#FCA5A5":"red-300",
+      "#FCD34D":"yellow-300",
+      "#F9A8D4":"pink-300",
+      "#C4B5FD":"purple-300",
+      "#93C5FD":"blue-300",
+      "#D1D5DB":"gray-300",
+      "#10B981":"green-500",
+      "#EF4444":"red-500",
+      "#F59E0B":"yellow-500",
+      "#EC4899":"pink-500",
+      "#8B5CF6":"purple-500",
+      "#3B82F6":"blue-500",
+      "#6B7280":"gray-500"}
+    nodesClassesCorrespondence={uri:"uri",bnode:"bnode",literal:"literal","menu-option":"menu option",link_basic_graph:"link basic graph","typed-literal":"typed-literal","more_results":"Results collapsed"}
+    vis.nodesClassesShow=nodesClassesCorrespondence
+
+    vis.colorScaleRange=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
+    vis.colors=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
+  
+    vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
+  }
+
 }
 
-NetworkGraphBasic.prototype.checkMenuItems = async function(){
-  let node=get_node_from_element(element.getAttribute("id").replace("_image",""))
+NetworkGraph.prototype.updateFilters = async function () {
+  var vis=this,newFilterClasses,existingFilterClasses,filterClass;
+  ////console.log(vis.filterClassesObjects)
 
-  if(menuItems){
-    await menuItems.update(node)
-  }else{
-    menuItems= new MenuItems(node)
-  }
-}
-
-NetworkGraphBasic.prototype.updateFilters = async function () {
-  var vis=this,newFilterClasses,existingFilterClasses,filterClass,values;
   if(configRow){
-    if(configRow.filters){
-      if((configRow.filters.length!=0)&&(configRow.filters!="None")){
-        newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
-        existingFilterClasses=vis.filterClassesObjects.map(f=>f.name)
-        //newFilterClasses.forEach(function(cf){
-        for (let i = 0; i < newFilterClasses.length; i++) {
-          if(!existingFilterClasses.includes(newFilterClasses[i])){
-            filterClass=new FilterClassBasic(newFilterClasses[i])
-            await filterClass.init()
-            //////////////////////////////////////////console.log("checkHidden")
-            filterClass.checkHidden()
-            vis.filterClassesObjects.push(filterClass) 
-          }else{
-            networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
-              //////////////////////////////////console.log("update filters")
-              f.resetAllValues()
-            })
+    if(configRow.class){
+      if(configRow.filters){
+        if((configRow.filters.length!=0)&&(configRow.filters!="None")){
+          newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
+          existingFilterClasses=vis.filterClassesObjects.map(f=>f.name)
+          for (let i = 0; i < newFilterClasses.length; i++) {
+            if(!existingFilterClasses.includes(newFilterClasses[i])){
+              filterClass=new FilterClassBasic(newFilterClasses[i])
+              await filterClass.init()
+              filterClass.checkHidden()
+              vis.filterClassesObjects.push(filterClass) 
+            }else{
+              networkGraph.filterClassesObjects.filter(d=>d.name==newFilterClasses[i])[0].filters.forEach(function(f){
+                f.resetAllValues()
+              })
+            }
           }
-        //})
         }
       }
+    }else{
+      const filterClass=new FilterClassExpert(configRow.node["uri"])
+      //console.log(filterClass)
+      await filterClass.init()
+      vis.filterClassesObjects.push(filterClass) 
+      getFiltersVisibility()
     }
   }
 }
 
-class NetworkGraphBasicNotImported extends NetworkGraphBasic {
+class NetworkGraphNotImported extends NetworkGraph {
   async addClassesShow() {
     super.addClassesShow();
     var vis=this,newClasses;
@@ -1789,9 +1499,9 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
     super.setColorScale()
   }
   async getFilters() {
-    ////////////////////////////////////////////console.log("en getfilters principio")
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
+
     if(configRow.filters){
       if(configRow.filters.length!=0){
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
@@ -1800,16 +1510,15 @@ class NetworkGraphBasicNotImported extends NetworkGraphBasic {
           filterClass=new FilterClassBasic(newFilterClasses[i])
           await filterClass.init()
           vis.filterClassesObjects.push(filterClass) 
+          //console.log(vis.filterClassesObjects)
         //})
         }
       }
     }
     getFiltersVisibility()
-    ////////////////////////////////////////////console.log("en getfilters final")
-
   }
 }
-class NetworkGraphBasicImported extends NetworkGraphBasic {
+class NetworkGraphImported extends NetworkGraph {
   addClassesShow() {
     var vis=this;
     super.addClassesShow();
@@ -1823,72 +1532,19 @@ class NetworkGraphBasicImported extends NetworkGraphBasic {
   }
   getFilters() {
     var vis=this,filterClass;
-    ////////console.log("getFilters")
-    ////////console.log(vis.importedFilterClasses)
     vis.importedFilterClasses.forEach(function(ifc){
-      //////console.log(ifc)
       filterClass=new FilterClassBasic(ifc.name)
       filterClass.getCode()
-      //////console.log("after class filter added")
       filterClass.filters=[]
       vis.filterClassesObjects.push(filterClass)
-      //////console.log(vis.filterClassesObjects)
       ifc.filters.forEach(function (f){
         filterClass.addFilterTypeImported(f,true)
       })
       filterClass.checkHidden()
     })
-    //getFilters()
   }
 }
 
-function NetworkGraphExpert(...args){
-  NetworkGraph.apply(this, args);
-}
-
-NetworkGraphExpert.prototype = Object.create(NetworkGraph.prototype);
-
-NetworkGraphExpert.prototype.setColorScale = async function(){
-  var vis=this;
-  vis.colorCorrespondence={
-    "#6EE7B7":"green-300",
-    "#FCA5A5":"red-300",
-    "#FCD34D":"yellow-300",
-    "#F9A8D4":"pink-300",
-    "#C4B5FD":"purple-300",
-    "#93C5FD":"blue-300",
-    "#D1D5DB":"gray-300",
-    "#10B981":"green-500",
-    "#EF4444":"red-500",
-    "#F59E0B":"yellow-500",
-    "#EC4899":"pink-500",
-    "#8B5CF6":"purple-500",
-    "#3B82F6":"blue-500",
-    "#6B7280":"gray-500"}
-  //vis.nodesClassesShow=["uri","bnode","literal","menu option","link basic graph","typed-literal","Results collapsed"]
-  nodesClassesCorrespondence={uri:"uri",bnode:"bnode",literal:"literal","menu-option":"menu option",link_basic_graph:"link basic graph","typed-literal":"typed-literal","more_results":"Results collapsed"}
-  vis.nodesClassesShow=nodesClassesCorrespondence
-  vis.colorScaleRange=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
-  vis.colors=["#6EE7B7","#FCD34D","#F9A8D4","#93C5FD","#EF4444","#F9A8D4","#8B5CF6"]
-
-  vis.colorScaleDomain=Object.values(vis.nodesClassesShow)
-}
-NetworkGraphExpert.prototype.addClassesShow = function(){
-  var vis=this,newClasses;
-}
-
-NetworkGraphExpert.prototype.updateFilters = function () {
-  var vis=this;
-  vis.getFilters()
-}
-
-NetworkGraphExpert.prototype.getFilters = function () {
-  var vis=this
-  const filterClass=new FilterClassExpert(configRow.node["uri"])
-  filterClass.init()
-  vis.filterClassesObjects.push(filterClass) 
-  getFiltersVisibility()
-}
 function setForcesGraph(){
   forces = {
     center: {
@@ -1924,4 +1580,24 @@ function setForcesGraph(){
     }
   }
   return forces
+}
+
+function dragStart(d) {
+  lineDragActive = true;
+  if (!d3.event.active) networkGraph.simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function drag(d) {
+  networkGraph.simulation.alpha(0.5).restart()
+  d.fx= d3.event.x;
+  d.fy= d3.event.y;
+}
+
+function dragEnd(d) {
+  lineDragActive = false;
+  if (!d3.event.active) networkGraph.simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
 }

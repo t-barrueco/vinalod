@@ -90,9 +90,6 @@
     if(results[0]["item"]){
       var pdf=results[0]["item"]["value"]
     }
-
-    ////////////////console.log(checkUrl(pdf))
-    //////////////console.log(pdf)
     modalHeader.innerHTML = "PDF"
     $('#myModal2').resizable({
       //alsoResize: ".modal-dialog",
@@ -106,17 +103,13 @@
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
     PDFObject.embed(pdf, "#modalGraph");
-    //PDFObject.embed(pdf, "#modalGraph");
   }
   async function showWebPageQuery(node,sparqlQuery,url){
     var page;
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    //////////////console.log(sparqlQuery)
     results = await runSparlqQuery(settings)
-    //////////////console.log(node)
-    //////////////console.log(results)
     if(results[0]["item"]){
       page=results[0]["item"]["value"]
     }else{
@@ -134,29 +127,13 @@
 
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
     console.log(results)
-    /* url=configRow["endpoint_url"]
-    prefixes=""
-    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  
-    results = await runSparlqQuery(settings) */
+
     const title=rowInConfigFile.option + " - " + node.value
 
     const modalHeader=getModalHeader()
     modalHeader.innerHTML = title
 
     table(results,columns,column_names)
-  
-    ////////////console.log(configRow)
-
-    
-    //modalHeader.innerHTML = node["value"]
-/* 
-    $('#myModal2').resizable({
-      //alsoResize: ".modal-dialog",
-      //minHeight: 150
-    });
-    $("#myModal2").draggable() */
   }
   function table(data,columns,column_names){
     console.log(columns)
@@ -198,8 +175,6 @@
         console.log(column_names.filter(c=>c.property==columns[i]))
         if(column_names.filter(c=>c.property==columns[i]).length>0){
           headerCell.innerHTML = column_names.filter(c=>c.property==columns[i])[0]["property_name"]
-        /* }else{
-          headerCell.innerHTML = nodesClassesCorrespondence[columns[i]] */
         }
         
     }
@@ -285,15 +260,12 @@
       for (let i = 0; i < data.length; ++i) { 
         membership.push({
           "name": data[i]["membership"]["value"],
-          //"parent": node["value"],
           "children": [
           {
               "name": data[i]["person"]["value"],
-              //"parent": data[i]["membership"]["value"]
           }]})
       }
       treeData={"name":"Organisation",
-                     //"parent":"null",
                     "children":membership}
   
       return treeData
@@ -305,17 +277,8 @@
     console.log(rowInConfigFile)
     var sparqlQuery=rowInConfigFile.query
     sparqlQuery=sparqlQuery.replace("PARAMETER2", node[rowInConfigFile.parameters[0]["property"]]);
-/*     for (i = 0; i < rowInConfigFile.parameters.length; ++i) { 
-      sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[rowInConfigFile.parameters[i]]);
-    }  */ 
+
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,sparqlQuery,"query")
-    console.log(results)
-    /* url=configRow["endpoint_url"]
-    prefixes=""
-    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-    settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-  
-    results = await runSparlqQuery(settings) */
     const title=rowInConfigFile.option + " - " + node.value
 
     const modalHeader=getModalHeader()
@@ -337,104 +300,8 @@
         .style("width", "100%")
         .style("height","100%");
 
-/*     var div=document.createElement("div")
-    div.setAttribute("id","modalGraph")
-    div.setAttribute("style","overflow: auto")
-    modalContent.appendChild(div)
-
-    iframe=d3.select("#modalGraph").append("iframe")
-      .attr("src",page)
-        .style("width", "100%")
-        .style("height","100%"); */
-    //var mainEl=document.getElementById("modalGraph")
-
-    //console.log(document.getElementById("modalGraph"))
-    /* const modalContent=getModalContent()
-
-    var div=document.createElement("div")
-    div.className="h-full"
-    div.setAttribute("id","modalGraph")
-    div.setAttribute("style","overflow: auto")
-    modalContent.appendChild(div)
-
-    console.log(modalContent)
- */
-/*     iframe=document.createElement("iframe")
-    iframe.setAttribute("src",page)
-    iframe.setAttribute("style","width: 100%; height: 100%") */
-/*       .style("width", "100%")
-      .style("height","100%"); */
-
-    //var mainEl=document.getElementById("modalGraph")
-    //mainEl.appendChild(iframe)
-    
-    //modalVisibilityOn()
-  
-    /* if(parameters.length>0){
-      parameters=get_parameters(parameters)
-      for (let i = 0; i < parameters.length; ++i) { 
-        sparqlQuery=sparqlQuery.replace("PARAMETER"+(i+2).toString(), node[parameters[i]]);
-      }  
-    }
-    queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-    settings = { url: queryUrl, async: true       }; 
-
-    try {
-      results = await runSparlqQuery(settings);
-      //results = results.bindings;
-      ////////////////console.log(results)
-      page=results[0]["article"]["value"]
-  
-      var div=document.createElement("div")
-      div.className="h-full"
-      div.setAttribute("id","modalGraph")
-      div.setAttribute("style","overflow: auto")
-      modalContent.appendChild(div)
-      iframe=d3.select("#modalGraph").append("iframe")
-      .attr("src",page)
-        .style("width", "100%")
-        .style("height","100%");
-  
-      modalHeader.innerHTML = "Wikipedia Page"
-  
-      $('#myModal2').resizable({
-        //alsoResize: ".modal-dialog",
-        //minHeight: 150
-      });
-      $("#myModal2").draggable()
-    } catch (e) {
-      ////////////console.log(e)
-      results = false
-    } */
-
-
-/*     $.ajax(settings).then  (function( _data ) {
-      results = _data.results.bindings;
-      ////////////////console.log(results)
-      page=results[0]["article"]["value"]
-  
-      var div=document.createElement("div")
-      div.className="h-full"
-      div.setAttribute("id","modalGraph")
-      div.setAttribute("style","overflow: auto")
-      modalContent.appendChild(div)
-      iframe=d3.select("#modalGraph").append("iframe")
-      .attr("src",page)
-        .style("width", "100%")
-        .style("height","100%");
-  
-      modalHeader.innerHTML = "Wikipedia Page"
-  
-      $('#myModal2').resizable({
-        //alsoResize: ".modal-dialog",
-        //minHeight: 150
-      });
-      $("#myModal2").draggable()
-    }) */
-  }
-  function showWebPage(page,title,modalHeader,modalContent){
-      ////////////////////console.log(page)
-  
+}
+function showWebPage(page,title,modalHeader,modalContent){  
       $("#webpage").remove()
       var iframe=document.createElement("iframe")
       iframe.id="webpage"
@@ -465,7 +332,6 @@
   
     function transformDataBarchart(results){
       var resultsTransformed=[]
-      console.log(results)
       results.forEach(function(r){
         resultsTransformed.push({"Category":r["category"]["value"],"Number":r["number"]["value"]})
       })
@@ -491,9 +357,7 @@
       console.log(results)
       results.forEach(function(r){
         resultsTransformed.push({"date":d3.timeParse("%Y-%m-%d")(r["publicationDocument_date"]["value"]),"value":+r["publicationDocument_dateNumber"]["value"]})
-        //resultsTransformed.push({"Theme":r["opTheme"]["value"],"Number":r["opTheme_number"]["value"]})
       })
       return resultsTransformed
-      //return resultsTransformed
     }
   }

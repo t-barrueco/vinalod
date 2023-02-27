@@ -6,12 +6,17 @@
       </div>
       <div class="ecl-row ecl-u-justify-content-center" style="margin-top:25px;";>
       <div class="form-type-text">
-          <label for="free-uri" class="ecl-form-label">Enter URI<span class="ecl-form-label__required">*</span></label>
-          <input class="ecl-text-input ecl-text-input--l" type="text" placeholder="Node URI" id="free-uri"/>
-      </div>                  
+          <label for="free-uri" class="ecl-form-label">Enter URI<span class="ecl-form-label__required">*</span></label>          
+          <input class="ecl-text-input ecl-text-input--l" type="text" placeholder="Node URI" id="free-uri" onkeydown="checkEmptyURI(this)"/>
+            <div class="ecl-feedback-message" style="display: none;" id="form-expert-error">
+            This URI has no results
+            </div>
+      </div>  
+                       
       </div>
       <div class="ecl-row ecl-u-justify-content-center">
       <div class="form-type-text form-item-feedback-body form-item europa-text" style="margin-top: 25px;">
+        
         <label for="select-default" class="ecl-form-label">Select subject/object position<span class="ecl-form-label__required">*</span></label>                   
         <div class="ecl-select__container ecl-select__container--l">
           <select class="ecl-select" required id="subject-object">
@@ -26,10 +31,11 @@
         </div>
       </div>
       </div>
-      <div class="ecl-row ecl-u-justify-content-center" style="margin-top: 25px;">
+      <div class="ecl-row ecl-u-justify-content-center" style="margin-top: 25px;margin-bottom: 25px;">
         <button class="ecl-button ecl-button--primary" type="submit">Show</button>
       </div>
     </div>  
   </div>
+  
   <input type="hidden" id="class-node" name="class-node" value="free">
 </form>
