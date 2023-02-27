@@ -1,0 +1,185 @@
+<html lang="en" class="no-js">
+    <head>
+      <meta charset="utf-8" />
+      <title>VINALOD</title>
+
+      <meta content="width=device-width,initial-scale=1" name="viewport" />
+      <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+        <link type="text/css" rel="stylesheet" href="css/widget.min.css">
+        <style>
+          .kge-search-picker {
+            width: 500;
+          }
+        input[type=range]::-webkit-slider-thumb {
+          pointer-events: all;
+          width: 24px;
+          height: 24px;
+          -webkit-appearance: none;
+        /* @apply w-6 h-6 appearance-none pointer-events-auto; */
+        }
+        </style>
+        <script type="text/javascript" src="jslib/widget.min.js"></script>
+        <script src="jslib/d3.layout.cloud.js"></script>
+      
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="dist/styles.css">
+       <!-- D3 Tooltip CSS -->
+      <link rel="stylesheet" href="css/d3-tip.css">
+      <link
+        rel="stylesheet"
+        href="css/ecl-ec-default.css"
+        integrity="sha256-WK5hy3Ceb1aNnKy15Bp5KW+CVYBmHb4hmJ1Pdt3TbIM="
+        crossorigin="anonymous"
+        media="screen"
+      />
+      <link
+      rel="stylesheet"
+      href="css/ecl-reset.css"
+      integrity="sha256-UVESELfX0pvRysLCqyLCIEQDAc65AXBPfES9hWP/fgM="
+      crossorigin="anonymous"
+      media="screen"
+      />
+      <link
+      rel="stylesheet"
+      href="css/ecl-ec.css"
+      integrity="sha256-VLpAKlo85TEtUcWazHxBoDZavge0QuMsrU3jE64Na1k="
+      crossorigin="anonymous"
+      media="screen"
+      />
+      <link
+        rel="stylesheet"
+        href="css/ecl-ec-print.css"
+        integrity="sha256-QzATuL8r4ZY0kLFaAkxMmX4VIL2KxvSS0aG74lG5fsQ=""
+        crossorigin="anonymous"
+        media="print"
+      />
+      <script>
+        var cl = document.querySelector('html').classList;
+        cl.remove('no-js');
+        cl.add('has-js');
+      </script>
+      <script src="jslib/jquery.min.js"></script>
+      <script src="jslib/jquery-ui.min.js"></script>
+      <script src="jslib/d3-color.v2.min.js"></script>
+      <script src="jslib/d3.v4.min.js"></script>
+      <script type="text/javascript" src="jslib/d3-tip.js"></script>
+       <script src="jslib/alpine.min.js" defer></script>
+       <script src="jslib/pdfobject.min.js" integrity="sha512-B+t1szGNm59mEke9jCc5nSYZTsNXIadszIDSLj79fEV87QtNGFNrD6L+kjMSmYGBLzapoiR9Okz3JJNNyS2TSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+       <script src="jslib/moment.min.js"></script>
+       <script src="jslib/aws-sdk-2.752.0.min.js">
+      </script>
+
+    </head>
+    <body>
+      <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header">
+        <div class="ecl-site-header__container ecl-container">
+          <div class="ecl-site-header__top">
+            <a href="https://ec.europa.eu/"
+                class="ecl-link ecl-link--standalone ecl-site-header__logo-link"
+                aria-label="European&#x20;Commission">
+                <img
+                  alt="European Commission logo"
+                  title="European Commission"
+                  class="ecl-site-header__logo-image ecl-site-header__logo-image-desktop"
+                  src="images/logo--en.svg"
+                />
+            </a>
+          </div>
+        </div>
+    <div class="ecl-site-header__banner">
+      <div class="ecl-container">
+        <div class="ecl-site-header__site-name">Vinalod</div>
+      </div>
+    </div>
+
+    <div class="bg-white py-24 sm:py-32">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+          <h2 class="ecl-u-type-heading-2">VINALOD short demo videos</h2>
+          <p class="mt-6 ecl-u-type-paragraph">List of short videos showcasing different functionalities of the application. Get inspired by these demos to learn about the potential of the application.</p>
+        </div>
+        <ul role="list" class="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+          <li>
+           <video class="aspect-[3/2] w-full rounded-2xl object-cover" controls>
+              <source src="images/det.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>
+            <h6 class="mt-6 ecl-u-type-heading-6">EU Vocabularies</h6>
+
+            <p class="ecl-u-type-paragraph-s">DET - Digital Europa Thesaurus</p>
+          </li>
+          <li>
+            <video class="aspect-[3/2] w-full rounded-2xl object-cover" controls>
+               <source src="images/nuts.mp4" type="video/mp4">
+             Your browser does not support the video tag.
+             </video>
+             <h6 class="mt-6 ecl-u-type-heading-6">EU Vocabularies</h3>
+             <p class="ecl-u-type-paragraph-s">NUTS Tree (Nomenclature of Territorial Units for Statistics)</p>
+           </li>
+           <li>
+            <video class="aspect-[3/2] w-full rounded-2xl object-cover" controls>
+               <source src="images/authority_tables.mp4" type="video/mp4">
+             Your browser does not support the video tag.
+             </video>
+             <h6 class="mt-6 ecl-u-type-heading-6">EU Vocabularies</h3>
+             <p class="ecl-u-type-paragraph-s">Authority table classification</p>
+           </li>
+           <li>
+            <video class="aspect-[3/2] w-full rounded-2xl object-cover" controls>
+               <source src="images/whoiswho.mp4" type="video/mp4">
+             Your browser does not support the video tag.
+             </video>
+             <h6 class="mt-6 ecl-u-type-heading-6">EU Who is who</h3>
+             <p class="ecl-u-type-paragraph-s">European Union Institutions and bodies</p>
+           </li>
+<!--            <li>
+            <video class="aspect-[3/2] w-full rounded-2xl object-cover" controls>
+               <source src="images/whoiswho.mp4" type="video/mp4">
+             Your browser does not support the video tag.
+             </video>
+             <h6 class="mt-6 ecl-u-type-heading-6">Lindsay Walton</h3>
+              <p class="ecl-u-type-paragraph-s">Front-end Developer</p>
+           </li> -->
+          <!-- More people... -->
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+
+</header>
+
+  <div class="relative overflow-y-scroll">
+    <main class="lg:relative">
+    </main>
+  </div>
+  <script
+  src="jslib/ecl-ec.js"
+  integrity="sha256-WWTwQseyv8+i6bgq3MPCim/seztSFPBM/CHAlBz4eVk="
+  crossorigin="anonymous"
+   ></script>
+    <script src="js/main.js"></script>
+    <script src="js/no_network_graphs.js"></script>
+    <script src="js/navigationClass.js"></script>
+    <script src="js/legendClass.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/linkedDataGraphClass.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/treeGraph.js"></script>
+    <script src="js/wordCloud.js"></script>
+    <script src="js/barchart.js"></script>
+    <script src="js/linechart.js"></script>
+    <script src="js/download.js"></script>
+    <script src="js/d3NetworkGraph.js"></script>
+    <script src="js/configFileClass.js"></script>
+    <script src="js/configRowClass.js"></script>
+    <script src="js/menuItemsClass.js"></script>
+    <script src="js/optionNodeClass.js"></script>
+    <script src="js/filterClass.js"></script>
+    <script>
+      runAutoInit()
+    </script>
+    </body>
+</html>
+

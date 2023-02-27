@@ -87,6 +87,7 @@ MenuItemsExpert.prototype.buildOptions = async function(){
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     }
   }
+  console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
@@ -98,13 +99,14 @@ MenuItemsExpert.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
-    if(!mi.indexRows[i] instanceof OptionNodeBasic){
+    //console.log(mi.indexRows[i] instanceof OptionNodeBasic)
+    if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
       try {
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
       } catch (e) {
       results = false
       } 
-
+      console.log(results)
       if(results==true){
         mi.addSelectedRow(i)
       }

@@ -48,6 +48,7 @@ ConfigRow.prototype.getClassesCorrespondence=function(){
 ConfigRow.prototype.getResults = async function () {
   var cr=this;
   cr.results = await runSparlqQuery(cr.endpoint_url,cr.query,"query");
+  console.log(cr.results)
 }
 
 function ConfigRowBasic(...args){
@@ -174,7 +175,9 @@ ConfigRowExpert.prototype.getNameClasses = function () {
 }
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
+  console.log(cr.node.uri)
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
+  console.log(cr.query)
 }
 
 ConfigRowExpert.prototype.clusterResults = function (){

@@ -247,6 +247,8 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
   }
 
+  console.log(colorCircle)
+
   let navImage=li.querySelector("#nav_image")
   if(navImage){
     navImage.classList.add("bg-"+ colorCircle)
@@ -707,6 +709,7 @@ NavigationPanel.prototype.addElementContentTable = async function (target,i){
   var navPanel=this;
   let code = await getHtmlCodeFromFile("pages/elementContentTable.html");
   $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
+    $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").attr("src",bubbleImage(target["target"]))
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row span").text(target["target"]["value"]);

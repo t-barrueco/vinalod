@@ -848,6 +848,20 @@ function formatDate(str){
 function formatDateComp(str){
   return formatDate(str).getTime()
 }
+function isValidDate(text){
+  var validity;
+
+  //var d_reg = /^(0[1-9]|1[0-2])\-(0[1-9]|1\d|2\d|3[01])\-(0[1-9]|1[1-9]|2[1-9])$/;
+  //var d_reg = /^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
+  var d_reg =/^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
+  if (d_reg.test(text)) {
+    validity=true
+  }
+  else{
+    validity=false
+  }
+  return validity
+}
 
 function formatDateShow(str){
   let day=("0" + formatDate(str).getDate()).slice(-2)
@@ -932,7 +946,14 @@ function showNavContentTable(){
 function hideNavContentTable(){
   $("#dvTable").hide()
 }
-
+function showErrorMessageExpertForm(){
+  $("#form-expert-error").show()
+  $("#free-uri").addClass("ecl-text-input--invalid")
+}
+function hideErrorMessageExpertForm(){
+  $("#form-expert-error").hide()
+  $("#free-uri").removeClass("ecl-text-input--invalid")
+}
 function showSearchNavContent(){
   $("#search-nav-content").show()
 }
@@ -1064,6 +1085,13 @@ function openNavigationPanel(){
 function closeNavigationPanel(){
   $("#myModal").addClass("translate-x-full")
   $("#myModal").removeClass("translate-x-0")
+}
+function checkNavigationPanelOpen(){
+if($( "#myModal" ).hasClass( "translate-x-0" )){
+  return true;
+}else{
+  return false;
+}
 }
 
 function removeColorsFromLegend(){

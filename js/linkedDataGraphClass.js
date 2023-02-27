@@ -187,6 +187,7 @@ LinkedDataGraph.prototype.showDuplicatesGraph = function(){
 LinkedDataGraph.prototype.flattenFiltered = function(){
   var nodes = [], links=[];
   var ldg=this;
+  //console.log("flattenFiltered")
 
   function recurse(node) {
     
@@ -236,9 +237,15 @@ LinkedDataGraph.prototype.add = function(){
 LinkedDataGraph.prototype.filter = function(filterId){
   var ldg=this;
 
+  //networkGraph.filtered=true
+
   function recurse(node) {
     var hidden=false,nodesIds=[],index;
     
+    if(node.more_results){
+      checkMoreResults(node)
+      //console.log(node)
+    }
     index=ldg.treeDataFiltered.findIndex(function(element){
       if(element.children){
         return (element.children.some((subElement) => subElement.id === node.id))
@@ -267,8 +274,28 @@ LinkedDataGraph.prototype.filter = function(filterId){
   ldg.treeDataFiltered.forEach(function(r){
     recurse(r);
   })
-  
 
+  console.log(ldg.treeDataFiltered)
+  console.log(ldg.treeData)
+  function checkMoreResults(node){
+    var children=[];
+    var maxNumber=$("#cluster-number").val()
+    //console.log(node)
+    node.more_results.forEach(function(mr){
+      checkHidden(mr)
+      //console.log(mr)
+      if(!mr.hidden){
+        children.push(mr)
+      }
+    })
+    console.log(children)
+    if(children.length<maxNumber){
+      node.children=children
+      //console.log("refresh")
+      //networkGraph.refresh()
+    }
+    console.log(node)
+  }
   function checkHidden(node){
     var check;
     if(node.class!="free"){
@@ -294,7 +321,9 @@ LinkedDataGraph.prototype.filter = function(filterId){
     })
     
     if(filterClass.length>0){
+      //console.log(filterClass[0].checkConditionNode(node,filterId))
       hidden=filterClass[0].checkConditionNode(node,filterId)
+      //console.log(hidden)
     }
     
     return hidden
@@ -337,7 +366,7 @@ LinkedDataGraph.prototype.clearFilter = function(){
   var ldg=this;
 
   function recurse(node) {
-    console.log(node.filter)
+    //console.log(node.filter)
     if(node.filter){
       delete node.hidden
       delete node.filter
@@ -350,7 +379,7 @@ LinkedDataGraph.prototype.clearFilter = function(){
   }
 
   ldg.treeData.forEach(function(r){
-    console.log(r)
+    //console.log(r)
     recurse(r);
   })
 
@@ -378,9 +407,9 @@ LinkedDataGraph.prototype.clusterData = function (treeData) {
     
     
     if(configRow["endpoint_url"]){
-      node={"id":genRandomString(),"value":branch.children.length + " results collpsed","shape":1,"class":"more_results","className":"Results collapsed","url":configRow.endpoint_url}
+      node={"id":genRandomString(),"value":branch.children.length + " results collapsed","shape":1,"class":"more_results","className":"Results collapsed","url":configRow.endpoint_url}
     }else{
-      node={"id":genRandomString(),"value":branch.children.length + " results collpsed","shape":1,"class":"more_results","className":"Results collapsed"}
+      node={"id":genRandomString(),"value":branch.children.length + " results collapsed","shape":1,"class":"more_results","className":"Results collapsed"}
     }
     branch.children=[node]
   }
@@ -458,12 +487,15 @@ LinkedDataGraph.prototype.update = async function(option,node,type){
   }
   async function updateExpert(){
     if(configRow){
+      console.log("from option to config row")
+      console.log(option)
       await configRow.fromOptionToConfigRow(option,node)
     } 
     else{
       configRow=new ConfigRowExpert(option,node)
       settingsFromOption("expert")
     }
+    console.log(configRow)
   }
 }
 
@@ -540,6 +572,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
   }
 
   function buildTreeDataExpert(){
+    console.log(configRow.results)
     configRow.results.forEach(r => {
       if (configRow.position == "s") {
         if (r["o"]["configRow"]) {

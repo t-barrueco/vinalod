@@ -66,6 +66,7 @@ FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
   var cf=this,hidden=false;
   cf.filters.forEach(function(f){
       var condition;
+      //////console.log(f)
       if(filterId){
         if(f.id==filterId){
           condition=f.checkConditionNode(node)
@@ -73,10 +74,12 @@ FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
       }else{
         condition=f.checkConditionNode(node)
       }
+      //////console.log(condition)
       if(condition){
         hidden=true
       }
   })
+  //////console.log(hidden)
   return hidden;
 }
 
@@ -169,6 +172,7 @@ FilterClassExpert.prototype.initFilters = async function (){
     }
   }
   cf.checkHidden()
+  ////console.log(cf)
 }
 
 FilterClassExpert.prototype.checkConditionNode = function(node){
@@ -225,6 +229,8 @@ Filter.prototype.init= async function () {
   }else{
     await fi.addHtml()
   }
+  ////console.log(fi)
+  ////console.log(fi.values)
   if(fi.values.length==0){
     fi.hide()
   }else{
@@ -257,16 +263,41 @@ Filter.prototype.getValuesNodes=function (nodes){
 }
 
 Filter.prototype.getValuesAllNodes=function (){
-  var fi=this
+  var fi=this,searchValues=[]
+  ////console.log(linkedDataGraph)
   let nodes=linkedDataGraph.data.flatData.nodes.filter(d=>d.class==fi.details.class)
-  let searchValues=nodes.map(d=>d[fi.details.property]).filter(d=>d!=undefined)
+  ////////console.log(linkedDataGraph.data.flatData.nodes)
+  searchValues=searchValues.concat(getSearchValues(nodes))
+  //////console.log(searchValues)
+  if(linkedDataGraph.data.flatData.nodes.filter(d=>d.class=="more_results").length>0){
+    searchValues=searchValues.concat(addValuesMoreResults())
+    //////console.log(searchValues)
+  }
   fi.values=[...new Set(searchValues)].sort()
+  ////console.log(fi.values)
+
+  function addValuesMoreResults(){
+    var s=[],sm;
+    linkedDataGraph.treeData.forEach(function(node){
+      if(node.more_results){
+        sm=getSearchValues(node.more_results)
+        //////console.log(sm)
+        s=s.concat(sm)
+      }
+    })
+    //////console.log(s)
+    return s
+  }
+  function getSearchValues(n){
+    return n.map(d=>d[fi.details.property]).filter(d=>d!=undefined)
+  }
 }
 
 Filter.prototype.resetAllValues=function (){
   var fi=this
   fi.getValuesAllNodes()
   fi.fillField()
+  ////console.log(fi)
   fi.resetComponent()
   if(fi.values.length==0){
     fi.hide()
@@ -329,7 +360,7 @@ FilterBasic.prototype.addHtml= function () {
   fi.getValuesAllNodes()
 }
 
-FilterBasic.prototype.hide= function () {
+Filter.prototype.hide= function () {
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
   .fadeOut( "slow", function() {
@@ -337,7 +368,7 @@ FilterBasic.prototype.hide= function () {
   this.hidden=true
 }
 
-FilterBasic.prototype.show= function () {
+Filter.prototype.show= function () {
   var filterClass
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
@@ -378,27 +409,36 @@ class FilterBasicDropdown extends FilterBasic {
     addHtmlOptionsSelect(select,fi.values,false)
     if(fi.valuesChanged){
       select.value=fi.valuesChanged
+      //console.log(select.options)
       const $options = Array.from(select.options);
+      console.log($options)
       const optionToSelect = $options.find(item => item.text ===fi.valuesChanged);
       optionToSelect.selected = true;
     }
   }
   checkConditionNode(node){
+    var val;
     let elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
+    //////console.log(this.elValue)
     if(elValue=="All"){
-      return false
+      val=false
     }else{
+      //////console.log(node[this.details.property])
       if(node[this.details.property]){
         if(elValue.toLowerCase()==node[this.details.property].toLowerCase()){
-          return false
+          //////console.log("false")
+          val=false
         }else{
-          return true
+          //////console.log("true")
+          val=true
         }
       }else{
-        return true
+        val=true
       }
     }
+    //////console.log(val)
+    return val
   }
   addValuesChanged(el){
     this["valuesChanged"]=el.value
@@ -450,6 +490,7 @@ class FilterBasicDate extends FilterBasic {
   }
   fillField(){
     var fi=this;
+    fi.sortValues()
     document.getElementById(fi.details.property+"_filter_start").value = fi.values[0];
     document.getElementById(fi.details.property+"_filter_end").value = fi.values[fi.values.length-1];
   }
@@ -516,6 +557,33 @@ class FilterBasicDate extends FilterBasic {
     runAutoInit(component)
     component=$("#"+this.id+"_end")[0]
     runAutoInit(component)
+  }
+  checkValidity(){
+    var message="",errorMessage=false;
+    let start=$("#"+this.details.property+"_filter_start")
+    let end=$("#"+this.details.property+"_filter_end")
+    //console.log($("#"+this.details.property+"_filter_start").val())
+    //console.log($("#"+this.details.property+"_filter_end").val())
+    //console.log(formatDateComp(end)<formatDateComp(start))
+    //if()
+    
+    if(!isValidDate(start.val())){
+      message="Not valid start date format"
+    }else if(!isValidDate(end.val())){
+      message="Not valid end date format"
+    }else if(formatDateComp(end.val())<formatDateComp(start.val())){
+      message="Not valid date range"
+    }else{
+      message=""
+    }
+
+    start.parent().prev('.ecl-feedback-message').text(message);
+    
+    if(message!=""){
+      errorMessage=true
+    }
+
+    return (errorMessage)
   }
 }
 
@@ -616,12 +684,18 @@ FilterExpert.prototype.addHtml=function (){
 }
 
 FilterExpert.prototype.show= function () {
+  var filterClass
+  ////console.log(networkGraph.filterClassesObjects)
+  ////console.log(this)
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
   .fadeIn( "slow", function() {
   });
   delete this.hidden
-  networkGraph.filterClassesObjects.filter(cf=>cf.name==this.class)[0].checkHidden()
+  filterClass=networkGraph.filterClassesObjects.filter(cf=>cf.name==this.class)
+  if(filterClass.length>0){
+    filterClass[0].checkHidden()
+  }
 }
 
 class FilterExpertDropdown extends FilterExpert {
@@ -630,16 +704,17 @@ class FilterExpertDropdown extends FilterExpert {
     super.addHtml();
     await $.get("pages/select-filter.html", function (code) {
       code=code.replace("Label",fi.field).replace("relatedFilters(this)","relatedFiltersExpert(this)")
-      ////console.log(fi.internalClass)
-      ////console.log(document.getElementById(fi.internalClass+"_filters"))
-      $("#"+fi.internalClass+"_filters").append($(code)).ready(function () {
-        var select=document.getElementById("select-default")
-        select.name = fi.internalClass + "_"+ fi.field;
-        select.id = fi.internalClass + "_"+ fi.field;
-        fi.getResultsField();
-        fi.fillField();
-        runAutoInit()
-      }) 
+      //////////console.log(fi.internalClass)
+      //////////console.log(document.getElementById(fi.internalClass+"_filters"))
+      $("#"+fi.internalClass+"_filters").append($(code))
+      //.ready(function () {
+      var select=document.getElementById("select-default")
+      select.name = fi.internalClass + "_"+ fi.field;
+      select.id = fi.internalClass + "_"+ fi.field;
+      fi.getResultsField();
+      fi.fillField();
+      runAutoInit()
+      //}) 
     });       
   }
   getResultsField(){
