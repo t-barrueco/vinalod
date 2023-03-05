@@ -66,7 +66,7 @@ FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
   var cf=this,hidden=false;
   cf.filters.forEach(function(f){
       var condition;
-      //////console.log(f)
+      ////////console.log(f)
       if(filterId){
         if(f.id==filterId){
           condition=f.checkConditionNode(node)
@@ -74,12 +74,12 @@ FilterClassBasic.prototype.checkConditionNode = function(node,filterId){
       }else{
         condition=f.checkConditionNode(node)
       }
-      //////console.log(condition)
+      ////////console.log(condition)
       if(condition){
         hidden=true
       }
   })
-  //////console.log(hidden)
+  ////////console.log(hidden)
   return hidden;
 }
 
@@ -172,7 +172,16 @@ FilterClassExpert.prototype.initFilters = async function (){
     }
   }
   cf.checkHidden()
-  ////console.log(cf)
+  //////console.log(cf)
+}
+
+FilterClassExpert.prototype.updateFilters = async function (){
+  var cf=this;
+  //console.log(cf)
+  for (let i = 0; i < cf.filters.length; i++) {
+    cf.filters[i].getResultsField()
+  }
+  cf.checkHidden()
 }
 
 FilterClassExpert.prototype.checkConditionNode = function(node){
@@ -229,8 +238,8 @@ Filter.prototype.init= async function () {
   }else{
     await fi.addHtml()
   }
-  ////console.log(fi)
-  ////console.log(fi.values)
+  //////console.log(fi)
+  //////console.log(fi.values)
   if(fi.values.length==0){
     fi.hide()
   }else{
@@ -264,28 +273,28 @@ Filter.prototype.getValuesNodes=function (nodes){
 
 Filter.prototype.getValuesAllNodes=function (){
   var fi=this,searchValues=[]
-  ////console.log(linkedDataGraph)
+  //////console.log(linkedDataGraph)
   let nodes=linkedDataGraph.data.flatData.nodes.filter(d=>d.class==fi.details.class)
-  ////////console.log(linkedDataGraph.data.flatData.nodes)
+  //////////console.log(linkedDataGraph.data.flatData.nodes)
   searchValues=searchValues.concat(getSearchValues(nodes))
-  //////console.log(searchValues)
+  ////////console.log(searchValues)
   if(linkedDataGraph.data.flatData.nodes.filter(d=>d.class=="more_results").length>0){
     searchValues=searchValues.concat(addValuesMoreResults())
-    //////console.log(searchValues)
+    ////////console.log(searchValues)
   }
   fi.values=[...new Set(searchValues)].sort()
-  ////console.log(fi.values)
+  //////console.log(fi.values)
 
   function addValuesMoreResults(){
     var s=[],sm;
     linkedDataGraph.treeData.forEach(function(node){
       if(node.more_results){
         sm=getSearchValues(node.more_results)
-        //////console.log(sm)
+        ////////console.log(sm)
         s=s.concat(sm)
       }
     })
-    //////console.log(s)
+    ////////console.log(s)
     return s
   }
   function getSearchValues(n){
@@ -297,7 +306,7 @@ Filter.prototype.resetAllValues=function (){
   var fi=this
   fi.getValuesAllNodes()
   fi.fillField()
-  ////console.log(fi)
+  //////console.log(fi)
   fi.resetComponent()
   if(fi.values.length==0){
     fi.hide()
@@ -409,9 +418,9 @@ class FilterBasicDropdown extends FilterBasic {
     addHtmlOptionsSelect(select,fi.values,false)
     if(fi.valuesChanged){
       select.value=fi.valuesChanged
-      //console.log(select.options)
+      ////console.log(select.options)
       const $options = Array.from(select.options);
-      console.log($options)
+      //console.log($options)
       const optionToSelect = $options.find(item => item.text ===fi.valuesChanged);
       optionToSelect.selected = true;
     }
@@ -420,24 +429,24 @@ class FilterBasicDropdown extends FilterBasic {
     var val;
     let elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
-    //////console.log(this.elValue)
+    ////////console.log(this.elValue)
     if(elValue=="All"){
       val=false
     }else{
-      //////console.log(node[this.details.property])
+      ////////console.log(node[this.details.property])
       if(node[this.details.property]){
         if(elValue.toLowerCase()==node[this.details.property].toLowerCase()){
-          //////console.log("false")
+          ////////console.log("false")
           val=false
         }else{
-          //////console.log("true")
+          ////////console.log("true")
           val=true
         }
       }else{
         val=true
       }
     }
-    //////console.log(val)
+    ////////console.log(val)
     return val
   }
   addValuesChanged(el){
@@ -562,9 +571,9 @@ class FilterBasicDate extends FilterBasic {
     var message="",errorMessage=false;
     let start=$("#"+this.details.property+"_filter_start")
     let end=$("#"+this.details.property+"_filter_end")
-    //console.log($("#"+this.details.property+"_filter_start").val())
-    //console.log($("#"+this.details.property+"_filter_end").val())
-    //console.log(formatDateComp(end)<formatDateComp(start))
+    ////console.log($("#"+this.details.property+"_filter_start").val())
+    ////console.log($("#"+this.details.property+"_filter_end").val())
+    ////console.log(formatDateComp(end)<formatDateComp(start))
     //if()
     
     if(!isValidDate(start.val())){
@@ -685,8 +694,8 @@ FilterExpert.prototype.addHtml=function (){
 
 FilterExpert.prototype.show= function () {
   var filterClass
-  ////console.log(networkGraph.filterClassesObjects)
-  ////console.log(this)
+  //////console.log(networkGraph.filterClassesObjects)
+  //////console.log(this)
   $( "#"+this.id )
   .closest( ".ecl-form-group" )
   .fadeIn( "slow", function() {
@@ -704,8 +713,8 @@ class FilterExpertDropdown extends FilterExpert {
     super.addHtml();
     await $.get("pages/select-filter.html", function (code) {
       code=code.replace("Label",fi.field).replace("relatedFilters(this)","relatedFiltersExpert(this)")
-      //////////console.log(fi.internalClass)
-      //////////console.log(document.getElementById(fi.internalClass+"_filters"))
+      ////////////console.log(fi.internalClass)
+      ////////////console.log(document.getElementById(fi.internalClass+"_filters"))
       $("#"+fi.internalClass+"_filters").append($(code))
       //.ready(function () {
       var select=document.getElementById("select-default")
@@ -734,8 +743,18 @@ class FilterExpertDropdown extends FilterExpert {
     }else if(fi.field=="property"){
       valuesFilter=[...new Set(configRow.results.map(d=>d.p.value))].sort()
     }
-    fi.values=valuesFilter;
+    //console.log(fi.values)
+    if(fi.values){
+      fi.values=[...new Set(fi.values.concat(valuesFilter))].sort()
+    }else{
+      fi.values=valuesFilter;
+    }
   }
+/*   addResultsToValues(){
+    var fi=this;
+    //console.log(fi)
+    //console.log(configRow.results)
+  } */
   fillField(){
     var fi=this;
     let select=document.getElementById(fi.internalClass + "_"+ fi.field)

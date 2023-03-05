@@ -9,12 +9,23 @@
 //set option chosen from menu
 function setMenuOption(node,option){
   if((configFile.file.filter(d=>d.option==option).length==0)||(configFile.file.filter(d=>d.option==option)[0]["type"]=="TREE")){
-    if(node.menuOption){
+   /*  if(node.menuOption){
       node.menuOption+=";"+option
     }else{
       node.menuOption=option
-    }
+    } */
+    addMenuOptionToNode(node,option)
   }
+}
+
+function addMenuOptionToNode(node,option){
+  //console.log(node.menuOptions)
+  if(node.menuOption){
+    node.menuOption+=";"+option
+  }else{
+    node.menuOption=option
+  }
+  ////console.log(node.menuOption)
 }
 
 // Generate random string for ids
@@ -29,7 +40,7 @@ function showMessageForNoGraphs(){
   $("#no-graphs-message").show()
   component=$("#no-graphs-message")[0]
   runAutoInit(component)
-  //////console.log(ECL.autoInit())
+  ////////console.log(ECL.autoInit())
 }
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
@@ -143,6 +154,9 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 //execute sparql query
 async function runSparlqQuery(url,query,type){
   var settings;
+  //console.log(url)
+  //console.log(query)
+  //console.log(type)
   showSpinMessage()
   var p = new Promise(function(resolve, reject){
     let prefixes="";
@@ -368,6 +382,7 @@ function getTooltipTextFreeGraph(d) {
         </div>`;
   } else {
     if (d.menuOption != undefined) {
+      //console.log(d.menuOption.split(";"))
       if (d.menuOption.split(";").length == 1) {
         sparqlEndpoint = d.menuOption.split(",")[0]
         position = d.menuOption.split(",")[1]
@@ -529,7 +544,7 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
-      ////console.log(arr)
+      //////console.log(arr)
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         if (arr[i].toUpperCase().includes(val.toUpperCase())) {
@@ -544,7 +559,7 @@ function autocomplete(inp, arr,numParentNodes) {
           b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
           b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
           /*insert a input field that will hold the current array item's value:*/
-          ////////////////////console.log(arr[i])
+          //////////////////////console.log(arr[i])
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
@@ -741,7 +756,7 @@ function textImageZoom(zoomScale){
 //based on structure
 function getDetail(detail,nodeClass){
   var detailNode="";
-  //console.log(detail)
+  ////console.log(detail)
   if(detail!=undefined){
     if(detail!=""){
       for (let k of detail) {
@@ -1255,7 +1270,7 @@ function selectTabNavPanel(element,otherText){
 }
 
 function noPunctuationStr(id){
-  return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_")
+  return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_").replaceAll(",","_")
 }
 
 function getMnemonicCodeForOrg(org){

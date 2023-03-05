@@ -14,9 +14,13 @@ MenuItems.prototype.init = async function () {
 
 MenuItems.prototype.filterByMenuOption = function () {
     var mi=this;
+    ////console.log(mi.node.menuOption)
     if(mi.node.menuOption){
       let menuOptions=mi.node.menuOption.split(";")
-      mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.option)))
+      ////console.log(menuOptions)
+      ////console.log(mi.indexRows)
+      mi.checkMenuOptions(menuOptions)
+      ////console.log(mi.indexRows)
     }
 }
 
@@ -87,7 +91,7 @@ MenuItemsExpert.prototype.buildOptions = async function(){
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     }
   }
-  console.log(mi.indexRows)
+  ////console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
@@ -95,18 +99,23 @@ MenuItemsExpert.prototype.addSelectedRow=function (i){
   mi.selectedRows.push(mi.indexRows[i])
 }
 
+MenuItemsExpert.prototype.checkMenuOptions=function(menuOptions){
+  var mi=this;
+  mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.endpoint_url+","+d.position)))
+}
+
 MenuItemsExpert.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
-    //console.log(mi.indexRows[i] instanceof OptionNodeBasic)
+    //////console.log(mi.indexRows[i] instanceof OptionNodeBasic)
     if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
       try {
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
       } catch (e) {
       results = false
       } 
-      console.log(results)
+      ////console.log(results)
       if(results==true){
         mi.addSelectedRow(i)
       }
@@ -127,6 +136,7 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
         let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
         let position = d.title.match("and Position: (.*)")[1];
         let selectedRow=mi.selectedRows.filter(s=>(s.position==position&&s.endpoint_url==url))[0]
+        //addMenuOptionToNode(node,selectedRow)
         addExpertGraph(selectedRow,node)
         }
     }
@@ -192,6 +202,11 @@ MenuItemsBasic.prototype.addSelectedRow=function (i){
   var mi=this;
   if(configFile.file.filter(d=>d.option==mi.indexRows[i]["option"])[0]["type"]=="TREE") mi.treeSelectedRows+=1
   mi.selectedRows.push(mi.indexRows[i])
+}
+
+MenuItemsBasic.prototype.checkMenuOptions=function(menuOptions){
+  var mi=this;
+  mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.option)))
 }
 
 MenuItemsBasic.prototype.filterByAskResult = async function () {

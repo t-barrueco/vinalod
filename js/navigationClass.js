@@ -85,10 +85,62 @@ NavigationPanel.prototype.getNodes = function (){
   }
   function buildtargetNodes(index){
     var links=[]
-    linkedDataGraph.treeData[index]["more_results"].forEach(function(d){
-      links.push({"target":d})
-    })
+
+    if(index!=-1){
+      linkedDataGraph.treeData[index]["more_results"].forEach(function(d){
+        links.push({"target":d})
+      })
+    }else{
+      //console.log(navPanel.node)
+      return findNestedObj(linkedDataGraph.treeData,"id",navPanel.node.id)
+    }
+    
     return links
+/*     let more_results=linkedDataGraph.treeData[index]["more_results"]
+    if(Array.isArray(more_results)){
+      linkedDataGraph.treeData[index]["more_results"].forEach(function(d){
+        links.push({"target":d})
+      })
+    }else{
+      //console.log(navPanel.node)
+    } */
+    function findNestedObj(entireObj, keyToFind, valToFind) {
+      let links=[];
+      console.log(valToFind)
+      entireObj.forEach(function(parent){
+        var menuOptionElements,foundObj
+        //console.log(parent)
+        //menuOptionElements=parent.children.filter(d=>(d.type)&&(d.type="menuOption"))
+        if(parent.more_results){
+          //console.log(parent.more_results)
+          //more_results.
+        }
+        //menuOptionElements=parent.more_results.filter(d=>((d.type)&&(d.type=="menuOption")))
+
+        menuOptionElements=parent.children.filter(d=>((d.type)&&(d.type=="menuOption")))
+        //console.log(menuOptionElements)
+        if(menuOptionElements.length>0){
+          //console.log(menuOptionElements)
+          menuOptionElements.forEach(function(v){
+            //console.log(valToFind)
+            //console.log(v)
+            if(v.children.findIndex((subSubElement) => subSubElement.id == valToFind).length!=-1){
+              foundObj=v
+            }
+          })
+        }
+        if(foundObj){
+          //console.log(foundObj)
+          console.log(parent.more_results)
+          console.log(foundObj)
+          //console.log(parent.more_results[foundObj.value])
+          parent.more_results[foundObj.value].forEach(function(d){
+            links.push({"target":d})
+          })
+        }
+      })
+      return links
+    }
   }
   function changetargetPerSource(nodes){
     var tmp,reverse=[];
@@ -247,7 +299,7 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
     colorCircle=networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[navPanel.sources[i]["class"]])]
   }
 
-  console.log(colorCircle)
+  //console.log(colorCircle)
 
   let navImage=li.querySelector("#nav_image")
   if(navImage){
@@ -730,6 +782,7 @@ function addToGraph(){
 }
 NavigationPanel.prototype.addToGraph = function (){
   var navPanel=this,node,indexChild;
+  console.log(navPanel.node)
   let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
   navPanel.clusterElSelected.forEach(function(d){
     indexChild=linkedDataGraph.treeData[index]["more_results"].findIndex(c=>c.id==d)
