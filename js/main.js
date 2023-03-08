@@ -496,6 +496,7 @@ async function checkMenuItems(origin,element) {
   }else if(origin=="table"){
     //when origin is table content in navigation panel
     // get the node from the table row id
+    //console.log(element)
     node=getNodeFromTableRow(element)
   }else if(origin=="navigation"){
     //when origin is the last element in the navigation panel history

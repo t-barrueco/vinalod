@@ -530,7 +530,7 @@ function getTooltipMenu(d){
 function autocomplete(inp, arr,numParentNodes) {
   var currentFocus;
   inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value,node=this;
+      var a, b, i, val = this.value,node=this,strIncluded;
       closeAllLists();
       if (!val) { return false;}
       currentFocus = -1;
@@ -544,34 +544,36 @@ function autocomplete(inp, arr,numParentNodes) {
       }
       node.appendChild(a)
       //this.parentNode.appendChild(a);
-      //////console.log(arr)
+      strIncluded=arr.filter(s=>s.toUpperCase().includes(val.toUpperCase()))
       /*for each item in the array...*/
-      for (i = 0; i < arr.length; i++) {
-        if (arr[i].toUpperCase().includes(val.toUpperCase())) {
-        //if (arr[i].toUpperCase().includes(val.toUpperCase())) {
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          b.setAttribute("class", "cursor-pointer");
-/*           b.innerHTML = arr[i].toUpperCase().substr(0,arr[i].toUpperCase().indexOf(val.toUpperCase()));
-          b.innerHTML += "<strong>" + arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
-          b.innerHTML += arr[i].toUpperCase().substr(arr[i].toUpperCase().indexOf(val.toUpperCase())+val.length); */
-          b.innerHTML = arr[i].substr(0,arr[i].indexOf(val));
-          b.innerHTML += "<strong>" + arr[i].substr(arr[i].indexOf(val), val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(arr[i].indexOf(val)+val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          //////////////////////console.log(arr[i])
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
-          b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
-              inp.value = this.getElementsByTagName("input")[0].value;
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              autocompleteValSelected(this)
-              closeAllLists();
-          });
-          a.appendChild(b);
-          a.appendChild(document.createElement("hr"))
+      if (strIncluded.length<=100){
+        for (i = 0; i < strIncluded.length; i++) {
+          if (strIncluded[i].toUpperCase().includes(val.toUpperCase())) {
+          //if (strIncluded[i].toUpperCase().includes(val.toUpperCase())) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            b.setAttribute("class", "cursor-pointer");
+  /*           b.innerHTML = strIncluded[i].toUpperCase().substr(0,strIncluded[i].toUpperCase().indexOf(val.toUpperCase()));
+            b.innerHTML += "<strong>" + strIncluded[i].toUpperCase().substr(strIncluded[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
+            b.innerHTML += strIncluded[i].toUpperCase().substr(strIncluded[i].toUpperCase().indexOf(val.toUpperCase())+val.length); */
+            b.innerHTML = strIncluded[i].substr(0,strIncluded[i].indexOf(val));
+            b.innerHTML += "<strong>" + strIncluded[i].substr(strIncluded[i].indexOf(val), val.length) + "</strong>";
+            b.innerHTML += strIncluded[i].substr(strIncluded[i].indexOf(val)+val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            //////////////////////console.log(strIncluded[i])
+            b.innerHTML += "<input type='hidden' value='" + strIncluded[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
+                /*close the list of autocompleted values,
+                (or any other open lists of autocompleted values:*/
+                autocompleteValSelected(this)
+                closeAllLists();
+            });
+            a.appendChild(b);
+            a.appendChild(document.createElement("hr"))
+          }
         }
       }
   });
@@ -833,6 +835,12 @@ function deleteTooltip(){
   d3.select(".tooltip").transition()		
   .duration(200)		
   .style("opacity", 0)
+}
+function showAddToGraph(){
+  $("#cluster-add").show()
+}
+function hideAddToGraph(){
+  $("#cluster-add").show()
 }
 function addTooltip(htmlData){
   var x = d3.event.pageX
@@ -1275,4 +1283,7 @@ function noPunctuationStr(id){
 
 function getMnemonicCodeForOrg(org){
   return mnemonicCodes.filter(m=>m.org.value==org)[0]
+}
+function getTextMenuOptionExpert(text){
+  return "SPARQL Endpoint:" + text.split(",")[0] + " and Position: " + positionFullText(text.split(",")[1])
 }

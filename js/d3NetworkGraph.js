@@ -209,12 +209,33 @@ NetworkGraph.prototype.initVis = function () {
   vis.sizeNode=d3.scalePow()
   .domain([0,vis.maxSizeNode])
   .range([ 15, 45])  // Size in pixel
+
+/*   var clusterNodeSize=checkClusterNodesSize()
+
+  console.log(clusterNodeSize)
+
+  vis.sizeClusterNode=d3.scalePow()
+  .domain([d3.min(clusterNodeSize),d3.max(clusterNodeSize)])
+  .range([ 50, 100])  // Size in pixel */
  
   vis.initializeSimulation();
   vis.initializeDisplay();
   
 };
-
+function checkClusterNodesSize(){
+  var clusterNodeSize=[]
+  networkGraph.treeData.forEach(function(d){
+    console.log(d)
+    if((d.more_results)&&(Array.isArray(d.more_results))){
+      clusterNodeSize.push(d.more_results.length)
+    }else if(d.more_results){
+      Object.keys(d.more_results).forEach(key => {
+        clusterNodeSize.push(d.more_results[key].length);
+      });
+    }
+  })
+  return clusterNodeSize
+}
 NetworkGraph.prototype.zoomed = function(){
   var vis=this
   textImageZoom(d3.event.transform.k)
@@ -617,7 +638,10 @@ NetworkGraph.prototype.enterGraph = function(){
         })
         .attr("r", function(d){
             if(d.class=="more_results"){
-              return 50;
+              //console.log(d.value)
+              //getNumberClusterFromText(text)
+              //console.log(getNumberClusterFromText(d.value))
+              return vis.sizeClusterNode(getNumberClusterFromText(d.value));
             }else{
               return vis.sizeNode(d.number)
             }
@@ -810,10 +834,17 @@ NetworkGraph.prototype.enterGraph = function(){
               }
             }) 
             .attr("r", function(d){
+              console.log(d)
               if(d.class=="more_results"){
+                console.log(d)
                 return 25;
               }else{
-                return 17;
+                if(d.children){
+                  return vis.sizeNode(d.children.length);
+                }else{
+                  return 17;
+                }
+                //return 17;
               }
             })
             .attr("id",d=>d.id)
@@ -962,7 +993,8 @@ NetworkGraph.prototype.enterGraph = function(){
         .transition()
         .attr("r", function(d) { 
           if(d.class=="more_results"){
-            return 50;
+            //return 50;
+            return vis.sizeClusterNode(getNumberClusterFromText(d.value));
           }else{
             return vis.sizeNode(d.number);
           }
@@ -1040,6 +1072,11 @@ NetworkGraph.prototype.enterGraph = function(){
       
 }
 
+function getNumberClusterFromText(text){
+  var test=text.replace(" results collapsed","")
+  console.log(test)
+  return Number(test)
+}
 NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width){
 
   var vis=this,uri="",url,subjectObject;
@@ -1147,6 +1184,7 @@ NetworkGraph.prototype.exitGraph = function(){
 
 NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY) {
   var vis = this;
+  console.log(element)
   checkMenuItems("graph",element)
 };
 
@@ -1324,6 +1362,8 @@ NetworkGraph.prototype.refresh = function (node){
   vis.initializeSimulation();
   vis.dataJoinGraph()
   vis.exitGraph()
+
+  vis.updateSizeCircles()
   //////console.log(////console.log(vis.colorScale.domain()).length)
   vis.updateFilters()
   //////console.log(////console.log(vis.colorScale.domain()).length)
@@ -1359,7 +1399,51 @@ for (var i = 0; i < elements.length; i++) {
   ////console.log(vis.height)
   vis.svg.attr("viewBox", `0 0 ${vis.width} ${vis.height}`) */
 }
+NetworkGraph.prototype.updateSizeCircles = function(){
+  var vis = this;
+  d3.selectAll(".nodeCircleCircle")
+  .attr("r",function(d){
+    if(d.class=="more_results"){
+      console.log(d)
+      console.log(d.value)
+      console.log(getNumberClusterFromText(d.value))
+      console.log(vis.sizeClusterNode(getNumberClusterFromText(d.value)));
+      //return 25;
+      return vis.sizeClusterNode(getNumberClusterFromText(d.value));
+    }else{
+      if(d.children){
+        return vis.sizeNode(d.children.length);
+      }else{
+        return 17;
+      } 
+    }
+  })
 
+  d3.selectAll(".nodeCircleCircleFree")
+  .attr("r",function(d){
+    if(d.class=="more_results"){
+      console.log(d)
+      //return 25;
+      return vis.sizeClusterNode(getNumberClusterFromText(d.value));
+    }else{
+      if(d.children){
+        return vis.sizeNode(d.children.length);
+      }else{
+        return 17;
+      } 
+    }
+  })
+/*   console.log(d)
+  if(d.class=="more_results"){
+    console.log(d)
+    return 25;
+  }else{
+    if(d.children){
+      return vis.sizeNode(d.children.length);
+    }else{
+      return 17;
+    } */
+}
 NetworkGraph.prototype.getFilteredOrNotFilteredData = function (){
   var vis = this,ldg=linkedDataGraph;
   if(ldg.dataFiltered){
@@ -1404,6 +1488,17 @@ NetworkGraph.prototype.updateData = function (){
     vis.data=linkedDataGraph.data.flatData
     vis.treeData=linkedDataGraph.treeData
   }
+
+  var clusterNodeSize=checkClusterNodesSize()
+
+  console.log(clusterNodeSize)
+  
+  vis.sizeClusterNode=d3.scalePow()
+  .domain([d3.min(clusterNodeSize),d3.max(clusterNodeSize)])
+  .range([ 50, 100])  // Size in pixel
+
+  console.log(vis.sizeClusterNode.domain())
+  console.log(vis.sizeClusterNode.range())
   //////console.log(vis.data)
   //////console.log(vis.treeData)
   

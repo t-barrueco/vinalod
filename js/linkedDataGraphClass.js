@@ -615,6 +615,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
                 
                 indexParent=checkNodeInTreeData()
                 if(treeData[indexParent]["children"].filter(d=>d.value==configRow.results[j][treeResults[i]]["value"]).length==0){
+                    console.log(configRow.results[j])
                     child=nodeValues(configRow.results[j],i)
                     child["configRowNumber"]=configRow["rowNumber"]
                     treeData[indexParent]["children"].push(child)
@@ -785,17 +786,28 @@ LinkedDataGraph.prototype.buildTreeData = function () {
         }
       }else{
         
-        
+        console.log(id)
+        console.log(ldg.treeData)
         let index=ldg.treeData.findIndex(function(element){
           if(element.children){
             return (element.children.some((subElement) => subElement.id === id))
           }
         })
-        node=ldg.treeData[index].children.filter(d=>d.id==id)[0]
+        if (index!=-1){
+          node=ldg.treeData[index].children.filter(d=>d.id==id)[0]
+        }else{
+          getNodeInMenuOption(id)
+        }
       }
       return node
   }
-
+  function getNodeInMenuOption(id){
+    console.log(networkGraph.data.links)
+    let link=networkGraph.data.links.filter(l=>l.target.id==id)[0]
+    if((link.source.type)&&(link.source.type=="menuOption")){
+      
+    }
+  }
   function createMenuOptionNodes(j){
     var node,nodeOption1,nodeOption2;
 
