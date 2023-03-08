@@ -1287,3 +1287,13 @@ function getMnemonicCodeForOrg(org){
 function getTextMenuOptionExpert(text){
   return "SPARQL Endpoint:" + text.split(",")[0] + " and Position: " + positionFullText(text.split(",")[1])
 }
+
+function calculateSizeElement(d,difference){
+  if(d.children){
+    return networkGraph.sizeNode(d.children.length);
+  }else if(d._children){
+    return networkGraph.sizeNode(d._children.length);
+  }else{
+    return networkGraph.sizeNode(0)
+  }
+}

@@ -395,7 +395,7 @@ async function createNewBasicGraph(option){
 
   legend=new Legend("legend",networkGraph)
 
-  networkGraph.collapseAll()
+  //networkGraph.collapseAll()
 }
 
 //create new expert graph

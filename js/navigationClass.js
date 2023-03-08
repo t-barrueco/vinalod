@@ -27,13 +27,17 @@ NavigationPanel.prototype.init = function () {
 }
 
 NavigationPanel.prototype.getNodes = function (){
-  var navPanel=this;
+  var navPanel=this,links=[];
   var sources
 
   if(navPanel.node){
     if(navPanel.node.class=="more_results"){
-      let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
-      navPanel.targets=buildtargetNodes(index)
+      //let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
+      //navPanel.targets=buildtargetNodes(index)
+      navPanel.node.more_results.forEach(function(d){
+        links.push({"target":d})
+      })
+      navPanel.targets=links
       navPanel.more_results=true
     }else{
       navPanel.targets=networkGraph.data.links.filter(function(item) {
@@ -86,6 +90,7 @@ NavigationPanel.prototype.getNodes = function (){
   function buildtargetNodes(index){
     var links=[]
 
+    console.log(index)
     if(index!=-1){
       linkedDataGraph.treeData[index]["more_results"].forEach(function(d){
         links.push({"target":d})
@@ -831,18 +836,23 @@ function addToGraph(){
 NavigationPanel.prototype.addToGraph = function (){
   var navPanel=this,node,indexChild,id,nodeMenuOption,parentNode,more_results,children;
   console.log(navPanel.node)
-  let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
+/*   let index=linkedDataGraph.treeData.findIndex((element) => element.children.some((subElement) => subElement.id === navPanel.node.id))
   if (index!=-1){
     more_results=linkedDataGraph.treeData[index]["more_results"]
     children=linkedDataGraph.treeData[index]["children"]
     id=linkedDataGraph.treeData[index]["id"]
   }else{
-    nodeMenuOption=networkGraph.data.links.filter(d=>d.target.id==navPanel.node.id)[0]["source"]
-    parentNode=networkGraph.data.links.filter(d=>d.target.id==nodeMenuOption.id)[0]["source"]
-    more_results=parentNode["more_results"][nodeMenuOption.value]
-    children=nodeMenuOption["children"]
-    id=nodeMenuOption.id
-  }
+    //nodeMenuOption=networkGraph.data.links.filter(d=>d.target.id==navPanel.node.id)[0]["source"]
+    parentNode=networkGraph.data.links.filter(d=>d.target.id==navPanel.node.id)[0]["source"]
+    more_results=navPanel.node["more_results"]
+    children=parentNode["children"]
+    id=parentNode.id
+  } */
+  parentNode=networkGraph.data.links.filter(d=>d.target.id==navPanel.node.id)[0]["source"]
+  more_results=navPanel.node["more_results"]
+  children=parentNode["children"]
+  id=parentNode.id
+
   navPanel.clusterElSelected.forEach(function(d){
     indexChild=more_results.findIndex(c=>c.id==d)
     node=more_results[indexChild]
