@@ -10,9 +10,10 @@ LinkedDataGraph.prototype.init = function () {
 
 LinkedDataGraph.prototype.buildData = function () {
   var ldg=this;    
-  if(networkGraph){
-    ////console.log(networkGraph.treeData)
-  }
+/*   if(networkGraph){
+    console.log(networkGraph.treeData)
+    throw new Error('Parameter is not a number!');
+  } */
   ldg.buildTreeData()
   if(networkGraph){
     ////console.log(networkGraph.treeData)
@@ -574,9 +575,9 @@ LinkedDataGraph.prototype.update = async function(option,node,type){
 
   await ldg.init()
 
-  if(networkGraph){
+/*   if(networkGraph){
     ////console.log(networkGraph.treeData)
-  }
+  } */
   applyAllFilters()
 
   async function updateBasic(){
@@ -608,27 +609,44 @@ LinkedDataGraph.prototype.buildTreeData = function () {
   var treeResults;
   var properties=configRow.properties
   var treeData=[],children = []
+
+  
+  
+
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
 
   //console.log(treeData)
+
   if(configRow.class){
     buildTreeDataBasic()
   }else{
     childrenLength=buildTreeDataExpert()
   }
 
-  //////console.log(configRow)
+  //console.log(treeData)
+  if(configRow.node){
+    console.log(configRow.node.id)
+  }
+
+  console.log(treeData)
+
+  console.log(ldg.treeData)
+
   if((configRow.hierarchy)&&(configRow.node)){
     indexNode=ldg.treeData.findIndex(d=>d.id==configRow.node.id)
     if(indexNode!=-1){
-      ldg.treeData.splice(indexNode, 1);
+      console.log(treeData)
+      //console.log(networkGraph.treeData)
+      console.log(ldg.treeData)
+      //throw new Error('Parameter is not a number!');
+      //ldg.treeData.splice(indexNode, 1);
     }
   }
 
-  //console.log(treeData)
-  
+  console.log(treeData)
+  console.log(ldg.treeData)
   //treeData=treeData.reverse()
   
   treeData=ldg.clusterData(treeData,childrenLength)
@@ -637,22 +655,22 @@ LinkedDataGraph.prototype.buildTreeData = function () {
 
   ldg.treeData=ldg.treeData.concat(treeData)
   ////console.log("cluster data")
-  //console.log(ldg.treeData)
+  
   //treeData=ldg.clusterData(treeData)
   
-  if((treeData.length>1)&&(treeData[0].children[0].class!="menuOption")){
+  /* if((treeData.length>1)&&(treeData[0].children[0].class!="menuOption")){
     ldg.collapseBranch(treeData[0])
     linkedDataGraph.showFirstLevelBranch(treeData[0])
-  }
+  } */
 
   function buildTreeDataBasic(){
     for (let j = 0; j < configRow.results.length; ++j) {
+
       treeResults=get_hierarchy_from_keys(Object.keys(configRow.results[j]))
 
       for (let i = 0; i < treeResults.length; ++i) {
           if(configRow.results[j][treeResults[i]]){
               if(i>0){
-                
                 indexParent=checkNodeInTreeData()
                 if(treeData[indexParent]["children"].filter(d=>d.value==configRow.results[j][treeResults[i]]["value"]).length==0){
                     //console.log(configRow.results[j])
@@ -667,7 +685,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
                 procNode[i]=configRow.results[j][treeResults[i]]["value"]
               }else{
                 if(treeData.length==0) createMenuOptionNodes(j)
-                
+
                 if((configRow.node)&&(configRow.node.class=="free")){
                   procNode[i]=configRow.node.value
                 }else{
@@ -679,6 +697,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
           
           
       }
+
       procNode=[]
     }
   }
@@ -931,7 +950,10 @@ LinkedDataGraph.prototype.buildTreeData = function () {
     if(configRow.node){
       if(!configRow.node.menuOption){
         node=nodeValues(configRow.results[j],0,configRow.node.id)
-        node["children"]=[]
+        //LO HE DEJADO AAQUÍ
+        if(!node["children"]){
+          node["children"]=[]
+        }
       }else{
         let menuOptions=configRow.node.menuOption.split(";")
         if(menuOptions.length==2){

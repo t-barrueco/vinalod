@@ -504,72 +504,78 @@ async function checkMenuItems(origin,element) {
     node=get_node_from_element(element.getAttribute("id").replace("_a",""))
   }
 
-  //we create the menuItems object
-  //it is created from the basic or expert type depending on the node class
-  if(node.class!="free"){
-    ////////console.log(node)
-    menuItems= new MenuItemsBasic(node)
+  //if node has collapsed children, they will be expanded.
+  if(node._children){
+    networkGraph.expandBranch(node)
   }else{
-    menuItems= new MenuItemsExpert(node,position)
-  }
-  await menuItems.init()
-
-  ////////console.log(menuItems.selectedRows)
-
-  //after the menuItems object is created and initialized we get the number of
-  //possible options for graphs from that node
-  //depending on the number of menu options we will do something different
-  if(menuItems.selectedRows.length==0){
-/*     if(origin!="table"){
-      if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
-        networkGraph.checkCollapseExpandBranch(node)
-      }
-    } */
-    ////////////console.log("message for no graph")
-    
-    if(origin=="table"){
-      //////////console.log(node)
-      clickBubbleGraph(document.getElementById(node.id))
-    }else if(origin=="navigation"){
-      showMessageForNoGraphs()
-    }
-    //clickBubbleGraph(document.getElementById(node.id))
-  }else if(menuItems.selectedRows.length==1){
-
-    //if we get 1 result from the node options we show the graph
-    //and show the navigation panel for the new option if active
+    //we create the menuItems object
+    //it is created from the basic or expert type depending on the node class
     if(node.class!="free"){
-      //if basic graph we add the menuOption to the node
-      //like this we have a history of the options that have been selected
-      setMenuOption(node,menuItems.selectedRows[0]["option"])
-      //add basic graph to the existing graph
-      await addBasicGraph(menuItems.selectedRows[0],node)
+      ////////console.log(node)
+      menuItems= new MenuItemsBasic(node)
     }else{
-      //////console.log(menuItems.selectedRows[0]["option"])
-      if(linkedDataGraph){
-        //////////////////console.log("update linkedata")
-        await addExpertGraph(menuItems.selectedRows[0],node)
-/*         await linkedDataGraph.update(menuItems.selectedRows[0],node)
-        networkGraph.refresh() */
-      }else{
-        await createNewExpertGraph(menuItems.selectedRows[0])
-      }
+      menuItems= new MenuItemsExpert(node,position)
     }
-    clickBubbleGraph(document.getElementById(node.id))
-  }else if(menuItems.selectedRows.length>1){
-    if(origin=="table"){
-      menuItems.getMenuItemsInTable()
-    }else if(origin=="navigation"){
-      menuItems.getMenuItemsInTableFromNav()
-    }else{
-      if(menuItems.node.id){
-        menuItems.getMenuItemsInGraph()
-      }else{
-        menuItems.getMenuItemsInPopup()
-      }
+    await menuItems.init()
+
+    ////////console.log(menuItems.selectedRows)
+
+    //after the menuItems object is created and initialized we get the number of
+    //possible options for graphs from that node
+    //depending on the number of menu options we will do something different
+    if(menuItems.selectedRows.length==0){
+  /*     if(origin!="table"){
+        if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
+          networkGraph.checkCollapseExpandBranch(node)
+        }
+      } */
+      ////////////console.log("message for no graph")
       
+      if(origin=="table"){
+        //////////console.log(node)
+        clickBubbleGraph(document.getElementById(node.id))
+      }else if(origin=="navigation"){
+        showMessageForNoGraphs()
+      }
+      //clickBubbleGraph(document.getElementById(node.id))
+    }else if(menuItems.selectedRows.length==1){
+
+      //if we get 1 result from the node options we show the graph
+      //and show the navigation panel for the new option if active
+      if(node.class!="free"){
+        //if basic graph we add the menuOption to the node
+        //like this we have a history of the options that have been selected
+        setMenuOption(node,menuItems.selectedRows[0]["option"])
+        //add basic graph to the existing graph
+        await addBasicGraph(menuItems.selectedRows[0],node)
+      }else{
+        //////console.log(menuItems.selectedRows[0]["option"])
+        if(linkedDataGraph){
+          //////////////////console.log("update linkedata")
+          await addExpertGraph(menuItems.selectedRows[0],node)
+  /*         await linkedDataGraph.update(menuItems.selectedRows[0],node)
+          networkGraph.refresh() */
+        }else{
+          await createNewExpertGraph(menuItems.selectedRows[0])
+        }
+      }
+      clickBubbleGraph(document.getElementById(node.id))
+    }else if(menuItems.selectedRows.length>1){
+      if(origin=="table"){
+        menuItems.getMenuItemsInTable()
+      }else if(origin=="navigation"){
+        menuItems.getMenuItemsInTableFromNav()
+      }else{
+        if(menuItems.node.id){
+          menuItems.getMenuItemsInGraph()
+        }else{
+          menuItems.getMenuItemsInPopup()
+        }
+        
+      }
     }
   }
+  
 }
 
 async function addBasicGraph(option,node){
