@@ -154,6 +154,11 @@ function shareGraph(){
   if(link.slice(-1)=="#"){
     link=link.substring(0, link.length - 1)
   }
+  var anotherGraphId=link.split("?graph=")[1]
+  
+  //if()
+  console.log(anotherGraphId)
+  console.log("anotherGraphId")
 
   return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(link+"?graph="+fileName);
   
