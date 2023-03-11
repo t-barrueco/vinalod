@@ -148,14 +148,13 @@ function getDataToFile(){
 function shareGraph(){
   //create a random file name
   var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
-  var link;
+  var link=window.location.href.toString();
   addFile()
   //alert("The URL of this page is: " + window.location.href);
-  if(window.location.href.slice(-1)=="#"){
-    link=window.location.href.substring(0, window.location.href.length() - 1)
-  }else{
-    link=window.location.href
+  if(link.slice(-1)=="#"){
+    link=link.substring(0, link.length - 1)
   }
+
   return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(link+"?graph="+fileName);
   
   function addFile(){
