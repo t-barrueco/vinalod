@@ -20,6 +20,7 @@ OptionNodeBasic.prototype.buildOption = async function () {
     on.rowConfigFile=configFile.getRowNumber(on.option)
     on.query= configFile.file[on.rowConfigFile]["query"]
     on.askquery= configFile.file[on.rowConfigFile]["askquery"]
+    //console.log(on.askquery)
     on.parameters= configFile.file[on.rowConfigFile]["parameters"]
     on.endpoint_url=configFile.file[on.rowConfigFile]["endpoint_url"]
     on.fromSelectToAskQuery()

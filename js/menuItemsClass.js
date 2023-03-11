@@ -14,13 +14,13 @@ MenuItems.prototype.init = async function () {
 
 MenuItems.prototype.filterByMenuOption = function () {
     var mi=this;
-    ////console.log(mi.node.menuOption)
+    //////////console.log(mi.node.menuOption)
     if(mi.node.menuOption){
       let menuOptions=mi.node.menuOption.split(";")
-      ////console.log(menuOptions)
-      ////console.log(mi.indexRows)
+      //////////console.log(menuOptions)
+      //////////console.log(mi.indexRows)
       mi.checkMenuOptions(menuOptions)
-      ////console.log(mi.indexRows)
+      //////////console.log(mi.indexRows)
     }
 }
 
@@ -91,7 +91,7 @@ MenuItemsExpert.prototype.buildOptions = async function(){
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     }
   }
-  ////console.log(mi.indexRows)
+  //////////console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
@@ -108,8 +108,9 @@ MenuItemsExpert.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
-    //////console.log(mi.indexRows[i] instanceof OptionNodeBasic)
+    ////////////console.log(mi.indexRows[i] instanceof OptionNodeBasic)
     if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
+      ////console.log(mi.indexRows[i].askquery)
       try {
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
       } catch (e) {
@@ -193,9 +194,11 @@ MenuItemsBasic.prototype = Object.create(MenuItems.prototype);
 MenuItemsBasic.prototype.buildOptions=function (){
   var mi=this;
   configFile.getRowsNodeClass(mi.node["className"]).forEach(element => {
+    //console.log(element)
     mi.indexRows.push(new OptionNodeBasic(element.option,mi.node))
     mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
   });
+  //console.log(mi.indexRows)
 }
 
 MenuItemsBasic.prototype.addSelectedRow=function (i){
@@ -212,13 +215,16 @@ MenuItemsBasic.prototype.checkMenuOptions=function(menuOptions){
 MenuItemsBasic.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
+  ////////console.log(mi)
   for (var i = 0; i < mi.indexRows.length; i++) {
       try {
-          results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+        ////console.log(mi.indexRows[i].askquery)
+        results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+        ////console.log(results)
       } catch (e) {
       results = false
       } 
-
+      ////console.log(results)
       if(results==true){
         mi.addSelectedRow(i)
       }
