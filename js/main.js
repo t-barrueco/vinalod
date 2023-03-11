@@ -148,10 +148,15 @@ function getDataToFile(){
 function shareGraph(){
   //create a random file name
   var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
-  
+  var link;
   addFile()
-  alert("The URL of this page is: " + window.location.href);
-  return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(window.location.href+"?graph="+fileName);
+  //alert("The URL of this page is: " + window.location.href);
+  if(window.location.href.slice(-1)=="#"){
+    link=window.location.href.substring(0, window.location.href.length() - 1)
+  }else{
+    link=window.location.href
+  }
+  return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(link+"?graph="+fileName);
   
   function addFile(){
     d3.json("config_vinalod/aws-s3.json",function(data){
