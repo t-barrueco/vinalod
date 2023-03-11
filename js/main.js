@@ -552,13 +552,14 @@ async function checkMenuItems(origin,element) {
         //add basic graph to the existing graph
         await addBasicGraph(menuItems.selectedRows[0],node)
       }else{
+        console.log(linkedDataGraph)
         ////////console.log(menuItems.selectedRows[0]["option"])
-/*         if(linkedDataGraph){
+        if((linkedDataGraph)&&(linkedDataGraph.option instanceof OptionNodeExpert)){
           ////////////////////console.log("update linkedata")
           await addExpertGraph(menuItems.selectedRows[0],node)
-        }else{ */
+        }else{
           await createNewExpertGraph(menuItems.selectedRows[0])
-        //}
+        }
       }
       clickBubbleGraph(document.getElementById(node.id))
     }else if(menuItems.selectedRows.length>1){
