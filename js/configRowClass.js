@@ -40,15 +40,19 @@ ConfigRow.prototype.fromSelectToAskQuery = function(){
 
 ConfigRow.prototype.getClassesCorrespondence=function(){
   var cr=this,tmp={}
+  //////console.log(cr["classes_text"])
   cr["classes_text"].forEach(function(c){
     tmp[c["class"]]=c["text"]
   })
   return tmp
 }
+
+//nodesClassesCorrespondence={uri:"uri",bnode:"bnode",literal:"literal","menuOption":"menu option",link_basic_graph:"link basic graph","typed-literal":"typed-literal","more_results":"Results collapsed"}
 ConfigRow.prototype.getResults = async function () {
   var cr=this;
+  //console.log(cr.query)
   cr.results = await runSparlqQuery(cr.endpoint_url,cr.query,"query");
-  console.log(cr.results)
+  //console.log(cr.results)
 }
 
 function ConfigRowBasic(...args){
@@ -126,7 +130,7 @@ ConfigRowBasic.prototype.getValuesFromOption = async function () {
   rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
   Object.keys(rowFields).forEach(function(k){
     if(k=="hierarchy"){
-      //////////////console.log(rowFields[k])
+      ////////////////////console.log(rowFields[k])
     }
     cr[k]=rowFields[k]
   })
@@ -156,6 +160,7 @@ ConfigRowExpert.prototype.fromOptionToConfigRow = async function(option){
     cr[k]=option[k]
   })
   cr["node"]=node
+  //////console.log(node)
   cr.replaceParmtrsQuery("query")
 
   cr.getNameClasses()
@@ -164,7 +169,9 @@ ConfigRowExpert.prototype.fromOptionToConfigRow = async function(option){
 
 ConfigRowExpert.prototype.getValuesFromOption = async function () {
   var cr=this;
+  //console.log(cr.option)
   let option=JSON.parse(JSON.stringify(cr.option));
+  //console.log(option)
   Object.keys(option).forEach(function(k){
     cr[k]=option[k]
   })
@@ -175,9 +182,10 @@ ConfigRowExpert.prototype.getNameClasses = function () {
 }
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
-  console.log(cr.node.uri)
+  //////console.log(cr.node.uri)
+  //console.log(cr)
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
-  console.log(cr.query)
+  //////console.log(cr.query)
 }
 
 ConfigRowExpert.prototype.clusterResults = function (){

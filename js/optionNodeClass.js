@@ -20,6 +20,7 @@ OptionNodeBasic.prototype.buildOption = async function () {
     on.rowConfigFile=configFile.getRowNumber(on.option)
     on.query= configFile.file[on.rowConfigFile]["query"]
     on.askquery= configFile.file[on.rowConfigFile]["askquery"]
+    //console.log(on.askquery)
     on.parameters= configFile.file[on.rowConfigFile]["parameters"]
     on.endpoint_url=configFile.file[on.rowConfigFile]["endpoint_url"]
     on.fromSelectToAskQuery()
@@ -50,5 +51,10 @@ OptionNodeExpert.prototype.buildOption = async function () {
     on.endpoint_url = on.option.match("Sparql Endpoint: (.*) and Position:")[1];
     on.position = on.option.match("and Position: (.*)")[1];
     on.query= "SELECT distinct ?s ?p ?o WHERE{{ ?s ?p ?o.} FILTER (?position=<PARAMETER>).}"
-    on.askquery= "ASK WHERE{{ ?s ?p ?o.} FILTER (?position=<PARAMETER>).}".replace("position",on.position).replace("PARAMETER",on.node.uri)
+    if(on.node.uri){
+      on.askquery= "ASK WHERE{{ ?s ?p ?o.} FILTER (?position=<PARAMETER>).}".replace("position",on.position).replace("PARAMETER",on.node.uri)
+    }else{
+      on.askquery= "ASK WHERE{{ ?s ?p ?o.} FILTER (?position=<PARAMETER>).}".replace("position",on.position).replace("PARAMETER",on.node.value)
+    }
+   
   }

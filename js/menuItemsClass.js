@@ -14,9 +14,13 @@ MenuItems.prototype.init = async function () {
 
 MenuItems.prototype.filterByMenuOption = function () {
     var mi=this;
+    //////////console.log(mi.node.menuOption)
     if(mi.node.menuOption){
       let menuOptions=mi.node.menuOption.split(";")
-      mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.option)))
+      //////////console.log(menuOptions)
+      //////////console.log(mi.indexRows)
+      mi.checkMenuOptions(menuOptions)
+      //////////console.log(mi.indexRows)
     }
 }
 
@@ -87,7 +91,7 @@ MenuItemsExpert.prototype.buildOptions = async function(){
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     }
   }
-  console.log(mi.indexRows)
+  //////////console.log(mi.indexRows)
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
@@ -95,18 +99,24 @@ MenuItemsExpert.prototype.addSelectedRow=function (i){
   mi.selectedRows.push(mi.indexRows[i])
 }
 
+MenuItemsExpert.prototype.checkMenuOptions=function(menuOptions){
+  var mi=this;
+  mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.endpoint_url+","+d.position)))
+}
+
 MenuItemsExpert.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
-    //console.log(mi.indexRows[i] instanceof OptionNodeBasic)
+    ////////////console.log(mi.indexRows[i] instanceof OptionNodeBasic)
     if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
+      ////console.log(mi.indexRows[i].askquery)
       try {
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
       } catch (e) {
       results = false
       } 
-      console.log(results)
+      ////console.log(results)
       if(results==true){
         mi.addSelectedRow(i)
       }
@@ -127,6 +137,7 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
         let url = d.title.match("Sparql Endpoint: (.*) and Position:")[1];
         let position = d.title.match("and Position: (.*)")[1];
         let selectedRow=mi.selectedRows.filter(s=>(s.position==position&&s.endpoint_url==url))[0]
+        //addMenuOptionToNode(node,selectedRow)
         addExpertGraph(selectedRow,node)
         }
     }
@@ -183,9 +194,11 @@ MenuItemsBasic.prototype = Object.create(MenuItems.prototype);
 MenuItemsBasic.prototype.buildOptions=function (){
   var mi=this;
   configFile.getRowsNodeClass(mi.node["className"]).forEach(element => {
+    //console.log(element)
     mi.indexRows.push(new OptionNodeBasic(element.option,mi.node))
     mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
   });
+  //console.log(mi.indexRows)
 }
 
 MenuItemsBasic.prototype.addSelectedRow=function (i){
@@ -194,16 +207,24 @@ MenuItemsBasic.prototype.addSelectedRow=function (i){
   mi.selectedRows.push(mi.indexRows[i])
 }
 
+MenuItemsBasic.prototype.checkMenuOptions=function(menuOptions){
+  var mi=this;
+  mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.option)))
+}
+
 MenuItemsBasic.prototype.filterByAskResult = async function () {
   var mi=this;
   mi.selectedRows=[]
+  ////////console.log(mi)
   for (var i = 0; i < mi.indexRows.length; i++) {
       try {
-          results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+        ////console.log(mi.indexRows[i].askquery)
+        results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
+        ////console.log(results)
       } catch (e) {
       results = false
       } 
-
+      ////console.log(results)
       if(results==true){
         mi.addSelectedRow(i)
       }
