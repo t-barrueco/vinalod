@@ -1734,7 +1734,6 @@ class NetworkGraphNotImported extends NetworkGraph {
     super.setColorScale()
   }
   async getFilters() {
-    ////////////////////////////////////////////////console.log("en getfilters principio")
     var vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
     if(configRow.filters){
@@ -1769,7 +1768,7 @@ class NetworkGraphImported extends NetworkGraph {
   getFilters() {
     var vis=this,filterClass;
     ////////////console.log("getFilters")
-    ////////////console.log(vis.importedFilterClasses)
+    console.log(vis.importedFilterClasses)
     vis.importedFilterClasses.forEach(function(ifc){
       //////////console.log(ifc)
       filterClass=new FilterClassBasic(ifc.name)

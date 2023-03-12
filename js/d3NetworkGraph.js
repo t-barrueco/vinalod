@@ -1715,14 +1715,22 @@ class NetworkGraphImported extends NetworkGraph {
   }
   getFilters() {
     var vis=this,filterClass;
+    console.log(vis.importedFilterClasses)
+
     vis.importedFilterClasses.forEach(function(ifc){
-      filterClass=new FilterClassBasic(ifc.name)
+      if(ifc.filters[0]["field"]){
+        filterClass=new FilterClassExpert(ifc.name)
+      }else{
+        filterClass=new FilterClassBasic(ifc.name)
+      }
+      console.log(filterClass)
       filterClass.getCode()
       filterClass.filters=[]
       vis.filterClassesObjects.push(filterClass)
       ifc.filters.forEach(function (f){
         filterClass.addFilterTypeImported(f,true)
       })
+      filtersVisible()
       filterClass.checkHidden()
     })
   }

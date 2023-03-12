@@ -21,6 +21,7 @@ FilterClass.prototype.getCode= async function(){
   
   //title for accordion element in filters
   cf.setTitle()
+  console.log("setTitle")
   $("#accordion-filters").append(cf.code)
 }
 
@@ -171,6 +172,31 @@ FilterClassExpert.prototype.initFilters = async function (){
       cf.filters.push(fi)
     }
   }
+  cf.checkHidden()
+  ////////console.log(cf)
+}
+
+FilterClassExpert.prototype.addFilterTypeImported = async function (filter,imported){
+  var cf=this,filters=[];
+
+  //cf.internalClass=noPunctuationStr(configRow.node.uri)
+  //filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
+  //filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"property","internalClass":cf.internalClass,"id":cf.internalClass+"_property"})
+  //filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"value","internalClass":cf.internalClass,"id":cf.internalClass+"_value"})
+
+  console.log(filter)
+  //cf.getCode()
+  console.log(filters)
+  console.log(cf.filters)
+  //for (let i = 0; i < filters.length; i++) {
+  //console.log(filters[i]["filter_type"])
+  if(filter["filter_type"]=="dropdown"){
+    fi=new FilterExpertDropdown(filter)
+    fi.imported=imported
+    await fi.init()
+    cf.filters.push(fi)
+  }
+  //}
   cf.checkHidden()
   ////////console.log(cf)
 }
@@ -711,6 +737,7 @@ class FilterExpertDropdown extends FilterExpert {
   async addHtml() {
     var fi=this;
     super.addHtml();
+    console.log("addHtml2")
     await $.get("pages/select-filter.html", function (code) {
       code=code.replace("Label",fi.field).replace("relatedFilters(this)","relatedFiltersExpert(this)")
       //////////////console.log(fi.internalClass)
@@ -723,6 +750,7 @@ class FilterExpertDropdown extends FilterExpert {
       fi.getResultsField();
       fi.fillField();
       runAutoInit()
+      console.log("addHTml")
       //}) 
     });       
   }
