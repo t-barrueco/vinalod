@@ -34,7 +34,7 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
         elementMenu=mi.detailsMenuItemsInGraph(i)
         mi.menuItems.push(elementMenu)
     }
-
+    //// MIRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     elementMenu=mi.collapsedBranchMenuItemsInGraph()
     if(elementMenu!=-1){
       mi.menuItems.push(elementMenu)
