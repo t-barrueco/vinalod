@@ -362,9 +362,16 @@ LinkedDataGraph.prototype.filter = function(filterId){
   if(networkGraph.filterClassesObjects){
     networkGraph.filterClassesObjects.forEach(function (cf){
       cf.filters.forEach(function(f){
+        console.log($("#"+f.details.property+"_filter_start").val())
+        console.log($("#"+f.details.property+"_filter_end").val())
         f.valuesFiltered()
+        console.log($("#"+f.details.property+"_filter_start").val())
+        console.log($("#"+f.details.property+"_filter_end").val())
         if(f.valuesChanged){
+          console.log(f.valuesChanged)
           if(f.checkValuesChangedIn()){
+            console.log($("#"+f.details.property+"_filter_start").val())
+            console.log($("#"+f.details.property+"_filter_end").val())
             checkNodesForFilter(f);
           }else{
             f.emptyValuesChanged()

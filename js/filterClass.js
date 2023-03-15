@@ -235,6 +235,7 @@ Filter.prototype.resetAllValues=function (){
 
 Filter.prototype.emptyValuesChanged=function (){
   var fi=this
+  console.log("emptyvalueschanged")
   delete fi.valuesChanged
 }
 
@@ -324,6 +325,7 @@ FilterBasic.prototype.valuesFiltered= function () {
   var fi=this;
   linkedDataGraph.flattenAllData()
   fi.getValuesAllNodes()
+  //console.log(fi.values)
   if(fi.values.length>0){
     fi.fillField()
   }
@@ -483,11 +485,30 @@ class FilterBasicDate extends FilterBasic {
       })
     })
   }
+/*   valuesFiltered() {
+    var fi=this;
+    linkedDataGraph.flattenAllData()
+    fi.getValuesAllNodes()
+    //console.log(fi.values)
+    if(fi.values.length>0){
+      fi.fillField()
+    }
+  
+    if(fi.values.length==0){
+      fi.hide()
+    }else{
+      fi.show()
+    }
+  } */
   fillField(){
     var fi=this;
     fi.sortValues()
-    document.getElementById(fi.details.property+"_filter_start").value = fi.values[0];
-    document.getElementById(fi.details.property+"_filter_end").value = fi.values[fi.values.length-1];
+    if((!fi.valuesChanged)||(!fi.valuesChanged["start"])){
+      document.getElementById(fi.details.property+"_filter_start").value = fi.values[0];
+    }
+    if((!fi.valuesChanged)||(!fi.valuesChanged["end"])){
+      document.getElementById(fi.details.property+"_filter_end").value = fi.values[fi.values.length-1];
+    }
   }
   checkConditionNode(node){
     let startDate=$("#"+this.details.property+"_filter_start").val()
@@ -512,6 +533,7 @@ class FilterBasicDate extends FilterBasic {
         this["valuesChanged"]={"end":el.value}
       }
     }
+    console.log(el.value)
   }
   sortValues(){
     var fi=this;
@@ -589,13 +611,25 @@ class FilterBasicDate extends FilterBasic {
     fi.fillField()
   } */
   checkValuesChangedIn(){
-    var fi=this;
+    var fi=this,check=true;
 /*     if(fi.values.includes(fi.valuesChanged)){
       return true
     }else{
       return false
     } */
-    return true
+    console.log(fi.valuesChanged["start"])
+    if(fi.valuesChanged["start"]){
+      console.log(fi)
+      if((formatDateComp(fi.values[fi.values.length-1])<formatDateComp(fi.valuesChanged["start"]))){
+        check=false
+      }
+    }
+    if(fi.valuesChanged["end"]){
+      if((formatDateComp(fi.values[0])>formatDateComp(fi.valuesChanged["end"]))){
+        check=false
+      }
+    }
+    return check
   }
 }
 

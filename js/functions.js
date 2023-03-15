@@ -867,6 +867,7 @@ function changeDateFormat(date){
 }
 
 function formatDate(str){
+  //console.log(str)
   const [day, month, year] = str.split('-');
   const date = new Date(+year, +month - 1, +day);
   return new Date(date)

@@ -1112,14 +1112,17 @@ NavigationPanel.prototype.addTextToHeaderContentTable = function (){
   if(navPanel.node.class!="free"){
     $("#dvTable #nav-children-header").text(configRow.option_text)
   }else{
-    if(navPanel.node.menuOption!=""){
-      if(navPanel.node.menuOption.split(";").length>1){
-        $("#dvTable #nav-children-header").text("Several options displayed in graph. Click on each option to see results:");
+    console.log(navPanel.node.menuOption)
+    if(navPanel.node.menuOption){
+      if(navPanel.node.menuOption!=""){
+        if(navPanel.node.menuOption.split(";").length>1){
+          $("#dvTable #nav-children-header").text("Several options displayed in graph. Click on each option to see results:");
+        }else{
+          $("#dvTable #nav-children-header").text(getTextMenuOptionExpert(navPanel.node.menuOption));
+        }
       }else{
-        $("#dvTable #nav-children-header").text(getTextMenuOptionExpert(navPanel.node.menuOption));
+        $("#dvTable #nav-children-header").text("");   
       }
-    }else{
-      $("#dvTable #nav-children-header").text("");   
     }
 
   }
