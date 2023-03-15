@@ -408,6 +408,8 @@ LinkedDataGraph.prototype.filter = function(filterId){
       ldg.allTreeData=ldg.allTreeData.reverse()
     } */
     //ldg.allTreeData=treeByOrder(ldg.allTreeData)
+
+    console.log(JSON.parse(JSON.stringify(ldg.allTreeData)))
     ldg.allTreeData.forEach(function(r){
       recurse(r,filter);
     })
@@ -614,7 +616,6 @@ LinkedDataGraph.prototype.importGraph = function(fileText){
 
 LinkedDataGraph.prototype.update = async function(option,node,type){
   var ldg=this;
-  ////////////////////////////console.log(node.menuOption)
 
   if(type=="basic"){
     await updateBasic()
@@ -622,42 +623,24 @@ LinkedDataGraph.prototype.update = async function(option,node,type){
     await updateExpert()
   }
 
-  if(networkGraph){
-    //////////////////////////console.log(networkGraph.treeData)
-  }
-
   await ldg.init()
 
-/*   if(networkGraph){
-    //////////////////////////console.log(networkGraph.treeData)
-  } */
   applyAllFilters()
 
   async function updateBasic(){
-    //////////////console.log("updateBasic")
-    ////////////////console.log(configRow)
     if((configRow)&&(configRow instanceof ConfigRowBasic)){
       await configRow.fromOptionToConfigRow(option)
     }else{
-      //configRow=new ConfigRowBasic(option,node)
       await settingsFromOption("basic",option,node)
     }
   }
   async function updateExpert(){
-    //////////////console.log("updateExpert")
-    ////////////////console.log(configRow)
     if((configRow)&&(configRow instanceof ConfigRowExpert)){
-      ////////////////////////////console.log("from option to config row")
-      ////////////////////////////console.log(node.menuOption)
       await configRow.fromOptionToConfigRow(option,node)
     } 
     else{
-      ////////////////console.log(option)
-      ////////////////console.log(node)
-      //configRow=new ConfigRowExpert(option,node)
       await settingsFromOption("expert",option,node)
     }
-    ////////////////////////////console.log(configRow)
   }
 }
 
@@ -668,14 +651,10 @@ LinkedDataGraph.prototype.buildTreeData = function () {
   var properties=configRow.properties
   var treeData=[],children = []
 
-  
-  
 
   if (ldg.treeData==undefined){
     ldg.treeData=[]
   }
-
-  ////////////////////////console.log(treeData)
 
   if(configRow.class){
     childrenLength=buildTreeDataBasic()
@@ -683,39 +662,10 @@ LinkedDataGraph.prototype.buildTreeData = function () {
     childrenLength=buildTreeDataExpert()
   }
 
-  ////////////////////////console.log(treeData)
-  if(configRow.node){
-    //////////////////////console.log(configRow.node.id)
-  }
-
-  //////////////////////console.log(treeData)
-
-  //////////////////////console.log(ldg.treeData)
-
- /*  if((configRow.hierarchy)&&(configRow.node)){
-    indexNode=ldg.treeData.findIndex(d=>d.id==configRow.node.id)
-    if(indexNode!=-1){
-      //////////////////////console.log(treeData)
-      ////////////////////////console.log(networkGraph.treeData)
-      //////////////////////console.log(ldg.treeData)
-      //throw new Error('Parameter is not a number!');
-      ldg.treeData.splice(indexNode, 1);
-    }
-  } */
   indexNode=ldg.treeData.findIndex(d=>d.id==configRow.node.id)
   if(indexNode!=-1){
-    //////////////////////console.log(treeData)
-    ////////////////////////console.log(networkGraph.treeData)
-    //////////////////////console.log(ldg.treeData)
-    //throw new Error('Parameter is not a number!');
     ldg.treeData.splice(indexNode, 1);
   }
-
-  //////////////////////console.log(treeData)
-  //////////////////////console.log(ldg.treeData)
-  //treeData=treeData.reverse()
-  //////console.log(JSON.parse(JSON.stringify(treeData)))
-  //////console.log(JSON.parse(JSON.stringify(ldg.treeData)))
 
   treeData=ldg.clusterData(treeData,childrenLength)
 
@@ -723,7 +673,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
 
   ldg.treeData=ldg.treeData.concat(treeData)
 
-  createMenuOptionNodes
+  //createMenuOptionNodes
   if(!ldg.allTreeData){
     ldg.allTreeData=JSON.parse(JSON.stringify(ldg.treeData))
   }
@@ -1062,25 +1012,30 @@ LinkedDataGraph.prototype.buildTreeData = function () {
         if(menuOptions.length==2){
            let children=ldg.treeData.filter(n=>n.id==configRow.node.id)[0]["children"]
            nodeOption1={"id":genRandomString(),"value":menuOptions[0],"shape":1,"class":"menuOption","className":"Menu Option","children":children}
-           treeData.push(nodeOption1)
+           //treeData.push(nodeOption1)
            nodeOption2={"id":genRandomString(),"value":menuOptions[1],"shape":1,"class":"menuOption","className":"Menu Option","children":[]}
-           treeData.push(nodeOption2)
+           //treeData.push(nodeOption2)
 
            node=nodeValues(configRow.results[j],0,configRow.node.id)
            node["children"]=[nodeOption1,nodeOption2]
+           treeData.push(node)
+           treeData.push(nodeOption1)
+           treeData.push(nodeOption2)
            ////////console.log(JSON.parse(JSON.stringify(node["children"])))
         }else{
            node=nodeValues(configRow.results[j],0,configRow.node.id)
            node["children"]=[]
+           treeData.push(node)
         }
       }
       
     }else{
       node=nodeValues(configRow.results[j],0)
       node["children"]=[]
+      treeData.push(node)
     }
     ////////////////////////console.log(node)
-    treeData.push(node)
+    //treeData.push(node)
     ////////console.log(JSON.parse(JSON.stringify(node["children"])))
 
     ////////////////////console.log(treeData)
