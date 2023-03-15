@@ -157,6 +157,7 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.setColorScale()
    
+  console.log(vis.colorScaleDomain)
   vis.colorScale = d3.scaleOrdinal()
   .domain(vis.colorScaleDomain)
   .range(vis.colorScaleRange)
@@ -1336,7 +1337,7 @@ NetworkGraph.prototype.addClassesShow = function(){
 
 NetworkGraph.prototype.setColorScale = async function(){
   var vis=this;
-
+  console.log(configRow.class)
   if(configRow.class){
     setColorScaleBasic()
   }else{
@@ -1476,7 +1477,11 @@ class NetworkGraphImported extends NetworkGraph {
   }
   setColorScale(){
     var vis=this;
+    console.log(vis.classesCorrespondence)
     vis.nodesClassesShow=vis.classesCorrespondence
+/*     if(configRow["classes_text"]){
+      vis.nodesClassesShow=configRow.getClassesCorrespondence()
+    } */
     super.setColorScale()
   }
   getFilters() {

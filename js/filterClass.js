@@ -113,14 +113,20 @@ FilterClassBasic.prototype.addFilterType = async function (filter,imported) {
 FilterClassBasic.prototype.addFilterTypeImported = async function (filter,imported) {
   var cf=this,fi;
   if(filter.details.filter_type=="dropdown"){
-    cf.filters.push(new FilterBasicDropdown(filter,imported))
+    fi=new FilterBasicDropdown(filter,imported)
+    console.log(fi)
+    cf.filters.push(fi)
   }else if(filter.details.filter_type=="date"){
-    cf.filters.push(new FilterBasicDate(filter,imported))
+    fi=new FilterBasicDate(filter,imported)
+    cf.filters.push(fi)
   }else if(filter.details.filter_type=="text"){
-    cf.filters.push(new FilterBasicText(filter,imported))
+    fi=new FilterBasicText(filter,imported)
+    cf.filters.push(fi)
   }else if(filter.details.filter_type=="number"){
-    cf.filters.push(new FilterBasicNumber(filter,imported))
+    fi=new FilterBasicNumber(filter,imported)
+    cf.filters.push(fi)
   }
+  fi.addHtml()
 }
 //set values to other filters when filter changes
 //filterId=id from changed filter
@@ -237,15 +243,16 @@ Filter = function (_details,_imported) {
     fi.copyDetails(_details)
   };  
 
-Filter.prototype.import = function (details) {
+/* Filter.prototype.import = function (details) {
     var fi=this;
     if(details){
       Object.keys(details).forEach(function(k){
         fi[k]=details[k]
       })
     }
+    console.log(JSON.parse(JSON.stringify(fi)))
     fi.addHtml()
-}
+} */
 Filter.prototype.removeValuesChanged=function (){   
   delete this["valuesChanged"]
 }
@@ -298,7 +305,12 @@ FilterBasic.prototype = Object.create(Filter.prototype);
 FilterBasic.prototype.copyDetails=function(details){
   var fi=this;
   if(fi.imported){
-    fi.import(details)
+    //fi.import(details)
+    if(details){
+      Object.keys(details).forEach(function(k){
+        fi[k]=details[k]
+      })
+    }
     fi.imported=true
   }else{
     fi.details=details
@@ -307,12 +319,14 @@ FilterBasic.prototype.copyDetails=function(details){
 
 FilterBasic.prototype.init= async function () {
   var fi=this;
-  //console.log(fi)
-  if(fi.imported){
+  console.log(fi.imported)
+/*   if(fi.imported){
     fi.import(fi.details)
   }else{
+    console.log("addHtml")
     await fi.addHtml()
-  }
+  } */
+  await fi.addHtml()
   if(fi.values.length==0){
     fi.hide()
   }else{
@@ -374,7 +388,13 @@ FilterBasic.prototype.addHtml= function () {
   }else{
     fi.selection="none"
   }
-  fi.getValuesAllNodes()
+  console.log(JSON.parse(JSON.stringify(fi)))
+  console.log(fi)
+  if(!fi.imported){
+    console.log("getValuesAllNodes")
+    fi.getValuesAllNodes()
+  }
+  
 }
 
 FilterBasic.prototype.valuesFiltered= function () {
@@ -893,6 +913,15 @@ class FilterExpertDropdown extends FilterExpert {
     ////console.log(fi)
     ////console.log(fi.values)
     addHtmlOptionsSelect(select,fi.values)
+    if(fi.valuesChanged){
+      select.value=fi.valuesChanged
+      const $options = Array.from(select.options);
+      console.log($options)
+      console.log(fi.valuesChanged)
+      const optionToSelect = $options.find(item => item.text.toLowerCase() ===fi.valuesChanged.toLowerCase());
+      console.log(optionToSelect)
+      optionToSelect.selected = true;
+    }
   }
   addValuesChanged(el){
     this["valuesChanged"]=el.value

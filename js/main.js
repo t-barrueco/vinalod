@@ -232,12 +232,21 @@ async function createGraphFromFile(fileText){
 
   //set networkgraph forces
   let forces=setForcesGraph()
+  //networkGraph.colorScale.domain()=[]
 
+  //networkGraph=undefined
+  //console.log(networkGraph.colorScale.domain()[0])
+  //console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
   //create networkgraph with elements from the fileText that contains the data
   networkGraph = new NetworkGraphImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
   await networkGraph.initVis()
 
+  console.log("removeColorsFromLegend")
+  removeColorsFromLegend()
   //create colors legend
+  console.log(networkGraph.nodesClassesCorrespondence)
+  console.log(colorCorrespondence)
+  console.log(networkGraph.colorScale.domain())
   legend=new Legend("legend",networkGraph)
 
   //add filters that has been stored in the fileText

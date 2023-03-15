@@ -501,9 +501,12 @@ LinkedDataGraph.prototype.clusterData = function (treeData,childrenLength) {
     if(treeData.length>0){
       treeData.forEach(function(t){
         ////////////////////console.log(t.children.length)
-        if(t.children.length>maxNumber){
-          transformDataCluster(t)
+        if(t.children){
+          if(t.children.length>maxNumber){
+            transformDataCluster(t)
+          }
         }
+
       })
     }else{
       transformDataMenuOption()
