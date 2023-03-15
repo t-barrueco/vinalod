@@ -19,8 +19,8 @@ Legend.prototype.initColors=function(i){
 }
 Legend.prototype.addColors=function(){
     var le=this;
-    ////console.log(networkGraph.colorScale.domain().length)
-
+    console.log(networkGraph.colorScale.domain())
+    console.log(networkGraph.classesCorrespondence)
     ////console.log(//console.log(networkGraph.colorScale.domain()).length)
 
     if(le.graph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){

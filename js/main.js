@@ -101,6 +101,7 @@ function collapse(){
 }
 //when expand button is clicked
 function expand(){
+  console.log(JSON.parse(JSON.stringify(linkedDataGraph.treeData[0])))
   networkGraph.expandAll()
 }
 
@@ -595,7 +596,15 @@ async function addBasicGraph(option,node){
   const rowInConfigFile=configFile.file.filter(c=>c.option==option.option)[0]
 
   if(rowInConfigFile["type"]=="TREE"){
+
     await linkedDataGraph.update(option,node,"basic")
+
+    linkedDataGraph.filter()
+     
+    linkedDataGraph.flattenAllData()
+
+    linkedDataGraph.data=linkedDataGraph.allData
+    linkedDataGraph.treeData=linkedDataGraph.allTreeData
 
     networkGraph.refresh()
 
@@ -605,11 +614,6 @@ async function addBasicGraph(option,node){
   return rowInConfigFile["type"]
 }
 async function addExpertGraph(option,node){
-  ////console.log("addExpertGraph")
-  //////////console.log(option.endpoint_url)
-
-  //////////console.log(node)
-  //////////console.log(node.menuOption)
   addMenuOptionToNode(node,option.endpoint_url+","+option.position)
   if(networkGraph){
     ////////console.log(networkGraph.treeData)
@@ -632,14 +636,31 @@ function showDuplicates(value){
   }else if(value=="no"){
     showNoDuplicatesGraph()
   }
-  linkedDataGraph.flatten()
-  networkGraph.refreshNoFilters()
+  if(linkedDataGraph){
+    linkedDataGraph.flatten()
+  }
+  if(networkGraph){
+    networkGraph.refreshNoFilters()
+  } 
 }
 function showDuplicatesGraph(){
-  linkedDataGraph.showDuplicatesGraph()
+  if(linkedDataGraph){
+    linkedDataGraph.showDuplicatesGraph()
+  }
+  document.getElementById('radio-navigation-no').checked = false;
+  document.getElementById('radio-navigation-yes').checked = true;
+  document.getElementById('radio-navigation-yes').disabled=false;
+  document.getElementById('radio-navigation-no').disabled=false;
 }
 function showNoDuplicatesGraph(){
-  linkedDataGraph.showNoDuplicatesGraph()
+  if(linkedDataGraph){
+    linkedDataGraph.showNoDuplicatesGraph()
+  }
+  document.getElementById('radio-navigation-no').checked = true;
+  document.getElementById('radio-navigation-yes').checked = false;
+  document.getElementById('radio-navigation-yes').disabled=true;
+  document.getElementById('radio-navigation-no').disabled=true;
+
 }
 
 function getShowDuplicates(){
@@ -654,11 +675,6 @@ function relatedFilters(element){
   var filter,filterId,id,wrongValues=false,ldg=linkedDataGraph;
 
   getAllData()
-
-  //networkGraph.allData=JSON.parse(JSON.stringify(networkGraph.data))
-
-  //test+=1
-  //
 
   id=element.getAttribute("id").replace("_filter","")
   id=id.replace("_start","").replace("_end","")
@@ -675,9 +691,6 @@ function relatedFilters(element){
     }
     if(!wrongValues){
       filter.addValuesChanged(element)
-      //////console.log(linkedDataGraph.data)
-      //linkedDataGraph.dataBeforeFilter=JSON.parse(JSON.stringify(linkedDataGraph.data))
-      //
       linkedDataGraph.filter(filter.id)
      
       //console.log(JSON.parse(JSON.stringify(linkedDataGraph.allTreeData)))
@@ -719,35 +732,28 @@ function getFilterClassExpertName(id){
 function relatedFiltersExpert(element){
   var filter,id;
   getAllData()
-  //networkGraph.allData=JSON.parse(JSON.stringify(networkGraph.data))
-  //////console.log(ldg.allTreeData)
-  //////console.log(ldg.treeData)
+/* 
+  filter.addValuesChanged(element)
+  linkedDataGraph.filter(filter.id)
+ 
+  //console.log(JSON.parse(JSON.stringify(linkedDataGraph.allTreeData)))
+  linkedDataGraph.flattenAllData() */
+
   id=getFilterClassExpertName(element.getAttribute("id"))
   let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==id)[0]
+  console.log(filterClass)
   if(filterClass){
     filter=filterClass.filters.filter((f)=>f.field==element.closest(".ecl-form-group").querySelector("label").textContent)[0]
     filter.addValuesChanged(element)
     linkedDataGraph.filter(filter.id)
-    linkedDataGraph.flatten()
-    setValuesFilters(id)
+    linkedDataGraph.flattenAllData()
+    //setValuesFilters(id)
   }
 }
 function getAllData(){
   var ldg=linkedDataGraph;
-  function recurse(node) {
-    //////console.log(node)
-    //let index=ldg.allTreeData.findIndex(d=>d.id==node.id)
-    //if(index!=-1){
-      if(node["corporateBody_location"]){
-        //////console.log(node["corporateBody_location"])
-      }
-/*       ////console.log(ldg.treeData)
-      ////console.log(ldg.allTreeData)
-      ////console.log(node.filtered)
-      ////console.log(node.collapsed)
-      ////console.log(node.hidden) */
+ /*  function recurse(node) {
       if((node.filtered)&&(!node.collapsed)){
-        ////console.log(node)
         delete node.hidden;
       }
       delete node.filtered;
@@ -757,19 +763,30 @@ function getAllData(){
           recurse(c)
         })
       }
-    //}
-    
-  } 
-  ////console.log(ldg.treeData)
-  ////console.log(ldg.allTreeData)
+  }  */
+
   ldg.allTreeData=JSON.parse(JSON.stringify(ldg.treeData))
-  ldg.allTreeData.forEach(function(n){
+  resetData("allTreeData")
+  ldg.flattenAllData()
+}
+function resetData(data){
+  var ldg=linkedDataGraph
+  function recurse(node) {
+      if((node.filtered)&&(!node.collapsed)){
+        delete node.hidden;
+      }
+      delete node.filtered;
+
+      if (node.children){
+        node.children.forEach(function(c){
+          recurse(c)
+        })
+      }
+  } 
+
+  ldg[data].forEach(function(n){
     recurse(n)
   })
-
-  ////console.log(ldg.allTreeData)
-  ////console.log(ldg.treeData)
-  ldg.flattenAllData()
 }
 function applyFilters(){
   networkGraph.filtered=true
@@ -790,6 +807,10 @@ function setValuesFilters(filterId){
 
 function clearFilters(){
   networkGraph.filtered=false
+  resetData("treeData")
+  linkedDataGraph.allTreeData=linkedDataGraph.treeData
+  linkedDataGraph.flatten()
+  linkedDataGraph.flattenAllData()
   networkGraph.refresh()
   networkGraph.filterClassesObjects.forEach(function (cf){
     cf.filters.forEach(async function (f){

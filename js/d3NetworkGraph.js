@@ -1113,7 +1113,7 @@ NetworkGraph.prototype.collapseAll = function () {
   vis.updateData()
   vis.refreshNoFilters()
 }
-NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
+/* NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
   var vis = this,treeDataEl;
   function recurse(node) {
     var el;
@@ -1144,8 +1144,8 @@ NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
   vis.dataJoinGraph()
   vis.exitGraph()
 
-}
-NetworkGraph.prototype.expandNodeBranch = function (nodeTreeData) {
+} */
+/* NetworkGraph.prototype.expandNodeBranch = function (nodeTreeData) {
   var vis = this
   nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)[0]
   nodeTreeData.children = nodeTreeData._children;
@@ -1156,10 +1156,10 @@ NetworkGraph.prototype.expandNodeBranch = function (nodeTreeData) {
   vis.dataJoinGraph()
   vis.exitGraph()
 
-}
+} */
 NetworkGraph.prototype.expandAll = function () {
   var vis = this,ldg=linkedDataGraph;
-  ldg.expandBranch(ldg.treeData[0])
+  ldg.expandAll()
   ldg.flatten()
   vis.updateData()
   vis.refreshNoFilters()
@@ -1184,50 +1184,16 @@ NetworkGraph.prototype.expandBranch = function (node){
   vis.refreshNoFilters()
 }
 
-NetworkGraph.prototype.checkCollapseExpandBranch = function (node){
+/* NetworkGraph.prototype.checkCollapseExpandBranch = function (node){
   var vis = this;
   if(vis.treeData.filter(d=>d.id==node.id)[0]["children"]){
     vis.collapseBranch(node)
   }else if(vis.treeData.filter(d=>d.id==node.id)[0]["_children"]){
     vis.expandBranch(node)
   }
-}
-NetworkGraph.prototype.collapseFullBranch = function (node){
-  var vis = this;
-  var nodes=[]
-  nodes.push(node.id)
-  collapseNode(node)
+} */
 
-  for (let i = 0; i < vis.treeData.length; i++) {
-    if (nodes.includes(vis.treeData[i]["id"])){
-      vis.treeData[i]._children = vis.treeData[i].children;
-      delete vis.treeData[i].children;
-      if(vis.treeData[i]["id"]!=node.id){
-        vis.treeData[i]["hidden"]=true
-        vis.treeData[i]["collapsed"]=true
-      }
-    }
-  }
-  function collapseNode(node) {
-    var position;
-    if(node){
-      if(node["children"]){
-        node["children"].forEach(function(d){
-          position=nodes.indexOf(nodes.filter(function(item) {
-            return (item.id == d.id)
-          })[0])
-          if(position==-1){
-            nodes.push(d.id)
-          }  
-          collapseNode(d)
-        })
-      }
-    }
-    
-  }
-}
-
-NetworkGraph.prototype.expandLevelBranch = function (node){
+/* NetworkGraph.prototype.expandLevelBranch = function (node){
   var vis = this;
   var nodes=[]
   nodes.push(node.id)
@@ -1259,7 +1225,7 @@ NetworkGraph.prototype.expandLevelBranch = function (node){
       })
     }
   }
-}
+} */
 
 NetworkGraph.prototype.refresh = function (node){
   var vis = this;
