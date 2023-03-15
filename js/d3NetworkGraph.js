@@ -157,7 +157,7 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.setColorScale()
    
-  console.log(vis.colorScaleDomain)
+  ////console.log(vis.colorScaleDomain)
   vis.colorScale = d3.scaleOrdinal()
   .domain(vis.colorScaleDomain)
   .range(vis.colorScaleRange)
@@ -1337,7 +1337,7 @@ NetworkGraph.prototype.addClassesShow = function(){
 
 NetworkGraph.prototype.setColorScale = async function(){
   var vis=this;
-  console.log(configRow.class)
+  ////console.log(configRow.class)
   if(configRow.class){
     setColorScaleBasic()
   }else{
@@ -1477,7 +1477,7 @@ class NetworkGraphImported extends NetworkGraph {
   }
   setColorScale(){
     var vis=this;
-    console.log(vis.classesCorrespondence)
+    ////console.log(vis.classesCorrespondence)
     vis.nodesClassesShow=vis.classesCorrespondence
 /*     if(configRow["classes_text"]){
       vis.nodesClassesShow=configRow.getClassesCorrespondence()
@@ -1486,7 +1486,7 @@ class NetworkGraphImported extends NetworkGraph {
   }
   getFilters() {
     var vis=this,filterClass;
-    console.log(vis.importedFilterClasses)
+    ////console.log(vis.importedFilterClasses)
 
     vis.importedFilterClasses.forEach(function(ifc){
       if(ifc.filters[0]["field"]){
@@ -1494,15 +1494,21 @@ class NetworkGraphImported extends NetworkGraph {
       }else{
         filterClass=new FilterClassBasic(ifc.name)
       }
-      console.log(filterClass)
+      //console.log(JSON.parse(JSON.stringify(filterClass)))
       filterClass.getCode()
       filterClass.filters=[]
       vis.filterClassesObjects.push(filterClass)
+      //console.log(JSON.parse(JSON.stringify(vis.filterClassesObjects)))
       ifc.filters.forEach(function (f){
+        //console.log(JSON.parse(JSON.stringify(filterClass)))
         filterClass.addFilterTypeImported(f,true)
+        ////console.log(JSON.parse(JSON.stringify(f)))
+        //////console.log(typeof f)
       })
+      
       filtersVisible()
       filterClass.checkHidden()
+      //console.log(JSON.parse(JSON.stringify(filterClass)))
     })
   }
 }
