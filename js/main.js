@@ -9,13 +9,13 @@ var prevent = false;
 var test=0,test2=0;
 
 window.onload = (event) => {
-  //////////////////////console.log("page is fully loaded");
+  ////////////////////////console.log("page is fully loaded");
   dataViz()
 };
 function keyPress (e) {
   if(e.key === "Escape") {
       // write your logic here.
-    //////////////////console.log("Escape")
+    ////////////////////console.log("Escape")
   }
 }
 //this function will be execute when the page is fully loaded
@@ -23,10 +23,10 @@ function dataViz(){
     //If a graph is shared the name of the graph will be added to the url
     //we get the graph name from the url
     const queryString = window.location.search;
-    //////////////////console.log(queryString)
+    ////////////////////console.log(queryString)
     const urlParams = new URLSearchParams(queryString);
     const graphName = urlParams.get('graph')
-    //////////////////console.log(graphName)
+    ////////////////////console.log(graphName)
     //WE READ THE FOLLOWING FILES:
     //config_basicMode.json -> config file where all options for basic mode are stored
     //graph_icon.txt -> where icons shown on bubbles are specified
@@ -42,7 +42,7 @@ function dataViz(){
                     configFileExpert=new ConfigFileExpert(dataConfigExpert);
                     //get all uris with mnemonicCode. This code will be shown instead of icons
                     mnemonicCodes=await getMnemonicCodes(dataMnemonicCodes);
-                    //////////////////////console.log(mnemonicCodes)
+                    ////////////////////////console.log(mnemonicCodes)
                     //icons for bubbles in basic mode will be stored in filesIcons
                     filesIcons=dataIcons;
                     //if a graph name is added to the url we will show the graph shared
@@ -96,12 +96,12 @@ function appendHtmlOptions(optionsMenu){
 
 //when collapse button is clicked
 function collapse(){
-  ////////////////////console.log("collapse")
+  //////////////////////console.log("collapse")
   networkGraph.collapseAll()
 }
 //when expand button is clicked
 function expand(){
-  ////console.log(JSON.parse(JSON.stringify(linkedDataGraph.treeData[0])))
+  //////console.log(JSON.parse(JSON.stringify(linkedDataGraph.treeData[0])))
   networkGraph.expandAll()
 }
 
@@ -160,7 +160,7 @@ function shareGraph(){
   
   if(anotherGraphId){
     link=link.replace("?graph=","").replace(anotherGraphId,"")
-    ////////console.log(link)
+    //////////console.log(link)
   }
 
   return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(link+"?graph="+fileName);
@@ -227,43 +227,62 @@ async function createGraphFromFile(fileText){
   //create a new element for storing the data. We specify that it is imported data
   linkedDataGraph = new LinkedDataGraph("imported");
 
+  if(configRow){
+    configRow=undefined
+  }
   //import data into object that contains the data for the network graph
   linkedDataGraph.importGraph(fileText)
 
   //set networkgraph forces
   let forces=setForcesGraph()
   //networkGraph.colorScale.domain()=[]
+  console.log(configRow)
+ 
+  /* if(networkGraph){
+    delete networkGraph.colorScale
+    delete networkGraph.colorScaleDomain
+    delete networkGraph.colorScaleRange
+    //console.log(JSON.parse(JSON.stringify(networkGraph.data)))
+    //console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
+  } */
+
+
 
   //networkGraph=undefined
-  //////console.log(networkGraph.colorScale.domain()[0])
-  //////console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
+  ////////console.log(networkGraph.colorScale.domain()[0])
+  ////////console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
   //create networkgraph with elements from the fileText that contains the data
   networkGraph = new NetworkGraphImported("#networkGraph",forces,linkedDataGraph.data,fileText.classesCorrespondence,fileText.filterClasses);
   await networkGraph.initVis()
 
-  ////console.log("removeColorsFromLegend")
+  //////console.log("removeColorsFromLegend")
   removeColorsFromLegend()
   //create colors legend
-  ////console.log(networkGraph.nodesClassesCorrespondence)
-  ////console.log(colorCorrespondence)
-  ////console.log(networkGraph.colorScale.domain())
+  //////console.log(networkGraph.nodesClassesCorrespondence)
+  //////console.log(colorCorrespondence)
+  //////console.log(networkGraph.colorScale.domain())
+  if(networkGraph){
+    console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
+  }
+  
+
   legend=new Legend("legend",networkGraph)
 
   //add filters that has been stored in the fileText
   networkGraph.getFilters()
-  //console.log(//console.log(JSON.parse(JSON.stringify(networkGraph.filterClassesObjects))))
+  ////console.log(////console.log(JSON.parse(JSON.stringify(networkGraph.filterClassesObjects))))
   //open navpanel if navpanel was opened when sharing or exporting the graph
   if(fileText.navPanelNode!="None"){
     clickBubbleGraph(document.getElementById(fileText.navPanelNode.id))
   }
 
   networkGraph.refreshNoFilters()
-  //console.log(//console.log(JSON.parse(JSON.stringify(networkGraph.filterClassesObjects))))
+  ////console.log(////console.log(JSON.parse(JSON.stringify(networkGraph.filterClassesObjects))))
 }
 
 //function launched when click on import button in menu
 function importGraph(file){
-  //////////////////////console.log(file)
+  ////////////////////////console.log(file)
   file.files[0].text().then(text => {
     createGraphFromFile(JSON.parse(text))
   })
@@ -275,7 +294,7 @@ function importGraph(file){
 //add graph when added in url
 //graph data stored in aws s3 bucket
 function addSharedGraphInUrl(file){
-  ////////////////console.log("addSharedGraph")
+  //////////////////console.log("addSharedGraph")
   //get details for aws s3 bucket on file
   d3.json("config_vinalod/aws-s3.json",async function(data){
     const albumBucketName=data["albumBucketName"]
@@ -304,7 +323,7 @@ function addSharedGraphInUrl(file){
       //get data from file
       const fileText = JSON.parse(data.Body.toString());
       //create graph
-      ////////////////console.log("createGraph")
+      //////////////////console.log("createGraph")
       createGraphFromFile(fileText)
      }             
    });
@@ -364,10 +383,10 @@ function expertMode(){
 
 //function run when expert form is filled and click on "Show" button
 async function startExpert(element){
-  ////////console.log("startExpert")
+  //////////console.log("startExpert")
   await checkMenuItems('form',element)
-  ////////////////console.log(menuItems)
-  ////////////////console.log(menuItems.selectedRows)
+  //////////////////console.log(menuItems)
+  //////////////////console.log(menuItems.selectedRows)
   if(menuItems.selectedRows.length==0){
     showErrorMessageExpertForm()
   }else{
@@ -378,7 +397,7 @@ async function startExpert(element){
 //launched if option selected when page that shows collection options is added
 async function createNewBasicGraph(option){
 
-  ////////////////////console.log(option)
+  //////////////////////console.log(option)
   removePreviousFilters()
   hideExpertForm()
   removeGraph()
@@ -421,9 +440,9 @@ async function createNewBasicGraph(option){
 
 //create new expert graph
 async function createNewExpertGraph(selectedRow){
-  ////////console.log("createNewExpertGraph")
+  //////////console.log("createNewExpertGraph")
   linkedDataGraph = new LinkedDataGraph(selectedRow);
-  //////////console.log(linkedDataGraph)
+  ////////////console.log(linkedDataGraph)
   await settingsFromOption("expert",linkedDataGraph.option)
 
   let forces=setForcesGraph()
@@ -435,8 +454,8 @@ async function createNewExpertGraph(selectedRow){
   removePreviousFilters()
   tabOptionsGraphVisible()
 
-  //////////console.log(forces)
-  //////////console.log(linkedDataGraph.data)
+  ////////////console.log(forces)
+  ////////////console.log(linkedDataGraph.data)
   //networkGraph = new NetworkGraph("#networkGraph",forces,linkedDataGraph.data);
   networkGraph = new NetworkGraphNotImported("#networkGraph",forces,linkedDataGraph.data);
 
@@ -462,7 +481,7 @@ function checkSelectGraphInCollection(option)
       optionSel.value = values[i];
       optionSel.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
       if(optionSel.value==option){
-        ////////////////////console.log(option)
+        //////////////////////console.log(option)
         optionSel.selected=true
       }
       selectField.appendChild(optionSel);
@@ -473,7 +492,7 @@ function checkSelectGraphInCollection(option)
 function changeGraphInCollection(element){
   //getOptionsCollectionSelect(this)
 
-  ////////////////////console.log(element.value)
+  //////////////////////console.log(element.value)
   createNewBasicGraph(element.value)
 }
 
@@ -520,7 +539,7 @@ async function checkMenuItems(origin,element) {
   }else if(origin=="table"){
     //when origin is table content in navigation panel
     // get the node from the table row id
-    ////////////console.log(element)
+    //////////////console.log(element)
     node=getNodeFromTableRow(element)
   }else if(origin=="navigation"){
     //when origin is the last element in the navigation panel history
@@ -535,14 +554,14 @@ async function checkMenuItems(origin,element) {
     //we create the menuItems object
     //it is created from the basic or expert type depending on the node class
     if(node.class!="free"){
-      //////////////////console.log(node)
+      ////////////////////console.log(node)
       menuItems= new MenuItemsBasic(node)
     }else{
       menuItems= new MenuItemsExpert(node,position)
     }
     await menuItems.init()
 
-    //////////console.log(menuItems.selectedRows)
+    ////////////console.log(menuItems.selectedRows)
 
     //after the menuItems object is created and initialized we get the number of
     //possible options for graphs from that node
@@ -553,10 +572,10 @@ async function checkMenuItems(origin,element) {
           networkGraph.checkCollapseExpandBranch(node)
         }
       } */
-      //////////////////////console.log("message for no graph")
+      ////////////////////////console.log("message for no graph")
       
       if(origin=="table"){
-        ////////////////////console.log(node)
+        //////////////////////console.log(node)
         clickBubbleGraph(document.getElementById(node.id))
       }else if(origin=="navigation"){
         showMessageForNoGraphs()
@@ -573,10 +592,10 @@ async function checkMenuItems(origin,element) {
         //add basic graph to the existing graph
         await addBasicGraph(menuItems.selectedRows[0],node)
       }else{
-        ////////console.log(linkedDataGraph)
-        ////////////////console.log(menuItems.selectedRows[0]["option"])
+        //////////console.log(linkedDataGraph)
+        //////////////////console.log(menuItems.selectedRows[0]["option"])
         if((linkedDataGraph)&&(linkedDataGraph.option instanceof OptionNodeExpert)){
-          ////////////////////////////console.log("update linkedata")
+          //////////////////////////////console.log("update linkedata")
           await addExpertGraph(menuItems.selectedRows[0],node)
         }else{
           await createNewExpertGraph(menuItems.selectedRows[0])
@@ -625,12 +644,12 @@ async function addBasicGraph(option,node){
 async function addExpertGraph(option,node){
   addMenuOptionToNode(node,option.endpoint_url+","+option.position)
   if(networkGraph){
-    ////////////console.log(networkGraph.treeData)
+    //////////////console.log(networkGraph.treeData)
   }
   await linkedDataGraph.update(option,node,"expert")
-  ////////////////console.log(linkedDataGraph)
+  //////////////////console.log(linkedDataGraph)
   if(networkGraph){
-    ////////////console.log(networkGraph.treeData)
+    //////////////console.log(networkGraph.treeData)
   }
   networkGraph.refresh()
 }
@@ -694,7 +713,7 @@ function relatedFilters(element){
 
   if(filterClass){
     filter=filterClass.filters.filter((f)=>f.details.property==id)[0]
-    //////console.log(filter)
+    ////////console.log(filter)
     if(filter.details.filter_type=="date"){
       wrongValues=filter.checkValidity()
     }
@@ -702,7 +721,7 @@ function relatedFilters(element){
       filter.addValuesChanged(element)
       linkedDataGraph.filter(filter.id)
      
-      //////console.log(JSON.parse(JSON.stringify(linkedDataGraph.allTreeData)))
+      ////////console.log(JSON.parse(JSON.stringify(linkedDataGraph.allTreeData)))
       linkedDataGraph.flattenAllData()
 
       //setValuesFilters(id)
@@ -745,12 +764,12 @@ function relatedFiltersExpert(element){
   filter.addValuesChanged(element)
   linkedDataGraph.filter(filter.id)
  
-  //////console.log(JSON.parse(JSON.stringify(linkedDataGraph.allTreeData)))
+  ////////console.log(JSON.parse(JSON.stringify(linkedDataGraph.allTreeData)))
   linkedDataGraph.flattenAllData() */
 
   id=getFilterClassExpertName(element.getAttribute("id"))
   let filterClass=networkGraph.filterClassesObjects.filter((d)=>d.internalName==id)[0]
-  ////console.log(filterClass)
+  //////console.log(filterClass)
   if(filterClass){
     filter=filterClass.filters.filter((f)=>f.field==element.closest(".ecl-form-group").querySelector("label").textContent)[0]
     filter.addValuesChanged(element)
@@ -834,57 +853,57 @@ function clearFilters(){
 *************************************************************************/
 async function checkBasicGraph(node){
   var classesLinesConfig={},filterClasses="",results,child;
-  //////////////////////console.log(node)
-  //////////////////////console.log(classesLinesConfig)
+  ////////////////////////console.log(node)
+  ////////////////////////console.log(classesLinesConfig)
 /*   if(networkGraph.treeData.filter(d=>d.id==node.id).length>0){
     node["children"]=networkGraph.treeData.filter(d=>d.id==node.id)[0]["children"]
   } */
-  //////////////////////console.log(configFile)
+  ////////////////////////console.log(configFile)
   for (var i = 0; i < configFile.file.length; i++) {
     if((configFile.file[i].modelClass!=undefined)&&(configFile.file[i].modelClass!="None")){
       if(Object.keys(classesLinesConfig).includes(configFile.file[i].modelClass)){
         classesLinesConfig[configFile.file[i].modelClass]["lines"].push(i)
       }else{
-        //////////////////////console.log(configFile.file[i])
+        ////////////////////////console.log(configFile.file[i])
         classesLinesConfig[configFile.file[i].modelClass]={"class":configFile.file[i]["class"],"lines":[i],"class_orig":configFile.file[i]["classes_text"].filter(o => o.text === configFile.file[i].class)[0]["class"]}
       }
     }
   }
-  ////////////////////console.log(classesLinesConfig)
+  //////////////////////console.log(classesLinesConfig)
   var classesInConfig=Object.keys(classesLinesConfig)
   //networkGraph.classesLinesConfig=classesLinesConfig
   for (var i = 0; i < classesInConfig.length; i++) {
-    //////////////////////console.log(classesInConfig[i])
+    ////////////////////////console.log(classesInConfig[i])
     if(filterClasses==""){
       filterClasses+="(<"+classesInConfig[i]+">"
     }else{
       filterClasses+=",<"+classesInConfig[i]+">"
     }
-    //////////////////////console.log(filterClasses)
+    ////////////////////////console.log(filterClasses)
   }
   filterClasses+=")"
 
   //results=await checkClassesNode(node,classesLinesConfig,filterClasses)
   for (var i = 0; i < node.children.length; i++) {
-    //////////////////////console.log(node.children[i])
+    ////////////////////////console.log(node.children[i])
     if(node.children[i]["type"]=="uri"){
       results=await checkClassesNode(node.children[i],classesLinesConfig,filterClasses)
     }
   }
   
-  //////////////////////////////console.log(results)
+  ////////////////////////////////console.log(results)
   //networkGraph.nodesLinkBasicGraph=results
   //addColorsBasicGraph(results,node["children"])
 }
 
 async function checkClassesNode(node,classesLinesConfig,filterClasses){
-  ////////////////////////////console.log(node)
+  //////////////////////////////console.log(node)
   //var filterClasses="",subjectObject=node.children[0]["subject-object"],sparqlQuery,settings,endpoint_url=node.children[0]["url"],results,resultsAsk;
   var sparqlQuery,settings,results,resultsAsk;
  
 
-  ////////////////////console.log(filterClasses)
-  ////////////////////console.log(node)
+  //////////////////////console.log(filterClasses)
+  //////////////////////console.log(node)
 
 /*   if(subjectObject=="s"){
     sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?s ?p ?child. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
@@ -893,43 +912,43 @@ async function checkClassesNode(node,classesLinesConfig,filterClasses){
   } */
   //sparqlQuery="SELECT distinct ?child ?class WHERE{{ ?s ?p ?child. ?child <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
   sparqlQuery="SELECT distinct ?s ?class WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
-  ////////////////////console.log(sparqlQuery)
+  //////////////////////console.log(sparqlQuery)
   prefixes=""
   queryUrl = node["url"] + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
   settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   results = await runSparlqQuery(node["url"],sparqlQuery,"query")
-  ////////////////////console.log(results)
+  //////////////////////console.log(results)
   results=await filterResults(results,classesLinesConfig)
-  //////////////////////////////console.log(results)
+  ////////////////////////////////console.log(results)
   return results
   async function filterResults(results,classesLinesConfig){
     var askquery,filteredResults=[];
     for (var i = 0; i < results.length; i++) {
-      ////////////////////console.log(results[i]["class"]["value"])
-      ////////////////////console.log(classesLinesConfig[results[i]["class"]["value"]]["lines"])
+      //////////////////////console.log(results[i]["class"]["value"])
+      //////////////////////console.log(classesLinesConfig[results[i]["class"]["value"]]["lines"])
       for (var j = 0; j < classesLinesConfig[results[i]["class"]["value"]]["lines"].length; j++) {
         if((configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"])&&(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]!="None")){
           askquery=configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
         }else{
           askquery=fromSelectToAskQuery(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["query"])
         }
-        ////////////console.log(askquery)
+        //////////////console.log(askquery)
         if(askquery){
           if(askquery.indexOf("PARAMETER2") === -1){
             askquery=askquery.replaceAll("PARAMETER",results[i]["s"]["value"])
             resultsAsk= await runSparlqQuery(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery,"askquery")
-            ////////////////////console.log(resultsAsk)
+            //////////////////////console.log(resultsAsk)
             if(resultsAsk){
               filteredResults.push(results[i])
-              ////////////////////console.log(node)
+              //////////////////////console.log(node)
               //idNode=node["children"].filter(d=>d.value==results[i]["s"]["value"]).map(v=>v.id)
               if(d3.select("#"+node.id).data()[0]["configRow"]==""){
                 d3.select("#"+node.id).data()[0]["configRow"]=[]
               }
               d3.select("#"+node.id).data()[0]["configRow"].push(classesLinesConfig[results[i]["class"]["value"]]["lines"][j])
               d3.select("#"+node.id).style('fill', "red");
-              ////////////////////console.log(node)
-              ////////////////////console.log(d3.select("#"+node.id).data()[0])
+              //////////////////////console.log(node)
+              //////////////////////console.log(d3.select("#"+node.id).data()[0])
             }
           }
         }
@@ -980,7 +999,7 @@ span2.onclick = function() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  //////////////////console.log("ANYWHERE OUTSIDE THE MODAL")
+  ////////////////////console.log("ANYWHERE OUTSIDE THE MODAL")
 }
 
 ///////////////////////////////////////////////////
@@ -988,7 +1007,7 @@ window.onclick = function(event) {
 ////////////////TO BE PLACED
 
 function checkEmptyURI(field){
-  //////////////////console.log(field.value)
+  ////////////////////console.log(field.value)
   if(field.value==""){
     hideErrorMessageExpertForm()
   }
@@ -997,10 +1016,10 @@ function checkEmptyURI(field){
 
 function changeSvgHeight(field){
 /*   if(field){
-    ////////////////console.log(field.getAttribute('aria-expanded'))
+    //////////////////console.log(field.getAttribute('aria-expanded'))
   } */
   
   networkGraph.height=$( document ).height();
-  //////////////////console.log(networkGraph.height)
+  ////////////////////console.log(networkGraph.height)
   networkGraph.svg.attr("viewBox", `0 0 ${networkGraph.width} ${networkGraph.height}`)
 }
