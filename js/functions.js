@@ -19,13 +19,13 @@ function setMenuOption(node,option){
 }
 
 function addMenuOptionToNode(node,option){
-  ////////console.log(node.menuOptions)
+  ////////////console.log(node.menuOptions)
   if(node.menuOption){
     node.menuOption+=";"+option
   }else{
     node.menuOption=option
   }
-  //////////console.log(node.menuOption)
+  //////////////console.log(node.menuOption)
 }
 
 // Generate random string for ids
@@ -40,7 +40,7 @@ function showMessageForNoGraphs(){
   $("#no-graphs-message").show()
   component=$("#no-graphs-message")[0]
   runAutoInit(component)
-  //////////////console.log(ECL.autoInit())
+  //////////////////console.log(ECL.autoInit())
 }
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
@@ -153,29 +153,43 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 *****************************************************/
 //execute sparql query
 async function runSparlqQuery(url,query,type){
-  var settings;
-  ////////console.log(url)
-  ////console.log(query)
-  //////console.log(type)
-  //////console.log(configFile.file)
+  var settings,p;
+  ////////////console.log(url)
+  ////////console.log(query)
+  //////////console.log(type)
+  //////////console.log(configFile.file)
   showSpinMessage()
-  var p = new Promise(function(resolve, reject){
-    let prefixes="";
-    let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
-    if(url.includes("wikidata")){
-      settings = { url: queryUrl, async: true       }; 
-    }else{
-      settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    }
-    settings["success"] =function (_data) {
-      if(type=="query"){
-        resolve(_data.results.bindings)
-      }else if(type=="askquery"){
-        resolve(_data.boolean)
+
+  try{
+    p = new Promise(function(resolve, reject){
+      let prefixes="";
+      let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
+      if(url.includes("wikidata")){
+        settings = { url: queryUrl, async: true       }; 
+      }else{
+        settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
       }
-    }
-    $.ajax(settings)
-  })
+      settings["success"] =function (_data) {
+        if(type=="query"){
+          resolve(_data.results.bindings)
+        }else if(type=="askquery"){
+          resolve(_data.boolean)
+        }
+      }
+      $.ajax(settings)
+      .always(function(jqXHR, textStatus) {
+        if (textStatus != "success") {
+          hideSpinMessage()
+            //alert("Error: " + jqXHR.statusText);
+        }
+      });
+    })
+  } catch (error) {
+    ////console.error(error);
+    // Expected output: ReferenceError: nonExistentFunction is not defined
+    // (Note: the exact output may be browser-dependent)
+  }
+  
   return await p.then(async function(_data){
     hideSpinMessage()
     return _data
@@ -231,8 +245,8 @@ function fromSelectToAskQuery(query){
 }
 function replaceParmtrsQuery(query,parameters,node){
   var query;
-  ////console.log(query)
-  ////console.log(parameters)
+  ////////console.log(query)
+  ////////console.log(parameters)
   if(node!=undefined){
       if((parameters!="")&&(parameters!=null)){
           for (let i = 0; i < parameters.length; ++i) { 
@@ -246,7 +260,7 @@ function replaceParmtrsQuery(query,parameters,node){
       }
          
   }
-  ////console.log(query)
+  ////////console.log(query)
   return query
 }
 /****************************************************
@@ -386,7 +400,7 @@ function getTooltipTextFreeGraph(d) {
         </div>`;
   } else {
     if (d.menuOption != undefined) {
-      ////////console.log(d.menuOption.split(";"))
+      ////////////console.log(d.menuOption.split(";"))
       if (d.menuOption.split(";").length == 1) {
         sparqlEndpoint = d.menuOption.split(",")[0]
         position = d.menuOption.split(",")[1]
@@ -564,7 +578,7 @@ function autocomplete(inp, arr,numParentNodes) {
             b.innerHTML += "<strong>" + strIncluded[i].substr(strIncluded[i].indexOf(val), val.length) + "</strong>";
             b.innerHTML += strIncluded[i].substr(strIncluded[i].indexOf(val)+val.length);
             /*insert a input field that will hold the current array item's value:*/
-            ////////////////////////////console.log(strIncluded[i])
+            ////////////////////////////////console.log(strIncluded[i])
             b.innerHTML += "<input type='hidden' value='" + strIncluded[i] + "'>";
             /*execute a function when someone clicks on the item value (DIV element):*/
             b.addEventListener("click", function(e) {
@@ -762,7 +776,7 @@ function textImageZoom(zoomScale){
 //based on structure
 function getDetail(detail,nodeClass){
   var detailNode="";
-  //////////console.log(detail)
+  //////////////console.log(detail)
   if(detail!=undefined){
     if(detail!=""){
       for (let k of detail) {
@@ -867,7 +881,7 @@ function changeDateFormat(date){
 }
 
 function formatDate(str){
-  //console.log(str)
+  //////console.log(str)
   const [day, month, year] = str.split('-');
   const date = new Date(+year, +month - 1, +day);
   return new Date(date)
@@ -1294,6 +1308,12 @@ function getTextMenuOptionExpert(text){
 }
 
 function calculateSizeElement(d,difference){
+  //console.log(d)
+  //console.log(d.children)
+  let node=networkGraph.treeData.filter(v=>v.id==d.id)
+  if(node.length>0){
+    d=node[0]
+  }
   if(d.children){
     return networkGraph.sizeNode(d.children.length);
   }else if(d._children){

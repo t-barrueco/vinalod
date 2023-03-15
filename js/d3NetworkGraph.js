@@ -157,9 +157,9 @@ NetworkGraph.prototype.initVis = function () {
 
   vis.setColorScale()
    
-  //////console.log(vis.colorScaleDomain)
+  //////////console.log(vis.colorScaleDomain)
   if(networkGraph.colorScale){
-    console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
+    ////console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
   }
   
   vis.colorScale = d3.scaleOrdinal()
@@ -167,9 +167,9 @@ NetworkGraph.prototype.initVis = function () {
   .range(vis.colorScaleRange)
 
   //vis.colorScaleDomain
-  console.log(JSON.parse(JSON.stringify(vis.colorScaleDomain)))
+  ////console.log(JSON.parse(JSON.stringify(vis.colorScaleDomain)))
 
-  console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
+  ////console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
 
   vis.simulation = d3.forceSimulation()
   vis.forceProperties = {
@@ -628,6 +628,7 @@ NetworkGraph.prototype.enterGraph = function(){
               return vis.sizeClusterNode(d.more_results.length);
             }else{
               return vis.sizeNode(d.number)
+              //return (vis.sizeNode(d.number)*1.5)
             }
           })
         .attr("stroke", function(d){
@@ -956,6 +957,8 @@ NetworkGraph.prototype.enterGraph = function(){
             //return 50;
             return vis.sizeClusterNode(getNumberClusterFromText(d.value));
           }else{
+            //console.log(d.value)
+            //console.log(d.children)
             return calculateSizeElement(d);
           }
           })
@@ -1346,7 +1349,7 @@ NetworkGraph.prototype.addClassesShow = function(){
 
 NetworkGraph.prototype.setColorScale = async function(){
   var vis=this;
-  console.log(configRow.class)
+  ////console.log(configRow.class)
   if(configRow.class){
     setColorScaleBasic()
   }else{
@@ -1486,7 +1489,7 @@ class NetworkGraphImported extends NetworkGraph {
   }
   setColorScale(){
     var vis=this;
-    //////console.log(vis.classesCorrespondence)
+    //////////console.log(vis.classesCorrespondence)
     vis.nodesClassesShow=vis.classesCorrespondence
 /*     if(configRow["classes_text"]){
       vis.nodesClassesShow=configRow.getClassesCorrespondence()
@@ -1495,7 +1498,7 @@ class NetworkGraphImported extends NetworkGraph {
   }
   getFilters() {
     var vis=this,filterClass;
-    //////console.log(vis.importedFilterClasses)
+    //////////console.log(vis.importedFilterClasses)
 
     vis.importedFilterClasses.forEach(function(ifc){
       if(ifc.filters[0]["field"]){
@@ -1503,21 +1506,21 @@ class NetworkGraphImported extends NetworkGraph {
       }else{
         filterClass=new FilterClassBasic(ifc.name)
       }
-      ////console.log(JSON.parse(JSON.stringify(filterClass)))
+      ////////console.log(JSON.parse(JSON.stringify(filterClass)))
       filterClass.getCode()
       filterClass.filters=[]
       vis.filterClassesObjects.push(filterClass)
-      ////console.log(JSON.parse(JSON.stringify(vis.filterClassesObjects)))
+      ////////console.log(JSON.parse(JSON.stringify(vis.filterClassesObjects)))
       ifc.filters.forEach(function (f){
-        ////console.log(JSON.parse(JSON.stringify(filterClass)))
+        ////////console.log(JSON.parse(JSON.stringify(filterClass)))
         filterClass.addFilterTypeImported(f,true)
-        //////console.log(JSON.parse(JSON.stringify(f)))
-        ////////console.log(typeof f)
+        //////////console.log(JSON.parse(JSON.stringify(f)))
+        ////////////console.log(typeof f)
       })
       
       filtersVisible()
       filterClass.checkHidden()
-      ////console.log(JSON.parse(JSON.stringify(filterClass)))
+      ////////console.log(JSON.parse(JSON.stringify(filterClass)))
     })
   }
 }
