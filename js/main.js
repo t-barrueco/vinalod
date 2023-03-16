@@ -700,7 +700,7 @@ function getShowDuplicates(){
 *****************************************************/
 
 function relatedFilters(element){
-  var filter,filterId,id,wrongValues=false,ldg=linkedDataGraph;
+  var filter,id,wrongValues=false;
 
   getAllData()
 

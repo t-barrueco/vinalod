@@ -454,7 +454,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
   }
 
   function checkFilterExpert(node,filter){
-    var hidden=false,classNameNode,filterClass;
+    var hidden=false;
     let index=ldg.allTreeData.findIndex((element) => element.children.some((subElement) => subElement.id == node.id))
     if(index!=-1){
       if(filter.idNode==ldg.allTreeData[index]["id"]){
@@ -1012,6 +1012,9 @@ LinkedDataGraph.prototype.buildTreeData = function () {
     if(configRow.node){
       if(!configRow.node.menuOption){
         node=nodeValues(configRow.results[j],0,configRow.node.id)
+        if(!node["children"]){
+          node["children"]=[]
+        }
         //LO HE DEJADO AAQUÍ
 /*         if(!node["children"]){
           node["children"]=[]
