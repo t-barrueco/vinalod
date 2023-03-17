@@ -148,7 +148,7 @@ FilterClassExpert.prototype.initFilters = async function (){
 }
 
 FilterClassExpert.prototype.addFilterTypeImported = async function (filter,imported){
-  var cf=this,filters=[],fi;
+  let cf=this,fi;
 
   if(filter["filter_type"]=="dropdown"){
     fi=new FilterExpertDropdown(filter,imported)
@@ -247,7 +247,7 @@ FilterBasic.prototype.copyDetails=function(details){
 FilterBasic.prototype.init= async function () {
   var fi=this;
 
-  await fi.addHtml()
+  fi.addHtml()
   if(fi.values.length==0){
     fi.hide()
   }else{
@@ -323,7 +323,7 @@ FilterBasic.prototype.getClass=function(){
 }
 
 Filter.prototype.hide= function () {
-  var fi=this;
+  let fi=this;
   fi.hidden=true
   
   let classFilter=fi.getClass()
@@ -410,12 +410,13 @@ class FilterBasicDropdown extends FilterBasic {
     runAutoInit(component)
   }
   checkValuesChangedIn(){
-    var fi=this;
+    var fi=this,result;
     if(fi.values.includes(fi.valuesChanged)){
-      return true
+      result= true
     }else{
-      return false
+      result= false
     }
+    return result
   }
 }
 
@@ -514,7 +515,7 @@ class FilterBasicDate extends FilterBasic {
   }
 
   checkValuesChangedIn(){
-    var fi=this,check=true;
+    let fi=this,check=true;
 
     if(fi.valuesChanged["start"]){
       if((formatDateComp(fi.values[fi.values.length-1])<formatDateComp(fi.valuesChanged["start"]))){
@@ -585,12 +586,13 @@ class FilterBasicText extends FilterBasic {
   }
 
   checkValuesChangedIn(){
-    var fi=this;
+    let fi=this,result;
     if(fi.values.includes(fi.valuesChanged)){
-      return true
+      result= true
     }else{
-      return false
+      result= false
     }
+    return result;
   }
 }
 
