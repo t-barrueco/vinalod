@@ -90,31 +90,6 @@ ConfigRowBasic.prototype.replaceParmtrsQuery = function(queryName){
   if(cr.node!=undefined) cr[queryName]=replaceParmtrsQuery(cr[queryName],cr.parameters,cr.node)
 }
 
-ConfigRowBasic.prototype.clusterResults = function (){
-  var cr=this,number,unique,numberResults={};
-
-  var maxNumber=$("#cluster-number").val()
-
-  if(cr.hierarchy.length==1){
-    numberResults[cr.results[0][cr.hierarchy[0].parent].value]=cr.results.length
-  }else{
-    cr.hierarchy.forEach(function(h,i){
-      unique = [...new Set(cr.results.map(item => item[h.parent].value))];
-      unique.forEach(function(u){
-        number = cr.results.reduce(function (n, r) {
-          return n + (r[h.parent].value == u);
-        }, 0);
-        numberResults[u]=number
-      })
-      if(cr.hierarchy[i-1]){
-        numberResults[cr.results[0][cr.hierarchy[i-1]["parent"]].value]=unique.length
-      }
-    })
-  }
-  if(cr.results.length>maxNumber){
-  }
-}
-
 ConfigRowBasic.prototype.getNameClasses = function () {
   var cr=this;
   cr.nameClasses=cr.classes_text.map(d=>d.text)
@@ -173,7 +148,4 @@ ConfigRowExpert.prototype.getNameClasses = function () {
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
   var cr=this;
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
-}
-/// mirar!!!!!
-ConfigRowExpert.prototype.clusterResults = function (){
 }

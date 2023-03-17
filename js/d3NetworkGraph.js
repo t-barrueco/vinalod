@@ -156,20 +156,11 @@ NetworkGraph.prototype.initVis = function () {
   .attr("class", "nodesFree")
 
   vis.setColorScale()
-   
-  //////////console.log(vis.colorScaleDomain)
-  if(networkGraph.colorScale){
-    ////console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
-  }
-  
+
   vis.colorScale = d3.scaleOrdinal()
   .domain(vis.colorScaleDomain)
   .range(vis.colorScaleRange)
 
-  //vis.colorScaleDomain
-  ////console.log(JSON.parse(JSON.stringify(vis.colorScaleDomain)))
-
-  ////console.log(JSON.parse(JSON.stringify(networkGraph.colorScale.domain())))
 
   vis.simulation = d3.forceSimulation()
   vis.forceProperties = {
@@ -255,7 +246,6 @@ NetworkGraph.prototype.initializeSimulation = function () {
 NetworkGraph.prototype.initializeForces = function() {
   var vis = this;
 
-  //var x,y,value
   vis.simulation
       .force("link", d3.forceLink())
       .force("charge", d3.forceManyBody())
@@ -628,7 +618,6 @@ NetworkGraph.prototype.enterGraph = function(){
               return vis.sizeClusterNode(d.more_results.length);
             }else{
               return vis.sizeNode(d.number)
-              //return (vis.sizeNode(d.number)*1.5)
             }
           })
         .attr("stroke", function(d){
@@ -954,11 +943,8 @@ NetworkGraph.prototype.enterGraph = function(){
         .transition()
         .attr("r", function(d) { 
           if(d.class=="more_results"){
-            //return 50;
             return vis.sizeClusterNode(getNumberClusterFromText(d.value));
           }else{
-            //console.log(d.value)
-            //console.log(d.children)
             return calculateSizeElement(d);
           }
           })
@@ -1126,50 +1112,6 @@ NetworkGraph.prototype.collapseAll = function () {
   vis.updateData()
   vis.refreshNoFilters()
 }
-/* NetworkGraph.prototype.collapseNodeBranch = function (nodeTreeData) {
-  var vis = this,treeDataEl;
-  function recurse(node) {
-    var el;
-    if(node.children){
-      node.children.forEach(function(d){
-        el=vis.treeData.filter(l=>l.id==d.id)
-        if(el.length>0){
-          recurse(el[0])
-          vis.collapseBranch(el[0])
-        }
-      })
-    }
-    
-  }
-  nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)[0]
-  nodeTreeData["children"].forEach(function(r){
-    treeDataEl=vis.treeData.filter(d=>d.id==r.id)
-    if(treeDataEl.length>0){
-      recurse(treeDataEl[0]);
-      treeDataEl[0]._children = treeDataEl[0].children;
-      delete treeDataEl[0].children;
-    }
-    
-  })
-
-  vis.data=flatten(vis.treeData).flatData
-  vis.initializeSimulation();
-  vis.dataJoinGraph()
-  vis.exitGraph()
-
-} */
-/* NetworkGraph.prototype.expandNodeBranch = function (nodeTreeData) {
-  var vis = this
-  nodeTreeData=vis.treeData.filter(d=>d.id==nodeTreeData.id)[0]
-  nodeTreeData.children = nodeTreeData._children;
-  delete nodeTreeData._children;
-
-  vis.data=flatten(vis.treeData).flatData
-  vis.initializeSimulation();
-  vis.dataJoinGraph()
-  vis.exitGraph()
-
-} */
 NetworkGraph.prototype.expandAll = function () {
   var vis = this,ldg=linkedDataGraph;
   ldg.expandAll()
@@ -1197,48 +1139,6 @@ NetworkGraph.prototype.expandBranch = function (node){
   vis.refreshNoFilters()
 }
 
-/* NetworkGraph.prototype.checkCollapseExpandBranch = function (node){
-  var vis = this;
-  if(vis.treeData.filter(d=>d.id==node.id)[0]["children"]){
-    vis.collapseBranch(node)
-  }else if(vis.treeData.filter(d=>d.id==node.id)[0]["_children"]){
-    vis.expandBranch(node)
-  }
-} */
-
-/* NetworkGraph.prototype.expandLevelBranch = function (node){
-  var vis = this;
-  var nodes=[]
-  nodes.push(node.id)
-  expand(node)
-  for (let i = 0; i < vis.treeData.length; i++) {
-    if(node.id==vis.treeData[i]["id"]){
-      vis.treeData[i].children = vis.treeData[i]._children;
-      delete vis.treeData[i]._children;
-    }
-    if (nodes.includes(vis.treeData[i]["id"])){
-      if(vis.treeData[i]["hidden"]){
-        if(!vis.treeData[i].filtered){
-          delete vis.treeData[i].hidden;
-        }
-        delete vis.treeData[i].collapsed;
-      }
-    }
-  }
-  function expand(node) {
-    var position;
-    if(node["_children"]){
-      node["_children"].forEach(function(d){
-        position=nodes.indexOf(nodes.filter(function(item) {
-          return (item.id == d.id)
-        })[0])
-        if(position==-1){
-          nodes.push(d.id)
-        }  
-      })
-    }
-  }
-} */
 
 NetworkGraph.prototype.refresh = function (node){
   var vis = this;
@@ -1349,7 +1249,6 @@ NetworkGraph.prototype.addClassesShow = function(){
 
 NetworkGraph.prototype.setColorScale = async function(){
   var vis=this;
-  ////console.log(configRow.class)
   if(configRow.class){
     setColorScaleBasic()
   }else{
@@ -1489,16 +1388,11 @@ class NetworkGraphImported extends NetworkGraph {
   }
   setColorScale(){
     var vis=this;
-    //////////console.log(vis.classesCorrespondence)
     vis.nodesClassesShow=vis.classesCorrespondence
-/*     if(configRow["classes_text"]){
-      vis.nodesClassesShow=configRow.getClassesCorrespondence()
-    } */
     super.setColorScale()
   }
   getFilters() {
     var vis=this,filterClass;
-    //////////console.log(vis.importedFilterClasses)
 
     vis.importedFilterClasses.forEach(function(ifc){
       if(ifc.filters[0]["field"]){
@@ -1506,21 +1400,15 @@ class NetworkGraphImported extends NetworkGraph {
       }else{
         filterClass=new FilterClassBasic(ifc.name)
       }
-      ////////console.log(JSON.parse(JSON.stringify(filterClass)))
       filterClass.getCode()
       filterClass.filters=[]
       vis.filterClassesObjects.push(filterClass)
-      ////////console.log(JSON.parse(JSON.stringify(vis.filterClassesObjects)))
       ifc.filters.forEach(function (f){
-        ////////console.log(JSON.parse(JSON.stringify(filterClass)))
         filterClass.addFilterTypeImported(f,true)
-        //////////console.log(JSON.parse(JSON.stringify(f)))
-        ////////////console.log(typeof f)
       })
       
       filtersVisible()
       filterClass.checkHidden()
-      ////////console.log(JSON.parse(JSON.stringify(filterClass)))
     })
   }
 }
