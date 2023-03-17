@@ -12,17 +12,12 @@ Legend.prototype.init = function () {
 }
 Legend.prototype.initColors=function(i){
     var le=this;
-    //console.log(networkGraph.colorScale.domain())
     for (i; i < le.graph.colorScale.domain().length; i++) {
         le.addOne(i,le.graph.colorScale.domain()[i])
       } 
 }
 Legend.prototype.addColors=function(){
     var le=this;
-    ////console.log(networkGraph.colorScale.domain().length)
-
-    ////console.log(//console.log(networkGraph.colorScale.domain()).length)
-
     if(le.graph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }

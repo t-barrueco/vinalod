@@ -9,23 +9,16 @@
 //set option chosen from menu
 function setMenuOption(node,option){
   if((configFile.file.filter(d=>d.option==option).length==0)||(configFile.file.filter(d=>d.option==option)[0]["type"]=="TREE")){
-   /*  if(node.menuOption){
-      node.menuOption+=";"+option
-    }else{
-      node.menuOption=option
-    } */
     addMenuOptionToNode(node,option)
   }
 }
 
 function addMenuOptionToNode(node,option){
-  ////////console.log(node.menuOptions)
   if(node.menuOption){
     node.menuOption+=";"+option
   }else{
     node.menuOption=option
   }
-  //////////console.log(node.menuOption)
 }
 
 // Generate random string for ids
@@ -40,7 +33,6 @@ function showMessageForNoGraphs(){
   $("#no-graphs-message").show()
   component=$("#no-graphs-message")[0]
   runAutoInit(component)
-  //////////////console.log(ECL.autoInit())
 }
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
@@ -153,29 +145,36 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 *****************************************************/
 //execute sparql query
 async function runSparlqQuery(url,query,type){
-  var settings;
-  ////////console.log(url)
-  ////console.log(query)
-  //////console.log(type)
-  //////console.log(configFile.file)
+  var settings,p;
   showSpinMessage()
-  var p = new Promise(function(resolve, reject){
-    let prefixes="";
-    let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
-    if(url.includes("wikidata")){
-      settings = { url: queryUrl, async: true       }; 
-    }else{
-      settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    }
-    settings["success"] =function (_data) {
-      if(type=="query"){
-        resolve(_data.results.bindings)
-      }else if(type=="askquery"){
-        resolve(_data.boolean)
+
+  try{
+    p = new Promise(function(resolve, reject){
+      let prefixes="";
+      let queryUrl = url + "?query=" + prefixes +  encodeURIComponent( query )+ "&format=json";
+      if(url.includes("wikidata")){
+        settings = { url: queryUrl, async: true       }; 
+      }else{
+        settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
       }
-    }
-    $.ajax(settings)
-  })
+      settings["success"] =function (_data) {
+        if(type=="query"){
+          resolve(_data.results.bindings)
+        }else if(type=="askquery"){
+          resolve(_data.boolean)
+        }
+      }
+      $.ajax(settings)
+      .always(function(jqXHR, textStatus) {
+        if (textStatus != "success") {
+          hideSpinMessage()
+        }
+      });
+    })
+  } catch (error) {
+    console.error(error);
+  }
+  
   return await p.then(async function(_data){
     hideSpinMessage()
     return _data
@@ -231,8 +230,6 @@ function fromSelectToAskQuery(query){
 }
 function replaceParmtrsQuery(query,parameters,node){
   var query;
-  ////console.log(query)
-  ////console.log(parameters)
   if(node!=undefined){
       if((parameters!="")&&(parameters!=null)){
           for (let i = 0; i < parameters.length; ++i) { 
@@ -246,7 +243,6 @@ function replaceParmtrsQuery(query,parameters,node){
       }
          
   }
-  ////console.log(query)
   return query
 }
 /****************************************************
@@ -386,7 +382,6 @@ function getTooltipTextFreeGraph(d) {
         </div>`;
   } else {
     if (d.menuOption != undefined) {
-      ////////console.log(d.menuOption.split(";"))
       if (d.menuOption.split(";").length == 1) {
         sparqlEndpoint = d.menuOption.split(",")[0]
         position = d.menuOption.split(",")[1]
@@ -564,7 +559,7 @@ function autocomplete(inp, arr,numParentNodes) {
             b.innerHTML += "<strong>" + strIncluded[i].substr(strIncluded[i].indexOf(val), val.length) + "</strong>";
             b.innerHTML += strIncluded[i].substr(strIncluded[i].indexOf(val)+val.length);
             /*insert a input field that will hold the current array item's value:*/
-            ////////////////////////////console.log(strIncluded[i])
+            ////////////////////////////////console.log(strIncluded[i])
             b.innerHTML += "<input type='hidden' value='" + strIncluded[i] + "'>";
             /*execute a function when someone clicks on the item value (DIV element):*/
             b.addEventListener("click", function(e) {
@@ -762,7 +757,7 @@ function textImageZoom(zoomScale){
 //based on structure
 function getDetail(detail,nodeClass){
   var detailNode="";
-  //////////console.log(detail)
+  //////////////console.log(detail)
   if(detail!=undefined){
     if(detail!=""){
       for (let k of detail) {
@@ -826,8 +821,6 @@ function showSpinMessage(message){
   d3.select("#spin-message")
   .text(message)
   d3.select("#spin").style("display","inline-flex")
-  //interval = setInterval(fn, 8000);
-  //return interval
 }
 function hideSpinMessage(interval){
   d3.select("#sparql-timeout").style("display","none")
@@ -877,9 +870,6 @@ function formatDateComp(str){
 }
 function isValidDate(text){
   var validity;
-
-  //var d_reg = /^(0[1-9]|1[0-2])\-(0[1-9]|1\d|2\d|3[01])\-(0[1-9]|1[1-9]|2[1-9])$/;
-  //var d_reg = /^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
   var d_reg =/^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
   if (d_reg.test(text)) {
     validity=true
@@ -1064,7 +1054,6 @@ function tabOptionsGraphVisible(){
   $('#save-graph-div').removeClass("hidden")
 }
 function tabOptionsGraphNotVisible(){
-  //$('#settings-tab').parent().addClass("hidden")
   $('#legend-tab').parent().addClass("hidden")
   $('#share-graph-div').addClass("hidden")
   $('#save-graph-div').addClass("hidden")
@@ -1293,6 +1282,10 @@ function getTextMenuOptionExpert(text){
 }
 
 function calculateSizeElement(d,difference){
+  let node=networkGraph.treeData.filter(v=>v.id==d.id)
+  if(node.length>0){
+    d=node[0]
+  }
   if(d.children){
     return networkGraph.sizeNode(d.children.length);
   }else if(d._children){

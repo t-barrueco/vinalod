@@ -16,8 +16,6 @@ function createLinechart(data,title){
     var margin = {top: 20, right: 0, bottom: 50, left: 50},
     width = modalContent.offsetWidth - margin.left - margin.right,
     height = modalContent.offsetHeight - margin.top - margin.bottom;
-    //height =data.length * 40
-    ////console.log(document.getElementById("modalGraph"))
             
     // append the svg object to the body of the page
     var svg=d3.select("#modalGraph").append("svg")
