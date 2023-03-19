@@ -404,7 +404,7 @@ async function settingsFromOption(type,option,node){
       await configRow.update(option,node)
     }
   }
-  async function settingsFromOpionExpert(){
+  async function settingsFromOpionExpert(option,node){
     if((!configRow)||(configRow instanceof ConfigRowBasic)){
       configRow = new ConfigRowExpert(option,node);
       await configRow.init()
