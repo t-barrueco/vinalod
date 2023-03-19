@@ -28,13 +28,11 @@
   
     $(id).removeClass("translate-x-full")
     $(id).addClass("translate-x-0")
-    //////////////////console.log($(id))
   }
   function hideModal(id){
   
     $(id).removeClass("translate-x-0")
     $(id).addClass("translate-x-full")
-    //////////////////console.log($(id))
   }
   async function showTimeLine(data,modalHeader,modalContent,configRow){
     var results,node,dataTimeline=[];
@@ -82,10 +80,7 @@
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    ////////////////console.log(sparqlQuery)
     results = await runSparlqQuery(settings)
-    ////////////////console.log(node)
-
     
     if(results[0]["item"]){
       var pdf=results[0]["item"]["value"]
@@ -122,11 +117,9 @@
     var columns=rowInConfigFile.columns,column_names=rowInConfigFile.properties
     var results;
 
-    //console.log(rowInConfigFile)
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
 
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
-    //console.log(results)
 
     const title=rowInConfigFile.option + " - " + node.value
 
@@ -136,8 +129,6 @@
     table(results,columns,column_names)
   }
   function table(data,columns,column_names){
-    //console.log(columns)
-    //console.log(column_names)
     var cellContent;
     modalVisibilityOn()
 
@@ -172,7 +163,6 @@
         var headerCell = row.insertCell(0);
         headerCell.setAttribute("scope", "col");
         headerCell.setAttribute("class", "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider");
-        //console.log(column_names.filter(c=>c.property==columns[i]))
         if(column_names.filter(c=>c.property==columns[i]).length>0){
           headerCell.innerHTML = column_names.filter(c=>c.property==columns[i])[0]["property_name"]
         }
@@ -232,7 +222,6 @@
   
   async function showWordcloud(rowInConfigFile,node){
     var results;
-    //console.log(node)
     const title=rowInConfigFile.option + " - " + node.value
 
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
@@ -274,7 +263,6 @@
   async function showWikipediaPage(rowInConfigFile,node){
     var results,page;
 
-    //console.log(rowInConfigFile)
     var sparqlQuery=rowInConfigFile.query
     sparqlQuery=sparqlQuery.replace("PARAMETER2", node[rowInConfigFile.parameters[0]["property"]]);
 
@@ -321,7 +309,6 @@ function showWebPage(page,title,modalHeader,modalContent){
   }
   async function showBarchart(rowInConfigFile,node){
     var results;
-    //console.log(node)
     const title=rowInConfigFile.option + " - " + node.value
 
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
@@ -341,8 +328,6 @@ function showWebPage(page,title,modalHeader,modalContent){
 
   async function showLinechart(rowInConfigFile,node){
     var results;
-    //console.log(node)
-    //console.log(rowInConfigFile.query)
     const query=rowInConfigFile.query.replace("PARAMETER2",node[rowInConfigFile.parameters[0]["property"]]).replace("PARAMETER",node[node.class+"_uri"])
 
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
@@ -354,7 +339,6 @@ function showWebPage(page,title,modalHeader,modalContent){
   
     function transformDataLinechart(results){
       var resultsTransformed=[]
-      //console.log(results)
       results.forEach(function(r){
         resultsTransformed.push({"date":d3.timeParse("%Y-%m-%d")(r["publicationDocument_date"]["value"]),"value":+r["publicationDocument_dateNumber"]["value"]})
       })
