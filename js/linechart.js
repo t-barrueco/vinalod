@@ -10,8 +10,6 @@ function createLinechart(data,title){
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
-    let titleColor="white"
-    let titleAltColor="black"
 
     var margin = {top: 20, right: 0, bottom: 50, left: 50},
     width = modalContent.offsetWidth - margin.left - margin.right,

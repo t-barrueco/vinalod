@@ -1,7 +1,7 @@
 var data={},
 linkedDataGraph,networkGraph,legend,navigationPanel,menuItems,configFile,configRow,filesIcons,
 nodesClasses,configRowsList=[],
-nodesClassesShow=[],nodesClassesCorrespondence,filesIcons,colorCorrespondence={},
+nodesClassesShow=[],nodesClassesCorrespondence,colorCorrespondence={},
 optionsMenuHtml,showNavigation=true,mnemonicCodes,lineDragActive = false;
 var timer = 0;
 var delay = 400;
@@ -751,7 +751,7 @@ async function checkBasicGraph(node){
 
   for (var i = 0; i < node.children.length; i++) {
     if(node.children[i]["type"]=="uri"){
-      results=await checkClassesNode(node.children[i],classesLinesConfig,filterClasses)
+      await checkClassesNode(node.children[i],classesLinesConfig,filterClasses)
     }
   }
 }
