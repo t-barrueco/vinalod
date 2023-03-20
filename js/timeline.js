@@ -72,10 +72,6 @@ function timelineGraph(data,modalHeader,modalContent){
         .style("text-anchor", "middle")
         .attr("fill","black")
 
-
-let axisBottom = d3.axisBottom(x)
-    .tickPadding(2)
-    .tickFormat(d3.timeFormat("%Y"))
     
 let gRects=svg.append("g")
 .attr("class", "rects")

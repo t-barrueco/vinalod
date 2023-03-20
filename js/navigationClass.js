@@ -327,7 +327,7 @@ NavigationPanel.prototype.contentTable = async function (){
           $("#dvTable th").text("Several options displayed in graph. Click on each option to see results:");
         }else{
           menuOption=menuOption.split(",")
-          label=navPanel.labelGraph(menuOption)
+          navPanel.labelGraph(menuOption)
         }
       }     
     }

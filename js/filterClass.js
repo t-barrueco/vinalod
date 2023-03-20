@@ -630,7 +630,7 @@ FilterExpert.prototype.init= async function () {
 }
 
 FilterExpert.prototype.valuesNodes=function(nodes){
-  let fi=this,values=[],filterClassName
+  let fi=this,values=[]
 /*   let index=networkGraph.filterClassesObjects.findIndex((element) => element.filters.some((subElement) => subElement.id == node.id))
   networkGraph.filterClassesObjects.filter((d)=>d.name==filterClassName)[0] */
 
