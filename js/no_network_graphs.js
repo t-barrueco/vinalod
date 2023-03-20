@@ -38,17 +38,17 @@
     var results,node,dataTimeline=[];
 
     node=data
-    url=configRow["endpoint_url"]
-    sparqlQuery=configRow["query"]
-    prefixes=""
+    let url=configRow["endpoint_url"]
+    let sparqlQuery=configRow["query"]
+    let prefixes=""
     do{
       if(node["class"]!=undefined){
         sparqlQuery=sparqlQuery.replace("PARAMETER", node[node["class"]+"_uri"]); 
       }else{
         sparqlQuery=sparqlQuery.replace("PARAMETER", node);
       }
-      queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-      settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
+      let queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+      let settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   
       results = await runSparlqQuery(settings)
       if(node["class"]!=undefined){
@@ -80,7 +80,7 @@
     prefixes=""
     queryUrl = url + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
     settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
-    results = await runSparlqQuery(settings)
+    let results = await runSparlqQuery(settings)
     
     if(results[0]["item"]){
       var pdf=results[0]["item"]["value"]
@@ -155,7 +155,7 @@
   
     table.className="min-w-full divide-y divide-gray-200"
   
-    header = table.createTHead();
+    let header = table.createTHead();
     header.className="bg-gray-50"
     var row = header.insertRow(0);    
   
@@ -168,7 +168,7 @@
         }
         
     }
-    body=table.createTBody();
+    let body=table.createTBody();
     for (var j = 0; j < data.length; j++) {
       row = body.insertRow();
       if(j%2==0){
@@ -227,7 +227,7 @@
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
 
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
-    dataWordCloud=transformDataWordCloud(results)
+    let dataWordCloud=transformDataWordCloud(results)
     wordCloudGraph(dataWordCloud,title)
   
   }
@@ -283,7 +283,7 @@
       div.setAttribute("id","modalGraph")
       div.setAttribute("style","overflow: auto")
       modalContent.appendChild(div)
-      iframe=d3.select("#modalGraph").append("iframe")
+      let iframe=d3.select("#modalGraph").append("iframe")
       .attr("src",page)
         .style("width", "100%")
         .style("height","100%");
@@ -314,7 +314,7 @@ function showWebPage(page,title,modalHeader,modalContent){
     const query=rowInConfigFile.query.replace("PARAMETER",node[node.class+"_uri"])
 
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,query,"query")
-    data=transformDataBarchart(results)
+    let data=transformDataBarchart(results)
     createBarchart(data,title)
   
     function transformDataBarchart(results){

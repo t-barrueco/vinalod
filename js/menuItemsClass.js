@@ -73,7 +73,9 @@ function MenuItemsExpert(...args){
 MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
-  var mi=this,option;
+  var mi=this;
+  //console.log(configFileExpert)
+  console.log(JSON.parse(JSON.stringify(configFileExpert)))
   configFileExpert.option.forEach(option => {
     let position = option.match("and Position: (.*)")[1];
     if((!mi.node["position"])||(position==mi.node["position"])){
