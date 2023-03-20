@@ -4,7 +4,7 @@ MenuItems = function (_node,_position) {
   };
 
 MenuItems.prototype.init = async function () {
-  var mi=this;
+  let mi=this;
   mi.indexRows=[]
   mi.treeSelectedRows=0
   await mi.buildOptions()
@@ -13,7 +13,7 @@ MenuItems.prototype.init = async function () {
 }
 
 MenuItems.prototype.filterByMenuOption = function () {
-    var mi=this;
+    let mi=this;
     if(mi.node.menuOption){
       let menuOptions=mi.node.menuOption.split(";")
       mi.checkMenuOptions(menuOptions)
@@ -21,7 +21,7 @@ MenuItems.prototype.filterByMenuOption = function () {
 }
 
 MenuItems.prototype.getMenuItemsInGraph = async function (){
-    var mi=this;
+    let mi=this;
 
     var elementMenu,width
     mi.menuItems=[]
@@ -45,14 +45,14 @@ MenuItems.prototype.getMenuItemsInGraph = async function (){
 }
 
 MenuItems.prototype.update = async function (node) {
-    var mi=this;
+    let mi=this;
     mi.node=node
     mi.menuItems=[]
     await mi.init()
 }
 
 MenuItems.prototype.collapsedBranchMenuItemsInGraph=function (){
-  var mi=this;
+  let mi=this;
   let nodeTreeData=linkedDataGraph.treeData.filter(d=>d.id==mi.node.id)
   if((nodeTreeData.length>0)&&(nodeTreeData[0]._children)){
     elementMenu={
@@ -73,7 +73,7 @@ function MenuItemsExpert(...args){
 MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
-  var mi=this;
+  let mi=this;
   //console.log(configFileExpert)
   console.log(JSON.parse(JSON.stringify(configFileExpert)))
   configFileExpert.option.forEach(option => {
@@ -92,17 +92,17 @@ MenuItemsExpert.prototype.buildOptions = async function(){
 }
 
 MenuItemsExpert.prototype.addSelectedRow=function (i){
-  var mi=this;
+  let mi=this;
   mi.selectedRows.push(mi.indexRows[i])
 }
 
 MenuItemsExpert.prototype.checkMenuOptions=function(menuOptions){
-  var mi=this;
+  let mi=this;
   mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.endpoint_url+","+d.position)))
 }
 
 MenuItemsExpert.prototype.filterByAskResult = async function () {
-  var mi=this;
+  let mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
     if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
@@ -121,7 +121,7 @@ MenuItemsExpert.prototype.filterByAskResult = async function () {
 }
 
 MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
-  var mi=this;
+  let mi=this;
 
   if(!(mi.selectedRows[i] instanceof OptionNodeBasic)){
     elementMenu = {
@@ -141,7 +141,7 @@ MenuItemsExpert.prototype.detailsMenuItemsInGraph=function (i){
 }
 
 MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
-  var mi=this;
+  let mi=this;
 
   $("#modal3-content form").remove()
 
@@ -181,7 +181,7 @@ function MenuItemsBasic(...args){
 MenuItemsBasic.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsBasic.prototype.buildOptions=function (){
-  var mi=this;
+  let mi=this;
   configFile.getRowsNodeClass(mi.node["className"]).forEach(element => {
     mi.indexRows.push(new OptionNodeBasic(element.option,mi.node))
     mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
@@ -189,18 +189,18 @@ MenuItemsBasic.prototype.buildOptions=function (){
 }
 
 MenuItemsBasic.prototype.addSelectedRow=function (i){
-  var mi=this;
+  let mi=this;
   if(configFile.file.filter(d=>d.option==mi.indexRows[i]["option"])[0]["type"]=="TREE") mi.treeSelectedRows+=1
   mi.selectedRows.push(mi.indexRows[i])
 }
 
 MenuItemsBasic.prototype.checkMenuOptions=function(menuOptions){
-  var mi=this;
+  let mi=this;
   mi.indexRows=mi.indexRows.filter(d=>(!menuOptions.includes(d.option)))
 }
 
 MenuItemsBasic.prototype.filterByAskResult = async function () {
-  var mi=this;
+  let mi=this;
   mi.selectedRows=[]
   for (var i = 0; i < mi.indexRows.length; i++) {
       try {
@@ -215,7 +215,7 @@ MenuItemsBasic.prototype.filterByAskResult = async function () {
 }
 
 MenuItemsBasic.prototype.detailsMenuItemsInGraph=function (i){
-  var mi=this;
+  let mi=this;
   elementMenu={
     title: mi.selectedRows[i]["option"],
     action: async (data,d) => {

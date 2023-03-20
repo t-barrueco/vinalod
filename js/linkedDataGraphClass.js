@@ -3,13 +3,13 @@ LinkedDataGraph = function (_option) {
   };
 
 LinkedDataGraph.prototype.init = function () {
-    var ldg=this;
+    let ldg=this;
     
     ldg.buildData()
   }
 
 LinkedDataGraph.prototype.buildData = function () {
-  var ldg=this;    
+  let ldg=this;    
 
   ldg.buildTreeData()
 
@@ -20,14 +20,14 @@ LinkedDataGraph.prototype.buildData = function () {
 }
 
 LinkedDataGraph.prototype.collapseAll= function (){
-  var ldg=this;
+  let ldg=this;
   ldg.treeData.slice(1, ldg.treeData.length).forEach(function(n){
     ldg.collapseBranch(n)
   })
 }
 
 LinkedDataGraph.prototype.collapseBranch = function (node){
-  var ldg=this;
+  let ldg=this;
   let index=ldg.treeData.findIndex(d=>d.id==node.id)
   if(index!=-1){
     ldg.treeData[index]._children = ldg.treeData[index].children;
@@ -38,7 +38,7 @@ LinkedDataGraph.prototype.collapseBranch = function (node){
 }
 
 LinkedDataGraph.prototype.expandAll= function (){
-  var ldg=this;
+  let ldg=this;
 
   ldg.treeData.slice(1, ldg.treeData.length).forEach(function(n){
     ldg.expandBranch(n)
@@ -46,7 +46,7 @@ LinkedDataGraph.prototype.expandAll= function (){
 }
 
 LinkedDataGraph.prototype.expandBranch = function (node){
-  var ldg=this;
+  let ldg=this;
 
   let index=ldg.treeData.findIndex(d=>d.id==node.id)
   if(index!=-1){
@@ -67,7 +67,7 @@ LinkedDataGraph.prototype.expandBranch = function (node){
 
 LinkedDataGraph.prototype.flatten = function(){
     var nodes = [], links=[];
-    var ldg=this;
+    let ldg=this;
     
     function recurse(node) {
       
@@ -109,7 +109,7 @@ LinkedDataGraph.prototype.flatten = function(){
 
 LinkedDataGraph.prototype.flattenAllData = function(){
   var nodes = [], links=[];
-  var ldg=this;
+  let ldg=this;
   
   function recurse(node) {
     
@@ -151,7 +151,7 @@ LinkedDataGraph.prototype.flattenAllData = function(){
 
 LinkedDataGraph.prototype.showNoDuplicatesGraph = function(){
   var processedNodes = [];
-  var ldg=this;
+  let ldg=this;
 
   function recurse(node) {
     let nodeUri=node[node["class"]+"_uri"]
@@ -187,7 +187,7 @@ LinkedDataGraph.prototype.showNoDuplicatesGraph = function(){
 }
 
 LinkedDataGraph.prototype.showDuplicatesGraph = function(){
-  var ldg=this;
+  let ldg=this;
 
   function recurse(node) {
     node.id=genRandomString()
@@ -203,13 +203,13 @@ LinkedDataGraph.prototype.showDuplicatesGraph = function(){
 }
 
 LinkedDataGraph.prototype.add = function(){
-  var ldg=this;
+  let ldg=this;
   ldg.data.treeData=ldg.treeData
   ldg.flatten()
 }
 
 LinkedDataGraph.prototype.filter = function(filterId){
-  var ldg=this;
+  let ldg=this;
 
   networkGraph.filtered=true
 
@@ -304,7 +304,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
 }
 
 LinkedDataGraph.prototype.clearFilter = function(){
-  var ldg=this;
+  let ldg=this;
 
   function recurse(node) {
     //////////////////////////////////console.log(node.filter)
@@ -329,7 +329,7 @@ LinkedDataGraph.prototype.clearFilter = function(){
 }
 
 LinkedDataGraph.prototype.clusterData = function (treeData,childrenLength) {
-  var ldg=this;
+  let ldg=this;
   var maxNumber=parseInt($("#cluster-number").val())
   if((childrenLength)&&(childrenLength>maxNumber)){
     if(treeData.length>0){
@@ -416,7 +416,7 @@ async function settingsFromOption(type,option,node){
 };
 
 LinkedDataGraph.prototype.importGraph = function(fileText){
-  var ldg=this;
+  let ldg=this;
 
   ldg.treeData=fileText.treeData
   
@@ -435,7 +435,7 @@ LinkedDataGraph.prototype.importGraph = function(fileText){
 }
 
 LinkedDataGraph.prototype.update = async function(option,node,type){
-  var ldg=this;
+  let ldg=this;
 
   if(type=="basic"){
     await updateBasic()
@@ -465,7 +465,7 @@ LinkedDataGraph.prototype.update = async function(option,node,type){
 }
 
 LinkedDataGraph.prototype.buildTreeData = function () {
-  var ldg=this;
+  let ldg=this;
   var procNode=[],indexParent,child,indexNode,configRowResults,childrenLength;
   var treeResults;
   var properties=configRow.properties

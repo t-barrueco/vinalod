@@ -29,11 +29,6 @@ function genRandomString(){
   }
   return s; 
 }
-function showMessageForNoGraphs(){
-  $("#no-graphs-message").show()
-  component=$("#no-graphs-message")[0]
-  runAutoInit(component)
-}
 //Show options when right clicking
 async function getMenuItemsContextMenu(node,origin,pageX,pageY){
   var Items;

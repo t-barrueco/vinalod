@@ -12,16 +12,16 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 function download(data, fileName, mimeType) {
-  var str = '';
-  var content = '';
-  var outerArr = [];
-  var type=mimeType.split(";")[0].split("/")[1]
+  let str = '';
+  let content = '';
+  let outerArr = [];
+  let type=mimeType.split(";")[0].split("/")[1]
   if(type=="csv"){
     outerArr.push(Object.keys(data[0]));  // column headers 
 
     data.forEach(d => {
-      var dataString = "";
-      var toStr = "";
+      let dataString = "";
+      let toStr = "";
       for (let x in d) {
         toStr = String(d[x]);
         toStr = toStr.replace(/["',]/g, " ").trim();   // to replace all commas with a space 

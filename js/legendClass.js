@@ -6,25 +6,25 @@ Legend = function ( _parent,_graph) {
   
   
 Legend.prototype.init = function () {
-  var le=this;
+  let le=this;
   le.parentEl=d3.select("#"+le.parent)
   le.initColors()
 }
 Legend.prototype.initColors=function(){
-    var le=this;
+    let le=this;
     for (let i=0; i < le.graph.colorScale.domain().length; i++) {
         le.addOne(i,le.graph.colorScale.domain()[i])
       } 
 }
 Legend.prototype.addColors=function(){
-    var le=this;
+    let le=this;
     if(le.graph.colorScale.domain().length>d3.selectAll("#legend .legend-color").size()){
         le.initColors(i=(d3.selectAll("#legend .legend-color").size()))
     }
 }
 
 Legend.prototype.addOne=function (index,textLi){
-  var le=this;
+  let le=this;
   var li,classLi;
   classLi="flex items-center justify-center flex-shrink-0 w-16 text-sm font-medium text-white legend-color "
   li=le.parentEl.append("li")
