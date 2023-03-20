@@ -678,9 +678,9 @@ LinkedDataGraph.prototype.buildTreeData = function () {
   }
   function getNodeInMenuOption(id){
     let link=networkGraph.data.links.filter(l=>l.target.id==id)[0]
-    if((link.source.type)&&(link.source.type=="menuOption")){
+/*     if((link.source.type)&&(link.source.type=="menuOption")){
     
-    }
+    } */
   }
   function createMenuOptionNodes(j){
     var node,nodeOption1,nodeOption2;

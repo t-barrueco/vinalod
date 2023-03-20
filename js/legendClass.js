@@ -8,11 +8,11 @@ Legend = function ( _parent,_graph) {
 Legend.prototype.init = function () {
   var le=this;
   le.parentEl=d3.select("#"+le.parent)
-  le.initColors(i=0)
+  le.initColors()
 }
-Legend.prototype.initColors=function(i){
+Legend.prototype.initColors=function(){
     var le=this;
-    for (i; i < le.graph.colorScale.domain().length; i++) {
+    for (i=0; i < le.graph.colorScale.domain().length; i++) {
         le.addOne(i,le.graph.colorScale.domain()[i])
       } 
 }

@@ -229,7 +229,6 @@ function fromSelectToAskQuery(query){
   return query
 }
 function replaceParmtrsQuery(query,parameters,node){
-  var query;
   if(node!=undefined){
       if((parameters!="")&&(parameters!=null)){
           for (let i = 0; i < parameters.length; ++i) { 
@@ -251,6 +250,7 @@ function replaceParmtrsQuery(query,parameters,node){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
+  var text;
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -281,7 +281,7 @@ function getTooltipText(d){
     </div>`;
     return text;
   }else{
-    var text = `
+    text = `
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -542,24 +542,19 @@ function autocomplete(inp, arr,numParentNodes) {
         node=node.parentNode
       }
       node.appendChild(a)
-      //this.parentNode.appendChild(a);
       strIncluded=arr.filter(s=>s.toUpperCase().includes(val.toUpperCase()))
       /*for each item in the array...*/
       if (strIncluded.length<=100){
         for (i = 0; i < strIncluded.length; i++) {
           if (strIncluded[i].toUpperCase().includes(val.toUpperCase())) {
-          //if (strIncluded[i].toUpperCase().includes(val.toUpperCase())) {
             /*create a DIV element for each matching element:*/
             b = document.createElement("DIV");
             b.setAttribute("class", "cursor-pointer");
-  /*           b.innerHTML = strIncluded[i].toUpperCase().substr(0,strIncluded[i].toUpperCase().indexOf(val.toUpperCase()));
-            b.innerHTML += "<strong>" + strIncluded[i].toUpperCase().substr(strIncluded[i].toUpperCase().indexOf(val.toUpperCase()), val.length) + "</strong>";
-            b.innerHTML += strIncluded[i].toUpperCase().substr(strIncluded[i].toUpperCase().indexOf(val.toUpperCase())+val.length); */
+
             b.innerHTML = strIncluded[i].substr(0,strIncluded[i].indexOf(val));
             b.innerHTML += "<strong>" + strIncluded[i].substr(strIncluded[i].indexOf(val), val.length) + "</strong>";
             b.innerHTML += strIncluded[i].substr(strIncluded[i].indexOf(val)+val.length);
             /*insert a input field that will hold the current array item's value:*/
-            ////////////////////////////////console.log(strIncluded[i])
             b.innerHTML += "<input type='hidden' value='" + strIncluded[i] + "'>";
             /*execute a function when someone clicks on the item value (DIV element):*/
             b.addEventListener("click", function(e) {
@@ -636,21 +631,7 @@ function autocomplete(inp, arr,numParentNodes) {
       closeAllLists(e.target);
   });
 }
-//function used in autocomplete to close list shown
-function closeAllLists(elmnt) {
-  /*close all autocomplete lists in the document,
-  except the one passed as an argument:*/
-  var x = document.getElementsByClassName("autocomplete-items");
-  for (var i = 0; i < x.length; i++) {
-    if(elmnt){
-      if (elmnt != x[i] && elmnt != inp) {
-        x[i].parentNode.removeChild(x[i]);
-      }
-    }else{
-      x[i].parentNode.removeChild(x[i]);
-    }     
-  }
-}
+
 //function used in autocomplete to add value selected to the navigation panel.
 function autocompleteValSelected(el){
   if(el.parentNode.getAttribute("id")=="node-searchautocomplete-list"){
@@ -1119,7 +1100,7 @@ function runAutoInit(component){
   if(component){
     ECLdestroy(component)
   }
-  let autoInit=ECL.autoInit()
+  ECL.autoInit()
 }
 function ECLdestroy(component){
   let index=window.ECL.components.findIndex(d=>d.element==component)
