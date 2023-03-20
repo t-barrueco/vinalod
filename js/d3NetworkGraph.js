@@ -831,15 +831,9 @@ NetworkGraph.prototype.enterGraph = function(){
             })
             .on("click",function(d){
               let element=this
-              let timer = setTimeout(function() {
-                if (!prevent) {
-                  clickBubbleGraph(element,vis.data)
-                }
-                let prevent = false;
-              }, delay);
+              handleClickEvent(element)
             })
             .on('dblclick', function(d){
-
               if((d.type=="uri")||(d.type=="bnode")){
                 handleDblClickEvent(this.getAttribute("id"))
                 if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
