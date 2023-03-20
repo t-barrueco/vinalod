@@ -281,7 +281,7 @@ FilterBasic.prototype.valuesNodes=function(nodes){
 
 FilterBasic.prototype.addHtml= function () {
   let fi=this;
-  var div = document.createElement("div");
+  let div = document.createElement("div");
   div.className="relative"
   div.id=fi.details.property.replaceAll(" ","_")+"_root"
   fi.id=fi.details.property.replaceAll(" ","_")+"_filter";
@@ -359,7 +359,7 @@ class FilterBasicDropdown extends FilterBasic {
         code=code.replaceAll("HelperText","")
       }
       $("#"+fi.details.class+"_filters").append($(code))
-      var select=document.getElementById("select-default")
+      let select=document.getElementById("select-default")
       select.name = fi.details.property;
       select.id = fi.id;
       fi.fillField();
@@ -370,7 +370,7 @@ class FilterBasicDropdown extends FilterBasic {
     let fi=this;
     checkAddAll(this.values)
     $(("#accordion-filters #"+fi.details.property+"_filter")).empty();
-    var select=document.getElementById(fi.details.property+"_filter")
+    let select=document.getElementById(fi.details.property+"_filter")
     addHtmlOptionsSelect(select,fi.values,false)
     if(fi.valuesChanged){
       select.value=fi.valuesChanged
@@ -673,7 +673,7 @@ FilterExpert.prototype.valuesFiltered= function () {
 FilterExpert.prototype.addHtml=function (){
     let fi=this;
 
-    var div = document.createElement("div");
+    let div = document.createElement("div");
     div.className="relative"
 }
 
@@ -698,7 +698,7 @@ class FilterExpertDropdown extends FilterExpert {
     await $.get("pages/select-filter.html", function (code) {
       code=code.replace("Label",fi.field).replace("relatedFilters(this)","relatedFiltersExpert(this)")
       $("#"+fi.internalClass+"_filters").append($(code))
-      var select=document.getElementById("select-default")
+      let select=document.getElementById("select-default")
       select.name = fi.internalClass + "_"+ fi.field;
       select.id = fi.internalClass + "_"+ fi.field;
       if(!fi.imported){

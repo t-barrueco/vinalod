@@ -73,7 +73,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         title: 'Download data',
         position:1,
         action: (d) => {
-          // TODO: add any action you want to perform
           downloadData()
         }
       },
@@ -81,7 +80,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         title: 'Download SPARQL query',
         position:2,
         action: (d) => {
-          // TODO: add any action you want to perform
           downloadQuery()
         }
       }]
@@ -91,7 +89,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         title: 'Check Basic Graph',
         position: 3,
         action: (d) => {
-          // TODO: add any action you want to perform
           checkBasicGraph(d)
         }
       })
@@ -101,7 +98,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         title: 'Collapse Branch',
         position: 4,
         action: (d) => {
-          // TODO: add any action you want to perform
           networkGraph.collapseBranch(d)
         }
       })
@@ -111,7 +107,6 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
         title: 'Expand Branch',
         position: 5,
         action: (d) => {
-          // TODO: add any action you want to perform
           networkGraph.expandBranch(d)
         }
       })
@@ -507,7 +502,7 @@ function getTooltipTextFreeGraph(d) {
 }
 //This is the tooltip for the menu options
 function getTooltipMenu(d){
-  var text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  let text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
           <div class="border-t border-gray-200 py-3 px-2">
           ` + d + `
           </div>
