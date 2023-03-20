@@ -4,7 +4,6 @@ function timelineGraph(data,modalHeader,modalContent){
     var margin = {top: 30, right: 30, bottom: 30, left: 30}
     modalHeader.innerHTML = "Timeline EU Members"
 
-    var xFormat = "%Y-%m-%d";;
     var parseTime = d3.timeParse("%Y-%m-%d");
 
     data = data.map(d=>{

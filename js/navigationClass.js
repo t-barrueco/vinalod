@@ -168,7 +168,7 @@ NavigationPanel.prototype.initModal = function (){
 
 NavigationPanel.prototype.navTableTable = async function ()
   {
-    let navPanel=this,nodeClass;
+    let navPanel=this;
     navPanel.navTable = document.getElementById("navTable");
     navPanel.nav=navPanel.navTable.querySelector("nav")
     navPanel.ol=navPanel.navTable.querySelector("ol")
@@ -178,7 +178,6 @@ NavigationPanel.prototype.navTableTable = async function ()
     })
 
     for (let i=0;i<navPanel.sources.length;i++) {
-      nodeClass=navPanel.sources[i].class
       await navPanel.checkElementNav(navPanel.sources[i],i)
     }
 }
@@ -319,7 +318,6 @@ NavigationPanel.prototype.contentTable = async function (){
     if(navPanel.node["type"]=="menuOption"){
       menuOption=navPanel.node["value"].split(",")
       label=navPanel.labelGraph(menuOption)
-      
     }else{
       menuOption=navPanel.node["menuOption"]
       if(menuOption){
@@ -651,7 +649,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 }
 
 NavigationPanel.prototype.addEventsContentNav = function (){
-  let navPanel=this,nodeSearchField,node;
+  let navPanel=this,nodeSearchField;
   navPanel.isDblclick = false;
 
   navPanel.searchValues=navPanel.targets.map(d=>d.target.value)
