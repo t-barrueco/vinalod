@@ -22,7 +22,7 @@ NetworkGraph = function (_parentElement,_forces,_data,_classesCorrespondence,_im
 
 /////////////////// initVis Method //////////////////////
 NetworkGraph.prototype.initVis = function () {
-  var vis = this,coorX,coorY;
+  let vis = this;
   vis.data=vis.data.flatData
   vis.treeData=linkedDataGraph.treeData
   vis.allData=vis.data
@@ -118,7 +118,7 @@ NetworkGraph.prototype.initVis = function () {
 
   })
 
-    var dragSvg = d3.zoom()
+    let dragSvg = d3.zoom()
     .scaleExtent([0.25, 2.5])
     .on("zoom", function(e){
       if (lineDragActive == false) {
@@ -203,7 +203,7 @@ NetworkGraph.prototype.initVis = function () {
   .domain([0,vis.maxSizeNode])
   .range([ 15, 45])  // Size in pixel
  
-  var clusterNodeSize=checkClusterNodesSize()
+  let clusterNodeSize=checkClusterNodesSize()
 
   vis.sizeClusterNode=d3.scalePow()
   .domain([d3.min(clusterNodeSize),d3.max(clusterNodeSize)])
@@ -214,7 +214,7 @@ NetworkGraph.prototype.initVis = function () {
   
 };
 function checkClusterNodesSize(){
-  var clusterNodeSize=[]
+  let clusterNodeSize=[]
 
   networkGraph.treeData.forEach(function(d){
     if(d.children){
@@ -225,7 +225,7 @@ function checkClusterNodesSize(){
   return clusterNodeSize
 }
 NetworkGraph.prototype.zoomed = function(){
-  var vis=this
+  let vis=this
   textImageZoom(d3.event.transform.k)
   
   if(vis.centerGraphX==0){
@@ -237,14 +237,14 @@ NetworkGraph.prototype.zoomed = function(){
 };
 
 NetworkGraph.prototype.initializeSimulation = function () {
-  var vis = this;
+  let vis = this;
   vis.simulation.stop() 
   vis.simulation.nodes(vis.data.nodes);
   vis.initializeForces();
 
 }
 NetworkGraph.prototype.initializeForces = function() {
-  var vis = this;
+  let vis = this;
 
   vis.simulation
       .force("link", d3.forceLink())
@@ -283,16 +283,16 @@ NetworkGraph.prototype.initializeForces = function() {
   }
 
     function getTransform() {
-      bbox = d3.select("#"+vis.dblClickId).node().getBBox();
-      var bx = bbox.x;
+      let bbox = d3.select("#"+vis.dblClickId).node().getBBox();
+      let bx = bbox.x;
       bx=d3.select("#"+vis.dblClickId).data()[0]["x"]
-      var by = bbox.y;
+      let by = bbox.y;
       by=d3.select("#"+vis.dblClickId).data()[0]["y"]
-      var bw = bbox.width;
-      var bh = bbox.height;
+      let bw = bbox.width;
+      let bh = bbox.height;
 
-      var tx = -bx*vis.zoomScale + vis.g.vx + vis.g.vw/2 - bw*vis.zoomScale/2;
-      var ty = -by*vis.zoomScale + vis.g.vy + vis.g.vh/2 - bh*vis.zoomScale/2;
+      let tx = -bx*vis.zoomScale + vis.g.vx + vis.g.vw/2 - bw*vis.zoomScale/2;
+      let ty = -by*vis.zoomScale + vis.g.vy + vis.g.vh/2 - bh*vis.zoomScale/2;
       return {translate: [tx, ty], scale: vis.zoomScale}
     }
   });    
@@ -301,10 +301,10 @@ NetworkGraph.prototype.initializeForces = function() {
   vis.updateForces();
 
   function ticked() {
-    var positions=[]
+    let positions=[]
     vis.link.attr('d', function (d){
-      var source,target
-      var index=positions.findIndex(n=>n.id==d.source.id)
+      let source,target
+      let index=positions.findIndex(n=>n.id==d.source.id)
       if(index==-1){
         source=addPosition(d.source)
         positions.push(source)
@@ -340,7 +340,7 @@ NetworkGraph.prototype.initializeForces = function() {
 
 NetworkGraph.prototype.updateForces= function() {
 
-  var vis = this;
+  let vis = this;
 
   vis.simulation.force("center")
       .x(vis.width * vis.forceProperties.center.x)
@@ -372,7 +372,7 @@ NetworkGraph.prototype.updateForces= function() {
 
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
-  var vis = this,text;
+  let vis = this,text;
 
   
   if(!document.getElementsByClassName("tooltip")[0]){
@@ -388,7 +388,7 @@ NetworkGraph.prototype.initializeDisplay = function() {
 }
 
 NetworkGraph.prototype.updateDisplay = function () {
-  var vis = this;
+  let vis = this;
 
   vis.link
       .style("stroke-width", vis.forceProperties.link.enabled ? 1 : .5)
@@ -396,7 +396,7 @@ NetworkGraph.prototype.updateDisplay = function () {
 }
 
 NetworkGraph.prototype.dataJoinGraph = function(){
-  var vis=this;
+  let vis=this;
 
   vis.link = vis.gLinks
   .selectAll(".link")
@@ -438,7 +438,7 @@ NetworkGraph.prototype.dataJoinGraph = function(){
 }
 
 NetworkGraph.prototype.enterGraph = function(){
-    var vis=this,r;
+    let vis=this,r;
     let lineHeight = 12;
     vis.maxSizeNode=d3.max(vis.data.nodes, d => d.number)  
 
@@ -559,8 +559,8 @@ NetworkGraph.prototype.enterGraph = function(){
           event.pageX=d3.mouse(vis.g.node())[0]
           event.pageY=d3.mouse(vis.g.node())[0]
 
-          var dcx = (window.innerWidth/2-d.x*vis.zoomScale);
-          var dcy = (window.innerHeight/2-d.y*vis.zoomScale);
+          let dcx = (window.innerWidth/2-d.x*vis.zoomScale);
+          let dcy = (window.innerHeight/2-d.y*vis.zoomScale);
           vis.wrangleData(this,"bubble",d.x + dcx,d.y + dcy);
         }
         return false;
@@ -666,7 +666,7 @@ NetworkGraph.prototype.enterGraph = function(){
               .text(d => d.text);
     }
     function drawImageCirclesBasic(){
-        var event={},mnemonic,bubbleImg;
+        let event={},mnemonic,bubbleImg;
 
         vis.nodeCircleImage=d3.selectAll(".nodeCircleBasic").filter(function(item){
           return !mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"])
@@ -726,7 +726,7 @@ NetworkGraph.prototype.enterGraph = function(){
         })
     }
     function drawTextCirclesBasic(){
-      var textValue,mnemonic;
+      let textValue,mnemonic;
       vis.mnemoCircle=d3.selectAll(".nodeCircleBasic").filter(function(item){
         return mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"])
       })
@@ -832,7 +832,7 @@ NetworkGraph.prototype.enterGraph = function(){
             .on('clickout', function(d){
             })
             .on("click",function(d){
-              var element=this
+              let element=this
               timer = setTimeout(function() {
                 if (!prevent) {
                   clickBubbleGraph(element,vis.data)
@@ -885,7 +885,7 @@ NetworkGraph.prototype.enterGraph = function(){
         .on('clickout', function(d){
         })
         .on("click",function(d){
-          var element=this
+          let element=this
           timer = setTimeout(function() {
             if (!prevent) {
               clickBubbleGraph(element,vis.data)
@@ -992,12 +992,12 @@ NetworkGraph.prototype.enterGraph = function(){
 }
 
 function getNumberClusterFromText(text){
-  var test=text.replace(" results collapsed","")
+  let test=text.replace(" results collapsed","")
   return Number(test)
 }
 NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width){
 
-  var vis=this,uri="",url,subjectObject;
+  let vis=this,uri="",url,subjectObject;
   if(data instanceof Element){
     uri=d3.select("#"+data.getAttribute("id")).data()[0]["uri"]
   }
@@ -1092,7 +1092,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
 
 }
 NetworkGraph.prototype.exitGraph = function(){
-    var vis=this;
+    let vis=this;
     vis.link.exit().remove();
 
     vis.nodeCircle.exit().remove();
@@ -1101,19 +1101,19 @@ NetworkGraph.prototype.exitGraph = function(){
 }
 
 NetworkGraph.prototype.wrangleData = async function (element,origin,pageX,pageY) {
-  var vis = this;
+  let vis = this;
   checkMenuItems("graph",element)
 };
 
 NetworkGraph.prototype.collapseAll = function () {
-  var vis = this,ldg=linkedDataGraph;
+  let vis = this,ldg=linkedDataGraph;
   ldg.collapseAll()
   ldg.flatten()
   vis.updateData()
   vis.refreshNoFilters()
 }
 NetworkGraph.prototype.expandAll = function () {
-  var vis = this,ldg=linkedDataGraph;
+  let vis = this,ldg=linkedDataGraph;
   ldg.expandAll()
   ldg.flatten()
   vis.updateData()
@@ -1122,7 +1122,7 @@ NetworkGraph.prototype.expandAll = function () {
 }
 
 NetworkGraph.prototype.collapseBranch = function (node){
-  var vis = this,ldg=linkedDataGraph;
+  let vis = this,ldg=linkedDataGraph;
 
   ldg.collapseBranch(node)
   vis.updateData()
@@ -1131,7 +1131,7 @@ NetworkGraph.prototype.collapseBranch = function (node){
 }
 
 NetworkGraph.prototype.expandBranch = function (node){
-  var vis = this,ldg=linkedDataGraph;
+  let vis = this,ldg=linkedDataGraph;
 
   ldg.expandBranch(node)
   ldg.flatten()
@@ -1141,7 +1141,7 @@ NetworkGraph.prototype.expandBranch = function (node){
 
 
 NetworkGraph.prototype.refresh = function (node){
-  var vis = this;
+  let vis = this;
   vis.addingGraph=true
   vis.updateData()
   if(configRow){
@@ -1167,7 +1167,7 @@ NetworkGraph.prototype.refresh = function (node){
 
 }
 NetworkGraph.prototype.updateSizeCircles = function(){
-  var vis = this;
+  let vis = this;
   d3.selectAll(".nodeCircleCircle")
   .attr("r",function(d){
     if(d.class=="more_results"){
@@ -1197,7 +1197,7 @@ NetworkGraph.prototype.updateSizeCircles = function(){
 }
 
 NetworkGraph.prototype.refreshNoFilters = function (){
-  var vis = this;
+  let vis = this;
   vis.addingGraph=true
 
   vis.updateData()
@@ -1205,13 +1205,13 @@ NetworkGraph.prototype.refreshNoFilters = function (){
 }
 
 NetworkGraph.prototype.refreshClearFilters = function (){
-  var vis = this;
+  let vis = this;
   //vis.addingGraph=true
   vis.updateData()
   vis.refreshCommon()
 }
 NetworkGraph.prototype.refreshCommon = function (){
-  var vis = this;
+  let vis = this;
   vis.dataJoinGraph()
   vis.enterGraph()
   vis.initializeSimulation();
@@ -1220,12 +1220,12 @@ NetworkGraph.prototype.refreshCommon = function (){
 }
 
 NetworkGraph.prototype.updateData = function (){
-  var vis = this;
+  let vis = this;
 
   vis.data=linkedDataGraph.data.flatData
   vis.treeData=linkedDataGraph.treeData
 
-  var clusterNodeSize=checkClusterNodesSize()
+  let clusterNodeSize=checkClusterNodesSize()
 
   vis.sizeClusterNode
   .domain([d3.min(clusterNodeSize),d3.max(clusterNodeSize)])
@@ -1235,7 +1235,7 @@ NetworkGraph.prototype.updateData = function (){
 }
 
 NetworkGraph.prototype.addClassesShow = function(){
-  var vis=this;
+  let vis=this;
   let newClasses=[...new Set(vis.data.nodes.map(d=>d.class))]
   newClasses.forEach(function(c) {
     if(!Object.keys(vis.nodesClassesShow).includes(c)){
@@ -1248,7 +1248,7 @@ NetworkGraph.prototype.addClassesShow = function(){
 }
 
 NetworkGraph.prototype.setColorScale = async function(){
-  var vis=this;
+  let vis=this;
   if(configRow.class){
     setColorScaleBasic()
   }else{
@@ -1305,7 +1305,7 @@ NetworkGraph.prototype.setColorScale = async function(){
 }
 
 NetworkGraph.prototype.updateFilters = async function () {
-  var vis=this,newFilterClasses,existingFilterClasses,filterClass;
+  let vis=this,newFilterClasses,existingFilterClasses,filterClass;
 
   if(configRow){
     if(configRow.class){
@@ -1344,7 +1344,7 @@ NetworkGraph.prototype.updateFilters = async function () {
 
 class NetworkGraphNotImported extends NetworkGraph {
   async addClassesShow() {
-    var vis=this,newClasses;
+    let vis=this,newClasses;
     if(configRow["classes_text"]){
       newClasses=configRow.getClassesCorrespondence()
       for (let key in newClasses) {
@@ -1356,14 +1356,14 @@ class NetworkGraphNotImported extends NetworkGraph {
     super.addClassesShow();
   }
   setColorScale() {
-    var vis=this;
+    let vis=this;
     if(configRow["classes_text"]){
       vis.nodesClassesShow=configRow.getClassesCorrespondence()
     }
     super.setColorScale()
   }
   async getFilters() {
-    var vis=this,newFilterClasses,filterClass;
+    let vis=this,newFilterClasses,filterClass;
     vis.filterClassesObjects=[]
 
     if(configRow.filters){
@@ -1381,18 +1381,18 @@ class NetworkGraphNotImported extends NetworkGraph {
 }
 class NetworkGraphImported extends NetworkGraph {
   addClassesShow() {
-    var vis=this;
+    let vis=this;
     super.addClassesShow();
 
     vis.nodesClassesShow=vis.classesCorrespondence
   }
   setColorScale(){
-    var vis=this;
+    let vis=this;
     vis.nodesClassesShow=vis.classesCorrespondence
     super.setColorScale()
   }
   getFilters() {
-    var vis=this,filterClass;
+    let vis=this,filterClass;
 
     vis.importedFilterClasses.forEach(function(ifc){
       if(ifc.filters[0]["field"]){

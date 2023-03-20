@@ -94,6 +94,8 @@ div.tooltip {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position:relative;
+  z-index: 99;
 }
 .menuEntry rect:hover {
   stroke: #FBD74A;
@@ -159,10 +161,6 @@ div.tooltip {
   text-align:center;
   font-size: 30px;
   color:#7bb6d9
-}
-.menuEntry{
-  position:relative;
-  z-index: 99;
 }
 
 .node {
