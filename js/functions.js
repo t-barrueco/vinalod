@@ -795,10 +795,6 @@ function deselectNodesAndLinks(){
   .style("fill","gray")
 }
 function showSpinMessage(message){
-  var fn = function(){
-    d3.select("#spin").style("display","none")
-    document.getElementById("sparql-timeout").style.display="inline-block"
-  };
   d3.select("#spin-message")
   .text(message)
   d3.select("#spin").style("display","inline-flex")

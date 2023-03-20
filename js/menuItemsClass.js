@@ -23,7 +23,7 @@ MenuItems.prototype.filterByMenuOption = function () {
 MenuItems.prototype.getMenuItemsInGraph = async function (){
     var mi=this;
 
-    var elementMenu,position,width
+    var elementMenu,width
     mi.menuItems=[]
 
     for (var i = 0; i < mi.selectedRows.length; i++) {
@@ -171,9 +171,6 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
 }
 
 MenuItemsExpert.prototype.getMenuItemsInTable = async function (){
-  var menuItems=[],elementMenu,position,width
-  var mi=this;
-
   navigationPanel.addMenuToTable()
 }
 
@@ -264,8 +261,6 @@ MenuItemsBasic.prototype.getMenuItemsInTable = async function (){
 }
 
 MenuItemsBasic.prototype.getMenuItemsInTableFromNav = async function (){
-  var menuItems=[],elementMenu,position,width
-  var mi=this;
   navigationPanel.addMenuToTableFromNav()
 }
 

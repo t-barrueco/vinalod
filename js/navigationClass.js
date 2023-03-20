@@ -85,41 +85,7 @@ NavigationPanel.prototype.getNodes = function (){
         recurse(c.source)
     });
   }
-  function buildtargetNodes(index){
-    var links=[]
 
-    if(index!=-1){
-      linkedDataGraph.treeData[index]["more_results"].forEach(function(d){
-        links.push({"target":d})
-      })
-    }else{
-      return findNestedObj(linkedDataGraph.treeData,"id",navPanel.node.id)
-    }
-    
-    return links
-
-    function findNestedObj(entireObj, keyToFind, valToFind) {
-      let links=[];
-      entireObj.forEach(function(parent){
-        var menuOptionElements,foundObj
-
-        menuOptionElements=parent.children.filter(d=>((d.type)&&(d.type=="menuOption")))
-        if(menuOptionElements.length>0){
-          menuOptionElements.forEach(function(v){
-            if(v.children.findIndex((subSubElement) => subSubElement.id == valToFind)!=-1){
-              foundObj=v
-            }
-          })
-        }
-        if(foundObj){
-          parent.more_results[foundObj.value].forEach(function(d){
-            links.push({"target":d})
-          })
-        }
-      })
-      return links
-    }
-  }
   function changetargetPerSource(nodes){
     var tmp,reverse=[];
     nodes.forEach(function(n){
@@ -218,14 +184,7 @@ NavigationPanel.prototype.navTableTable = async function ()
 }
 
 NavigationPanel.prototype.addElementNav = async function (source,i){
-  var navPanel=this, last=false,nodeClass
-  
-  if(source.source){
-    nodeClass=source.source.class
-  }else{
-    nodeClass=source.class
-  }
-
+  var navPanel=this, last=false
   if(i+1==navPanel.sources.length){
     last=true
   }
@@ -768,7 +727,7 @@ function addToGraph(){
 }
 
 NavigationPanel.prototype.addToGraph = function (){
-  var navPanel=this,node,indexChild,id,nodeMenuOption,parentNode,more_results,children;
+  var navPanel=this,node,indexChild,id,parentNode,more_results,children;
 
   parentNode=networkGraph.data.links.filter(d=>d.target.id==navPanel.node.id)[0]["source"]
   more_results=navPanel.node["more_results"]
@@ -800,7 +759,6 @@ NavigationPanel.prototype.addElChecked = function (el){
 NavigationPanel.prototype.addElementContentTableProp = async function (target,i,cluster){
   var navPanel=this;
 
-  var navPanel=this;
   let code = await getHtmlCodeFromFile("pages/elementContentTableProperty.html");
 
   $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
@@ -987,7 +945,6 @@ NavigationPanel.prototype.addMenuToTable = async function (){
 
   var navPanel=this;
   d3.selectAll(".menu-table").remove()
-  var rowIndex=$('#myModal #'+ menuItems.node["id"]+"_row")[0].rowIndex
   let tBodyRef=$('#myModal #'+ menuItems.node["id"]+"_row")
   addCodeMenuTable(tBodyRef)
 }
