@@ -102,7 +102,7 @@ let xGridLines = xGrid.selectAll("line")
 .data(x.ticks());
 
 xGridLines.enter().append("line")
-    .attr("class", "gridLine") //"grid-line")
+    .attr("class", "gridLine") 
     .attr("x1", function(d){
         return x(d);
     } )
