@@ -23,7 +23,7 @@ function addMenuOptionToNode(node,option){
 
 // Generate random string for ids
 function genRandomString(){
-  var s=Math.random().toString(36).substr(2, 11);
+  let s=Math.random().toString(36).substr(2, 11);
   if (s.match(/^\d/)) {
    s="_"+s
   }

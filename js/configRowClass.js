@@ -4,7 +4,7 @@ ConfigRow = function (_option,_node) {
   };
 
 ConfigRow.prototype.init = async function () {
-    var cr=this
+    let cr=this
     cr.getValuesFromOption()
     cr.replaceParmtrsQuery("query")
     cr.getNameClasses()
