@@ -1,6 +1,6 @@
 ConfigFile = function (_file) {
     this.file=_file
-    this.init();
+    //this.init();
   };
 
 function ConfigFileBasic(...args){
@@ -9,13 +9,13 @@ function ConfigFileBasic(...args){
     
 ConfigFileBasic.prototype = Object.create(ConfigFile.prototype);
 
-ConfigFileBasic.prototype.init = function () {
+/* ConfigFileBasic.prototype.init = function () {
   var cf=this;
 
-}
+} */
 
 ConfigFileBasic.prototype.getRowNumber = function (option) {
-    var cf=this;
+    let cf=this;
 
     return cf.file.map(function (e) {
         return e.option;
@@ -23,12 +23,12 @@ ConfigFileBasic.prototype.getRowNumber = function (option) {
   }
 
 ConfigFileBasic.prototype.getFieldsConfigFile= function(rowDataConfig){
-    var cf=this;
+    let cf=this;
     return JSON.parse(JSON.stringify(cf.file[rowDataConfig]));
   }
 
 ConfigFileBasic.prototype.getRowsNodeClass= function(classNode){
-    var cf=this;
+    let cf=this;
 
     return cf.file.filter(d=>d.class==classNode)
   }
@@ -40,7 +40,7 @@ function ConfigFileExpert(...args){
 ConfigFileExpert.prototype = Object.create(ConfigFile.prototype);
 
 ConfigFileExpert.prototype.init = function () {
-  var cf=this;
+  let cf=this;
   cf.position=["s","o"]
   cf.option=[]
   cf.file.forEach(element => {

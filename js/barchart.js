@@ -7,27 +7,26 @@ const modalHeader=getModalHeader()
 const modalContent=getModalContent()
 modalHeader.innerHTML = title
 
-var div=document.createElement("div")
+let div=document.createElement("div")
 div.setAttribute("id","modalGraph")
 div.setAttribute("style","overflow: auto")
 modalContent.appendChild(div)
 let titleColor="white"
 let titleAltColor="black"
 
-var margin = {top: 20, right: 0, bottom: 0, left: 20},
+let margin = {top: 20, right: 0, bottom: 0, left: 20},
 width = modalContent.offsetWidth - margin.left - margin.right,
-height = modalContent.offsetHeight - margin.top - margin.bottom;
 height =data.length * 40
         
 // append the svg object to the body of the page
-var svg=d3.select("#modalGraph").append("svg")
+let svg=d3.select("#modalGraph").append("svg")
 .attr("width", width)
 .attr("height", height + margin.top + margin.bottom)
 .append("g")
 .attr("transform", "translate(250,10)")
 
 // Parse the Data
-  var x = d3.scaleLinear()
+  let x = d3.scaleLinear()
     .domain([0, d3.max(data.map(d=>+d.Number))])
     .range([ 0, width-260]);
 
@@ -39,7 +38,7 @@ var svg=d3.select("#modalGraph").append("svg")
       .style("text-anchor", "end");
 
   // Y axis
-  var y = d3.scaleBand()
+  let y = d3.scaleBand()
     .range([ 10, height ])
     .domain(data.map(function(d) { return d.Category; }))
     .padding(.1);

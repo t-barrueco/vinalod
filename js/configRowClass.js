@@ -11,27 +11,27 @@ ConfigRow.prototype.init = async function () {
     await cr.getResults()
 }
 ConfigRow.prototype.import=function(configRowObject){
-  var cr=this
+  let cr=this
   Object.keys(configRowObject).forEach(function(k){
     cr[k]=configRowObject[k]
   })
 }
 
 ConfigRow.prototype.update = async function(option,node){
-  var cr=this;
+  let cr=this;
   cr.option=option
   cr.node=node
   await cr.init()
 }
 
 ConfigRow.prototype.setDefaultValues = function (){
-  var cr=this;
+  let cr=this;
   if(cr["filters"]=="None"){
     cr["filters"]=[]
   }
 }
 ConfigRow.prototype.fromSelectToAskQuery = function(){
-  var cr=this;
+  let cr=this;
   if(cr["askquery"]==null){
     cr["askquery"]=fromSelectToAskQuery(cr["query"])
   }
@@ -39,7 +39,7 @@ ConfigRow.prototype.fromSelectToAskQuery = function(){
 }
 
 ConfigRow.prototype.getClassesCorrespondence=function(){
-  var cr=this,tmp={}
+  let cr=this,tmp={}
   cr["classes_text"].forEach(function(c){
     tmp[c["class"]]=c["text"]
   })
@@ -47,7 +47,7 @@ ConfigRow.prototype.getClassesCorrespondence=function(){
 }
 
 ConfigRow.prototype.getResults = async function () {
-  var cr=this;
+  let cr=this;
   cr.results = await runSparlqQuery(cr.endpoint_url,cr.query,"query");
 }
 
@@ -62,9 +62,9 @@ ConfigRowBasic.prototype.getValuesFromConfig=function(option){
 }
 
 ConfigRowBasic.prototype.fromOptionToConfigRow = async function(option){
-  var cr=this;
+  let cr=this;
 
-  values=cr.getValuesFromConfig(option)
+  let values=cr.getValuesFromConfig(option)
 
   Object.keys(values).forEach(function(k){
     if(option[k]){
@@ -86,17 +86,17 @@ ConfigRowBasic.prototype.fromOptionToConfigRow = async function(option){
 }
 
 ConfigRowBasic.prototype.replaceParmtrsQuery = function(queryName){
-  var cr=this;
+  let cr=this;
   if(cr.node!=undefined) cr[queryName]=replaceParmtrsQuery(cr[queryName],cr.parameters,cr.node)
 }
 
 ConfigRowBasic.prototype.getNameClasses = function () {
-  var cr=this;
+  let cr=this;
   cr.nameClasses=cr.classes_text.map(d=>d.text)
 }
 
 ConfigRowBasic.prototype.getValuesFromOption = async function () {
-  var cr=this,rowFields;
+  let cr=this,rowFields;
   cr.rowNumber=configFile.getRowNumber(cr.option)
   rowFields=configFile.getFieldsConfigFile(cr.rowNumber)
   Object.keys(rowFields).forEach(function(k){
@@ -114,7 +114,7 @@ function ConfigRowExpert(...args){
 ConfigRowExpert.prototype = Object.create(ConfigRow.prototype);
 
 ConfigRowExpert.prototype.getValuesFromConfig = async function (option) {
-  var cr=this;
+  let cr=this;
   option=JSON.parse(JSON.stringify(option));
   Object.keys(option).forEach(function(k){
     cr[k]=option[k]
@@ -122,7 +122,7 @@ ConfigRowExpert.prototype.getValuesFromConfig = async function (option) {
 }
 
 ConfigRowExpert.prototype.fromOptionToConfigRow = async function(option){
-  var cr=this;
+  let cr=this;
 
   Object.keys(option).forEach(function(k){
     cr[k]=option[k]
@@ -135,17 +135,17 @@ ConfigRowExpert.prototype.fromOptionToConfigRow = async function(option){
 }
 
 ConfigRowExpert.prototype.getValuesFromOption = async function () {
-  var cr=this;
+  let cr=this;
   let option=JSON.parse(JSON.stringify(cr.option));
   Object.keys(option).forEach(function(k){
     cr[k]=option[k]
   })
 }
 ConfigRowExpert.prototype.getNameClasses = function () {
-  var cr=this;
+  let cr=this;
   cr.nameClasses=["uri","bnode","literal","menu option","link basic graph","typed-literal"]
 }
 ConfigRowExpert.prototype.replaceParmtrsQuery = function(queryName){
-  var cr=this;
+  let cr=this;
   cr.query=cr.query.replace("position",cr.position).replace("PARAMETER",cr.node.uri)
 }
