@@ -260,8 +260,6 @@ function detailsMenuItemsInGraphBasic(i){
 }
 
 MenuItemsBasic.prototype.getMenuItemsInTable = async function (){
-  var menuItems=[],elementMenu,position,width
-  var mi=this;
   navigationPanel.addMenuToTable()
 }
 
