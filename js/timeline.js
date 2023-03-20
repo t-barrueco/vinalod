@@ -24,22 +24,22 @@ function timelineGraph(data,modalHeader,modalContent){
         }
         }).sort((a,b)=>  b.star-a.start);
 
-    width=1100
-    height=500
+    let width=1100
+    let height=500
 
     var div=document.createElement("div")
     div.setAttribute("id","modalGraph")
     div.setAttribute("style","overflow: auto")
     modalContent.appendChild(div)
 
-    svg=d3.select("#modalGraph").append("svg")
+    let svg=d3.select("#modalGraph").append("svg")
     .style("width", width - margin.left + 'px')
     .style("height", height + 'px');
 
-    y= d3.scaleBand()
+    let y= d3.scaleBand()
     .domain(data.map(d => d.org))
     .range([0,height - margin.bottom - margin.top-200])
-    x=d3.scaleTime()
+    let x=d3.scaleTime()
       .domain([d3.min(data, d => parseTime(d.start)), d3.max(data, d => parseTime(d.end))])
       .range([margin.left,width - margin.left-margin.right-20])
 
@@ -73,11 +73,11 @@ function timelineGraph(data,modalHeader,modalContent){
         .attr("fill","black")
 
 
-axisBottom = d3.axisBottom(x)
+let axisBottom = d3.axisBottom(x)
     .tickPadding(2)
     .tickFormat(d3.timeFormat("%Y"))
     
-gRects=svg.append("g")
+let gRects=svg.append("g")
 .attr("class", "rects")
 .attr("transform", "translate("+margin.left+",30)");
 
@@ -100,10 +100,10 @@ bar
         return 40;
     })
 
-xGrid = svg.append("g")
+let xGrid = svg.append("g")
 .attr("transform", "translate("+margin.left+",-10)");
 
-xGridLines = xGrid.selectAll("line")
+let xGridLines = xGrid.selectAll("line")
 .data(x.ticks());
 
 xGridLines.enter().append("line")
