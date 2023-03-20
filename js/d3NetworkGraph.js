@@ -284,10 +284,8 @@ NetworkGraph.prototype.initializeForces = function() {
 
     function getTransform() {
       let bbox = d3.select("#"+vis.dblClickId).node().getBBox();
-      let bx = bbox.x;
-      bx=d3.select("#"+vis.dblClickId).data()[0]["x"]
-      let by = bbox.y;
-      by=d3.select("#"+vis.dblClickId).data()[0]["y"]
+      let bx=d3.select("#"+vis.dblClickId).data()[0]["x"]
+      let by=d3.select("#"+vis.dblClickId).data()[0]["y"]
       let bw = bbox.width;
       let bh = bbox.height;
 

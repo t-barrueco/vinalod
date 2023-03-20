@@ -10,7 +10,6 @@ function ConfigFileBasic(...args){
 ConfigFileBasic.prototype = Object.create(ConfigFile.prototype);
 
 ConfigFileBasic.prototype.init = function () {
-  let cf=this;
 
 }
 

@@ -489,8 +489,6 @@ async function checkMenuItems(origin,element) {
     if(menuItems.selectedRows.length==0){
       if(origin=="table"){
         clickBubbleGraph(document.getElementById(node.id))
-      }else if(origin=="navigation"){
-        showMessageForNoGraphs()
       }
     }else if(menuItems.selectedRows.length==1){
 
