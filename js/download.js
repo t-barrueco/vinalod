@@ -46,7 +46,7 @@ function download(data, fileName, mimeType) {
     content=data
   }
    
-  var a = document.createElement('a');
+  let a = document.createElement('a');
   mimeType = mimeType || 'application/octet-stream';
 
   if (navigator.msSaveBlob) { // IE10
