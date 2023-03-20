@@ -728,7 +728,7 @@ function clearFilters(){
 ************CHECK EXISTING BASIC GRAPH NODE IN EXPERT GRAPH**************
 *************************************************************************/
 async function checkBasicGraph(node){
-  var classesLinesConfig={},filterClasses="",results,child;
+  var classesLinesConfig={},filterClasses="";
 
   for (var i = 0; i < configFile.file.length; i++) {
     if((configFile.file[i].modelClass!=undefined)&&(configFile.file[i].modelClass!="None")){
