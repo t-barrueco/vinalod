@@ -4,7 +4,7 @@ NavigationPanel = function ( _node) {
   };
    
 NavigationPanel.prototype.init = function () {
-  var navPanel=this;
+  let navPanel=this;
 
   navPanel.node=networkGraph.node
   navPanel.clusterElSelected=[]
@@ -27,7 +27,7 @@ NavigationPanel.prototype.init = function () {
 }
 
 NavigationPanel.prototype.getNodes = function (){
-  var navPanel=this,links=[];
+  let navPanel=this,links=[];
   var sources
 
   if(navPanel.node){
@@ -100,7 +100,7 @@ NavigationPanel.prototype.getNodes = function (){
 
 NavigationPanel.prototype.selectBubbles = function (){
 
-  var navPanel=this;
+  let navPanel=this;
 
   d3.selectAll(".nodeCircle")
   .style("opacity", 0.1)
@@ -168,7 +168,7 @@ NavigationPanel.prototype.initModal = function (){
 
 NavigationPanel.prototype.navTableTable = async function ()
   {
-    var navPanel=this,nodeClass;
+    let navPanel=this,nodeClass;
     navPanel.navTable = document.getElementById("navTable");
     navPanel.nav=navPanel.navTable.querySelector("nav")
     navPanel.ol=navPanel.navTable.querySelector("ol")
@@ -184,7 +184,7 @@ NavigationPanel.prototype.navTableTable = async function ()
 }
 
 NavigationPanel.prototype.addElementNav = async function (source,i){
-  var navPanel=this, last=false
+  let navPanel=this, last=false
   if(i+1==navPanel.sources.length){
     last=true
   }
@@ -196,7 +196,7 @@ NavigationPanel.prototype.addElementNav = async function (source,i){
 }
 
 NavigationPanel.prototype.getCodeElementNav = async function (last,i){
-  var navPanel=this,file,value;
+  let navPanel=this,file,value;
 
   if(!last){
     file="pages/navTable_element.html"
@@ -257,7 +257,7 @@ NavigationPanel.prototype.getCodeElementNav = async function (last,i){
 }
 
 NavigationPanel.prototype.addElementNavProp = async function (source,i,property){
-  var navPanel=this;
+  let navPanel=this;
 
   if(source["url"]){
     let code = await getHtmlCodeFromFile("pages/navTable_property.html");
@@ -281,7 +281,7 @@ NavigationPanel.prototype.addElementNavProp = async function (source,i,property)
 }
 
 NavigationPanel.prototype.addEventsNav = function (){
-  var navPanel=this;
+  let navPanel=this;
   d3.selectAll("#navTable a").on("dblclick",function(){ 
     d3.event.preventDefault();
     dblclickNav(this)
@@ -297,7 +297,7 @@ NavigationPanel.prototype.addEventsNav = function (){
 }
 
 NavigationPanel.prototype.contentTable = async function (){
-  var navPanel=this,label;
+  let navPanel=this,label;
   var menuOption;
   navPanel.numStart=1
   navPanel.numTot=navPanel.targets.length
@@ -392,7 +392,7 @@ NavigationPanel.prototype.contentTable = async function (){
 }
 
 NavigationPanel.prototype.showDetails = function (){
-  var navPanel=this;
+  let navPanel=this;
   $("#dvTable").hide()
   itemDetails()
   function itemDetails(){
@@ -446,7 +446,7 @@ NavigationPanel.prototype.showDetails = function (){
 }
 
 NavigationPanel.prototype.contentTableSearch = function (){
-  var navPanel=this;
+  let navPanel=this;
   navPanel.numStart=1
 
   if (navPanel.targets.length>0){  
@@ -461,7 +461,7 @@ NavigationPanel.prototype.contentTableSearch = function (){
   } 
 }
 NavigationPanel.prototype.paginationNumbers = function (){
-  var navPanel=this
+  let navPanel=this
   if (navPanel.numCurrent < 1) {
     navPanel.numCurrent = 1;
   } else if (navPanel.numCurrent > navPanel.numPages) {
@@ -515,7 +515,7 @@ NavigationPanel.prototype.paginationNumbers = function (){
 }
 
 NavigationPanel.prototype.showNumberPages = async function (){
-  var navPanel=this,afterElement="#page-prev"
+  let navPanel=this,afterElement="#page-prev"
   navPanel.firstPage=1
   navPanel.numPages=Math.ceil(navPanel.numTot/navPanel.numLinesShown)
   navPanel.arrNumberPages=[]
@@ -549,7 +549,7 @@ NavigationPanel.prototype.showNumberPages = async function (){
 
 }
 NavigationPanel.prototype.showChildrenDetails = function (){
-  var navPanel=this;
+  let navPanel=this;
   if((navPanel.fromNodes.length>0)||((navPanel.targets.length>0)&&(navPanel.node.detail!=""))){
     showNavTabs()
     let component=$("#tabsNav nav").attr('id', navPanel.node.id+"_tabsNav")[0]
@@ -584,7 +584,7 @@ function removeNumberPages(){
   })
 }
 NavigationPanel.prototype.prevNextVisibility = function (){
-  var navPanel=this
+  let navPanel=this
 
   if(navPanel.pages.currentPage==1){
     $('#page-prev').hide();
@@ -598,7 +598,7 @@ NavigationPanel.prototype.prevNextVisibility = function (){
   }
 }
 NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
-  var navPanel=this,linesShown,numPagesElements;
+  let navPanel=this,linesShown,numPagesElements;
 
   if(numCurrent=='page-first'){
     numCurrent=navPanel.firstPage
@@ -651,7 +651,7 @@ NavigationPanel.prototype.showLines = function (numCurrent,first,cluster){
 }
 
 NavigationPanel.prototype.addEventsContentNav = function (){
-  var navPanel=this,nodeSearchField,node;
+  let navPanel=this,nodeSearchField,node;
   navPanel.isDblclick = false;
 
   navPanel.searchValues=navPanel.targets.map(d=>d.target.value)
@@ -679,7 +679,7 @@ NavigationPanel.prototype.addEventsContentNav = function (){
   }  
 }
 NavigationPanel.prototype.valueSelected=function(){
-  var navPanel=this;
+  let navPanel=this;
   nodeSearchField=document.getElementById("node-search")
   removeLinesNavContent()
   if(navPanel.targetsBackup){
@@ -694,14 +694,14 @@ NavigationPanel.prototype.valueSelected=function(){
   $("#nav-delete").removeClass("hidden")
 }
 NavigationPanel.prototype.addHeaderContentTable = async function (){
-  var navPanel=this;
+  let navPanel=this;
   let code = await getHtmlCodeFromFile("pages/headerContentTable.html");
   $("#dvTable thead").append(code).ready(function () {
   })
   navPanel.addTextToHeaderContentTable()
 }
 NavigationPanel.prototype.addElementContentTable = async function (target,i){
-  var navPanel=this;
+  let navPanel=this;
   let code = await getHtmlCodeFromFile("pages/elementContentTable.html");
   $("#dvTable tbody" + " #"+target["target"]["id"]+"_row").append(code).ready(function () {
     $("#dvTable tbody"+" #"+target["target"]["id"]+"_row img").addClass("bg-"+networkGraph.colorCorrespondence[networkGraph.colorScale(networkGraph.nodesClassesShow[target["target"]["class"]])])
@@ -727,7 +727,7 @@ function addToGraph(){
 }
 
 NavigationPanel.prototype.addToGraph = function (){
-  var navPanel=this,node,indexChild,id,parentNode,more_results,children;
+  let navPanel=this,node,indexChild,id,parentNode,more_results,children;
 
   parentNode=networkGraph.data.links.filter(d=>d.target.id==navPanel.node.id)[0]["source"]
   more_results=navPanel.node["more_results"]
@@ -749,7 +749,7 @@ NavigationPanel.prototype.addToGraph = function (){
 }
 
 NavigationPanel.prototype.addElChecked = function (el){
-  var navPanel=this;
+  let navPanel=this;
   if(el.checked){
     navPanel.clusterElSelected.push(el.closest( "tr" ).getAttribute("id").replace("_row",""))
   }else{
@@ -757,7 +757,7 @@ NavigationPanel.prototype.addElChecked = function (el){
   }
 }
 NavigationPanel.prototype.addElementContentTableProp = async function (target,i,cluster){
-  var navPanel=this;
+  let navPanel=this;
 
   let code = await getHtmlCodeFromFile("pages/elementContentTableProperty.html");
 
@@ -782,7 +782,7 @@ NavigationPanel.prototype.addElementContentTableProp = async function (target,i,
     navigation.dblclickCellCluster(el)
   }
   NavigationPanel.prototype.dblclickCellCluster = async function (cell) {
-    var navPanel=this,results;
+    let navPanel=this,results;
     results=cell.more_results
     
     results=results.map(function (d){
@@ -834,7 +834,7 @@ NavigationPanel.prototype.clickCellContent = async function (cell){
 }
 
 NavigationPanel.prototype.dblclickNav = async function (cell) {
-  var navPanel=this,bubble;
+  let navPanel=this,bubble;
   bubble=document.getElementsByClassName("gMain")[0].querySelector("#"+(cell.getAttribute("id").replace("_a","").replace("_li","")))
   emptyNavDetails()
   clickBubbleGraph(bubble,networkGraph.data)
@@ -858,7 +858,7 @@ function removeSelection(){
   navigation.removeSelection()
 }
 NavigationPanel.prototype.removeSelection = function (){
-  var navPanel=this;
+  let navPanel=this;
 
   navPanel.targets=navPanel.targetsBackup
 
@@ -870,7 +870,7 @@ function addSelToGraph(element){
   navigation.addSelToGraph()
 }
 NavigationPanel.prototype.addSelToGraph = function (){
-  var navPanel=this,selected=[],results,form,parent,configRow,children=[],clusterNode;
+  let navPanel=this,selected=[],results,form,parent,configRow,children=[],clusterNode;
   var node=d3.select("#"+document.getElementById(navPanel.clusterElSelected[0].replace("_check","")).getAttribute("cluster")).data()[0]
   for (var i = 0; i < navPanel.clusterElSelected.length; i++) {
     selected.push(document.getElementById(navPanel.clusterElSelected[i].replace("_check","")).querySelector("a span").innerText)
@@ -943,7 +943,7 @@ NavigationPanel.prototype.addSelToGraph = function (){
 
 NavigationPanel.prototype.addMenuToTable = async function (){
 
-  var navPanel=this;
+  let navPanel=this;
   d3.selectAll(".menu-table").remove()
   let tBodyRef=$('#myModal #'+ menuItems.node["id"]+"_row")
   addCodeMenuTable(tBodyRef)
@@ -988,7 +988,7 @@ function addCodeMenuTable(tBodyRef){
 }
 
 NavigationPanel.prototype.addMenuToTableFromNav = async function (){
-  var navPanel=this;
+  let navPanel=this;
   showNavContentTable()
   hideNavContentTablePagination()
   addCodeMenuTable()
@@ -1026,7 +1026,7 @@ class NavigationPanelNoDuplicates extends NavigationPanel {
 }
 
 NavigationPanel.prototype.checkElementNav = async function (d,i){
-  var navPanel=this;
+  let navPanel=this;
   if(d.class!="free"){
     await navPanel.addElementNav(d,i)
   }else{
@@ -1040,7 +1040,7 @@ NavigationPanel.prototype.checkElementNav = async function (d,i){
 }
 
 NavigationPanel.prototype.labelGraph = function (menuOption){
-  var navPanel=this,exists,label;
+  let navPanel=this,exists,label;
   if(navPanel.node.class!="free"){
     label=menuOption[0]
     if(label=="no options"){
@@ -1066,7 +1066,7 @@ NavigationPanel.prototype.labelGraph = function (menuOption){
   return label
 }
 NavigationPanel.prototype.addTextToHeaderContentTable = function (){
-  var navPanel=this
+  let navPanel=this
   if(navPanel.node.class!="free"){
     $("#dvTable #nav-children-header").text(configRow.option_text)
   }else{
