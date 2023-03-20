@@ -552,7 +552,7 @@ NetworkGraph.prototype.enterGraph = function(){
         return (d.id+"_g")
       })
       .on('dblclick', function(d){
-        handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id").replace("_g",""))
+        handleDblClickEvent(this.getAttribute("id").replace("_g",""))
         if(get_node_from_element(this.getAttribute("id").replace("_g",""))["class"]!="menuOption"){
           event.pageX=d3.mouse(vis.g.node())[0]
           event.pageY=d3.mouse(vis.g.node())[0]
@@ -664,7 +664,7 @@ NetworkGraph.prototype.enterGraph = function(){
               .text(d => d.text);
     }
     function drawImageCirclesBasic(){
-        let event={},mnemonic,bubbleImg;
+        let bubbleImg;
 
         vis.nodeCircleImage=d3.selectAll(".nodeCircleBasic").filter(function(item){
           return !mnemonicCodes.map(m=>m.org.value).includes(item[item["class"]+"_uri"])
@@ -841,7 +841,7 @@ NetworkGraph.prototype.enterGraph = function(){
             .on('dblclick', function(d){
 
               if((d.type=="uri")||(d.type=="bnode")){
-                handleDblClickEvent(d3.mouse(this)[0],d3.mouse(this)[1],this.getAttribute("id"))
+                handleDblClickEvent(this.getAttribute("id"))
                 if(get_node_from_element(this.getAttribute("id"))["class"]!="menuOption"){
                   vis.wrangleData(this,"bubble",d3.event);
                 }
@@ -907,7 +907,7 @@ NetworkGraph.prototype.enterGraph = function(){
         })
 
     }
-    function handleDblClickEvent(mouseX,mouseY,id){
+    function handleDblClickEvent(id){
         d3.event.stopPropagation();
         d3.event.preventDefault();
         clearTimeout(timer);

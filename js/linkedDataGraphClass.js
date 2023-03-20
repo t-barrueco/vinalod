@@ -670,18 +670,11 @@ LinkedDataGraph.prototype.buildTreeData = function () {
         })
         if (index!=-1){
           node=ldg.treeData[index].children.filter(d=>d.id==id)[0]
-        }else{
-          getNodeInMenuOption(id)
         }
       }
       return node
   }
-  function getNodeInMenuOption(id){
-    let link=networkGraph.data.links.filter(l=>l.target.id==id)[0]
-/*     if((link.source.type)&&(link.source.type=="menuOption")){
-    
-    } */
-  }
+
   function createMenuOptionNodes(j){
     var node,nodeOption1,nodeOption2;
     if(configRow.node){

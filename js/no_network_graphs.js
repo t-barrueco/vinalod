@@ -283,7 +283,7 @@
       div.setAttribute("id","modalGraph")
       div.setAttribute("style","overflow: auto")
       modalContent.appendChild(div)
-      let iframe=d3.select("#modalGraph").append("iframe")
+      d3.select("#modalGraph").append("iframe")
       .attr("src",page)
         .style("width", "100%")
         .style("height","100%");
