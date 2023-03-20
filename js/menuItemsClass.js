@@ -147,7 +147,6 @@ MenuItemsExpert.prototype.getMenuItemsInPopup=function (){
 
   d3.select("#modal3-content").select("div").remove()
 
-  var content = document.getElementById("modal3-content");
   addOptions()
 
   showPopupWindowExpert()
