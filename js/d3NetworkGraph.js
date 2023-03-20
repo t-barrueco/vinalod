@@ -372,7 +372,7 @@ NetworkGraph.prototype.updateForces= function() {
 
 // generate the svg objects and force simulation
 NetworkGraph.prototype.initializeDisplay = function() {
-  let vis = this,text;
+  let vis = this;
 
   
   if(!document.getElementsByClassName("tooltip")[0]){
@@ -641,7 +641,7 @@ NetworkGraph.prototype.enterGraph = function(){
             })       
             .attr("transform", 
             function(d){
-              textRadiusText=textRadius(lines(words(d.value),d.value))
+              let textRadiusText=textRadius(lines(words(d.value),d.value))
               return `translate(${-vis.sizeNode(d.number)/1.2},${-(textRadiusText/vis.sizeNode(d.number))/1.2}) scale(${vis.sizeNode(d.number) / textRadiusText})`
             })
             .attr('opacity', function(d) {
@@ -833,11 +833,11 @@ NetworkGraph.prototype.enterGraph = function(){
             })
             .on("click",function(d){
               let element=this
-              timer = setTimeout(function() {
+              let timer = setTimeout(function() {
                 if (!prevent) {
                   clickBubbleGraph(element,vis.data)
                 }
-                prevent = false;
+                let prevent = false;
               }, delay);
             })
             .on('dblclick', function(d){
@@ -1075,6 +1075,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       });
 
   function getTooltipInside(title,uri){
+    var textTooltip;
     if(title.match("Sparql Endpoint: (.*) and Position:")){
       url = title.match("Sparql Endpoint: (.*) and Position:")[1]; 
       subjectObject=title.match("and Position: (.*)")[1];
@@ -1414,7 +1415,7 @@ class NetworkGraphImported extends NetworkGraph {
 }
 
 function setForcesGraph(){
-  forces = {
+  let forces = {
     center: {
         x: 0.5,
         y: 0.5
@@ -1451,7 +1452,7 @@ function setForcesGraph(){
 }
 
 function dragStart(d) {
-  lineDragActive = true;
+  let lineDragActive = true;
   if (!d3.event.active) networkGraph.simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
   d.fy = d.y;

@@ -757,12 +757,11 @@ async function checkBasicGraph(node){
 }
 
 async function checkClassesNode(node,classesLinesConfig,filterClasses){
-  var sparqlQuery,settings,results,resultsAsk;
+  var sparqlQuery,results,resultsAsk;
  
   sparqlQuery="SELECT distinct ?s ?class WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
   prefixes=""
   queryUrl = node["url"] + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
-  settings = { url: queryUrl, async: true   , dataType: 'jsonp'     };
   results = await runSparlqQuery(node["url"],sparqlQuery,"query")
   results=await filterResults(results,classesLinesConfig)
   return results

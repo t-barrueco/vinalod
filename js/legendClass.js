@@ -12,7 +12,7 @@ Legend.prototype.init = function () {
 }
 Legend.prototype.initColors=function(){
     var le=this;
-    for (i=0; i < le.graph.colorScale.domain().length; i++) {
+    for (let i=0; i < le.graph.colorScale.domain().length; i++) {
         le.addOne(i,le.graph.colorScale.domain()[i])
       } 
 }

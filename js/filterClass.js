@@ -28,7 +28,7 @@ FilterClass.prototype.getCode= async function(){
 //it will be hide otherwise
 FilterClass.prototype.checkHidden=async function(){
   var cf=this,hidden=true;
-  for(i=0;i<cf.filters.length;i++){
+  for(let i=0;i<cf.filters.length;i++){
     if(!cf.filters[i].hidden){
       hidden=false
     }
@@ -127,7 +127,7 @@ function FilterClassExpert(...args){
 FilterClassExpert.prototype = Object.create(FilterClass.prototype);
 
 FilterClassExpert.prototype.initFilters = async function (){
-  var cf=this,filters=[];
+  var cf=this,filters=[],fi;
 
   cf.internalClass=noPunctuationStr(configRow.node.uri)
   filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
@@ -190,7 +190,7 @@ FilterClassExpert.prototype.show=async function(){
 
 
 FilterClassExpert.prototype.setTitle = async function () {
-  var cf=this,name;
+  var cf=this;
   cf.internalName=noPunctuationStr(cf.name)
   cf.code=cf.code.replaceAll("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
