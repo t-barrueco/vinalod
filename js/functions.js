@@ -1,9 +1,8 @@
 /*
 *    VINALOD
 *    functions.js
-*    
-*    AUTOCOMPLETE https://www.w3schools.com/howto/howto_js_autocomplete.asp
 *    created by Teresa Barrueco
+*    AUTOCOMPLETE function copied from https://www.w3schools.com/howto/howto_js_autocomplete.asp
 */
 
 //set option chosen from menu

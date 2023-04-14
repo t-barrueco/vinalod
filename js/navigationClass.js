@@ -377,7 +377,7 @@ NavigationPanel.prototype.contentTable = async function (){
     <span class="ecl-button__container">
     <span class="ecl-button__label" data-ecl-label="true">Search</span>
       <svg class="ecl-icon ecl-icon--xs ecl-button__icon ecl-button__icon--after" focusable="false" aria-hidden="true" data-ecl-icon="">
-            <use xlink:href="/images/icons.svg#general--search"></use>
+            <use xlink:href="images/icons.svg#general--search"></use>
       </svg>
     </span>
   </button>

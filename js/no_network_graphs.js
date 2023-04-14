@@ -335,7 +335,6 @@ function showWebPage(page,title,modalHeader,modalContent){
 
     const title=rowInConfigFile.option + " - " + node.value
 
-    createLinechart(data,title)
   
     function transformDataLinechart(results){
       var resultsTransformed=[]
