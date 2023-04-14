@@ -122,21 +122,21 @@ NetworkGraph.prototype.initVis = function () {
     let dragSvg = d3.zoom()
     .scaleExtent([0.25, 2.5])
     .on("zoom", function(e){
-      if (lineDragActive == false) {
+      if (!lineDragActive) {
         vis.zoomed.call(vis);
         vis.zoomScale=d3.event.transform.k
         return true;
       }
     })
     .on("start", function(){
-      if (lineDragActive == false) {
+      if (!lineDragActive) {
         d3.select('body').style("cursor", "move");
         d3.event.transform.x=0
         d3.event.transform.y=0
       }
     })
     .on("end", function(){
-      if (lineDragActive == false) {
+      if (!lineDragActive) {
         vis.dragX=d3.event.transform.x
         vis.dragY=d3.event.transform.y
         vis.zoomScale=d3.event.transform.k
@@ -740,7 +740,7 @@ NetworkGraph.prototype.enterGraph = function(){
         mnemonic=getMnemonicCodeForOrg(d[d["class"]+"_uri"])
         if(mnemonic!=undefined){
           textValue=mnemonic["code"]["value"]
-          textRadiusText=textRadius(lines(words(textValue),textValue))
+          let textRadiusText=textRadius(lines(words(textValue),textValue))
           return `translate(${-vis.sizeNode(d.number)/1.2},${-(textRadiusText/vis.sizeNode(d.number))/1.2}) scale(${vis.sizeNode(d.number) / textRadiusText})`
         }else{
           return `translate(0,0)`
@@ -1068,7 +1068,7 @@ NetworkGraph.prototype.menuFactory = function(x, y, menuItems, data,origin,width
       });
 
   function getTooltipInside(title,uri){
-    var textTooltip;
+    let textTooltip;
     if(title.match("Sparql Endpoint: (.*) and Position:")){
       url = title.match("Sparql Endpoint: (.*) and Position:")[1]; 
       subjectObject=title.match("and Position: (.*)")[1];
@@ -1178,7 +1178,6 @@ NetworkGraph.prototype.updateSizeCircles = function(){
   d3.selectAll(".nodeCircleCircleFree")
   .attr("r",function(d){
     if(d.class=="more_results"){
-      //return 25;
       return vis.sizeClusterNode(d.more_results);
     }else{
       if(d.children){
@@ -1363,8 +1362,8 @@ class NetworkGraphNotImported extends NetworkGraph {
     if(configRow.filters){
       if(configRow.filters.length!=0){
         newFilterClasses=[...new Set(configRow.filters.map(d=>d.class))]
-        for (let i = 0; i < newFilterClasses.length; i++) {
-          filterClass=new FilterClassBasic(newFilterClasses[i])
+        for (const element of newFilterClasses) {
+          filterClass=new FilterClassBasic(element)
           await filterClass.init()
           vis.filterClassesObjects.push(filterClass) 
         }
@@ -1445,7 +1444,7 @@ function setForcesGraph(){
 }
 
 function dragStart(d) {
-  let lineDragActive = true;
+  lineDragActive = true;
   if (!d3.event.active) networkGraph.simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
   d.fy = d.y;
@@ -1460,6 +1459,6 @@ function drag(d) {
 function dragEnd(d) {
   lineDragActive = false;
   if (!d3.event.active) networkGraph.simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
+  d.fx = null;
+  d.fy = null;
 }
