@@ -35,7 +35,7 @@ function dataViz(){
           d3.json("config_vinalod/config_basicMode.json",function(dataConfigBasic){
               d3.text("config_vinalod/query_mnemonic.txt",function(dataMnemonicCodes){
                 d3.tsv("config_vinalod/graph_icons.txt",function(dataIcons){
-                  d3.csv('../config_vinalod/sparqlEndpoints.csv',async function(dataConfigExpert){
+                  d3.csv('config_vinalod/sparqlEndpoints.csv',async function(dataConfigExpert){
                     //create configFile for basic mode with data from config_basicMode.json
                     configFile = new ConfigFileBasic(dataConfigBasic);
                     //create configFile for expert mode with data from sparqlEndpoints.csv
