@@ -362,7 +362,7 @@ LinkedDataGraph.prototype.clusterData = function (treeData,childrenLength) {
     branch.children=[node]
   }
   function transformDataMenuOption(){
-    let menuOptions=configRow.node.menuOption.split(";"),more_results
+    let menuOptions=configRow.node.menuOption.split(";"),more_results,node
 
     let branch=ldg.treeData.filter(d=>d.id==configRow.node.id)[0]
 
@@ -589,7 +589,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
         }
       }
     } else {
-      menuOption = configRow["endpoint_url"] + "," + configRow.position
+      let menuOption = configRow["endpoint_url"] + "," + configRow.position
       treeData = [{ "id": genRandomString(), "value": configRow.results[0][configRow.position]["value"], "type": configRow.results[0][configRow.position]["type"], "children": children, "hidden": false, "menuOption": menuOption, "configRow": configRowResults, "class": "free" }]
   
     }
@@ -683,10 +683,6 @@ LinkedDataGraph.prototype.buildTreeData = function () {
         if(!node["children"]){
           node["children"]=[]
         }
-        //LO HE DEJADO AAQUÍ
-/*         if(!node["children"]){
-          node["children"]=[]
-        } */
       }else{
         let menuOptions=configRow.node.menuOption.split(";")
         if(menuOptions.length==2){

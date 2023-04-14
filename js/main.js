@@ -159,8 +159,8 @@ function shareGraph(){
   if(anotherGraphId){
     link=link.replace("?graph=","").replace(anotherGraphId,"")
   }
-
-  return parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(link+"?graph="+fileName);
+  parent.location="mailto:?subject=VINALOD graph&body=Follow or copy the following link in your browser in order to see the graph shared%0D%0D%0D" + encodeURIComponent(link+"?graph="+fileName)
+  return parent.location;
   
   function addFile(){
     d3.json("config_vinalod/aws-s3.json",function(data){
@@ -409,10 +409,10 @@ function checkSelectGraphInCollection(option)
     showSelectGraphInCollection()
     $('#select-graph-in-collection option').remove()
     let selectField=document.getElementById("select-graph-in-collection")
-    for (let i = 0; i < values.length; i++) {
+    for (const element of values) {
       var optionSel = document.createElement("option");
-      optionSel.value = values[i];
-      optionSel.text = values[i].charAt(0).toUpperCase() + values[i].slice(1);
+      optionSel.value = element;
+      optionSel.text = element.charAt(0).toUpperCase() + element.slice(1);
       if(optionSel.value==option){
         optionSel.selected=true
       }
@@ -631,14 +631,12 @@ function relatedFilters(element){
 
 
 function applyAllFilters(){
-  let filterClass;
-
   if(networkGraph.filterClassesObjects.length>0){
-    for (let i = 0; i < networkGraph.filterClassesObjects.length; i++) {
-      filterClass=networkGraph.filterClassesObjects[i]
-      for (let j = 0; j < filterClass.filters.length; j++) {
+    for (const filterClass of networkGraph.filterClassesObjects) {
+      networkGraph.filterClassesObjects
+      for (const filter of filterClass.filters){
         if(!filterClass.filters[j].hidden){
-          linkedDataGraph.filter(filterClass.filters[j].id)
+          linkedDataGraph.filter(filter.id)
         }   
       }
     }
@@ -665,14 +663,14 @@ function relatedFiltersExpert(element){
   }
 }
 function getAllData(){
-  var ldg=linkedDataGraph;
+  let ldg=linkedDataGraph;
 
   ldg.allTreeData=JSON.parse(JSON.stringify(ldg.treeData))
   resetData("allTreeData")
   ldg.flattenAllData()
 }
 function resetData(data){
-  var ldg=linkedDataGraph
+  let ldg=linkedDataGraph
   function recurse(node) {
       if((node.filtered)&&(!node.collapsed)){
         delete node.hidden;
@@ -726,9 +724,9 @@ function clearFilters(){
 ************CHECK EXISTING BASIC GRAPH NODE IN EXPERT GRAPH**************
 *************************************************************************/
 async function checkBasicGraph(node){
-  var classesLinesConfig={},filterClasses="";
+  let classesLinesConfig={},filterClasses="";
 
-  for (var i = 0; i < configFile.file.length; i++) {
+  for (let i = 0; i < configFile.file.length; i++) {
     if((configFile.file[i].modelClass!=undefined)&&(configFile.file[i].modelClass!="None")){
       if(Object.keys(classesLinesConfig).includes(configFile.file[i].modelClass)){
         classesLinesConfig[configFile.file[i].modelClass]["lines"].push(i)
@@ -738,50 +736,49 @@ async function checkBasicGraph(node){
     }
   }
   var classesInConfig=Object.keys(classesLinesConfig)
-  for (var i = 0; i < classesInConfig.length; i++) {
+  for (const classEl of classesInConfig) {
     if(filterClasses==""){
-      filterClasses+="(<"+classesInConfig[i]+">"
+      filterClasses+="(<"+classEl+">"
     }else{
-      filterClasses+=",<"+classesInConfig[i]+">"
+      filterClasses+=",<"+classEl+">"
     }
   }
   filterClasses+=")"
 
-  for (var i = 0; i < node.children.length; i++) {
-    if(node.children[i]["type"]=="uri"){
-      await checkClassesNode(node.children[i],classesLinesConfig,filterClasses)
+  for (const childEl of node.children) {
+    if(childEl["type"]=="uri"){
+      await checkClassesNode(childEl,classesLinesConfig,filterClasses)
     }
   }
 }
 
 async function checkClassesNode(node,classesLinesConfig,filterClasses){
-  var sparqlQuery,results,resultsAsk;
+  let sparqlQuery,results,resultsAsk;
  
   sparqlQuery="SELECT distinct ?s ?class WHERE{{ ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.} FILTER (?s=<"+node.value+">). FILTER (?class in "+filterClasses+")}"
-  prefixes=""
-  queryUrl = node["url"] + "?query=" + prefixes +  encodeURIComponent(  sparqlQuery  )+ "&format=json";
+
   results = await runSparlqQuery(node["url"],sparqlQuery,"query")
   results=await filterResults(results,classesLinesConfig)
   return results
   async function filterResults(results,classesLinesConfig){
-    var askquery,filteredResults=[];
-    for (var i = 0; i < results.length; i++) {
-      for (var j = 0; j < classesLinesConfig[results[i]["class"]["value"]]["lines"].length; j++) {
-        if((configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"])&&(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]!="None")){
-          askquery=configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["askquery"]
+    let askquery,filteredResults=[];
+    for (const result of results) {
+      for (const element of classesLinesConfig[result["class"]["value"]]["lines"]) {
+        if((configFile.file[element]["askquery"])&&(configFile.file[element]["askquery"]!="None")){
+          askquery=configFile.file[element]["askquery"]
         }else{
-          askquery=fromSelectToAskQuery(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["query"])
+          askquery=fromSelectToAskQuery(configFile.file[element]["query"])
         }
         if(askquery){
           if(askquery.indexOf("PARAMETER2") === -1){
-            askquery=askquery.replaceAll("PARAMETER",results[i]["s"]["value"])
-            resultsAsk= await runSparlqQuery(configFile.file[classesLinesConfig[results[i]["class"]["value"]]["lines"][j]]["endpoint_url"], askquery,"askquery")
+            askquery=askquery.replaceAll("PARAMETER",result["s"]["value"])
+            resultsAsk= await runSparlqQuery(configFile.file[element]["endpoint_url"], askquery,"askquery")
             if(resultsAsk){
-              filteredResults.push(results[i])
+              filteredResults.push(result)
               if(d3.select("#"+node.id).data()[0]["configRow"]==""){
                 d3.select("#"+node.id).data()[0]["configRow"]=[]
               }
-              d3.select("#"+node.id).data()[0]["configRow"].push(classesLinesConfig[results[i]["class"]["value"]]["lines"][j])
+              d3.select("#"+node.id).data()[0]["configRow"].push(element)
               d3.select("#"+node.id).style('fill', "red");
             }
           }

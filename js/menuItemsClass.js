@@ -84,8 +84,8 @@ MenuItemsExpert.prototype.buildOptions = async function(){
   })  
 
   if((node.configRow)&&(node.configRow.length>0)){
-    for (var i = 0; i < node.configRow.length; i++) {
-      mi.indexRows.push(new OptionNodeBasic(configFile.file[node.configRow[i]].option,mi.node))
+    for (const element of node.configRow) {
+      mi.indexRows.push(new OptionNodeBasic(configFile.file[element].option,mi.node))
       mi.indexRows[mi.indexRows.length - 1]["url"]=mi.indexRows[mi.indexRows.length - 1]["endpoint_url"]
     }
   }
