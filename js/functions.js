@@ -134,7 +134,7 @@ async function getMenuItemsContextMenu(node,origin,pageX,pageY){
 *****************************************************/
 //execute sparql query
 async function runSparlqQuery(url,query,type){
-  var settings,p;
+  let settings,p;
   showSpinMessage()
 
   try{
@@ -239,7 +239,7 @@ function replaceParmtrsQuery(query,parameters,node){
 //Tooltip added to the network graph if hover over bubble
 //This is the toolip for Basic Graph
 function getTooltipText(d){
-  var text;
+  let text;
   if(d.class=="menuOption"){
     text= `<div class="bg-white shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
@@ -518,7 +518,7 @@ function getTooltipMenu(d){
 function autocomplete(inp, arr,numParentNodes) {
   var currentFocus;
   inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value,node=this,strIncluded;
+      let a, b, i, val = this.value,node=this,strIncluded;
       closeAllLists();
       if (!val) { return false;}
       currentFocus = -1;
@@ -835,8 +835,8 @@ function formatDateComp(str){
   return formatDate(str).getTime()
 }
 function isValidDate(text){
-  var validity;
-  var d_reg =/^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
+  let validity;
+  let d_reg =/^(0[1-9]|1\d|2\d|3[01])-([1-9]|0[1-9]|1[0-2])-(19[0-9][0-9]|20[0-2][0-9]|0[1-9]|1[1-9]|2[1-9])$/;
   if (d_reg.test(text)) {
     validity=true
   }

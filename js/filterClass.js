@@ -380,7 +380,7 @@ class FilterBasicDropdown extends FilterBasic {
     }
   }
   checkConditionNode(node){
-    var val;
+    let val;
     let elValue=$("#"+this.details.property+"_filter").val()
     this.elValue=elValue
     if(elValue=="All"){
@@ -491,7 +491,7 @@ class FilterBasicDate extends FilterBasic {
     runAutoInit(component)
   }
   checkValidity(){
-    var message="",errorMessage=false;
+    let message="",errorMessage=false;
     let start=$("#"+this.details.property+"_filter_start")
     let end=$("#"+this.details.property+"_filter_end")
     
@@ -617,10 +617,10 @@ FilterExpert.prototype.copyDetails=function(_details){
   Object.assign(fi, _details);
 }
 
-FilterExpert.prototype.init= async function () {
+FilterExpert.prototype.init= function () {
   let fi=this;
 
-  await fi.addHtml()
+  fi.addHtml()
 
   if(fi.values.length==0){
     fi.hide()
