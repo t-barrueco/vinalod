@@ -230,7 +230,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
   }
 
   function recurse(node,filter) {
-    var index;
+    let index;
 
     index=ldg.allTreeData.findIndex(function(element){
       if(element.children){
@@ -284,7 +284,7 @@ LinkedDataGraph.prototype.filter = function(filterId){
   }
 
   function checkFilter(node,filter){
-    var hidden=false;
+    let hidden=false;
     if(filter.details.class==node.class){
       hidden=filter.checkConditionNode(node)
     }
@@ -362,9 +362,9 @@ LinkedDataGraph.prototype.clusterData = function (treeData,childrenLength) {
     branch.children=[node]
   }
   function transformDataMenuOption(){
-    var menuOptions=configRow.node.menuOption.split(";"),more_results
+    let menuOptions=configRow.node.menuOption.split(";"),more_results
 
-    var branch=ldg.treeData.filter(d=>d.id==configRow.node.id)[0]
+    let branch=ldg.treeData.filter(d=>d.id==configRow.node.id)[0]
 
     let children=branch.children.filter(d=>d.value==menuOptions[menuOptions.length - 1])[0]["children"]
 
@@ -466,10 +466,10 @@ LinkedDataGraph.prototype.update = async function(option,node,type){
 
 LinkedDataGraph.prototype.buildTreeData = function () {
   let ldg=this;
-  var procNode=[],indexParent,child,indexNode,configRowResults,childrenLength;
+  let procNode=[],indexParent,child,indexNode,configRowResults,childrenLength;
   var treeResults;
   var properties=configRow.properties
-  var treeData=[],children = []
+  let treeData=[],children = []
 
 
   if (ldg.treeData==undefined){
@@ -540,7 +540,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
 
 
   function buildTreeDataExpert(){
-    var menuOptionNodes=[],node1,node2;
+    let menuOptionNodes=[],node1,node2;
     configRow.results.forEach(r => {
       if (configRow.position == "s") {
         if (r["o"]["configRow"]) {
@@ -676,7 +676,7 @@ LinkedDataGraph.prototype.buildTreeData = function () {
   }
 
   function createMenuOptionNodes(j){
-    var node,nodeOption1,nodeOption2;
+    let node,nodeOption1,nodeOption2;
     if(configRow.node){
       if(!configRow.node.menuOption){
         node=nodeValues(configRow.results[j],0,configRow.node.id)

@@ -4,9 +4,9 @@ nodesClasses,configRowsList=[],
 nodesClassesShow=[],nodesClassesCorrespondence,colorCorrespondence={},
 optionsMenuHtml,showNavigation=true,mnemonicCodes,lineDragActive = false;
 var timer = 0;
-var delay = 400;
+let delay = 400;
 var prevent = false;
-var test=0,test2=0;
+let test=0,test2=0;
 
 window.onload = (event) => {
   //////////////////////////console.log("page is fully loaded");
@@ -149,12 +149,12 @@ function getDataToFile(){
 function shareGraph(){
   //create a random file name
   var fileName=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)+".json"
-  var link=window.location.href.toString();
+  let link=window.location.href.toString();
   addFile()
   if(link.slice(-1)=="#"){
     link=link.substring(0, link.length - 1)
   }
-  var anotherGraphId=link.split("?graph=")[1]
+  let anotherGraphId=link.split("?graph=")[1]
   
   if(anotherGraphId){
     link=link.replace("?graph=","").replace(anotherGraphId,"")
@@ -599,7 +599,7 @@ function getShowDuplicates(){
 *****************************************************/
 
 function relatedFilters(element){
-  var filter,id,wrongValues=false;
+  let filter,id,wrongValues=false;
 
   getAllData()
 
@@ -631,12 +631,12 @@ function relatedFilters(element){
 
 
 function applyAllFilters(){
-  var filterClass;
+  let filterClass;
 
   if(networkGraph.filterClassesObjects.length>0){
-    for (var i = 0; i < networkGraph.filterClassesObjects.length; i++) {
+    for (let i = 0; i < networkGraph.filterClassesObjects.length; i++) {
       filterClass=networkGraph.filterClassesObjects[i]
-      for (var j = 0; j < filterClass.filters.length; j++) {
+      for (let j = 0; j < filterClass.filters.length; j++) {
         if(!filterClass.filters[j].hidden){
           linkedDataGraph.filter(filterClass.filters[j].id)
         }   
