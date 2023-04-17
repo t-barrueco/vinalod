@@ -633,9 +633,8 @@ function relatedFilters(element){
 function applyAllFilters(){
   if(networkGraph.filterClassesObjects.length>0){
     for (const filterClass of networkGraph.filterClassesObjects) {
-      networkGraph.filterClassesObjects
       for (const filter of filterClass.filters){
-        if(!filterClass.filters[j].hidden){
+        if(!filter.hidden){
           linkedDataGraph.filter(filter.id)
         }   
       }
