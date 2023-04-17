@@ -199,7 +199,7 @@ MenuItemsBasic.prototype.checkMenuOptions=function(menuOptions){
 }
 
 MenuItemsBasic.prototype.filterByAskResult = async function () {
-  let mi=this;
+  let mi=this,results;
   mi.selectedRows=[]
   for (let i = 0; i < mi.indexRows.length; i++) {
       try {
@@ -207,7 +207,7 @@ MenuItemsBasic.prototype.filterByAskResult = async function () {
       } catch (e) {
       results = false
       } 
-      if(results==true){
+      if(results){
         mi.addSelectedRow(i)
       }
   }
