@@ -734,7 +734,7 @@ async function checkBasicGraph(node){
       }
     }
   }
-  var classesInConfig=Object.keys(classesLinesConfig)
+  let classesInConfig=Object.keys(classesLinesConfig)
   for (const classEl of classesInConfig) {
     if(filterClasses==""){
       filterClasses+="(<"+classEl+">"

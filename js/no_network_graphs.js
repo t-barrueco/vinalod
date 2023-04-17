@@ -261,9 +261,9 @@
   }
   
   async function showWikipediaPage(rowInConfigFile,node){
-    var results,page;
+    let results,page;
 
-    var sparqlQuery=rowInConfigFile.query
+    let sparqlQuery=rowInConfigFile.query
     sparqlQuery=sparqlQuery.replace("PARAMETER2", node[rowInConfigFile.parameters[0]["property"]]);
 
     results=await runSparlqQuery(rowInConfigFile.endpoint_url,sparqlQuery,"query")
@@ -278,7 +278,7 @@
 
     const modalContent=getModalContent()
 
-    var div=document.createElement("div")
+    let div=document.createElement("div")
       div.className="h-full"
       div.setAttribute("id","modalGraph")
       div.setAttribute("style","overflow: auto")
