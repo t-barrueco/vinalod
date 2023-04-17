@@ -1061,11 +1061,13 @@ function closeNavigationPanel(){
   $("#myModal").removeClass("translate-x-0")
 }
 function checkNavigationPanelOpen(){
-if($( "#myModal" ).hasClass( "translate-x-0" )){
-  return true;
-}else{
-  return false;
-}
+  let open;
+  if($( "#myModal" ).hasClass( "translate-x-0" )){
+    open=true;
+  }else{
+    open=false;
+  }
+  return open
 }
 
 function removeColorsFromLegend(){

@@ -28,8 +28,8 @@ FilterClass.prototype.getCode= async function(){
 //it will be hide otherwise
 FilterClass.prototype.checkHidden=async function(){
   let cf=this,hidden=true;
-  for(let i=0;i<cf.filters.length;i++){
-    if(!cf.filters[i].hidden){
+  for (const filter of cf.filters) {
+    if(!filter.hidden){
       hidden=false
     }
   }
@@ -165,8 +165,9 @@ FilterClassExpert.prototype.addFilterTypeImported = async function (filter,impor
 
 FilterClassExpert.prototype.updateFilters = async function (){
   let cf=this;
-  for (let i = 0; i < cf.filters.length; i++) {
-    cf.filters[i].getResultsField()
+  cf.filters
+  for (const filter of cf.filters) {
+    filter.getResultsField()
   }
   cf.checkHidden()
 }
@@ -501,8 +502,6 @@ class FilterBasicDate extends FilterBasic {
       message="Not valid end date format"
     }else if(formatDateComp(end.val())<formatDateComp(start.val())){
       message="Not valid date range"
-    }else{
-      message=""
     }
 
     start.parent().prev('.ecl-feedback-message').text(message);
@@ -771,13 +770,14 @@ class FilterExpertDropdown extends FilterExpert {
 
   }
   checkValuesChangedIn(){
-    let fi=this;
+    let fi=this,valuesChanged;
 
     if(fi.values.includes(fi.valuesChanged)){
-      return true
+      valuesChanged=true
     }else{
-      return false
+      valuesChanged=false
     }
+    return valuesChanged
   }
   sortValues(){
     this.values=[...new Set(this.values)].sort()
