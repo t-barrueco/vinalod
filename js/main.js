@@ -133,7 +133,7 @@ function downloadQuery(){
 //create json data from graph for being exported or shared
 function getDataToFile(){
   var navPanelNode;
-  if(getNavPanelVisibility()){
+  if(checkNavigationPanelOpen()){
     navPanelNode=navigationPanel.node
   }else{
     navPanelNode="None"

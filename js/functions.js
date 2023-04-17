@@ -900,14 +900,6 @@ function getModalContent(){
 ************VISIBILITY FUNCTIONS**************
 ****************************************/
 
-function getNavPanelVisibility(){
-  if($( "#myModal" ).hasClass( "translate-x-0" )){
-    return true;
-  }else{
-    return false;
-  }
-}
-
 function modalVisibilityOn(){
   if($("#modal-content2 #modalGraph")){
     $("#modal-content2 #modalGraph").remove()
