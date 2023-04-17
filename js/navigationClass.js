@@ -297,7 +297,7 @@ NavigationPanel.prototype.addEventsNav = function (){
 
 NavigationPanel.prototype.contentTable = async function (){
   let navPanel=this,label;
-  var menuOption;
+  let menuOption;
   navPanel.numStart=1
   navPanel.numTot=navPanel.targets.length
   navPanel.numLinesShown=10
@@ -567,7 +567,7 @@ function showLines(numCurrent){
   navigationPanel.showLines(numCurrent,false,false)
 }
 function removeLinesNavContent(){
-  var sel=document.querySelectorAll("#dvTable tbody tr")
+  let sel=document.querySelectorAll("#dvTable tbody tr")
   if(sel.length>0){
     sel.forEach(
       function(currentValue, currentIndex, listObj) {
@@ -940,8 +940,6 @@ NavigationPanel.prototype.addSelToGraph = function (){
 }
 
 NavigationPanel.prototype.addMenuToTable = async function (){
-
-  let navPanel=this;
   d3.selectAll(".menu-table").remove()
   let tBodyRef=$('#myModal #'+ menuItems.node["id"]+"_row")
   addCodeMenuTable(tBodyRef)
@@ -972,21 +970,15 @@ function addCodeMenuTable(tBodyRef){
       let code = await getHtmlCodeFromFile("pages/menu-table-property.html");
     
       menuItems.selectedRows = menuItems.selectedRows.reverse();
-      for (var i = 0; i < menuItems.selectedRows.length; i++) {
+      for (let i = 0; i < menuItems.selectedRows.length; i++) {
         let menuOption="Sparql Endpoint: "+ menuItems.selectedRows[i]["endpoint_url"]+" Position: " +positionFullText(menuItems.selectedRows[i]["position"])
         let tooltipText="Find all objects for the URI :" + d3.select("#"+node.id).data()[0].value + " in the SPARQL EndPoint: "+menuItems.selectedRows[i]["endpoint_url"]
         $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-/*         if(!tBodyRef){
-          $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-        }else{
-          $(code.replace("Menu Option",menuOption).replace("Menu Option Tooltip",tooltipText).replace("menu-table-id",menuItems.node["id"]+"_menu-option_"+i)).insertAfter(tBodyRef);
-        }  */
       }
   }
 }
 
 NavigationPanel.prototype.addMenuToTableFromNav = async function (){
-  let navPanel=this;
   showNavContentTable()
   hideNavContentTablePagination()
   addCodeMenuTable()
@@ -1018,7 +1010,6 @@ NavigationPanel.prototype.clickMenuTable = async function (row){
 
 class NavigationPanelNoDuplicates extends NavigationPanel {
   async addHtml() {
-   var fi=this;
    super.addHtml();
  }
 }

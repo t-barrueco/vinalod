@@ -102,9 +102,9 @@ MenuItemsExpert.prototype.checkMenuOptions=function(menuOptions){
 }
 
 MenuItemsExpert.prototype.filterByAskResult = async function () {
-  let mi=this;
+  let mi=this,results;
   mi.selectedRows=[]
-  for (var i = 0; i < mi.indexRows.length; i++) {
+  for (let i = 0; i < mi.indexRows.length; i++) {
     if(!(mi.indexRows[i] instanceof OptionNodeBasic)){
       try {
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
@@ -201,7 +201,7 @@ MenuItemsBasic.prototype.checkMenuOptions=function(menuOptions){
 MenuItemsBasic.prototype.filterByAskResult = async function () {
   let mi=this;
   mi.selectedRows=[]
-  for (var i = 0; i < mi.indexRows.length; i++) {
+  for (let i = 0; i < mi.indexRows.length; i++) {
       try {
         results = await runSparlqQuery(mi.indexRows[i].endpoint_url,mi.indexRows[i].askquery,"askquery");
       } catch (e) {
