@@ -74,8 +74,8 @@ MenuItemsExpert.prototype = Object.create(MenuItems.prototype);
 
 MenuItemsExpert.prototype.buildOptions = async function(){
   let mi=this;
-  //console.log(configFileExpert)
-  console.log(JSON.parse(JSON.stringify(configFileExpert)))
+  ////console.log(configFileExpert)
+  //console.log(JSON.parse(JSON.stringify(configFileExpert)))
   configFileExpert.option.forEach(option => {
     let position = option.match("and Position: (.*)")[1];
     if((!mi.node["position"])||(position==mi.node["position"])){
@@ -111,7 +111,7 @@ MenuItemsExpert.prototype.filterByAskResult = async function () {
       } catch (e) {
       results = false
       } 
-      if(results==true){
+      if(results){
         mi.addSelectedRow(i)
       }
     }else{

@@ -42,7 +42,7 @@ ConfigFileExpert.prototype.init = function () {
   let cf=this;
   cf.position=["s","o"]
   cf.option=[]
-  console.log(JSON.parse(JSON.stringify(cf)))
+  //console.log(JSON.parse(JSON.stringify(cf)))
   cf.file.forEach(element => {
     cf.position.forEach(position => {
       cf.option.push("Sparql Endpoint: " + element.sparqlEndpoint + " and Position: " + position)
