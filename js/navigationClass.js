@@ -1059,7 +1059,7 @@ NavigationPanel.prototype.addTextToHeaderContentTable = function (){
   if(navPanel.node.class!="free"){
     $("#dvTable #nav-children-header").text(configRow.option_text)
   }else{
-    console.log(navPanel.node.menuOption)
+    //console.log(navPanel.node.menuOption)
     if(navPanel.node.menuOption){
       if(navPanel.node.menuOption!=""){
         if(navPanel.node.menuOption.split(";").length>1){

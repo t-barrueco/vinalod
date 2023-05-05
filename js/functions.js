@@ -161,7 +161,7 @@ async function runSparlqQuery(url,query,type){
       });
     })
   } catch (error) {
-    console.error(error);
+    //console.error(error);
   }
   
   return await p.then(async function(_data){
@@ -727,7 +727,7 @@ function textImageZoom(zoomScale){
 //based on structure
 function getDetail(detail,nodeClass){
   var detailNode="";
-  //////////////console.log(detail)
+  ////////////////console.log(detail)
   if(detail!=undefined){
     if(detail!=""){
       for (let k of detail) {
@@ -1231,6 +1231,7 @@ function selectTabNavPanel(element,otherText){
 }
 
 function noPunctuationStr(id){
+  //console.log(id)
   return id.replaceAll(":","_").replaceAll(".","_").replaceAll("/","_").replaceAll("#","_").replaceAll(",","_")
 }
 

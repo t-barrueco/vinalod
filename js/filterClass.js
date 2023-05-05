@@ -128,8 +128,9 @@ FilterClassExpert.prototype = Object.create(FilterClass.prototype);
 
 FilterClassExpert.prototype.initFilters = async function (){
   let cf=this,filters=[],fi;
-
+  //console.log(configRow.node.uri)
   cf.internalClass=noPunctuationStr(configRow.node.uri)
+
   filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"type","internalClass":cf.internalClass,"id":cf.internalClass+"_type"})
   filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"property","internalClass":cf.internalClass,"id":cf.internalClass+"_property"})
   filters.push({"class":configRow.node.uri,"filter_type":"dropdown","field":"value","internalClass":cf.internalClass,"id":cf.internalClass+"_value"})
@@ -192,6 +193,7 @@ FilterClassExpert.prototype.show=async function(){
 
 FilterClassExpert.prototype.setTitle = async function () {
   let cf=this;
+  //console.log(cf.name)
   cf.internalName=noPunctuationStr(cf.name)
   cf.code=cf.code.replaceAll("FilterClassName",cf.name).replaceAll("accordion-example-content",cf.internalName+"_filters")
 }
@@ -211,6 +213,7 @@ Filter.prototype.resetAllValues=function (){
   let fi=this
   fi.getValuesAllNodes()
   fi.fillField()
+  //console.log(fi)
   fi.resetComponent()
   if(fi.values.length==0){
     fi.hide()
@@ -616,10 +619,10 @@ FilterExpert.prototype.copyDetails=function(_details){
   Object.assign(fi, _details);
 }
 
-FilterExpert.prototype.init= function () {
+FilterExpert.prototype.init= async function () {
   let fi=this;
 
-  fi.addHtml()
+  await fi.addHtml()
 
   if(fi.values.length==0){
     fi.hide()
@@ -703,6 +706,7 @@ class FilterExpertDropdown extends FilterExpert {
       if(!fi.imported){
         fi.getResultsField()
       }
+      //console.log(JSON.parse(JSON.stringify(fi)))
       fi.fillField();
       runAutoInit()
     });       
@@ -778,6 +782,10 @@ class FilterExpertDropdown extends FilterExpert {
       valuesChanged=false
     }
     return valuesChanged
+  }
+  resetComponent(){
+    let component=$("#"+this.id)[0]
+    runAutoInit(component)
   }
   sortValues(){
     this.values=[...new Set(this.values)].sort()
