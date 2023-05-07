@@ -1,0 +1,7 @@
+SELECT DISTINCT ?org ?code
+WHERE{{
+?s ?p <http://publications.europa.eu/resource/authority/use-context/MNEMONIC>.
+?s <http://publications.europa.eu/ontology/euvoc#xlCodification> ?code.
+?org ?p3 ?s.
+}
+}
