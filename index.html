@@ -72,7 +72,7 @@
       </script>
 
     </head>
-    <body>
+    <body class="vinalod-app">
       <header class="ecl-site-header" data-ecl-auto-init="SiteHeader" data-ecl-has-menu><div class="ecl-site-header__header">
         <div class="ecl-site-header__container ecl-container">
           <div class="ecl-site-header__top">
@@ -112,7 +112,7 @@
             <use xlink:href="images/icons.svg#ui--corner-arrow"></use>
           </svg><span class="ecl-u-sr-only"></span></button></div>
     </nav>
-    <div class="ecl-u-border-bottom ecl-u-border-color-grey-20" id="content-main-tabs">
+    <div class="ecl-u-border-bottom ecl-u-border-color-grey-20 vinalod-tabs-content" id="content-main-tabs">
     <ul role="list" class="content-item" id="mode-content">
       
       <li class="px-6">
@@ -122,9 +122,9 @@
         <div>
           
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">       
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="vinalod-panel">
               <fieldset class="ecl-form-group" aria-describedby="helper-mode">
-                <legend class="ecl-form-label">Chose mode<span class="ecl-form-label__required">*</span></legend>
+                <legend class="ecl-form-label">Choose mode<span class="ecl-form-label__required">*</span></legend>
                 <div class="ecl-help-block" id="helper-mode">Showing graphs in basic or expert mode</div>
                 <div class="ecl-radio ecl-radio--binary">
                   <input id="mode-option-basic" name="radio-mode" class="ecl-radio__input" type="radio" value="yes" checked required onclick="showCollections()"/>
@@ -146,11 +146,11 @@
                 </div>
               </fieldset>
             </div>
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="collections-div">
+            <div class="vinalod-panel" id="collections-div">
               <div class="relative flex items-start">
                   <div class="ecl-form-group"><label for="select-collections" class="ecl-form-label">Select a collection<span
                     class="ecl-form-label__required">*</span></label>
-                  <div class="helper-collections">Chose collection for selecting a graph.</div>
+                  <div class="helper-collections">Choose a collection to select a graph.</div>
                   <div class="ecl-select__container ecl-select__container--m">
                     <select class="ecl-select" id="select-collections"
                       required="" onchange="getOptionsCollectionSelect(this)">
@@ -169,7 +169,7 @@
               </div>
               </div>
             </div>
-            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="graph-in-collection-div">
+            <div class="hidden vinalod-panel" id="graph-in-collection-div">
               <div class="relative flex items-start">
                   <div class="ecl-form-group"><label for="select-collections" class="ecl-form-label">Change graph</label>
                   <div class="helper-collections">Show different graph in same collection.</div>
@@ -198,7 +198,7 @@
         <div>
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-4">
 
-            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="collapse-graph-div">
+            <div class="hidden vinalod-panel" id="collapse-graph-div">
               <dd class="mt-1 text-sm font-semibold text-gray-900">
                 <button class="ecl-button ecl-button--secondary" type="button"  onclick='collapse()' id="collapse">Collapse all</button>
                 <button class="ecl-button ecl-button--secondary" type="button"  onclick='expand()' id="expand">Expand all</button>
@@ -206,7 +206,7 @@
               </dd>
             </div>
         
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="vinalod-panel">
               <fieldset class="ecl-form-group" aria-describedby="helper-id-1">
                 <legend class="ecl-form-label">Show navigation?<span class="ecl-form-label__required">*</span></legend>
                 <div class="ecl-help-block" id="helper-id-1">Show navigation panel after clicking on graph</div>
@@ -215,7 +215,7 @@
               </fieldset>
             </div>
 
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="vinalod-panel">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -229,7 +229,7 @@
               </div>
             </div> 
 
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6">
+            <div class="vinalod-panel">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div> 
@@ -248,7 +248,7 @@
     <ul role="list" class="hidden content-item" id="import-content">
       <li class="px-6">
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="share-graph-div">
+            <div class="hidden vinalod-panel" id="share-graph-div">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -260,7 +260,7 @@
                 </fieldset>
               </div>
             </div>
-            <div class="hidden px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="save-graph-div">
+            <div class="hidden vinalod-panel" id="save-graph-div">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -272,7 +272,7 @@
                 </fieldset>
               </div>
             </div>
-            <div class="px-4 py-2 overflow-hidden bg-white rounded-lg sm:p-6" id="import-graph-div">
+            <div class="vinalod-panel" id="import-graph-div">
               <div class="relative flex items-start">
                 <div class="flex items-center h-5">
                 </div>
@@ -337,7 +337,7 @@
           
           <div class="object-contain w-full h-full">
               <div class="grid w-full grid-cols-11">
-                <div class="z-0 h-full col-span-11 bg-white shadow-2xl sm:col-span-2" id="filters" style="display: none;">
+                <div class="z-0 h-full col-span-11 sm:col-span-2" id="filters" style="display: none;">
                   <div class="ecl-container left-aligned ecl-u-mv-s">
                     <h3 class="ecl-u-type-heading-3">Filter by</h3>
                   </div>
@@ -357,7 +357,7 @@
                     <div class="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl" id="modal-content">
                       <div class="px-4 sm:px-6 ecl-u-z-modal">
                         <div class="flex items-start justify-between p-6 border-1" style="background-color:#F5F5F5">
-                          <h4 class="ecl-u-type-heading-4">Navigaton panel</h4>
+                          <h4 class="ecl-u-type-heading-4">Navigation panel</h4>
                           <div class="flex items-center ml-3 h-7">
                             <button type="button" class="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 close">
                               <span class="sr-only">Close panel</span>
@@ -566,4 +566,3 @@
     </script>
     </body>
 </html>
-

@@ -237,3 +237,54 @@ div#networkgraph{
 /*   width: calc(100% - 25px);
  */
 }
+
+body.vinalod-app {
+  background: #f5f7fa;
+  color: #1b1b1b;
+}
+
+#content-main-tabs {
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 8px 8px;
+}
+
+.vinalod-tabs-content {
+  padding: 0.75rem 0;
+}
+
+.vinalod-panel {
+  background: #ffffff;
+  border: 1px solid #d9dde1;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#graph-area {
+  gap: 1rem;
+  padding: 1rem;
+}
+
+#filters {
+  border: 1px solid #d9dde1;
+  border-radius: 8px;
+}
+
+#networkGraph {
+  background: #ffffff;
+  border: 1px solid #d9dde1;
+  border-radius: 8px;
+  min-height: 70vh;
+}
+
+#modal-content,
+#modal-content2 {
+  border-left: 1px solid #d9dde1;
+}
+
+#dataviz-collection .ecl-navigation-list__item {
+  border: 1px solid #d9dde1;
+  border-radius: 8px;
+  overflow: hidden;
+}
