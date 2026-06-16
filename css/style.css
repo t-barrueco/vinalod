@@ -330,9 +330,18 @@ body.vinalod-app {
 
 /* Replacement utility classes (former Tailwind usage) */
 .hidden { display: none !important; }
+.block { display: block; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
 .relative { position: relative; }
 .inset-0 { inset: 0; }
 .inset-y-0 { top: 0; bottom: 0; }
+.top-4 { top: 1rem; }
+.left-4 { left: 1rem; }
+.right-0 { right: 0; }
+.z-0 { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
 .grid { display: grid; }
 .flex { display: flex; }
 .inline-block { display: inline-block; }
@@ -450,7 +459,6 @@ body.vinalod-app {
 .border-1 { border-width: 1px; border-style: solid; }
 .border-2 { border-width: 2px; border-style: solid; }
 .border-t { border-top-width: 1px; border-top-style: solid; }
-.bordert-t { border-top-width: 1px; border-top-style: solid; }
 .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
 .border-transparent { border-color: transparent; }
 .border-gray-200 { border-color: #e5e7eb; }
