@@ -7,17 +7,12 @@
     "@ecl/ec-resources-icons": "^2.39.0",
     "@ecl/preset-ec": "^3.4.1",
     "@ecl/twig-component-datepicker": "^3.4.1",
-    "@tailwindcss/typography": "^0.4.1",
-    "autoprefixer": "^10.3.1",
-    "moment": "^2.29.4",
-    "postcss": "^8.3.5",
-    "postcss-cli": "^8.3.1",
-    "tailwindcss": "^2.2.4"
+    "moment": "^2.29.4"
   },
   "devDependencies": {},
   "scripts": {
-    "build": " postcss tailwind.css -o dist/styles.css",
-    "watch": "postcss tailwind.css -o dist/styles.css --watch"
+    "build": "echo \"No frontend build step required\"",
+    "watch": "echo \"Watch script removed\""
   },
   "repository": {
     "type": "git",
