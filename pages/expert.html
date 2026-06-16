@@ -1,10 +1,10 @@
-<form class="ecl-search-form" role="search" style="margin-top: 100px;" onsubmit="startExpert(this);return false">
+<form class="ecl-search-form ecl-u-mt-xl" role="search" onsubmit="startExpert(this);return false">
   <div class="ecl-form-group">
     <div class="ecl-container ecl-u-justify-content-center">
       <div class="ecl-row ecl-u-justify-content-center">
       <h2 class="ecl-u-type-heading-2">Start navigation from URI</h2>
       </div>
-      <div class="ecl-row ecl-u-justify-content-center" style="margin-top:25px;";>
+      <div class="ecl-row ecl-u-justify-content-center ecl-u-mt-m">
       <div class="form-type-text">
           <label for="free-uri" class="ecl-form-label">Enter URI<span class="ecl-form-label__required">*</span></label>          
           <input class="ecl-text-input ecl-text-input--l" type="text" placeholder="Node URI" id="free-uri" onkeydown="checkEmptyURI(this)"/>
@@ -15,13 +15,13 @@
                        
       </div>
       <div class="ecl-row ecl-u-justify-content-center">
-      <div class="form-type-text form-item-feedback-body form-item europa-text" style="margin-top: 25px;">
+      <div class="form-type-text form-item-feedback-body form-item europa-text ecl-u-mt-m">
         
         <label for="select-default" class="ecl-form-label">Select subject/object position<span class="ecl-form-label__required">*</span></label>                   
         <div class="ecl-select__container ecl-select__container--l">
           <select class="ecl-select" required id="subject-object">
             <option value="s">Subject</option>
-            <option value="o">Object</option>s
+            <option value="o">Object</option>
           </select>
           <div class="ecl-select__icon">
             <svg class="ecl-icon ecl-icon--s ecl-icon--rotate-180 ecl-select__icon-shape" focusable="false" aria-hidden="true">
@@ -31,7 +31,7 @@
         </div>
       </div>
       </div>
-      <div class="ecl-row ecl-u-justify-content-center" style="margin-top: 25px;margin-bottom: 25px;">
+      <div class="ecl-row ecl-u-justify-content-center ecl-u-mv-m">
         <button class="ecl-button ecl-button--primary" type="submit">Show</button>
       </div>
     </div>  
