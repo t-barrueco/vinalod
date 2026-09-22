@@ -1,0 +1,239 @@
+html{ width: 100%; }
+
+.filters {
+    flex-basis: 200px;
+    padding: 0 5px;
+  }
+  
+body{ 
+    width: 100%; 
+    margin: 0; padding: 0; 
+/*     display: flex;  */
+    font-family: sans-serif; font-size: 75%; }
+/* svg {
+  flex-basis: 100%;
+  min-width: 200px;
+} */
+.links line {
+  stroke: #aaa;
+}
+.nodes circle {
+  pointer-events: all;
+}
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+/*   width: 60px;					
+  height: 28px;	 */				
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: lightsteelblue;	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
+}
+/* The Modal (background) */
+/* .modal {
+  display: none; 
+  position: fixed; 
+  top: 0px;
+  right: 20px;
+  bottom: 0;
+  left: 625px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: grey; 
+  background-color: rgba(0,0,0,0); 
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+} */
+/* .modal.ui-resizable {
+  overflow: scroll;
+} */
+
+/* Modal Content/Box */
+/* .modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 20px;
+  border: 0.5px solid lightgray;
+  box-shadow: 0 13px 17px rgba(0, 0, 0, 0.3);
+  width: 80%; 
+} */
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.contextMenu {
+  position: absolute;
+  stroke: #042F67;
+  fill: #ffffff;
+  z-index: 1060;
+}
+.contextMenu:hover{
+  stroke: #FBD74A;
+}
+
+.menuEntry {
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position:relative;
+  z-index: 99;
+}
+.menuEntry rect:hover {
+  stroke: #FBD74A;
+}
+
+.menuEntry text {
+  font-size: 14px;
+  font-weight: bold;
+  stroke: #042F67;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.modal2 {
+  display: none; /* Hidden by default */
+  position: fixed; 
+  top: 0px;
+  right: 20px;
+  bottom: 0px;
+  left: 20px;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0); /* Black w/ opacity */
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.modal-content2 {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 0.5px solid lightgray;
+  box-shadow: 0 13px 17px rgba(0, 0, 0, 0.3);
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close2 {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close2:hover,
+.close2:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tick line{
+  stroke: grey;
+}
+.tick text{
+  fill: grey;
+}
+.gridLine {
+  z-index: 1;
+}
+.modal-header2{
+  text-align:center;
+  font-size: 30px;
+  color:#7bb6d9
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+.limit{
+  word-wrap: break-word;
+}
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+ text-decoration: none;
+}
+/* .autocomplete-items{
+  text-transform: none;
+} */
+
+#logo:hover { text-decoration: none; }
+
+div#networkgraph{
+  overflow-y: auto;
+  }
+
+
+.page {
+  padding: 4px 2px;
+  margin-right: 20px;
+  display: inline-block;
+}
+.page svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+.page span{
+    display: inline-block;
+  }
+
+/* button.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
+
+/* button.truncate{
+  white-space:normal !important;
+  word-wrap:break-word; 
+} */
+
+.filter-class {
+  overflow: hidden;
+}
+
+.filter-class-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+/*   width: calc(100% - 25px);
+ */
+}
